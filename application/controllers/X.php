@@ -230,20 +230,20 @@ class X extends CI_Controller
     function apply_preview()
     {
 
-        if(!isset($_POST['apply_id']) || !isset($_POST['coin__id'])){
+        if(!isset($_POST['apply_id']) || !isset($_POST['card__id'])){
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing Core Data</div>';
         } else {
             if($_POST['apply_id']==4997){
 
                 //Source list:
-                $counter = view_coins_e(12274, $_POST['coin__id'], 0, false);
+                $counter = view_coins_e(12274, $_POST['card__id'], 0, false);
                 if(!$counter){
                     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach(view_coins_e(12274, $_POST['coin__id'], 1, true) as $e) {
+                    foreach(view_coins_e(12274, $_POST['card__id'], 1, true) as $e) {
                         array_push($ids, $e['e__id']);
                         echo view_card_e(12274, $e);
                     }
@@ -258,7 +258,7 @@ class X extends CI_Controller
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                    'x__left' => $_POST['coin__id'],
+                    'x__left' => $_POST['card__id'],
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
                 $counter = count($is_next);
 
@@ -986,7 +986,7 @@ class X extends CI_Controller
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif (!isset($_POST['coin__type']) || !isset($_POST['coin__id'])) {
+        } elseif (!isset($_POST['card__type']) || !isset($_POST['card__id'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -1041,8 +1041,8 @@ class X extends CI_Controller
             $invite_x = $this->X_model->create(array(
                 'x__type' => 25990,
                 'x__creator' => $member_e['e__id'],
-                'x__down' => ( $_POST['coin__type']==12274 ? $_POST['coin__id'] : 0 ),
-                'x__right' => ( $_POST['coin__type']==12273 ? $_POST['coin__id'] : 0 ),
+                'x__down' => ( $_POST['card__type']==12274 ? $_POST['card__id'] : 0 ),
+                'x__right' => ( $_POST['card__type']==12273 ? $_POST['card__id'] : 0 ),
                 'x__message' => $cdn_status['cdn_url'],
             ));
 
@@ -1438,7 +1438,7 @@ class X extends CI_Controller
     }
 
 
-    function load_coin_count(){
+    function load_card_count(){
         //Count transactions:
         $query = $this->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $return_array = array(
@@ -1450,7 +1450,7 @@ class X extends CI_Controller
         return view_json($return_array);
     }
 
-    function coin__save()
+    function card__save()
     {
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -1458,56 +1458,56 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['coin__type']) || !in_array($_POST['coin__type'] , $this->config->item('n___12761'))) {
+        } elseif (!isset($_POST['card__type']) || !in_array($_POST['card__type'] , $this->config->item('n___12761'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin Type',
             ));
-        } elseif (!isset($_POST['coin__id'])) {
+        } elseif (!isset($_POST['card__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
             ));
-        } elseif (!isset($_POST['coin__title'])) {
+        } elseif (!isset($_POST['card__title'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin Title',
             ));
-        } elseif (!isset($_POST['coin__cover'])) {
+        } elseif (!isset($_POST['card__cover'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin Cover',
             ));
         }
 
-        if($_POST['coin__type']==12273){
+        if($_POST['card__type']==12273){
 
             //IDEA
-            $this->I_model->update($_POST['coin__id'], array(
-                'i__title' => trim($_POST['coin__title']),
+            $this->I_model->update($_POST['card__id'], array(
+                'i__title' => trim($_POST['card__title']),
             ), true, $member_e['e__id']);
 
-        } elseif($_POST['coin__type']==12274){
+        } elseif($_POST['card__type']==12274){
 
             //Reset member session data if this data belongs to the logged-in member:
-            if ($_POST['coin__id'] == $member_e['e__id']) {
+            if ($_POST['card__id'] == $member_e['e__id']) {
 
                 $es = $this->E_model->fetch(array(
-                    'e__id' => intval($_POST['coin__id']),
+                    'e__id' => intval($_POST['card__id']),
                 ));
                 if(count($es)){
                     //Re-activate Session with new data:
-                    $es[0]['e__title'] = trim($_POST['coin__title']);
-                    $es[0]['e__cover'] = trim($_POST['coin__cover']);
+                    $es[0]['e__title'] = trim($_POST['card__title']);
+                    $es[0]['e__cover'] = trim($_POST['card__cover']);
                     $this->E_model->activate_session($es[0], true);
                 }
 
             }
 
             //SOURCE
-            $this->E_model->update($_POST['coin__id'], array(
-                'e__title' => trim($_POST['coin__title']),
-                'e__cover' => trim($_POST['coin__cover']),
+            $this->E_model->update($_POST['card__id'], array(
+                'e__title' => trim($_POST['card__title']),
+                'e__cover' => trim($_POST['card__cover']),
             ), true, $member_e['e__id']);
 
         }

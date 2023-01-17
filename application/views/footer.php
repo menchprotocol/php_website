@@ -21,7 +21,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </button>
                     </div>
                     <form method="POST" action="/-27196?e__id=12274">
-                    <input type="hidden" name="coin__id" value="" />
+                    <input type="hidden" name="card__id" value="" />
                     <div class="modal-body">
                             <?php
 
@@ -164,7 +164,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </button>
                     </div>
                     <form method="POST" action="/-27196?e__id=12273">
-                    <input type="hidden" name="coin__id" value="" />
+                    <input type="hidden" name="card__id" value="" />
                     <div class="modal-body">
                         <?php
 
@@ -332,14 +332,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 <!-- COVER PREVIEW -->
                                 <a name="preview_cover" style="height: 1px;">&nbsp;</a>
-                                <div class="coin_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
+                                <div class="card_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
                                     <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                                    <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="coin__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
+                                    <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="card__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
                                 </div>
 
 
-                                    <input type="hidden" id="coin__type" value="0" />
-                                    <input type="hidden" id="coin__id" value="0" />
+                                    <input type="hidden" id="card__type" value="0" />
+                                    <input type="hidden" id="card__id" value="0" />
 
 
                                     <!-- IMAGE DROP ENDS -->
@@ -347,7 +347,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
                             <!-- Power Edit (Required Superpower) -->
-                            <div class="<?= superpower_active(14003) ?>"><input type="text" id="coin__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+                            <div class="<?= superpower_active(14003) ?>"><input type="text" id="card__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
 
                             <!-- CONTROLLER -->
                             <table style="width: 100%; margin-bottom: 34px;">
@@ -368,7 +368,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                     <td>
                                         <!-- SAVE -->
-                                        <button type="button" onclick="coin__save()" class="btn btn-default">SAVE</button>
+                                        <button type="button" onclick="card__save()" class="btn btn-default">SAVE</button>
                                     </td>
                                 </tr>
                             </table>

@@ -1045,7 +1045,7 @@ textarea.note-textarea{
     width: 100%;
     margin-bottom: 0;
 }
-.coin_e_click, .coin_i_click, .x_remove, .ignore-click, a:hover, a:hover * {
+.card_e_click, .card_i_click, .x_remove, .ignore-click, a:hover, a:hover * {
     cursor: pointer !important;
 }
 
@@ -1301,10 +1301,10 @@ a.headline {
 .list-group-item:hover .show-on-hover{
     display:inline-block !important;
 }
-.coin_cover:hover .show-on-hover{
+.card_cover:hover .show-on-hover{
     display:block !important;
 }
-.coin_cover.focus-coin {
+.card_cover.focus-coin {
     padding-bottom: 13px !important;
 }
 
@@ -1985,7 +1985,7 @@ input.form-control {
     .coin-12274 .cover-content{
         top: 16px;
     }
-    .coin-12274 .coin_coins{
+    .coin-12274 .card_coins{
         margin-top: -45px;
         margin-bottom: 45px;
     }
@@ -2046,13 +2046,13 @@ input.form-control {
     right: 5px;
 }
 
-.coin_coins{
+.card_coins{
     width: 100%;
     height: 37px;
     text-align: center;
     margin:0;
 }
-.coin_coins>span{
+.card_coins>span{
     padding: 0 3px;
 }
 
@@ -2069,23 +2069,23 @@ input.form-control {
 .headline {
     padding: 5px 0 8px;
 }
-.coin_cover{
+.card_cover{
     position: relative;
     margin:0 auto 5px auto !important;
     padding: 5px 0 !important;
     border-radius: 0 !important;
 }
-.coin_cover.coin-12274{
+.card_cover.coin-12274{
     border-radius: 21px !important;
 }
 
-.coin_cover.coinface-12274{
+.card_cover.coinface-12274{
     margin:0 !important;
 }
-.coin_cover .large_cover i{
+.card_cover .large_cover i{
     font-size:5em !important;
 }
-.coin_cover .large_title{
+.card_cover .large_title{
     font-size: 2.2em;
     font-weight: bold;
     margin: 21px 0 0;
@@ -2093,7 +2093,7 @@ input.form-control {
     min-height: 25px;
     line-height: 75%;
 }
-.coin_cover div.css__title{
+.card_cover div.css__title{
     padding: 0;
 }
 .mini-coin{
@@ -2429,7 +2429,7 @@ input.form-control {
 .focus-coin .cover-btn i {
     margin-top: -33%;
 }
-.list-coins .coin_cover {
+.list-coins .card_cover {
     text-align: center;
     padding:34px 8px !important;
 }
@@ -2550,7 +2550,7 @@ h4.css__title{
         font-size: 1.15em;
     }
 
-    .coin_coins>span{
+    .card_coins>span{
         padding: 0 2px;
     }
 
@@ -2649,7 +2649,7 @@ h4.css__title{
     .list-group-item .show-on-hover{
         display:inline-block !important;
     }
-    .coin_cover .show-on-hover{
+    .card_cover .show-on-hover{
         display:block !important;
     }
 
@@ -2738,8 +2738,8 @@ h4.css__title{
     background: rgba(16,16,16,0.80) !important;
 }
 
-.custom_ui_13884_13886 .coin_cover:hover,
-.custom_ui_13884_13886 .coin-12274.coin_cover:hover .cover-content{
+.custom_ui_13884_13886 .card_cover:hover,
+.custom_ui_13884_13886 .coin-12274.card_cover:hover .cover-content{
     background: #000000 !important;
 }
 
@@ -2797,7 +2797,7 @@ h4.css__title{
 .custom_ui_13884_13886 .controller-nav,
 .custom_ui_13884_13886 .grey-background,
 .custom_ui_13884_13886 .grey-background i,
-.custom_ui_13884_13886 .coin_reverse .black-background i{
+.custom_ui_13884_13886 .card_reverse .black-background i{
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .btn-close,
@@ -2884,8 +2884,8 @@ h4.css__title{
     background: rgba(239,239,239,0.80) !important;
 }
 
-.custom_ui_13884_13885 .coin_cover:hover,
-.custom_ui_13884_13885 .coin-12274.coin_cover:hover .cover-content{
+.custom_ui_13884_13885 .card_cover:hover,
+.custom_ui_13884_13885 .coin-12274.card_cover:hover .cover-content{
     background: #FFFFFF !important;
 }
 
@@ -2938,7 +2938,7 @@ h4.css__title{
 .custom_ui_13884_13885 .nav-title i,
 .custom_ui_13884_13885 .grey-background,
 .custom_ui_13884_13885 .grey-background i,
-.custom_ui_13884_13885 .coin_reverse .black-background i{
+.custom_ui_13884_13885 .card_reverse .black-background i{
     color: #000000 !important;
 }
 .custom_ui_13884_13885 .btn-close,
@@ -3621,7 +3621,7 @@ h4.css__title{
     line-height: 100%;
 }
 
-.coin_reverse .black-background {
+.card_reverse .black-background {
     background-color: transparent !important;
 }
 .btn-grey .fa-gif-wrap {
@@ -3905,7 +3905,7 @@ div.img {
     margin:0 !important;
 }
 
-.coin_coins .btn {
+.card_coins .btn {
     padding: 7px;
 }
 
@@ -4049,7 +4049,7 @@ main {
     max-width: 100%;
     border-radius: 21px;
 }
-.platform-6255 .coin_cover {
+.platform-6255 .card_cover {
     margin: 0 !important;
 }
 
@@ -4084,7 +4084,7 @@ main {
     background-color: transparent;
 }
 
-.coin_frame{
+.card_frame{
     border: 5px solid transparent;
     border-radius: 21px !important;
     margin: 0;

@@ -52,7 +52,7 @@ class App extends CI_Controller
             $member_e = superpower_unlocked();
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                //die(view_unauthorized_message(end($superpower_actives)));
+                die(view_unauthorized_message(end($superpower_actives)));
             }
         }
 

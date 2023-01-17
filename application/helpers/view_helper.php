@@ -4,7 +4,7 @@
 function view_show_more($see_more_type, $class, $href_link = null){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    return '<div class="coin_cover coin_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding '.$class.'">
+    return '<div class="card_cover card_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding '.$class.'">
                                 <div class="cover-wrapper"><a '.( $href_link ? 'href="'.$href_link.'"' : 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"' ).' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
                             </div>';
 }
@@ -186,7 +186,7 @@ function view_i_title($i){
 }
 
 
-function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_prefix = '')
+function view_cover($card__type, $cover_code, $noicon_default = null, $icon_prefix = '')
 {
 
     $valid_url = ( filter_var($cover_code, FILTER_VALIDATE_URL) || substr($cover_code, 0, 2)=='//' );
@@ -216,8 +216,8 @@ function view_cover($coin__type, $cover_code, $noicon_default = null, $icon_pref
 
         //Standard Icon if none:
         return null;
-        //return '<i class="fas fa-circle zq'.$coin__type.'"></i>';
-        //return '<img src="/img/'.$coin__type.'.png" />';
+        //return '<i class="fas fa-circle zq'.$card__type.'"></i>';
+        //return '<img src="/img/'.$card__type.'.png" />';
 
     }
 }
@@ -446,10 +446,10 @@ function view_coins(){
     $count = 0;
     foreach($CI->config->item('e___14874') as $e__id => $m) {
         $count++;
-        $ui .= '<div class="coin_cover no-padding col-12 col-md-4">';
-        $ui .= '<div class="coin_frame dropdown_'.$e__id.'">';
+        $ui .= '<div class="card_cover no-padding col-12 col-md-4">';
+        $ui .= '<div class="card_frame dropdown_'.$e__id.'">';
         $ui .= '<div class="large_cover">'.$m['m__cover'].'</div>';
-        $ui .= '<div class="css__title large_title zq'.$e__id.' "><b class="coin_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>';
+        $ui .= '<div class="css__title large_title zq'.$e__id.' "><b class="card_count_'.$e__id.'">'.number_format(count_unique_coins($e__id), 0).'</b></div>';
         $ui .= '<div class="css__title large_title zq'.$e__id.'">'.$m['m__title'].'</div>';
         $ui .= '</div>';
         $ui .= '</div>';
@@ -457,13 +457,13 @@ function view_coins(){
     $ui .= '</div>';
 
 
-    $ui .= '<div class="row justify-content list-coins" style="font-size: 1.8em; padding-top: 55px; line-height: 130%;"><div style="min-height:40px; width: 100%; text-align: center;"><b class="coin_count_x css__title">'.number_format($query[0]['totals'], 0).'</b></div><div class="css__title" style="text-align: center;">Transactions</div></div>';
+    $ui .= '<div class="row justify-content list-coins" style="font-size: 1.8em; padding-top: 55px; line-height: 130%;"><div style="min-height:40px; width: 100%; text-align: center;"><b class="card_count_x css__title">'.number_format($query[0]['totals'], 0).'</b></div><div class="css__title" style="text-align: center;">Transactions</div></div>';
 
 
     return $ui;
 }
 
-function view_coin_line($href, $is_current, $x__type, $o__privacy, $o__type, $o__title, $x__message = null){
+function view_card($href, $is_current, $x__type, $o__privacy, $o__type, $o__title, $x__message = null){
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item css__title '.( $is_current ? ' active ' : '' ).'">'.
         ( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).
         ( $o__privacy ? '<span class="icon-block-xxs">'.$o__privacy.'</span>' : '' ).
@@ -679,7 +679,7 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
 
 }
 
-function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true){
+function view_coins_e($x__type, $e__id, $page_num = 0, $append_card_icon = true){
 
     /*
      *
@@ -777,18 +777,18 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
         $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
         $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
 
-        if($append_coin_icon){
+        if($append_card_icon){
 
             if(!$count_query){
                 return null;
             }
 
             $current_e = ( substr($first_segment, 0, 1)=='@' ? intval(substr($first_segment, 1)) : 0 );
-            $coin_icon = '<span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span>';
+            $card_icon = '<span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_e_coins button_of_'.$e__id.'_'.$x__type.'" id="coin_e_group_'.$x__type.'_'.$e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'" ><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$coin_icon.$visual_counter.'</span></button>';
-            $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_e_'.$e__id.'_'.$x__type.'" aria-labelledby="coin_e_group_'.$x__type.'_'.$e__id.'">';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_e_coins button_of_'.$e__id.'_'.$x__type.'" id="card_e_group_'.$x__type.'_'.$e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'" load_current_e="'.$current_e.'" ><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
+            $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_e_'.$e__id.'_'.$x__type.'" aria-labelledby="card_e_group_'.$x__type.'_'.$e__id.'">';
                 //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
             $ui .= '</div>';
@@ -803,7 +803,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_coin_icon = true)
 }
 
 
-function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true){
+function view_coins_i($x__type, $i__id, $page_num = 0, $append_card_icon = true){
 
     /*
      *
@@ -893,19 +893,19 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_coin_icon = true)
         $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
         $title_desc = number_format($count_query, 0).( isset($e___11035[$x__type]['m__title']) ? ' '.$e___11035[$x__type]['m__title'] : '' );
 
-        if($append_coin_icon){
+        if($append_card_icon){
 
             if(!$count_query){
                 return null;
             }
 
-            $coin_icon = '<span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span>';
+            $card_icon = '<span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_i_coins button_of_'.$i__id.'_'.$x__type.'" id="coin_i_group_'.$x__type.'_'.$i__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$coin_icon.$visual_counter.'</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title load_i_coins button_of_'.$i__id.'_'.$x__type.'" id="card_i_group_'.$x__type.'_'.$i__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
 
             //Menu To be loaded dynamically via AJAX:
-            $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_i_'.$i__id.'_'.$x__type.'" aria-labelledby="coin_i_group_'.$x__type.'_'.$i__id.'"></div>';
+            $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_i_'.$i__id.'_'.$x__type.'" aria-labelledby="card_i_group_'.$x__type.'_'.$i__id.'"></div>';
 
             $ui .= '</div>';
 
@@ -1205,9 +1205,9 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
     $href = 'href="javascript:void(0);"'.( $spots_remaining==0 && !$previously_selected ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="toggle_answer(' . $i['i__id'] . ')"' );
 
-    $ui  = '<div class="coin_cover col-6 col-md-4 no-padding">';
+    $ui  = '<div class="card_cover col-6 col-md-4 no-padding">';
     $ui .= '<div class="cover-wrapper">';
-    $ui .= '<table class="coin_coins"></table>'; //For UI height adjustment
+    $ui .= '<table class="card_coins"></table>'; //For UI height adjustment
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'">';
 
     $ui .= '</a>';
@@ -1327,8 +1327,8 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="coin_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-sm-10 col-12
-     ' : ' edge-coin coin_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' coin___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
+    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-sm-10 col-12
+     ' : ' edge-coin card_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
 
 
     //Determine Link Type
@@ -1379,7 +1379,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
-            $top_bar_ui .= '<a href="javascript:void(0);" onclick="coin__load(12273,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+            $top_bar_ui .= '<a href="javascript:void(0);" onclick="card__load(12273,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==13909 && $has_sortable){
@@ -1464,7 +1464,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
     }
 
-    $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
+    $ui .= '<table class="card_coins active_bars_'.$active_bars.'"><tr>';
     $ui .= $top_bar_ui;
     $ui .= '</tr></table>';
 
@@ -1560,7 +1560,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
 
         if($bottom_bar_ui){
-            $ui .= '<div class="coin_coins"><div class="show-on-hover">';
+            $ui .= '<div class="card_coins"><div class="show-on-hover">';
             $ui .= $bottom_bar_ui;
             $ui .= '</div></div>';
         }
@@ -1773,7 +1773,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="coin_cover no-padding coin___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-coin coin_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_coin ? ' focus-coin slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-coin card_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     //Source Link Groups
     $link_type_id = 0;
@@ -1822,7 +1822,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Edit Source
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="show-on-hover">';
-                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="coin__load(12274,'.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="card__load(12274,'.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13006 && $has_sortable){
@@ -1922,7 +1922,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             }
         }
 
-        $ui .= '<table class="coin_coins active_bars_'.$active_bars.'"><tr>';
+        $ui .= '<table class="card_coins active_bars_'.$active_bars.'"><tr>';
         $ui .= $top_bar_ui;
         $ui .= '</tr></table>';
 
@@ -1934,7 +1934,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Coin Cover
-    $ui .= ( !$focus_coin ? '<a href="'.$href.'"' : '<div' ).' class="'.($discovery_mode ? 'coinType12274 coinType6255' : 'coinType12274' ) . ' coin_privacy_'.$e['e__privacy'].( !$source_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus_coin ? '<a href="'.$href.'"' : '<div' ).' class="'.($discovery_mode ? 'coinType12274 coinType6255' : 'coinType12274' ) . ' card_privacy_'.$e['e__privacy'].( !$source_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_coin ? '</a>' : '</div>' );
     $ui .= '</div>';
@@ -1974,7 +1974,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Bottom Bar
     if(!$is_cache && !$is_app && !$focus_coin && $superpower_10939){
-        $ui .= '<div class="coin_coins"><div class="show-on-hover">';
+        $ui .= '<div class="card_coins"><div class="show-on-hover">';
         foreach($CI->config->item('e___31916') as $menu_id => $m) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             $ui .= '<span class="hideIfEmpty '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';

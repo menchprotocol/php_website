@@ -165,7 +165,7 @@ function e_x__type($string = null){
     return 0;
 }
 
-function current_coin_id(){
+function current_card_id(){
 
     /*
      *

@@ -7,16 +7,16 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___31966 = $this->config->item('e___31966');
 $e___4527 = $this->config->item('e___4527');
 $e___14870 = $this->config->item('e___14870'); //Website Partner
-$current_coin_id = current_coin_id();
+$current_card_id = current_card_id();
 $website_id = website_setting(0);
 $website_favicon = website_setting(31887);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
-$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_coin_id.'.png' ));
+$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_card_id.'.png' ));
 $bgVideo = null;
 
 //Generate Body Class String:
-$body_class = 'platform-'.$current_coin_id; //Always append current coin
+$body_class = 'platform-'.$current_card_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     if($member_e){
         //Look at their session:

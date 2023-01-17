@@ -122,7 +122,7 @@ class E extends CI_Controller
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false) as $source_e) {
                     if(isset($source_e['e__id'])){
-                        $ui .= view_coin_line('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__privacy']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__privacy']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], view_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
                 }
@@ -136,7 +136,7 @@ class E extends CI_Controller
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 foreach(view_coins_e($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_coin_line('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__privacy']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_card('/i/i_go/'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__privacy']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), view_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
                 }
@@ -145,7 +145,7 @@ class E extends CI_Controller
 
             if($listed_items < $_POST['counter']){
                 //We have more to show:
-                $ui .= view_coin_line('/@'.$_POST['e__id'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                $ui .= view_card('/@'.$_POST['e__id'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
             }
 
             echo $ui;
@@ -652,7 +652,7 @@ class E extends CI_Controller
     }
 
 
-    function coin__load()
+    function card__load()
     {
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -660,12 +660,12 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['coin__type']) || !in_array($_POST['coin__type'] , $this->config->item('n___12761'))) {
+        } elseif (!isset($_POST['card__type']) || !in_array($_POST['card__type'] , $this->config->item('n___12761'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin Type',
             ));
-        } elseif (!isset($_POST['coin__id'])) {
+        } elseif (!isset($_POST['card__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
@@ -677,13 +677,13 @@ class E extends CI_Controller
         //Any suggestions?
         $icon_suggestions = array();
 
-        if($_POST['coin__type']==12274){
+        if($_POST['card__type']==12274){
 
 
             //Find Past Selected Icons for Source:
             $unique_covers = array();
             foreach($this->X_model->fetch(array(
-                'x__down' => $_POST['coin__id'],
+                'x__down' => $_POST['card__id'],
                 'x__type' => 10653, //Source Icon Update
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
@@ -701,7 +701,7 @@ class E extends CI_Controller
                 }
             }
 
-            if($member_e['e__id']==$_POST['coin__id']){
+            if($member_e['e__id']==$_POST['card__id']){
                 //Show animal icons:
                 foreach($this->config->item('e___12279') as $e__id => $m) {
                     $cover = one_two_explode('class="','"',$m['m__cover']);
@@ -719,30 +719,30 @@ class E extends CI_Controller
 
 
 
-        if($_POST['coin__type']==12273){
+        if($_POST['card__type']==12273){
             //IDEA
             $is = $this->I_model->fetch(array(
-                'i__id' => $_POST['coin__id'],
+                'i__id' => $_POST['card__id'],
             ));
             if(count($is)){
                 return view_json(array(
                     'status' => 1,
-                    'coin__title' => $is[0]['i__title'],
-                    'coin__cover' => null,
+                    'card__title' => $is[0]['i__title'],
+                    'card__cover' => null,
                     'icon_suggestions' => $icon_suggestions,
                 ));
             }
-        } elseif($_POST['coin__type']==12274){
+        } elseif($_POST['card__type']==12274){
             //SOURCE
             $es = $this->E_model->fetch(array(
-                'e__id' => $_POST['coin__id'],
+                'e__id' => $_POST['card__id'],
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if(count($es)){
                 return view_json(array(
                     'status' => 1,
-                    'coin__title' => $es[0]['e__title'],
-                    'coin__cover' => $es[0]['e__cover'],
+                    'card__title' => $es[0]['e__title'],
+                    'card__cover' => $es[0]['e__cover'],
                     'icon_suggestions' => $icon_suggestions,
                 ));
             }
