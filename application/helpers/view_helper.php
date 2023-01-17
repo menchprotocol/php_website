@@ -1361,14 +1361,14 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $active_bars++;
             $top_bar_ui .= $link_type_ui;
 
-        } elseif($x__type_top_bar==4737 && !$discovery_mode){
+        } elseif($x__type_top_bar==4737 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
             $top_bar_ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
-        } elseif($x__type_top_bar==31004 && !$discovery_mode){
+        } elseif($x__type_top_bar==31004 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
