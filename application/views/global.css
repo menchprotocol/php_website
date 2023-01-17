@@ -479,6 +479,12 @@ img.no-frame {
     text-decoration: none;
 }
 
+.breadcrumb {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: auto;
+}
+
 .aa-dropdown-menu .aa-suggestion em {
     font-weight: bold;
     font-style: normal;
