@@ -76,6 +76,10 @@ function preview_x__message($x__message, $x__type, $full_message = null, $has_di
         //Other URL
         return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><span class="url_truncate"><u>' . view_url_clean($x__message) . '</u></span></a>';
 
+    } elseif(strlen($x__message) > 0) {
+
+        return nl2br(htmlentities($x__message));
+
     } else {
 
         return null;
