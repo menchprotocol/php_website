@@ -287,7 +287,7 @@ function x_detect_type($string)
 
     }
 
-    if (strlen($string)>9 && is_valid_date($string) && !is_numeric($string)) {
+    if (strlen($string)>9 && is_valid_date($string)) {
         return array(
             'status' => 1,
             'x__type' => 4318, //Date/time
