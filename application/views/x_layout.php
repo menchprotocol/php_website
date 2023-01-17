@@ -711,10 +711,9 @@ if(!$top_i__id){
 
         $control_btn = '';
 
-        if($x__creator && in_array($x__type, $this->config->item('n___31125'))){
+        if($x__creator && in_array($x__type, $this->config->item('n___12274'))){
 
-            //Action Buttons: Reshare, Save & Watch
-            //Find Pending Action Source:
+            //Sources
             if(is_array($this->config->item('n___'.$x__type))){
                 foreach(array_intersect($this->config->item('n___'.$x__type), $this->config->item('n___31127')) as $pending_action_id) {
 
@@ -964,7 +963,7 @@ echo '</div>';
         } else if(go_next_url && go_next_url.length > 0){
 
             //Go Next:
-            $('.go-next').html(( is_logged_in ? '<i class="fas fa-play zq6255"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
+            $('.go-next').html(( is_logged_in ? '<i class="fal fa-play zq6255"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
             window.location = go_next_url;
 
         }
@@ -1033,7 +1032,7 @@ echo '</div>';
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="fas fa-play zq6255"></i>');
+                $('.go-next').html('<i class="fal fa-play zq6255"></i>');
                 window.location = go_next_url;
             } else {
                 //Show error:
@@ -1062,7 +1061,7 @@ echo '</div>';
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="fas fa-play zq6255"></i>');
+                $('.go-next').html('<i class="fal fa-play zq6255"></i>');
                 window.location = go_next_url;
             } else {
                 //Show error:

@@ -287,7 +287,7 @@ function x_detect_type($string)
 
     }
 
-    if (strtotime($string)>0 && !is_numeric($string)) {
+    if (validateDate($string, 'Y-m-d H:i:s')) {
         return array(
             'status' => 1,
             'x__type' => 4318, //Date/time
@@ -299,6 +299,12 @@ function x_detect_type($string)
         'x__type' => 4255, //Text (Default)
     );
 
+}
+
+function validateDate($date, $format)
+{
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
 }
 
 function current_link(){
