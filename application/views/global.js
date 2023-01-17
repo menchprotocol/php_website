@@ -206,7 +206,7 @@ function apply_all_load(apply_id, card__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .apply_preview').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>Loading...');
+    $('#modal'+apply_id+' .apply_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...');
     $.post("/x/apply_preview", {
         apply_id: apply_id,
         card__id: card__id
@@ -466,7 +466,7 @@ function toggle_pills(x__type){
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
-            $('.headline_body_' + x__type).html('<div class="center" style="padding-top: 13px;"><i class="fal fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + x__type).html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
             load_tab(x__type, false);
         }
     }
@@ -530,7 +530,7 @@ function view_load_page(x__type) {
     var e_list = '#list-in-'+x__type;
     var current_top_x__id = $( e_list + ' .card_cover ' ).first().attr('x__id');
     var top_element = $('.cover_x_'+current_top_x__id);
-    var e_loader = '<div class="load-more"><span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>Loading More...</div>';
+    var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More...</div>';
     console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
 
     if(!has_more_to_load){
@@ -695,7 +695,7 @@ function cover_upload(droppedFiles, uploadType) {
         return false;
     }
 
-    $('#upload_results').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
+    $('#upload_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
 
     if (isAdvancedUpload) {
 
@@ -764,7 +764,7 @@ function e_load_coin(x__type, e__id, counter, first_segment){
        return false;
     }
 
-    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
+    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/e/e_load_coin", {
         x__type:x__type,
@@ -784,7 +784,7 @@ function i_load_coin(x__type, i__id, counter, first_segment, current_e){
         return false;
     }
 
-    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
+    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/i/i_load_coin", {
         x__type:x__type,
@@ -1552,7 +1552,7 @@ function i__add(x__type, link_i__id) {
     }
 
     //Remove results:
-    $('.mini-coin.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="fal fa-yin-yang fa-spin"></i>');
+    $('.mini-coin.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     i_is_adding = true;
     var sort_i_handler = ".card_cover";
     var input_field = $('.new-list-'+x__type+' .add-input');
@@ -1568,7 +1568,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(x__type, sort_i_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fal fa-yin-yang fa-spin"></i></div></div></div></div>');
+    add_to_list(x__type, sort_i_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
     
     //Update backend:
     $.post("/i/i__add", {
@@ -1630,7 +1630,7 @@ function e__add(x__type, e_existing_id) {
     var input = $('.new-list-'+x__type+' .add-input');
 
     var original_photo = $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html();
-    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="fal fa-yin-yang fa-spin"></i>');
+    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     var e_new_string = null;
     if (e_existing_id == 0) {
         e_new_string = input.val();
@@ -1703,7 +1703,7 @@ function x_message_save(new_x__message = null) {
     };
 
     //Show spinner:
-    $('#modal13571 .save_results').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695) +  '').hide().fadeIn();
+    $('#modal13571 .save_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695) +  '').hide().fadeIn();
 
 
     $.post("/x/x_message_save", modify_data, function (data) {
@@ -1778,7 +1778,7 @@ function e_remove(x__id, x__type) {
 function x_type_preview() {
 
     //Shows the transaction type based on the transaction message
-    $('#x__type_preview').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
+    $('#x__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     //Fetch Idea Data to load modify widget:
     $.post("/x/x_type_preview", {
@@ -2190,7 +2190,7 @@ function e_toggle_superpower(superpower_id){
 
     var notify_el = '.superpower-frame-'+superpower_id+' .main-icon';
     var initial_icon = $(notify_el).html();
-    $(notify_el).html('<i class="fal fa-yin-yang fa-spin"></i>');
+    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
 
     //Save session variable to save the state of advance setting:
     $.post("/e/e_toggle_superpower/"+superpower_id, {}, function (data) {
@@ -2260,7 +2260,7 @@ function e_radio(focus_id, selected_e__id, enable_mulitiselect){
     //Show spinner on the notification element:
     var notify_el = '.radio-'+focus_id+' .item-'+selected_e__id+' .change-results';
     var initial_icon = $(notify_el).html();
-    $(notify_el).html('<i class="fal fa-yin-yang fa-spin"></i>');
+    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
 
 
     if(!enable_mulitiselect){
@@ -2298,7 +2298,7 @@ function e_radio(focus_id, selected_e__id, enable_mulitiselect){
 function e_email(){
 
     //Show spinner:
-    $('.save_email').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+    $('.save_email').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_email", {
@@ -2330,7 +2330,7 @@ function e_email(){
 function e_phone(){
 
     //Show spinner:
-    $('.save_phone').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+    $('.save_phone').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_phone", {
@@ -2360,7 +2360,7 @@ function e_phone(){
 function e_fullname(){
 
     //Show spinner:
-    $('.save_name').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+    $('.save_name').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_fullname", {
@@ -2391,7 +2391,7 @@ function e_fullname(){
 function e_password(){
 
     //Show spinner:
-    $('.save_password').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
+    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
 
     //Save the rest of the content:
     $.post("/e/e_password", {
@@ -2480,7 +2480,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         alert('Invalid element ID');
         return false;
     }
-    $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
+    $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/x/update_dropdown", {
         focus_id:fetch_val('#focus_id'),
@@ -2591,7 +2591,7 @@ function e_reset_discoveries(e__id){
     //Confirm First:
     var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
     if (r == true) {
-        $('.e_reset_discoveries').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
+        $('.e_reset_discoveries').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
 
         //Redirect:
         window.location = '/x/e_reset_discoveries/'+e__id;
@@ -2606,7 +2606,7 @@ function e_reset_discoveries(e__id){
 function e_x_form_lock(){
     $('#x__message').prop("disabled", true);
 
-    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>Uploading');
+    $('.btn-save').addClass('grey').attr('href', '#').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Uploading');
 
 }
 
@@ -2662,7 +2662,7 @@ function sort_e_handle_save(x__type) {
 function sort_e_handle_reset(){
     var r = confirm("Reset all Portfolio Source orders & sort alphabetically?");
     if (r == true) {
-        $('.sort_reset').html('<i class="fal fa-yin-yang fa-spin"></i>');
+        $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
 
         //Update via call:
         $.post("/e/sort_e_handle_reset", {

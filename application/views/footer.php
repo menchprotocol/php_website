@@ -268,7 +268,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
                     <!-- Loads dynamically -->
-                    <i class="fal fa-yin-yang fa-spin"></i> Loading...
+                    <i class="far fa-yin-yang fa-spin"></i> Loading...
                 </div>
             </div>
         </div>

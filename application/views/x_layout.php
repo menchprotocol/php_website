@@ -420,7 +420,7 @@ if($top_i__id) {
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
 
-            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
+            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
 
             //Referesh soon so we can check if completed or not
             js_redirect('/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1', 2584);
@@ -963,7 +963,7 @@ echo '</div>';
         } else if(go_next_url && go_next_url.length > 0){
 
             //Go Next:
-            $('.go-next').html(( is_logged_in ? '<i class="fal fa-yin-yang fa-spin zq6255"></i>' : '<i class="fal fa-yin-yang fa-spin"></i>' ));
+            $('.go-next').html(( is_logged_in ? '<i class="far fa-yin-yang fa-spin zq6255"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
             window.location = go_next_url;
 
         }
@@ -976,7 +976,7 @@ echo '</div>';
             return false;
         }
 
-        $('.file_saving_result').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
+        $('.file_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="css__title">UPLOADING...</span>');
 
         if (isAdvancedUpload) {
 
@@ -1032,7 +1032,7 @@ echo '</div>';
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="fal fa-yin-yang fa-spin zq6255"></i>');
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
                 window.location = go_next_url;
             } else {
                 //Show error:
@@ -1061,7 +1061,7 @@ echo '</div>';
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="fal fa-yin-yang fa-spin zq6255"></i>');
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
                 window.location = go_next_url;
             } else {
                 //Show error:
