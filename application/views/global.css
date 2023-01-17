@@ -268,8 +268,9 @@ img.no-frame {
 .alert{
     padding:10px !important;
     border-radius: 21px;
-    margin:5px 0 8px !important;
+    margin:0 5px 5px !important;
     border: 0 !important;
+    width: auto !important;
 }
 
 
