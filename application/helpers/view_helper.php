@@ -37,17 +37,18 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
         return '<div class="block"><a href="' . $x__message . '" target="_blank" class="ignore-click"><span class="url_truncate">' . view_url_clean($x__message) . '</span></a></div>';
 
+    } elseif ($x__type == 26661 /* Currency */) {
+
+        $parts = explode(' ', $x__message, 2);
+        return $parts[0].' '.number_format($parts[1], 2);
+
+    } elseif ($x__type == 4318 /* Time */) {
+
+        return date("D M j G:i:s T Y", strtotime($x__message));
+
     } elseif ($x__type == 4257 /* Embed Widget URL? */) {
 
         return view_url_embed($x__message, $full_message);
-
-    } elseif ($x__type == 26092 /* CAD */) {
-
-        return str_replace('CAD ','$',$x__message);
-
-    } elseif ($x__type == 26091 /* USD */) {
-
-        return str_replace('USD ','$',$x__message);
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
@@ -65,6 +66,18 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         return '<a href="' . $x__message . '" class="btn btn-12273" target="_blank" class="ignore-click">'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</a>';
+
+    } elseif ($x__type==32097 /* Email */) {
+
+        return '<a href=mailto:' . strtolower($x__message) . '" class="btn btn-12273" target="_blank" class="ignore-click">' . strtolower($x__message) . '</a>';
+
+    } elseif ($x__type==32102 /* Hash */) {
+
+        return '<span style="font-family:monospace; font-size:0.7em;">' . strtolower($x__message) . '</span>';
+
+    } elseif (in_array($x__type, $CI->config->item('n___4537'))) {
+
+        return '<a href="' . $x__message . '" class="btn btn-12273" target="_blank" class="ignore-click">'.$x__message.'</a>';
 
     } elseif(strlen($x__message) > 0) {
 
