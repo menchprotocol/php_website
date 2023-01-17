@@ -36,7 +36,7 @@ function referral_line($i){
     <p class="mb-1"><small><a href="'.$link.'">'.$link.'</a></small></p>
     <p class="mb-1" style="padding: 8px 0;">'.
         '<span class="data-block"><span class="icon-block-xxs"><i class="fal fa-eye"></i></span>'.$x_count[0]['total_count'].'</span>'.
-        '<span class="data-block"><span class="icon-block-xxs"><i class="fal fa-play"></i></span>'.$plays.'</span>'.
+        '<span class="data-block"><span class="icon-block-xxs"><i class="fal fa-yin-yang fa-spin"></i></span>'.$plays.'</span>'.
         '<span class="data-block"><span class="icon-block-xxs"><i class="fal fa-ticket"></i></span>'.$tickets.'</span>'.
         '<span class="data-block"><span class="icon-block-xxs"><i class="fal fa-dollar-sign"></i></span>'.$income.'</span>'.
         '</p>

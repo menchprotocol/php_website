@@ -180,7 +180,7 @@ if(superpower_unlocked()) {
 
                 //Lock fields:
                 email_searching = true;
-                $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+                $('#email_check_next').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
                 $('#input_email').prop('disabled', true);
                 $('#password_errors').html('');
                 $('#flash_message').html(''); //Delete previous errors, if any
@@ -238,7 +238,7 @@ if(superpower_unlocked()) {
 
                 //Lock fields:
                 account_adding = true;
-                $('#add_acount_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+                $('#add_acount_next').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
                 $('#input_name, #password_reset').prop('disabled', true);
 
                 //Check email and validate:
@@ -292,7 +292,7 @@ if(superpower_unlocked()) {
 
                 //Lock fields:
                 password_checking = true;
-                $('#password_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+                $('#password_check_next').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>');
                 $('#input_password').prop('disabled', true);
 
                 //Check email and validate:
@@ -330,7 +330,7 @@ if(superpower_unlocked()) {
             function e_magic_email(){
                 //Update UI:
                 goto_step(5); //To check their email and create new account
-                $('.magic_result').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Sending Email...</div>');
+                $('.magic_result').html('<div><span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span>Sending Email...</div>');
 
                 //Check email and validate:
                 $.post("/e/e_magic_email", {

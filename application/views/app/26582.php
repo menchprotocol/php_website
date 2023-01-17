@@ -238,7 +238,7 @@ if(!$is_u_request || isset($_GET['cron'])){
                 return false;
             }
 
-            $('#message_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span> Sending Messages...');
+            $('#message_result').html('<span class="icon-block"><i class="fal fa-yin-yang fa-spin"></i></span> Sending Messages...');
 
             $.post("/x/x_schedule_message", {
                 i__id: '<?= $_GET['i__id'] ?>',
