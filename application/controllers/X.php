@@ -106,16 +106,17 @@ class X extends CI_Controller
         }
 
 
-        $x__type_preview = '<b class="css__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>';
+        $x__message_preview = '';
         if($detected_x_type['x__type']==4318){
-            $x__type_preview = '<b class="css__title">' . date("D M j G:i:s T Y", strtotime($_POST['x__message'])) . '</b>';
+            $x__message_preview = '<b class="css__title">' . date("D M j G:i:s T Y", strtotime($_POST['x__message'])) . '</b>';
+        } elseif(in_array($detected_x_type['x__type'], $this->config->item('n___12524'))){
+            $x__message_preview = '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>';
         }
-
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => $x__type_preview,
-            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">'.view_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true).'</span>' : ''),
+            'x__type_preview' => '<b class="css__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
+            'x__message_preview' => $x__message_preview,
             'in_history' => $in_history,
             'x__history_preview' => $x__history_preview,
         ));
