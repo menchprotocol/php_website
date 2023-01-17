@@ -65,7 +65,7 @@ function view_x__message($x__message, $x__type, $full_message = null, $has_disco
 
     } elseif ($x__type==32097 /* Email */) {
 
-        return '<a href=mailto:' . strtolower($x__message) . '" target="_blank" class="ignore-click"><u>' . strtolower($x__message) . '</u></a>';
+        return '<a href="mailto:' . strtolower($x__message) . '" target="_blank" class="ignore-click"><u>' . strtolower($x__message) . '</u></a>';
 
     } elseif (in_array($x__type, $CI->config->item('n___4537'))) {
 
