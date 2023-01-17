@@ -234,6 +234,7 @@ li a {
 
 .btn {
     font-size: 1em !important;
+    border-radius: 0 !important;
 }
 
 .btn-large,
