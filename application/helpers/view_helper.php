@@ -78,7 +78,7 @@ function preview_x__message($x__message, $x__type, $full_message = null, $has_di
 
     } else {
 
-        $this->X_model->create(array(
+        $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'preview_x__message() Unknown text type',
             'x__metadata' => array(
