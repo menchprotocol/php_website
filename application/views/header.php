@@ -86,6 +86,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
     echo ' var website_id = "' . $website_id . '"; ';
+    echo ' var search_and_filter = ( superpower_js_12701 ? \'\' : \' AND ( _tags:is_public \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORYwq
     foreach($this->config->item('e___11054') as $x__type => $m){
@@ -352,13 +353,13 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    echo '<div class="left_nav search_nav hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="text" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="text" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
                     echo '</div>';
                     echo '</td>';
 
-                    echo '<td class="block-x search_icon hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
-                    echo '<td class="block-x search_icon"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );

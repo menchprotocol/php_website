@@ -1417,7 +1417,7 @@ class E_model extends CI_Model
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
-                if((in_array($action_e__id, array(5981, 13441)) && count($follower_following_e)==0) || ($action_e__id==12928 && view_coins_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_coins_e(12273, $x['e__id'],0, false))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($follower_following_e)==0) || ($action_e__id==12928 && view_covers_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_covers_e(12273, $x['e__id'],0, false))){
 
                     $add_fields = array(
                         'x__creator' => $x__creator,

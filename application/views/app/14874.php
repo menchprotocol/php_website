@@ -1,5 +1,5 @@
 <?php
 
-echo view_coins();
+echo view_covers();
 
 

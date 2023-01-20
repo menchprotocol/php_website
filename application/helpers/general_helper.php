@@ -821,7 +821,7 @@ function round_minutes($seconds){
 
 
 
-function count_unique_coins($x__type, $x__time_start = null, $x__time_end = null){
+function count_unique_covers($x__type, $x__time_start = null, $x__time_end = null){
 
     $CI =& get_instance();
 

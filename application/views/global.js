@@ -233,7 +233,7 @@ function load_editor(){
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 's__type=12274',
+                    filters: 's__type=12274' + search_and_filter,
                     hitsPerPage: js_e___6404[31112]['m__message'],
                 }, function (error, content) {
                     if (error) {
@@ -264,7 +264,7 @@ function load_editor(){
 
             source: function (q, cb) {
                 algolia_index.search(q, {
-                    filters: 's__type=12273',
+                    filters: 's__type=12273' + search_and_filter,
                     hitsPerPage: js_e___6404[31112]['m__message'],
                 }, function (error, content) {
                     if (error) {
@@ -300,7 +300,7 @@ function view_s_js_line(suggestion){
     return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="css__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
 
-function view_s_js_coin(x__type, suggestion, action_id){
+function view_s_js_cover(x__type, suggestion, action_id){
 
     if(!js_n___26010.includes(x__type)){
         alert('Missing type in JS UI');
@@ -321,13 +321,13 @@ function view_s_js_coin(x__type, suggestion, action_id){
     //Return appropriate UI:
     if(x__type==26011){
         //Mini Coin
-        return '<div class="card_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     } else if(x__type==26012){
         //Link Idea
-        return '<div class="card_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26012]['m__cover']+'</div><a href="javascript:void(0);" onclick="i__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     } else if(x__type==26013){
         //Link Source
-        return '<div class="card_cover mini-coin coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
+        return '<div class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right">'+js_e___11035[26013]['m__cover']+'</div><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" target="_blank" class="css__title">'+suggestion.s__title+'</a></div></div></div>';
     }
 
 }
@@ -344,10 +344,10 @@ function toggle_headline(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var focus_coin = fetch_val('#focus_coin');
-    if(focus_coin==12273){
+    var focus_cover = fetch_val('#focus_cover');
+    if(focus_cover==12273){
         x__right = fetch_val('#focus_id');
-    } else if (focus_coin==12274){
+    } else if (focus_cover==12274){
         x__down = fetch_val('#focus_id');
     }
 
@@ -433,14 +433,14 @@ function toggle_pills(x__type){
 
     console.log(x__type+' PILL TOGGLED');
 
-    focus_coin = x__type;
+    focus_cover = x__type;
     var x__down = 0;
     var x__right = 0;
-    var focus_coin = fetch_val('#focus_coin');
+    var focus_cover = fetch_val('#focus_cover');
 
-    if(focus_coin==12273){
+    if(focus_cover==12273){
         x__right = fetch_val('#focus_id');
-    } else if (focus_coin==12274){
+    } else if (focus_cover==12274){
         x__down = fetch_val('#focus_id');
     }
 
@@ -549,7 +549,7 @@ function view_load_page(x__type) {
         $(e_loader).insertAfter(e_list);
     }
     $.post("/x/view_load_page", {
-        focus_coin: fetch_val('#focus_coin'),
+        focus_cover: fetch_val('#focus_cover'),
         focus_id: fetch_val('#focus_id'),
         x__type: x__type,
         current_page: current_page[x__type],
@@ -757,7 +757,7 @@ function initiate_algolia(){
     });
 }
 
-function e_load_coin(x__type, e__id, counter, first_segment){
+function e_load_cover(x__type, e__id, counter, first_segment){
 
     if($('.coins_e_'+e__id+'_'+x__type).html().length){
         //Already loaded:
@@ -766,7 +766,7 @@ function e_load_coin(x__type, e__id, counter, first_segment){
 
     $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/e/e_load_coin", {
+    $.post("/e/e_load_cover", {
         x__type:x__type,
         e__id:e__id,
         counter:counter,
@@ -777,7 +777,7 @@ function e_load_coin(x__type, e__id, counter, first_segment){
 
 }
 
-function i_load_coin(x__type, i__id, counter, first_segment, current_e){
+function i_load_cover(x__type, i__id, counter, first_segment, current_e){
 
     if($('.coins_i_'+i__id+'_'+x__type).html().length){
         //Already loaded:
@@ -786,7 +786,7 @@ function i_load_coin(x__type, i__id, counter, first_segment, current_e){
 
     $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/i/i_load_coin", {
+    $.post("/i/i_load_cover", {
         x__type:x__type,
         i__id:i__id,
         counter:counter,
@@ -821,14 +821,14 @@ function load_message_27963(i__id){
 
 }
 
-function load_coins(){
-    $(".load_e_coins, .load_i_coins").unbind();
+function load_covers(){
+    $(".load_e_covers, .load_i_covers").unbind();
 
-    $(".load_e_coins").click(function(event) {
-        e_load_coin($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+    $(".load_e_covers").click(function(event) {
+        e_load_cover($(this).attr('load_x__type'),$(this).attr('load_e__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
-    $(".load_i_coins").click(function(event) {
-        i_load_coin($(this).attr('load_x__type'),$(this).attr('load_i__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+    $(".load_i_covers").click(function(event) {
+        i_load_cover($(this).attr('load_x__type'),$(this).attr('load_i__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
 
@@ -869,7 +869,7 @@ $(document).ready(function () {
         }
     }
 
-    load_coins();
+    load_covers();
 
     //Should we auto start?
     if (isAdvancedUpload) {
@@ -893,7 +893,7 @@ $(document).ready(function () {
 
 
 
-    if ($(".list-coins")[0]){
+    if ($(".list-covers")[0]){
         //Update COINS every 3 seconds:
         $(function () {
             setInterval(load_card_count, js_e___6404[31003]['m__message']);
@@ -995,7 +995,7 @@ $(document).ready(function () {
 
                 icons_listed = [];
                 algolia_index.search(q, {
-                    filters: ' _tags:z_14988 OR _tags:z_14038 OR _tags:z_14986 OR _tags:z_20425 OR _tags:z_20426 OR _tags:z_20427 OR _tags:has_image ',
+                    filters: ' _tags:z_14988 OR _tags:z_14038 OR _tags:z_14986 OR _tags:z_20425 OR _tags:z_20426 OR _tags:z_20427 OR _tags:has_image '+ search_and_filter,
                     hitsPerPage: js_e___6404[31113]['m__message'],
                 }, function (error, content) {
                     if (error) {
@@ -1096,7 +1096,7 @@ $(document).ready(function () {
                         var item_key = suggestion.s__id+'_'+suggestion.s__id;
                         if(!icons_listed.includes(item_key)) {
                             icons_listed.push(item_key);
-                            $("#container_search .row").append(view_s_js_coin(26011, suggestion, 0));
+                            $("#container_search .row").append(view_s_js_cover(26011, suggestion, 0));
                         }
                         return false;
                     },
@@ -1299,7 +1299,7 @@ function i_load_search(x__type) {
 
             algolia_index.search(q, {
 
-                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_public ' + ( js_pl_id > 0 ? 'OR _tags:z_' + js_pl_id : '' ) + ') ' ),
+                filters: 's__type=12273' + search_and_filter,
                 hitsPerPage: js_e___6404[31112]['m__message'],
 
             }, function (error, content) {
@@ -1313,11 +1313,11 @@ function i_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26012, suggestion, x__type));
+                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26012, suggestion, x__type));
             },
             header: function (data) {
                 if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover mini-coin coin-12273 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover mini-cover coin-12273 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12273"></i></div><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
@@ -1359,7 +1359,7 @@ function e_load_search(x__type) {
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
 
             algolia_index.search(q, {
-                filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:z_13897 ) ' ), /* Nonfiction Content */
+                filters: 's__type=12274' + search_and_filter,
                 hitsPerPage: js_e___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
@@ -1371,11 +1371,11 @@ function e_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_coin(26013, suggestion, x__type));
+                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26013, suggestion, x__type));
             },
             header: function (data) {
                 if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover mini-coin coin-12274 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12274"></i></div><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background-obs cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
+                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover mini-cover coin-12274 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><div class="coin-cover coin-cover-right"><i class="fas fa-plus-circle zq12274"></i></div><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background-obs cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e_add('+x__type+', 0)" class="css__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
@@ -1428,13 +1428,13 @@ function card__save(){
 
 function load_tab(x__type, auto_load){
 
-    var focus_coin = fetch_val('#focus_coin');
-    console.log('Tab loading... from @'+focus_coin+' for @'+x__type);
+    var focus_cover = fetch_val('#focus_cover');
+    console.log('Tab loading... from @'+focus_cover+' for @'+x__type);
 
-    if(focus_coin==12273){
+    if(focus_cover==12273){
 
         $.post("/i/view_body_i", {
-            focus_coin:focus_coin,
+            focus_cover:focus_cover,
             x__type:x__type,
             counter:$('.headline_body_' + x__type).attr('read-counter'),
             i__id:fetch_val('#focus_id')
@@ -1448,11 +1448,11 @@ function load_tab(x__type, auto_load){
             }
         });
 
-    } else if(focus_coin==12274){
+    } else if(focus_cover==12274){
 
         //Load the tab:
         $.post("/e/view_body_e", {
-            focus_coin:focus_coin,
+            focus_cover:focus_cover,
             x__type:x__type,
             counter:$('.headline_body_'+x__type).attr('read-counter'),
             e__id:fetch_val('#focus_id')
@@ -1486,7 +1486,7 @@ function load_tab(x__type, auto_load){
         x_set_start_text();
 
         setTimeout(function () {
-            load_coins();
+            load_covers();
             sort_i_handle_load(x__type);
             $('[data-toggle="tooltip"]').tooltip();
         }, 2584);
@@ -1511,16 +1511,16 @@ function load_tab(x__type, auto_load){
             });
         });
 
-        if((x__type==12273 || x__type==11019) || (focus_coin==12274 && x__type==6255)){
+        if((x__type==12273 || x__type==11019) || (focus_cover==12274 && x__type==6255)){
             i_load_search(x__type);
-        } else if((x__type==12274 || x__type==11030) || (focus_coin==12273 && x__type==6255)) {
+        } else if((x__type==12274 || x__type==11030) || (focus_cover==12273 && x__type==6255)) {
             e_load_search(x__type);
             setTimeout(function () {
                 sort_e_handle_load(x__type);
             }, 2584);
         }
 
-        load_coins();
+        load_covers();
 
     }, 2584);
 
@@ -1545,7 +1545,7 @@ function i__add(x__type, link_i__id) {
     }
 
     //Remove results:
-    $('.mini-coin.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.mini-cover.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     i_is_adding = true;
     var sort_i_handler = ".card_cover";
     var input_field = $('.new-list-'+x__type+' .add-input');
@@ -1566,7 +1566,7 @@ function i__add(x__type, link_i__id) {
     //Update backend:
     $.post("/i/i__add", {
         x__type: x__type,
-        focus_coin: fetch_val('#focus_coin'),
+        focus_cover: fetch_val('#focus_cover'),
         focus_id: fetch_val('#focus_id'),
         i__title: i__title,
         link_i__id: link_i__id
@@ -1588,11 +1588,11 @@ function i__add(x__type, link_i__id) {
 
             //Lookout for textinput updates
             x_set_start_text();
-            load_coins();
+            load_covers();
             set_autosize($('.texttype__lg'));
 
             //Hide Coin:
-            $('.mini-coin.coin-12273.coin-id-'+link_i__id).fadeOut();
+            $('.mini-cover.coin-12273.coin-id-'+link_i__id).fadeOut();
 
         } else {
             //Show errors:
@@ -1622,8 +1622,8 @@ function e__add(x__type, e_existing_id) {
 
     var input = $('.new-list-'+x__type+' .add-input');
 
-    var original_photo = $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html();
-    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
+    var original_photo = $('.mini-cover.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html();
+    $('.mini-cover.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     var e_new_string = null;
     if (e_existing_id == 0) {
         e_new_string = input.val();
@@ -1637,7 +1637,7 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/e/e__add", {
 
-        focus_coin: fetch_val('#focus_coin'),
+        focus_cover: fetch_val('#focus_cover'),
         x__type: x__type,
         focus_id: fetch_val('#focus_id'),
         e_existing_id: e_existing_id,
@@ -1654,7 +1654,7 @@ function e__add(x__type, e_existing_id) {
                 if (r == true) {
                     data.e_already_linked = false;
                 } else {
-                    $('.mini-coin.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html(original_photo);
+                    $('.mini-cover.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html(original_photo);
                 }
             }
 
@@ -1670,10 +1670,10 @@ function e__add(x__type, e_existing_id) {
                 x_set_start_text();
 
                 sort_e_handle_load(x__type);
-                load_coins();
+                load_covers();
 
                 //Hide Coin:
-                $('.mini-coin.coin-12274.coin-id-'+e_existing_id).fadeOut();
+                $('.mini-cover.coin-12274.coin-id-'+e_existing_id).fadeOut();
             }
 
         } else {
@@ -1812,21 +1812,21 @@ var search_on = false;
 function toggle_search(){
 
     $('.left_nav').addClass('hidden');
-    $('.search_icon').toggleClass('hidden');
+    $('.icon_search').toggleClass('hidden');
 
     if(search_on){
 
         //Search OFF
         search_on = false; //Reverse
         $('.top_nav, #container_content').removeClass('hidden');
-        $('.search_nav, #container_search').addClass('hidden');
+        $('.nav_search, #container_search').addClass('hidden');
 
     } else {
 
         //Search ON
         search_on = true; //Reverse
         $('.top_nav, #container_content').addClass('hidden');
-        $('.search_nav, #container_search').removeClass('hidden');
+        $('.nav_search, #container_search').removeClass('hidden');
         $("#container_search .row").html(''); //Reset results view
         $('#top_search').focus();
 
@@ -2057,7 +2057,7 @@ function text_search(obj) {
                 search: function (q, callback) {
                     algolia_index.search(q, {
                         hitsPerPage: js_e___6404[31112]['m__message'],
-                        filters: 's__type=12274',
+                        filters: 's__type=12274' + search_and_filter,
                     })
                         .then(function searchSuccess(content) {
                             if (content.query === q) {
@@ -2076,6 +2076,32 @@ function text_search(obj) {
                         autosize.update(obj);
                     }, 233);
                     return ' @' + suggestion.s__id + ' ';
+                }
+            },
+            {
+                match: /(^|\s)#(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    algolia_index.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12273' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    setTimeout(function () {
+                        autosize.update(obj);
+                    }, 233);
+                    return ' #' + suggestion.s__id + ' ';
                 }
             },
         ]);

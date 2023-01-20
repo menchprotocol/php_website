@@ -19,7 +19,7 @@ foreach($this->I_model->fetch(array(
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $follower_or){
 
-        $x_coins = $this->X_model->fetch(array(
+        $x_covers = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $follower_or['i__id'],
@@ -30,7 +30,7 @@ foreach($this->I_model->fetch(array(
 
         echo '<li>';
         echo '<a href="/~'.$follower_or['i__id'].'">'.view_i_title($follower_or).'</a>';
-        echo ( $x_coins[0]['totals'] > 0 ? ' <span class="zq6255 css__title"><i class="fas fa-circle zq6255"></i> '.$x_coins[0]['totals'].'</span>' : '' );
+        echo ( $x_covers[0]['totals'] > 0 ? ' <span class="zq6255 css__title"><i class="fas fa-circle zq6255"></i> '.$x_covers[0]['totals'].'</span>' : '' );
         echo '</li>';
 
     }

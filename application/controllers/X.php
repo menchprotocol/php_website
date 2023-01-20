@@ -234,14 +234,14 @@ class X extends CI_Controller
             if($_POST['apply_id']==4997){
 
                 //Source list:
-                $counter = view_coins_e(12274, $_POST['card__id'], 0, false);
+                $counter = view_covers_e(12274, $_POST['card__id'], 0, false);
                 if(!$counter){
                     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
                 } else {
                     echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach(view_coins_e(12274, $_POST['card__id'], 1, true) as $e) {
+                    foreach(view_covers_e(12274, $_POST['card__id'], 1, true) as $e) {
                         array_push($ids, $e['e__id']);
                         echo view_card_e(12274, $e);
                     }
@@ -513,11 +513,11 @@ class X extends CI_Controller
         $focus_e = array();
         $previous_i = array();
 
-        if(!isset($_POST['focus_coin'])){
+        if(!isset($_POST['focus_cover'])){
             die('Missing input. Refresh and try again.');
         }
 
-        if($_POST['focus_coin']==12274){
+        if($_POST['focus_cover']==12274){
 
             //SOURCE
             $focus_es = $this->E_model->fetch(array(
@@ -525,7 +525,7 @@ class X extends CI_Controller
             ));
             $focus_e = $focus_es[0];
 
-            foreach(view_coins_e($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
+            foreach(view_covers_e($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
                 if ($_POST['x__type'] == 12274 || $_POST['x__type'] == 11030) {
                     echo view_card_e($_POST['x__type'], $s);
                 } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12273) {
@@ -533,7 +533,7 @@ class X extends CI_Controller
                 }
             }
 
-        } elseif($_POST['focus_coin']==12273) {
+        } elseif($_POST['focus_cover']==12273) {
 
             //IDEA
             $previous_is = $this->I_model->fetch(array(
@@ -541,7 +541,7 @@ class X extends CI_Controller
             ));
             $previous_i = $previous_is[0];
 
-            foreach(view_coins_i($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
+            foreach(view_covers_i($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
                 if ($_POST['x__type'] == 12273 || $_POST['x__type'] == 11019) {
                     echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                 } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12274) {
@@ -1443,7 +1443,7 @@ class X extends CI_Controller
             'count__x' => number_format($query[0]['totals'], 0),
         );
         foreach($this->config->item('e___14874') as $e__id => $m) {
-            $return_array['count__'.$e__id] = number_format(count_unique_coins($e__id), 0);
+            $return_array['count__'.$e__id] = number_format(count_unique_covers($e__id), 0);
         }
         return view_json($return_array);
     }

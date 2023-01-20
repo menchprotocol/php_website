@@ -12,12 +12,12 @@ foreach($this->E_model->scissor_e(website_setting(0), 13207) as $e_item) {
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x) {
 
-        $total_count = view_coins_e(12274, $x['e__id'], 0, false);
+        $total_count = view_covers_e(12274, $x['e__id'], 0, false);
 
         if($total_count){
 
             $ui = '<div class="row justify-content">';
-            foreach(view_coins_e(12274, $x['e__id'], 1, false) as $count=>$e) {
+            foreach(view_covers_e(12274, $x['e__id'], 1, false) as $count=>$e) {
                 $ui .= view_card_e(13207, $e, null);
             }
             $ui .= '</div>';

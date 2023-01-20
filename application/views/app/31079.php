@@ -9,7 +9,7 @@ function referral_line($i){
     $CI =& get_instance();
 
 
-    $plays = view_coins_i(6255, $i['i__id'], 0, false);
+    $plays = view_covers_i(6255, $i['i__id'], 0, false);
     $x_count = $CI->X_model->fetch(array(
         'x__right' => $i['i__id'],
         'x__type' => 7610, //MEMBER VIEWED DISCOVERY
@@ -71,7 +71,7 @@ if(count($is)){
 
     //Referrals:
     echo '<div class="list-group list-group-flush">';
-    foreach(view_coins_i(11019, $_GET['i__id'], 1, false) as $referral_i){
+    foreach(view_covers_i(11019, $_GET['i__id'], 1, false) as $referral_i){
         echo referral_line($referral_i);
     }
     echo '</div>';
@@ -142,7 +142,7 @@ if(count($is)){
             //Update backend:
             $.post("/i/i__add", {
                 x__type: 11019,
-                focus_coin: 12273,
+                focus_cover: 12273,
                 focus_id: <?= $_GET['i__id'] ?>,
                 i__title: new_title,
                 link_i__id: 0

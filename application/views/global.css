@@ -74,10 +74,10 @@ body {
     border-radius: 0px !important;
     display: inline-block;
 }
-.focus-coin .content-image {
+.focus-cover .content-image {
     max-height: 233px;
 }
-.edge-coin .content-image {
+.edge-cover .content-image {
     max-height: 144px;
 }
 
@@ -1204,10 +1204,10 @@ a.headline {
     line-height: 151%;
     margin-bottom: -7px;
 }
-.search_nav{
+.nav_search{
     margin-top:7px;
 }
-.search_nav .algolia_search{
+.nav_search .algolia_search{
     top:-3px !important;
 }
 
@@ -1303,7 +1303,7 @@ a.headline {
 .card_cover:hover .show-on-hover{
     display:block !important;
 }
-.card_cover.focus-coin {
+.card_cover.focus-cover {
     padding-bottom: 13px !important;
 }
 
@@ -1974,7 +1974,7 @@ input.form-control {
 .coin-12273 .cover-content{
     top:43px;
 }
-.coin-12273.focus-coin .cover-content{
+.coin-12273.focus-cover .cover-content{
     top:42px;
 }
 .hide-subline .subtle-line {
@@ -1984,19 +1984,19 @@ input.form-control {
     .coin-12274 .cover-content{
         top: 16px;
     }
-    .coin-12274 .card_coins{
+    .coin-12274 .card_covers{
         margin-top: -45px;
         margin-bottom: 45px;
     }
     */
-.mini-coin .cover-content {
+.mini-cover .cover-content {
     top:24px;
 }
-.focus-coin .cover-content {
+.focus-cover .cover-content {
     max-height: 85%;
 }
 
-#container_search .mini-coin .cover-content {
+#container_search .mini-cover .cover-content {
     top: 13px;
     padding-top: 1px;
     padding-bottom: 1px;
@@ -2028,7 +2028,7 @@ input.form-control {
     top: 47px;
     left: 8px;
 }
-.focus-coin .coin-cover-left {
+.focus-cover .coin-cover-left {
     top: 45px;
     left: 45px;
 }
@@ -2036,22 +2036,22 @@ input.form-control {
     top: 45px;
     right: 13px;
 }
-.focus-coin .coin-cover-right {
+.focus-cover .coin-cover-right {
     top: 45px;
     right: 45px;
 }
-.mini-coin .coin-cover-right {
+.mini-cover .coin-cover-right {
     top: 25px;
     right: 5px;
 }
 
-.card_coins{
+.card_covers{
     width: 100%;
     height: 37px;
     text-align: center;
     margin:0;
 }
-.card_coins>span{
+.card_covers>span{
     padding: 0 3px;
 }
 
@@ -2095,13 +2095,13 @@ input.form-control {
 .card_cover div.css__title{
     padding: 0;
 }
-.mini-coin{
+.mini-cover{
     margin: 0 !important;
 }
-.focus-coin{
+.focus-cover{
     margin:13px 0 0 !important;
 }
-.coin-12273.focus-coin{
+.coin-12273.focus-cover{
     margin:13px 0 0 !important;
 }
 
@@ -2117,7 +2117,7 @@ input.form-control {
 .coinface-12274 .cover-content .inner-content {
     padding: 2px 3px 0;
 }
-.mini-coin .cover-content .inner-content {
+.mini-cover .cover-content .inner-content {
     margin: 0;
     padding: 0;
     line-height: 128%;
@@ -2144,7 +2144,7 @@ input.form-control {
 .coinType12274.cover-link.ready-only, .coinType12274.cover-link {
     margin-top:47px;
 }
-.focus-coin .coinType12274.cover-link, .focus-coin .coinType12274.cover-link.ready-only {
+.focus-cover .coinType12274.cover-link, .focus-cover .coinType12274.cover-link.ready-only {
     margin-top:77px;
 }
 
@@ -2181,7 +2181,7 @@ input.form-control {
 .cover-content .msg{
     font-size: 0.8em !important;
 }
-.focus-coin .cover-content .msg{
+.focus-cover .cover-content .msg{
     font-size: 1.1em !important;
 }
 
@@ -2234,10 +2234,10 @@ input.form-control {
 .coinType12274 .cover-btn{
     color:#000000 !important;
 }
-.mini-coin .cover-btn{
+.mini-cover .cover-btn{
     font-size: 5em;
 }
-.focus-coin .cover-btn {
+.focus-cover .cover-btn {
     font-size: 16em;
 }
 
@@ -2425,10 +2425,10 @@ input.form-control {
     margin-top: -27%;
     font-size: 0.87em !important;
 }
-.focus-coin .cover-btn i {
+.focus-cover .cover-btn i {
     margin-top: -33%;
 }
-.list-coins .card_cover {
+.list-covers .card_cover {
     text-align: center;
     padding:34px 8px !important;
 }
@@ -2459,10 +2459,10 @@ textarea {
     margin: 0;
     line-height: 120%;
 }
-.focus-coin .inner-content textarea {
+.focus-cover .inner-content textarea {
     line-height: 220%;
 }
-.focus-coin .inner-content .css__title {
+.focus-cover .inner-content .css__title {
     font-size: 1.15em;
     line-height: 128%;
     padding: 13px !important;
@@ -2549,7 +2549,7 @@ h4.css__title{
         font-size: 1.15em;
     }
 
-    .card_coins>span{
+    .card_covers>span{
         padding: 0 2px;
     }
 
@@ -2583,11 +2583,11 @@ h4.css__title{
         right: 1px;
     }
 
-    .focus-coin .coin-cover-left{
+    .focus-cover .coin-cover-left{
         top: 39px;
         left: 26px;
     }
-    .focus-coin .coin-cover-right{
+    .focus-cover .coin-cover-right{
         top: 39px;
         right: 26px;
     }
@@ -2677,7 +2677,7 @@ h4.css__title{
 
 
 
-    .focus-coin .inner-content .css__title {
+    .focus-cover .inner-content .css__title {
         font-size: 1.15em;
     }
     .the_counter{
@@ -2694,7 +2694,7 @@ h4.css__title{
     .cover-btn{
         font-size: 8em;
     }
-    .focus-coin .cover-btn{
+    .focus-cover .cover-btn{
         font-size: 10em;
     }
 
@@ -2730,7 +2730,7 @@ h4.css__title{
 }
 
 .custom_ui_13884_13886 .coin-12274 .cover-content,
-.custom_ui_13884_13886 .coin-12274.mini-coin .cover-content,
+.custom_ui_13884_13886 .coin-12274.mini-cover .cover-content,
 .custom_ui_13884_13886 .coin-12274.not-allowed .cover-content,
 .custom_ui_13884_13886 .coin-12274.ready-only .cover-content
 {
@@ -3904,7 +3904,7 @@ div.img {
     margin:0 !important;
 }
 
-.card_coins .btn {
+.card_covers .btn {
     padding: 7px;
 }
 
