@@ -1898,7 +1898,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 5px 5px;
+    margin:0 5px;
 }
 .form-check{
     padding: 8px 0 8px 60px;
@@ -2562,10 +2562,6 @@ h4.css__title{
         margin: 0 5px 0;
     }
 
-    .cover-wrapper {
-        margin:0 5px 0;
-    }
-
 
     .the_counter{
         margin-top: -21px;
@@ -3081,6 +3077,11 @@ h4.css__title{
 .dropdown_12274,
 .dropdown_11030 {
     border-radius: 21px !important;
+}
+
+.coin-6287 .coinType12274 {
+    border:1px solid #000000;
+    border-radius:21px !important;
 }
 
 .btn.btn-12273,
