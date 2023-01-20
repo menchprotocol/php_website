@@ -2075,7 +2075,8 @@ input.form-control {
     padding: 5px 0 !important;
     border-radius: 0 !important;
 }
-.card_cover.coin-12274{
+.card_cover.coin-12274,
+.card_cover.coin-6287{
     border-radius: 21px !important;
 }
 
@@ -3062,7 +3063,7 @@ h4.css__title{
     border-radius:50% !important;
 }
 .coinType6287 {
-    border:1px solid transparent;
+    border:1px solid #FFF;
     border-radius:21px !important;
 }
 .coin-12274 .cover-content {
@@ -3216,8 +3217,10 @@ h4.css__title{
     border-color: #FC1B44 !important;
 }
 
-
-
+.coin-12273 .cover-content .css__title,
+.coin-12273 .cover-content a {
+    color: #000000 !important;
+}
 
 
 
@@ -3658,7 +3661,8 @@ h4.css__title{
     text-align: left;
     padding: 0 5px !important;
 }
-.coin-12274 .inner-content .css__title{
+.coin-12274 .inner-content .css__title,
+.coin-6287 .inner-content .css__title{
     text-align: center;
 }
 .coin-12274 .cover-content{
