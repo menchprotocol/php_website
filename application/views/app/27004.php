@@ -504,16 +504,16 @@ if(count($i_query)){
         font-size: 1.01em !important;
         margin-bottom: 3px;
     }
-    th{
+    #sortable_table th{
         cursor: ns-resize !important;
         border: 0 !important;
     }
-    tr th{
+    #sortable_table tr th{
        padding: 8px 0 !important;
         font-weight: bold;
         font-size: 1.12em;
     }
-    tr td {
+    #sortable_table tr td {
         padding: 5px 0 !important;
         font-size: 1.01em;
     }
