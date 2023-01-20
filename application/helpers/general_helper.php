@@ -1717,7 +1717,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
         //Do both ideas and sources:
         $fetch_objects = $CI->config->item('n___12761');
-        $fetch_objects = array(12273,12274,6287);
         $batch_command = array(); //TODO To be populated:
         /*
         array_push($batch_command, array(
@@ -1923,8 +1922,10 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
+
                     //Add tags:
                     array_push($export_row['_tags'], 'z_' . $x['e__id']);
+
                     //Add Keywords:
                     $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['x__message']) ? ' '.$x['x__message'] : '' ) . ' ';
                 }
@@ -1949,27 +1950,30 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //Tag Idea Sources
                 foreach($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //SOURCE AUTHORS
+                    'x__right' => $s['i__id'],
+                ), array(), 0) as $x){
+                    array_push($export_row['_tags'], 'z_' . $x['x__up']);
+                }
+
+                //Tag Idea Sources
+                foreach($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $s['i__id'],
+                    'LENGTH()>0' => $s['i__id'],
                 ), array(), 0) as $x){
 
                     //Add tags:
-                    array_push($export_row['_tags'], 'z_' . $x['x__up']);
+                    if(in_array($s['i__privacy'], $CI->config->item('n___31919'))){
+                        array_push($export_row['_tags'], 'z_' . $x['x__up']);
+                    }
 
                     //Add Keywords if any:
                     if(strlen($x['x__message'])){
                         $export_row['s__keywords'] .= $x['x__message'] . ' ';
                     }
 
-                }
-
-                //Tag Idea Discoverers
-                foreach($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__left' => $s['i__id'],
-                )) as $x){
-                    array_push($export_row['_tags'], 'z_' . $x['x__creator']);
                 }
 
             }

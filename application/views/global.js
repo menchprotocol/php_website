@@ -1038,11 +1038,12 @@ $(document).ready(function () {
                     //Members can filter search with first word:
                     var search_only_e = $("#top_search").val().charAt(0) == '@';
                     var search_only_in = $("#top_search").val().charAt(0) == '#';
+                    var search_only_app = $("#top_search").val().charAt(0) == '-';
                     $("#container_search .row").html(''); //Reset results view
 
 
                     //Do not search if specific command ONLY:
-                    if (( search_only_in || search_only_e ) && !isNaN($("#top_search").val().substr(1)) ) {
+                    if (( search_only_in || search_only_e || search_only_app ) && !isNaN($("#top_search").val().substr(1)) ) {
 
                         cb([]);
                         return;
@@ -1052,8 +1053,12 @@ $(document).ready(function () {
                         //Now determine the filters we need to apply:
                         var search_filters = '';
 
-                        if(search_only_e || search_only_in){
-                            search_filters += ' s__type='+( search_only_in ? 12273 : 12274 );
+                        if(search_only_in){
+                            search_filters += ' s__type=12273';
+                        } else if(search_only_e){
+                            search_filters += ' s__type=12274';
+                        } else if(search_only_app){
+                            search_filters += ' s__type=6287';
                         }
 
                         if(js_pl_id > 0){
@@ -1093,7 +1098,7 @@ $(document).ready(function () {
                 },
                 templates: {
                     suggestion: function (suggestion) {
-                        var item_key = suggestion.s__id+'_'+suggestion.s__id;
+                        var item_key = suggestion.s__type+'_'+suggestion.s__id;
                         if(!icons_listed.includes(item_key)) {
                             icons_listed.push(item_key);
                             $("#container_search .row").append(view_s_js_cover(26011, suggestion, 0));

@@ -1726,7 +1726,8 @@ i, .btn .show-max {
     padding-left: 5px;
 }
 
-.coin-12274 .inner-content .text_e_4736, .coin-12274 .inner-content .text_e_6197 {
+.coin-12274 .inner-content .text_e_4736,
+.coin-12274 .inner-content .text_e_6197 {
     text-align: center;
     padding-left: 0;
 }
@@ -3059,6 +3060,10 @@ h4.css__title{
 .coinType12274 {
     border:1px solid #007AFD;
     border-radius:50% !important;
+}
+.coinType12274 {
+    border:1px solid #000000;
+    border-radius:21px !important;
 }
 .coin-12274 .cover-content {
     background: rgba(0,122,253,0.82);
