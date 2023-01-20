@@ -3524,7 +3524,8 @@ h4.css__title{
     border-radius: 50%;
 }
 
-.cover-link.coinType12274 .cover-btn{
+.cover-link.coinType12274 .cover-btn,
+.cover-link.coinType6287 .cover-btn{
     top: 44% !important;
 }
 
