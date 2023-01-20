@@ -9,4 +9,4 @@ if(!intval(view_memory(6404,12678))){
 
 
 //Call the update function and passon possible values:
-view_json(update_algolia($obj, $s__id));
+print_r(update_algolia($obj, $s__id));
