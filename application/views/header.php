@@ -299,7 +299,6 @@ if(strlen($live_chat_page_id)>10){
     <script>
         var chatbox = document.getElementById('fb-customer-chat');
         chatbox.setAttribute("page_id", "<?= $live_chat_page_id ?>");
-        chatbox.setAttribute("attribution", "biz_inbox");
     </script>
     <!-- Your SDK code -->
     <script>

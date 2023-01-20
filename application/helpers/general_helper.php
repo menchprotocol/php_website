@@ -1695,7 +1695,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     if($s__type==12273){
         $focus_field_id = 'i__id';
         $focus_field_privacy = 'i__privacy';
-    } elseif($s__type==12274){
+    } elseif($s__type==12274 || $s__type==6287){
         $focus_field_id = 'e__id';
         $focus_field_privacy = 'e__privacy';
     }
@@ -1717,6 +1717,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
         //Do both ideas and sources:
         $fetch_objects = $CI->config->item('n___12761');
+        $fetch_objects = array(12273,12274,6287);
         $batch_command = array(); //TODO To be populated:
         /*
         array_push($batch_command, array(
@@ -1770,7 +1771,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $filters['x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__right'), 10);
+            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__right'), 0);
 
         } elseif ($loop_obj == 12274) {
 
@@ -1783,7 +1784,16 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $filters['x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__down'), 10);
+            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__down'), 0);
+
+        } elseif (!$s__id && $loop_obj == 6287) {
+
+            $db_rows[$loop_obj] = $CI->X_model->fetch(array(
+                'x__up' => 6287, //Featured Apps
+                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
+            ), array('x__down'), 0);
 
         }
 
@@ -1801,10 +1811,10 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             //Update Weight if single update:
             if($s__id){
                 //Update weight before updating this object:
-                if($s__type==12274){
-                    e__weight_calculator($s);
-                } elseif($s__type==12273){
+                if($s__type==12273){
                     i__weight_calculator($s);
+                } elseif($s__type==12274){
+                    e__weight_calculator($s);
                 }
             }
 
@@ -1834,6 +1844,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             //To hold followings info
             $export_row['_tags'] = array();
+            $export_row['s__keywords'] = '';
 
             //Now build object-specific index:
             if ($loop_obj == 12274) {
@@ -1846,15 +1857,13 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
                 $export_row['s__weight'] = intval($s['e__weight']);
-                $export_row['s__keywords'] = '';
-
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'tag_' . $s['x__creator']);
+                array_push($export_row['_tags'], 'z_' . $s['x__creator']);
 
                 if($s['x__creator']!=$s['e__id']){
                     //Also give access to source themselves, in case they can login:
-                    array_push($export_row['_tags'], 'tag_' . $s['e__id']);
+                    array_push($export_row['_tags'], 'z_' . $s['e__id']);
                 }
 
                 //Is this an image?
@@ -1874,7 +1883,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
 
                     //Add tags:
-                    array_push($export_row['_tags'], 'tag_' . $x['e__id']);
+                    array_push($export_row['_tags'], 'z_' . $x['e__id']);
 
                     //Add Keywords:
                     $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['x__message']) ? ' '.$x['x__message'] : '' ) . ' ';
@@ -1890,6 +1899,36 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     $export_row['s__keywords'] .= $x['x__message'] . ' ';
                 }
 
+            } elseif ($loop_obj == 6287) {
+
+                //APPS
+                $export_row['s__type'] = $loop_obj;
+                $export_row['s__id'] = intval($s['e__id']);
+                $export_row['s__url'] = '/-' . $s['e__id'];
+                $export_row['s__privacy'] = intval($s['e__privacy']);
+                $export_row['s__cover'] = $s['e__cover'];
+                $export_row['s__title'] = $s['e__title'];
+                $export_row['s__weight'] = intval($s['e__weight']);
+
+                array_push($export_row['_tags'], 'is_app');
+
+                if(in_array($s['e__privacy'], $CI->config->item('n___7357'))){
+                    array_push($export_row['_tags'], 'is_public');
+                }
+
+                //Fetch Following:
+                foreach($CI->X_model->fetch(array(
+                    'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__down' => $s['e__id'], //This follower source
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+                ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
+                    //Add tags:
+                    array_push($export_row['_tags'], 'z_' . $x['e__id']);
+                    //Add Keywords:
+                    $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['x__message']) ? ' '.$x['x__message'] : '' ) . ' ';
+                }
+
             } elseif ($loop_obj == 12273) {
 
                 //IDEAS
@@ -1901,7 +1940,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s__weight'] = intval($s['i__weight']);
-                $export_row['s__keywords'] = '';
 
 
                 if(in_array($s['i__privacy'], $CI->config->item('n___31870'))){
@@ -1916,7 +1954,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 ), array(), 0) as $x){
 
                     //Add tags:
-                    array_push($export_row['_tags'], 'tag_' . $x['x__up']);
+                    array_push($export_row['_tags'], 'z_' . $x['x__up']);
 
                     //Add Keywords if any:
                     if(strlen($x['x__message'])){
@@ -1931,7 +1969,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__left' => $s['i__id'],
                 )) as $x){
-                    array_push($export_row['_tags'], 'tag_' . $x['x__creator']);
+                    array_push($export_row['_tags'], 'z_' . $x['x__creator']);
                 }
 
             }
@@ -1968,7 +2006,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$focus_field_privacy], array(6178 /* Member Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_privacy], array(6178 /* Source Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 

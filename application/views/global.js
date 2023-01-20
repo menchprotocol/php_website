@@ -995,7 +995,7 @@ $(document).ready(function () {
 
                 icons_listed = [];
                 algolia_index.search(q, {
-                    filters: ' _tags:tag_14988 OR _tags:tag_14038 OR _tags:tag_14986 OR _tags:tag_20425 OR _tags:tag_20426 OR _tags:tag_20427 OR _tags:has_image ',
+                    filters: ' _tags:z_14988 OR _tags:z_14038 OR _tags:z_14986 OR _tags:z_20425 OR _tags:z_20426 OR _tags:z_20427 OR _tags:has_image ',
                     hitsPerPage: js_e___6404[31113]['m__message'],
                 }, function (error, content) {
                     if (error) {
@@ -1064,7 +1064,7 @@ $(document).ready(function () {
                                 if(search_filters.length>0){
                                     search_filters += ' AND ';
                                 }
-                                search_filters += ' ( _tags:is_public OR _tags:tag_' + js_pl_id + ' ) ';
+                                search_filters += ' ( _tags:is_public OR _tags:z_' + js_pl_id + ' ) ';
                             }
 
                         } else {
@@ -1299,7 +1299,7 @@ function i_load_search(x__type) {
 
             algolia_index.search(q, {
 
-                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_public ' + ( js_pl_id > 0 ? 'OR _tags:tag_' + js_pl_id : '' ) + ') ' ),
+                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_public ' + ( js_pl_id > 0 ? 'OR _tags:z_' + js_pl_id : '' ) + ') ' ),
                 hitsPerPage: js_e___6404[31112]['m__message'],
 
             }, function (error, content) {
@@ -1359,7 +1359,7 @@ function e_load_search(x__type) {
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
 
             algolia_index.search(q, {
-                filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:tag_13897 ) ' ), /* Nonfiction Content */
+                filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:z_13897 ) ' ), /* Nonfiction Content */
                 hitsPerPage: js_e___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
