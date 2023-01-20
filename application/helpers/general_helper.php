@@ -1756,34 +1756,34 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     foreach($fetch_objects as $loop_obj){
 
         //Reset limits:
-        unset($limits);
+        unset($filters);
 
         //Fetch item(s) for updates including their followings:
         if ($loop_obj == 12273) {
 
-            $limits['x__type'] = 4250;
+            $filters['x__type'] = 4250;
 
             if($s__id){
-                $limits['x__right'] = $s__id;
+                $filters['x__right'] = $s__id;
             } else {
-                $limits['i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')'] = null; //ACTIVE
-                $limits['x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
+                $filters['i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')'] = null; //ACTIVE
+                $filters['x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->X_model->fetch($limits, array('x__right'), 0);
+            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__right'), 10);
 
         } elseif ($loop_obj == 12274) {
 
-            $limits['x__type'] = 4251;
+            $filters['x__type'] = 4251;
 
             if($s__id){
-                $limits['x__down'] = $s__id;
+                $filters['x__down'] = $s__id;
             } else {
-                $limits['e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
-                $limits['x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
+                $filters['e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
+                $filters['x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
             }
 
-            $db_rows[$loop_obj] = $CI->X_model->fetch($limits, array('x__down'), 0);
+            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__down'), 10);
 
         }
 

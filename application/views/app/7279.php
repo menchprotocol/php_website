@@ -7,5 +7,6 @@ if(!intval(view_memory(6404,12678))){
     die('Algolia is currently disabled');
 }
 
+
 //Call the update function and passon possible values:
 view_json(update_algolia($obj, $s__id));

@@ -2625,7 +2625,7 @@ function e_x_form_unlock(result){
 
 function sort_e_handle_save(x__type) {
 
-    var new_x__weights = [];
+    var new_x__weight = [];
     var sort_rank = 0;
 
     $("#list-in-"+x__type+" .coinface-12274").each(function () {
@@ -2636,13 +2636,13 @@ function sort_e_handle_save(x__type) {
         sort_rank++;
 
         //Store in DB:
-        new_x__weights[sort_rank] = x__id;
+        new_x__weight[sort_rank] = x__id;
     });
 
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/sort_e_handle_save", {e__id: fetch_val('#focus_id'), x__type:x__type, new_x__weights: new_x__weights}, function (data) {
+        $.post("/e/sort_e_handle_save", {e__id: fetch_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!

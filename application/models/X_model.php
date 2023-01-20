@@ -425,29 +425,6 @@ class X_model extends CI_Model
         return $affected_rows;
     }
 
-    function max_spectrum($query_filters)
-    {
-
-        /*
-         *
-         *    $x__weight = 1 + $this->X_model->(array(
-                            'x__up' => $x__up,
-                            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        ));
-         * */
-        //Fetches the maximum order value
-        $this->db->select('MAX(x__weight) as largest_order');
-        $this->db->from('table__x');
-        foreach($query_filters as $key => $value) {
-            $this->db->where($key, $value);
-        }
-        $q = $this->db->get();
-        $stats = $q->row_array();
-        return ( count($stats) > 0 ? intval($stats['largest_order']) : 0 );
-
-    }
-
 
     function update_dropdown($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id = 0) {
 

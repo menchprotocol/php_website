@@ -167,7 +167,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid e__id',
             ));
-        } elseif (!isset($_POST['new_x__weights']) || !is_array($_POST['new_x__weights']) || count($_POST['new_x__weights']) < 1) {
+        } elseif (!isset($_POST['new_x__weight']) || !is_array($_POST['new_x__weight']) || count($_POST['new_x__weight']) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -205,7 +205,7 @@ class E extends CI_Controller
             } else {
 
                 //Update them all:
-                foreach($_POST['new_x__weights'] as $rank => $x__id) {
+                foreach($_POST['new_x__weight'] as $rank => $x__id) {
                     $this->X_model->update($x__id, array(
                         'x__weight' => intval($rank),
                     ), $member_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
