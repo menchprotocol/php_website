@@ -92,7 +92,7 @@ class E extends CI_Controller
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
             $this->X_model->update($x['x__id'], array(
-                'x__spectrum' => 0,
+                'x__weight' => 0,
             ), $member_e['e__id'], 13007 /* SOURCE SORT RESET */);
         }
 
@@ -167,7 +167,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid e__id',
             ));
-        } elseif (!isset($_POST['new_x__spectrums']) || !is_array($_POST['new_x__spectrums']) || count($_POST['new_x__spectrums']) < 1) {
+        } elseif (!isset($_POST['new_x__weights']) || !is_array($_POST['new_x__weights']) || count($_POST['new_x__weights']) < 1) {
             view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -205,9 +205,9 @@ class E extends CI_Controller
             } else {
 
                 //Update them all:
-                foreach($_POST['new_x__spectrums'] as $rank => $x__id) {
+                foreach($_POST['new_x__weights'] as $rank => $x__id) {
                     $this->X_model->update($x__id, array(
-                        'x__spectrum' => intval($rank),
+                        'x__weight' => intval($rank),
                     ), $member_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
@@ -308,7 +308,7 @@ class E extends CI_Controller
                 'x__up' => $focus_e['e__id'],
                 'x__down' => $x['x__down'],
                 'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
+                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
@@ -328,7 +328,7 @@ class E extends CI_Controller
                 'x__up' => $x['x__up'],
                 'x__down' => $focus_e['e__id'],
                 'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
+                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
@@ -350,7 +350,7 @@ class E extends CI_Controller
                 'x__left' => $x['x__left'],
                 'x__right' => $x['x__right'],
                 'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
+                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
@@ -535,14 +535,14 @@ class E extends CI_Controller
                 //Following
                 $x__down = $fetch_o[0]['e__id'];
                 $x__up = $focus_e['e__id'];
-                $x__spectrum = 0; //Never sort following, only sort followers
+                $x__weight = 0; //Never sort following, only sort followers
 
             } else {
 
                 //Followers
                 $x__up = $fetch_o[0]['e__id'];
                 $x__down = $focus_e['e__id'];
-                $x__spectrum = 0;
+                $x__weight = 0;
 
             }
 
@@ -578,7 +578,7 @@ class E extends CI_Controller
                 'x__message' => $x__message,
                 'x__down' => $x__down,
                 'x__up' => $x__up,
-                'x__spectrum' => $x__spectrum,
+                'x__weight' => $x__weight,
             ));
 
         }

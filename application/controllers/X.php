@@ -257,7 +257,7 @@ class X extends CI_Controller
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__left' => $_POST['card__id'],
-                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+                ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 $counter = count($is_next);
 
                 if(!$counter){
@@ -404,7 +404,7 @@ class X extends CI_Controller
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $top_i__id,
-                ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+                ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 if(count($is_next)==1){
                     foreach($is_next as $single_followers){
                         if(in_array($single_followers['i__type'], $this->config->item('n___12330'))){
@@ -600,7 +600,7 @@ class X extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i){
+            ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
                 if($next_i['i__id']==$i__id){
                     break;
                 } else {
@@ -772,7 +772,7 @@ class X extends CI_Controller
                 'x__type' => 7610, //MEMBER VIEWED DISCOVERY
                 'x__left' => ( $top_i__id > 0 ? $top_is[0]['i__id'] : 0 ),
                 'x__right' => $is[0]['i__id'],
-                'x__spectrum' => fetch_cookie_order('7610_' . $is[0]['i__id']),
+                'x__weight' => fetch_cookie_order('7610_' . $is[0]['i__id']),
             ));
         }
 
@@ -1710,11 +1710,11 @@ class X extends CI_Controller
 
         //Update the order of their discoveries:
         $updated = 0;
-        foreach($_POST['new_x_order'] as $x__spectrum => $x__id){
-            if(intval($x__id) > 0 && intval($x__spectrum) > 0){
+        foreach($_POST['new_x_order'] as $x__weight => $x__id){
+            if(intval($x__id) > 0 && intval($x__weight) > 0){
                 //Update order of this transaction:
                 if($this->X_model->update(intval($x__id), array(
-                    'x__spectrum' => $x__spectrum,
+                    'x__weight' => $x__weight,
                 ), $member_e['e__id'], 4603)){
                     $updated++;
                 }

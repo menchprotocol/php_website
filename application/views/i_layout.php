@@ -8,7 +8,7 @@ $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
     'x__right' => $i['i__id'],
-    'x__spectrum' => $new_order,
+    'x__weight' => $new_order,
 ));
 
 

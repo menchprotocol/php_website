@@ -244,7 +244,7 @@ class E_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
+        ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
         //Remove if not in the secondary group:
         foreach($all_results as $key => $primary_list){
@@ -270,7 +270,7 @@ class E_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
         //Remove if not in the secondary group:
         foreach($all_results as $key => $primary_list){
@@ -478,7 +478,7 @@ class E_model extends CI_Model
 
         if($direction == 12274){
             //Downwards:
-            $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
+            $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
             $join_objects = array('x__down');
             $query_filters = array(
                 'x__up' => $e__id,
@@ -487,7 +487,7 @@ class E_model extends CI_Model
             );
         } elseif($direction == 11030){
             //Upwards:
-            $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
+            $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
             $join_objects = array('x__up');
             $query_filters = array(
                 'x__down' => $e__id,

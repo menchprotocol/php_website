@@ -21,7 +21,7 @@ foreach($this->X_model->fetch(array(
     'x__type' => 10573, //Watching
     'x__right > 0' => null,
     'x__up' => $website_id,
-), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $this_i){
+), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
     } else {
@@ -37,7 +37,7 @@ foreach($this->X_model->fetch(array(
     'x__type !=' => 10573, //Not Watching
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__spectrum' => 'DESC')) as $this_i){
+), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__weight' => 'DESC')) as $this_i){
     array_push($secondary_i_list, $this_i);
 }
 
@@ -63,7 +63,7 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $primary_i['i__id'],
-), array(), 0, 0, array('x__spectrum' => 'ASC')) as $count => $x) {
+), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
 
     $msg = $this->X_model->message_view( $x['x__message'], true);
 
@@ -125,7 +125,7 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC')) as $info_element) {
+    ), array('x__down'), 0, 0, array('x__weight' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){

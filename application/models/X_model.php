@@ -68,7 +68,7 @@ class X_model extends CI_Model
         }
 
         //Set some zero defaults if not set:
-        foreach(array('x__right', 'x__left', 'x__down', 'x__up', 'x__reference', 'x__spectrum') as $dz) {
+        foreach(array('x__right', 'x__left', 'x__down', 'x__up', 'x__reference', 'x__weight') as $dz) {
             if (!isset($add_fields[$dz])) {
                 $add_fields[$dz] = 0;
             }
@@ -376,7 +376,7 @@ class X_model extends CI_Model
 
                             $x__message .= view_db_field($key) . '7 updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
 
-                        } elseif(in_array($key, array('x__message', 'x__spectrum'))){
+                        } elseif(in_array($key, array('x__message', 'x__weight'))){
 
                             $x__message .= view_db_field($key) . '8 updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
 
@@ -430,14 +430,14 @@ class X_model extends CI_Model
 
         /*
          *
-         *    $x__spectrum = 1 + $this->X_model->(array(
+         *    $x__weight = 1 + $this->X_model->(array(
                             'x__up' => $x__up,
                             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         ));
          * */
         //Fetches the maximum order value
-        $this->db->select('MAX(x__spectrum) as largest_order');
+        $this->db->select('MAX(x__weight) as largest_order');
         $this->db->from('table__x');
         foreach($query_filters as $key => $value) {
             $this->db->where($key, $value);
@@ -1028,7 +1028,7 @@ class X_model extends CI_Model
                     'x__down' => $referenced_e,
                 ), array('x__up'), 0, 0, array(
                     'x__type' => 'ASC', /* Text first */
-                    'e__spectrum' => 'DESC',
+                    'e__weight' => 'DESC',
                 )) as $e_following) {
 
                     if(in_array($e_following['e__privacy'], $this->config->item('n___30956'))){
@@ -1209,7 +1209,7 @@ class X_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $next_i) {
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i) {
 
             //Validate Find After:
             if ($find_after_i__id && !$found_trigger) {
@@ -1566,7 +1566,7 @@ class X_model extends CI_Model
                         'x__type' => 4260, //IMAGES
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__down' => intval(str_replace('@','',$add_fields['x__message'])),
-                    ), array('x__up'), 1, 0, array('e__spectrum' => 'DESC')) as $following){
+                    ), array('x__up'), 1, 0, array('e__weight' => 'DESC')) as $following){
 
                         //Update profile picture for current user:
                         $this->E_model->update($member_e['e__id'], array(

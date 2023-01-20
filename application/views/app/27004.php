@@ -30,7 +30,7 @@ if($superpower_28727 && 0) {
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
             'x__up' => $e['e__id'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
             array_push($assigned_i_ids, $i_assigned['x__right']);
         }
     }
@@ -136,7 +136,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
         'x__up' => $_GET['e__id'],
-    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC', 'i__title' => 'ASC'));
+    ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC'));
 
 
     //List all payment Ideas and their total earnings

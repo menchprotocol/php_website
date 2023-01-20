@@ -20,7 +20,7 @@ if(!$obj || $obj==12273){
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
     )) as $in) {
         $stats['i_scanned']++;
-        $stats['i_updated'] += i__spectrum_calculator($in);
+        $stats['i_updated'] += i__weight_calculator($in);
     }
 
 }
@@ -32,7 +32,7 @@ if(!$obj || $obj==12274){
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     )) as $en) {
         $stats['e_scanned']++;
-        $stats['e_changed'] += e__spectrum_calculator($en);
+        $stats['e_changed'] += e__weight_calculator($en);
     }
 }
 

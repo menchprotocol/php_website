@@ -24,7 +24,7 @@ $is_next = $this->X_model->fetch(array(
     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i['i__id'],
-), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
 //Filter Next Ideas:
 $first_followers = array();
@@ -167,7 +167,7 @@ if($top_i__id && $x__creator && $top_i__id!=$i['i__id']){
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $followings_i['i__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+            ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
             foreach($query_subset as $key=>$value){
                 $i_is_available = i_is_available($value['i__id'], false);
                 if(!$i_is_available['status'] || !count($this->X_model->fetch(array(
@@ -258,7 +258,7 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $i['i__id'],
-), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
+), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
     $messages_string .= $this->X_model->message_view(
         $message_x['x__message'],
         true,
@@ -281,7 +281,7 @@ if($one_follower_hack){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $first_followers['i__id'],
-    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
+    ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
         $messages_string .= $this->X_model->message_view(
             $message_x['x__message'],
             true,
@@ -339,7 +339,7 @@ if($top_i__id) {
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i['i__id'],
-            ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+            ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
                 //See if this answer was seleted:
                 if (count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

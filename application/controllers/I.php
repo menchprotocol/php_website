@@ -137,7 +137,7 @@ class I extends CI_Controller {
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i){
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i){
             if($action=='next'){
                 if($trigger_next){
                     return redirect_message('/~' . $i['i__id'] );
@@ -311,7 +311,7 @@ class I extends CI_Controller {
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $_POST['i__id'],
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+        ), array(), 0, 0, array('x__weight' => 'ASC')) as $x) {
             $message .= $x['x__message']."\n";
         }
 
@@ -431,7 +431,7 @@ class I extends CI_Controller {
             //SAVE this message:
             $x = $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
-                'x__spectrum' => ($count + 1),
+                'x__weight' => ($count + 1),
                 'x__type' => 4231,
                 'x__right' => $is[0]['i__id'],
                 'x__message' => $msg_validation['clean_message'],

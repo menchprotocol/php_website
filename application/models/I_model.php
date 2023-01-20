@@ -380,7 +380,7 @@ class I_model extends CI_Model
                     //Copy:
                     'x__type' => $x['x__type'],
                     'x__privacy' => $x['x__privacy'],
-                    'x__spectrum' => $x['x__spectrum'],
+                    'x__weight' => $x['x__weight'],
                     'x__message' => $x['x__message'],
                     'x__metadata' => $x['x__metadata'],
                     'x__up' => $x['x__up'],
@@ -580,7 +580,7 @@ class I_model extends CI_Model
                 'x__type' => 4228, //Idea Transaction Regular read
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__spectrum' => 0,
+                'x__weight' => 0,
             ), true);
 
             //Fetch and return full data to be properly shown on the UI
@@ -692,7 +692,7 @@ class I_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i__id,
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+        ), array(), 0, 0, array('x__weight' => 'ASC')) as $x) {
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__type' => $x['x__type'],
@@ -701,7 +701,7 @@ class I_model extends CI_Model
                 'x__up' => $x['x__up'],
                 'x__down' => $x['x__down'],
                 'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
+                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
@@ -727,7 +727,7 @@ class I_model extends CI_Model
                 'x__down' => $x['x__down'],
                 'x__left' => $x['x__left'],
                 'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
+                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
@@ -747,7 +747,7 @@ class I_model extends CI_Model
                 'x__right' => $i_new['i__id'],
                 'x__left' => $x['x__left'],
                 'x__message' => $x['x__message'],
-                'x__spectrum' => $x['x__spectrum'],
+                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
@@ -772,7 +772,7 @@ class I_model extends CI_Model
                     'x__left' => $i_new['i__id'],
                     'x__right' => $x['x__right'],
                     'x__message' => $x['x__message'],
-                    'x__spectrum' => $x['x__spectrum'],
+                    'x__weight' => $x['x__weight'],
                     'x__reference' => $x['x__reference'],
                     'x__metadata' => $x['x__metadata'],
                     'x__privacy' => $x['x__privacy'],
@@ -868,7 +868,7 @@ class I_model extends CI_Model
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
 
         //Process request:

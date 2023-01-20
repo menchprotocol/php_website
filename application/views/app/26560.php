@@ -69,7 +69,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__creato
                         'x__type' => 32016,
                         'x__creator' => $x[0]['e__id'], //Ticket Buyer
                         'x__up' => $member_e['e__id'], //Ticket Scanner
-                        'x__spectrum' => $quantity, //Tickets Scanned
+                        'x__weight' => $quantity, //Tickets Scanned
                         'x__right' => $x[0]['x__right'],
                         'x__left' => $x[0]['x__left'],
                         'x__reference' => $x[0]['x__id'],

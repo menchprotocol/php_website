@@ -376,7 +376,7 @@ function string_is_icon($icon_code){
 }
 
 
-function i__spectrum_calculator($i){
+function i__weight_calculator($i){
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
@@ -386,9 +386,9 @@ function i__spectrum_calculator($i){
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
-    if($count_x[0]['totals'] != $i['i__spectrum']){
+    if($count_x[0]['totals'] != $i['i__weight']){
         return $CI->I_model->update($i['i__id'], array(
-            'i__spectrum' => $count_x[0]['totals'],
+            'i__weight' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -396,7 +396,7 @@ function i__spectrum_calculator($i){
 
 }
 
-function e__spectrum_calculator($e){
+function e__weight_calculator($e){
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
@@ -406,9 +406,9 @@ function e__spectrum_calculator($e){
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
-    if($count_x[0]['totals'] != $e['e__spectrum']){
+    if($count_x[0]['totals'] != $e['e__weight']){
         return $CI->E_model->update($e['e__id'], array(
-            'e__spectrum' => $count_x[0]['totals'],
+            'e__weight' => $count_x[0]['totals'],
         ));
     } else {
         return 0;
@@ -1646,7 +1646,7 @@ function objectToArray($object)
 function sources_currently_sorted($e__id){
     $CI =& get_instance();
     return count( $CI->X_model->fetch(array(
-        'x__spectrum >' => 0, //Sorted
+        'x__weight >' => 0, //Sorted
         'x__up' => $e__id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1802,9 +1802,9 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             if($s__id){
                 //Update weight before updating this object:
                 if($s__type==12274){
-                    e__spectrum_calculator($s);
+                    e__weight_calculator($s);
                 } elseif($s__type==12273){
-                    i__spectrum_calculator($s);
+                    i__weight_calculator($s);
                 }
             }
 
@@ -1845,7 +1845,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__privacy'] = intval($s['e__privacy']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
-                $export_row['s__weight'] = intval($s['e__spectrum']);
+                $export_row['s__weight'] = intval($s['e__weight']);
                 $export_row['s__keywords'] = '';
 
 
@@ -1900,7 +1900,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__privacy'] = intval($s['i__privacy']);
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['i__title'];
-                $export_row['s__weight'] = intval($s['i__spectrum']);
+                $export_row['s__weight'] = intval($s['i__weight']);
                 $export_row['s__keywords'] = '';
 
 

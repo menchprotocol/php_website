@@ -327,10 +327,10 @@ function view_card_x($x, $has_x__reference = false)
             //TIME
             $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
 
-        } elseif($e__id==4370 && $x['x__spectrum'] > 0){
+        } elseif($e__id==4370 && $x['x__weight'] > 0){
 
             //Order
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. '"><span class="icon-block">'.$m['m__cover']. '</span>'.view_ordinal($x['x__spectrum']).'</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="'.$m['m__title']. '"><span class="icon-block">'.$m['m__cover']. '</span>'.view_ordinal($x['x__weight']).'</span></div>';
 
         } elseif($e__id==6103 && strlen($x['x__metadata']) > 0){
 
@@ -665,7 +665,7 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i__id,
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x){
+        ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x){
             if(substr($message_x['x__message'], 0, 1)=='@' && is_numeric(substr($message_x['x__message'], 1)) && count($CI->X_model->fetch(array(
                     'x__type' => 4260, //IMAGES
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -703,7 +703,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_card_icon = true)
     if($x__type==12274){
 
         //DOWN
-        $order_columns = array('x__spectrum' => 'ASC', 'e__title' => 'ASC');
+        $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
         $join_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
@@ -731,7 +731,7 @@ function view_coins_e($x__type, $e__id, $page_num = 0, $append_card_icon = true)
         foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
-        $order_columns['x__spectrum'] = 'ASC';
+        $order_columns['x__weight'] = 'ASC';
         $order_columns['i__title'] = 'ASC';
 
         //IDEAS
@@ -857,7 +857,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_card_icon = true)
     } elseif($x__type==12273){
 
         //IDEAS NEXT
-        $order_columns = array('x__spectrum' => 'ASC');
+        $order_columns = array('x__weight' => 'ASC');
         $join_objects = array('x__right');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1237,7 +1237,7 @@ function view_card_x_select($i, $x__creator, $previously_selected){
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
-    ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
+    ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
         $ui .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, 0, true);
     }
     $ui .= '</a>';
@@ -1493,7 +1493,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="inner-content">';
     if($e_of_i && !$discovery_mode){
         //Editable title:
-        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__spectrum']) ? (($i['x__spectrum']*100)+1) : 0), true);
+        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
     } elseif($can_click){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
@@ -1515,7 +1515,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 4231,
             'x__right' => $i['i__id'],
-        ), array('x__creator'), 0, 0, array('x__spectrum' => 'ASC')) as $mes){
+        ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
 
@@ -1953,7 +1953,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="inner-content">';
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
-        $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__spectrum']) ? ($e['x__spectrum']*100)+1 : 0  ), true);
+        $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $source_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
     } else {
         //Static:
         $ui .= '<div class="css__title">'.( $is_cache ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';

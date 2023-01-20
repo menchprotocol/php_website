@@ -24,7 +24,7 @@ if(!isset($_GET['i__id'])){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $_GET['i__id'],
-        ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+        ), array(), 0, 0, array('x__weight' => 'ASC')) as $x) {
             echo $this->X_model->message_view($x['x__message'], true);
         }
         echo '<br /><br />';
@@ -35,7 +35,7 @@ if(!isset($_GET['i__id'])){
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $_GET['i__id'],
-        ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $i) {
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i) {
 
             echo '<h3 style="margin:21px 0 0; padding-left:5px; font-size:1.15em;"><a href="javascript:void(0);" onclick="$(\'.i_msg_'.$i['i__id'].'\').toggleClass(\'hidden\');" class="inner-content doblock css__title">' . $i['i__title'] . '</a></h3>';
 
@@ -45,7 +45,7 @@ if(!isset($_GET['i__id'])){
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4231, //IDEA NOTES Messages
                 'x__right' => $i['i__id'],
-            ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $x) {
+            ), array(), 0, 0, array('x__weight' => 'ASC')) as $x) {
                 echo $this->X_model->message_view($x['x__message'], true);
             }
             echo '</div>';

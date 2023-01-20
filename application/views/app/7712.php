@@ -17,7 +17,7 @@ foreach($this->I_model->fetch(array(
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC')) as $follower_or){
+    ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $follower_or){
 
         $x_coins = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

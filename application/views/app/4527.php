@@ -37,7 +37,7 @@ foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
         'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
-    ), array('x__down'), 0, 0, array('x__spectrum' => 'ASC', 'e__title' => 'ASC'));
+    ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
 
 
