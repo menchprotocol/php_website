@@ -35,11 +35,11 @@ if(strlen($_GET['i__id'])){
     echo '</tr><tr>';
 
     echo '<td><div>';
-    echo '<span class="mini-header">Includes Profile Source(s):</span>';
+    echo '<span class="mini-header">Includes Following Source(s):</span>';
     echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">Excludes Profile Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Excludes Following Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
 
     echo '</tr><tr>';
 

@@ -6,8 +6,8 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 } else {
 
-    //Fetch parent URLs:
-    $profiles = $this->X_model->fetch(array(
+    //Fetch followings URLs:
+    $following = $this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
@@ -21,13 +21,13 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
     echo '</div>';
 
 
-    if(!count($profiles)){
+    if(!count($following)){
 
         js_redirect(home_url(), 1);
 
     } else {
 
-        js_redirect($profiles[0]['x__message'], 1);
+        js_redirect($following[0]['x__message'], 1);
 
     }
 

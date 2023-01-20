@@ -6,7 +6,7 @@ $joined_by = array();
 
 //We have a special OR filter when combined with any_e__id & any_i__id
 $any_i_e_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( isset($_GET['any_i__id']) && $_GET['any_i__id'] > 0 ) );
-$parent_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 ? ' OR x__reference = '.$_GET['x__reference'].' ' : false );
+$followings_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 ? ' OR x__reference = '.$_GET['x__reference'].' ' : false );
 
 
 
@@ -118,27 +118,27 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0){
 }
 
 if(isset($_GET['any_e__id']) && strlen($_GET['any_e__id']) > 0){
-    //We need to look for both parent/child
+    //We need to look for both following/follower
     if (substr_count($_GET['any_e__id'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__creator IN (' . $_GET['any_e__id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__creator IN (' . $_GET['any_e__id'] . ') ' . $followings_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_e__id']) > 0) {
-        $query_filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__creator = ' . $_GET['any_e__id'] . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__creator = ' . $_GET['any_e__id'] . $followings_tr_filter . ' )'] = null;
     }
 }
 
 if(isset($_GET['any_i__id']) && strlen($_GET['any_i__id']) > 0){
-    //We need to look for both parent/child
+    //We need to look for both following/follower
     if (substr_count($_GET['any_i__id'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__right IN (' . $_GET['any_i__id'] . ') OR x__left IN (' . $_GET['any_i__id'] . ') ' . $parent_tr_filter . ' )'] = null;
+        $query_filters['( x__right IN (' . $_GET['any_i__id'] . ') OR x__left IN (' . $_GET['any_i__id'] . ') ' . $followings_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_i__id']) > 0) {
-        $query_filters['( x__right = ' . $_GET['any_i__id'] . ' OR x__left = ' . $_GET['any_i__id'] . $parent_tr_filter . ')'] = null;
+        $query_filters['( x__right = ' . $_GET['any_i__id'] . ' OR x__left = ' . $_GET['any_i__id'] . $followings_tr_filter . ')'] = null;
     }
 }
 
 if(isset($_GET['any_x__id']) && strlen($_GET['any_x__id']) > 0){
-    //We need to look for both parent/child
+    //We need to look for both following/follower
     if (substr_count($_GET['any_x__id'], ',') > 0) {
         //This is multiple:
         $query_filters['( x__id IN (' . $_GET['any_x__id'] . ') OR x__reference IN (' . $_GET['any_x__id'] . '))'] = null;
@@ -306,7 +306,7 @@ echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" nam
 
 echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__up" value="' . ((isset($_GET['x__up'])) ? $_GET['x__up'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE PORTFOLIO:</span><input type="text" name="x__down" value="' . ((isset($_GET['x__down'])) ? $_GET['x__down'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="x__down" value="' . ((isset($_GET['x__down'])) ? $_GET['x__down'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 

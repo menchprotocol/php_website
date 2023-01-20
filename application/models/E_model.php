@@ -22,8 +22,8 @@ class E_model extends CI_Model
 
         //PROFILE
         $session_data = array(
-            'session_profile' => $e,
-            'session_parent_ids' => array(),
+            'session_following' => $e,
+            'session_following_ids' => array(),
             'session_superpowers_unlocked' => array(),
             'session_superpowers_activated' => array(),
         );
@@ -108,35 +108,35 @@ class E_model extends CI_Model
         //Fetch User Defaults:
         $user_theme = array();
         foreach($this->X_model->fetch(array(
-            'x__down' => $e['e__id'], //This child source
+            'x__down' => $e['e__id'], //This follower source
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
-        ), array('x__up'), 0) as $e_profile){
+        ), array('x__up'), 0) as $e_following){
 
-            //Push to parent IDs:
-            array_push($session_data['session_parent_ids'], intval($e_profile['e__id']));
+            //Push to followings IDs:
+            array_push($session_data['session_following_ids'], intval($e_following['e__id']));
 
             //Website Theme Items?
-            if(in_array($e_profile['e__id'], $this->config->item('n___14926'))){
-                array_push($user_theme, intval($e_profile['e__id']));
+            if(in_array($e_following['e__id'], $this->config->item('n___14926'))){
+                array_push($user_theme, intval($e_following['e__id']));
             }
 
             //Superpower?
-            if(in_array($e_profile['e__id'], $this->config->item('n___10957'))){
+            if(in_array($e_following['e__id'], $this->config->item('n___10957'))){
 
                 //It's unlocked!
-                array_push($session_data['session_superpowers_unlocked'], intval($e_profile['e__id']));
+                array_push($session_data['session_superpowers_unlocked'], intval($e_following['e__id']));
 
                 //Was the latest toggle to de-activate? If not, assume active:
                 $last_advance_settings = $this->X_model->fetch(array(
                     'x__creator' => $e['e__id'],
                     'x__type' => 5007, //TOGGLE SUPERPOWER
-                    'x__up' => $e_profile['e__id'],
+                    'x__up' => $e_following['e__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1); //Fetch the single most recent supoerpower toggle only
                 if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['x__message'] , ' DEACTIVATED')){
-                    array_push($session_data['session_superpowers_activated'], intval($e_profile['e__id']));
+                    array_push($session_data['session_superpowers_activated'], intval($e_following['e__id']));
                 }
 
             }
@@ -192,7 +192,7 @@ class E_model extends CI_Model
         $unsubscribed_time = null;
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
-            'x__down' => $e['e__id'], //This child source
+            'x__down' => $e['e__id'], //This follower source
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $unsubscribed){
@@ -527,7 +527,7 @@ class E_model extends CI_Model
                 $flat_items[$e_follower['e__id']] = $e_follower;
             }
 
-            //Do we have more children?
+            //Do we have more followers?
             if($s__level>=$hard_level || count($flat_items)>=$hard_limit){
                 break;
             }
@@ -582,7 +582,7 @@ class E_model extends CI_Model
                     continue;
                 }
 
-                //FYI: Unlike Ideas, we cannot log parent/child source relations since the child source slot is previously taken...
+                //FYI: Unlike Ideas, we cannot log following/follower source relations since the follower source slot is previously taken...
 
                 if($x__type){
 
@@ -650,41 +650,41 @@ class E_model extends CI_Model
     }
 
 
-    function radio_set($e_profile_bucket_id, $set_e_child_id, $x__creator)
+    function radio_set($e_following_bucket_id, $set_e_follower_id, $x__creator)
     {
 
         /*
-         * Treats an source child group as a drop down menu where:
+         * Treats an source follower group as a drop down menu where:
          *
-         *  $e_profile_bucket_id is the parent of the drop down
-         *  $x__creator is the member source ID that one of the children of $e_profile_bucket_id should be assigned (like a drop down)
-         *  $set_e_child_id is the new value to be assigned, which could also be null (meaning just delete all current values)
+         *  $e_following_bucket_id is the followings of the drop down
+         *  $x__creator is the member source ID that one of the followers of $e_following_bucket_id should be assigned (like a drop down)
+         *  $set_e_follower_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like Member communication levels
          *
          * */
 
 
-        //Fetch all the child sources for $e_profile_bucket_id and make sure they match $set_e_child_id
-        $children = $this->config->item('n___' . $e_profile_bucket_id);
-        if ($e_profile_bucket_id < 1) {
+        //Fetch all the follower sources for $e_following_bucket_id and make sure they match $set_e_follower_id
+        $followers = $this->config->item('n___' . $e_following_bucket_id);
+        if ($e_following_bucket_id < 1) {
             return false;
-        } elseif (!$children) {
+        } elseif (!$followers) {
             return false;
-        } elseif ($set_e_child_id > 0 && !in_array($set_e_child_id, $children)) {
+        } elseif ($set_e_follower_id > 0 && !in_array($set_e_follower_id, $followers)) {
             return false;
         }
 
-        //First delete existing parent/child transactions for this drop down:
-        $previously_assigned = ($set_e_child_id < 1);
+        //First delete existing following/follower transactions for this drop down:
+        $previously_assigned = ($set_e_follower_id < 1);
         $updated_x__id = 0;
         foreach($this->X_model->fetch(array(
             'x__down' => $x__creator,
-            'x__up IN (' . join(',', $children) . ')' => null, //Current children
+            'x__up IN (' . join(',', $followers) . ')' => null, //Current followers
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), view_memory(6404,11064)) as $x) {
 
-            if (!$previously_assigned && $x['x__up'] == $set_e_child_id) {
+            if (!$previously_assigned && $x['x__up'] == $set_e_follower_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
@@ -699,13 +699,13 @@ class E_model extends CI_Model
         }
 
 
-        //Make sure $set_e_child_id belongs to parent if set (Could be null which means delete all)
+        //Make sure $set_e_follower_id belongs to followings if set (Could be null which means delete all)
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__down' => $x__creator,
-                'x__up' => $set_e_child_id,
+                'x__up' => $set_e_follower_id,
                 'x__type' => e_x__type(),
                 'x__reference' => $updated_x__id,
             ));
@@ -715,12 +715,12 @@ class E_model extends CI_Model
 
     function remove_duplicate_links($e__id){
 
-        //A function that scans source parent links and removes duplicates
+        //A function that scans source followings links and removes duplicates
 
         $current_up = array();
         $duplicates_removed = 0;
 
-        //Check parents to see if there are duplicates:
+        //Check followings to see if there are duplicates:
         foreach($this->X_model->fetch(array(
             'x__down' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1044,7 +1044,7 @@ class E_model extends CI_Model
 
 
 
-    function url($url, $x__creator = 0, $add_to_child_e__id = 0, $page_title = null)
+    function url($url, $x__creator = 0, $add_to_follower_e__id = 0, $page_title = null)
     {
 
         /*
@@ -1054,7 +1054,7 @@ class E_model extends CI_Model
          *
          * - $url:                  Input URL
          * - $x__creator:       IF > 0 will save URL (if not previously there) and give credit to this source as the member
-         * - $add_to_child_e__id:   IF > 0 Will also add URL to this child if present
+         * - $add_to_follower_e__id:   IF > 0 Will also add URL to this follower if present
          * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable members to edit auto generated title)
          *
          * */
@@ -1066,10 +1066,10 @@ class E_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid URL',
             );
-        } elseif ($add_to_child_e__id > 0 && $x__creator < 1) {
+        } elseif ($add_to_follower_e__id > 0 && $x__creator < 1) {
             return array(
                 'status' => 0,
-                'message' => 'Parent source is required to add a parent URL',
+                'message' => 'Following source is required to add a followings URL',
             );
         }
 
@@ -1218,7 +1218,7 @@ class E_model extends CI_Model
                     //All good:
                     $e_url = $added_e['new_e'];
 
-                    //Always transaction URL to its parent domain:
+                    //Always transaction URL to its followings domain:
                     $this->X_model->create(array(
                         'x__creator' => $x__creator,
                         'x__type' => $x__type,
@@ -1244,7 +1244,7 @@ class E_model extends CI_Model
                         'x__metadata' => array(
                             'url' => $url,
                             'x__creator' => $x__creator,
-                            'add_to_child_e__id' => $add_to_child_e__id,
+                            'add_to_follower_e__id' => $add_to_follower_e__id,
                             'page_title' => $page_title,
                             'page_title_generic' => $page_title_generic,
                         ),
@@ -1259,14 +1259,14 @@ class E_model extends CI_Model
         }
 
 
-        //Have we been asked to also add URL to another parent or child?
-        if(!$url_previously_existed && $add_to_child_e__id){
-            //Transaction URL to its parent domain?
+        //Have we been asked to also add URL to another followings or follower?
+        if(!$url_previously_existed && $add_to_follower_e__id){
+            //Transaction URL to its followings domain?
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__type' => e_x__type(),
                 'x__up' => $e_url['e__id'],
-                'x__down' => $add_to_child_e__id,
+                'x__down' => $add_to_follower_e__id,
             ));
         }
 
@@ -1336,8 +1336,8 @@ class E_model extends CI_Model
         //Basic input validation done, let's continue...
         $applied_success = 0; //To be populated...
 
-        //Fetch all children:
-        $children = $this->X_model->fetch(array(
+        //Fetch all followers:
+        $followers = $this->X_model->fetch(array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1346,7 +1346,7 @@ class E_model extends CI_Model
 
 
         //Process request:
-        foreach($children as $x) {
+        foreach($followers as $x) {
 
             //Logic here must match items in e_mass_actions config variable
 
@@ -1370,11 +1370,11 @@ class E_model extends CI_Model
 
             } elseif (in_array($action_e__id, array(26149))) {
 
-                //Go through all parents of this source:
-                //Add Child Sources:
+                //Go through all followings of this source:
+                //Add Follower Sources:
                 $focus_id = intval(one_two_explode('@',' ',$action_command1));
 
-                //Go through all parents and add the ones missing:
+                //Go through all followings and add the ones missing:
                 foreach($this->X_model->fetch(array(
                     'x__up' => $focus_id,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1382,7 +1382,7 @@ class E_model extends CI_Model
                     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__down'), 0, 0) as $e__up){
 
-                    //Add if not added as the child:
+                    //Add if not added as the follower:
                     if(!count($this->X_model->fetch(array(
                         'x__up' => $e__up['e__id'],
                         'x__down' => $x['e__id'],
@@ -1404,25 +1404,25 @@ class E_model extends CI_Model
 
                 }
 
-            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate parent source
+            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate followings source
 
                 //What member searched for:
                 $focus_id = intval(one_two_explode('@',' ',$action_command1));
 
-                //See if child source has searched parent source:
-                $child_parent_e = $this->X_model->fetch(array(
+                //See if follower source has searched followings source:
+                $follower_following_e = $this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $x['e__id'], //This child source
+                    'x__down' => $x['e__id'], //This follower source
                     'x__up' => $focus_id,
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
-                if((in_array($action_e__id, array(5981, 13441)) && count($child_parent_e)==0) || ($action_e__id==12928 && view_coins_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_coins_e(12273, $x['e__id'],0, false))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($follower_following_e)==0) || ($action_e__id==12928 && view_coins_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_coins_e(12273, $x['e__id'],0, false))){
 
                     $add_fields = array(
                         'x__creator' => $x__creator,
                         'x__type' => e_x__type(),
-                        'x__down' => $x['e__id'], //This child source
+                        'x__down' => $x['e__id'], //This follower source
                         'x__up' => $focus_id,
                     );
 
@@ -1431,7 +1431,7 @@ class E_model extends CI_Model
                         $add_fields['x__message'] = $x['x__message'];
                     }
 
-                    //Parent Member Addition
+                    //Following Member Addition
                     $this->X_model->create($add_fields);
 
                     $applied_success++;
@@ -1443,12 +1443,12 @@ class E_model extends CI_Model
                         ), $x__creator, 10673 /* Member Transaction Unpublished  */);
                     }
 
-                } elseif(in_array($action_e__id, array(5982, 11956)) && count($child_parent_e) > 0){
+                } elseif(in_array($action_e__id, array(5982, 11956)) && count($follower_following_e) > 0){
 
                     if($action_e__id==5982){
 
-                        //Parent Member Removal
-                        foreach($child_parent_e as $delete_tr){
+                        //Following Member Removal
+                        foreach($follower_following_e as $delete_tr){
 
                             $this->X_model->update($delete_tr['x__id'], array(
                                 'x__privacy' => 6173, //Transaction Deleted
@@ -1459,14 +1459,14 @@ class E_model extends CI_Model
 
                     } elseif($action_e__id==11956) {
 
-                        $parent_new_e__id = intval(one_two_explode('@',' ',$action_command2));
+                        $followings_new_e__id = intval(one_two_explode('@',' ',$action_command2));
 
-                        //Add as a parent because it meets the condition
+                        //Add as a followings because it meets the condition
                         $this->X_model->create(array(
                             'x__creator' => $x__creator,
                             'x__type' => e_x__type(),
-                            'x__down' => $x['e__id'], //This child source
-                            'x__up' => $parent_new_e__id,
+                            'x__down' => $x['e__id'], //This follower source
+                            'x__up' => $followings_new_e__id,
                         ));
 
                         $applied_success++;
@@ -1559,7 +1559,7 @@ class E_model extends CI_Model
             'x__down' => $e__id,
             'x__metadata' => array(
                 'payload' => $_POST,
-                'sources_total' => count($children),
+                'sources_total' => count($followers),
                 'sources_updated' => $applied_success,
                 'command1' => $action_command1,
                 'command2' => $action_command2,
@@ -1569,7 +1569,7 @@ class E_model extends CI_Model
         //Return results:
         return array(
             'status' => 1,
-            'message' => $applied_success . ' of ' . count($children) . ' sources updated',
+            'message' => $applied_success . ' of ' . count($followers) . ' sources updated',
         );
 
     }

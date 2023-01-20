@@ -77,11 +77,11 @@ if($search_for_set){
                 echo '<td style="text-align: left;">'.$new_outcome.'</td>';
                 echo '<td style="text-align: left;">'.( !$i__validate_title['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i__validate_title['message'] : ( $replace_with_confirmed && $i__validate_title['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
             } else {
-                //Show parents now:
+                //Show followings now:
                 echo '<td style="text-align: left;">';
 
 
-                //Loop through parents:
+                //Loop through followings:
                 $e___4737 = $this->config->item('e___4737'); // Idea Status
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

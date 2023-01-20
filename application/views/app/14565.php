@@ -118,7 +118,7 @@ if($double_contact){
 
 //Any Info Boxes?
 foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
-    //Any Children?
+    //Any Followers?
     $info_item = null;
     foreach($this->X_model->fetch(array(
         'x__up' => $e_item['e__id'],

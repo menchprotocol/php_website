@@ -510,17 +510,17 @@ class X_model extends CI_Model
                 //Determine what to do after deleted:
                 if($o__id == $focus_id){
 
-                    //Find Published Parents:
+                    //Find Published Followings:
                     foreach($this->X_model->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         'x__down' => $o__id,
-                    ), array('x__up'), 1, 0, array('e__title' => 'DESC')) as $profile_e) {
-                        $deletion_redirect = '/@'.$profile_e['e__id'];
+                    ), array('x__up'), 1, 0, array('e__title' => 'DESC')) as $following_e) {
+                        $deletion_redirect = '/@'.$following_e['e__id'];
                     }
 
-                    //If still not found, go to main page if no parent found:
+                    //If still not found, go to main page if no followings found:
                     if(!$deletion_redirect){
                         $deletion_redirect = '/@'.$o__id;
                     }
@@ -558,7 +558,7 @@ class X_model extends CI_Model
                 //Determine what to do after deleted:
                 if($o__id == $focus_id){
 
-                    //Find Published Parents:
+                    //Find Published Followings:
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -568,7 +568,7 @@ class X_model extends CI_Model
                         $deletion_redirect = '/~'.$previous_i['i__id'];
                     }
 
-                    //If not found, find active parents:
+                    //If not found, find active followings:
                     if(!$deletion_redirect){
                         foreach($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -580,7 +580,7 @@ class X_model extends CI_Model
                         }
                     }
 
-                    //If still not found, go to main page if no parent found:
+                    //If still not found, go to main page if no followings found:
                     if(!$deletion_redirect){
                         $deletion_redirect = '/~'.$o__id;
                     }
@@ -1008,7 +1008,7 @@ class X_model extends CI_Model
             array_push($note_references, intval($referenced_e));
 
 
-            //See if this source has any parent transactions to be shown in this appendix
+            //See if this source has any followings transactions to be shown in this appendix
             $e_media_count = 0;
             $e_count = 0;
             $e_appendix = null;
@@ -1029,34 +1029,34 @@ class X_model extends CI_Model
                 ), array('x__up'), 0, 0, array(
                     'x__type' => 'ASC', /* Text first */
                     'e__spectrum' => 'DESC',
-                )) as $e_profile) {
+                )) as $e_following) {
 
-                    if(in_array($e_profile['e__privacy'], $this->config->item('n___30956'))){
+                    if(in_array($e_following['e__privacy'], $this->config->item('n___30956'))){
                         //ACTIVE Transactions Not Allowed:
                         continue;
                     }
 
                     $e_count++;
 
-                    if (in_array($e_profile['x__type'], $this->config->item('n___13899'))) {
+                    if (in_array($e_following['x__type'], $this->config->item('n___13899'))) {
 
                         //TOOLTIP INFO
-                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_profile['e__title'].': ' . str_replace("\n",' ',$e_profile['x__message']);
+                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_following['e__title'].': ' . str_replace("\n",' ',$e_following['x__message']);
 
-                    } elseif (in_array($e_profile['x__type'], $this->config->item('n___12524'))) {
+                    } elseif (in_array($e_following['x__type'], $this->config->item('n___12524'))) {
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_profile['x__message'], $e_profile['x__type'], $message_input, $is_discovery_mode) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_following['x__message'], $e_following['x__type'], $message_input, $is_discovery_mode) . '</div>';
 
-                    } elseif($e_profile['x__type'] == 4256 /* URL */) {
+                    } elseif($e_following['x__type'] == 4256 /* URL */) {
 
-                        array_push($e_links, $e_profile);
+                        array_push($e_links, $e_following);
 
                     } else {
 
                         //Text and Percentage, etc...
-                        $e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . view_cover(12274,$e_profile['e__cover'], true).'</span>' . $e_profile['e__title'].': ' . $e_profile['x__message'] . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . view_cover(12274,$e_following['e__cover'], true).'</span>' . $e_following['e__title'].': ' . $e_following['x__message'] . '</div>';
 
                     }
                 }
@@ -1153,7 +1153,7 @@ class X_model extends CI_Model
             return 0;
         }
 
-        //Fetch parents:
+        //Fetch followings:
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1187,7 +1187,7 @@ class X_model extends CI_Model
             }
         }
 
-        //Did not find any parents:
+        //Did not find any followings:
         return array();
 
     }
@@ -1323,7 +1323,6 @@ class X_model extends CI_Model
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 10573, //WATCHERS
                 'x__right' => $i['i__id'],
-                'x__up > 0' => null,
             ), array(), 0);
             if(count($watchers)){
 
@@ -1529,7 +1528,6 @@ class X_model extends CI_Model
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 10573, //WATCHERS
                         'x__right' => $i['i__id'],
-                        'x__up > 0' => null,
                     ), array(), 0) as $watcher){
                         $this->X_model->send_dm($watcher['x__up'], $i['i__title'], $clone_urls);
                     }
@@ -1540,7 +1538,7 @@ class X_model extends CI_Model
             //ADD PROFILE?
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 7545, //Profile Add
+                'x__type' => 7545, //Following Add
                 'x__right' => $i['i__id'],
             ), array('x__up')) as $x_tag){
 
@@ -1568,15 +1566,15 @@ class X_model extends CI_Model
                         'x__type' => 4260, //IMAGES
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__down' => intval(str_replace('@','',$add_fields['x__message'])),
-                    ), array('x__up'), 1, 0, array('e__spectrum' => 'DESC')) as $profile){
+                    ), array('x__up'), 1, 0, array('e__spectrum' => 'DESC')) as $following){
 
                         //Update profile picture for current user:
                         $this->E_model->update($member_e['e__id'], array(
-                            'e__cover' => $profile['x__message'],
+                            'e__cover' => $following['x__message'],
                         ), true, $member_e['e__id']);
 
                         //Update live session as well:
-                        $member_e['e__cover'] = $profile['x__message'];
+                        $member_e['e__cover'] = $following['x__message'];
                         $this->E_model->activate_session($member_e, true);
 
                     }
@@ -1588,7 +1586,7 @@ class X_model extends CI_Model
                     $x_edited = 0;
                     $x_deleted = 0;
 
-                    //Assign tag if parent/child transaction NOT previously assigned:
+                    //Assign tag if following/follower transaction NOT previously assigned:
                     $existing_x = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1615,7 +1613,7 @@ class X_model extends CI_Model
                             ), $add_fields['x__creator'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                             $this->X_model->create(array(
-                                'x__type' => 12197, //Profile Added
+                                'x__type' => 12197, //Following Added
                                 'x__creator' => $add_fields['x__creator'],
                                 'x__up' => $x_tag['x__up'],
                                 'x__down' => $add_fields['x__creator'],
@@ -1657,7 +1655,7 @@ class X_model extends CI_Model
                         ));
 
                         $this->X_model->create(array(
-                            'x__type' => 12197, //Profile Added
+                            'x__type' => 12197, //Following Added
                             'x__creator' => $add_fields['x__creator'],
                             'x__up' => $x_tag['x__up'],
                             'x__down' => $add_fields['x__creator'],
@@ -1682,11 +1680,11 @@ class X_model extends CI_Model
             //REMOVE PROFILE?
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 26599, //Profile Remove
+                'x__type' => 26599, //Following Remove
                 'x__right' => $i['i__id'],
             )) as $x_tag){
 
-                //Remove Profile IF previously assigned:
+                //Remove Following IF previously assigned:
                 $existing_x = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -1701,7 +1699,7 @@ class X_model extends CI_Model
 
                     $this->X_model->update($existing_x[0]['x__id'], array(
                         'x__privacy' => 6173,
-                    ), $member_e['e__id'], 12197 /* Profile Removed */);
+                    ), $member_e['e__id'], 12197 /* Following Removed */);
 
                     //See if Session needs to be updated:
                     if($member_e && $member_e['e__id']==$add_fields['x__creator']){
@@ -1728,8 +1726,8 @@ class X_model extends CI_Model
             return false;
         }
 
-        $recursive_child_ids = $this->I_model->recursive_child_ids($i['i__id']);
-        if(!count($recursive_child_ids)){
+        $recursive_follower_ids = $this->I_model->recursive_follower_ids($i['i__id']);
+        if(!count($recursive_follower_ids)){
             return false;
         }
 
@@ -1740,7 +1738,7 @@ class X_model extends CI_Model
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $e__id, //Belongs to this Member
-            'x__left IN (' . join(',', $recursive_child_ids ) . ')' => null,
+            'x__left IN (' . join(',', $recursive_follower_ids ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array(), 'COUNT(DISTINCT i__id) as completed_x');
@@ -1748,7 +1746,7 @@ class X_model extends CI_Model
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
-            'fixed_total' => count($recursive_child_ids),
+            'fixed_total' => count($recursive_follower_ids),
             'fixed_discovered' => intval($common_completed[0]['completed_x']),
         );
 
@@ -1757,7 +1755,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
             'x__creator' => $e__id, //Belongs to this Member
-            'x__left IN (' . join(',', $recursive_child_ids ) . ')' => null,
+            'x__left IN (' . join(',', $recursive_follower_ids ) . ')' => null,
             'x__right > 0' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC

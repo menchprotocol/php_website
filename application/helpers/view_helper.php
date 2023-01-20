@@ -401,13 +401,13 @@ function view_time_difference($t, $micro = false)
 }
 
 
-function view_memory($parent, $child, $filed = 'm__message'){
+function view_memory($following, $follower, $filed = 'm__message'){
     $CI =& get_instance();
-    $memory_tree = $CI->config->item('e___'.$parent);
-    return $memory_tree[$child][$filed];
+    $memory_tree = $CI->config->item('e___'.$following);
+    return $memory_tree[$follower][$filed];
 }
 
-function view_cache($parent, $e__id, $micro_status = true, $data_placement = 'top', $i__id = 0)
+function view_cache($following, $e__id, $micro_status = true, $data_placement = 'top', $i__id = 0)
 {
 
     /*
@@ -417,7 +417,7 @@ function view_cache($parent, $e__id, $micro_status = true, $data_placement = 'to
      * */
 
     $CI =& get_instance();
-    $config_array = $CI->config->item('e___'.$parent);
+    $config_array = $CI->config->item('e___'.$following);
     if(!isset($config_array[$e__id])){
         return false;
     }
@@ -437,7 +437,7 @@ function view_cache($parent, $e__id, $micro_status = true, $data_placement = 'to
         }
     } else {
         //data-toggle="tooltip" data-placement="' . $data_placement . '"
-        return '<span class="'.( $micro_status ? 'cache_micro_'.$parent.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
+        return '<span class="'.( $micro_status ? 'cache_micro_'.$following.'_'.$i__id : '' ).'" ' . ( $micro_status && !is_null($data_placement) ? ' title="' . ($micro_status ? $cache['m__title'] : '') . (strlen($cache['m__message']) > 0 ? ($micro_status ? ': ' : '') . $cache['m__message'] : '') . '"' : 'style="cursor:pointer;"') . '>' . $cache['m__cover'] . ' ' . ($micro_status ? '' : $cache['m__title']) . '</span>';
     }
 }
 
@@ -831,7 +831,6 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_card_icon = true)
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i__id,
-            'x__up >' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
         );
 
         $order_columns = array();
@@ -928,7 +927,7 @@ function view_coins_i($x__type, $i__id, $page_num = 0, $append_card_icon = true)
 
 }
 
-function view_radio_e($focus_id, $child___id, $enable_mulitiselect){
+function view_radio_e($focus_id, $follower___id, $enable_mulitiselect){
 
     /*
      * Print UI for
@@ -946,7 +945,7 @@ function view_radio_e($focus_id, $child___id, $enable_mulitiselect){
     $already_selected = array();
     foreach($CI->X_model->fetch(array(
         'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null,
-        'x__down' => $child___id,
+        'x__down' => $follower___id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $sel){
@@ -1298,7 +1297,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     $is_completed = ($tree_progress['fixed_completed_percentage']>=100);
     $is_started = ($tree_progress['fixed_completed_percentage']>0);
-    $parent_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
+    $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
     $has_sortable = !$focus_coin && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
@@ -1337,7 +1336,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover '.( $focus_coin ? ' focus-coin slim_flat col-md-8 col-sm-10 col-12
-     ' : ' edge-coin card_i_click col-md-4 col-6 ' ).( $parent_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
+     ' : ' edge-coin card_i_click col-md-4 col-6 ' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
 
 
     //Determine Link Type
@@ -1598,8 +1597,8 @@ function view_featured_source($x__creator, $x){
         ));
     }
 
-    $is_featured = in_array($x['e__privacy'], $CI->config->item('n___30977'));
-    if(!$is_featured && !count($member_follows)){
+    $is__featured = in_array($x['e__privacy'], $CI->config->item('n___30977'));
+    if(!$is__featured && !count($member_follows)){
         return false;
     }
 
@@ -1610,7 +1609,7 @@ function view_featured_source($x__creator, $x){
         }
     }
 
-    if(!$is_featured && !$messages){
+    if(!$is__featured && !$messages){
         return false;
     }
 
@@ -1767,16 +1766,15 @@ function view_card_e($x__type, $e, $extra_class = null)
     $href = ( $is_app ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
     $focus_id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
     $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $source_of_e));
-    $is_public =  in_array($e['e__privacy'], $CI->config->item('n___7357')); //PUBLIC
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
     $source_is_e = $focus_id>0 && $e['e__id']==$focus_id;
-    $is_featured = in_array($e['e__privacy'], $CI->config->item('n___30977'));
+    $is__featured = in_array($e['e__privacy'], $CI->config->item('n___30977'));
 
 
     //Is Lock/Private?
     $has_hard_lock = in_array($e['e__privacy'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
-    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!$is_public && !$source_of_e));
+    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!in_array($e['e__privacy'], $CI->config->item('n___7357')) && !$source_of_e));
     $has_any_lock = $is_cache || (!$superpower_12701 && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
     $show_text_editor = $source_of_e && !$has_any_lock && !$is_cache;
@@ -1960,13 +1958,13 @@ function view_card_e($x__type, $e, $extra_class = null)
         //Static:
         $ui .= '<div class="css__title">'.( $is_cache ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
-    $grant_access = $is_featured || $source_of_e || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
+    $grant_access = $is__featured || $source_of_e || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.preview_x__message($e['x__message'] , $e['x__type']).'</span>';
 
-        } elseif(($is_featured || $has_x_progress) && strlen($e['x__message'])){
+        } elseif(($is__featured || $has_x_progress) && strlen($e['x__message'])){
 
             //DISCOVERY PROGRESS
             $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false).'</span>';

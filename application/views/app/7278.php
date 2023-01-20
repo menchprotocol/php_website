@@ -43,7 +43,7 @@ foreach($is as $in){
         'node_status' => $in['i__type'],
     ));
 
-    //Fetch children:
+    //Fetch followers:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -79,21 +79,21 @@ foreach($es as $en){
         'node_status' => $en['e__privacy'],
     ));
 
-    //Fetch children:
+    //Fetch followers:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
-    ), array('x__down'), 0, 0) as $e_child){
+    ), array('x__down'), 0, 0) as $e_followers){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12274].$e_child['x__up'],
-            'target' => $id_prefix[12274].$e_child['x__down'],
-            'label' => $e___4593[$e_child['x__type']]['m__title'].': '.$e_child['x__message'],
+            'source' => $id_prefix[12274].$e_followers['x__up'],
+            'target' => $id_prefix[12274].$e_followers['x__down'],
+            'label' => $e___4593[$e_followers['x__type']]['m__title'].': '.$e_followers['x__message'],
             'weight' => 1,
-            'edge_type' => $e_child['x__type'],
-            'edge_status' => $e_child['x__privacy'],
+            'edge_type' => $e_followers['x__type'],
+            'edge_status' => $e_followers['x__privacy'],
         ));
 
     }

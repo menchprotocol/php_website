@@ -37,20 +37,20 @@ foreach($this->E_model->fetch(array(
     'e__privacy' => 6178,
 ), array(), 0) as $e){
 
-    $profiles = count($this->X_model->fetch(array(
+    $following = count($this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__down' => $e['e__id'],
     ), array(), 0));
 
-    $portfolios = count($this->X_model->fetch(array(
+    $followers = count($this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__up' => $e['e__id'],
     ), array(), 0));
 
-    if($profiles>0 || $portfolios>0){
-        echo '<a href="/@'.$e['e__id'].'">@'.$e['e__id'].' '.$e['e__title'].'</a> ['.$profiles.' profiles & '.$portfolios.' portfolios]<br />';
+    if($following>0 || $followers>0){
+        echo '<a href="/@'.$e['e__id'].'">@'.$e['e__id'].' '.$e['e__title'].'</a> ['.$following.' following & '.$followers.' followers]<br />';
     }
 
 }

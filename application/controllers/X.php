@@ -312,7 +312,7 @@ class X extends CI_Controller
             return false;
         }
 
-        //Mark this as complete since there is no child to choose from:
+        //Mark this as complete since there is no follower to choose from:
         if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -398,7 +398,7 @@ class X extends CI_Controller
                     'x__creator' => $member_e['e__id'],
                 ));
 
-                //$one_child_hack: Mark next level as done too? Only if Single show:
+                //$one_follower_hack: Mark next level as done too? Only if Single show:
                 $is_next = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -406,9 +406,9 @@ class X extends CI_Controller
                     'x__left' => $top_i__id,
                 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
                 if(count($is_next)==1){
-                    foreach($is_next as $single_child){
-                        if(in_array($single_child['i__type'], $this->config->item('n___12330'))){
-                            $this->X_model->mark_complete($top_i__id, $single_child, array(
+                    foreach($is_next as $single_followers){
+                        if(in_array($single_followers['i__type'], $this->config->item('n___12330'))){
+                            $this->X_model->mark_complete($top_i__id, $single_followers, array(
                                 'x__type' => 4559, //DISCOVERY MESSAGES
                                 'x__creator' => $member_e['e__id'],
                             ));
@@ -617,7 +617,7 @@ class X extends CI_Controller
 
 
 
-    function x_layout($top_i__id, $i__id, $tag__id=0, $member__id=0)
+    function x_layout($top_i__id, $i__id, $append__id=0, $member__id=0)
     {
 
         /*
@@ -632,7 +632,7 @@ class X extends CI_Controller
 
         //Log link if not there:
         if(
-            $tag__id>0
+            $append__id>0
             && $member__id>0
             && count($this->X_model->fetch(array(
                 'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
@@ -641,7 +641,7 @@ class X extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))
             && !count($this->X_model->fetch(array(
-                'x__up' => $tag__id,
+                'x__up' => $append__id,
                 'x__down' => $member__id,
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -650,7 +650,7 @@ class X extends CI_Controller
 
             $x__creator = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
             $es_tag = $this->E_model->fetch(array(
-                'e__id' => $tag__id,
+                'e__id' => $append__id,
             ));
             if(count($es_tag)){
 
@@ -658,7 +658,7 @@ class X extends CI_Controller
                 $this->X_model->create(array(
                     'x__type' => e_x__type(),
                     'x__creator' => $x__creator,
-                    'x__up' => $tag__id,
+                    'x__up' => $append__id,
                     'x__down' => $x__creator,
                 ));
 
@@ -666,7 +666,7 @@ class X extends CI_Controller
                 $this->X_model->create(array(
                     'x__type' => 29393, //Log Referral
                     'x__creator' => $x__creator,
-                    'x__up' => $tag__id,
+                    'x__up' => $append__id,
                     'x__down' => $x__creator,
                     'x__left' => $i__id,
                     'x__right' => $top_i__id,
@@ -691,7 +691,7 @@ class X extends CI_Controller
 
         } elseif($member_e) {
 
-            //Fetch parent tree discovery trace to see if we find anything:
+            //Fetch followings tree discovery trace to see if we find anything:
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -703,7 +703,7 @@ class X extends CI_Controller
                 return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
 
-            $recursive_is = $this->I_model->recursive_parent_ids($i__id);
+            $recursive_is = $this->I_model->recursive_following_ids($i__id);
             if(count($recursive_is)){
                 //Try top level discoveries:
                 foreach($this->X_model->fetch(array(

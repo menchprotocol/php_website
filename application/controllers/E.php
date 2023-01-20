@@ -84,7 +84,7 @@ class E extends CI_Controller
 
 
 
-        //All good, reset sort value for all children:
+        //All good, reset sort value for all followers:
         foreach($this->X_model->fetch(array(
             'x__up' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -180,7 +180,7 @@ class E extends CI_Controller
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
-            //Count Portfolio:
+            //Count followers:
             $list_e_count = $this->X_model->fetch(array(
                 'x__up' => $_POST['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -266,7 +266,7 @@ class E extends CI_Controller
         } elseif (intval($_POST['e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Parent Source',
+                'message' => 'Invalid Following Source',
             ));
         }
 
@@ -279,7 +279,7 @@ class E extends CI_Controller
         if (count($fetch_o) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid parent source ID',
+                'message' => 'Invalid followings source ID',
             ));
         }
 
@@ -296,7 +296,7 @@ class E extends CI_Controller
         }
 
 
-        //Children:
+        //Followers:
         foreach($this->X_model->fetch(array(
             'x__up' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -316,7 +316,7 @@ class E extends CI_Controller
         }
 
 
-        //Parents:
+        //Followings:
         foreach($this->X_model->fetch(array(
             'x__down' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
@@ -380,7 +380,7 @@ class E extends CI_Controller
         } elseif (intval($_POST['focus_id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Parent Source',
+                'message' => 'Invalid Following Source',
             ));
         } elseif (!isset($_POST['x__type'])) {
             return view_json(array(
@@ -405,7 +405,7 @@ class E extends CI_Controller
             if (count($fetch_o) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid parent source ID',
+                    'message' => 'Invalid followings source ID',
                 ));
             }
 
@@ -419,7 +419,7 @@ class E extends CI_Controller
             if (count($fetch_o) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid parent source ID',
+                    'message' => 'Invalid followings source ID',
                 ));
             }
 
@@ -535,7 +535,7 @@ class E extends CI_Controller
                 //Following
                 $x__down = $fetch_o[0]['e__id'];
                 $x__up = $focus_e['e__id'];
-                $x__spectrum = 0; //Never sort profiles, only sort portfolios
+                $x__spectrum = 0; //Never sort following, only sort followers
 
             } else {
 
@@ -782,7 +782,7 @@ class E extends CI_Controller
         if (!isset($_POST['focus_id']) || intval($_POST['focus_id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing parent source',
+                'message' => 'Missing followings source',
             ));
         } elseif (!isset($_POST['selected_e__id']) || intval($_POST['selected_e__id']) < 1) {
             return view_json(array(
@@ -825,7 +825,7 @@ class E extends CI_Controller
         if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
             //Since this is not a multi-select we want to delete all existing options...
 
-            //Fetch all possible answers based on parent source:
+            //Fetch all possible answers based on followings source:
             $query_filters = array(
                 'x__up' => $_POST['focus_id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS

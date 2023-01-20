@@ -884,7 +884,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $member_e = $CI->session->userdata('session_profile');
+    $member_e = $CI->session->userdata('session_following');
     $has_session = ( is_array($member_e) && count($member_e) > 0 && $member_e );
 
     //Let's start checking various ways we can give member access:
@@ -1758,7 +1758,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //Reset limits:
         unset($limits);
 
-        //Fetch item(s) for updates including their parents:
+        //Fetch item(s) for updates including their followings:
         if ($loop_obj == 12273) {
 
             $limits['x__type'] = 4250;
@@ -1832,7 +1832,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             }
 
-            //To hold parent info
+            //To hold followings info
             $export_row['_tags'] = array();
 
             //Now build object-specific index:
@@ -1845,58 +1845,50 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__privacy'] = intval($s['e__privacy']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
-                $export_row['s___weight'] = intval($s['e__spectrum']);
+                $export_row['s__weight'] = intval($s['e__spectrum']);
+                $export_row['s__keywords'] = '';
+
 
                 //Add source as their own author:
-                array_push($export_row['_tags'], 'alg_e_' . $s['x__creator']);
+                array_push($export_row['_tags'], 'tag_' . $s['x__creator']);
 
                 if($s['x__creator']!=$s['e__id']){
                     //Also give access to source themselves, in case they can login:
-                    array_push($export_row['_tags'], 'alg_e_' . $s['e__id']);
+                    array_push($export_row['_tags'], 'tag_' . $s['e__id']);
                 }
 
                 //Is this an image?
                 if(strlen($s['e__cover'])){
                     array_push($export_row['_tags'], 'has_image');
                 }
-
-                //Is Featured Source?
-                if(in_array($s['e__privacy'], $CI->config->item('n___30977'))){
-                    array_push($export_row['_tags'], 'is_featured');
+                if(in_array($s['e__privacy'], $CI->config->item('n___7357'))){
+                    array_push($export_row['_tags'], 'is_public');
                 }
 
-                //Fetch Profiles:
-                $export_row['s__keywords'] = '';
+                //Fetch Following:
                 foreach($CI->X_model->fetch(array(
                     'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $s['e__id'], //This child source
+                    'x__down' => $s['e__id'], //This follower source
                     'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
 
-                    //Always add to tags:
-                    array_push($export_row['_tags'], 'alg_e_' . $x['e__id']);
+                    //Add tags:
+                    array_push($export_row['_tags'], 'tag_' . $x['e__id']);
 
-                    //Add content to keywords if any:
-                    if (strlen($x['x__message']) > 0) {
-                        //Add to keywords:
-                        $export_row['s__keywords'] .= $x['x__message'] . ' ';
-                    }
+                    //Add Keywords:
+                    $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['x__message']) ? ' '.$x['x__message'] : '' ) . ' ';
 
                 }
 
-                //Fetch Discoveries
+                //Append Discovery Written Responses to Keywords
                 foreach($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___29133')) . ')' => null, //Written Responses
-                    'x__creator' => $s['e__id'], //This child source
+                    'x__creator' => $s['e__id'], //This follower source
                 ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) as $x){
-                    if (strlen($x['x__message']) > 0) {
-                        $export_row['s__keywords'] .= $x['x__message'] . ' ';
-                    }
+                    $export_row['s__keywords'] .= $x['x__message'] . ' ';
                 }
-
-                $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 
             } elseif ($loop_obj == 12273) {
 
@@ -1908,41 +1900,44 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__privacy'] = intval($s['i__privacy']);
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['i__title'];
-                $export_row['s___weight'] = intval($s['i__spectrum']);
-
-                //Add keywords:
+                $export_row['s__weight'] = intval($s['i__spectrum']);
                 $export_row['s__keywords'] = '';
-                foreach($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea Source Links
-                    'x__right' => $s['i__id'],
-                ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $keyword) {
-                    if(strlen($keyword['x__message'])){
-                        $export_row['s__keywords'] .= $keyword['x__message'] . ' ';
-                    }
+
+
+                if(in_array($s['i__privacy'], $CI->config->item('n___31870'))){
+                    array_push($export_row['_tags'], 'is_public');
                 }
-                $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 
-
-                //Startable?
-                //                    array_push($export_row['_tags'], 'is_featured');
-
-                //Is SOURCE for any IDEA?
+                //Tag Idea Sources
                 foreach($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $s['i__id'],
-                    'x__up > ' => 0, //MESSAGES MUST HAVE A SOURCE REFERENCE TO ISSUE IDEA COINS
-                ), array(), 0) as $e){
-                    if($e['x__up']>0){
-                        array_push($export_row['_tags'], 'alg_e_' . $e['x__up']);
+                ), array(), 0) as $x){
+
+                    //Add tags:
+                    array_push($export_row['_tags'], 'tag_' . $x['x__up']);
+
+                    //Add Keywords if any:
+                    if(strlen($x['x__message'])){
+                        $export_row['s__keywords'] .= $x['x__message'] . ' ';
                     }
-                    if($e['x__down']>0){
-                        array_push($export_row['_tags'], 'alg_e_' . $e['x__down']);
-                    }
+
+                }
+
+                //Tag Idea Discoverers
+                foreach($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__left' => $s['i__id'],
+                )) as $x){
+                    array_push($export_row['_tags'], 'tag_' . $x['x__creator']);
                 }
 
             }
+
+            //Prep Keywords:
+            $export_row['s__keywords'] = trim(strip_tags($export_row['s__keywords']));
 
             //Add to main array
             array_push($all_export_rows, $export_row);

@@ -442,7 +442,7 @@ class I_model extends CI_Model
         if($focus_is_idea){
 
             if ($focus_id > 0 && $link_i__id==$focus_id) {
-                //Make sure none of the parents are the same:
+                //Make sure none of the followings are the same:
                 return array(
                     'status' => 0,
                     'message' => 'You cannot add idea to itself.',
@@ -482,7 +482,7 @@ class I_model extends CI_Model
 
             //Linking to $link_i__id (NOT creating any new ideas)
 
-            //Fetch more details on the child idea we're about to transaction:
+            //Fetch more details on the follower idea we're about to transaction:
             $link_i = $this->I_model->fetch(array(
                 'i__id' => $link_i__id,
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -494,7 +494,7 @@ class I_model extends CI_Model
                 );
             }
 
-            //Determine which is parent Idea, and which is child
+            //Determine which is followings Idea, and which is follower
             if($focus_is_idea){
 
                 //Must be adding PREVIOUS or NEXT
@@ -627,7 +627,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_child_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
+    function recursive_follower_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
 
         if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
             return array();
@@ -647,7 +647,7 @@ class I_model extends CI_Model
             //AND Idea? Follow through...
             if(!in_array($next_i['i__type'], $this->config->item('n___7712'))){
 
-                $recursive_is = $this->I_model->recursive_child_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
+                $recursive_is = $this->I_model->recursive_follower_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
 
                 //Add to current array if we found anything:
                 if(count($recursive_is) > 0){
@@ -713,7 +713,6 @@ class I_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i__id,
-            'x__up > 0' => null,
         );
         if(count($exclude_es)){
             $filters['x__up NOT IN (' . join(',', $exclude_es) . ')'] = null;
@@ -736,7 +735,7 @@ class I_model extends CI_Model
         }
 
 
-        //Always Link Parents:
+        //Always Link Followings:
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -756,17 +755,17 @@ class I_model extends CI_Model
         }
 
 
-        //Fetch children:
+        //Fetch followers:
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         ), array(), 0) as $x){
             if($do_recursive){
-                //Clone Children Recursively:
+                //Clone Followers Recursively:
                 $this->I_model->recursive_clone($x['x__right'], $do_recursive, $x__creator, $this_i[0]);
             } else {
-                //Link Children:
+                //Link Followers:
                 $this->X_model->create(array(
                     'x__creator' => $x__creator,
                     'x__type' => $x['x__type'],
@@ -791,7 +790,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_parent_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
+    function recursive_following_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
 
         if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
             return array();
@@ -808,7 +807,7 @@ class I_model extends CI_Model
 
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
-            $recursive_is = $this->I_model->recursive_parent_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
+            $recursive_is = $this->I_model->recursive_following_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -861,7 +860,7 @@ class I_model extends CI_Model
         //Basic input validation done, let's continue...
 
 
-        //Fetch all children:
+        //Fetch all followers:
         $applied_success = 0; //To be populated...
 
         $is_next = $this->X_model->fetch(array(
@@ -880,29 +879,29 @@ class I_model extends CI_Model
             if(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087))){
 
                 //Check if it has this item:
-                $e__profile_id = intval(one_two_explode('@',' ',$action_command1));
+                $e__following_id = intval(one_two_explode('@',' ',$action_command1));
                 $i_has_e = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $next_i['i__id'],
-                    'x__up' => $e__profile_id,
+                    'x__up' => $e__following_id,
                 ));
 
                 if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
 
                     $source_mapper = array(
                         12591 => 4983,  //Sources
-                        27080 => 13865, //Profile Includes Any
-                        27985 => 27984, //Profile Includes All
-                        27082 => 26600, //Profile Excludes All
-                        27084 => 7545,  //Profile Add
-                        27086 => 26599, //Profile Remove
+                        27080 => 13865, //Following Includes Any
+                        27985 => 27984, //Following Includes All
+                        27082 => 26600, //Following Excludes All
+                        27084 => 7545,  //Following Add
+                        27086 => 26599, //Following Remove
                     );
 
                     //Missing & Must be Added:
                     $this->X_model->create(array(
                         'x__creator' => $x__creator,
-                        'x__up' => $e__profile_id,
+                        'x__up' => $e__following_id,
                         'x__type' => $source_mapper[$action_e__id],
                         'x__right' => $next_i['i__id'],
                         'x__message' => trim($action_command2),

@@ -105,14 +105,14 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '</tr><tr>';
 
     echo '<td><div>';
-    echo '<span class="mini-header">Includes Profile Source:</span>';
+    echo '<span class="mini-header">Includes Following Source:</span>';
     echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
     echo '</div></td>';
 
     echo '<td><div>';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">Excludes Profile Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Excludes Following Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
 
     echo '</tr><tr>';
 

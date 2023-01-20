@@ -995,7 +995,7 @@ $(document).ready(function () {
 
                 icons_listed = [];
                 algolia_index.search(q, {
-                    filters: ' _tags:alg_e_14988 OR _tags:alg_e_14038 OR _tags:alg_e_14986 OR _tags:alg_e_20425 OR _tags:alg_e_20426 OR _tags:alg_e_20427 OR _tags:has_image ',
+                    filters: ' _tags:tag_14988 OR _tags:tag_14038 OR _tags:tag_14986 OR _tags:tag_20425 OR _tags:tag_20426 OR _tags:tag_20427 OR _tags:has_image ',
                     hitsPerPage: js_e___6404[31113]['m__message'],
                 }, function (error, content) {
                     if (error) {
@@ -1064,7 +1064,7 @@ $(document).ready(function () {
                                 if(search_filters.length>0){
                                     search_filters += ' AND ';
                                 }
-                                search_filters += ' ( _tags:is_featured OR _tags:alg_e_' + js_pl_id + ' ) ';
+                                search_filters += ' ( _tags:is_public OR _tags:tag_' + js_pl_id + ' ) ';
                             }
 
                         } else {
@@ -1073,7 +1073,7 @@ $(document).ready(function () {
                             if(search_filters.length>0){
                                 search_filters += ' AND ';
                             }
-                            search_filters += ' _tags:is_featured ';
+                            search_filters += ' _tags:is_public ';
 
                         }
 
@@ -1299,7 +1299,7 @@ function i_load_search(x__type) {
 
             algolia_index.search(q, {
 
-                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_featured ' + ( js_pl_id > 0 ? 'OR _tags:alg_e_' + js_pl_id : '' ) + ') ' ),
+                filters: ' s__type=12273 ' + ( superpower_js_12701 ? '' : ' AND ( _tags:is_public ' + ( js_pl_id > 0 ? 'OR _tags:tag_' + js_pl_id : '' ) + ') ' ),
                 hitsPerPage: js_e___6404[31112]['m__message'],
 
             }, function (error, content) {
@@ -1359,7 +1359,7 @@ function e_load_search(x__type) {
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
 
             algolia_index.search(q, {
-                filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:alg_e_13897 ) ' ), /* Nonfiction Content */
+                filters: 's__type=12274' + ( superpower_js_13422 ? '' : ' AND ( _tags:tag_13897 ) ' ), /* Nonfiction Content */
                 hitsPerPage: js_e___6404[31112]['m__message'],
             }, function (error, content) {
                 if (error) {
@@ -1726,7 +1726,7 @@ function x_message_save(new_x__message = null) {
 
 
 function click_has_class(target_el, target_class){
-    //Aggregare parents:
+    //Aggregare followings:
     var class_found = false;
     if(target_el.is(target_class)){
         class_found = true;
@@ -2425,7 +2425,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     *
     * WARNING:
     *
-    * element_id Must be listed as children of:
+    * element_id Must be listed as followers of:
     *
     * MEMORY CACHE @4527
     * JS MEMORY CACHE @11054
@@ -2653,7 +2653,7 @@ function sort_e_handle_save(x__type) {
 }
 
 function sort_e_handle_reset(){
-    var r = confirm("Reset all Portfolio Source orders & sort alphabetically?");
+    var r = confirm("Reset all followers Source orders & sort alphabetically?");
     if (r == true) {
         $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
 

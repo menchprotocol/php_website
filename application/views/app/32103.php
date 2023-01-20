@@ -46,7 +46,7 @@ if(count($preg_query)){
                     //Also update follower link?
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 7545, //Profile Add
+                        'x__type' => 7545, //Following Add
                         'x__right' => $i__id,
                     ), array('x__up')) as $x_tag){
                         foreach($this->X_model->fetch(array(
@@ -73,7 +73,7 @@ if(count($preg_query)){
                     //Also update follower link?
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 7545, //Profile Add
+                        'x__type' => 7545, //Following Add
                         'x__right' => $i__id,
                     ), array('x__up')) as $x_tag){
                         foreach($this->X_model->fetch(array(

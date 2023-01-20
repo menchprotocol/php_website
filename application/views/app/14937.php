@@ -25,11 +25,11 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
     $found_image = null;
     $found_icon = null;
 
-    //Source Profile Search:
+    //Source Following Search:
     foreach($this->X_model->fetch(array( //SOURCE PROFILE
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Inherit Cover Types
-        'x__down' => $o['e__id'], //This child source
+        'x__down' => $o['e__id'], //This follower source
     ), array('x__up'), 0, 0, array()) as $fetched_e){
 
         if($fetched_e['x__type']==4260){
@@ -47,7 +47,7 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
     }
 
     if(!$found_image && !$found_icon){
-        //Parent Sources:
+        //Following Sources:
         foreach($this->X_model->fetch(array(
             'x__down' => $o['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS

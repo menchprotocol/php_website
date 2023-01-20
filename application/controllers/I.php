@@ -45,7 +45,7 @@ class I extends CI_Controller {
         } elseif (intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Parent Source',
+                'message' => 'Invalid Following Source',
             ));
         } elseif (!isset($_POST['do_template'])) {
             return view_json(array(
@@ -195,7 +195,7 @@ class I extends CI_Controller {
         } elseif (!isset($_POST['i__title']) || !isset($_POST['link_i__id']) || ( strlen($_POST['i__title']) < 1 && intval($_POST['link_i__id']) < 1)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing either Idea Outcome OR Child Idea ID',
+                'message' => 'Missing either Idea Outcome OR Follower Idea ID',
             ));
         } elseif (strlen($_POST['i__title']) > view_memory(6404,4736)) {
             return view_json(array(

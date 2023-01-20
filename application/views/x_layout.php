@@ -27,10 +27,10 @@ $is_next = $this->X_model->fetch(array(
 ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
 
 //Filter Next Ideas:
-$first_child = array();
+$first_followers = array();
 foreach($is_next as $in_key => $in_value){
-    if(!$first_child && in_array($in_value['i__type'], $this->config->item('n___12330'))){
-        $first_child = $in_value;
+    if(!$first_followers && in_array($in_value['i__type'], $this->config->item('n___12330'))){
+        $first_followers = $in_value;
     }
     $i_is_available = i_is_available($in_value['i__id'], false);
     if(!$i_is_available['status']){
@@ -44,7 +44,7 @@ foreach($is_next as $in_key => $in_value){
 $i['i__title'] = str_replace('"','',$i['i__title']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->started_ids($x__creator, $i_top['i__id']) ? $i_top['i__id'] : 0 );
-$one_child_hack = (count($first_child) && count($is_next)==1 && !$top_i__id);
+$one_follower_hack = (count($first_followers) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -128,7 +128,6 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__right' => $i['i__id'],
-    'x__up > 0' => null,
     'x__up !=' => website_setting(0),
 ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
     $relevant_sources .= view_featured_source($x__creator, $x);
@@ -151,23 +150,23 @@ if($top_i__id && $x__creator && $top_i__id!=$i['i__id']){
 
         $nav_list = array();
         $main_branch = array(intval($i['i__id']));
-        foreach($find_previous as $parent_i){
+        foreach($find_previous as $followings_i){
             //First add-up the main branch:
-            array_push($main_branch, intval($parent_i['i__id']));
+            array_push($main_branch, intval($followings_i['i__id']));
         }
 
         $breadcrum_content = null;
         $level = 0;
-        foreach($find_previous as $parent_i){
+        foreach($find_previous as $followings_i){
 
             $level++;
 
-            //Does this have a child list?
+            //Does this have a follower list?
             $query_subset = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $parent_i['i__id'],
+                'x__left' => $followings_i['i__id'],
             ), array('x__right'), 0, 0, array('x__spectrum' => 'ASC'));
             foreach($query_subset as $key=>$value){
                 $i_is_available = i_is_available($value['i__id'], false);
@@ -184,7 +183,7 @@ if($top_i__id && $x__creator && $top_i__id!=$i['i__id']){
             $messages = count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 4231, //IDEA NOTES Messages
-                'x__right' => $parent_i['i__id'],
+                'x__right' => $followings_i['i__id'],
             )));
 
             if(!$messages && count($query_subset)==1 && $level==1){
@@ -193,16 +192,16 @@ if($top_i__id && $x__creator && $top_i__id!=$i['i__id']){
             }
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$parent_i['i__id'].'"><u>'.$parent_i['i__title'].'</u></a>';
+            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$followings_i['i__id'].'"><u>'.$followings_i['i__title'].'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
-                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$parent_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$followings_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 $breadcrum_content .= '<span style="padding-left:5px;"><i class="far fa-chevron-square-down"></i></span>';
                 $breadcrum_content .= '</button>';
-                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$parent_i['i__id'].'">';
+                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$followings_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
                     $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item css__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
                 }
@@ -274,14 +273,14 @@ foreach($this->X_model->fetch(array(
 
 
 
-//$one_child_hack Get the message for the single child, if any:
-if($one_child_hack){
+//$one_follower_hack Get the message for the single follower, if any:
+if($one_follower_hack){
     echo '<h3 class="msg-frame" style="text-align: left; padding: 13px 0 0 !important;">'.$i['i__title'].'</h3>';
-    $messages_string .= '<h1 class="msg-frame" style="text-align: left; padding: 13px 0 !important; font-size:2.5em;">'.$first_child['i__title'].'</h1>';
+    $messages_string .= '<h1 class="msg-frame" style="text-align: left; padding: 13px 0 !important; font-size:2.5em;">'.$first_followers['i__title'].'</h1>';
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
-        'x__right' => $first_child['i__id'],
+        'x__right' => $first_followers['i__id'],
     ), array(), 0, 0, array('x__spectrum' => 'ASC')) as $message_x) {
         $messages_string .= $this->X_model->message_view(
             $message_x['x__message'],
@@ -313,10 +312,10 @@ if($top_i__id) {
 
     if ($is_or_idea) {
 
-        //Has no children:
+        //Has no followers:
         if (!count($is_next)) {
 
-            //Mark this as complete since there is no child to choose from:
+            //Mark this as complete since there is no follower to choose from:
             if (!count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -370,7 +369,7 @@ if($top_i__id) {
             //Open for list to be printed:
             $select_answer = '<div class="row list-answers" i__type="' . $i['i__type'] . '">';
 
-            //List children to choose from:
+            //List followers to choose from:
             foreach ($is_next as $key => $next_i) {
 
                 //Make sure it meets the conditions:
@@ -552,7 +551,7 @@ if($top_i__id) {
             //Does this have any append sources?
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 7545, //Profile Add
+                'x__type' => 7545, //Following Add
                 'x__right' => $i['i__id'],
             )) as $append_source){
                 //Does the user have this source with any values?
@@ -561,9 +560,9 @@ if($top_i__id) {
                     'x__down' => $x__creator,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                ), array(), 0, 0) as $profile_appended) {
-                    if(strlen($profile_appended['x__message'])){
-                        $previous_response = $profile_appended['x__message'];
+                ), array(), 0, 0) as $following_appended) {
+                    if(strlen($following_appended['x__message'])){
+                        $previous_response = $following_appended['x__message'];
                         break;
                     }
                 }

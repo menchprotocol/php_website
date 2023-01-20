@@ -24,7 +24,6 @@ function referral_line($i){
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__right' => $i['i__id'],
-        'x__up > 0' => null,
     ))) >= 3; //Too many sources, cannot edit
 
 
