@@ -1963,6 +1963,11 @@ i, .btn .show-max {
     top:43px;
 }
 
+.coin-6287 .cover-content{
+    width: calc(100% - 12px) !important;
+    margin: 0 6px;
+}
+
 .list-answers .cover-content{
     top:48px;
 }
