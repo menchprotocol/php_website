@@ -198,6 +198,10 @@ li a {
     padding:8px 3px;
 }
 
+.dropdown-item .img {
+    margin-bottom: -5px;
+}
+
 /* FONTS */
 .css__title, .headline, .btn {
     font-weight: bold;
