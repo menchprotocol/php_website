@@ -1064,7 +1064,7 @@ a.headline {
 .full-text{
     width: 100%;
     height: 200px;
-    border: 1px solid #999 !important;
+    border: 1px solid #999999 !important;
     border-radius: 21px;
     margin: 0;
 }
@@ -2734,7 +2734,11 @@ h4.css__title{
 .custom_ui_13884_13886 .coin-12274 .cover-content,
 .custom_ui_13884_13886 .coin-12274.mini-cover .cover-content,
 .custom_ui_13884_13886 .coin-12274.not-allowed .cover-content,
-.custom_ui_13884_13886 .coin-12274.ready-only .cover-content
+.custom_ui_13884_13886 .coin-12274.ready-only .cover-content,
+.custom_ui_13884_13886 .coin-6287 .cover-content,
+.custom_ui_13884_13886 .coin-6287.mini-cover .cover-content,
+.custom_ui_13884_13886 .coin-6287.not-allowed .cover-content,
+.custom_ui_13884_13886 .coin-6287.ready-only .cover-content
 {
     background: rgba(16,16,16,0.80) !important;
 }
@@ -3772,7 +3776,7 @@ h4.css__title{
 
 .divider-line{
     height: 1px;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #999999;
     margin: 2px 8px;
 }
 

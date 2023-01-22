@@ -30,7 +30,7 @@ if(isset($_GET['e__id'])){
     $merged = false;
     if(isset($_GET['auto_merge']) && $_GET['e__id']==3288){//THis is for email only for now...
         foreach($duplicates_found as $x__message_md5 => $e__ids){
-            $lowest_e_id = 9999999999;
+            $lowest_e_id = 98999899899;
             foreach($e__ids as $e__id){
                 if($e__id < $lowest_e_id){
                     $lowest_e_id = $e__id;

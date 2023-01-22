@@ -23,7 +23,7 @@ if($superpower_28727 && 0) {
     echo '<div class="list-group" style="max-width:768px; margin: 0 auto; display: block;">';
     foreach($payment_es as $e){
 
-        echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item list-group-item-action" style="border: 1px solid #999;">'.$e['e__title'].' &nbsp;<i class="far fa-chevron-right"></i></a>';
+        echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item list-group-item-action" style="border: 1px solid #999999;">'.$e['e__title'].' &nbsp;<i class="far fa-chevron-right"></i></a>';
 
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
