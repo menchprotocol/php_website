@@ -13,6 +13,10 @@ foreach($this->X_model->fetch(array(
     'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
 
+    if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?
+        continue;
+    }
+
     $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
     if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
         continue;
@@ -23,6 +27,8 @@ foreach($this->X_model->fetch(array(
 
 }
 
+
+
 //List Regular Apps:
 foreach($this->X_model->fetch(array(
     'x__up' => 6287, //Featured Apps
@@ -31,6 +37,10 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
+
+    if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?
+        continue;
+    }
 
     $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
     if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
