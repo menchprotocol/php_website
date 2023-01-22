@@ -1,6 +1,7 @@
 <?php
 
 $already_loaded = array(6287);
+$e___6287 = $this->config->item('e___6287'); //APP
 
 //Show Featured Apps
 echo '<div class="row">';
@@ -11,8 +12,15 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
+
+    $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
+    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+        continue;
+    }
+
     echo view_card_e(6287, $app);
     array_push($already_loaded, intval($app['e__id']));
+
 }
 
 //List Regular Apps:
@@ -23,6 +31,12 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
+
+    $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
+    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+        continue;
+    }
+
     echo view_card_e(6287, $app);
 }
 echo '</div>';
