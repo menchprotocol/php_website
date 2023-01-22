@@ -1731,7 +1731,9 @@ i, .btn .show-max {
 }
 
 .coin-12274 .inner-content .text_e_4736,
-.coin-12274 .inner-content .text_e_6197 {
+.coin-12274 .inner-content .text_e_6197,
+.coin-6287 .inner-content .text_e_4736,
+.coin-6287 .inner-content .text_e_6197{
     text-align: center;
     padding-left: 0;
 }
@@ -1985,15 +1987,7 @@ input.form-control {
 .hide-subline .subtle-line {
     display: none;
 }
-    /*
-    .coin-12274 .cover-content{
-        top: 16px;
-    }
-    .coin-12274 .card_covers{
-        margin-top: -45px;
-        margin-bottom: 45px;
-    }
-    */
+
 .mini-cover .cover-content {
     top:24px;
 }
@@ -2744,7 +2738,8 @@ h4.css__title{
 }
 
 .custom_ui_13884_13886 .card_cover:hover,
-.custom_ui_13884_13886 .coin-12274.card_cover:hover .cover-content{
+.custom_ui_13884_13886 .coin-12274.card_cover:hover .cover-content,
+.custom_ui_13884_13886 .coin-6287.card_cover:hover .cover-content{
     background: #000000 !important;
 }
 
@@ -2885,12 +2880,15 @@ h4.css__title{
 }
 
 .custom_ui_13884_13885 .coin-12274 .cover-content,
-.custom_ui_13884_13885 .coin-12274.not-allowed .cover-content{
+.custom_ui_13884_13885 .coin-12274.not-allowed .cover-content,
+.custom_ui_13884_13885 .coin-6287 .cover-content,
+.custom_ui_13884_13885 .coin-6287.not-allowed .cover-content{
     background: rgba(239,239,239,0.80) !important;
 }
 
 .custom_ui_13884_13885 .card_cover:hover,
-.custom_ui_13884_13885 .coin-12274.card_cover:hover .cover-content{
+.custom_ui_13884_13885 .coin-12274.card_cover:hover .cover-content,
+.custom_ui_13884_13885 .coin-6287.card_cover:hover .cover-content{
     background: #FFFFFF !important;
 }
 
@@ -3070,7 +3068,8 @@ h4.css__title{
     border:1px solid #999999;
     border-radius:21px !important;
 }
-.coin-12274 .cover-content {
+.coin-12274 .cover-content,
+.coin-6287 .cover-content{
     background: rgba(0,122,253,0.82);
 }
 .bg12274,
@@ -3675,10 +3674,12 @@ h4.css__title{
 .coin-6287 .inner-content .css__title{
     text-align: center;
 }
-.coin-12274 .cover-content{
+.coin-12274 .cover-content,
+.coin-6287 .cover-content{
     border-radius: 21px;
 }
-.coin-12274 .mini-font {
+.coin-12274 .mini-font,
+.coin-6287 .mini-font{
     text-align: center;
 }
 .select-btns .btn{
@@ -3894,7 +3895,8 @@ div.img {
     margin-bottom: -3px;
 }
 
-.coin-12274 .inner-content .msg {
+.coin-12274 .inner-content .msg,
+.coin-6287 .inner-content .msg{
     text-align: center !important;
 }
 
