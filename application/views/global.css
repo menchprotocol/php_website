@@ -2723,7 +2723,9 @@ h4.css__title{
     border:1px solid #FC1B44 !important;
 }
 
-
+.custom_ui_13884_13886 .modal-header .btn-close {
+    color: #FFFFFF;
+}
 
 
 .custom_ui_13884_13886 .light-bg,
@@ -4121,6 +4123,8 @@ main {
     margin: 0;
     padding: 55px 0 89px;
 }
+
+
 
 .active_bars_1 td { width:100.0% !important; }
 .active_bars_2 td { width:50.00% !important; }
