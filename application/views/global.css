@@ -1686,7 +1686,7 @@ i, .btn .show-max {
     display: inline-block;
 }
 .center-icons a img{
-    width:30px;
+    width:24px;
 }
 
 .icon-block-lg img {
@@ -3883,8 +3883,8 @@ div.img {
 
 }
 .source_cover_mini div.img {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
 }
 
 .source_cover_micro div.img {
