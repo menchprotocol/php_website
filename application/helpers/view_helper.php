@@ -1385,8 +1385,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         } elseif($x__type_top_bar==31911 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
+
             $top_bar_ui .= '<td><div class="show-on-hover">';
-            $top_bar_ui .= '<a href="javascript:void(0);" onclick="card__load(12273,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+            $top_bar_ui .= '<a href="javascript:void(0);" onclick="load_message_27963('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==13909 && $has_sortable){
@@ -1518,14 +1519,17 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
 
-        if($e_of_i && !$discovery_mode) {
-            //Can edit:
-            $message_tooltip = '<a href="javascript:void(0);" onclick="load_message_27963(' . $i['i__id'] . ')" class="mini-font messages_4231_' . $i['i__id'] . '">' . (strlen($messages) ? $messages : '<i class="no-message">Write Message...</i>') . '</a>';
-        } elseif($can_click){
-            $message_tooltip = '<a href="'.$href.'">'.$messages.'</a>';
-        } else {
-            $message_tooltip = $messages;
+        if(strlen($messages)){
+            if($e_of_i && !$discovery_mode) {
+                //Can edit:
+                $message_tooltip = '<span class="mini-font messages_4231_' . $i['i__id'] . '">' . $messages . '</a>';
+            } elseif($can_click){
+                $message_tooltip = '<a href="'.$href.'">'.$messages.'</a>';
+            } else {
+                $message_tooltip = $messages;
+            }
         }
+
 
     }
 
