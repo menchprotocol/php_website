@@ -1767,7 +1767,8 @@ function view_card_e($x__type, $e, $extra_class = null)
         return 'Missing core variables';
     }
 
-    $e_of_e = e_of_e($e['e__id']);
+    $locked_privacy = in_array($e['e__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
+    $e_of_e = ( $locked_privacy ? false :  e_of_e($e['e__id']) );
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
@@ -1864,7 +1865,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_handle">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==14980 && !$cache_app){
+            } elseif($x__type_top_bar==14980 && !$cache_app && !$locked_privacy){
 
                 $action_buttons = null;
 
