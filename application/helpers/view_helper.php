@@ -1416,13 +1416,16 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     if($e__id_dropdown==12589 && !$discovery_mode){
                         //Mass Apply
                         $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
-                    } elseif($e__id_dropdown==30795 && !$discovery_mode && $superpower_10939){
-                        //Discovery Mode
+                    } elseif($e__id_dropdown==30795 && !$discovery_mode){
+                        //Discover Idea
                         $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
-                    } elseif($e__id_dropdown==13571 && $x__id > 0 && $superpower_10939){
+                    } elseif($e__id_dropdown==31911 && $discovery_mode && $e_of_i){
+                        //Edit Idea
+                        $action_buttons .= '<a href="/~'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+                    } elseif($e__id_dropdown==13571 && $x__id > 0 && $e_of_i){
                         //Edit Message
                         $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
-                    } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $e_of_i){
+                    } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $e_of_i && !$discovery_mode){
                         //Unlink
                         $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
                     } elseif($e__id_dropdown==30873 && !$discovery_mode){
@@ -1431,7 +1434,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     } elseif($e__id_dropdown==29771 && !$discovery_mode){
                         //Clone:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
-                    } elseif($e__id_dropdown==28636 && $e_of_i && $x__id){
+                    } elseif($e__id_dropdown==28636 && $e_of_i && $x__id && !$discovery_mode){
                         //Transaction Details
                         $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
                     } elseif($e__id_dropdown==6182 && $e_of_i && !$discovery_mode){
