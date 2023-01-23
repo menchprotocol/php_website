@@ -1900,7 +1900,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             } elseif ($loop_obj == 6287) {
 
-                //APPS
+                //Non-Hidden APPS
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['e__id']);
                 $export_row['s__url'] = '/-' . $s['e__id'];
@@ -1911,7 +1911,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                 array_push($export_row['_tags'], 'is_app');
 
-                if(in_array($s['e__privacy'], $CI->config->item('n___7357'))){
+                if(in_array($s['e__privacy'], $CI->config->item('n___7357')) && !in_array($s['e__id'], $CI->config->item('n___32141'))){
                     array_push($export_row['_tags'], 'is_public');
                 }
 

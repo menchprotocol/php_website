@@ -657,7 +657,6 @@ function view_body_i($x__type, $counter, $i__id){
 
 function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m_cover = false){
 
-    //$link = '/-27970?e__id='.$e__id.'&i__id='.$i__id.'&go_to='.urlencode($link);
     if(!$desc && $i__id>0){
         $CI =& get_instance();
         $member_e = superpower_unlocked();
