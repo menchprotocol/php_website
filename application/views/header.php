@@ -389,7 +389,7 @@ if(!$basic_header_footer){
 
                             //Profile
                             $m['m__cover'] = view_cover(12274,$member_e['e__cover'], 1);
-                            $m['m__title'] = $member_e['e__title'].'<div class="grey">@'.$member_e['e__id'].'</div>';
+                            $m['m__title'] = $member_e['e__title'].'<div class="grey"><span class="icon-block">&nbsp;</span>@'.$member_e['e__id'].'</div>';
                             $href = 'href="/@'.$member_e['e__id'].'" ';
 
                         } elseif($x__type==31911 && intval($first_segment)==$first_segment) {
