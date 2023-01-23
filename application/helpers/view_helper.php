@@ -1376,7 +1376,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
-        } elseif($x__type_top_bar==31004 && $e_of_i && !$discovery_mode){
+        } elseif($x__type_top_bar==31004 && ($e_of_i || $locked_privacy) && !$discovery_mode){
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
@@ -1398,7 +1398,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_handle">'.$m_top_bar['m__cover'].'</span>';
             $top_bar_ui .= '</div></td>';
 
-        } elseif($x__type_top_bar==14980 && !$cache_app){
+        } elseif($x__type_top_bar==14980 && !$cache_app && !$locked_privacy){
 
             $action_buttons = null;
 
