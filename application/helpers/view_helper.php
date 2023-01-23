@@ -1368,21 +1368,21 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $active_bars++;
             $top_bar_ui .= $link_type_ui;
 
-        } elseif($x__type_top_bar==4737 && $e_of_i){
+        } elseif($x__type_top_bar==4737 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
-            $top_bar_ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i, false, $i['i__id']);
+            $top_bar_ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
-        } elseif($x__type_top_bar==31004 && $e_of_i){
+        } elseif($x__type_top_bar==31004 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
-            $top_bar_ui .= view_input_dropdown(31004, $i['i__privacy'], null, $e_of_i, false, $i['i__id']);
+            $top_bar_ui .= view_input_dropdown(31004, $i['i__privacy'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
-        } elseif($x__type_top_bar==31911 && $e_of_i){
+        } elseif($x__type_top_bar==31911 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
 
@@ -1413,7 +1413,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
                     $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
-                    if($e__id_dropdown==12589){
+                    if($e__id_dropdown==12589 && !$discovery_mode){
                         //Mass Apply
                         $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
                     } elseif($e__id_dropdown==30795 && !$discovery_mode && $superpower_10939){
@@ -1425,16 +1425,16 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $e_of_i){
                         //Unlink
                         $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
-                    } elseif($e__id_dropdown==30873){
+                    } elseif($e__id_dropdown==30873 && !$discovery_mode){
                         //Template:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
-                    } elseif($e__id_dropdown==29771){
+                    } elseif($e__id_dropdown==29771 && !$discovery_mode){
                         //Clone:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
                     } elseif($e__id_dropdown==28636 && $e_of_i && $x__id){
                         //Transaction Details
                         $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
-                    } elseif($e__id_dropdown==6182 && $e_of_i){
+                    } elseif($e__id_dropdown==6182 && $e_of_i && !$discovery_mode){
                         //Delete
                         $action_buttons .= '<a href="javascript:void();" new-en-id="6182" onclick="update_dropdown(4737, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_4737_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
                     } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014'))){
@@ -1446,7 +1446,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                         if(isset($x__metadata['txn_id'])){
                             $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
                         }
-                    } elseif(substr($m_dropdown['m__message'], 0, 1)=='/'){
+                    } elseif(substr($m_dropdown['m__message'], 0, 1)=='/' && !$discovery_mode){
                         //Standard button
                         $action_buttons .= '<a href="'.$m_dropdown['m__message'].$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
                     }
@@ -1892,7 +1892,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         //Filter applies only when browsing an idea
                         $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?load__e=' . $e['e__id'] . '" class="dropdown-item css__title">'.$anchor.'</a>';
 
-                    } elseif(substr($m_dropdown['m__message'], 0, 1)=='/'){
+                    } elseif(substr($m_dropdown['m__message'], 0, 1)=='/' && !$discovery_mode){
 
                         //Standard button
                         $action_buttons .= '<a href="' . $m_dropdown['m__message'] . $e['e__id'] . '" class="dropdown-item css__title">'.$anchor.'</a>';
