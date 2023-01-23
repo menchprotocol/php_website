@@ -1538,7 +1538,7 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0){
     return $e___14870[$domain_source][$var_field];
 }
 
-function source_of_e($e__id, $member_e = array()){
+function e_of_e($e__id, $member_e = array()){
 
     if(!$member_e){
         //Fetch from session:

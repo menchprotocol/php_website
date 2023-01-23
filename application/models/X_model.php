@@ -1034,7 +1034,7 @@ class X_model extends CI_Model
             $tooltip_underdot = ( $tooltip_info ? ' underdot ' : null );
 
 
-            if(!$is_discovery_mode && source_of_e($es[0]['e__id'])){
+            if(!$is_discovery_mode && e_of_e($es[0]['e__id'])){
                 $tooltip_class .= ' class="inline-block ignore-click" card__type="12274" card__id="' . $es[0]['e__id'] . '" ';
                 $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover(12274,$es[0]['e__cover'], true).'</span> ';
             } else {
