@@ -1329,7 +1329,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $can_click = !$focus_cover && (!$e_of_i || $discovery_mode);
+    $can_click = !$focus_cover; // && (!$e_of_i || $discovery_mode)
 
 
 
@@ -1520,16 +1520,8 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
 
         if(strlen($messages)){
-            if($e_of_i && !$discovery_mode) {
-                //Can edit:
-                $message_tooltip = '<span class="mini-font messages_4231_' . $i['i__id'] . '">' . $messages . '</a>';
-            } elseif($can_click){
-                $message_tooltip = '<a href="'.$href.'">'.$messages.'</a>';
-            } else {
-                $message_tooltip = $messages;
-            }
+            $message_tooltip = '<a href="'.$href.'" class="messages_4231_' . $i['i__id'] . '">'.$messages.'</a>';
         }
-
 
     }
 
