@@ -1261,10 +1261,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     }
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
+    $locked_privacy = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
 
     $member_e = superpower_unlocked();
-    $e_of_i = ( $cache_app ? false : e_of_i($i['i__id']) );
+    $e_of_i = ( $cache_app || $locked_privacy ? false : e_of_i($i['i__id']) );
     $user_input = $focus_e;
     $superpower_10939 = superpower_active(10939, true);
 
