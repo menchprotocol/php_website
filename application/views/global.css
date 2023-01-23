@@ -3887,6 +3887,11 @@ div.img {
     height: 24px;
 }
 
+.platform-logo .source_cover_mini div.img {
+    width: 30px;
+    height: 30px;
+}
+
 .source_cover_micro div.img {
     width: 24px;
     height: 24px;
