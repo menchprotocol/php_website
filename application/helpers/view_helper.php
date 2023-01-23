@@ -1546,19 +1546,12 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 continue; //Does not have permission
             }
-            if($e__id_bottom_bar==31892 && !$can_click && $member_e && !$focus_cover && !$discovery_mode){
+            $coins_ui = view_covers_i($e__id_bottom_bar,  $i['i__id']);
+            if(strlen($coins_ui)){
                 $active_bars++;
                 $bottom_bar_ui .= '<span class="hideIfEmpty">';
-                $bottom_bar_ui .= '<a href="'.$href.'" class="right-btn" title="'.$m_bottom_bar['m__title'].'">'.$m_bottom_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= $coins_ui;
                 $bottom_bar_ui .= '</span>';
-            } else {
-                $coins_ui = view_covers_i($e__id_bottom_bar,  $i['i__id']);
-                if(strlen($coins_ui)){
-                    $active_bars++;
-                    $bottom_bar_ui .= '<span class="hideIfEmpty">';
-                    $bottom_bar_ui .= $coins_ui;
-                    $bottom_bar_ui .= '</span>';
-                }
             }
         }
 
