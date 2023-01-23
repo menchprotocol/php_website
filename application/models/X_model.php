@@ -325,67 +325,57 @@ class X_model extends CI_Model
         if ($affected_rows > 0 && $x__creator > 0 && $x__type > 0) {
 
             if(strlen($x__message) == 0){
-                if(in_array($x__type, $this->config->item('n___10593') /* Statement */)){
+                //Log modification transaction for every field changed:
+                foreach($update_columns as $key => $value) {
 
-                    //Since it's a statement we want to determine the change in content:
-                    if($before_data[0]['x__message']!=$update_columns['x__message']){
-                        $x__message .= update_description($before_data[0]['x__message'], $update_columns['x__message']);
+                    if($before_data[0][$key]==$value){
+                        continue;
                     }
 
-                } else {
+                    //Now determine what type is this:
+                    if($key=='x__privacy'){
 
-                    //Log modification transaction for every field changed:
-                    foreach($update_columns as $key => $value) {
+                        $e___6186 = $this->config->item('e___6186'); //Transaction Status
+                        $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m__title'] . '] to [' . $e___6186[$value]['m__title'] . ']'."\n";
 
-                        if($before_data[0][$key]==$value){
-                            continue;
-                        }
+                    } elseif($key=='x__type'){
 
-                        //Now determine what type is this:
-                        if($key=='x__privacy'){
+                        $e___4593 = $this->config->item('e___4593'); //Transaction Types
+                        $x__message .= view_db_field($key) . ' updated from [' . $e___4593[$before_data[0][$key]]['m__title'] . '] to [' . $e___4593[$value]['m__title'] . ']'."\n";
 
-                            $e___6186 = $this->config->item('e___6186'); //Transaction Status
-                            $x__message .= view_db_field($key) . '4 updated from [' . $e___6186[$before_data[0][$key]]['m__title'] . '] to [' . $e___6186[$value]['m__title'] . ']'."\n";
+                    } elseif(in_array($key, array('x__up', 'x__down'))) {
 
-                        } elseif($key=='x__type'){
+                        //Fetch new/old source names:
+                        $befores = $this->E_model->fetch(array(
+                            'e__id' => $before_data[0][$key],
+                        ));
+                        $after_e = $this->E_model->fetch(array(
+                            'e__id' => $value,
+                        ));
 
-                            $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                            $x__message .= view_db_field($key) . '5 updated from [' . $e___4593[$before_data[0][$key]]['m__title'] . '] to [' . $e___4593[$value]['m__title'] . ']'."\n";
+                        $x__message .= view_db_field($key) . ' updated from [' . $befores[0]['e__title'] . '] to [' . $after_e[0]['e__title'] . ']' . "\n";
 
-                        } elseif(in_array($key, array('x__up', 'x__down'))) {
+                    } elseif(in_array($key, array('x__left', 'x__right'))) {
 
-                            //Fetch new/old source names:
-                            $befores = $this->E_model->fetch(array(
-                                'e__id' => $before_data[0][$key],
-                            ));
-                            $after_e = $this->E_model->fetch(array(
-                                'e__id' => $value,
-                            ));
+                        //Fetch new/old Idea outcomes:
+                        $before_i = $this->I_model->fetch(array(
+                            'i__id' => $before_data[0][$key],
+                        ));
+                        $after_i = $this->I_model->fetch(array(
+                            'i__id' => $value,
+                        ));
 
-                            $x__message .= view_db_field($key) . '6 updated from [' . $befores[0]['e__title'] . '] to [' . $after_e[0]['e__title'] . ']' . "\n";
+                        $x__message .= view_db_field($key) . ' updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
 
-                        } elseif(in_array($key, array('x__left', 'x__right'))) {
+                    } elseif(in_array($key, array('x__message', 'x__weight'))){
 
-                            //Fetch new/old Idea outcomes:
-                            $before_i = $this->I_model->fetch(array(
-                                'i__id' => $before_data[0][$key],
-                            ));
-                            $after_i = $this->I_model->fetch(array(
-                                'i__id' => $value,
-                            ));
+                        $x__message .= view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
 
-                            $x__message .= view_db_field($key) . '7 updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
+                    } else {
 
-                        } elseif(in_array($key, array('x__message', 'x__weight'))){
+                        //Should not log updates since not specifically programmed:
+                        continue;
 
-                            $x__message .= view_db_field($key) . '8 updated from [' . $before_data[0][$key] . '] to [' . $value . ']'."\n";
-
-                        } else {
-
-                            //Should not log updates since not specifically programmed:
-                            continue;
-
-                        }
                     }
                 }
             }
@@ -831,7 +821,7 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Message must be UTF8',
             );
-        } elseif ($message_type_e__id > 0 && !in_array($message_type_e__id, $this->config->item('n___4485'))) {
+        } elseif ($message_type_e__id > 0 && $message_type_e__id!=4231 && !in_array($message_type_e__id, $this->config->item('n___13550'))) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Message type ID',

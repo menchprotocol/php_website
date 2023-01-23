@@ -601,12 +601,12 @@ class E_model extends CI_Model
                         $x__type = 6178; //Source Deleted
                     }
                     $e___6177 = $this->config->item('e___6177'); //Source Status
-                    $x__message = view_db_field($key) . '2 updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
+                    $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
 
                 } elseif($key=='e__cover') {
 
                     $x__type = 10653; //Member Updated Icon
-                    $x__message = view_db_field($key) . '3 updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 
