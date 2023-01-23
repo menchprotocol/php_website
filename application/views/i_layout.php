@@ -11,8 +11,8 @@ $this->X_model->create(array(
     'x__weight' => $new_order,
 ));
 
-
-$e_of_i = e_of_i($i['i__id']);
+$locked_privacy = in_array($i['i__privacy'], $this->config->item('n___32145')); //Locked Dropdown
+$e_of_i = ( !$locked_privacy ? e_of_i($i['i__id']) : false );
 
 
 //Focusing on a certain source?
