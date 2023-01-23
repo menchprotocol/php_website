@@ -2464,7 +2464,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     *
     * */
 
-    var current_selected = parseInt($('.dropi_'+element_id+'_'+o__id+'_'+x__id+'.active').attr('new-en-id'));
+    var current_selected = parseInt($('.dropi_'+element_id+'_'+o__id+'_'+x__id+'.active').attr('current-selected'));
     new_e__id = parseInt(new_e__id);
     if(current_selected == new_e__id){
         //Nothing changed:

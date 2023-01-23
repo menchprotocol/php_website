@@ -293,15 +293,15 @@ function view_card_x($x, $has_x__reference = false)
         if(in_array(6160 , $m['m__following']) && intval($x[$e___32088[$e__id]['m__message']])>0){
 
             //SOURCE
-            foreach($CI->E_model->fetch(array('e__id' => $x[$e___32088[$e__id]['m__message']])) as $this_e){
-                $ui .= '<div class="simple-line"><a href="/@'.$this_e['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$this_e['e__cover'], true). '</span>'.$this_e['e__title'].'</a></div>';
+            foreach($CI->E_model->fetch(array('e__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_e){
+                $ui .= '<div class="simple-line"><a href="/@'.$focus_e['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$focus_e['e__cover'], true). '</span>'.$focus_e['e__title'].'</a></div>';
             }
 
         } elseif(in_array(6202 , $m['m__following']) && intval($x[$e___32088[$e__id]['m__message']])>0){
 
             //IDEA
-            foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $this_i){
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$this_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $this_i['i__type'], true, 'right', $this_i['i__id']).'</span>'.view_i_title($this_i).'</a></div>';
+            foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_i){
+                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$focus_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
             }
 
 
@@ -1348,7 +1348,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="show-on-hover">';
-                    $link_type_ui .= view_input_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1372,14 +1372,14 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
-            $top_bar_ui .= view_input_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+            $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==31004 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
             $top_bar_ui .= '<td><div class="show-on-hover">';
-            $top_bar_ui .= view_input_dropdown(31004, $i['i__privacy'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+            $top_bar_ui .= view_dropdown(31004, $i['i__privacy'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==31911 && $e_of_i && !$discovery_mode){
@@ -1400,7 +1400,16 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         } elseif($x__type_top_bar==14980 && !$cache_app){
 
             $action_buttons = null;
-            $focus_dropdown = ( !$x__id ? 11047 /* Idea Dropdown */ : ( $link_type_id==4486 /* Idea/Idea Links */ ? 14955 /* Idea/Idea Dropdown */ : 28787 /* Idea/Source Dropdown (It must be) */ ) );
+
+            if(!$x__id){
+                $focus_dropdown = 11047; //Idea Dropdown
+            } elseif($link_type_id==4486){ //Idea/Idea Links
+                $focus_dropdown = 14955; //Idea/Idea Dropdown
+            } elseif($link_type_id==6255){ //Discoveries
+                $focus_dropdown = 32069; //Idea/Discoveries Dropdown
+            } elseif($link_type_id==13550){ //Idea/Source Links
+                $focus_dropdown = 28787; //Idea/Source Dropdown
+            }
 
             if(is_array($CI->config->item('e___'.$focus_dropdown))){
                 foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
@@ -1414,44 +1423,68 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
                     if($e__id_dropdown==12589 && !$discovery_mode){
+
                         //Mass Apply
                         $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==30795 && !$discovery_mode){
+
                         //Discover Idea
                         $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==31911 && $discovery_mode && $e_of_i){
+
                         //Edit Idea
                         $action_buttons .= '<a href="/~'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==13571 && $x__id > 0 && $e_of_i){
+
                         //Edit Message
                         $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $e_of_i && !$discovery_mode){
+
                         //Unlink
                         $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item css__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==30873 && !$discovery_mode){
+
                         //Template:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==29771 && !$discovery_mode){
+
                         //Clone:
                         $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==28636 && $e_of_i && $x__id && !$discovery_mode){
+
                         //Transaction Details
                         $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==6182 && $e_of_i && !$discovery_mode){
-                        //Delete
-                        $action_buttons .= '<a href="javascript:void();" new-en-id="6182" onclick="update_dropdown(4737, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_4737_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
+
+                        //Delete Permanently
+                        $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__privacy'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014'))){
+
                         //Ticket Details
                         $action_buttons .= '<a href="/-26560?x__id='.$i['x__id'].'&x__creator='.$i['x__creator'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_active(28727, true)){
+
                         //Paypal Details
                         $x__metadata = unserialize($i['x__metadata']);
                         if(isset($x__metadata['txn_id'])){
                             $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item css__title" target="_blank">'.$anchor.'</a>';
                         }
+
                     } elseif(substr($m_dropdown['m__message'], 0, 1)=='/' && !$discovery_mode){
+
                         //Standard button
                         $action_buttons .= '<a href="'.$m_dropdown['m__message'].$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
+
                     }
                 }
             }
@@ -1783,7 +1816,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="show-on-hover">';
-                    $link_type_ui .= view_input_dropdown($x__type1, $e['x__type'], null, $source_of_e, false, $e['e__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $e['x__type'], null, $source_of_e, false, $e['e__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1812,7 +1845,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Source Privacy
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( !in_array($e['e__privacy'], $CI->config->item('n___7357')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_input_dropdown(6177, $e['e__privacy'], null, $source_of_e, false, $e['e__id']);
+                $top_bar_ui .= view_dropdown(6177, $e['e__privacy'], null, $source_of_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31912 && $source_of_e){
@@ -1834,7 +1867,16 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==14980 && !$cache_app){
 
                 $action_buttons = null;
-                $focus_dropdown = ( !$x__id ? 12887 /* Source Dropdown */ : ( $link_type_id==4592 /* Source/Source Links */ ? 14956 /* Source/Source Dropdown */ : 28792 /* Source/Idea Dropdown */ ) );
+
+                if(!$x__id){
+                    $focus_dropdown = 12887; //Source Dropdown
+                } elseif($link_type_id==4592){ //Source/Source Links
+                    $focus_dropdown = 14956; //Source/Source Dropdown
+                } elseif($link_type_id==6255){ //Discoveries
+                    $focus_dropdown = 32070; //Source>Discoveries Dropdown
+                } elseif($link_type_id==13550){ //Idea/Source Links
+                    $focus_dropdown = 28792; //Source/Idea Dropdown
+                }
 
                 foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
@@ -1874,6 +1916,11 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                         //UNLINK
                         $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item css__title">'.$anchor.'</span></a>';
+
+                    } elseif($e__id_dropdown==6178 && $superpower_13422){
+
+                        //Delete Permanently
+                        $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__privacy'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' css__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                     } elseif($e__id_dropdown==13007 && $focus_cover){
 
@@ -2020,7 +2067,7 @@ function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabinde
 
 
 
-function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $e_of_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $e_of_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -2029,8 +2076,8 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
         return false;
     }
 
-    $e___12079 = $CI->config->item('e___12079');
-    $e_of_i = ( isset($e___12079[$cache_e__id]) ? $e_of_i : false );
+    //Make sure it's not locked:
+    $e_of_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $e_of_i : false );
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
 
@@ -2044,6 +2091,10 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
         $ui .= '<div class="dropdown-menu btn-'.$btn_class.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
 
         foreach($e___this as $e__id => $m) {
+
+            if(in_array($e__id, $CI->config->item('n___32145'))){
+                continue; //Locked Dropdown
+            }
 
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
 
@@ -2065,7 +2116,7 @@ function view_input_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $
             } else{
 
                 //Idea Dropdown updater:
-                $anchor_url = 'href="javascript:void();" new-en-id="'.$e__id.'" onclick="update_dropdown('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"';
+                $anchor_url = 'href="javascript:void();" current-selected="'.$e__id.'" onclick="update_dropdown('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"';
 
             }
 

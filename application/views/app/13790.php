@@ -53,7 +53,7 @@ if(strlen($_GET['i__id'])){
     echo '</tr><tr>';
 
     echo '<td class="standard-bg"><input type="submit" class="btn btn-default" value="Apply" /></td>';
-    echo '<td class="standard-bg">'.view_input_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 )).'</td>';
+    echo '<td class="standard-bg">'.view_dropdown(27264, ( isset($_GET['expand']) ? 27266 : 27265 )).'</td>';
 
     echo '</tr></table>';
 

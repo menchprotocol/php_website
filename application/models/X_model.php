@@ -419,9 +419,6 @@ class X_model extends CI_Model
     function update_dropdown($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id = 0) {
 
 
-        //Maintain a manual index as a hack for the Idea/Source tables for now:
-        $e___12079 = $this->config->item('e___12079');
-
         //Authenticate Member:
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -434,7 +431,7 @@ class X_model extends CI_Model
                 'status' => 0,
                 'message' => 'Missing Target ID',
             );
-        } elseif (intval($element_id) < 1 || !count($this->config->item('n___'.$element_id)) || !isset($e___12079[$element_id])) {
+        } elseif (intval($element_id) < 1 || !count($this->config->item('n___'.$element_id))) {
             return array(
                 'status' => 0,
                 'message' => 'Invalid Variable ID ['.$element_id.']',

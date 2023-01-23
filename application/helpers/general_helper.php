@@ -1602,7 +1602,7 @@ function e_of_i($i__id, $member_e = array()){
                 ))) ||
                 count($CI->X_model->fetch(array( //IDEA SOURCE
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
                     'x__right' => $i__id,
                     'x__up' => $member_e['e__id'],
                 )))
