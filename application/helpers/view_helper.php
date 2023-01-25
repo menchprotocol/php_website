@@ -1555,9 +1555,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
         }
 
-        if(strlen($messages)){
-            $message_tooltip = '<a href="'.$href.'" class="messages_4231_' . $i['i__id'] . '">'.$messages.'</a>';
-        }
+        $message_tooltip = '<a href="'.$href.'" class="messages_4231_' . $i['i__id'] . '">'.$messages.'</a>';
 
     }
 
