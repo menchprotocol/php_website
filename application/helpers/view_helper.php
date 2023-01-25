@@ -1538,30 +1538,25 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip = '';
     if(isset($i['x__message']) && strlen($i['x__message'])>0){
 
-        if(superpower_active(12701, true)){
-            $message_tooltip = '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="mini-font">'.$CI->X_model->message_view( $i['x__message'], true).'</a>';
-        } elseif($e_of_i || !$discovery_mode) {
-            $message_tooltip = '<p class="mini-font" title="'.$i['x__message'].'">'.$CI->X_model->message_view( $i['x__message'], true).'</p>';
-        }
-
-    } else {
-
-        $messages = '';
-        foreach($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231,
-            'x__right' => $i['i__id'],
-        ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
-            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
-        }
-
-        $message_tooltip = '<a href="'.$href.'" class="messages_4231_' . $i['i__id'] . '">'.$messages.'</a>';
+        $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true).( !$can_click ? '</div>' : '</a>' );
 
     }
 
+
+    $messages = '';
+    foreach($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type' => 4231,
+        'x__right' => $i['i__id'],
+    ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
+        $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
+    }
+    $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.$messages.( !$can_click ? '</div>' : '</a>' );
+
+
     $ui .= '<div class="cover-text">';
     if($message_tooltip){
-        $ui .= '<div class="">' . $message_tooltip . '</div>'; //grey
+        $ui .= $message_tooltip; //grey
     }
     $ui .= '</div>';
     $ui .= '</div></div>';
