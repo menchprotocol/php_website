@@ -701,7 +701,10 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
     if($x__type==12274){
 
         //DOWN
-        $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
+        $order_columns = array();
+        $order_columns['x__weight'] = 'ASC';
+        $order_columns['e__title'] = 'ASC';
+
         $join_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
@@ -713,7 +716,9 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
     } elseif($x__type==11030){
 
         //UP
-        $order_columns = array('e__title' => 'DESC');
+        $order_columns = array();
+        $order_columns['e__weight'] = 'DESC';
+        //$order_columns['e__title'] = 'DESC';
         $join_objects = array('x__up');
         $query_filters = array(
             'x__down' => $e__id,
@@ -726,11 +731,15 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //Determine Sort:
         $order_columns = array();
+        /*
         foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['x__weight'] = 'ASC';
         $order_columns['i__title'] = 'ASC';
+        */
+        $order_columns['x__weight'] = 'ASC';
+        $order_columns['x__id'] = 'DESC';
 
         //IDEAS
         $join_objects = array('x__right');
@@ -745,9 +754,11 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //Determine Sort:
         $order_columns = array();
+        /*
         foreach($CI->config->item('e___6255') as $x__sort_id => $sort) {
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
+        */
         $order_columns['x__id'] = 'DESC';
 
         //DISCOVERIES
@@ -835,10 +846,8 @@ function view_covers_i($x__type, $i__id, $page_num = 0, $append_card_icon = true
         foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
-        foreach($CI->config->item('e___6177') as $x__sort_id => $sort) {
-            $order_columns['e__privacy = \''.$x__sort_id.'\' DESC'] = null;
-        }
-        $order_columns['e__title'] = 'ASC';
+        //$order_columns['e__title'] = 'ASC';
+        $order_columns['x__id'] = 'DESC';
 
     } elseif($x__type==11019) {
 
