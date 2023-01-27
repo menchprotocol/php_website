@@ -343,7 +343,7 @@ if(!$basic_header_footer){
                     if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
                         $padding_hack = 1; //For URL
                     } elseif(string_is_icon($domain_logo)){
-                        $padding_hack = 4; //For Icon
+                        $padding_hack = 1; //For Icon (4 before)
                     } else {
                         $padding_hack = 7; //For Emoji
                     }
