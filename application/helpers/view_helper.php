@@ -1529,7 +1529,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="inner-content">';
     if($e_of_i && !$discovery_mode){
         //Editable title:
-        $ui .= view_input_text(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
+        $ui .= view_input(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
     } elseif($can_click){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
@@ -1985,7 +1985,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="inner-content">';
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
-        $ui .= view_input_text(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
+        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
     } else {
         //Static:
         $ui .= '<div class="css__title">'.( $is_cache ? '<a href="'.$href.'" class="css__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
@@ -2032,7 +2032,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 }
 
 
-function view_input_text($cache_e__id, $current_value, $s__id, $e_of_i, $tabindex = 0, $extra_large = false){
+function view_input($cache_e__id, $current_value, $s__id, $e_of_i, $tabindex = 0, $extra_large = false){
 
     $CI =& get_instance();
     $e___12112 = $CI->config->item('e___12112');

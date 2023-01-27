@@ -380,13 +380,16 @@ if(superpower_unlocked()) {
 
                     <?php
 
-                    //SOCIAL LOGIN:
-                    echo '<div class="social-frame">';
-                    echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
-                    echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
-                    echo '</a></div>';
-                    echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '</div>';
+                    if(strlen(website_setting(14881)) && strlen(website_setting(14882))){
+                        //SOCIAL LOGIN:
+                        echo '<div class="social-frame">';
+                        echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
+                        echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
+                        echo '</a></div>';
+                        echo '<div class="mid-text-line"><span>OR</span></div>';
+                        echo '</div>';
+                    }
+
                     ?>
 
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>

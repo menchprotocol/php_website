@@ -811,9 +811,6 @@ function load_message_27963(i__id){
         if(data.status){
             $('.input_note_4231').val(data.message.trim()).focus();
             set_autosize($('.input_note_4231'));
-            setTimeout(function () {
-                autosize.update($(".input_note_4231"));
-            }, 233);
         } else {
             $('.note_error_4231').html(data.message);
         }
@@ -1210,7 +1207,6 @@ function x_message_load(x__id) {
             x_type_preview();
             setTimeout(function () {
                 set_autosize($('#x__message'));
-                autosize.update($("#x__message"));
                 $('#x__message').focus();
             }, 144);
 
@@ -1997,7 +1993,9 @@ function x_set_start_text(){
 }
 
 function update_text_name(cache_e__id, e__id, e__title){
-    $(".text__"+cache_e__id+"_" + e__id).text(e__title).attr('old-value', e__title); //.val(e__title)
+    var handler = ".text__"+cache_e__id+"_" + e__id;
+    $(handler).text(e__title).attr('old-value', e__title); //.val(e__title)
+    set_autosize($(handler));
 }
 
 function x_set_text(this_handler){
@@ -2077,9 +2075,7 @@ function text_search(obj) {
                     return view_s_js_line(suggestion);
                 },
                 replace: function (suggestion) {
-                    setTimeout(function () {
-                        autosize.update(obj);
-                    }, 233);
+                    set_autosize(obj);
                     return ' @' + suggestion.s__id + ' ';
                 }
             },
@@ -2103,9 +2099,7 @@ function text_search(obj) {
                     return view_s_js_line(suggestion);
                 },
                 replace: function (suggestion) {
-                    setTimeout(function () {
-                        autosize.update(obj);
-                    }, 233);
+                    set_autosize(obj);
                     return ' #' + suggestion.s__id + ' ';
                 }
             },
