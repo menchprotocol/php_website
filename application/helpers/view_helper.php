@@ -1359,7 +1359,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
         //Determine hover state:
-        $always_show = in_array($x__type_top_bar, $CI->config->item('n___32172'));
+        $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
         if($x__type_top_bar==31770 && $link_type_ui){
 
@@ -1369,14 +1369,14 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         } elseif($x__type_top_bar==4737 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
-            $top_bar_ui .= '<td><div class="'.( $always_show || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+            $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
             $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==31004 && ($e_of_i || $locked_privacy) && !$discovery_mode){
 
             $active_bars++;
-            $top_bar_ui .= '<td><div class="'.( $always_show || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+            $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
             $top_bar_ui .= view_dropdown(31004, $i['i__privacy'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
@@ -1384,14 +1384,14 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             $active_bars++;
 
-            $top_bar_ui .= '<td><div class="'.( $always_show ? '' : 'show-on-hover' ).'">';
+            $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
             $top_bar_ui .= '<a href="javascript:void(0);" onclick="load_message_27963('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==13909 && $has_sortable){
 
             $active_bars++;
-            $top_bar_ui .= '<td><div class="'.( $always_show ? '' : 'show-on-hover' ).'">';
+            $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
             $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_handle">'.$m_top_bar['m__cover'].'</span>';
             $top_bar_ui .= '</div></td>';
 
@@ -1492,7 +1492,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 //Right Action Menu
                 $e___14980 = $CI->config->item('e___14980'); //Dropdowns
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_show ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<div class="dropdown inline-block">';
                 $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                 $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
@@ -1813,7 +1813,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         $active_bars = 0;
         foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
 
-            $always_show = in_array($x__type_top_bar, $CI->config->item('n___32172'));
+            $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
             if($x__type_top_bar==31770 && $x__id && $superpower_13422){
 
@@ -1824,7 +1824,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 //Source Privacy
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_show || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_dropdown(6177, $e['e__privacy'], null, $e_of_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
@@ -1832,7 +1832,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 //Edit Source
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_show ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="card__load(12274,'.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
@@ -1840,7 +1840,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 //Sort Source
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_show ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_handle">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
@@ -1935,7 +1935,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
                     $active_bars++;
-                    $top_bar_ui .= '<td><div class="'.( $always_show ? '' : 'show-on-hover' ).'">';
+                    $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                     $top_bar_ui .= '<div class="dropdown inline-block">';
                     $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding css__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
