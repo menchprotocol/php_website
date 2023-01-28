@@ -445,33 +445,6 @@ function view_cache($following, $e__id, $micro_status = true, $data_placement = 
 
 
 
-function view_covers(){
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-    $ui = '';
-
-    $ui .= '<div class="row justify-content list-covers">';
-    $count = 0;
-    foreach($CI->config->item('e___14874') as $e__id => $m) {
-        $count++;
-        $ui .= '<div class="card_cover no-padding col-12 col-md-4">';
-        $ui .= '<div class="card_frame dropdown_'.$e__id.'">';
-        $ui .= '<div class="large_cover">'.$m['m__cover'].'</div>';
-        $ui .= '<div class="css__title large_title zq'.$e__id.' "><b class="card_count_'.$e__id.'">'.number_format(count_unique_covers($e__id), 0).'</b></div>';
-        $ui .= '<div class="css__title large_title zq'.$e__id.'">'.$m['m__title'].'</div>';
-        $ui .= '</div>';
-        $ui .= '</div>';
-    }
-    $ui .= '</div>';
-
-
-    $ui .= '<div class="row justify-content list-covers" style="font-size: 1.8em; padding-top: 55px; line-height: 130%;"><div style="min-height:40px; width: 100%; text-align: center;"><b class="card_count_x css__title">'.number_format($query[0]['totals'], 0).'</b></div><div class="css__title" style="text-align: center;">Transactions</div></div>';
-
-
-    return $ui;
-}
-
 function view_card($href, $is_current, $x__type, $o__privacy, $o__type, $o__title, $x__message = null){
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item css__title '.( $is_current ? ' active ' : '' ).'">'.
         ( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).
@@ -1329,7 +1302,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover '.( $focus_cover ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
+    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover contrast_bg '.( $focus_cover ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
      ' : ' edge-cover card_i_click col-md-4 col-6 ' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
@@ -1783,7 +1756,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $show_text_editor = $e_of_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_cover ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover contrast_bg no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_cover ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     //Source Link Groups
     $link_type_id = 0;

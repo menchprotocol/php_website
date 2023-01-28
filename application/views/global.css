@@ -2741,7 +2741,7 @@ h4.css__title{
     background: rgba(16,16,16,0.80) !important;
 }
 
-.custom_ui_13884_13886 .card_cover:hover,
+.custom_ui_13884_13886 .card_cover.contrast_bg:hover,
 .custom_ui_13884_13886 .coin-12274.card_cover:hover .cover-content,
 .custom_ui_13884_13886 .coin-6287.card_cover:hover .cover-content{
     background: #000000 !important;
@@ -2890,7 +2890,7 @@ h4.css__title{
     background: rgba(239,239,239,0.80) !important;
 }
 
-.custom_ui_13884_13885 .card_cover:hover,
+.custom_ui_13884_13885 .card_cover.contrast_bg:hover,
 .custom_ui_13884_13885 .coin-12274.card_cover:hover .cover-content,
 .custom_ui_13884_13885 .coin-6287.card_cover:hover .cover-content{
     background: #FFFFFF !important;
