@@ -1485,6 +1485,7 @@ function load_tab(x__type, auto_load){
         x_type_preview_load();
         init_remove();
         x_set_start_text();
+        set_autosize($('.x_set_class_text'));
 
         setTimeout(function () {
             load_covers();
