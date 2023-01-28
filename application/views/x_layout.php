@@ -406,7 +406,7 @@ if($top_i__id) {
 
             //HTML:
             echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-            echo view_headline($i['i__type'], null, $e___4737[$i['i__type']].':', $select_answer, true);
+            echo view_headline($i['i__type'], null, $e___4737[$i['i__type']], $select_answer, true);
             echo '</div>';
 
         }
