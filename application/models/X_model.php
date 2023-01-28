@@ -1695,9 +1695,6 @@ class X_model extends CI_Model
             return false;
         }
 
-        $metadata_this['fixed_completed_percentage'] = 100;
-        return $metadata_this;
-
         //Count completed:
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES

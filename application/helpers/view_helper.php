@@ -522,7 +522,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_card_i(12273, 0, null, $i, $focus_e, null);
+            $ui .= view_card_i(12273, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -996,7 +996,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     //Build Body UI:
     $body = '<div class="row">';
     foreach($next_is as $key => $next_i){
-        $body .= view_card_i($x__type, $top_i__id, $i, $next_i, $member_e, ( $member_e ? $CI->X_model->tree_progress($member_e['e__id'], $next_i) : null ), null);
+        $body .= view_card_i($x__type, $top_i__id, $i, $next_i, $member_e);
     }
     $body .= '</div>';
 
@@ -1260,7 +1260,7 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 }
 
 
-function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false, $tree_progress = null, $extra_class = null){
+function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1290,26 +1290,12 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0 && $focus_e && $discovery_mode;
 
 
-    if(0 && is_null($tree_progress)){
-        if($load_completion){ //Load Completion Bar
-            $tree_progress = $CI->X_model->tree_progress($focus_e['e__id'], $i);
-        } else {
-            //set zero:
-            $tree_progress['fixed_completed_percentage'] = 0;
-        }
-    } elseif($discovery_mode){
-        $tree_progress['fixed_completed_percentage'] = 100;
-    }
 
-
-
-    $is_completed = ($tree_progress['fixed_completed_percentage']>=100);
-    $is_started = ($tree_progress['fixed_completed_percentage']>0);
     $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
     $has_sortable = !$focus_cover && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
-    if($discovery_mode && !$is_completed) {
+    if($discovery_mode) {
         if($top_i__id){
             $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
         } elseif($e_of_i) {
@@ -1344,7 +1330,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover '.( $focus_cover ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
-     ' : ' edge-cover card_i_click col-md-4 col-6 ' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $is_completed ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).' '.$extra_class.'">';
+     ' : ' edge-cover card_i_click col-md-4 col-6 ' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
     //Determine Link Type
@@ -1525,16 +1511,13 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Coin Cover
     $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $is_completed ? ' coinType12273 ' : ' coinType12273 ' ).' black-background-obs cover-link">';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="coinType12273 black-background-obs cover-link">';
     $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
     //Title Cover
     $ui .= '<div class="cover-content">';
-    if($load_completion && $is_started && !$is_completed){
-        $ui .= '<div class="cover-progress">'.view_x_progress($tree_progress, $i).'</div>';
-    }
     $ui .= '<div class="inner-content">';
     if($e_of_i && !$discovery_mode){
         //Editable title:
@@ -1723,16 +1706,6 @@ function view_pill($focus_cover, $x__type, $counter, $m, $ui = null, $is_open = 
 
     return '<script> '.( $is_open ? ' $(document).ready(function () { toggle_pills('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="css__title hideIfEmpty xtypecounter'.$x__type.'" style="padding-right:4px;">'.view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody pillbody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" read-counter="'.$counter.'">'.$ui.'</div>';
-
-}
-
-function view_x_progress($tree_progress, $i){
-
-    if(!isset($tree_progress['fixed_total'])){
-        return '<div class="progress-bg-list progress_'.$i['i__id'].'"><div class="progress-done" style="width:0%" prograte="0"></div></div>';
-    }
-
-    return '<div class="progress-bg-list progress_'.$i['i__id'].'" title="'.$tree_progress['fixed_completed_percentage'].'% COMPLETED"><div class="progress-done" style="width:'.$tree_progress['fixed_completed_percentage'].'%" prograte="'.$tree_progress['fixed_completed_percentage'].'"></div></div>';
 
 }
 
