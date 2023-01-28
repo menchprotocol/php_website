@@ -2719,10 +2719,6 @@ h4.css__title{
     border-top: 1px solid #FFFFFF;
 }
 
-.isSelected {
-    border:1px solid #FC1B44 !important;
-}
-
 .custom_ui_13884_13886 .modal-header .btn-close {
     background-color: #CCCCCC;
 }
@@ -4126,6 +4122,9 @@ main {
     padding: 55px 0 89px;
 }
 
+.isSelected {
+    border:1px solid #FC1B44 !important;
+}
 
 
 .active_bars_1 td { width:100.0% !important; }
