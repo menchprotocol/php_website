@@ -1366,7 +1366,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         } elseif($x__type_top_bar==4737 && $e_of_i && !$discovery_mode){
 
             $active_bars++;
-            $top_bar_ui .= '<td><div class="show-on-hover">';
+            $top_bar_ui .= '<td><div class="">'; //show-on-hover
             $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
             $top_bar_ui .= '</div></td>';
 
