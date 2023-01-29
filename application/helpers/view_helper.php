@@ -1493,7 +1493,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $member_e['e__id'],
             'x__left' => $i['i__id'],
-        ))) ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
+        ))) ? 'coinType6255' : 'coinType6255' ).' black-background-obs cover-link">';
     $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>';
 
