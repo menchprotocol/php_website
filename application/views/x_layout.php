@@ -731,7 +731,7 @@ if(!$top_i__id){
             }
 
 
-        } elseif($x__type==12273 && !$is_or_idea && count($is_next)){
+        } elseif($x__type==12273 && !$is_or_idea && count($is_next) && !$is_payment){
 
             //Ideas
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a>'; //<span class="nav-counter css__title"></span>
