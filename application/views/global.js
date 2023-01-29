@@ -2580,7 +2580,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
 var message_saving = false; //Prevent double saving
-function save_message_27963(){
+function save_editor(){
 
     if(message_saving){
         return false;
@@ -2603,7 +2603,7 @@ function save_message_27963(){
 
         } else {
 
-            $('.top_message_box').addClass('hidden');
+            toggle_editor(i__id);
 
             //Reset errors:
             $(".note_error_"+x__type).html('');
@@ -2615,8 +2615,6 @@ function save_message_27963(){
             $('[data-toggle="tooltip"]').tooltip();
 
             //Load Images:
-
-
             message_saving = false;
 
         }

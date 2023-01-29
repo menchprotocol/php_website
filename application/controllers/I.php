@@ -330,7 +330,7 @@ class I extends CI_Controller {
 
 
 
-    function save_message_27963(){
+    function save_editor(){
 
         //Authenticate Member:
         $member_e = superpower_unlocked(10939);
