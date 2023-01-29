@@ -285,7 +285,7 @@ class I extends CI_Controller {
     }
 
 
-    function load_message_27963(){
+    function toggle_editor(){
 
         //Authenticate Member:
         $member_e = superpower_unlocked(10939); //Superpower not required as it may be just a comment

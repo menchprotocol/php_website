@@ -1358,7 +1358,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $active_bars++;
 
             $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-            $top_bar_ui .= '<a href="javascript:void(0);" onclick="load_message_27963('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+            $top_bar_ui .= '<a href="javascript:void(0);" onclick="toggle_editor('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==13909 && $has_sortable){
