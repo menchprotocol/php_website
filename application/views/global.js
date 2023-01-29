@@ -2591,7 +2591,7 @@ function save_editor(){
     var i__id = $('#modal_i__id').val();
     var input_textarea = '.input_note_'+x__type;
 
-    $.post("/i/save_message_27963", {
+    $.post("/i/save_editor", {
         i__id:i__id,
         field_value: $('.input_note_4231').val().trim()
     }, function (data) {
