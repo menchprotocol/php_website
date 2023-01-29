@@ -79,7 +79,7 @@ if($is_payment){
 
     if($x__creator>0 && count($total_dues)){
         $detected_x_type = x_detect_type($total_dues[0]['x__message']);
-        if ($detected_x_type['status'] && in_array($detected_x_type['x__type'], $this->config->item('n___26661'))){
+        if ($detected_x_type['status'] && $detected_x_type['x__type']==26661){
 
             $digest_fees = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
