@@ -696,7 +696,7 @@ class X extends CI_Controller
                 return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
             }
 
-        } elseif($member_e) {
+        } elseif($member_e && 0) {
 
             //Do we have a direct discovery?
             foreach($this->X_model->fetch(array(
