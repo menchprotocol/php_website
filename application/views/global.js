@@ -797,24 +797,79 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
 
 }
 
-function load_message_27963(i__id){
 
-    //Grab and load data:
-    $('.input_note_4231').val(''); //Reset until loaded
-    $('.note_error_4231').html('');
-    $('.top_message_box').removeClass('hidden');
-    $('#modal_i__id').val(i__id);
+//Main navigation
+var search_on = false;
+function toggle_search(){
 
-    $.post("/i/load_message_27963", {
-        i__id:i__id,
-    }, function (data) {
-        if(data.status){
-            $('.input_note_4231').val(data.message.trim()).focus();
-            set_autosize($('.input_note_4231'));
-        } else {
-            $('.note_error_4231').html(data.message);
-        }
-    });
+    $('.left_nav').addClass('hidden');
+    $('.icon_search').toggleClass('hidden');
+
+    if(search_on){
+
+        //Turn OFF
+        search_on = false; //Reverse
+        $('.top_nav, #container_content').removeClass('hidden');
+        $('.nav_search, #container_search').addClass('hidden');
+
+    } else {
+
+        //Turn ON
+        search_on = true; //Reverse
+        $('.top_nav, #container_content').addClass('hidden');
+        $('.nav_search, #container_search').removeClass('hidden');
+        $("#container_search .row").html(''); //Reset results view
+        $('#top_search').focus();
+
+        setTimeout(function () {
+            //One more time to make sure it also works in mobile:
+            $('#top_search').focus();
+        }, 55);
+
+
+    }
+}
+
+
+
+var editor_on = false;
+function toggle_editor(i__id){
+
+    $('.left_nav').addClass('hidden');
+    $('.icon_search').toggleClass('hidden');
+
+    if(editor_on){
+
+        //Turn OFF
+        editor_on = false; //Reverse
+        $('.top_nav, #container_content, .container_content').removeClass('hidden');
+        $('.top_message_box').addClass('hidden');
+
+
+    } else {
+
+        //Turn ON
+        editor_on = true; //Reverse
+        $('.top_nav, #container_content, .container_content').addClass('hidden');
+        $('.top_message_box').removeClass('hidden');
+        $('.input_note_4231').val(''); //Reset until loaded
+        $('.note_error_4231').html('');
+        $('#modal_i__id').val(i__id);
+
+        $.post("/i/toggle_editor", {
+            i__id:i__id,
+        }, function (data) {
+            if(data.status){
+                $('.input_note_4231').val(data.message.trim()).focus();
+                set_autosize($('.input_note_4231'));
+            } else {
+                $('.note_error_4231').html(data.message);
+            }
+        });
+
+    }
+
+
 
 }
 
@@ -1808,39 +1863,6 @@ var isAdvancedUpload = function () {
     var div = document.createElement('div');
     return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
 }();
-
-//Main navigation
-var search_on = false;
-function toggle_search(){
-
-    $('.left_nav').addClass('hidden');
-    $('.icon_search').toggleClass('hidden');
-
-    if(search_on){
-
-        //Search OFF
-        search_on = false; //Reverse
-        $('.top_nav, #container_content').removeClass('hidden');
-        $('.nav_search, #container_search').addClass('hidden');
-
-    } else {
-
-        //Search ON
-        search_on = true; //Reverse
-        $('.top_nav, #container_content').addClass('hidden');
-        $('.nav_search, #container_search').removeClass('hidden');
-        $("#container_search .row").html(''); //Reset results view
-        $('#top_search').focus();
-
-        setTimeout(function () {
-            //One more time to make sure it also works in mobile:
-            $('#top_search').focus();
-        }, 55);
-
-
-    }
-}
-
 
 function x_link_toggle(x__type, i__id){
 

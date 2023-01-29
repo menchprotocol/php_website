@@ -460,29 +460,13 @@ if(!$basic_header_footer){
         </div>
     </div>
 
+
 <?php
 
 }
 
-
-echo '<div id="container_search" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
-echo '<div id="container_content" class="container">';
-
-//Any message we need to show here?
-if (!isset($flash_message) || !strlen($flash_message)) {
-    $flash_message = $this->session->flashdata('flash_message');
-}
-
-if(strlen($flash_message) > 0) {
-
-    //Delete from Flash:
-    $this->session->unmark_flash('flash_message');
-
-    echo '<div class="'.( $basic_header_footer ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">'.$flash_message.'</div>';
-
-}
-
 ?>
+
 
 <div class="top_message_box hidden">
 
@@ -525,3 +509,26 @@ if(strlen($flash_message) > 0) {
         </tr>
     </table>
 </div>
+
+
+
+<?php
+
+echo '<div id="container_search" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
+echo '<div id="container_content" class="container">';
+
+//Any message we need to show here?
+if (!isset($flash_message) || !strlen($flash_message)) {
+    $flash_message = $this->session->flashdata('flash_message');
+}
+
+if(strlen($flash_message) > 0) {
+
+    //Delete from Flash:
+    $this->session->unmark_flash('flash_message');
+
+    echo '<div class="'.( $basic_header_footer ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">'.$flash_message.'</div>';
+
+}
+
+?>
