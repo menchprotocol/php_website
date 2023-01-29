@@ -629,7 +629,7 @@ class I_model extends CI_Model
 
     function recursive_follower_ids($i__id, $first_level = true, $loop_breaker_ids = array()){
 
-        if(count($loop_breaker_ids) && in_array($i__id, $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i__id, $loop_breaker_ids)){
             return array();
         }
 
@@ -800,7 +800,7 @@ class I_model extends CI_Model
          *
          * */
 
-        if(count($loop_breaker_ids) && in_array($i__id, $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i__id, $loop_breaker_ids)){
             return ( $first_discovery>0 ? 0 : array() );
         }
 

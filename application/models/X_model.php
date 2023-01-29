@@ -1113,7 +1113,7 @@ class X_model extends CI_Model
     function find_previous($e__id, $top_i__id, $i__id, $loop_breaker_ids = array())
     {
 
-        if(count($loop_breaker_ids) && in_array($i__id, $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i__id, $loop_breaker_ids)){
             return 0;
         }
 
@@ -1164,7 +1164,7 @@ class X_model extends CI_Model
     function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $loop_breaker_ids = array())
     {
 
-        if(count($loop_breaker_ids) && in_array($i['i__id'], $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i['i__id'], $loop_breaker_ids)){
             return 0;
         }
 
@@ -1689,7 +1689,7 @@ class X_model extends CI_Model
     function tree_progress($e__id, $i, $top_level = true, $loop_breaker_ids = array())
     {
 
-        if(count($loop_breaker_ids) && in_array($i['i__id'], $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i['i__id'], $loop_breaker_ids)){
             return false;
         }
 
