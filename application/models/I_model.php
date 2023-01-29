@@ -790,10 +790,16 @@ class I_model extends CI_Model
 
 
 
-    function recursive_following_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
+    function recursive_following_ids($i__id, $first_discovery = false, $first_level = true, $loop_breaker_ids = array()){
 
-        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
-            return array();
+        /*
+         *
+         * Returns integer if $first_discovery=true or array otherwise
+         *
+         * */
+
+        if(count($loop_breaker_ids) && in_array($i__id, $loop_breaker_ids)){
+            return ( $first_discovery ? 0 : array() );
         }
 
         $recursive_i_ids = array();
@@ -803,11 +809,27 @@ class I_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
-        ), array('x__left')) as $next_i){
+        ), array('x__left')) as $prev_i){
 
-            array_push($recursive_i_ids, intval($next_i['i__id']));
+            if($first_discovery){
+                $member_e = superpower_unlocked();
+                if($member_e){
+                    foreach($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__creator' => $member_e['e__id'],
+                        'x__left' => $prev_i['i__id'],
+                        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                    )) as $x){
+                        return $x['x__right'];
+                    }
+                }
+            }
 
-            $recursive_is = $this->I_model->recursive_following_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
+            array_push($recursive_i_ids, intval($prev_i['i__id']));
+            array_push($loop_breaker_ids, $i__id);
+
+            $recursive_is = $this->I_model->recursive_following_ids($prev_i['i__id'], $first_discovery, false, $loop_breaker_ids);
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -815,11 +837,14 @@ class I_model extends CI_Model
             }
         }
 
-        if($first_level){
+        if($first_discovery) {
+            return 0;
+        } elseif($first_level){
             return array_unique($recursive_i_ids);
         } else {
             return $recursive_i_ids;
         }
+
     }
 
 

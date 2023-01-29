@@ -19,7 +19,6 @@ $secondary_i_list = array();
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 10573, //Watching
-    'x__right > 0' => null,
     'x__up' => $website_id,
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $this_i){
     if(!count($primary_i)){

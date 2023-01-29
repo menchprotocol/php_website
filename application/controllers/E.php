@@ -341,7 +341,6 @@ class E extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right > 0' => null,
             'x__up' => $_POST['e__id'],
         ), array(), 0) as $x){
             $this->X_model->create(array(

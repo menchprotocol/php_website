@@ -13,7 +13,7 @@ foreach($this->X_model->fetch(array(
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
 
-    if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?
+    if(!in_array($app['e__id'], $this->config->item('n___6287')) || in_array($app['e__id'], $this->config->item('n___32141'))){ //Hidden Apps?
         continue;
     }
 

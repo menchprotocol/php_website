@@ -691,31 +691,21 @@ class X extends CI_Controller
 
         } elseif($member_e) {
 
-            //Fetch followings tree discovery trace to see if we find anything:
+            //Do we have a direct discovery?
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $member_e['e__id'],
                 'x__left' => $i__id,
-                'x__right > 0' => null,
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ), array('x__right')) as $x){
                 return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
 
-            $recursive_is = $this->I_model->recursive_following_ids($i__id);
-            if(count($recursive_is)){
-                //Try top level discoveries:
-                foreach($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__creator' => $member_e['e__id'],
-                    'x__left IN (' . join(',', $recursive_is) . ')' => null,
-                    'x__right > 0' => null,
-                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-                ), array('x__right')) as $x){
-                    return redirect_message('/'.$x['x__right'].'/'.$i__id);
-                }
+            //Any of tops been discovered?
+            $top_discovery_id = $this->I_model->recursive_following_ids($i__id, true);
+            if($top_discovery_id > 0){
+                return redirect_message('/'.$top_discovery_id.'/'.$i__id);
             }
 
         }
