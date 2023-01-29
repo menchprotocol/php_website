@@ -790,39 +790,36 @@ class I_model extends CI_Model
 
 
 
-    function recursive_following_ids($i__id, $first_discovery = false, $first_level = true, $loop_breaker_ids = array()){
+    function recursive_following_ids($i__id, $first_discovery = 0, $first_level = true, $loop_breaker_ids = array()){
 
         /*
          *
-         * Returns integer if $first_discovery=true or array otherwise
+         * Returns integer if $first_discovery>0 or array otherwise
          *
          * */
 
         if(count($loop_breaker_ids) && in_array($i__id, $loop_breaker_ids)){
-            return ( $first_discovery ? 0 : array() );
+            return ( $first_discovery>0 ? 0 : array() );
         }
 
         $recursive_i_ids = array();
 
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         ), array('x__left')) as $prev_i){
 
-            if($first_discovery){
-                $member_e = superpower_unlocked();
-                if($member_e){
-                    foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__creator' => $member_e['e__id'],
-                        'x__left' => $prev_i['i__id'],
-                        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-                    )) as $x){
-                        return $x['x__right'];
-                    }
+            if($first_discovery > 0){
+                foreach($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__creator' => $first_discovery,
+                    'x__left' => $prev_i['i__id'],
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                )) as $x){
+                    return $x['x__right'];
                 }
             }
 

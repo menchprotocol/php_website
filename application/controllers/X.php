@@ -689,7 +689,7 @@ class X extends CI_Controller
                 'i__id' => $top_i__id,
             ));
 
-        } elseif($member_e) {
+        } elseif($member_e && 0) {
 
             //Do we have a direct discovery?
             foreach($this->X_model->fetch(array(
@@ -703,7 +703,7 @@ class X extends CI_Controller
             }
 
             //Any of tops been discovered?
-            $top_discovery_id = $this->I_model->recursive_following_ids($i__id, true);
+            $top_discovery_id = $this->I_model->recursive_following_ids($i__id, $member_e['e__id']);
             if($top_discovery_id > 0){
                 return redirect_message('/'.$top_discovery_id.'/'.$i__id);
             }
