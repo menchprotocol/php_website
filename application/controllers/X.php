@@ -682,12 +682,19 @@ class X extends CI_Controller
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
+        if ( !count($is) ) {
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
+        }
+
 
         if($top_i__id > 0){
 
             $top_is = $this->I_model->fetch(array(
                 'i__id' => $top_i__id,
             ));
+            if ( !count($top_is) ) {
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
+            }
 
         } elseif($member_e) {
 
@@ -711,27 +718,6 @@ class X extends CI_Controller
             }
 
         }
-
-        //Make sure we found it:
-        if ( $top_i__id > 0 && !count($top_is) ) {
-
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
-
-        } elseif ( !count($is) ) {
-
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
-
-        } elseif(!in_array($is[0]['i__privacy'], $this->config->item('n___31871') /* PRIVATE */)){
-
-            return redirect_message((superpower_unlocked(10939) ? '/~' . $i__id : home_url()), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Idea #'.$is[0]['i__id'].' is not published yet.</div>');
-
-        }
-
-
-        if($top_i__id > 0 && !in_array($top_is[0]['i__privacy'], $this->config->item('n___31871') /* PRIVATE */)) {
-            return redirect_message('/'.$i__id);
-        }
-
 
 
     //Determine Member:
