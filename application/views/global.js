@@ -886,7 +886,7 @@ function js_redirect(url, timer = 0){
         console.log('MERROR CATCH');
         console.log(url);
         console.log(timer);
-        return false;
+        //return false;
     }
     if(timer > 0){
         setTimeout(function () {

@@ -744,7 +744,7 @@ function redirect_message($url, $message = null, $log_error = false)
     $member_e = superpower_unlocked();
 
     if($member_e && $member_e['e__id']==26771){
-        die('MERROR: '.$url);
+        //die('MERROR: '.$url);
     }
 
     if ($message) {
