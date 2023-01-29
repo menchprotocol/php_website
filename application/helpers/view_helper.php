@@ -1398,7 +1398,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                         //Mass Apply
                         $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item css__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==30795 && !$discovery_mode){
+                    } elseif($e__id_dropdown==30795 && !$discovery_mode && $superpower_10939){
 
                         //Discover Idea
                         $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
