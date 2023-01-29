@@ -52,7 +52,7 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
             'x__down' => $o['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $linked_e){
             if(strlen($linked_e['e__cover'])){
                 if(filter_var($linked_e['e__cover'], FILTER_VALIDATE_URL)){

@@ -832,7 +832,7 @@ class E extends CI_Controller
                 'x__up' => $_POST['focus_id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             );
 
             if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
@@ -1449,7 +1449,7 @@ class E extends CI_Controller
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
-            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'));
 
 
@@ -1553,10 +1553,10 @@ class E extends CI_Controller
         $es = $this->E_model->fetch(array(
             'e__id' => $_POST['sign_e__id'],
         ));
-        if (!in_array($es[0]['e__privacy'], $this->config->item('n___7357') /* PUBLIC */)) {
+        if (!in_array($es[0]['e__privacy'], $this->config->item('n___7358'))) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Your account source is not public. Contact us to adjust your account.',
+                'message' => 'Your account source is not active. Contact us to adjust your account.',
             ));
         }
 
@@ -1823,7 +1823,7 @@ class E extends CI_Controller
             'x__message' => $_POST['input_email'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
-            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'));
 
 

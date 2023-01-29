@@ -10,7 +10,7 @@ foreach($this->X_model->fetch(array(
     'x__down NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
 
     if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?
@@ -35,7 +35,7 @@ foreach($this->X_model->fetch(array(
     'x__down NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
 
     if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?

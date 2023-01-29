@@ -986,7 +986,7 @@ class X_model extends CI_Model
             if(!$is_current_e || $string_references['ref_time_found']){
 
                 foreach($this->X_model->fetch(array(
-                    'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+                    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
                     'x__down' => $referenced_e,
@@ -1819,7 +1819,7 @@ class X_model extends CI_Model
         ));
         $es = $this->E_model->fetch(array(
             'e__id' => $member_e['e__id'],
-            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if (!count($is)) {
             return array(
