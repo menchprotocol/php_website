@@ -19,7 +19,7 @@ foreach($this->X_model->fetch(array(
     'x__up' => 30811, //Hard Redirect
 )) as $redirect){
     if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
-        js_redirect($redirect['x__message'], 13);
+        //js_php_redirect($redirect['x__message'], 13);
         break;
     }
 }
@@ -428,7 +428,7 @@ if($top_i__id) {
             echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
 
             //Referesh soon so we can check if completed or not
-            js_redirect('/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1', 2584);
+            js_php_redirect('/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1', 2584);
 
         } elseif(count($x_completes)){
 
@@ -969,7 +969,7 @@ echo '</div>';
 
             //Go Next:
             $('.go-next').html(( is_logged_in ? '<i class="far fa-yin-yang fa-spin zq6255"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
-            window.location = go_next_url;
+            js_redirect(go_next_url);
 
         }
     }
@@ -1038,7 +1038,7 @@ echo '</div>';
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                window.location = go_next_url;
+                js_redirect(go_next_url);
             } else {
                 //Show error:
                 alert(data.message);
@@ -1067,7 +1067,7 @@ echo '</div>';
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                window.location = go_next_url;
+                js_redirect(go_next_url);
             } else {
                 //Show error:
                 alert(data.message);

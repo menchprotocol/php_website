@@ -683,7 +683,7 @@ class X extends CI_Controller
             'i__id' => $i__id,
         ));
         if ( !count($is) ) {
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
+            //return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
         }
 
 
@@ -693,7 +693,7 @@ class X extends CI_Controller
                 'i__id' => $top_i__id,
             ));
             if ( !count($top_is) ) {
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
+                //return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
             }
 
         } elseif($member_e && 0) {

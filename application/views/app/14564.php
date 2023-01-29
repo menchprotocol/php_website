@@ -11,7 +11,7 @@ if(isset($_GET['i__id'])){
         ));
         echo 'ERROR Creating New Account! Admin is notified...';
     } else {
-        js_redirect(new_member_redirect($member_result['e']['e__id'], $_GET['i__id']), 13);
+        js_php_redirect(new_member_redirect($member_result['e']['e__id'], $_GET['i__id']), 13);
     }
 
 } else {
@@ -91,11 +91,11 @@ if(isset($_GET['i__id'])){
 
             //Activate Session:
             $this->E_model->activate_session($member_emails[0], true);
-            js_redirect(($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() )), 13);
+            js_php_redirect(($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() )), 13);
 
         } else {
 
-            js_redirect('/-14564?i__id='.$sign_i__id.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
+            js_php_redirect('/-14564?i__id='.$sign_i__id.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
 
         }
 
@@ -111,7 +111,7 @@ if(isset($_GET['i__id'])){
             ),
         ));
 
-        js_redirect(( $sign_i__id ? '/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() ) ), 13);
+        js_php_redirect(( $sign_i__id ? '/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() ) ), 13);
 
     }
 

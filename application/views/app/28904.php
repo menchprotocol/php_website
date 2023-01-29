@@ -12,7 +12,7 @@ if($e__id > 0){
     echo '<div style="max-width: 540px; margin: 0 auto;">'.view_radio_e(28904, $e__id, 0).'</div>';
     echo '<input type="hidden" id="member__id_override" value="'.$e__id.'" />';
 } else {
-    js_redirect('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), 13);
+    js_php_redirect('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), 13);
 }
 
 

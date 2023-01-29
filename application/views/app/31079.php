@@ -148,7 +148,7 @@ if(count($is)){
                 link_i__id: 0
             }, function (data) {
                 if (data.status) {
-                    window.location = '/-31079?i__id=<?= $_GET['i__id'] ?>&new_id='+data.new_i__id;
+                    js_redirect('/-31079?i__id=<?= $_GET['i__id'] ?>&new_id='+data.new_i__id);
                 } else {
                     //Show errors:
                     alert(data.message);

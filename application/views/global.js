@@ -462,7 +462,7 @@ function toggle_pills(x__type){
         $('.headlinebody').addClass('hidden');
         $('.thepill' + x__type+ ' .nav-link').addClass('active');
         $('.headline_body_' + x__type).removeClass('hidden');
-        //window.location.hash = '#'+x__type;
+        //js_redirect('#'+x__type);
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type).html().length ){
@@ -490,7 +490,7 @@ function i_copy(i__id, do_template){
         do_template:do_template
     }, function (data) {
         if(data.status){
-            window.location = '/~'+data.new_i__id;
+            js_redirect('/~'+data.new_i__id);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -503,7 +503,7 @@ function e_copy(e__id){
         e__id:e__id
     }, function (data) {
         if(data.status){
-            window.location = '/@'+data.new_e__id;
+            js_redirect('/@'+data.new_e__id);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -881,6 +881,22 @@ function load_covers(){
     });
 }
 
+function js_redirect(url, timer = 0){
+    if(js_pl_id==26771){
+        console.log('MERROR CATCH');
+        console.log(url);
+        console.log(timer);
+        return false;
+    }
+    if(timer > 0){
+        setTimeout(function () {
+            window.location = url;
+        }, timer);
+    } else{
+        window.location = url;
+    }
+    return false;
+}
 
 function load_card_clickers(){
 
@@ -888,15 +904,13 @@ function load_card_clickers(){
 
     $( ".card_e_click" ).click(function(e) {
         if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273').length < 1){
-            window.location = '/@'+$(this).attr('e__id');
-            return false;
+            js_redirect('/@'+$(this).attr('e__id'));
         }
     });
 
     $('.card_i_click').click(function(e) {
         if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273').length < 1){
-            window.location = '/~'+$(this).attr('i__id');
-            return false;
+            js_redirect('/~'+$(this).attr('i__id'));
         }
     });
 
@@ -2546,7 +2560,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
                 //Go to main idea page:
-                window.location = data.deletion_redirect;
+                js_redirect(data.deletion_redirect);
             } else if( data.delete_element && data.delete_element.length > 0 ){
                 //Go to main idea page:
                 setTimeout(function () {
@@ -2630,7 +2644,7 @@ function e_reset_discoveries(e__id){
         $('.e_reset_discoveries').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="css__title">REMOVING ALL...</b>');
 
         //Redirect:
-        window.location = '/x/e_reset_discoveries/'+e__id;
+        js_redirect('/x/e_reset_discoveries/'+e__id);
     } else {
         return false;
     }
@@ -2713,7 +2727,7 @@ function sort_e_handle_reset(){
             } else {
 
                 //Refresh page:
-                window.location = '/@' + fetch_val('#focus_id');
+                js_redirect('/@' + fetch_val('#focus_id'));
 
             }
         });

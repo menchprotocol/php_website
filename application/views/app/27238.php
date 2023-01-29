@@ -39,7 +39,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             //Assign session & log transaction:
             $this->E_model->activate_session($es[0]);
 
-            js_redirect('/@'.$es[0]['e__id']);
+            js_php_redirect('/@'.$es[0]['e__id']);
         }
 
 

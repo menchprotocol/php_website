@@ -7,7 +7,7 @@ $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ($sign_i__id > 0 ?
 if(superpower_unlocked()) {
 
     //Lead member and above, go to console:
-    js_redirect($next_url, 13);
+    js_php_redirect($next_url, 13);
 
 } elseif(isset($_COOKIE['auth_cookie'])){
 
@@ -31,7 +31,7 @@ if(superpower_unlocked()) {
 
     }
 
-    js_redirect($next_url, 13);
+    js_php_redirect($next_url, 13);
 
 } else {
 
@@ -52,7 +52,7 @@ if(superpower_unlocked()) {
     if(0 && !isset($_GET['active'])){
 
         //Disable for now:
-        js_redirect('/-14436', 13);
+        js_php_redirect('/-14436', 13);
 
         echo '<div class="center-info">';
         echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
@@ -259,7 +259,7 @@ if(superpower_unlocked()) {
 
                         setTimeout(function () {
                             //Redirect to next read:
-                            window.location = data.sign_url;
+                            js_redirect(data.sign_url);
                         }, 377);
 
                     } else {
@@ -310,7 +310,7 @@ if(superpower_unlocked()) {
                         $('#password_errors').html('');
 
                         //Redirect
-                        window.location = data.sign_url;
+                        js_redirect(data.sign_url);
 
                     } else {
 

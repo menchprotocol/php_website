@@ -743,6 +743,10 @@ function redirect_message($url, $message = null, $log_error = false)
     $CI =& get_instance();
     $member_e = superpower_unlocked();
 
+    if($member_e && $member_e['e__id']==26771){
+        die('MERROR: '.$url);
+    }
+
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
     }
@@ -1139,14 +1143,8 @@ function analyze_domain($full_url){
 }
 
 
-function js_redirect($url, $timer = 13){
-    echo '<script>
-    $(document).ready(function () {
-        setTimeout(function () {
-            window.location = \''.$url.'\';
-        }, '.$timer.');
-    });
-</script>';
+function js_php_redirect($url, $timer = 0){
+    echo '<script> $(document).ready(function () { js_redirect(\''.$url.'\', '.$timer.'); }); </script>';
 }
 
 function i__validate_title($string){

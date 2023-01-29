@@ -9,7 +9,7 @@ if(!count($website_terms)){
 }
 
 foreach($website_terms as $i_item) {
-    js_redirect('/:'.$i_item['i__id'], 13);
+    js_php_redirect('/:'.$i_item['i__id'], 13);
     break;
 }
 

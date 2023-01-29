@@ -23,11 +23,11 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
     if(!count($following)){
 
-        js_redirect(home_url(), 1);
+        js_php_redirect(home_url(), 1);
 
     } else {
 
-        js_redirect($following[0]['x__message'], 1);
+        js_php_redirect($following[0]['x__message'], 1);
 
     }
 
