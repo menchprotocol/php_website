@@ -836,15 +836,14 @@ var editor_on = false;
 function toggle_editor(i__id){
 
     $('.left_nav').addClass('hidden');
-    $('.icon_search').toggleClass('hidden');
+    $('.icon_editor').toggleClass('hidden');
 
-    if(editor_on){
+    if(editor_on || !i__id){
 
         //Turn OFF
         editor_on = false; //Reverse
         $('.top_nav, #container_content, .container_content').removeClass('hidden');
         $('.top_message_box').addClass('hidden');
-
 
     } else {
 
@@ -868,8 +867,6 @@ function toggle_editor(i__id){
         });
 
     }
-
-
 
 }
 
