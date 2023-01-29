@@ -696,7 +696,7 @@ class X extends CI_Controller
                 //return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
             }
 
-        } elseif($member_e && 0) {
+        } elseif($member_e) {
 
             //Do we have a direct discovery?
             foreach($this->X_model->fetch(array(
@@ -706,15 +706,13 @@ class X extends CI_Controller
                 'x__left' => $i__id,
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ), array('x__right')) as $x){
-                return redirect_message('/'.$x['x__right'].'/'.$i__id);
+                return redirect_message('/'.$x['x__right'].'/'.$i__id.'?nav=2');
             }
 
-            if(0){
-                //Any of tops been discovered?
-                $top_discovery_id = $this->I_model->recursive_following_ids($i__id, $member_e['e__id']);
-                if($top_discovery_id > 0){
-                    return redirect_message('/'.$top_discovery_id.'/'.$i__id);
-                }
+            //Any of tops been discovered?
+            $top_discovery_id = $this->I_model->recursive_following_ids($i__id, $member_e['e__id']);
+            if($top_discovery_id > 0){
+                return redirect_message('/'.$top_discovery_id.'/'.$i__id.'?nav=1');
             }
 
         }
