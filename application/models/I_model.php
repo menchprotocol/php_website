@@ -627,9 +627,9 @@ class I_model extends CI_Model
 
 
 
-    function recursive_follower_ids($i__id, $first_level = true, $loop_breaker_i_id = 0){
+    function recursive_follower_ids($i__id, $first_level = true, $loop_breaker_ids = array()){
 
-        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
+        if(count($loop_breaker_ids) && in_array($i__id, $loop_breaker_ids)){
             return array();
         }
 
@@ -647,7 +647,9 @@ class I_model extends CI_Model
             //AND Idea? Follow through...
             if(!in_array($next_i['i__type'], $this->config->item('n___7712'))){
 
-                $recursive_is = $this->I_model->recursive_follower_ids($next_i['i__id'], false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
+                array_push($loop_breaker_ids, $next_i['i__id']);
+
+                $recursive_is = $this->I_model->recursive_follower_ids($next_i['i__id'], false, $loop_breaker_ids);
 
                 //Add to current array if we found anything:
                 if(count($recursive_is) > 0){

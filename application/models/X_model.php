@@ -1110,10 +1110,10 @@ class X_model extends CI_Model
 
 
 
-    function find_previous($e__id, $top_i__id, $i__id, $loop_breaker_i_id = 0)
+    function find_previous($e__id, $top_i__id, $i__id, $loop_breaker_ids = array())
     {
 
-        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i__id){
+        if(count($loop_breaker_ids) && in_array($i__id, $loop_breaker_ids)){
             return 0;
         }
 
@@ -1143,8 +1143,10 @@ class X_model extends CI_Model
                 return array($i_previous);
             }
 
+            array_push($loop_breaker_ids, $i_previous['i__id']);
+
             //Keep looking:
-            $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i__id ));
+            $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], $loop_breaker_ids);
             if(count($top_search)){
                 array_push($top_search, $i_previous);
                 return $top_search;
@@ -1159,10 +1161,10 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $loop_breaker_i_id = 0)
+    function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $loop_breaker_ids = array())
     {
 
-        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i['i__id']){
+        if(count($loop_breaker_ids) && in_array($i['i__id'], $loop_breaker_ids)){
             return 0;
         }
 
@@ -1206,9 +1208,10 @@ class X_model extends CI_Model
                 return intval($next_i['i__id']);
             }
 
+            array_push($loop_breaker_ids, $next_i['i__id']);
 
             //Keep looking deeper:
-            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i['i__id'] ));
+            $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, $loop_breaker_ids);
             if ($found_next) {
                 return $found_next;
             }
@@ -1683,10 +1686,10 @@ class X_model extends CI_Model
 
 
 
-    function tree_progress($e__id, $i, $top_level = true, $loop_breaker_i_id = 0)
+    function tree_progress($e__id, $i, $top_level = true, $loop_breaker_ids = array())
     {
 
-        if($loop_breaker_i_id>0 && $loop_breaker_i_id==$i['i__id']){
+        if(count($loop_breaker_ids) && in_array($i['i__id'], $loop_breaker_ids)){
             return false;
         }
 
@@ -1722,8 +1725,10 @@ class X_model extends CI_Model
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__right')) as $expansion_in) {
 
+            array_push($loop_breaker_ids, $i__id);
+
             //Fetch recursive:
-            $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, false, ( $loop_breaker_i_id>0 ? $loop_breaker_i_id : $i['i__id'] ));
+            $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, false, $loop_breaker_ids);
 
             //Addup completion stats for this:
             $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
