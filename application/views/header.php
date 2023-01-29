@@ -469,7 +469,7 @@ if(!$basic_header_footer){
 ?>
 
 
-<div class="top_message_box hidden">
+<div class="container top_message_box hidden">
 
     <h5 class="css__title"><?= $e___11035[27963]['m__title'] ?></h5>
 
