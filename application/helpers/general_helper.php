@@ -741,6 +741,11 @@ function redirect_message($url, $message = null, $log_error = false)
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
     $CI =& get_instance();
+    $member_e = superpower_unlocked();
+
+    if($member_e && $member_e['e__id']==26771){
+        die('Done:'.$message);
+    }
 
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
@@ -748,7 +753,6 @@ function redirect_message($url, $message = null, $log_error = false)
 
     if($log_error){
         //Log thie error:
-        $member_e = superpower_unlocked();
         $CI->X_model->create(array(
             'x__message' => $url.' '.stripslashes($message),
             'x__type' => 4246, //Platform Bug Reports
