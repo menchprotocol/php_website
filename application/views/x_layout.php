@@ -815,7 +815,7 @@ if(!$is_or_idea){
 
 
 if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
-    echo '<p style="padding:10px;">'.$tree_progress['fixed_completed_percentage'].'% Completed</p>';
+    echo '<p style="padding:10px;" title="'.$tree_progress['fixed_discovered'].' / '.$tree_progress['fixed_total'].' completed">'.$tree_progress['fixed_completed_percentage'].'% Completed</p>';
 }
 
 
