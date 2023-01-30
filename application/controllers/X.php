@@ -696,7 +696,7 @@ class X extends CI_Controller
 
                 return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
 
-            } elseif(!$this->X_model->started_ids($x__creator, $top_i__id)){
+            } elseif($x__creator && !$this->X_model->started_ids($x__creator, $top_i__id)){
 
                 $this->X_model->create(array(
                     'x__message' => '$top_i__id ('.$top_i__id.', '.$i__id.') not a started_ids() for @'.$x__creator,
