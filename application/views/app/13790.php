@@ -307,8 +307,8 @@ if(strlen($_GET['i__id'])){
         <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
         .container{
-            width: 100% !important;
-            max-width: 100% !important;
+            margin-left: 8px;
+            max-width: calc(100% - 16px) !important;
         }
         #sortable_table td>span{
             display: block;
