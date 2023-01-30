@@ -308,6 +308,7 @@ if(strlen($_GET['i__id'])){
 
         .container{
             width: 100% !important;
+            max-width: 100% !important;
         }
         #sortable_table td>span{
             display: block;
