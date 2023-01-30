@@ -627,34 +627,36 @@ class I_model extends CI_Model
 
 
 
-    function recursive_down_ids($i__id, $first_level = true, $loop_breaker_ids = array()){
+    function recursive_down_ids($i, $first_level = true, $loop_breaker_ids = array()){
 
-        if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return array();
         }
-        array_push($loop_breaker_ids, intval($i__id));
+
+        if(in_array($i['i__type'], $this->config->item('n___7712'))){
+            //OR IDEA:
+            return array();
+        }
 
         $recursive_i_ids = array();
+        array_push($loop_breaker_ids, intval($i['i__id']));
 
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-            'x__left' => $i__id,
+            'x__left' => $i['i__id'],
         ), array('x__right')) as $next_i){
 
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
-            //AND Idea? Follow through...
-            if(!in_array($next_i['i__type'], $this->config->item('n___7712'))){
+            $recursive_is = $this->I_model->recursive_down_ids($next_i, false, $loop_breaker_ids);
 
-                $recursive_is = $this->I_model->recursive_down_ids($next_i['i__id'], false, $loop_breaker_ids);
-
-                //Add to current array if we found anything:
-                if(count($recursive_is) > 0){
-                    $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
-                }
+            //Add to current array if we found anything:
+            if(count($recursive_is) > 0){
+                $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
             }
+
         }
 
         if($first_level){

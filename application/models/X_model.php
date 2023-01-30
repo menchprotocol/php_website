@@ -1217,7 +1217,7 @@ class X_model extends CI_Model
         }
 
 
-        if ($search_up && $top_i__id!=$i['i__id'] && 0) {
+        if ($search_up && $top_i__id!=$i['i__id']) {
             //Check Previous/Up
             $current_previous = $i['i__id'];
             foreach (array_reverse($this->X_model->find_previous($e__id, $top_i__id, $i['i__id'])) as $p_i) {
@@ -1691,7 +1691,7 @@ class X_model extends CI_Model
             return false;
         }
 
-        $recursive_down_ids = $this->I_model->recursive_down_ids($i['i__id']);
+        $recursive_down_ids = $this->I_model->recursive_down_ids($i);
         if(!count($recursive_down_ids)){
             return false;
         }
