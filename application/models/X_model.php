@@ -1708,7 +1708,7 @@ class X_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__left'), 0) as $completed){
-            array_push($list_discovered, intval($completed['i__id']).'-'.$current_level.'-'.$i['i__id']);
+            array_push($list_discovered, intval($completed['i__id']));
         }
 
 
