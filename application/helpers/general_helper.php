@@ -1839,7 +1839,60 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             $export_row['s__keywords'] = '';
 
             //Now build object-specific index:
-            if ($loop_obj == 12274) {
+            if ($loop_obj == 12273) {
+
+                //IDEAS
+                //See if this idea has a time-range:
+                $export_row['s__type'] = $loop_obj;
+                $export_row['s__id'] = intval($s['i__id']);
+                $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
+                $export_row['s__privacy'] = intval($s['i__privacy']);
+                $export_row['s__cover'] = '';
+                $export_row['s__title'] = $s['i__title'];
+                $export_row['s__weight'] = intval($s['i__weight']);
+
+                if(in_array($s['i__privacy'], $CI->config->item('n___31870'))){
+                    array_push($export_row['_tags'], 'is_public');
+                }
+
+                //Top/Bottom Idea Keywords
+                foreach ($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__left' => $s['i__id'],
+                ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i) {
+                    $export_row['s__keywords'] .= $i['i__title'] . ' ';
+                }
+                foreach ($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__right' => $s['i__id'],
+                ), array('x__left'), 0, 0, array('x__weight' => 'ASC')) as $i) {
+                    $export_row['s__keywords'] .= $i['i__title'] . ' ';
+                }
+
+                //Idea Sources Keywords
+                foreach($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__right' => $s['i__id'],
+                    'LENGTH(x__message)>0' => null,
+                ), array(), 0) as $x){
+                    $export_row['s__keywords'] .= $x['x__message'] . ' ';
+                }
+
+                //Idea Authors access tag
+                foreach($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //SOURCE AUTHORS
+                    'x__right' => $s['i__id'],
+                ), array('x__up'), 0) as $x){
+                    array_push($export_row['_tags'], 'z_' . $x['e__id']);
+                }
+
+            } elseif ($loop_obj == 12274) {
 
                 //SOURCES
                 $export_row['s__type'] = $loop_obj;
@@ -1921,42 +1974,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                     //Add Keywords:
                     $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['x__message']) ? ' '.$x['x__message'] : '' ) . ' ';
-                }
-
-            } elseif ($loop_obj == 12273) {
-
-                //IDEAS
-                //See if this idea has a time-range:
-                $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['i__id']);
-                $export_row['s__url'] = '/i/i_go/' . $s['i__id'];
-                $export_row['s__privacy'] = intval($s['i__privacy']);
-                $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['i__title'];
-                $export_row['s__weight'] = intval($s['i__weight']);
-
-
-                if(in_array($s['i__privacy'], $CI->config->item('n___31870'))){
-                    array_push($export_row['_tags'], 'is_public');
-                }
-
-                //Tag Idea Source Authors
-                foreach($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //SOURCE AUTHORS
-                    'x__right' => $s['i__id'],
-                ), array(), 0) as $x){
-                    array_push($export_row['_tags'], 'z_' . $x['x__up']);
-                }
-
-                //Append Idea Sources Keywords
-                foreach($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__right' => $s['i__id'],
-                    'LENGTH(x__message)>0' => null,
-                ), array(), 0) as $x){
-                    $export_row['s__keywords'] .= $x['x__message'] . ' ';
                 }
 
             }
