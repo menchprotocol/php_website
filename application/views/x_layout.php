@@ -49,7 +49,6 @@ foreach($is_next as $in_key => $in_value){
 
 $i['i__title'] = str_replace('"','',$i['i__title']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
-$top_i__id = ( $i_top && $this->X_model->started_ids($x__creator, $i_top['i__id']) ? $i_top['i__id'] : 0 );
 $one_down_hack = (count($first_down) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

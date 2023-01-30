@@ -629,6 +629,7 @@ class X extends CI_Controller
 
         $flash_message = null;
         $member_e = superpower_unlocked();
+        $x__creator = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
 
         //Log link if not there:
         if(
@@ -648,7 +649,6 @@ class X extends CI_Controller
             )))
         ){
 
-            $x__creator = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
             $es_tag = $this->E_model->fetch(array(
                 'e__id' => $append__id,
             ));
@@ -693,7 +693,17 @@ class X extends CI_Controller
                 'i__id' => $top_i__id,
             ));
             if ( !count($top_is) ) {
-                //return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
+
+                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
+
+            } elseif(!$this->X_model->started_ids($x__creator, $top_i__id)){
+
+                $this->X_model->create(array(
+                    'x__message' => '$top_i__id ('.$top_i__id.', '.$i__id.') not a started_ids() for @'.$x__creator,
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__creator' => $x__creator,
+                ));
+
             }
 
         } elseif($member_e) {
@@ -746,7 +756,7 @@ class X extends CI_Controller
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 7610, //MEMBER VIEWED DISCOVERY
-                'x__left' => ( $top_i__id > 0 ? $top_is[0]['i__id'] : 0 ),
+                'x__left' => $top_i__id,
                 'x__right' => $is[0]['i__id'],
                 'x__weight' => fetch_cookie_order('7610_' . $is[0]['i__id']),
             ));
@@ -759,8 +769,11 @@ class X extends CI_Controller
             'i' => $is[0],
             'flash_message' => $flash_message,
         ));
+
+
+
         $this->load->view('x_layout', array(
-            'i_top' => ( $top_i__id > 0 ? $top_is[0] : false ),
+            'top_i__id' => $top_i__id,
             'i' => $is[0],
             'member_e' => $member_e,
         ));
