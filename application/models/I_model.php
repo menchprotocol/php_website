@@ -627,7 +627,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_down_ids($i, $first_level = true, $loop_breaker_ids = array()){
+    function recursive_down_ids($i, $current_level = 0, $loop_breaker_ids = array()){
 
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return array();
@@ -638,6 +638,7 @@ class I_model extends CI_Model
             return array();
         }
 
+        $current_level++;
         $recursive_i_ids = array();
         array_push($loop_breaker_ids, intval($i['i__id']));
 
@@ -648,9 +649,9 @@ class I_model extends CI_Model
             'x__left' => $i['i__id'],
         ), array('x__right')) as $next_i){
 
-            array_push($recursive_i_ids, intval($next_i['i__id']));
+            array_push($recursive_i_ids, intval($next_i['i__id'])).'-'.$current_level.'-'.$i['i__id'];
 
-            $recursive_is = $this->I_model->recursive_down_ids($next_i, false, $loop_breaker_ids);
+            $recursive_is = $this->I_model->recursive_down_ids($next_i, $current_level, $loop_breaker_ids);
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -659,7 +660,7 @@ class I_model extends CI_Model
 
         }
 
-        if($first_level){
+        if($current_level==1){
             return array_unique($recursive_i_ids);
         } else {
             return $recursive_i_ids;
@@ -793,7 +794,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_up_ids($i__id, $first_discovery = 0, $first_level = true, $loop_breaker_ids = array()){
+    function recursive_up_ids($i__id, $first_discovery = 0, $current_level = 0, $loop_breaker_ids = array()){
 
         /*
          *
@@ -807,6 +808,7 @@ class I_model extends CI_Model
         array_push($loop_breaker_ids, intval($i__id));
 
         $recursive_i_ids = array();
+        $current_level++;
 
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -829,7 +831,7 @@ class I_model extends CI_Model
 
             array_push($recursive_i_ids, intval($prev_i['i__id']));
 
-            $recursive_is = $this->I_model->recursive_up_ids($prev_i['i__id'], $first_discovery, false, $loop_breaker_ids);
+            $recursive_is = $this->I_model->recursive_up_ids($prev_i['i__id'], $first_discovery, $current_level, $loop_breaker_ids);
 
             //Add to current array if we found anything:
             if(!$first_discovery && count($recursive_is) > 0){
@@ -839,7 +841,7 @@ class I_model extends CI_Model
 
         if($first_discovery) {
             return 0;
-        } elseif($first_level){
+        } elseif($current_level==1){
             return array_unique($recursive_i_ids);
         } else {
             return $recursive_i_ids;
