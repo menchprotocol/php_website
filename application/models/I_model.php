@@ -830,7 +830,7 @@ class I_model extends CI_Model
             $recursive_is = $this->I_model->recursive_up_ids($prev_i['i__id'], $first_discovery, false, $loop_breaker_ids);
 
             //Add to current array if we found anything:
-            if(count($recursive_is) > 0){
+            if(!$first_discovery && count($recursive_is) > 0){
                 $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
             }
         }
