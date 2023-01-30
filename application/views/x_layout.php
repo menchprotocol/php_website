@@ -235,7 +235,7 @@ if($top_i__id){
     $is_this = $this->I_model->fetch(array(
         'i__id' => $top_i__id,
     ));
-    if($x__creator==26771){
+    if($x__creator==267711){
         $tree_progress['fixed_completed_percentage'] = 76;
     } else {
         $tree_progress = $this->X_model->tree_progress($x__creator, $is_this[0]);
