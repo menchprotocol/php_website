@@ -1114,7 +1114,7 @@ class X_model extends CI_Model
     {
 
         if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
-            return 0;
+            return array();
         }
         array_push($loop_breaker_ids, $i__id);
 
