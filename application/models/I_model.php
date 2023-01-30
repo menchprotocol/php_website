@@ -645,7 +645,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //Must See Idea Links
             'x__left' => $i['i__id'],
         ), array('x__right')) as $next_i){
 
