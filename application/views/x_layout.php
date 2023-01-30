@@ -345,7 +345,7 @@ if($top_i__id) {
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
-                //See if this answer was seleted:
+                //See if this answer was selected:
                 if (count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY IDEA LINK

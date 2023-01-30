@@ -1129,13 +1129,15 @@ class X_model extends CI_Model
             //Validate Selection:
             $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___7712'));
             $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
-            if($e__id>0 && ($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
-                    'x__left' => $i_previous['i__id'],
-                    'x__right' => $i__id,
-                    'x__creator' => $e__id,
-                )))){
+            $is_selected = count($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
+                'x__left' => $i_previous['i__id'],
+                'x__right' => $i__id,
+                'x__creator' => $e__id,
+            )));
+
+            if($e__id>0 && !$is_selected && ($is_or_i || !$is_fixed_x)){
                 continue;
             }
 
@@ -1188,13 +1190,14 @@ class X_model extends CI_Model
 
             //Validate Selection:
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
-            if(($is_or_i || !$is_fixed_x) && !count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
-                    'x__left' => $i['i__id'],
-                    'x__right' => $next_i['i__id'],
-                    'x__creator' => $e__id,
-                )))){
+            $is_selected = count($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
+                'x__left' => $i['i__id'],
+                'x__right' => $next_i['i__id'],
+                'x__creator' => $e__id,
+            )));
+            if(($is_or_i || !$is_fixed_x) && !$is_selected){
                 continue;
             }
 
@@ -1356,7 +1359,6 @@ class X_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
                 'x__creator' => $add_fields['x__creator'],
                 'x__left' => $i['i__id'],
-                'x__right >' => 0, //With an answer
             ), array('x__right'), 0);
 
         } elseif(!in_array($i['i__type'], $this->config->item('n___7712'))){
@@ -1906,7 +1908,7 @@ class X_model extends CI_Model
         //Delete ALL previous answers:
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
+            'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY ANSWERED
             'x__creator' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )) as $x_progress){
