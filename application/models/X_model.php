@@ -1116,6 +1116,7 @@ class X_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
             return 0;
         }
+        array_push($loop_breaker_ids, $i__id);
 
         //Fetch followings:
         foreach($this->X_model->fetch(array(
@@ -1143,8 +1144,6 @@ class X_model extends CI_Model
                 return array($i_previous);
             }
 
-            array_push($loop_breaker_ids, $i_previous['i__id']);
-
             //Keep looking:
             $top_search = $this->X_model->find_previous($e__id, $top_i__id, $i_previous['i__id'], $loop_breaker_ids);
             if(count($top_search)){
@@ -1167,6 +1166,7 @@ class X_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return 0;
         }
+        array_push($loop_breaker_ids, $i['i__id']);
 
         $is_or_i = in_array($i['i__type'], $this->config->item('n___7712'));
         $found_trigger = false;
@@ -1207,8 +1207,6 @@ class X_model extends CI_Model
                 )))){
                 return intval($next_i['i__id']);
             }
-
-            array_push($loop_breaker_ids, $next_i['i__id']);
 
             //Keep looking deeper:
             $found_next = $this->X_model->find_next($e__id, $top_i__id, $next_i, 0, false, $top_completed, $loop_breaker_ids);
@@ -1692,6 +1690,7 @@ class X_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return false;
         }
+        array_push($loop_breaker_ids, $i['i__id']);
 
         $recursive_down_ids = $this->I_model->recursive_down_ids($i['i__id']);
         if(!count($recursive_down_ids)){
@@ -1714,7 +1713,6 @@ class X_model extends CI_Model
             'fixed_discovered' => intval($common_completed[0]['completed_x']),
         );
 
-
         //Now let's check possible expansions:
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
@@ -1724,8 +1722,6 @@ class X_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__right')) as $expansion_in) {
-
-            array_push($loop_breaker_ids, $i__id);
 
             //Fetch recursive:
             $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, false, $loop_breaker_ids);

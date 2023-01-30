@@ -706,13 +706,13 @@ class X extends CI_Controller
                 'x__left' => $i__id,
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ), array('x__right')) as $x){
-                return redirect_message('/'.$x['x__right'].'/'.$i__id.'?nav=2');
+                return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
 
             //Any of tops been discovered?
             $top_discovery_id = $this->I_model->recursive_up_ids($i__id, $member_e['e__id']);
             if($top_discovery_id > 0){
-                return redirect_message('/'.$top_discovery_id.'/'.$i__id.'?nav=1');
+                return redirect_message('/'.$top_discovery_id.'/'.$i__id);
             }
 
         }
