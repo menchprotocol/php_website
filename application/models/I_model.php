@@ -647,7 +647,7 @@ class I_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //Must See Idea Links
             'x__left' => $i['i__id'],
-        ), array('x__right')) as $next_i){
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
 
             if(!in_array(intval($next_i['i__id']), $recursive_i_ids)){
                 array_push($recursive_i_ids, intval($next_i['i__id']));
