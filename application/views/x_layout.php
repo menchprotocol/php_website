@@ -816,14 +816,15 @@ if(!$is_or_idea){
 
 if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
     echo '<p style="padding:10px;" title="'.$tree_progress['fixed_discovered'].' / '.$tree_progress['fixed_total'].' completed">'.$tree_progress['fixed_completed_percentage'].'% Completed</p>';
+}
+
     if(isset($_GET['list'])){
-        echo '<p style="padding:10px;">Discovered</p>';
+        echo '<p style="padding:10px;">'.$tree_progress['fixed_discovered'].' Discovered</p>';
         echo '<p style="padding:10px;">'.join(', ',$tree_progress['list_discovered']).'</p>';
-        echo '<p style="padding:10px;">Total</p>';
+        echo '<p style="padding:10px;">'.$tree_progress['fixed_total'].' Total</p>';
         echo '<p style="padding:10px;">'.join(', ',$tree_progress['list_total']).'</p>';
 
     }
-}
 
 
 
