@@ -1434,7 +1434,6 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
     $already_added = array(); //Prevent duplicates
     foreach($query as $subscriber){
 
-        /*
         //Make sure not already added AND not unsubscribed:
         if(in_array($subscriber['e__id'], $already_added)){
             continue;
@@ -1467,7 +1466,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             continue;
         }
 
-        */
+
 
 
         //Fetch email & phone:
