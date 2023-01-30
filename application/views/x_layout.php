@@ -235,7 +235,11 @@ if($top_i__id){
     $is_this = $this->I_model->fetch(array(
         'i__id' => $top_i__id,
     ));
-    $tree_progress = $this->X_model->tree_progress($x__creator, $is_this[0]);
+    if($x__creator==26771){
+        $tree_progress['fixed_completed_percentage'] = 76;
+    } else {
+        $tree_progress = $this->X_model->tree_progress($x__creator, $is_this[0]);
+    }
     $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i['i__id'];
 
