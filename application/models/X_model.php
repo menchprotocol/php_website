@@ -1170,6 +1170,7 @@ class X_model extends CI_Model
 
         $is_or_i = in_array($i['i__type'], $this->config->item('n___7712'));
         $found_trigger = false;
+
         foreach ($this->X_model->fetch(array(
             'x__left' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
@@ -1215,7 +1216,6 @@ class X_model extends CI_Model
             }
 
         }
-
 
         if ($search_up && $top_i__id!=$i['i__id']) {
             //Check Previous/Up
@@ -1699,19 +1699,24 @@ class X_model extends CI_Model
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         //Count completed:
-        $common_completed = $this->X_model->fetch(array(
+        $list_discovered = array();
+        foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-        ), array('x__left'), 0, 0, array(), 'COUNT(DISTINCT i__id) as completed_x');
+        ), array('x__left'), 0) as $completed){
+            array_push($list_discovered, intval($completed['i__id']));
+        }
 
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
             'fixed_total' => count($recursive_down_ids),
-            'fixed_discovered' => intval($common_completed[0]['completed_x']),
+            'list_total' => $recursive_down_ids,
+            'fixed_discovered' => count($list_discovered),
+            'list_discovered' => $list_discovered,
         );
 
         //Now let's check possible expansions:
