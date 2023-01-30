@@ -653,13 +653,12 @@ class I_model extends CI_Model
                 array_push($recursive_i_ids, intval($next_i['i__id']));
             }
 
-            $recursive_is = $this->I_model->recursive_down_ids($next_i, $current_level, $loop_breaker_ids);
-
             //Add to current array if we found anything:
-            if(count($recursive_is) > 0){
-                $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
+            foreach($this->I_model->recursive_down_ids($next_i, $current_level, $loop_breaker_ids) as $recursive_i_id){
+                if(!in_array($recursive_i_id, $recursive_i_ids)){
+                    array_push($recursive_i_ids, $recursive_i_id);
+                }
             }
-
         }
 
         if($current_level==1){
