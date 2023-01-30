@@ -1729,8 +1729,6 @@ class X_model extends CI_Model
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__right')) as $expansion_in) {
 
-            continue;
-
             //Fetch recursive:
             $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
 
