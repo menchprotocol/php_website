@@ -1116,7 +1116,7 @@ class X_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
             return array();
         }
-        array_push($loop_breaker_ids, $i__id);
+        array_push($loop_breaker_ids, intval($i__id));
 
         //Fetch followings:
         foreach($this->X_model->fetch(array(
@@ -1166,7 +1166,7 @@ class X_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return 0;
         }
-        array_push($loop_breaker_ids, $i['i__id']);
+        array_push($loop_breaker_ids, intval($i['i__id']));
 
         $is_or_i = in_array($i['i__type'], $this->config->item('n___7712'));
         $found_trigger = false;
@@ -1690,12 +1690,13 @@ class X_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return false;
         }
-        array_push($loop_breaker_ids, $i['i__id']);
 
         $recursive_down_ids = $this->I_model->recursive_down_ids($i['i__id']);
         if(!count($recursive_down_ids)){
             return false;
         }
+
+        array_push($loop_breaker_ids, intval($i['i__id']));
 
         //Count completed:
         $common_completed = $this->X_model->fetch(array(
@@ -1718,7 +1719,6 @@ class X_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
-            'x__right > 0' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__right')) as $expansion_in) {

@@ -632,7 +632,7 @@ class I_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
             return array();
         }
-        array_push($loop_breaker_ids, $i__id);
+        array_push($loop_breaker_ids, intval($i__id));
 
         $recursive_i_ids = array();
 
@@ -646,7 +646,7 @@ class I_model extends CI_Model
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
             //AND Idea? Follow through...
-            if(!in_array($next_i['i__type'], $this->config->item('n___7712')) && 0){
+            if(!in_array($next_i['i__type'], $this->config->item('n___7712'))){
 
                 $recursive_is = $this->I_model->recursive_down_ids($next_i['i__id'], false, $loop_breaker_ids);
 
@@ -802,7 +802,7 @@ class I_model extends CI_Model
         if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
             return ( $first_discovery>0 ? 0 : array() );
         }
-        array_push($loop_breaker_ids, $i__id);
+        array_push($loop_breaker_ids, intval($i__id));
 
         $recursive_i_ids = array();
 
