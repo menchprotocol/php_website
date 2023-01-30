@@ -649,7 +649,7 @@ class I_model extends CI_Model
             'x__left' => $i['i__id'],
         ), array('x__right')) as $next_i){
 
-            array_push($recursive_i_ids, intval($next_i['i__id'])).'-'.$current_level.'-'.$i['i__id'];
+            array_push($recursive_i_ids, intval($next_i['i__id']).'-'.$current_level.'-'.$i['i__id']);
 
             $recursive_is = $this->I_model->recursive_down_ids($next_i, $current_level, $loop_breaker_ids);
 
