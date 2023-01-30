@@ -743,10 +743,6 @@ function redirect_message($url, $message = null, $log_error = false)
     $CI =& get_instance();
     $member_e = superpower_unlocked();
 
-    if($member_e && $member_e['e__id']==267711){
-        die('MERROR: '.$url);
-    }
-
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
     }
