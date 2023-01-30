@@ -882,7 +882,7 @@ function load_covers(){
 }
 
 function js_redirect(url, timer = 0){
-    if(js_pl_id==26771){
+    if(js_pl_id==267711){
         console.log('MERROR CATCH');
         console.log(url);
         console.log(timer);
