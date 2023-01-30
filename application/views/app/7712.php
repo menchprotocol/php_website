@@ -1,7 +1,7 @@
 <?php
 
 $all_x = 0;
-$all_followers = 0;
+$all_down = 0;
 $updated = 0;
 
 foreach($this->I_model->fetch(array(
@@ -17,19 +17,19 @@ foreach($this->I_model->fetch(array(
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $follower_or){
+    ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $down_or){
 
         $x_covers = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__left' => $follower_or['i__id'],
+            'x__left' => $down_or['i__id'],
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
 
 
-        $all_followers++;
+        $all_down++;
 
         echo '<li>';
-        echo '<a href="/~'.$follower_or['i__id'].'">'.view_i_title($follower_or).'</a>';
+        echo '<a href="/~'.$down_or['i__id'].'">'.view_i_title($down_or).'</a>';
         echo ( $x_covers[0]['totals'] > 0 ? ' <span class="zq6255 css__title"><i class="fas fa-circle zq6255"></i> '.$x_covers[0]['totals'].'</span>' : '' );
         echo '</li>';
 
@@ -38,5 +38,5 @@ foreach($this->I_model->fetch(array(
     echo '<hr />';
 }
 
-echo 'DISCOVERY: '.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_followers.' answers';
+echo 'DISCOVERY: '.( $updated > 0 ? ' ('.$updated.' updated)' : '' ).' across '.$all_down.' answers';
 

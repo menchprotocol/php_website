@@ -32,7 +32,7 @@ foreach($this->X_model->fetch(array(
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its followers:
-    $follower__e = $this->X_model->fetch(array(
+    $down__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
@@ -43,32 +43,32 @@ foreach($this->X_model->fetch(array(
 
 
     //Generate raw IDs:
-    $follower_ids = array();
-    foreach($follower__e as $follower){
-        array_push($follower_ids , $follower['e__id']);
+    $down_ids = array();
+    foreach($down__e as $follower){
+        array_push($down_ids , $follower['e__id']);
     }
 
     $memory_text .= "\n".'//'.$en['e__title'].':'."\n";
-    $memory_text .= '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$follower_ids).');'."\n";
+    $memory_text .= '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$down_ids).');'."\n";
     $memory_text .= '$config[\'e___'.$en['x__down'].'\'] = array('."\n";
-    foreach($follower__e as $follower){
+    foreach($down__e as $follower){
 
         //Fetch all followings for this follower:
-        $follower_following_ids = array(); //To be populated soon
+        $down_up_ids = array(); //To be populated soon
         foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
             'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
             'e__privacy IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
         ), array('x__up'), 0) as $cp_en){
-            array_push($follower_following_ids, intval($cp_en['e__id']));
+            array_push($down_up_ids, intval($cp_en['e__id']));
         }
 
         $memory_text .= '     '.$follower['e__id'].' => array('."\n";
         $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$follower['e__title'])).'\','."\n";
         $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['x__message'])).'\','."\n";
         $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view_cover(12274, $follower['e__cover'])).'\','."\n";
-        $memory_text .= '        \'m__following\' => array('.join(',',$follower_following_ids).'),'."\n";
+        $memory_text .= '        \'m__following\' => array('.join(',',$down_up_ids).'),'."\n";
         $memory_text .= '     ),'."\n";
 
     }

@@ -907,7 +907,7 @@ function view_covers_i($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
 }
 
-function view_radio_e($focus_id, $follower___id, $enable_mulitiselect){
+function view_radio_e($focus_id, $down___id, $enable_mulitiselect){
 
     /*
      * Print UI for
@@ -925,7 +925,7 @@ function view_radio_e($focus_id, $follower___id, $enable_mulitiselect){
     $already_selected = array();
     foreach($CI->X_model->fetch(array(
         'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null,
-        'x__down' => $follower___id,
+        'x__down' => $down___id,
         'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $sel){

@@ -85,15 +85,15 @@ foreach($es as $en){
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
-    ), array('x__down'), 0, 0) as $e_followers){
+    ), array('x__down'), 0, 0) as $e_down){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12274].$e_followers['x__up'],
-            'target' => $id_prefix[12274].$e_followers['x__down'],
-            'label' => $e___4593[$e_followers['x__type']]['m__title'].': '.$e_followers['x__message'],
+            'source' => $id_prefix[12274].$e_down['x__up'],
+            'target' => $id_prefix[12274].$e_down['x__down'],
+            'label' => $e___4593[$e_down['x__type']]['m__title'].': '.$e_down['x__message'],
             'weight' => 1,
-            'edge_type' => $e_followers['x__type'],
-            'edge_status' => $e_followers['x__privacy'],
+            'edge_type' => $e_down['x__type'],
+            'edge_status' => $e_down['x__privacy'],
         ));
 
     }

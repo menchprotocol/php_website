@@ -398,7 +398,7 @@ class X extends CI_Controller
                     'x__creator' => $member_e['e__id'],
                 ));
 
-                //$one_follower_hack: Mark next level as done too? Only if Single show:
+                //$one_down_hack: Mark next level as done too? Only if Single show:
                 $is_next = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
@@ -406,9 +406,9 @@ class X extends CI_Controller
                     'x__left' => $top_i__id,
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 if(count($is_next)==1){
-                    foreach($is_next as $single_followers){
-                        if(in_array($single_followers['i__type'], $this->config->item('n___12330'))){
-                            $this->X_model->mark_complete($top_i__id, $single_followers, array(
+                    foreach($is_next as $single_down){
+                        if(in_array($single_down['i__type'], $this->config->item('n___12330'))){
+                            $this->X_model->mark_complete($top_i__id, $single_down, array(
                                 'x__type' => 4559, //DISCOVERY MESSAGES
                                 'x__creator' => $member_e['e__id'],
                             ));
@@ -710,7 +710,7 @@ class X extends CI_Controller
             }
 
             //Any of tops been discovered?
-            $top_discovery_id = $this->I_model->recursive_following_ids($i__id, $member_e['e__id']);
+            $top_discovery_id = $this->I_model->recursive_up_ids($i__id, $member_e['e__id']);
             if($top_discovery_id > 0){
                 return redirect_message('/'.$top_discovery_id.'/'.$i__id.'?nav=1');
             }

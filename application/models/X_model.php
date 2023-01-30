@@ -480,8 +480,8 @@ class X_model extends CI_Model
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         'x__down' => $o__id,
-                    ), array('x__up'), 1, 0, array('e__title' => 'DESC')) as $following_e) {
-                        $deletion_redirect = '/@'.$following_e['e__id'];
+                    ), array('x__up'), 1, 0, array('e__title' => 'DESC')) as $up_e) {
+                        $deletion_redirect = '/@'.$up_e['e__id'];
                     }
 
                     //If still not found, go to main page if no followings found:
@@ -993,34 +993,34 @@ class X_model extends CI_Model
                 ), array('x__up'), 0, 0, array(
                     'x__type' => 'ASC', /* Text first */
                     'e__weight' => 'DESC',
-                )) as $e_following) {
+                )) as $e_up) {
 
-                    if(in_array($e_following['e__privacy'], $this->config->item('n___30956'))){
+                    if(in_array($e_up['e__privacy'], $this->config->item('n___30956'))){
                         //ACTIVE Transactions Not Allowed:
                         continue;
                     }
 
                     $e_count++;
 
-                    if (in_array($e_following['x__type'], $this->config->item('n___13899'))) {
+                    if (in_array($e_up['x__type'], $this->config->item('n___13899'))) {
 
                         //TOOLTIP INFO
-                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_following['e__title'].': ' . str_replace("\n",' ',$e_following['x__message']);
+                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_up['e__title'].': ' . str_replace("\n",' ',$e_up['x__message']);
 
-                    } elseif (in_array($e_following['x__type'], $this->config->item('n___12524'))) {
+                    } elseif (in_array($e_up['x__type'], $this->config->item('n___12524'))) {
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_following['x__message'], $e_following['x__type'], $message_input, $is_discovery_mode) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_up['x__message'], $e_up['x__type'], $message_input, $is_discovery_mode) . '</div>';
 
-                    } elseif($e_following['x__type'] == 4256 /* URL */) {
+                    } elseif($e_up['x__type'] == 4256 /* URL */) {
 
-                        array_push($e_links, $e_following);
+                        array_push($e_links, $e_up);
 
                     } else {
 
                         //Text and Percentage, etc...
-                        $e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . view_cover(12274,$e_following['e__cover'], true).'</span>' . $e_following['e__title'].': ' . $e_following['x__message'] . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . view_cover(12274,$e_up['e__cover'], true).'</span>' . $e_up['e__title'].': ' . $e_up['x__message'] . '</div>';
 
                     }
                 }
@@ -1113,7 +1113,7 @@ class X_model extends CI_Model
     function find_previous($e__id, $top_i__id, $i__id, $loop_breaker_ids = array())
     {
 
-        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i__id, $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
             return 0;
         }
 
@@ -1164,7 +1164,7 @@ class X_model extends CI_Model
     function find_next($e__id, $top_i__id, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $loop_breaker_ids = array())
     {
 
-        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i['i__id'], $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return 0;
         }
 
@@ -1689,12 +1689,12 @@ class X_model extends CI_Model
     function tree_progress($e__id, $i, $top_level = true, $loop_breaker_ids = array())
     {
 
-        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i['i__id'], $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return false;
         }
 
-        $recursive_follower_ids = $this->I_model->recursive_follower_ids($i['i__id']);
-        if(!count($recursive_follower_ids)){
+        $recursive_down_ids = $this->I_model->recursive_down_ids($i['i__id']);
+        if(!count($recursive_down_ids)){
             return false;
         }
 
@@ -1702,7 +1702,7 @@ class X_model extends CI_Model
         $common_completed = $this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $e__id, //Belongs to this Member
-            'x__left IN (' . join(',', $recursive_follower_ids ) . ')' => null,
+            'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__left'), 0, 0, array(), 'COUNT(DISTINCT i__id) as completed_x');
@@ -1710,7 +1710,7 @@ class X_model extends CI_Model
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
-            'fixed_total' => count($recursive_follower_ids),
+            'fixed_total' => count($recursive_down_ids),
             'fixed_discovered' => intval($common_completed[0]['completed_x']),
         );
 
@@ -1719,7 +1719,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
             'x__creator' => $e__id, //Belongs to this Member
-            'x__left IN (' . join(',', $recursive_follower_ids ) . ')' => null,
+            'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             'x__right > 0' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC

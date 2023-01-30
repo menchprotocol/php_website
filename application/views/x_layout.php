@@ -33,10 +33,10 @@ $is_next = $this->X_model->fetch(array(
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
 //Filter Next Ideas:
-$first_followers = array();
+$first_down = array();
 foreach($is_next as $in_key => $in_value){
-    if(!$first_followers && in_array($in_value['i__type'], $this->config->item('n___12330'))){
-        $first_followers = $in_value;
+    if(!$first_down && in_array($in_value['i__type'], $this->config->item('n___12330'))){
+        $first_down = $in_value;
     }
     $i_is_available = i_is_available($in_value['i__id'], false);
     if(!$i_is_available['status']){
@@ -50,7 +50,7 @@ foreach($is_next as $in_key => $in_value){
 $i['i__title'] = str_replace('"','',$i['i__title']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $i_top && $this->X_model->started_ids($x__creator, $i_top['i__id']) ? $i_top['i__id'] : 0 );
-$one_follower_hack = (count($first_followers) && count($is_next)==1 && !$top_i__id);
+$one_down_hack = (count($first_down) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -279,14 +279,14 @@ foreach($this->X_model->fetch(array(
 
 
 
-//$one_follower_hack Get the message for the single follower, if any:
-if($one_follower_hack){
+//$one_down_hack Get the message for the single follower, if any:
+if($one_down_hack){
     echo '<h3 class="msg-frame" style="text-align: left; padding: 13px 0 0 !important;">'.$i['i__title'].'</h3>';
-    $messages_string .= '<h1 class="msg-frame" style="text-align: left; padding: 13px 0 !important; font-size:2.5em;">'.$first_followers['i__title'].'</h1>';
+    $messages_string .= '<h1 class="msg-frame" style="text-align: left; padding: 13px 0 !important; font-size:2.5em;">'.$first_down['i__title'].'</h1>';
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
-        'x__right' => $first_followers['i__id'],
+        'x__right' => $first_down['i__id'],
     ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
         $messages_string .= $this->X_model->message_view(
             $message_x['x__message'],
@@ -566,9 +566,9 @@ if($top_i__id) {
                     'x__down' => $x__creator,
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                ), array(), 0, 0) as $following_appended) {
-                    if(strlen($following_appended['x__message'])){
-                        $previous_response = $following_appended['x__message'];
+                ), array(), 0, 0) as $up_appended) {
+                    if(strlen($up_appended['x__message'])){
+                        $previous_response = $up_appended['x__message'];
                         break;
                     }
                 }

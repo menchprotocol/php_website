@@ -627,9 +627,9 @@ class I_model extends CI_Model
 
 
 
-    function recursive_follower_ids($i__id, $first_level = true, $loop_breaker_ids = array()){
+    function recursive_down_ids($i__id, $first_level = true, $loop_breaker_ids = array()){
 
-        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i__id, $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
             return array();
         }
 
@@ -645,11 +645,11 @@ class I_model extends CI_Model
             array_push($recursive_i_ids, intval($next_i['i__id']));
 
             //AND Idea? Follow through...
-            if(!in_array($next_i['i__type'], $this->config->item('n___7712'))){
+            if(!in_array($next_i['i__type'], $this->config->item('n___7712')) && 0){
 
                 array_push($loop_breaker_ids, $next_i['i__id']);
 
-                $recursive_is = $this->I_model->recursive_follower_ids($next_i['i__id'], false, $loop_breaker_ids);
+                $recursive_is = $this->I_model->recursive_down_ids($next_i['i__id'], false, $loop_breaker_ids);
 
                 //Add to current array if we found anything:
                 if(count($recursive_is) > 0){
@@ -792,7 +792,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_following_ids($i__id, $first_discovery = 0, $first_level = true, $loop_breaker_ids = array()){
+    function recursive_up_ids($i__id, $first_discovery = 0, $first_level = true, $loop_breaker_ids = array()){
 
         /*
          *
@@ -800,7 +800,7 @@ class I_model extends CI_Model
          *
          * */
 
-        if(count($loop_breaker_ids)>0 && count($loop_breaker_ids)<21 && in_array($i__id, $loop_breaker_ids)){
+        if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
             return ( $first_discovery>0 ? 0 : array() );
         }
 
@@ -828,7 +828,7 @@ class I_model extends CI_Model
             array_push($recursive_i_ids, intval($prev_i['i__id']));
             array_push($loop_breaker_ids, $i__id);
 
-            $recursive_is = $this->I_model->recursive_following_ids($prev_i['i__id'], $first_discovery, false, $loop_breaker_ids);
+            $recursive_is = $this->I_model->recursive_up_ids($prev_i['i__id'], $first_discovery, false, $loop_breaker_ids);
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -903,12 +903,12 @@ class I_model extends CI_Model
             if(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087))){
 
                 //Check if it has this item:
-                $e__following_id = intval(one_two_explode('@',' ',$action_command1));
+                $e__up_id = intval(one_two_explode('@',' ',$action_command1));
                 $i_has_e = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                     'x__right' => $next_i['i__id'],
-                    'x__up' => $e__following_id,
+                    'x__up' => $e__up_id,
                 ));
 
                 if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
@@ -925,7 +925,7 @@ class I_model extends CI_Model
                     //Missing & Must be Added:
                     $this->X_model->create(array(
                         'x__creator' => $x__creator,
-                        'x__up' => $e__following_id,
+                        'x__up' => $e__up_id,
                         'x__type' => $source_mapper[$action_e__id],
                         'x__right' => $next_i['i__id'],
                         'x__message' => trim($action_command2),

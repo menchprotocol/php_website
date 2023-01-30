@@ -888,7 +888,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $member_e = $CI->session->userdata('session_following');
+    $member_e = $CI->session->userdata('session_up');
     $has_session = ( is_array($member_e) && count($member_e) > 0 && $member_e );
 
     //Let's start checking various ways we can give member access:
