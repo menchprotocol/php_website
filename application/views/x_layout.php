@@ -301,7 +301,7 @@ if($one_down_hack){
 
 if($messages_string){
     echo $messages_string;
-} elseif(!count($x_completes) && in_array($i['i__type'], $this->config->item('n___12330'))) {
+} elseif(!count($x_completes) && in_array($i['i__type'], $this->config->item('n___12330')) && $top_i__id && $member_e) {
     //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
