@@ -1734,6 +1734,8 @@ class X_model extends CI_Model
             //Addup completion stats for this:
             $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
             $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
+            $metadata_this['list_total'] = array_merge($metadata_this['list_total'], $tree_progress['list_total']);
+            $metadata_this['list_discovered'] = array_merge($metadata_this['list_discovered'], $tree_progress['list_discovered']);
 
         }
 
