@@ -511,6 +511,8 @@ class X_model extends CI_Model
                 ), true, $member_e['e__id']);
             }
 
+            //Update Algolia:
+            update_algolia(12274,  $o__id);
 
         } elseif($element_id==31004){
 
@@ -565,6 +567,9 @@ class X_model extends CI_Model
             $status = $this->I_model->update($o__id, array(
                 'i__privacy' => $new_e__id,
             ), true, $member_e['e__id']);
+
+            //Update Algolia:
+            update_algolia(12273,  $o__id);
 
         } elseif($element_id==4737){
 

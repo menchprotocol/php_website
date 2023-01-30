@@ -86,7 +86,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
     echo ' var website_id = "' . $website_id . '"; ';
-    echo ' var search_and_filter = ( superpower_js_12701 ? \'\' : \' AND ( _tags:is_public \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
+    echo ' var search_and_filter = ( superpower_js_12701 ? \'\' : \' AND ( _tags:publicly_searchable \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORYwq
     foreach($this->config->item('e___11054') as $x__type => $m){

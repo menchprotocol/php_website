@@ -1126,7 +1126,7 @@ $(document).ready(function () {
                                 if(search_filters.length>0){
                                     search_filters += ' AND ';
                                 }
-                                search_filters += ' ( _tags:is_public OR _tags:z_' + js_pl_id + ' ) ';
+                                search_filters += ' ( _tags:publicly_searchable OR _tags:z_' + js_pl_id + ' ) ';
                             }
 
                         } else {
@@ -1135,7 +1135,7 @@ $(document).ready(function () {
                             if(search_filters.length>0){
                                 search_filters += ' AND ';
                             }
-                            search_filters += ' _tags:is_public ';
+                            search_filters += ' _tags:publicly_searchable ';
 
                         }
 

@@ -1851,8 +1851,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s__weight'] = intval($s['i__weight']);
 
-                if(in_array($s['i__privacy'], $CI->config->item('n___31870'))){
-                    array_push($export_row['_tags'], 'is_public');
+                if(in_array($s['i__privacy'], $CI->config->item('n___31874'))){
+                    array_push($export_row['_tags'], 'publicly_searchable');
                 }
 
                 //Top/Bottom Idea Keywords
@@ -1916,7 +1916,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     array_push($export_row['_tags'], 'has_image');
                 }
                 if(in_array($s['e__privacy'], $CI->config->item('n___7357'))){
-                    array_push($export_row['_tags'], 'is_public');
+                    array_push($export_row['_tags'], 'publicly_searchable');
                 }
 
                 //Fetch Following:
@@ -1958,7 +1958,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 array_push($export_row['_tags'], 'is_app');
 
                 if(in_array($s['e__privacy'], $CI->config->item('n___7357')) && !in_array($s['e__id'], $CI->config->item('n___32141'))){
-                    array_push($export_row['_tags'], 'is_public');
+                    array_push($export_row['_tags'], 'publicly_searchable');
                 }
 
                 //Fetch Following:
