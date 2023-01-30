@@ -818,11 +818,13 @@ if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_pe
 }
 
     if(isset($_GET['list'])){
-        echo '<p style="padding:10px;">'.$tree_progress['fixed_discovered'].' Discovered</p>';
-        echo '<p style="padding:10px;">'.join(', ',$tree_progress['list_discovered']).'</p>';
-        echo '<p style="padding:10px;">'.$tree_progress['fixed_total'].' Total</p>';
-        echo '<p style="padding:10px;">'.join(', ',$tree_progress['list_total']).'</p>';
-
+        echo '<p style="padding:10px;">'.$tree_progress['fixed_total'].'/'.$tree_progress['fixed_discovered'].' Discovered:</p>';
+        foreach($tree_progress['list_total'] as $to_discover_id){
+            $is = $this->I_model->fetch(array(
+                'i__id' => $to_discover_id,
+            ));
+            echo '<p style="padding:2px;"><a href="/~'.$is[0]['i__id'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).$is[0]['i__title'].'</p>';
+        }
     }
 
 
