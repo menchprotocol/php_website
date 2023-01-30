@@ -1799,7 +1799,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==6177 && ($e_of_e || $locked_privacy)){
+            } elseif($x__type_top_bar==6177 && ($e_of_e || $locked_privacy || $always_see)){
 
                 //Source Privacy
                 $active_bars++;
