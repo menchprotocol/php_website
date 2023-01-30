@@ -1745,7 +1745,7 @@ class X_model extends CI_Model
         }
 
 
-        if($current_level==0){
+        if($current_level==1){
 
             /*
              *
