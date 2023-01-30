@@ -820,7 +820,7 @@ class I_model extends CI_Model
                     'x__creator' => $first_discovery,
                     'x__left' => $prev_i['i__id'],
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-                )) as $x){
+                ), array('x__right')) as $x){
                     return $x['x__right'];
                 }
             }
