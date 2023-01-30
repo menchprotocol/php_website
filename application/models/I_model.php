@@ -661,11 +661,7 @@ class I_model extends CI_Model
             }
         }
 
-        if($current_level==1){
-            return array_unique($recursive_i_ids);
-        } else {
-            return $recursive_i_ids;
-        }
+        return array_unique($recursive_i_ids);
 
     }
 
