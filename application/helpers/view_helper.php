@@ -1297,11 +1297,16 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
     }
 
-
+    $has_discovered = ( isset($member_e['e__id']) && count($CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__creator' => $member_e['e__id'],
+            'x__left' => $i['i__id'],
+        ))));
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $can_click = !$focus_cover; // && (!$e_of_i || $discovery_mode)
+    $can_click = !$focus_cover && (!$discovery_mode || $has_discovered || $e_of_i);
 
 
 
@@ -1488,15 +1493,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '</tr></table>';
 
 
-
     //Coin Cover
     $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( isset($member_e['e__id']) && count($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__creator' => $member_e['e__id'],
-            'x__left' => $i['i__id'],
-        ))) ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
     $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>';
 
