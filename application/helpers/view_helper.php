@@ -528,7 +528,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
-            $ui .= view_card_i($x__type, $i['i__id'], null, $i, $focus_e);
+            $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -1272,32 +1272,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $has_sortable = !$focus_cover && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
-
-    //Determine Link Type
-    $link_type_id = 0;
-    $link_type_ui = '';
-    if($x__id){
-        foreach($CI->config->item('e___31770') as $x__type1 => $m1){
-            if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
-                foreach($CI->X_model->fetch(array(
-                    'x__id' => $x__id,
-                ), array('x__creator')) as $linker){
-                    $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
-                    $link_type_ui .= '</div></td>';
-                }
-                $link_type_id = $x__type1;
-                break;
-            }
-        }
-    }
-
-
-
-
     if($discovery_mode) {
         if($top_i__id){
-            $href = '/p'.$top_i__id.'/'.$i['i__id'];
+            $href = '/'.$top_i__id.'/'.$i['i__id'];
         } elseif($e_of_i) {
             $href = '/~'.$i['i__id'];
         } else {
@@ -1310,9 +1287,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } elseif($discovery_mode){
         if($top_i__id > 0 && $top_i__id!=$i['i__id']){
-            $href = '//'.$top_i__id.'/'.$i['i__id'];
-        } elseif($x__id && $link_type_id==6255) {
-            $href = '///'.$i['x__right'].'/'.$i['x__left'];
+            $href = '/'.$top_i__id.'/'.$i['i__id'];
+        } elseif($x__id && $i['x__left']>0 && $i['x__right']>0) {
+            $href = '/'.$i['x__right'].'/'.$i['x__left'];
         } else {
             $href = '/'.$i['i__id'];
         }
@@ -1332,6 +1309,25 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover contrast_bg '.( $focus_cover ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
      ' : ' edge-cover card_i_click col-md-4 col-6 ' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
+
+    //Determine Link Type
+    $link_type_id = 0;
+    $link_type_ui = '';
+    if($x__id){
+        foreach($CI->config->item('e___31770') as $x__type1 => $m1){
+            if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
+                foreach($CI->X_model->fetch(array(
+                    'x__id' => $x__id,
+                ), array('x__creator')) as $linker){
+                    $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
+                    $link_type_ui .= '</div></td>';
+                }
+                $link_type_id = $x__type1;
+                break;
+            }
+        }
+    }
 
 
     //Top Bar
