@@ -890,11 +890,17 @@ h4 .halfbg {
     padding:0;
 }
 
-.dropdown-menu a {
+.dropdown_12274, .dropdown_11030{
+    border-radius: 20px;
+}
+.dropdown_12274 a, .dropdown_11030 a {
     border-radius: 21px;
-    padding-right: 13px;
 }
 
+
+.dropdown-menu a {
+    padding-right: 13px;
+}
 
 
 
