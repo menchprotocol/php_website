@@ -361,10 +361,11 @@ if($top_i__id) {
                 //MODIFY ANSWER
                 echo '<div class="edit_toggle_answer">';
 
+                echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
+
                 //Edit response:
                 echo '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
-                echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
                 echo '</div>';
 
             }
