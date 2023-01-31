@@ -884,9 +884,11 @@ h4 .halfbg {
 
 
 .greybg{
-    background-color: #999999;
-    padding: 3px;
+    background-color: #EFEFEF;
+    padding: 2px 3px 0px;
     margin-top: 5px;
+    display: block;
+    border: 1px dotted #999;
 }
 .dropdown-menu {
     border: 1px solid transparent;
