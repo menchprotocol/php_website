@@ -377,18 +377,10 @@ if($top_i__id) {
             //List followers to choose from:
             foreach ($is_next as $key => $next_i) {
 
-                //Make sure it meets the conditions:
-               // $i_is_available = i_is_available($next_i['i__id'], false);
-               // if(!$i_is_available['status']){
-                    //This option is not available:
-                    //continue;
-                //}
-
-
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__creator' => $x__creator,
@@ -404,8 +396,8 @@ if($top_i__id) {
 
             if (count($x_selects) > 0) {
 
-                //Save Answers:
-                $select_answer .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');" title="' . $e___11035[13502]['m__title'] . '">' . $e___11035[13502]['m__cover'] . '</a>&nbsp;&nbsp;<a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a></div>';
+                //Cancel Saving...
+                $select_answer .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13502]['m__cover'] . ' ' . $e___11035[13502]['m__title'] . '</a></div>'; //&nbsp;&nbsp;<a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a>
 
             }
 
