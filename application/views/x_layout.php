@@ -247,6 +247,18 @@ if($top_i__id){
 </div></div>';
     }
 
+    if(isset($_GET['list'])){
+        echo '<p style="padding:10px;">'.$tree_progress['fixed_total'].'/'.$tree_progress['fixed_discovered'].' Discovered:</p>';
+        $counter = 0;
+        foreach($tree_progress['list_total'] as $to_discover_id){
+            $is = $this->I_model->fetch(array(
+                'i__id' => $to_discover_id,
+            ));
+            $counter++;
+            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__id'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).$is[0]['i__title'].'</p>';
+        }
+    }
+
 } else {
 
     $go_next_url = '/x/x_start/'.$i['i__id'];
