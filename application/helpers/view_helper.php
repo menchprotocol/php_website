@@ -1232,6 +1232,11 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
 }
 
+function convertURLs($string)
+{
+    $url = '/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';
+    return preg_replace($url, '<a href="$0" target="_blank" title="$0">$0</a>', $string);
+}
 
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
 

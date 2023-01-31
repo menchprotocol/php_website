@@ -198,7 +198,7 @@ if(strlen($_GET['i__id'])){
 
 
 
-            $idea_content .= '<td >'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</span>' : '<span title="'.$i['i__title'].'" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.$i['i__title'].'">✔️</span>' )  : '').'</td>';
+            $idea_content .= '<td >'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) || substr_count($i['i__title'], 'Full Name')  ? '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</span>' : '<span title="'.$i['i__title'].'" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.$i['i__title'].'">✔️</span>' )  : '').'</td>';
 
             if(count($discoveries)){
                 if(!isset($count_totals['i'][$i['i__id']])){
