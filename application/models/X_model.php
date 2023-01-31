@@ -1434,7 +1434,7 @@ class X_model extends CI_Model
 
         $member_e = superpower_unlocked();
         $detected_x_type = x_detect_type($add_fields['x__message']);
-        if ($detected_x_type['status'] && $member_e && !in_array($website_id , $this->config->item('n___31025'))) {
+        if ($detected_x_type['status'] && $member_e ) {
 
             //Remove Discoveries?
             foreach($this->X_model->fetch(array(
