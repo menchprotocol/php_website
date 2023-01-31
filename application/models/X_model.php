@@ -1252,10 +1252,10 @@ class X_model extends CI_Model
 
     function mark_complete($top_i__id, $i, $add_fields) {
 
-        if(!isset($add_fields['x__type']) || in_array($add_fields['x__type'], $this->config->item('n___30469'))){
+        if(!isset($add_fields['x__type']) || in_array($add_fields['x__type'], $this->config->item('n___31777'))){
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'mark_complete() Invalid x__type',
+                'x__message' => 'mark_complete() Invalid x__type @'.$add_fields['x__type'].' missing in @31777',
                 'x__metadata' => array(
                     '$top_i__id' => $top_i__id,
                     '$i' => $i,
@@ -1291,7 +1291,7 @@ class X_model extends CI_Model
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
 
-        
+
         if(0 && count($check_duplicate) && in_array($add_fields['x__type'], $this->config->item('n___30469'))){
 
             //Maybe renable later?
