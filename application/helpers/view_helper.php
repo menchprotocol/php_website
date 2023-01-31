@@ -1260,7 +1260,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $focus_cover = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
-    $self_link = isset($i['x__creator']) && $i['x__creator']==$member_e['e__id'];
+    $link_creator = isset($i['x__creator']) && $i['x__creator']==$member_e['e__id'];
 
     if(!$focus_e){
         $focus_e = $member_e;
@@ -1343,7 +1343,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         //Determine hover state:
         $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-        if($x__type_top_bar==31770 && $link_type_ui && ($e_of_i || $self_link)){
+        if($x__type_top_bar==31770 && $link_type_ui && ($e_of_i || $link_creator)){
 
             $active_bars++;
             $top_bar_ui .= $link_type_ui;
@@ -1447,7 +1447,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                         //Delete Permanently
                         $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__privacy'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014')) && $self_link){
+                    } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014')) && $link_creator){
 
                         //Ticket Details
                         $action_buttons .= '<a href="/-26560?x__id='.$i['x__id'].'&x__creator='.$i['x__creator'].'" class="dropdown-item css__title">'.$anchor.'</a>';
@@ -1525,7 +1525,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
 
-    if(isset($i['x__message']) && strlen($i['x__message'])>0){
+    if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
         $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true).( !$can_click ? '</div>' : '</a>' );
     }
 
