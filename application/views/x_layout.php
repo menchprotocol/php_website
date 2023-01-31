@@ -244,7 +244,7 @@ if($top_i__id){
 
 }
 
-if($top_completed){
+if($top_completed || $is_or_idea){
     $_GET['open'] = true;
 }
 
@@ -366,10 +366,6 @@ if($top_i__id) {
 
                 echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
                 echo '</div>';
-
-                if(isset($_GET['list'])){
-                    print_r($x_selects);
-                }
 
             }
 

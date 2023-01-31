@@ -961,7 +961,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     if(!count($next_is)){
         return false;
     } elseif(!in_array($x__type, $CI->config->item('n___13369'))){
-       // return false;
+        return false;
     }
 
     $e___13369 = $CI->config->item('e___13369'); //IDEA LISTS
