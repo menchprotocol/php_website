@@ -218,7 +218,6 @@ if(strlen($_GET['i__id'])){
 
         $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
         $body_content .= '<td>'.( strlen($name) ? $name.$plus_info.' [<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>]' : $x['e__title'].$plus_info ).'</td>';
-        //$body_content .= '<td>'.$perfect_point.'%</td>';
 
 
 
@@ -273,7 +272,6 @@ if(strlen($_GET['i__id'])){
 
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
     echo '<th id="th_primary" style="width:200px;">'.( isset($_GET['include_i']) || isset($_GET['include_e']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_e='.$_GET['xaxis_e'].'"><u>REMOVE FILTERS <i class="fas fa-filter"></i></u></a><br /><br />' : '' ).$count.' MEMBERS</th>';
-    echo '<th id="th_done">Done</th>';
     foreach($column_sources as $e){
         array_push($table_sortable, '#th_e_'.$e['e__id']);
         echo '<th id="th_e_'.$e['e__id'].'"><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover(12274,$e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&xaxis_e='.$_GET['xaxis_e'].'&include_e='.$e['e__id'].'&include_i='.( isset($_GET['include_i']) ? $_GET['include_i'] : '' ).'">'.( isset($_GET['include_e']) && $_GET['include_e']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? $count_totals['e'][$e['e__id']] : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
