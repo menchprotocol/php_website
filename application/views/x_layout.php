@@ -248,7 +248,7 @@ if($top_i__id){
     }
 
     if(isset($_GET['list'])){
-        echo '<p style="padding:10px;">'.$tree_progress['fixed_total'].'/'.$tree_progress['fixed_discovered'].' Discovered:</p>';
+        echo '<p style="padding:10px;">'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Discovered:</p>';
         $counter = 0;
         foreach($tree_progress['list_total'] as $to_discover_id){
             $is = $this->I_model->fetch(array(

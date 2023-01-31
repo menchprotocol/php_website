@@ -1729,7 +1729,9 @@ class X_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__left'), 0) as $completed){
-            array_push($list_discovered, intval($completed['i__id']));
+            if(!in_array(intval($completed['i__id']), $list_discovered)){
+                array_push($list_discovered, intval($completed['i__id']));
+            }
         }
 
 
@@ -1756,11 +1758,21 @@ class X_model extends CI_Model
             //Addup completion stats for this:
             $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
             $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
+
             if($tree_progress['list_total'] && count($tree_progress['list_total'])){
-                $metadata_this['list_total'] = array_merge($metadata_this['list_total'], $tree_progress['list_total']);
+                foreach($tree_progress['list_total'] as $tree_id){
+                    if(!in_array($tree_id, $metadata_this['list_total'])){
+                        array_push($metadata_this['list_total'], $tree_id);
+                    }
+                }
             }
+
             if($tree_progress['list_discovered'] && count($tree_progress['list_discovered'])){
-                $metadata_this['list_discovered'] = array_merge($metadata_this['list_discovered'], $tree_progress['list_discovered']);
+                foreach($tree_progress['list_discovered'] as $tree_id){
+                    if(!in_array($tree_id, $metadata_this['list_discovered'])){
+                        array_push($metadata_this['list_discovered'], $tree_id);
+                    }
+                }
             }
 
         }
