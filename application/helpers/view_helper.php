@@ -1297,7 +1297,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     if($discovery_mode) {
         if($top_i__id){
-            $href = '/'.$top_i__id.'/'.$i['i__id'];
+            $href = '/p'.$top_i__id.'/'.$i['i__id'];
         } elseif($e_of_i) {
             $href = '/~'.$i['i__id'];
         } else {
@@ -1310,9 +1310,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } elseif($discovery_mode){
         if($top_i__id > 0 && $top_i__id!=$i['i__id']){
-            $href = '/'.$top_i__id.'/'.$i['i__id'];
+            $href = '//'.$top_i__id.'/'.$i['i__id'];
         } elseif($x__id && $link_type_id==6255) {
-            $href = '/'.$i['x__right'].'/'.$i['x__left'];
+            $href = '///'.$i['x__right'].'/'.$i['x__left'];
         } else {
             $href = '/'.$i['i__id'];
         }
