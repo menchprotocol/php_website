@@ -218,9 +218,8 @@ if(strlen($_GET['i__id'])){
 
 
         $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
-        $body_content .= '<td>'.( strlen($name) ? $name.$plus_info.' [<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>]' : '<a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$plus_info ).'</td>';
 
-
+        $body_content .= '<td><span class="icon-block">'.view_cover(12274,$x['e__cover'], true).'</span><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$name.$plus_info.'</td>';
 
 
 
