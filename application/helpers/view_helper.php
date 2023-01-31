@@ -1513,12 +1513,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $ui .= $i_title;
     }
     $message_tooltip = '';
-    if(isset($i['x__message']) && strlen($i['x__message'])>0){
-
-        $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true).( !$can_click ? '</div>' : '</a>' );
-
-    }
-
 
     $messages = '';
     foreach($CI->X_model->fetch(array(
@@ -1529,6 +1523,12 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
     }
     $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.$messages.( !$can_click ? '</div>' : '</a>' );
+
+
+
+    if(isset($i['x__message']) && strlen($i['x__message'])>0){
+        $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true).( !$can_click ? '</div>' : '</a>' );
+    }
 
 
     $ui .= '<div class="cover-text">';
