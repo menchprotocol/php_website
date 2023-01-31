@@ -498,6 +498,13 @@ img.no-frame {
     overflow: hidden;
 }
 
+.alert-success,
+.alert-danger,
+.alert-warning,
+.alert-info {
+    color: #000000;
+}
+
 .center-info{
     width: 100%;
     max-width:380px !important;
