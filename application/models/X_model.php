@@ -1252,6 +1252,18 @@ class X_model extends CI_Model
 
     function mark_complete($top_i__id, $i, $add_fields) {
 
+        if(!isset($add_fields['x__type']) || in_array($add_fields['x__type'], $this->config->item('n___30469'))){
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'mark_complete() Invalid x__type',
+                'x__metadata' => array(
+                    '$top_i__id' => $top_i__id,
+                    '$i' => $i,
+                    '$add_fields' => $add_fields,
+                ),
+            ));
+        }
+
         //Always add Idea to x__left
         if($top_i__id>0 && (!isset($add_fields['x__right']) || intval($add_fields['x__right'])==0)){
             $add_fields['x__right'] = $top_i__id;
@@ -1278,10 +1290,12 @@ class X_model extends CI_Model
 
         //Log completion transaction if not duplicate:
         $check_duplicate = $this->X_model->fetch($search_fields);
-        if(0 && isset($check_duplicate[0]['x__id']) && in_array($add_fields['x__type'], $this->config->item('n___30469'))){
+
+        
+        if(0 && count($check_duplicate) && in_array($add_fields['x__type'], $this->config->item('n___30469'))){
 
             //Maybe renable later?
-            $new_x = $check_duplicate[0];
+            $new_x = array_pop(array_reverse($check_duplicate));
 
         } else {
 
@@ -1420,7 +1434,7 @@ class X_model extends CI_Model
 
         $member_e = superpower_unlocked();
         $detected_x_type = x_detect_type($add_fields['x__message']);
-        if ($detected_x_type['status'] && $member_e) {
+        if ($detected_x_type['status'] && $member_e && !in_array($website_id , $this->config->item('n___31025'))) {
 
             //Remove Discoveries?
             foreach($this->X_model->fetch(array(
@@ -1680,8 +1694,6 @@ class X_model extends CI_Model
                     }
                 }
             }
-
-
         }
 
 
@@ -1872,21 +1884,25 @@ class X_model extends CI_Model
                 'message' => 'You must select an item before going next.',
             );
         }
+        $did_skip = ( $can_skip && !count($answer_i__ids) );
 
         //How about the min selection?
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-            'x__right' => $focus_i__id,
-            'x__up' => 26613, //Min Selection
-        ), array(), 1) as $limit){
-            if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
-                return array(
-                    'status' => 0,
-                    'message' => 'You must select at-least '.$limit['x__message'].' items.',
-                );
+        if(!$can_skip){
+            foreach($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $focus_i__id,
+                'x__up' => 26613, //Min Selection
+            ), array(), 1) as $limit){
+                if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
+                    return array(
+                        'status' => 0,
+                        'message' => 'You must select at-least '.$limit['x__message'].' items.',
+                    );
+                }
             }
         }
+
 
         //How about  max selection?
         foreach($this->X_model->fetch(array(

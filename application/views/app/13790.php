@@ -312,7 +312,7 @@ if(strlen($_GET['i__id'])){
         #sortable_table td>p{
             display: block;
             max-width: 144px !important;
-            max-height: 144px !important;
+            max-height: 179px !important;
             overflow: scroll;
         }
 

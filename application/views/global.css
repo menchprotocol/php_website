@@ -78,7 +78,7 @@ body {
     max-height: 233px;
 }
 .edge-cover .content-image {
-    max-height: 144px;
+    max-height: 179px;
 }
 
 .ytframe{
@@ -527,7 +527,7 @@ img.no-frame {
 }
 .featured-image {
     max-width: 89px;
-    max-height: 144px;
+    max-height: 179px;
     overflow: hidden;
     display: block;
 }
