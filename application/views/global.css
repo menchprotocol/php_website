@@ -503,6 +503,7 @@ img.no-frame {
 .alert-warning,
 .alert-info {
     color: #000000;
+    font-weight: bold;
 }
 
 .center-info{
