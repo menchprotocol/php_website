@@ -365,7 +365,7 @@ if($top_i__id) {
                 echo '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
                 echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
-                echo '</div>';
+                echo '.</div>';
 
             }
 
@@ -380,7 +380,7 @@ if($top_i__id) {
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__creator' => $x__creator,
