@@ -967,7 +967,7 @@ function view_i_list($x__type, $top_i__id, $i, $next_is, $member_e){
     $e___13369 = $CI->config->item('e___13369'); //IDEA LISTS
 
     //Build Body UI:
-    $body = '<div class="row">';
+    $body = '<div class="row">.';
     foreach($next_is as $key => $next_i){
         $body .= view_card_i($x__type, $top_i__id, $i, $next_i, $member_e);
     }
