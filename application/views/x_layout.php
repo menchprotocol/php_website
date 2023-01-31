@@ -240,7 +240,7 @@ if($top_i__id){
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i['i__id'];
 
     if($tree_progress['fixed_completed_percentage']>0){
-        echo '<div class="progress" style="height: 8px; margin: -34px 0 21px; background-color: #CCCCCC;">
+        echo '<div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Ideas Discovered, '.$tree_progress['fixed_completed_percentage'].'% Completed" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div>';
     }
