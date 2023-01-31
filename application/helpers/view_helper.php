@@ -1269,7 +1269,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     if($discovery_mode) {
         if($top_i__id){
-            $href = '/x/x_next/'.$top_i__id.'/'.$i['i__id'];
+            $href = '/'.$top_i__id.'/'.$i['i__id'];
         } elseif($e_of_i) {
             $href = '/~'.$i['i__id'];
         } else {
