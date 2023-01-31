@@ -886,6 +886,7 @@ h4 .halfbg {
 
 .dropdown-menu {
     border: 1px solid transparent;
+    border-radius: 0;
     padding:0;
 }
 
