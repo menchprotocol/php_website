@@ -239,7 +239,9 @@ if($top_i__id){
     $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i['i__id'];
 
-    if($tree_progress['fixed_completed_percentage']>0){
+    if($top_completed){
+        echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
+    } else {
         echo '<div style="padding: 0 5px;"><div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Ideas Discovered, '.$tree_progress['fixed_completed_percentage'].'% Completed" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div></div>';
@@ -258,11 +260,6 @@ if($top_completed || $is_or_idea){
 
 
 echo '<div class="light-bg large-frame">';
-
-//Show Progress:
-if($top_completed){
-    echo '<div class="msg alert alert-success" role="alert"><span class="icon-block">✅</span>100% Completed: You Are Now Reviewing Your Responses</div>';
-}
 
 //MESSAGES
 $messages_string = false;
