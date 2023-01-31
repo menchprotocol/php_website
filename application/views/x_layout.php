@@ -229,12 +229,6 @@ if($top_i__id && $x__creator && $top_i__id!=$i['i__id']){
 }
 
 
-if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
-    echo '<div class="progress">
-<div class="progress-bar progress-bar-striped bg-danger" role="progressbar" title="'.$tree_progress['fixed_discovered'].' / '.$tree_progress['fixed_total'].' Ideas Discovered" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
-</div>';
-}
-
 
 if($top_i__id){
 
@@ -244,6 +238,12 @@ if($top_i__id){
     $tree_progress = $this->X_model->tree_progress($x__creator, $is_this[0]);
     $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i['i__id'];
+
+    if(isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
+        echo '<div class="progress">
+<div class="progress-bar progress-bar-striped bg-danger" role="progressbar" title="'.$tree_progress['fixed_discovered'].' / '.$tree_progress['fixed_total'].' Ideas Discovered" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
+</div>';
+    }
 
 } else {
 
