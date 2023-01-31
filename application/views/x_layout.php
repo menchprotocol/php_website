@@ -229,6 +229,13 @@ if($top_i__id && $x__creator && $top_i__id!=$i['i__id']){
 }
 
 
+if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
+    echo '<div class="progress">
+<div class="progress-bar" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].' / '.$tree_progress['fixed_total'].' Ideas Discovered" style="width: '.intval($tree_progress['fixed_completed_percentage']).'%" aria-valuenow="'.intval($tree_progress['fixed_completed_percentage']).'" aria-valuemin="0" aria-valuemax="100"></div>
+</div>';
+}
+
+
 if($top_i__id){
 
     $is_this = $this->I_model->fetch(array(
@@ -802,12 +809,6 @@ if(!$top_i__id){
 //NEXT IDEAS:
 if(!$is_or_idea){
     echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
-}
-
-
-
-if($top_i__id > 0 && !$top_completed && isset($tree_progress['fixed_completed_percentage']) && $tree_progress['fixed_completed_percentage']>0){
-    echo '<p style="padding:10px;" title="'.$tree_progress['fixed_discovered'].' / '.$tree_progress['fixed_total'].' completed">'.$tree_progress['fixed_completed_percentage'].'% Completed</p>';
 }
 
 
