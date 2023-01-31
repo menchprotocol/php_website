@@ -348,7 +348,7 @@ if($top_i__id) {
                 //See if this answer was selected:
                 if (count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY IDEA LINK
+                    'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY IDEA LINK
                     'x__left' => $i['i__id'],
                     'x__right' => $x['i__id'],
                     'x__creator' => $x__creator,
