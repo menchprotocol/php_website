@@ -315,6 +315,10 @@ if(strlen($_GET['i__id'])){
             overflow: scroll;
         }
 
+        td a {
+            text-decoration: underline !important;
+        }
+
         /* CSS Adjustments for Printing View */
         .fixed-top{
             background-color: transparent !important;
