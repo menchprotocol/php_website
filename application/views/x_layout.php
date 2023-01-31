@@ -348,7 +348,7 @@ if($top_i__id) {
                 //See if this answer was selected:
                 if (count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY IDEA LINK
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY IDEA LINK
                     'x__left' => $i['i__id'],
                     'x__right' => $x['i__id'],
                     'x__creator' => $x__creator,
@@ -365,7 +365,7 @@ if($top_i__id) {
                 echo '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
 
                 echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
-                echo '</div>';
+                echo count($x_selects).'</div>';
 
             }
 
