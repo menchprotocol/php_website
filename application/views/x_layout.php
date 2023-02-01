@@ -803,12 +803,6 @@ if(!$top_i__id){
         echo '<div class="doclear">&nbsp;</div>';
     }
 
-    if(!$top_completed) {
-        echo '<div style="padding: 0 5px;"><div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
-<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_completed_percentage'].'% Discovered: '.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
-</div></div>';
-    }
-
 }
 
 
@@ -821,6 +815,14 @@ if(!$top_i__id){
 if(!$is_or_idea){
     echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
 }
+
+
+if($top_i__id && !$top_completed) {
+    echo '<div style="padding: 0 5px;"><div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
+<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_completed_percentage'].'% Discovered: '.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
+</div></div>';
+}
+
 
 
 echo '</div>';
