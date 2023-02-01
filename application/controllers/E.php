@@ -434,9 +434,10 @@ class E extends CI_Controller
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
         $url_previously_existed = false;
         $url_e = false;
+        $adding_to_existing = (intval($_POST['e_existing_id']) > 0);
 
         //Are we adding an existing source?
-        if (intval($_POST['e_existing_id']) > 0) {
+        if ($adding_to_existing) {
 
             //Validate this existing source:
             $es = $this->E_model->fetch(array(
@@ -502,20 +503,13 @@ class E extends CI_Controller
 
             }
 
-            //Append creator as the source author:
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__up' => $member_e['e__id'],
-                'x__down' => $focus_e['e__id'],
-                'x__type' => e_x__type(),
-            ));
-
         }
 
 
         //We need to check to ensure this is not a duplicate transaction if adding an existing source:
         $ur2 = array();
         $e_already_linked = 0;
+        $create_author_link = true;
 
         if($adding_to_idea) {
 
@@ -552,6 +546,7 @@ class E extends CI_Controller
                 $x__up = $fetch_o[0]['e__id'];
                 $x__down = $focus_e['e__id'];
                 $x__weight = 0;
+                $create_author_link = !( $x__up==$member_e['e__id'] && $x__down==$focus_e['e__id'] );
 
             }
 
@@ -590,6 +585,16 @@ class E extends CI_Controller
                 'x__weight' => $x__weight,
             ));
 
+        }
+
+        if($create_author_link){
+            //Source not added as the source, let's add that:
+            $this->X_model->create(array(
+                'x__creator' => $member_e['e__id'],
+                'x__up' => $member_e['e__id'],
+                'x__down' => $focus_e['e__id'],
+                'x__type' => e_x__type(),
+            ));
         }
 
         //Return source:
