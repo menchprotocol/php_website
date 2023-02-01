@@ -1411,7 +1411,6 @@ label {
 .breadcrumb-item .btn{
     padding: 0 !important;
     font-size: 0.8em !important;
-    color: #CCCCCC !important;
 }
 
 .platform-navigation .btn{
@@ -2825,6 +2824,8 @@ h4.css__title{
 .custom_ui_13884_13886 .card_reverse .black-background i{
     color: #FFFFFF !important;
 }
+
+.custom_ui_13884_13886 .breadcrumb-item .btn,
 .custom_ui_13884_13886 .btn-close,
 .custom_ui_13884_13886 .cover-btn i,
 .custom_ui_13884_13886 .icon-block i,
@@ -2969,6 +2970,8 @@ h4.css__title{
 .custom_ui_13884_13885 .card_reverse .black-background i{
     color: #000000 !important;
 }
+
+.custom_ui_13884_13885 .breadcrumb-item .btn,
 .custom_ui_13884_13885 .btn-close,
 .custom_ui_13884_13885 .cover-btn i,
 .custom_ui_13884_13885 .black-background i,
