@@ -938,7 +938,7 @@ h4 .halfbg {
     border:1px solid transparent !important;
     height: 55px;
     margin: 0 5px;
-    width: auto;
+    width: calc(100% - 10px);
 }
 .previous_answer{
     display: block;
