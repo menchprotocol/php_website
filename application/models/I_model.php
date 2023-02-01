@@ -558,7 +558,6 @@ class I_model extends CI_Model
                 return $i__validate_title;
             }
 
-
             //Create new Idea:
             $i_new = $this->I_model->create(array(
                 'i__title' => $i__validate_title['i_clean_title'],
@@ -603,6 +602,16 @@ class I_model extends CI_Model
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
             ));
+
+            if($x__creator!=$focus_e[0]['e__id']){
+                //Also Add author:
+                $this->X_model->create(array(
+                    'x__type' => 4983, //IDEA SOURCES
+                    'x__creator' => $x__creator,
+                    'x__up' => $x__creator,
+                    'x__right' => $i_new['i__id'],
+                ));
+            }
 
             //Fetch Complete References:
             $new_i = $this->X_model->fetch(array(
