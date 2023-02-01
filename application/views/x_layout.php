@@ -240,11 +240,7 @@ if($top_i__id){
     $go_next_url = ( $top_completed ? '/x/x_completed_next/' : '/x/x_next/' ) . $top_i__id . '/' . $i['i__id'];
 
     if($top_completed){
-        echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Discovered 100%</div>';
-    } else {
-        echo '<div style="padding: 0 5px;"><div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
-<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Ideas Discovered, '.$tree_progress['fixed_completed_percentage'].'% Completed" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
-</div></div>';
+        echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
     }
 
     if(isset($_GET['list'])){
@@ -805,6 +801,12 @@ if(!$top_i__id){
         echo $buttons_ui;
         echo '</div>';
         echo '<div class="doclear">&nbsp;</div>';
+    }
+
+    if(!$top_completed) {
+        echo '<div style="padding: 0 5px;"><div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
+<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Ideas Discovered, '.$tree_progress['fixed_completed_percentage'].'% Completed" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
+</div></div>';
     }
 
 }
