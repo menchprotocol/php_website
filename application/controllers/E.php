@@ -502,6 +502,14 @@ class E extends CI_Controller
 
             }
 
+            //Append creator as the source author:
+            $this->X_model->create(array(
+                'x__creator' => $member_e['e__id'],
+                'x__up' => $member_e['e__id'],
+                'x__down' => $focus_e['e__id'],
+                'x__type' => e_x__type(),
+            ));
+
         }
 
 
