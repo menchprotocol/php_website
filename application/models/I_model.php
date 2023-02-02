@@ -503,7 +503,7 @@ class I_model extends CI_Model
                 if (count($this->X_model->fetch(array(
                         'x__left' => ( $is_upwards ? $link_i[0]['i__id'] : $focus_i[0]['i__id'] ),
                         'x__right' => ( $is_upwards ? $focus_i[0]['i__id'] : $link_i[0]['i__id'] ),
-                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     ))) > 0) {
                     return array(
@@ -586,7 +586,7 @@ class I_model extends CI_Model
             $new_i = $this->X_model->fetch(array(
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
@@ -748,7 +748,7 @@ class I_model extends CI_Model
         //Always Link Followings:
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         ), array(), 0) as $x){
             $this->X_model->create(array(
@@ -768,7 +768,7 @@ class I_model extends CI_Model
         //Fetch followers:
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         ), array(), 0) as $x){
             if($do_recursive){
@@ -819,7 +819,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         ), array('x__left')) as $prev_i){
 
@@ -972,7 +972,7 @@ class I_model extends CI_Model
 
                     $is_previous = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
                         'x__left' => $focus_id,
                         'x__right' => $next_i['i__id'],
                     ), array(), 0);

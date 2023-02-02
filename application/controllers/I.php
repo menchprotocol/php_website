@@ -135,7 +135,7 @@ class I extends CI_Controller {
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__left' => $previous_i__id,
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i){
             if($action=='next'){

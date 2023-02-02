@@ -1127,7 +1127,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         ), array('x__left')) as $i_previous) {
 
@@ -1180,7 +1180,7 @@ class X_model extends CI_Model
 
         foreach ($this->X_model->fetch(array(
             'x__left' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i) {
@@ -1472,56 +1472,43 @@ class X_model extends CI_Model
             }
 
             //Clone Templates?
+            $clone_urls = '';
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 30898, //Clone Template
-                'x__right' => $i['i__id'],
-            )) as $e_clone_template){
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___32275')) . ')' => null, //DISCOVERY TRIGGERS
+                'x__left' => $i['i__id'],
+            ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $clone_i){
+                $new_title = $member_e['e__title'].' '.$clone_i['i__title'];
+                $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $member_e['e__id'], null, $new_title);
+                if($result['status']){
 
-                $clone_urls = '';
+                    //Add as watcher:
+                    $this->X_model->create(array(
+                        'x__type' => 10573, //WATCHERS
+                        'x__creator' => $member_e['e__id'],
+                        'x__up' => $member_e['e__id'],
+                        'x__right' => $result['new_i__id'],
+                    ));
 
-                //Go through all Notes associated with this source:
+                    //New link:
+                    $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $member_e['e__id']).'/'.$result['new_i__id']."\n\n";
+                }
+            }
+            if(strlen($clone_urls)){
+                //Send DM with all the new clone Ideas:
+                $clone_urls = $clone_urls.'You have been added as a watcher so you will be notified when anyone starts using your link.';
+                $this->X_model->send_dm($member_e['e__id'], $i['i__title'], $clone_urls);
+                //Also DM all watchers of the idea:
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__up' => $e_clone_template['x__up'],
-                    'x__right !=' => $i['i__id'],
-                ), array('x__right'), 0) as $clone_i){
-                    $new_title = $member_e['e__title'].' '.$clone_i['i__title'];
-                    $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $member_e['e__id'], null, $new_title, array($e_clone_template['x__up']));
-                    if($result['status']){
-
-                        //Add as watcher:
-                        $this->X_model->create(array(
-                            'x__type' => 10573, //WATCHERS
-                            'x__creator' => $member_e['e__id'],
-                            'x__up' => $member_e['e__id'],
-                            'x__right' => $result['new_i__id'],
-                        ));
-
-                        //New link:
-                        $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $member_e['e__id']).'/'.$result['new_i__id']."\n\n";
-                    }
+                    'x__type' => 10573, //WATCHERS
+                    'x__right' => $i['i__id'],
+                ), array(), 0) as $watcher){
+                    $this->X_model->send_dm($watcher['x__up'], $i['i__title'], $clone_urls);
                 }
-
-                //TODO Go through all follower sources and clone then too?
-
-                if(strlen($clone_urls)){
-                    //Send DM with all the new clone Ideas:
-                    $clone_urls = $clone_urls.'You have been added as a watcher so you will be notified when anyone starts using your links.';
-                    $this->X_model->send_dm($member_e['e__id'], $i['i__title'], $clone_urls);
-
-                    //Also DM all watchers of the idea:
-                    foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 10573, //WATCHERS
-                        'x__right' => $i['i__id'],
-                    ), array(), 0) as $watcher){
-                        $this->X_model->send_dm($watcher['x__up'], $i['i__title'], $clone_urls);
-                    }
-                }
-
             }
+
 
             //ADD PROFILE?
             foreach($this->X_model->fetch(array(

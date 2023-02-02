@@ -598,7 +598,7 @@ class X extends CI_Controller
             foreach($this->X_model->fetch(array(
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
                 if($next_i['i__id']==$i__id){
