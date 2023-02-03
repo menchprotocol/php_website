@@ -77,8 +77,11 @@ class App extends CI_Controller
         $cache_x__time = null;
         if($memory_detected){
 
+            $es = $this->E_model->fetch(array(
+                'e__id' => $app_e__id,
+            ));
             $e___6287 = $this->config->item('e___6287'); //APP
-            $title = $e___6287[$app_e__id]['m__title'].' | '.$e___11035[6287]['m__title'];
+            $title = $e___6287[$app_e__id]['m__title'].( public_app($es[0]) ? ' | '.$e___11035[6287]['m__title'] : '' );
 
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
                 //Fetch Most Recent Cache:

@@ -1650,6 +1650,11 @@ function first_line($string){
     return $string;
 }
 
+function public_app($e){
+    $CI =& get_instance();
+    return in_array($e['e__privacy'], $CI->config->item('n___7357')) && !in_array($e['e__id'], $CI->config->item('n___32141'));
+}
+
 function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 {
 
@@ -1957,7 +1962,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                 array_push($export_row['_tags'], 'is_app');
 
-                if(in_array($s['e__privacy'], $CI->config->item('n___7357')) && !in_array($s['e__id'], $CI->config->item('n___32141'))){
+                if(public_app($s)){
                     array_push($export_row['_tags'], 'publicly_searchable');
                 }
 
