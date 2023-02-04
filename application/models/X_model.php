@@ -123,7 +123,7 @@ class X_model extends CI_Model
         //if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
 
         $tr_watchers = $this->E_model->fetch_recursive(12274, $add_fields['x__type'], $this->config->item('n___30820'));
-        if(count($tr_watchers)){
+        if(count($tr_watchers) && 0){
 
             //yes, start drafting email to be sent to them...
             $u_name = 'Unknown';
