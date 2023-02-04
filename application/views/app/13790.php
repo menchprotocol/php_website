@@ -6,7 +6,6 @@ foreach(array('i__id','e__id','exclude_e','include_e','xaxis_e') as $input){
     }
 }
 
-print_r($this->E_model->fetch_recursive(12274, 4250, array(4430,28909), array(), 1));
 
 $e___6287 = $this->config->item('e___6287'); //APP
 $e___4737 = $this->config->item('e___4737'); //Idea Types
