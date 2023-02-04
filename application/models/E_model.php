@@ -466,7 +466,7 @@ class E_model extends CI_Model
         return $q->result_array();
     }
 
-    function fetch_recursive($direction, $e__id, $include_e = array(), $exclude_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
+    function fetch_recursive($direction, $e__id, $include_any_e = array(), $exclude_all_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
 
         if(!in_array($direction, $this->config->item('n___11028'))){
             //Invalid direction:
@@ -501,16 +501,16 @@ class E_model extends CI_Model
 
             //Filter Sources, if needed:
             $qualified_source = true;
-            if(count($include_e) && count($include_e)!=count($this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $include_e) . ')' => null,
+            if(count($include_any_e) && !count($this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $include_any_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 //Must include all sources, skip:
                 $qualified_source = false;
-            } elseif(count($exclude_e) && count($this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $exclude_e) . ')' => null,
+            } elseif(count($exclude_all_e) && count($this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $exclude_all_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -532,7 +532,7 @@ class E_model extends CI_Model
                 break;
             }
 
-            foreach($this->E_model->fetch_recursive($direction, $e_down['e__id'], $include_e, $exclude_e, $hard_level, $hard_limit, $s__level) as $e_recursive_down){
+            foreach($this->E_model->fetch_recursive($direction, $e_down['e__id'], $include_any_e, $exclude_all_e, $hard_level, $hard_limit, $s__level) as $e_recursive_down){
                 if(!isset($flat_items[$e_recursive_down['e__id']])){
                     $e_recursive_down['s__count'] = count($flat_items)+1;
                     $flat_items[$e_recursive_down['e__id']] = $e_recursive_down;
