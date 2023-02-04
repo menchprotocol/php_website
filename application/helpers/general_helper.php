@@ -1605,35 +1605,12 @@ function e_of_i($i__id, $member_e = array()){
 
 }
 
-function privacy_converter($privacy_id){
-    //Create a map of statuses between transactions and ideas/sources:
-    $privacy_converter = array();
-    $CI =& get_instance();
-    foreach($CI->config->item('n___6186') as $e__id) {
-        foreach(array_intersect($CI->config->item('n___'.$privacy_id), $CI->config->item('n___'.$e__id)) as $matching_privacy){
-            $privacy_converter[$matching_privacy] = $e__id;
-        }
-    }
-    return $privacy_converter;
-}
 
 function boost_power()
 {
     //Give php page instance more processing power
     ini_set('memory_limit', '-1');
     ini_set('max_execution_time', 0);
-}
-
-function objectToArray($object)
-{
-    //Transform an object into an array
-    if (!is_object($object) && !is_array($object)) {
-        return $object;
-    }
-    if (is_object($object)) {
-        $object = (array)$object;
-    }
-    return array_map('objectToArray', $object);
 }
 
 function sources_currently_sorted($e__id){

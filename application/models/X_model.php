@@ -118,106 +118,78 @@ class X_model extends CI_Model
         }
 
 
-        //SOURCE SYNC Status
-        if(in_array($add_fields['x__type'] , $this->config->item('n___12401'))){
-            if($add_fields['x__down'] > 0){
-                $e__id = $add_fields['x__down'];
-            } elseif($add_fields['x__up'] > 0){
-                $e__id = $add_fields['x__up'];
+        //See if this transaction type has any followers that are essentially subscribed to it:
+
+        //if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
+
+        $tr_watchers = $this->E_model->fetch_recursive(12274, $add_fields['x__type'], $this->config->item('n___30820'));
+        if(count($tr_watchers)){
+
+            //yes, start drafting email to be sent to them...
+            $u_name = 'Unknown';
+            if($add_fields['x__creator'] > 0){
+                //Fetch member details:
+                $add_e = $this->E_model->fetch(array(
+                    'e__id' => $add_fields['x__creator'],
+                ));
+                if(count($add_e)){
+                    $u_name = $add_e[0]['e__title'];
+                }
             }
-            $this->E_model->match_x_privacy($add_fields['x__creator'], array(
-                'e__id' => $e__id,
-            ));
-        }
 
-        //IDEA SYNC Status
-        if(in_array($add_fields['x__type'] , $this->config->item('n___12400'))){
-            if($add_fields['x__right'] > 0){
-                $i__id = $add_fields['x__right'];
-            } elseif($add_fields['x__left'] > 0){
-                $i__id = $add_fields['x__left'];
+
+            //Email Subject:
+            $e___4593 = $this->config->item('e___4593'); //Transaction Types
+            $subject = 'Notification: '  . $u_name . ' ' . $e___4593[$add_fields['x__type']]['m__title'];
+
+            //Compose email body, start with transaction content:
+            $plain_message = ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '') . "\n";
+
+            $e___32088 = $this->config->item('e___32088'); //Platform Variables
+
+            //Append transaction object transactions:
+            foreach($this->config->item('e___4341') as $e__id => $m) {
+
+                if (in_array(6202 , $m['m__following'])) {
+
+                    //IDEA
+                    foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
+                        $plain_message .= $m['m__title'] . ': '.$this_i['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $this_i['i__id']."\n\n";
+                    }
+
+                } elseif (in_array(6160 , $m['m__following'])) {
+
+                    //SOURCE
+                    foreach($this->E_model->fetch(array( 'e__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_e){
+                        $plain_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').'/@' . $this_e['e__id'] . "\n\n";
+                    }
+
+                } elseif (in_array(4367 , $m['m__following'])) {
+
+                    //DISCOVERY
+                    $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$e___32088[$e__id]['m__message']]."\n\n";
+
+                }
+
             }
-            $this->I_model->match_x_privacy($add_fields['x__creator'], array(
-                'i__id' => $i__id,
-            ));
-        }
 
+            //Finally append DISCOVERY ID:
+            $plain_message .= 'TRANSACTION: #'.$add_fields['x__id']."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id']."\n\n";
 
-        //See if this transaction type has any subscribers:
-        if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
+            //Inform how to change settings:
+            $plain_message .= 'You received this notification because you follow: '."\n".$this->config->item('base_url').'/@'.$add_fields['x__type']."\n\n";
 
-            $e___5967 = $this->config->item('e___5967'); //Include subscription details
-            $sub_e__ids = explode(',', $e___5967[$add_fields['x__type']]['m__message']);
-
-            //Did we find any subscribers?
-            if(count($sub_e__ids) > 0){
-
-                //yes, start drafting email to be sent to them...
-                $u_name = get_domain('m__title', $add_fields['x__creator']);
-                if($add_fields['x__creator'] > 0){
-                    //Fetch member details:
-                    $add_e = $this->E_model->fetch(array(
-                        'e__id' => $add_fields['x__creator'],
+            //Send to all Watchers:
+            foreach($tr_watchers as $tr_watcher) {
+                //Do not inform the member who just took the action:
+                if(1 || $tr_watcher['e__id']!=$add_fields['x__creator']){
+                    $this->X_model->send_dm($tr_watcher['e__id'], $subject, $plain_message, array(
+                        'x__reference' => $add_fields['x__id'], //Save transaction
+                        'x__right' => $add_fields['x__right'],
+                        'x__left' => $add_fields['x__left'],
+                        'x__down' => $add_fields['x__down'],
+                        'x__up' => $add_fields['x__up'],
                     ));
-                    if(count($add_e)){
-                        $u_name = $add_e[0]['e__title'];
-                    }
-                }
-
-
-                //Email Subject:
-                $subject = 'Notification: '  . $u_name . ' ' . $e___5967[$add_fields['x__type']]['m__title'];
-
-                //Compose email body, start with transaction content:
-                $plain_message = ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '') . "\n";
-
-                $e___32088 = $this->config->item('e___32088'); //Platform Variables
-
-                //Append transaction object transactions:
-                foreach($this->config->item('e___4341') as $e__id => $m) {
-
-                    if (in_array(6202 , $m['m__following'])) {
-
-                        //IDEA
-                        foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                            $plain_message .= $m['m__title'] . ': '.$this_i['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $this_i['i__id']."\n\n";
-                        }
-
-                    } elseif (in_array(6160 , $m['m__following'])) {
-
-                        //SOURCE
-                       foreach($this->E_model->fetch(array( 'e__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_e){
-                            $plain_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').'/@' . $this_e['e__id'] . "\n\n";
-                        }
-
-                    } elseif (in_array(4367 , $m['m__following'])) {
-
-                        //DISCOVERY
-                        $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields[$e___32088[$e__id]['m__message']]."\n\n";
-
-                    }
-
-                }
-
-                //Finally append DISCOVERY ID:
-                $plain_message .= 'TRANSACTION: #'.$add_fields['x__id']."\n".$this->config->item('base_url').'/-12722?x__id=' . $add_fields['x__id']."\n\n";
-
-                //Inform how to change settings:
-                $plain_message .= 'Manage your transaction notifications:'."\n".$this->config->item('base_url').'/@5967'."\n\n";
-
-                //Try to fetch subscribers:
-
-                foreach($sub_e__ids as $subscriber_e__id){
-                    //Do not inform the member who just took the action:
-                    if($subscriber_e__id!=$add_fields['x__creator']){
-                        $this->X_model->send_dm($subscriber_e__id, $subject, $plain_message, array(
-                            'x__reference' => $add_fields['x__id'], //Save transaction
-                            'x__right' => $add_fields['x__right'],
-                            'x__left' => $add_fields['x__left'],
-                            'x__down' => $add_fields['x__down'],
-                            'x__up' => $add_fields['x__up'],
-                        ));
-                    }
                 }
             }
         }
