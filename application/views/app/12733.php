@@ -13,7 +13,7 @@ if(!isset($_GET['i__id']) || !intval($_GET['i__id'])) {
 
     $is = $this->I_model->fetch(array(
         'i__id' => $_GET['i__id'],
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ));
 
     if(count($is) < 1){

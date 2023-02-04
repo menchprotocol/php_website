@@ -209,7 +209,7 @@ class I_model extends CI_Model
             //Validate this migration ID:
             $is = $this->I_model->fetch(array(
                 'i__id' => $migrate_s__id,
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
 
             if(count($is)){
@@ -384,7 +384,7 @@ class I_model extends CI_Model
             }
             $focus_i = $this->I_model->fetch(array(
                 'i__id' => intval($focus_id),
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
             if (count($focus_i) < 1) {
                 return array(
@@ -419,7 +419,7 @@ class I_model extends CI_Model
             //Fetch more details on the follower idea we're about to transaction:
             $link_i = $this->I_model->fetch(array(
                 'i__id' => $link_i__id,
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
             if (count($link_i) < 1) {
                 return array(
@@ -522,7 +522,7 @@ class I_model extends CI_Model
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
             $new_i_html = view_card_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
@@ -586,7 +586,7 @@ class I_model extends CI_Model
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         foreach($this->X_model->fetch(array(
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //Must See Idea Links
             'x__left' => $i['i__id'],
@@ -751,7 +751,7 @@ class I_model extends CI_Model
         $current_level++;
 
         foreach($this->X_model->fetch(array(
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
@@ -763,7 +763,7 @@ class I_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__creator' => $first_discovery,
                     'x__left' => $prev_i['i__id'],
-                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 ), array('x__right')) as $x){
                     return $x['x__right'];
                 }
@@ -832,7 +832,7 @@ class I_model extends CI_Model
 
         $is_next = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));

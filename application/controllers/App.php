@@ -168,7 +168,7 @@ class App extends CI_Controller
             if(isset($_GET['i__id']) && intval($_GET['i__id'])){
                 $is = $this->I_model->fetch(array(
                     'i__id IN (' . $_GET['i__id'] . ')' => null,
-                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 ));
                 if(count($is)){
                     $log_data['x__left'] = $is[0]['i__id'];

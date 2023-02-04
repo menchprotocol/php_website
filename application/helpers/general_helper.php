@@ -505,7 +505,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
 
 function i_unlockable($i){
     $CI =& get_instance();
-    return in_array($i['i__privacy'], $CI->config->item('n___31871') /* PRIVATE */);
+    return in_array($i['i__privacy'], $CI->config->item('n___31871') /* ACTIVE */);
 }
 
 function i_spots_remaining($i__id){
@@ -1840,7 +1840,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //Top/Bottom Idea Keywords
                 foreach ($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $s['i__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i) {
@@ -1848,7 +1848,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 }
                 foreach ($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__right' => $s['i__id'],
                 ), array('x__left'), 0, 0, array('x__weight' => 'ASC')) as $i) {

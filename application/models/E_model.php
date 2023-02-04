@@ -269,7 +269,7 @@ class E_model extends CI_Model
             'x__up' => $main_id,
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
         //Remove if not in the secondary group:
@@ -509,7 +509,8 @@ class E_model extends CI_Model
                 )))){
                 //Must include all sources, skip:
                 $qualified_source = false;
-            } elseif(count($exclude_all_e) && count($this->X_model->fetch(array(
+            }
+            if(count($exclude_all_e) && count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $exclude_all_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS

@@ -119,9 +119,6 @@ class X_model extends CI_Model
 
 
         //See if this transaction type has any followers that are essentially subscribed to it:
-
-        //if(in_array($add_fields['x__type'] , $this->config->item('n___5967')) && $add_fields['x__type']!=5967 /* Email Sent causes endless loop */){
-
         $tr_watchers = $this->E_model->fetch_recursive(12274, $add_fields['x__type'], $this->config->item('n___30820'), array(), 1);
         if(count($tr_watchers)){
 
@@ -182,7 +179,7 @@ class X_model extends CI_Model
             //Send to all Watchers:
             foreach($tr_watchers as $tr_watcher) {
                 //Do not inform the member who just took the action:
-                if(1 || $tr_watcher['e__id']!=$add_fields['x__creator']){
+                if($tr_watcher['e__id']!=$add_fields['x__creator']){
                     $this->X_model->send_dm($tr_watcher['e__id'], $subject, $plain_message, array(
                         'x__reference' => $add_fields['x__id'], //Save transaction
                         'x__right' => $add_fields['x__right'],
@@ -499,7 +496,7 @@ class X_model extends CI_Model
                     //Find Published Followings:
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                         'x__right' => $o__id,
                     ), array('x__left'), 1) as $previous_i) {
@@ -510,7 +507,7 @@ class X_model extends CI_Model
                     if(!$deletion_redirect){
                         foreach($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                             'x__right' => $o__id,
                         ), array('x__left'), 1) as $previous_i) {
@@ -1097,7 +1094,7 @@ class X_model extends CI_Model
 
         //Fetch followings:
         foreach($this->X_model->fetch(array(
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
@@ -1154,7 +1151,7 @@ class X_model extends CI_Model
             'x__left' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i) {
 
             //Validate Find After:
@@ -1447,7 +1444,7 @@ class X_model extends CI_Model
             $clone_urls = '';
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___32275')) . ')' => null, //DISCOVERY TRIGGERS
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $clone_i){
@@ -1686,7 +1683,7 @@ class X_model extends CI_Model
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__left'), 0) as $completed){
             if(!in_array(intval($completed['i__id']), $list_discovered)){
                 array_push($list_discovered, intval($completed['i__id']));
@@ -1708,7 +1705,7 @@ class X_model extends CI_Model
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right')) as $expansion_in) {
 
             //Fetch recursive:
@@ -1820,7 +1817,7 @@ class X_model extends CI_Model
 
         $is = $this->I_model->fetch(array(
             'i__id' => $focus_i__id,
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         $es = $this->E_model->fetch(array(
             'e__id' => $member_e['e__id'],

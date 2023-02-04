@@ -362,7 +362,7 @@ if(superpower_unlocked()) {
                     $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
                     if ($sign_i__id > 0) {
                         $sign_i = $this->I_model->fetch(array(
-                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //PUBLIC
+                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             'i__id' => $sign_i__id,
                         ));
                         if (count($sign_i)) {
