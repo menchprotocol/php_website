@@ -106,7 +106,7 @@ class I extends CI_Controller {
                 }
             }
 
-            echo '<div>'.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
+            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
 
         }
 

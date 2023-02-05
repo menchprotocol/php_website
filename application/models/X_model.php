@@ -1407,40 +1407,7 @@ class X_model extends CI_Model
 
             //COMPLETED Discovery, take post trigger actions
 
-            //Remove Discoveries?
-            foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 29430, //Remove Discovery
-                'x__right' => $i['i__id'],
-            )) as $e_play_removal){
-
-                //Go through all Notes associated with this source:
-                foreach($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-                    'x__up' => $e_play_removal['x__up'],
-                    'x__right !=' => $i['i__id'],
-                )) as $remove_i){
-
-                    //Remove all Discoveries made by this user:
-                    foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__left' => $remove_i['x__right'], //IDEA LINKS
-                        'x__creator' => $member_e['e__id'],
-                    )) as $remove_x){
-
-                        //Remove this discovery:
-                        $this->X_model->update($remove_x['x__id'], array(
-                            'x__privacy' => 6173,
-                        ), $member_e['e__id'], 29431 /* Play Auto Removed */);
-
-                    }
-                }
-
-            }
-
-            //Clone Templates?
+            //Discovery Triggers?
             $clone_urls = '';
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1448,21 +1415,43 @@ class X_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___32275')) . ')' => null, //DISCOVERY TRIGGERS
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $clone_i){
-                $new_title = $member_e['e__title'].' '.$clone_i['i__title'];
-                $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $member_e['e__id'], null, $new_title);
-                if($result['status']){
 
-                    //Add as watcher:
-                    $this->X_model->create(array(
-                        'x__type' => 10573, //WATCHERS
+                if($clone_i['x__type']==32247){
+
+                    //Discovery Clone
+                    $new_title = $member_e['e__title'].' '.$clone_i['i__title'];
+                    $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $member_e['e__id'], null, $new_title);
+                    if($result['status']){
+
+                        //Add as watcher:
+                        $this->X_model->create(array(
+                            'x__type' => 10573, //WATCHERS
+                            'x__creator' => $member_e['e__id'],
+                            'x__up' => $member_e['e__id'],
+                            'x__right' => $result['new_i__id'],
+                        ));
+
+                        //New link:
+                        $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $member_e['e__id']).'/'.$result['new_i__id']."\n\n";
+                    }
+
+                } elseif($clone_i['x__type']==32304){
+
+                    //Discovery Forget: Remove all Discoveries made by this user:
+                    foreach($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__left' => $i['i__id'],
                         'x__creator' => $member_e['e__id'],
-                        'x__up' => $member_e['e__id'],
-                        'x__right' => $result['new_i__id'],
-                    ));
+                    )) as $remove_x){
+                        $this->X_model->update($remove_x['x__id'], array(
+                            'x__privacy' => 6173, //Remove this discovery
+                        ), $member_e['e__id'], 29431 /* Play Auto Removed */);
+                    }
 
-                    //New link:
-                    $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $member_e['e__id']).'/'.$result['new_i__id']."\n\n";
                 }
+
+
             }
             if(strlen($clone_urls)){
                 //Send DM with all the new clone Ideas:
