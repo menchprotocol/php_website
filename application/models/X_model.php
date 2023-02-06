@@ -1451,10 +1451,9 @@ class X_model extends CI_Model
 
                 }
 
-
             }
             if(strlen($clone_urls)){
-                //Send DM with all the new clone Ideas:
+                //Send DM with all the new clone idea URLs:
                 $clone_urls = $clone_urls.'You have been added as a watcher so you will be notified when anyone starts using your link.';
                 $this->X_model->send_dm($member_e['e__id'], $i['i__title'], $clone_urls);
                 //Also DM all watchers of the idea:
@@ -1557,25 +1556,6 @@ class X_model extends CI_Model
                         }
 
                     } else {
-
-                        //See if we need to delete single selectable transactions:
-                        foreach($this->config->item('n___6684') as $single_select_e__id){
-                            $single_selectable = $this->config->item('n___'.$single_select_e__id);
-                            if(is_array($single_selectable) && count($single_selectable) && in_array($x_tag['x__up'], $single_selectable)){
-                                //Delete other siblings, if any:
-                                foreach($this->X_model->fetch(array(
-                                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                                    'x__up IN (' . join(',', $single_selectable) . ')' => null,
-                                    'x__up !=' => $x_tag['x__up'],
-                                    'x__down' => $add_fields['x__creator'],
-                                )) as $single_selectable_siblings_preset){
-                                    $x_deleted += $this->X_model->update($single_selectable_siblings_preset['x__id'], array(
-                                        'x__privacy' => 6173, //Transaction Deleted
-                                    ), $add_fields['x__creator'], 10673 /* Member Transaction Unpublished */);
-                                }
-                            }
-                        }
 
                         //Create transaction:
                         $x_added++;
