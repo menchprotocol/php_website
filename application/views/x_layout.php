@@ -421,11 +421,14 @@ if($top_i__id) {
 
         }
 
-    } elseif ($is_payment) {
+    } elseif ($i['i__type'] == 26560) {
 
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
             echo '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
         }
+
+
+
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
 
@@ -479,7 +482,6 @@ if($top_i__id) {
                 . ( strlen($e___11035[31837]['m__message']) ? '<div class="sub_note css__title">'.nl2br($e___11035[31837]['m__message']).'</div>' : '' );
 
 
-
             if($max_allowed > 1 || $min_allowed > 1){
                 echo '<div>';
                 echo '<a href="javascript:void(0);" onclick="sale_increment(-1)" class="adjust_counter"><i class="fas fa-minus-circle"></i></a>';
@@ -506,6 +508,36 @@ if($top_i__id) {
 
             echo '</div>';
             echo '</div>';
+
+
+            $paypal_email =  website_setting(30882);
+            if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
+
+                $control_btn = '';
+
+                //Load Paypal Pay button:
+                $control_btn .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
+
+                $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
+                $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable
+                $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i['i__title'].'">';
+                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__creator.'">';
+
+                $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
+                $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
+                $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
+                $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
+                $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?cancel_pay=1">';
+                $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1">';
+                $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
+                $control_btn .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
+
+                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');" style="padding-top: 0 !important;">';
+                $control_btn .= '<span class="nav-title css__title process-btn">Pay Now</span>';
+
+                $control_btn .= '</form>';
+
+            }
 
             ?>
 
@@ -741,50 +773,15 @@ if(!$top_i__id){
             }
 
 
-        } elseif($x__type==12273 && !$is_or_idea && count($is_next) && !$is_payment){
+        } elseif($x__type==12273 && !$is_or_idea && count($is_next)){
 
             //Ideas
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a>'; //<span class="nav-counter css__title"></span>
-            $control_btn .= '<span class="nav-title css__title">'.count($is_next).' '.$m2['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.count($is_next).' '.$m2['m__title'].'</span>';
 
         } elseif($x__type==12211){
 
-            $control_btn = null;
-
-            $paypal_email =  website_setting(30882);
-            if($is_payment && !count($x_completes) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
-
-                $control_btn = '';
-
-                //Load Paypal Pay button:
-                $control_btn .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
-
-                $control_btn .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
-                $control_btn .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable
-                $control_btn .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i['i__title'].'">';
-                $control_btn .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-'.$detected_x_type['x__type'].'-'.$x__creator.'">';
-
-                $control_btn .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
-                $control_btn .= '<input type="hidden" name="currency_code" value="'.$currency_parts[0].'">';
-                $control_btn .= '<input type="hidden" name="no_shipping" value="1">';
-                $control_btn .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
-                $control_btn .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?cancel_pay=1">';
-                $control_btn .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1">';
-                $control_btn .= '<input type="hidden" name="cmd" value="_xclick">';
-                $control_btn .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
-
-                $control_btn .= '<input type="submit" class="round-btn adj-btn" name="pay_now" id="pay_now" value="$" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');" style="padding-top: 0 !important;">';
-                $control_btn .= '<span class="nav-title css__title process-btn">Pay Now</span>';
-
-                $control_btn .= '</form>';
-
-            } else {
-
-                //NEXT
-                $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a>';
-                $control_btn .= '<span class="nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span></div>';
-
-            }
+            //NEXT
+            $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span></div>';
 
         }
 

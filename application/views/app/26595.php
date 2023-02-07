@@ -3,6 +3,18 @@
 $new_x = array();
 $is_good = false;
 
+foreach($this->X_model->fetch(array(
+    'x__type' => 26595,
+)) as $fix){
+    $x__metadata = unserialize($fix['x__metadata']);
+    if(isset($x__metadata['quantity']) && $x__metadata['quantity']>0) {
+        //$this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
+        echo '<div>'.intval($x__metadata['quantity']).'</div>';
+    } else {
+        echo '<div>ERROR:'.$fix['x__id'].'</div>';
+    }
+}
+
 //Called when the paypal payment is complete:
 if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $_POST['payment_status']=='Completed')){
 
@@ -30,6 +42,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
             //Log Payment:
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 26595,
+                'x__weight' => intval($_POST['quantity']),
                 'x__creator' => $x__creator,
                 'x__metadata' => $_POST,
             ));
@@ -42,6 +55,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
             //Find original payment:
             $original_payment = $this->X_model->fetch(array(
                 'x__type' => 26595,
+                'x__weight' => (-1 * intval($_POST['quantity'])),
                 'x__creator' => $x__creator,
                 'x__left' => $next_is[0]['i__id'],
             ));
