@@ -5,10 +5,11 @@ $is_good = false;
 
 foreach($this->X_model->fetch(array(
     'x__type' => 26595,
+    'x__weight' => 0,
 )) as $fix){
     $x__metadata = unserialize($fix['x__metadata']);
     if(isset($x__metadata['quantity']) && $x__metadata['quantity']>0) {
-        //$this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
+        $this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
         echo '<div>'.intval($x__metadata['quantity']).'</div>';
     } else {
         echo '<div>ERROR:'.$fix['x__id'].'</div>';
