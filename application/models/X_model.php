@@ -1273,6 +1273,7 @@ class X_model extends CI_Model
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0) as $next_i){
                 //IS IT EMPTY?
+                //TODO Do not auto complete if the message has a @source reference in message...
                 if(in_array($next_i['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
