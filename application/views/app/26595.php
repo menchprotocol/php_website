@@ -4,16 +4,16 @@ $new_x = array();
 $is_good = false;
 
 foreach($this->X_model->fetch(array(
-    'x__type' => 26595,
+    'x__type' => 31967,
     'x__weight' => 0,
 ), array(), 0) as $fix){
     $x__metadata = unserialize($fix['x__metadata']);
     if(isset($x__metadata['quantity']) && $x__metadata['quantity']>0) {
-        $res = $this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
-        echo '<div>'.intval($x__metadata['quantity']).' ('.$res.')</div>';
+        //$res = $this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
+        echo '<div>-'.intval($x__metadata['quantity']).' ('.$res.')</div>';
     } else {
         echo '<div>ERROR:'.$fix['x__id'].'</div>';
-        $this->db->query("DELETE FROM table__x WHERE x__id=".$fix['x__id'].";");
+        //$this->db->query("DELETE FROM table__x WHERE x__id=".$fix['x__id'].";");
     }
 }
 
