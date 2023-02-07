@@ -9,7 +9,7 @@ foreach($this->X_model->fetch(array(
 ), array(), 0) as $fix){
     $x__metadata = unserialize($fix['x__metadata']);
     $res = $this->X_model->update($fix['x__id'], array('x__weight' => -1 ));
-    echo '<div>-'.intval($x__metadata['quantity']).' ('.$res.')</div>';
+    echo '<div>-1 ('.$res.')</div>';
 }
 
 //Called when the paypal payment is complete:
