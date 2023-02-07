@@ -995,6 +995,11 @@ echo '</div>';
             //Must upload file first:
             alert('You must upload file before going next.');
 
+        } else if (is_logged_in && focus_i__type==26560 ) {
+
+            //Must upload file first:
+            return x_free_ticket(go_next_url);
+
         } else if(go_next_url && go_next_url.length > 0){
 
             //READ:
@@ -1078,6 +1083,22 @@ echo '</div>';
 
     function x_read(go_next_url){
         $.post("/x/x_read", {
+            top_i__id:$('#top_i__id').val(),
+            i__id:fetch_val('#focus_id'),
+        }, function (data) {
+            if (data.status) {
+                //Go to redirect message:
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                js_redirect(go_next_url);
+            } else {
+                //Show error:
+                alert(data.message);
+            }
+        });
+    }
+
+    function x_free_ticket(go_next_url){
+        $.post("/x/x_free_ticket", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_val('#focus_id'),
             paypal_quantity:$('#paypal_quantity').val(),

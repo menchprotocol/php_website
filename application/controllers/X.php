@@ -1040,6 +1040,55 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea ID.',
             ));
+        } elseif(count($is) < 1){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea not published.',
+            ));
+        } elseif($is[0]['i__type']==6677){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea Type',
+            ));
+        }
+
+        $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
+            'x__type' => 4559, //Read Statement
+            'x__creator' => $member_e['e__id'],
+        ));
+
+        //All good:
+        return view_json(array(
+            'status' => 1,
+            'message' => 'Saved & Next...',
+        ));
+
+    }
+
+    function x_free_ticket(){
+
+        //Validate/Fetch idea:
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ));
+        $member_e = superpower_unlocked();
+
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        } elseif (!isset($_POST['top_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top idea ID.',
+            ));
         } elseif (!isset($_POST['paypal_quantity'])) {
             return view_json(array(
                 'status' => 0,
@@ -1050,22 +1099,18 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
-        }
-
-
-        //Complete based on type:
-        if($is[0]['i__type']==6677){
-            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-                'x__type' => 4559, //Read Statement
-                'x__creator' => $member_e['e__id'],
-            ));
         } elseif($is[0]['i__type']==26560){
-            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-                'x__type' => 31809, //FREE Ticket
-                'x__weight' => $_POST['paypal_quantity'],
-                'x__creator' => $member_e['e__id'],
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Idea Type',
             ));
         }
+
+        $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
+            'x__type' => 31809, //FREE Ticket
+            'x__weight' => $_POST['paypal_quantity'],
+            'x__creator' => $member_e['e__id'],
+        ));
 
 
         //All good:
