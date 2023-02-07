@@ -19,7 +19,7 @@ foreach($this->X_model->fetch(array(
     ), array('x__left'), 0) as $other_type){
 
         if($other_type['x__type']==4559){
-            //Delete this:
+            //This this Read Statement:
             $this->X_model->update($other_type['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
             ));

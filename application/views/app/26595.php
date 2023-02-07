@@ -3,15 +3,6 @@
 $new_x = array();
 $is_good = false;
 
-foreach($this->X_model->fetch(array(
-    'x__type' => 31967,
-    'x__weight' => 0,
-), array(), 0) as $fix){
-    $x__metadata = unserialize($fix['x__metadata']);
-    $res = $this->X_model->update($fix['x__id'], array('x__weight' => -1 ));
-    echo '<div>-1 ('.$res.')</div>';
-}
-
 //Called when the paypal payment is complete:
 if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $_POST['payment_status']=='Completed')){
 

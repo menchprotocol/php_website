@@ -1283,7 +1283,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
     } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $member_e && $top_i__id){
         //Complete if not already:
-        $href = '/x/complete_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
+        $href = '/x/completed_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } elseif($discovery_mode){
         if($top_i__id > 0 && $top_i__id!=$i['i__id']){
             $href = '/'.$top_i__id.'/'.$i['i__id'];

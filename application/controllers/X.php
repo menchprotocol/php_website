@@ -283,7 +283,7 @@ class X extends CI_Controller
 
 
 
-    function complete_next($top_i__id, $current_i__id, $next_i__id){
+    function completed_next($top_i__id, $current_i__id, $next_i__id){
 
         //Marks an idea as complete if the member decides to navigate out of order:
 
@@ -303,7 +303,7 @@ class X extends CI_Controller
             //Not public, somehow!
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'complete_next() found non-public ideas for Top ID /'.$top_i__id.'!',
+                'x__message' => 'completed_next() found non-public ideas for Top ID /'.$top_i__id.'!',
                 'x__creator' => ( $member_e ? $member_e['e__id'] : 0 ),
                 'x__left' => $current_i__id,
                 'x__right' => $next_i__id,
@@ -313,26 +313,26 @@ class X extends CI_Controller
         }
 
         //Mark this as complete since there is no follower to choose from:
-        if($member_e && in_array($current_is[0]['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
+        if($member_e && $current_is[0]['i__type']==6677 && !count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $member_e['e__id'],
                 'x__left' => $current_is[0]['i__id'],
             )))){
             $this->X_model->mark_complete($top_i__id, $current_is[0], array(
-                'x__type' => 4559, //DISCOVERY MESSAGES
+                'x__type' => 4559, //Read Statement
                 'x__creator' => $member_e['e__id'],
             ));
         }
 
-        if($member_e && in_array($next_is[0]['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
+        if($member_e && $next_is[0]['i__type']==6677 && !count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $member_e['e__id'],
                 'x__left' => $next_is[0]['i__id'],
             )))){
             $this->X_model->mark_complete($top_i__id, $next_is[0], array(
-                'x__type' => 4559, //DISCOVERY MESSAGES
+                'x__type' => 4559, //Read Statement
                 'x__creator' => $member_e['e__id'],
             ));
         }
@@ -407,9 +407,9 @@ class X extends CI_Controller
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 if(count($is_next)==1){
                     foreach($is_next as $single_down){
-                        if(in_array($single_down['i__type'], $this->config->item('n___12330'))){
+                        if($single_down['i__type']==6677){
                             $this->X_model->mark_complete($top_i__id, $single_down, array(
-                                'x__type' => 4559, //DISCOVERY MESSAGES
+                                'x__type' => 4559, //Read Statement
                                 'x__creator' => $member_e['e__id'],
                             ));
                         }
@@ -467,10 +467,14 @@ class X extends CI_Controller
             'x__left' => $is[0]['i__id'],
         )))){
             //Not yet completed, should we complete?
-            if(in_array($is[0]['i__type'], $this->config->item('n___12330'))){
-                //Yes we can:
+            if($is[0]['i__type']==6677){
                 $this->X_model->mark_complete($top_i__id, $is[0], array(
-                    'x__type' => 4559, //DISCOVERY MESSAGES
+                    'x__type' => 4559, //Read Statement
+                    'x__creator' => $member_e['e__id'],
+                ));
+            } elseif($is[0]['i__type']==26560){
+                $this->X_model->mark_complete($top_i__id, $is[0], array(
+                    'x__type' => 31809, //FREE Ticket
                     'x__creator' => $member_e['e__id'],
                 ));
             } else {

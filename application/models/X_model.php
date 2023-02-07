@@ -1274,7 +1274,7 @@ class X_model extends CI_Model
             ), array('x__right'), 0) as $next_i){
                 //IS IT EMPTY?
                 //TODO Do not auto complete if the message has a @source reference in message...
-                if(in_array($next_i['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
+                if($next_i['i__type']==6677 && !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $add_fields['x__creator'],
@@ -1282,7 +1282,7 @@ class X_model extends CI_Model
                     )))){
                     //Mark as complete:
                     $this->X_model->mark_complete($top_i__id, $next_i, array(
-                        'x__type' => 4559, //DISCOVERY MESSAGES
+                        'x__type' => 4559, //Read Statement
                         'x__creator' => $add_fields['x__creator'],
                     ));
                 }
