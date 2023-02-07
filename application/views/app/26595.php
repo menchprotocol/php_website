@@ -6,7 +6,7 @@ $is_good = false;
 foreach($this->X_model->fetch(array(
     'x__type' => 26595,
     'x__weight' => 0,
-)) as $fix){
+), array(), 0) as $fix){
     $x__metadata = unserialize($fix['x__metadata']);
     if(isset($x__metadata['quantity']) && $x__metadata['quantity']>0) {
         $res = $this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
