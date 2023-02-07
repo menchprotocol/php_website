@@ -13,6 +13,7 @@ foreach($this->X_model->fetch(array(
         echo '<div>'.intval($x__metadata['quantity']).' ('.$res.')</div>';
     } else {
         echo '<div>ERROR:'.$fix['x__id'].'</div>';
+        $this->db->query("DELETE FROM table__x WHERE x__id=".$fix['x__id'].";");
     }
 }
 
