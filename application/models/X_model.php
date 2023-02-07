@@ -1245,165 +1245,102 @@ class X_model extends CI_Model
 
         $x__creator = ( isset($add_fields['x__creator']) ? $add_fields['x__creator'] : 0);
         $domain_url = get_domain('m__message', $x__creator);
-
-        $search_fields = $add_fields;
-
-
-        if(isset($search_fields['x__metadata'])){
-            unset($search_fields['x__metadata']);
-        }
-        if(!isset($search_fields['x__privacy'])){
-            //Only search active:
-            $search_fields['x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')'] = null;
-        }
-
-        //Log completion transaction if not duplicate:
-        $check_duplicate = $this->X_model->fetch($search_fields);
+        $member_e = superpower_unlocked();
 
 
-        if(0 && count($check_duplicate) && in_array($add_fields['x__type'], $this->config->item('n___30469'))){
-
-            //Maybe renable later?
-            $new_x = array_pop(array_reverse($check_duplicate));
-
-        } else {
-
-            //We always add new transaction:
-            $new_x = $this->X_model->create($add_fields);
-
-        }
-
-        if(!isset($check_duplicate[0]['x__id'])){
-            //Fetch Source ID:
-            $watchers = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 10573, //WATCHERS
-                'x__right' => $i['i__id'],
-            ), array(), 0);
-            if(count($watchers)){
-
-                $es_discoverer = $this->E_model->fetch(array(
-                    'e__id' => $add_fields['x__creator'],
-                ));
-                if(count($es_discoverer)){
-
-                    //Fetch Discoverer contact:
-                    $u_list_phone = '';
-                    $u_clean_phone = '';
-                    foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                        'x__down' => $add_fields['x__creator'],
-                        'x__up' => 4783, //Phone
-                    )) as $x_progress){
-                        $u_clean_phone = clean_phone($x_progress['x__message']);
-                        $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n";
-                    }
-
-                    //Fetch Full Legal Name:
-                    $u_list_name = '';
-                    foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__left' => 15736, //What's your Full Legal Name that Matches your ID
-                        'x__creator' => $add_fields['x__creator'],
-                    )) as $x_progress){
-                        $u_list_name .= 'Full Name:'."\n".$x_progress['x__message']."\n\n";
-                    }
+        //Add new transaction:
+        $new_x = $this->X_model->create($add_fields);
 
 
+        //Notify watchers IF any:
+        $watchers = $this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 10573, //WATCHERS
+            'x__right' => $i['i__id'],
+        ), array(), 0);
+        if(count($watchers)){
 
-                    //Notify Idea Watchers
-                    $sent_watchers = array();
-                    foreach($watchers as $watcher){
-                        if(!in_array(intval($watcher['x__up']), $sent_watchers)){
-                            array_push($sent_watchers, intval($watcher['x__up']));
+            $es_discoverer = $this->E_model->fetch(array(
+                'e__id' => $add_fields['x__creator'],
+            ));
+            if(count($es_discoverer)){
 
-                            //'.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'
-                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.$i['i__title'],
-                                //Message Body:
-                                $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
-                                ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
-                                $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
-                                $u_list_name.
-                                $u_list_phone
-                            );
-                        }
-                    }
+                //Fetch Discoverer contact:
+                $u_list_phone = '';
+                $u_clean_phone = '';
+                foreach($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__down' => $add_fields['x__creator'],
+                    'x__up' => 4783, //Phone
+                )) as $x_progress){
+                    $u_clean_phone = clean_phone($x_progress['x__message']);
+                    $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n";
                 }
 
+                //Fetch Full Legal Name:
+                $u_list_name = '';
+                foreach($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__left' => 15736, //What's your Full Legal Name that Matches your ID
+                    'x__creator' => $add_fields['x__creator'],
+                )) as $x_progress){
+                    $u_list_name .= 'Full Name:'."\n".$x_progress['x__message']."\n\n";
+                }
+
+
+                //Notify Idea Watchers
+                $sent_watchers = array();
+                foreach($watchers as $watcher){
+                    if(!in_array(intval($watcher['x__up']), $sent_watchers)){
+                        array_push($sent_watchers, intval($watcher['x__up']));
+
+                        //'.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'
+                        $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.$i['i__title'],
+                            //Message Body:
+                            $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
+                            ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
+                            $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
+                            $u_list_name.
+                            $u_list_phone
+                        );
+                    }
+                }
             }
         }
 
 
 
-        //Check Auto Completes:
-        $is_next_autoscan = array();
+        //Auto Complete for OR Answers
         if(in_array($i['i__type'], $this->config->item('n___7712'))){
-
-            //IDEA TYPE SELECT NEXT
-            $is_next_autoscan = $this->X_model->fetch(array(
+            foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
                 'x__creator' => $add_fields['x__creator'],
                 'x__left' => $i['i__id'],
-            ), array('x__right'), 0);
-
-        } elseif(!in_array($i['i__type'], $this->config->item('n___7712'))){
-
-            //IDEA TYPE ALL NEXT
-            $is_next_autoscan = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $i['i__id'],
-            ), array('x__right'), 0);
-
-        }
-
-        foreach($is_next_autoscan as $next_i){
-
-            //IS IT EMPTY?
-            if(
-
-                //Auto completable type?
-                in_array($next_i['i__type'], $this->config->item('n___12330')) &&
-
-                //No Messages
-                !count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 4231, //IDEA NOTES Messages
-                    'x__right' => $next_i['i__id'],
-                ))) &&
-
-                //One or less next
-                /*
-                count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => $next_i['i__id'],
-                ))) <= 1 &&
-                */
-
-                //Not Already Completed:
-                !count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__creator' => $add_fields['x__creator'],
-                    'x__left' => $next_i['i__id'],
-                )))){
-
-                //Mark as complete:
-                $this->X_model->mark_complete($top_i__id, $next_i, array(
-                    'x__type' => 4559, //DISCOVERY MESSAGES
-                    'x__creator' => $add_fields['x__creator'],
-                ));
-
+            ), array('x__right'), 0) as $next_i){
+                //IS IT EMPTY?
+                if(in_array($next_i['i__type'], $this->config->item('n___12330')) && !count($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__creator' => $add_fields['x__creator'],
+                        'x__left' => $next_i['i__id'],
+                    )))){
+                    //Mark as complete:
+                    $this->X_model->mark_complete($top_i__id, $next_i, array(
+                        'x__type' => 4559, //DISCOVERY MESSAGES
+                        'x__creator' => $add_fields['x__creator'],
+                    ));
+                }
             }
         }
 
-        $member_e = superpower_unlocked();
+
+
+
         $detected_x_type = x_detect_type($add_fields['x__message']);
-        if ($detected_x_type['status'] && $member_e && !in_array($detected_x_type['x__type'] , $this->config->item('n___32248'))) {
+        if ($member_e && !in_array($add_fields['x__type'], $this->config->item('n___32248'))) {
 
             //COMPLETED Discovery, take post trigger actions
 
@@ -1467,6 +1404,8 @@ class X_model extends CI_Model
             }
 
 
+
+
             //ADD PROFILE?
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1476,7 +1415,7 @@ class X_model extends CI_Model
 
                 //Check if special profile add?
 
-                if($member_e && $x_tag['x__up']==13025){
+                if($x_tag['x__up']==13025){
 
                     if(strlen(trim($add_fields['x__message']))>=2){
 
@@ -1491,7 +1430,7 @@ class X_model extends CI_Model
 
                     }
 
-                } elseif($member_e && $x_tag['x__up']==26139){
+                } elseif($x_tag['x__up']==26139){
 
                     //Make sure submission is image source reference:
                     foreach($this->X_model->fetch(array(
@@ -1529,31 +1468,27 @@ class X_model extends CI_Model
                     if(count($existing_x)){
 
                         //Transaction previously exists, see if content value is the same:
-                        if($existing_x[0]['x__message'] == $add_fields['x__message'] && $existing_x[0]['x__type'] == $detected_x_type['x__type']){
-
+                        if(strtolower($existing_x[0]['x__message']) == strtolower($add_fields['x__message'])){
                             //Everything is the same, nothing to do here:
                             continue;
-
-                        } else {
-
-                            $x_edited++;
-
-                            //Content value has changed, update the transaction:
-                            $this->X_model->update($existing_x[0]['x__id'], array(
-                                'x__message' => $add_fields['x__message'],
-                                'x__type' => $detected_x_type['x__type'],
-                            ), $add_fields['x__creator'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
-
-                            $this->X_model->create(array(
-                                'x__type' => 12197, //Following Added
-                                'x__creator' => $add_fields['x__creator'],
-                                'x__up' => $x_tag['x__up'],
-                                'x__down' => $add_fields['x__creator'],
-                                'x__left' => $i['i__id'],
-                                'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
-                            ));
-
                         }
+
+                        $x_edited++;
+
+                        //Content value has changed, update the transaction:
+                        $this->X_model->update($existing_x[0]['x__id'], array(
+                            'x__message' => $add_fields['x__message'],
+                            'x__type' => $detected_x_type['x__type'],
+                        ), $add_fields['x__creator'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
+
+                        $this->X_model->create(array(
+                            'x__type' => 12197, //Following Added
+                            'x__creator' => $add_fields['x__creator'],
+                            'x__up' => $x_tag['x__up'],
+                            'x__down' => $add_fields['x__creator'],
+                            'x__left' => $i['i__id'],
+                            'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$add_fields['x__message'].']',
+                        ));
 
                     } else {
 
@@ -1578,12 +1513,9 @@ class X_model extends CI_Model
 
                     }
 
-                    if($x_added>0 || $x_edited>0 || $x_deleted>0){
-                        //See if Session needs to be updated:
-                        if($member_e && $member_e['e__id']==$add_fields['x__creator']){
-                            //Yes, update session:
-                            $this->E_model->activate_session($member_e, true);
-                        }
+                    //See if Session needs to be updated:
+                    if($member_e['e__id']==$add_fields['x__creator'] && ($x_added>0 || $x_edited>0 || $x_deleted>0)){
+                        $this->E_model->activate_session($member_e, true);
                     }
                 }
             }
@@ -1598,19 +1530,14 @@ class X_model extends CI_Model
             )) as $x_tag){
 
                 //Remove Following IF previously assigned:
-                $existing_x = $this->X_model->fetch(array(
+                foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
                     'x__down' => $add_fields['x__creator'],
-                ));
+                )) as $existing_x){
 
-                if(count($existing_x)){
-
-                    //Exists, so must be removed:
-                    $member_e = superpower_unlocked();
-
-                    $this->X_model->update($existing_x[0]['x__id'], array(
+                    $this->X_model->update($existing_x['x__id'], array(
                         'x__privacy' => 6173,
                     ), $member_e['e__id'], 12197 /* Following Removed */);
 

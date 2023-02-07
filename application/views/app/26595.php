@@ -10,7 +10,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
     $item_numbers = explode('-', $_POST['item_number']);
     $top_i__id = intval($item_numbers[0]);
     $i__id = intval($item_numbers[1]);
-    $currency_type = intval($item_numbers[2]);
+    //$currency_type = intval($item_numbers[2]); //Deprecated
     $x__creator = intval($item_numbers[3]);
     $pay_amount = doubleval(($_POST['payment_gross'] > $_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross']));
 
@@ -20,7 +20,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ));
 
-    if ($top_i__id > 0 && $i__id > 0 && $currency_type==26661 && $x__creator > 0 && count($next_is)) {
+    if ($top_i__id > 0 && $i__id > 0 && $x__creator > 0 && count($next_is)) {
 
         if($pay_amount > 0 && $_POST['payment_status']=='Completed'){
 
@@ -31,7 +31,6 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 26595,
                 'x__creator' => $x__creator,
-                'x__up' => $currency_type,
                 'x__metadata' => $_POST,
             ));
 
@@ -45,15 +44,12 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
                 'x__type' => 26595,
                 'x__creator' => $x__creator,
                 'x__left' => $next_is[0]['i__id'],
-                'x__right' => $top_i__id,
-                'x__up' => $currency_type,
             ));
 
             //Log Refund:
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
                 'x__type' => 31967,
                 'x__creator' => $x__creator,
-                'x__up' => $currency_type,
                 'x__metadata' => $_POST,
                 'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),
                 'x__website' => ( isset($original_payment[0]['x__website']) && $original_payment[0]['x__website']>0 ? $original_payment[0]['x__website'] : 0 ),
