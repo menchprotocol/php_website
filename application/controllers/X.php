@@ -458,37 +458,6 @@ class X extends CI_Controller
         }
 
 
-        //Should we check for auto next redirect if empty? Only if this is a selection:
-        $next_url = null;
-        if(!count($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__creator' => $member_e['e__id'],
-            'x__left' => $is[0]['i__id'],
-        )))){
-            //Not yet completed, should we complete?
-            if($is[0]['i__type']==6677){
-                $this->X_model->mark_complete($top_i__id, $is[0], array(
-                    'x__type' => 4559, //Read Statement
-                    'x__creator' => $member_e['e__id'],
-                ));
-            } elseif($is[0]['i__type']==26560){
-                $this->X_model->mark_complete($top_i__id, $is[0], array(
-                    'x__type' => 31809, //FREE Ticket
-                    'x__creator' => $member_e['e__id'],
-                ));
-            } else {
-                //We can't, so this is the next idea:
-                $next_url = '/'.$top_i__id.'/'.$is[0]['i__id'];
-            }
-        }
-
-
-        if($next_url){
-            return redirect_message($next_url);
-        }
-
-
         //Go to Next Idea:
         $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0]);
         if($next_i__id > 0){
@@ -1044,6 +1013,67 @@ class X extends CI_Controller
             ));
 
         }
+    }
+
+
+    function x_read(){
+
+        //Validate/Fetch idea:
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ));
+        $member_e = superpower_unlocked();
+
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        } elseif (!isset($_POST['top_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top idea ID.',
+            ));
+        } elseif (!isset($_POST['paypal_quantity'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Count.',
+            ));
+        } elseif(count($is) < 1){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea not published.',
+            ));
+        }
+
+
+        //Complete based on type:
+        if($is[0]['i__type']==6677){
+            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
+                'x__type' => 4559, //Read Statement
+                'x__creator' => $member_e['e__id'],
+            ));
+        } elseif($is[0]['i__type']==26560){
+            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
+                'x__type' => 31809, //FREE Ticket
+                'x__weight' => $_POST['paypal_quantity'],
+                'x__creator' => $member_e['e__id'],
+            ));
+        }
+
+
+        //All good:
+        return view_json(array(
+            'status' => 1,
+            'message' => 'Saved & Next...',
+        ));
+
     }
 
 

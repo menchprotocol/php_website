@@ -997,9 +997,8 @@ echo '</div>';
 
         } else if(go_next_url && go_next_url.length > 0){
 
-            //Go Next:
-            $('.go-next').html(( is_logged_in ? '<i class="far fa-yin-yang fa-spin zq6255"></i>' : '<i class="far fa-yin-yang fa-spin"></i>' ));
-            js_redirect(go_next_url);
+            //READ:
+            return x_read(go_next_url);
 
         }
     }
@@ -1064,6 +1063,24 @@ echo '</div>';
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_val('#focus_id'),
             x_reply:$('#x_reply').val(),
+        }, function (data) {
+            if (data.status) {
+                //Go to redirect message:
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                js_redirect(go_next_url);
+            } else {
+                //Show error:
+                alert(data.message);
+            }
+        });
+    }
+
+
+    function x_read(go_next_url){
+        $.post("/x/x_read", {
+            top_i__id:$('#top_i__id').val(),
+            i__id:fetch_val('#focus_id'),
+            paypal_quantity:$('#paypal_quantity').val(),
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
