@@ -9,8 +9,8 @@ foreach($this->X_model->fetch(array(
 )) as $fix){
     $x__metadata = unserialize($fix['x__metadata']);
     if(isset($x__metadata['quantity']) && $x__metadata['quantity']>0) {
-        $this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
-        echo '<div>'.intval($x__metadata['quantity']).'</div>';
+        $res = $this->X_model->update($fix['x__id'], array('x__weight' => intval($x__metadata['quantity'])));
+        echo '<div>'.intval($x__metadata['quantity']).' ('.$res.')</div>';
     } else {
         echo '<div>ERROR:'.$fix['x__id'].'</div>';
     }
