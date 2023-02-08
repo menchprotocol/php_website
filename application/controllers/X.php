@@ -282,41 +282,6 @@ class X extends CI_Controller
 
 
 
-
-    function completed_next($top_i__id, $current_i__id, $next_i__id){
-
-        //Marks an idea as complete if the member decides to navigate out of order:
-
-        $member_e = superpower_unlocked();
-        $current_is = $this->I_model->fetch(array(
-            'i__id' => $current_i__id,
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-
-        $next_is = $this->I_model->fetch(array(
-            'i__id' => $next_i__id,
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-
-        if(!count($current_is) || !count($next_is)){
-
-            //Not public, somehow!
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'completed_next() found non-public ideas for Top ID /'.$top_i__id.'!',
-                'x__creator' => ( $member_e ? $member_e['e__id'] : 0 ),
-                'x__left' => $current_i__id,
-                'x__right' => $next_i__id,
-            ));
-
-            return false;
-        }
-
-        return redirect_message('/'.$top_i__id.'/'.$next_i__id);
-
-    }
-
-
     function x_start($i__id){
 
         //Adds Idea to the Members read
@@ -499,38 +464,6 @@ class X extends CI_Controller
         }
 
     }
-
-    function x_completed_next($top_i__id, $i__id = 0){
-
-        $member_e = superpower_unlocked();
-        $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-
-        if(!$member_e){
-            return redirect_message('/-4269?i__id='.$top_i__id);
-        } elseif(!$this->X_model->started_ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message('/'.$top_i__id);
-        } elseif(!count($is)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
-        }
-
-        //Go to Next Idea:
-        $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0], 0, true, true);
-        if($next_i__id > 0){
-
-            return redirect_message('/'.$top_i__id.'/'.$next_i__id);
-
-        } else {
-
-            //Nothing else to find, go to top:
-            return redirect_message('/'.$top_i__id);
-
-        }
-    }
-
-
 
 
     function x_previous($previous_level_id, $i__id){

@@ -1283,9 +1283,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         }
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
-    } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $member_e && $top_i__id){
-        //Complete if not already:
-        $href = '/x/completed_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
     } else {
         $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
     }
