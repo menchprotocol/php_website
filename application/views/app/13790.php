@@ -30,11 +30,11 @@ if(strlen($_GET['i__id'])){
         $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
         $or_ids = $this->I_model->recursive_down_ids($loaded_i, 'OR');
 
-        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($or_ids).'/'.count($all_ids).' OR IDEAS</a>)</h2>';
+        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
         $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
 
         echo '<div class="hidden idea_list">';
-        echo '<div>ALL</div>';
+        echo '<div>'.count($all_ids).' Total Ideas:</div>';
         $count = 0;
         foreach($all_ids as $recursive_down_id){
             foreach($this->I_model->fetch(array(
@@ -60,7 +60,7 @@ if(strlen($_GET['i__id'])){
             }
         }
 
-        echo '<div>OR</div>';
+        echo '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
         $count = 0;
         foreach($or_ids as $recursive_down_id){
             foreach($this->I_model->fetch(array(
@@ -69,7 +69,7 @@ if(strlen($_GET['i__id'])){
                 $count++;
                 echo '<p>'.$count.') <a href="/i/i_go/'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
                 if(!strlen($_GET['custom_grid']) && !in_array($this_i['i__id'], $is_with_action_es)){
-                    array_push($column_ideas, $this_i);
+                    //array_push($column_ideas, $this_i);
                 }
             }
         }
