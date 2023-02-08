@@ -52,9 +52,9 @@ if(strlen($_GET['i__id'])){
                     ), array('x__up'), 0) as $this_e){
                         if(!in_array($this_e['e__id'], $es_added)){
                             array_push($column_sources, $this_e);
-                            array_push($is_with_action_es, $this_i['i__id']);
                             array_push($es_added, $this_e['e__id']);
                         }
+                        array_push($is_with_action_es, $this_i['i__id']);
                     }
                 }
             }
