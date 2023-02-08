@@ -551,7 +551,7 @@ if($top_i__id) {
                 $ticket_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                 $ticket_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
-                $ticket_ui .= '<input type="submit" class="adj-btn pay-btn" name="pay_now" id="pay_now" value="Pay Now" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');" style="padding-top: 0 !important;">';
+                $ticket_ui .= '<input type="submit" class="adj-btn pay-btn" name="pay_now" id="pay_now" value="Pay Now" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
 
                 $ticket_ui .= '</form>';
 

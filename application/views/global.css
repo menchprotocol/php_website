@@ -2333,17 +2333,18 @@ input.form-control {
 
 
 
-.pay-btn{
-    padding: 10px;
-    background-color: #999;
-    color: #FFF;
-    border-radius: 21px;
-}
+
 .adj-btn{
     border: 0;
     font-weight: 800 !important;
     font-size: 2.5em;
     padding: 1px 0 0 0;
+}
+.pay-btn{
+    padding: 21px;
+    background-color: #999;
+    color: #FFF;
+    border-radius: 21px;
 }
 
 .info_box{
