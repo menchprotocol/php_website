@@ -390,6 +390,9 @@ if($top_i__id) {
                 $ticket_ui .= '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'Received your payment of ' : 'Refunded you a total of ' ).$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' tickets' : '' ).'</div>';
             }
 
+            $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$x__metadata['mc_gross'].'">';
+            $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
+
             //Invite Your Friends (If 2 or more items):
             if($x__metadata['quantity']>1 && 0){
 
@@ -415,6 +418,8 @@ if($top_i__id) {
                 $ticket_ui .= '<script> $(document).ready(function () { set_autosize($(\'#invite_message\')); }); </script>';
 
             }
+
+
 
         } else {
 
