@@ -1138,21 +1138,21 @@ function view_e_settings($list_id, $is_open){
 
 function view_unauthorized_message($superpower_e__id = 0){
 
-    $member_e = superpower_unlocked($superpower_e__id);
-    $CI =& get_instance();
-    $e___10957 = $CI->config->item('e___10957');
-
-    if(!$member_e){
+    if(!superpower_unlocked()){
 
         return 'Sign-in to continue';
 
-    } elseif($superpower_e__id){
+    } elseif($superpower_e__id && !superpower_unlocked($superpower_e__id)){
 
+        $CI =& get_instance();
+        $e___10957 = $CI->config->item('e___10957');
         return 'You are missing the '.$e___10957[$superpower_e__id]['m__title'];
 
-    }
+    } else {
 
-    return null;
+        return null;
+
+    }
 
 }
 
