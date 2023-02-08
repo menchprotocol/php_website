@@ -1002,7 +1002,7 @@ echo '</div>';
 
         } else if(go_next_url && go_next_url.length > 0){
 
-            if(parseInt($('#top_i__id').val()) > 0){
+            if(is_logged_in && parseInt($('#top_i__id').val()) > 0){
 
                 //READ:
                 return x_read(go_next_url);
