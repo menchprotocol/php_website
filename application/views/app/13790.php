@@ -21,6 +21,7 @@ if(strlen($_GET['i__id'])){
 
     $recursive_i_ids = array();
     $is_with_action_es = array();
+    $es_added = array();
 
     foreach($this->I_model->fetch(array(
         'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
@@ -42,7 +43,7 @@ if(strlen($_GET['i__id'])){
                 $count++;
                 echo '<p>'.$count.') <a href="/i/i_go/'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
 
-                if(!strlen($_GET['custom_grid'])){
+                if(!strlen($_GET['custom_grid']) && !in_array($this_e['e__id'], $es_added)){
                     foreach($this->X_model->fetch(array(
                         'x__right' => $this_i['i__id'],
                         'x__type IN (' . join(',', $this->config->item('n___31023')) . ')' => null, //Idea Source Action Links
@@ -51,6 +52,7 @@ if(strlen($_GET['i__id'])){
                     ), array('x__up'), 0) as $this_e){
                         array_push($column_sources, $this_e);
                         array_push($is_with_action_es, $this_i['i__id']);
+                        array_push($es_added, $this_e['e__id']);
                     }
                 }
             }
