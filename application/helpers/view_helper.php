@@ -1432,7 +1432,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                         //Delete Permanently
                         $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__privacy'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' css__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014')) && $link_creator){
+                    } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014')) && ($link_creator || $e_of_i)){
 
                         //Ticket Details
                         $action_buttons .= '<a href="/-26560?x__id='.$i['x__id'].'&x__creator='.$i['x__creator'].'" class="dropdown-item css__title">'.$anchor.'</a>';
@@ -1873,7 +1873,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         //Reset Alphabetic order
                         $action_buttons .= '<a href="javascript:void(0);" onclick="sort_e_handle_reset()" class="dropdown-item css__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==26560 && isset($e['x__type']) && in_array($e['x__type'], $CI->config->item('n___32014')) && $e['x__creator']==$member_e['e__id']){
+                    } elseif($e__id_dropdown==26560 && isset($e['x__type']) && in_array($e['x__type'], $CI->config->item('n___32014')) && ($e['x__creator']==$member_e['e__id'] || $superpower_13422)){
 
                         //Ticket Details
                         $action_buttons .= '<a href="/-26560?x__id='.$e['x__id'].'&x__creator='.$e['x__creator'].'" class="dropdown-item css__title">'.$anchor.'</a>';
