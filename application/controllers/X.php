@@ -1052,10 +1052,19 @@ class X extends CI_Controller
             ));
         }
 
-        $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-            'x__type' => 4559, //Read Statement
-            'x__creator' => $member_e['e__id'],
-        ));
+
+        if(!count($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__creator' => $member_e['e__id'],
+                'x__left' => $is[0]['i__id'],
+            )))){
+            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
+                'x__type' => 4559, //Read Statement
+                'x__creator' => $member_e['e__id'],
+            ));
+        }
+
 
         //All good:
         return view_json(array(
@@ -1106,11 +1115,19 @@ class X extends CI_Controller
             ));
         }
 
-        $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-            'x__type' => 31809, //FREE Ticket
-            'x__weight' => $_POST['paypal_quantity'],
+
+        if(!count($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => 31809, //DISCOVERIES
             'x__creator' => $member_e['e__id'],
-        ));
+            'x__left' => $is[0]['i__id'],
+        )))){
+            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
+                'x__type' => 31809, //FREE Ticket
+                'x__weight' => $_POST['paypal_quantity'],
+                'x__creator' => $member_e['e__id'],
+            ));
+        }
 
 
         //All good:
