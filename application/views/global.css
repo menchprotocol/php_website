@@ -2344,7 +2344,8 @@ input.form-control {
     padding: 21px;
     background-color: #999;
     color: #FFF;
-    border-radius: 21px;
+    border-radius: 13px;
+    margin-top: 13px;
 }
 
 .info_box{
