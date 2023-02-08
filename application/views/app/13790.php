@@ -22,11 +22,13 @@ if(strlen($_GET['i__id'])){
         'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
     ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
 
-        $recursive_down_ids = $this->I_model->recursive_down_ids($loaded_i, $_GET['scope']);
-        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> ('.count($recursive_down_ids).' Ideas)</h2>';
-        $recursive_i_ids = array_merge($recursive_i_ids, $recursive_down_ids);
+        $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
+        $or_ids = $this->I_model->recursive_down_ids($loaded_i, 'OR');
 
-        foreach($recursive_down_ids as $recursive_down_id){
+        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> ('.count($or_ids).'/'.count($all_ids).' OR IDEAS)</h2>';
+        $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
+
+        foreach($all_ids as $recursive_down_id){
             foreach($this->I_model->fetch(array(
                 'i__id' => $recursive_down_id,
             ), 0, 0, array('i__id' => 'ASC')) as $this_i){
