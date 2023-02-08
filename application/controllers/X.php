@@ -352,8 +352,6 @@ class X extends CI_Controller
         //Check to see if added to read for logged-in members:
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$i__id);
-        } elseif($member_e['e__id']==1){
-            die('died');
         }
 
         //Add this Idea to their read If not there:
@@ -388,8 +386,12 @@ class X extends CI_Controller
 
                 //Already has a starting point:
                 $top_i__id =  $xs[0]['x__left'];
+                die('died1');
+
 
             } else {
+
+                die('died2');
 
                 //This is the new top ID
                 $top_i__id =  $is[0]['i__id'];
