@@ -1093,7 +1093,7 @@ class X extends CI_Controller
 
         if(!count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => 31809, //DISCOVERIES
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )))){
