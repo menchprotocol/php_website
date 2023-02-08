@@ -22,7 +22,7 @@ if(strlen($_GET['i__id'])){
         'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
     ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
 
-        $recursive_down_ids = $this->I_model->recursive_down_ids($loaded_i);
+        $recursive_down_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
         echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> ('.count($recursive_down_ids).' Ideas)</h2>';
         $recursive_i_ids = array_merge($recursive_i_ids, $recursive_down_ids);
 
@@ -35,6 +35,8 @@ if(strlen($_GET['i__id'])){
         }
 
     }
+
+    die('');
 
     echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
 

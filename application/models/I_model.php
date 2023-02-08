@@ -570,13 +570,26 @@ class I_model extends CI_Model
 
 
 
-    function recursive_down_ids($i, $current_level = 0, $loop_breaker_ids = array()){
+    function recursive_down_ids($i, $scope, $current_level = 0, $loop_breaker_ids = array()){
+
+        /*
+         *
+         * $fetch can be either:
+         * - ALL any and all nodes in the tree
+         * - AND only AND nodes that are similar for all
+         * - OR only what is different for all
+         * */
+
+        if(!($scope=='ALL' || $scope=='AND' || $scope=='OR')){
+            return false;
+        }
 
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
             return array();
         }
 
-        if(in_array($i['i__type'], $this->config->item('n___7712'))){
+        $is_or_i = in_array($i['i__type'], $this->config->item('n___7712'));
+        if($scope=='AND' && $is_or_i){
             //OR IDEA:
             return array();
         }
@@ -593,11 +606,14 @@ class I_model extends CI_Model
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
 
             if(!in_array(intval($next_i['i__id']), $recursive_i_ids)){
-                array_push($recursive_i_ids, intval($next_i['i__id']));
+                if(!($scope=='OR' && !$is_or_i)){
+                    //We add it at all times unless scope is OR and node is not OR
+                    array_push($recursive_i_ids, intval($next_i['i__id']));
+                }
             }
 
             //Add to current array if we found anything:
-            foreach($this->I_model->recursive_down_ids($next_i, $current_level, $loop_breaker_ids) as $recursive_i_id){
+            foreach($this->I_model->recursive_down_ids($next_i, $scope, $current_level, $loop_breaker_ids) as $recursive_i_id){
                 if(!in_array($recursive_i_id, $recursive_i_ids)){
                     array_push($recursive_i_ids, $recursive_i_id);
                 }
