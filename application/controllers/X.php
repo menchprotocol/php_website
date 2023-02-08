@@ -352,6 +352,8 @@ class X extends CI_Controller
         //Check to see if added to read for logged-in members:
         if(!$member_e){
             return redirect_message('/-4269?i__id='.$i__id);
+        } elseif($member_e['e__id']==1){
+            die('died');
         }
 
         //Add this Idea to their read If not there:
@@ -359,7 +361,7 @@ class X extends CI_Controller
 
         if(!in_array($i__id, $this->X_model->started_ids($member_e['e__id']))){
 
-            //Make sure they can start this:
+            //valid idea?
             $is = $this->I_model->fetch(array(
                 'i__id' => $i__id,
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -368,7 +370,7 @@ class X extends CI_Controller
                 return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid idea ID</div>', true);
             }
 
-            //Make sure it's available:
+            //is available?
             $i_is_available = i_is_available($i__id, true);
             if(!$i_is_available['status']){
                 return redirect_message('/'.$i_is_available['return_i__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');

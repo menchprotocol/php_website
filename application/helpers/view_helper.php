@@ -1274,6 +1274,8 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     if($discovery_mode) {
         if($top_i__id){
             $href = '/'.$top_i__id.'/'.$i['i__id'];
+        } elseif($x__id && $i['x__left']>0 && $i['x__right']>0) {
+            $href = '/'.$i['x__right'].'/'.$i['x__left'];
         } elseif($e_of_i) {
             $href = '/~'.$i['i__id'];
         } else {
@@ -1284,14 +1286,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     } elseif(in_array($x__type, $CI->config->item('n___14742')) && $previous_i && $member_e && $top_i__id){
         //Complete if not already:
         $href = '/x/completed_next/'.$top_i__id.'/'.$previous_i['i__id'].'/'.$i['i__id'];
-    } elseif($discovery_mode){
-        if($top_i__id > 0 && $top_i__id!=$i['i__id']){
-            $href = '/'.$top_i__id.'/'.$i['i__id'];
-        } elseif($x__id && $i['x__left']>0 && $i['x__right']>0) {
-            $href = '/'.$i['x__right'].'/'.$i['x__left'];
-        } else {
-            $href = '/'.$i['i__id'];
-        }
     } else {
         $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
     }
