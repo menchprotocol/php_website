@@ -1000,9 +1000,9 @@ echo '</div>';
             //Must upload file first:
             return x_free_ticket(go_next_url);
 
-        } else if(go_next_url && go_next_url.length > 0){
+        } else if(go_next_url && go_next_url.length > 0) {
 
-            if(is_logged_in && parseInt($('#top_i__id').val()) > 0){
+            if (is_logged_in && parseInt($('#top_i__id').val()) > 0) {
 
                 //READ:
                 return x_read(go_next_url);
@@ -1014,6 +1014,8 @@ echo '</div>';
                 js_redirect(go_next_url);
 
             }
+
+        }
     }
 
     function x_upload(droppedFiles, uploadType) {
