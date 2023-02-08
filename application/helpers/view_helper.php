@@ -1144,11 +1144,11 @@ function view_unauthorized_message($superpower_e__id = 0){
 
     if(!$member_e){
 
-        return 'Login to continue.';
+        return 'Sign-in to continue';
 
     } elseif($superpower_e__id){
 
-        return 'Missing: '.$e___10957[$superpower_e__id]['m__title'];
+        return 'You are missing the '.$e___10957[$superpower_e__id]['m__title'];
 
     }
 
