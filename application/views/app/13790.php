@@ -50,7 +50,7 @@ if(strlen($_GET['i__id'])){
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                     ), array('x__up'), 0) as $this_e){
-                        if(!in_array($this_e['e__id'], $es_added)){
+                        if(!in_array($this_e['e__id'], $es_added) && (!strlen($_GET['include_e']) || !in_array($this_e['e__id'], explode(',',$_GET['include_e'])))){
                             array_push($column_sources, $this_e);
                             array_push($es_added, $this_e['e__id']);
                         }
