@@ -386,6 +386,10 @@ class X extends CI_Controller
 
                 //Already has a starting point:
                 $top_i__id =  $xs[0]['x__left'];
+
+                foreach($xs as $xss){
+                    print_r($xss);
+                }
                 die('died1');
 
 
