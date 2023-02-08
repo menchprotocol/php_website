@@ -1002,10 +1002,18 @@ echo '</div>';
 
         } else if(go_next_url && go_next_url.length > 0){
 
-            //READ:
-            return x_read(go_next_url);
+            if(parseInt($('#top_i__id').val()) > 0){
 
-        }
+                //READ:
+                return x_read(go_next_url);
+
+            } else {
+
+                //Go Next:
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+                js_redirect(go_next_url);
+
+            }
     }
 
     function x_upload(droppedFiles, uploadType) {

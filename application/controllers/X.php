@@ -312,31 +312,6 @@ class X extends CI_Controller
             return false;
         }
 
-        //Mark this as complete since there is no follower to choose from:
-        if($member_e && $current_is[0]['i__type']==6677 && !count($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $member_e['e__id'],
-                'x__left' => $current_is[0]['i__id'],
-            )))){
-            $this->X_model->mark_complete($top_i__id, $current_is[0], array(
-                'x__type' => 4559, //Read Statement
-                'x__creator' => $member_e['e__id'],
-            ));
-        }
-
-        if($member_e && $next_is[0]['i__type']==6677 && !count($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $member_e['e__id'],
-                'x__left' => $next_is[0]['i__id'],
-            )))){
-            $this->X_model->mark_complete($top_i__id, $next_is[0], array(
-                'x__type' => 4559, //Read Statement
-                'x__creator' => $member_e['e__id'],
-            ));
-        }
-
         return redirect_message('/'.$top_i__id.'/'.$next_i__id);
 
     }
@@ -387,15 +362,7 @@ class X extends CI_Controller
                 //Already has a starting point:
                 $top_i__id =  $xs[0]['x__left'];
 
-                foreach($xs as $xss){
-                    print_r($xss);
-                }
-                die('died1');
-
-
             } else {
-
-                die('died2');
 
                 //This is the new top ID
                 $top_i__id =  $is[0]['i__id'];

@@ -1262,8 +1262,6 @@ class X_model extends CI_Model
         $new_x = $this->X_model->create($add_fields);
 
 
-
-
         //Auto Complete OR Answers:
         if(in_array($i['i__type'], $this->config->item('n___7712'))){
             foreach($this->X_model->fetch(array(
