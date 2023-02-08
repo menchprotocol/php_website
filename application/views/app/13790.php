@@ -68,8 +68,8 @@ if(strlen($_GET['i__id'])){
             ), 0, 0, array('i__id' => 'ASC')) as $this_i){
                 $count++;
                 echo '<p>'.$count.') <a href="/i/i_go/'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
-                if(!strlen($_GET['custom_grid']) && !in_array($this_i['i__id'], $is_with_action_es)){
-                    //array_push($column_ideas, $this_i);
+                if(!strlen($_GET['custom_grid']) && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
+                    array_push($column_ideas, $this_i);
                 }
             }
         }
