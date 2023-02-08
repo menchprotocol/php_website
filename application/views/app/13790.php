@@ -47,7 +47,7 @@ if(strlen($_GET['i__id'])){
                         'x__right' => $this_i['i__id'],
                         'x__type IN (' . join(',', $this->config->item('n___31023')) . ')' => null, //Idea Source Action Links
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                     ), array('x__up'), 0) as $this_e){
                         array_push($column_sources, $this_e);
                         array_push($is_with_action_es, $this_i['i__id']);
