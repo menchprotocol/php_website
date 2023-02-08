@@ -371,6 +371,9 @@ if($top_i__id) {
             $ticket_ui .= '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
         }
 
+        if($member_e['e__id']==1 || $member_e['e__id']==32340){
+            print_r($x_completes);
+        }
 
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
@@ -482,13 +485,13 @@ if($top_i__id) {
                     $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2);
 
                     //Append information to cart:
-                    $ticket_ui .= '<div class="sub_note css__title">';
+                    $info_append .= '<div class="sub_note css__title">';
                     if(!count($allow_refunds)){
-                        $ticket_ui .= 'Final sale. ';
+                        $info_append .= 'Final sale. ';
                     }
 
-                    $ticket_ui .= 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
-                    $ticket_ui .= '</div>';
+                    $info_append .= 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
+                    $info_append .= '</div>';
 
                 }
             }
