@@ -2333,6 +2333,12 @@ input.form-control {
 
 
 
+.pay-btn{
+    padding: 10px;
+    background-color: #999;
+    color: #FFF;
+    border-radius: 21px;
+}
 .adj-btn{
     border: 0;
     font-weight: 800 !important;
