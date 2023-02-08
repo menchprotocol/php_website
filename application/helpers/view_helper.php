@@ -1139,23 +1139,18 @@ function view_e_settings($list_id, $is_open){
 function view_unauthorized_message($superpower_e__id = 0){
 
     $member_e = superpower_unlocked($superpower_e__id);
+    $CI =& get_instance();
+    $e___10957 = $CI->config->item('e___10957');
 
     if(!$member_e){
-        if(!$superpower_e__id){
 
-            //Missing Session
-            return 'You must login to continue.';
+        return 'Login to continue.';
 
-        } else {
+    } elseif($superpower_e__id){
 
-            //Missing Superpower:
-            $CI =& get_instance();
-            $e___10957 = $CI->config->item('e___10957');
-            return 'Missing: '.$e___10957[$superpower_e__id]['m__title'];
+        return 'Missing: '.$e___10957[$superpower_e__id]['m__title'];
 
-        }
     }
-
 
     return null;
 
