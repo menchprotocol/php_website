@@ -56,7 +56,7 @@ body {
     max-width:600px !important;
 }
 .maxwidth {
-    border-radius: 21px !important;
+    border-radius: 0 !important;
     max-width:600px !important;
     margin: 0 auto !important;
 }
