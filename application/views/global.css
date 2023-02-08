@@ -98,7 +98,7 @@ body {
 }
 .list-group-item {
     border: 0;
-    border-radius: 21px;
+    border-radius: 0 !important;
     padding:10px 5px 5px;
     margin: 0;
     background-color: transparent;
