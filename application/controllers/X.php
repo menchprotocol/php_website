@@ -1045,7 +1045,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
-        } elseif($is[0]['i__type']==6677){
+        } elseif($is[0]['i__type']!=6677){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea Type',
@@ -1099,7 +1099,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
-        } elseif($is[0]['i__type']==26560){
+        } elseif($is[0]['i__type']!=26560){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea Type',
