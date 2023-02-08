@@ -29,19 +29,23 @@ if(strlen($_GET['i__id'])){
         $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
 
         echo '<div>ALL</div>';
+        $count = 0;
         foreach($all_ids as $recursive_down_id){
             foreach($this->I_model->fetch(array(
                 'i__id' => $recursive_down_id,
-            ), 0, 0, array('i__id' => 'ASC')) as $count => $this_i){
+            ), 0, 0, array('i__id' => 'ASC')) as $this_i){
+                $count++;
                 echo '<p>'.$count.') <a href="/i/i_go/'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
             }
         }
 
         echo '<div>OR</div>';
+        $count = 0;
         foreach($or_ids as $recursive_down_id){
             foreach($this->I_model->fetch(array(
                 'i__id' => $recursive_down_id,
-            ), 0, 0, array('i__id' => 'ASC')) as $count => $this_i){
+            ), 0, 0, array('i__id' => 'ASC')) as $this_i){
+                $count++;
                 echo '<p>'.$count.') <a href="/i/i_go/'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
             }
         }
