@@ -389,7 +389,7 @@ if($top_i__id) {
                     for($t=1;$t<=$quantity;$t--){
                         $checkin_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1';
                         $ticket_ui .= '<div>Ticket #'.$t.'</div>';
-                        $ticket_ui .= '<div>'.qr_code($checkin_url).'</div>';
+                        //$ticket_ui .= '<div>'.qr_code($checkin_url).'</div>';
                     }
                 }
             }
