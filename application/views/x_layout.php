@@ -385,7 +385,9 @@ if($top_i__id) {
                 $x__metadata = unserialize($x_complete['x__metadata']);
                 $quantity = ( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? $x__metadata['quantity'] : ( $x_complete['x__weight'] > 0 ? $x_complete['x__weight'] : 1 ) );
                 $ticket_ui .= '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'Received your payment of ' : 'Refunded you a total of ' ).$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
-                if($x__metadata['mc_gross']>0){
+
+                if($x__metadata['mc_gross']>0 && 0){
+                    $ticket_ui .= '<div>Here are your ticket QR codes that you will use to check-in:</div>';
                     for($t=1;$t<=$quantity;$t++){
                         $checkin_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1';
                         $ticket_ui .= '<div>Ticket #'.$t.'</div>';
