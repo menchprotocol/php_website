@@ -574,7 +574,6 @@ if($top_i__id) {
 
             }
 
-            echo $ticket_ui;
             ?>
 
             <script type="text/javascript">
@@ -620,6 +619,8 @@ if($top_i__id) {
 
 
         }
+
+        echo $ticket_ui;
 
     } elseif (in_array($i['i__type'], $this->config->item('n___31796'))) {
 
