@@ -383,8 +383,9 @@ if($top_i__id) {
 
             foreach($x_completes as $x_complete){
                 $x__metadata = unserialize($x_complete['x__metadata']);
-                $ticket_ui .= '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'Received your payment of ' : 'Refunded you a total of ' ).$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' tickets' : '' ).'</div>';
+                $ticket_ui .= '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'Received your payment of ' : 'Refunded you a total of ' ).$x__metadata['mc_currency'].' '.$x__metadata['mc_gross'].( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? ' for '.$x__metadata['quantity'].' tickets' : '' ).' (<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank">Paypal Receipt</a>)</div>';
             }
+
 
             $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$x__metadata['mc_gross'].'">';
             $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
