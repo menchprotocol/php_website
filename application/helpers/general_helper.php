@@ -943,7 +943,7 @@ function fetch_cookie_order($cookie_name){
     return $new_order_value;
 }
 
-function generateQR($url, $width = 150, $height = 150) {
+function qr_code($url, $width = 150, $height = 150) {
     $url    = urlencode($url);
     $image  = '<img src="http://chart.apis.google.com/chart?chs='.$width.'x'.$height.'&cht=qr&chl='.$url.'" alt="QR code" width="'.$width.'" height="'.$height.'"/>';
     return $image;

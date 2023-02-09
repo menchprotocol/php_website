@@ -48,7 +48,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__creato
 
         } else {
 
-            echo '<div style="text-align: center; padding-bottom: 21px;">'.generateQR($checkin_url).'</div>';
+            echo '<div style="text-align: center; padding-bottom: 21px;">'.qr_code($checkin_url).'</div>';
 
         }
 
