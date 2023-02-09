@@ -371,10 +371,6 @@ if($top_i__id) {
             $ticket_ui .= '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
         }
 
-        if($member_e['e__id']==1 || $member_e['e__id']==32340){
-            print_r($x_completes);
-        }
-
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
 
