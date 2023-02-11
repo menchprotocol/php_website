@@ -35,7 +35,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
 
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Ticket Discoveries
+            'x__type IN (' . join(',', $this->config->item(( in_array($ticket_type['i__type'], $this->config->item('n___30984')) ? 'n___6255' /* DISCOVERIES */ : 'n___32014' /* Ticket Discoveries */ ))) . ')' => null, //
             'x__left' => $ticket_type['i__id'],
         ), array('x__creator'), 0) as $x){
 
@@ -45,6 +45,9 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_transactions++;
             $x__creator = 1;
             $qr_link = 'https://'.get_domain('m__message', $x__creator).'/-26560?x__id='.$x['x__id'].'&x__creator='.$x['x__creator'];
+            $es = $this->E_model->fetch(array(
+                'e__id' => $x['x__creator'],
+            ));
 
             $ticket_checked_in = $this->X_model->fetch(array(
                 'x__reference' => $x['x__id'],
@@ -53,17 +56,17 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
 
             $ticket_holder_ui .= '<tr>';
             $ticket_holder_ui .= '<th>'.$ticket_transactions.'</th>';
-            $ticket_holder_ui .= '<th><a href="/@'.$x['e__id'].'"><u>'.$x['e__title'].'</u></a></th>';
-            $ticket_holder_ui .= '<td><a href=""><u>'.$this_count.'</u></a></td>';
+            $ticket_holder_ui .= '<th><a href="/@'.$x['x__creator'].'"><u>'.$es[0]['e__title'].'</u></a></th>';
+            $ticket_holder_ui .= '<td><u>'.$this_count.'</u></td>';
             $ticket_holder_ui .= '<td></td>';
             $ticket_holder_ui .= '<td>'.( count($ticket_checked_in) ? '<a href="/@'.$ticket_checked_in[0]['e__id'].'" title="Checked-In by '.$ticket_checked_in[0]['e__title'].' about ' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">'.view_cover(12274, $ticket_checked_in[0]['e__cover'], true).'</a>' : '' ).'</td>';
             $ticket_holder_ui .= '</tr>';
 
             if(isset($_GET['send'])){
-                $this->X_model->send_dm($x['e__id'], 'Your Atlas Camp NYE eTicket(s) QR Code',
-                    'To get your ticket(s) at the door simply open your QR code that will be scanned by our greeting team:'.
+                $this->X_model->send_dm($x['e__id'], 'Your Atlas QR Code',
+                    'To get your wristband at the door simply show a screenshot of your QR code upon arrival:'.
                     "\n\n".$qr_link."\n\n".
-                    'Anyone with your QR code can check-in and receive your ticket(s).'."\n"
+                    'Everyone needs a QR code to enter Atlas Camp and Anyone with your QR code can check-in on your behalf.'."\n"
                 );
             }
 

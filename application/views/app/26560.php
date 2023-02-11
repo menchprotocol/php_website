@@ -34,7 +34,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__creato
             'i__id' => $x[0]['x__left'],
         ));
 
-        $checkin_url = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__creator='.$x[0]['x__creator'].'&checkin_32016=1';
+        $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__creator='.$x[0]['x__creator'].'&checkin_32016=1';
 
         //Display UI:
         echo '<h2 style="text-align: center;">'.$is_top[0]['i__title'].'</h2>';
@@ -48,7 +48,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__creato
 
         } else {
 
-            echo '<div style="text-align: center; padding-bottom: 21px;">'.qr_code($checkin_url).'</div>';
+            echo '<div style="text-align: center; padding-bottom: 21px;">'.qr_code($qr_link).'</div>';
 
         }
 
@@ -82,7 +82,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__creato
             } elseif(!count($ticket_checked_in)) {
 
                 //Give option for manual checkin:
-                echo '<div style="text-align: center;"><div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="'.$checkin_url.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
+                echo '<div style="text-align: center;"><div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="'.$qr_link.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
 
 
             }
