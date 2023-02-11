@@ -1288,7 +1288,7 @@ class X_model extends CI_Model
         }
 
         //Ticket Email?
-        if(isset($new_x['x__id']) && isset($new_x['x__creator']) && in_array($i['i__type'], $this->config->item('n___32014'))){
+        if(isset($new_x['x__id']) && isset($new_x['x__creator']) && in_array($i['x__type'], $this->config->item('n___32014'))){
             send_qr($new_x['x__id'],$new_x['x__creator']);
         }
 
