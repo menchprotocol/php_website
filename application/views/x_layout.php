@@ -390,7 +390,7 @@ if($top_i__id) {
                 }
 
                 if($x__metadata['mc_gross']>=0){
-                    $ticket_ui .= '<div>Here is your QR code that you will use to check-in:</div>';
+                    $ticket_ui .= '<div class="msg"><span>Here is your QR code that you will use to check-in:</span></div>';
                     $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1').'</div>';
                 }
             }
