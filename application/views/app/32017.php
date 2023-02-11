@@ -14,7 +14,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => $_GET['e__id'], //Time Starts
+        'x__up' => $_GET['e__id'],
     ), array('x__right')) as $ticket_type){
 
         //Count Tickets:
@@ -35,7 +35,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
 
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item(( in_array($ticket_type['i__type'], $this->config->item('n___30984')) ? 'n___6255' /* DISCOVERIES */ : 'n___32014' /* Ticket Discoveries */ ))) . ')' => null, //
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //
             'x__left' => $ticket_type['i__id'],
         ), array('x__creator'), 0) as $x){
 
