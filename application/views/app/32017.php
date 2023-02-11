@@ -35,7 +35,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
 
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //
+            'x__type IN (' . join(',', $this->config->item('n___32014')) . ')' => null, //Tickets
             'x__left' => $ticket_type['i__id'],
         ), array('x__creator'), 0) as $x){
 
@@ -43,8 +43,6 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $this_count = ( (isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2) ? $x__metadata['quantity'] : 1 );
             $ticket_count += $this_count;
             $ticket_transactions++;
-            $x__creator = 1;
-            $qr_link = 'https://'.get_domain('m__message', $x__creator).'/-26560?x__id='.$x['x__id'].'&x__creator='.$x['x__creator'];
             $es = $this->E_model->fetch(array(
                 'e__id' => $x['x__creator'],
             ));
@@ -63,11 +61,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             $ticket_holder_ui .= '</tr>';
 
             if(isset($_GET['send'])){
-                $this->X_model->send_dm($x['e__id'], 'Your Atlas QR Code',
-                    'To get your wristband at the door simply show a screenshot of your QR code upon arrival:'.
-                    "\n\n".$qr_link."\n\n".
-                    'Everyone needs a QR code to enter Atlas Camp and Anyone with your QR code can check-in on your behalf.'."\n"
-                );
+                send_qr($x['x__id'], $x['x__creator']);
             }
 
         }

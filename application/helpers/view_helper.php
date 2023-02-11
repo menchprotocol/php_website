@@ -1561,6 +1561,8 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 }
 
+
+
 function view_featured_source($x__creator, $x){
 
     //See if this member also follows this featured source?
