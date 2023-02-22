@@ -58,50 +58,6 @@ class E extends CI_Controller
     }
 
 
-    function sort_e_handle_reset()
-    {
-
-        //Authenticate Member:
-        $member_e = superpower_unlocked(13422);
-
-        //Validate Source:
-        $es = $this->E_model->fetch(array(
-            'e__id' => $_POST['e__id'],
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
-
-        if (!$member_e) {
-            view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(13422),
-            ));
-        } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || count($es) < 1) {
-            view_json(array(
-                'status' => 0,
-                'message' => 'Invalid e__id',
-            ));
-        }
-
-
-
-        //All good, reset sort value for all followers:
-        foreach($this->X_model->fetch(array(
-            'x__up' => $_POST['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down'), 0, 0, array(), 'x__id') as $x) {
-            $this->X_model->update($x['x__id'], array(
-                'x__weight' => 0,
-            ), $member_e['e__id'], 13007 /* SOURCE SORT RESET */);
-        }
-
-        //Display message:
-        view_json(array(
-            'status' => 1,
-        ));
-    }
-
 
     function e_load_cover(){
 
@@ -395,7 +351,7 @@ class E extends CI_Controller
             ));
         }
 
-        $adding_to_idea = ($_POST['focus_cover']==12273);
+        $adding_to_idea = ($_POST['focus_card']==12273);
 
         if($adding_to_idea){
 

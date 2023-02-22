@@ -142,7 +142,7 @@ if(count($is)){
             //Update backend:
             $.post("/i/i__add", {
                 x__type: 11019,
-                focus_cover: 12273,
+                focus_card: 12273,
                 focus_id: <?= $_GET['i__id'] ?>,
                 i__title: new_title,
                 link_i__id: 0

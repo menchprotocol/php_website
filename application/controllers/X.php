@@ -426,11 +426,11 @@ class X extends CI_Controller
         $focus_e = array();
         $previous_i = array();
 
-        if(!isset($_POST['focus_cover'])){
+        if(!isset($_POST['focus_card'])){
             die('Missing input. Refresh and try again.');
         }
 
-        if($_POST['focus_cover']==12274){
+        if($_POST['focus_card']==12274){
 
             //SOURCE
             $focus_es = $this->E_model->fetch(array(
@@ -446,7 +446,7 @@ class X extends CI_Controller
                 }
             }
 
-        } elseif($_POST['focus_cover']==12273) {
+        } elseif($_POST['focus_card']==12273) {
 
             //IDEA
             $previous_is = $this->I_model->fetch(array(
@@ -668,6 +668,67 @@ class X extends CI_Controller
             'x__privacy' => 6173, //Deleted
         ));
     }
+
+
+    function sort_alphabetical()
+    {
+
+        //Authenticate Member:
+        $member_e = superpower_unlocked(13422);
+
+        if (!$member_e) {
+            view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(13422),
+            ));
+        } elseif (!isset($_POST['focus_card']) || !in_array($_POST['focus_card'], $this->config->item('n___28956'))) {
+            view_json(array(
+                'status' => 0,
+                'message' => 'Invalid focus_card',
+            ));
+        } elseif (!isset($_POST['focus_id']) || intval($_POST['focus_id']) < 1) {
+            view_json(array(
+                'status' => 0,
+                'message' => 'Invalid focus_id',
+            ));
+        }
+
+        if($_POST['focus_card']==12273){
+            //Ideas order based on alphabetical order
+            $order = 0;
+            foreach($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__left' => $_POST['focus_id'],
+            ), array('x__right'), 0, 0, array('i__title' => 'ASC')) as $x) {
+                $order++;
+                $this->X_model->update($x['x__id'], array(
+                    'x__weight' => $order,
+                ), $member_e['e__id'], 13007 /* SOURCE SORT RESET */);
+            }
+        } elseif($_POST['focus_card']==12274){
+            //Sources reset order
+            foreach($this->X_model->fetch(array(
+                'x__up' => $_POST['focus_id'],
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            ), array('x__down'), 0, 0, array()) as $x) {
+                $this->X_model->update($x['x__id'], array(
+                    'x__weight' => 0,
+                ), $member_e['e__id'], 13007 /* SOURCE SORT RESET */);
+            }
+        }
+
+
+        //Display message:
+        view_json(array(
+            'status' => 1,
+        ));
+    }
+
+
 
     function x_schedule_message(){
 

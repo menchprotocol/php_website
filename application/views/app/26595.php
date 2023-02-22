@@ -12,7 +12,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
     $i__id = intval($item_numbers[1]);
     //$currency_type = intval($item_numbers[2]); //Deprecated
     $x__creator = intval($item_numbers[3]);
-    $pay_amount = doubleval(($_POST['payment_gross'] > $_POST['mc_gross'] ? $_POST['payment_gross'] : $_POST['mc_gross']));
+    $pay_amount = doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross']));
 
     //Seems like a valid Paypal IPN Call:
     $next_is = $this->I_model->fetch(array(
@@ -35,7 +35,7 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
                 'x__metadata' => $_POST,
             ));
 
-        } elseif($pay_amount < 0 && $_POST['payment_status']=='Refunded'){
+        } elseif($pay_amount < 0 && ($_POST['payment_status']=='Refunded' || $_POST['payment_status']=='Pending')){
 
             //Refunded:
             $is_good = true;

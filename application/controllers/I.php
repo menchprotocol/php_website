@@ -187,7 +187,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['x__type']) || !isset($_POST['focus_id']) || !isset($_POST['focus_cover'])) {
+        } elseif (!isset($_POST['x__type']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variables',
@@ -223,7 +223,7 @@ class I extends CI_Controller {
         }
 
         //All seems good, go ahead and try to create/link the Idea:
-        return view_json($this->I_model->create_or_link($_POST['focus_cover'], $_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
+        return view_json($this->I_model->create_or_link($_POST['focus_card'], $_POST['x__type'], trim($_POST['i__title']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
 
     }
 

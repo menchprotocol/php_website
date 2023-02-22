@@ -344,10 +344,10 @@ function toggle_headline(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var focus_cover = fetch_val('#focus_cover');
-    if(focus_cover==12273){
+    var focus_card = fetch_val('#focus_card');
+    if(focus_card==12273){
         x__right = fetch_val('#focus_id');
-    } else if (focus_cover==12274){
+    } else if (focus_card==12274){
         x__down = fetch_val('#focus_id');
     }
 
@@ -414,7 +414,7 @@ function sort_e_handle_load(x__type) {
 
         //Show sort icon:
         console.log('Completed Loading Sorting for @'+x__type)
-        $('.sort_e_handle, .sort_reset').removeClass('hidden');
+        $('.sort_e_handle').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
@@ -433,14 +433,14 @@ function toggle_pills(x__type){
 
     console.log(x__type+' PILL TOGGLED');
 
-    focus_cover = x__type;
+    focus_card = x__type;
     var x__down = 0;
     var x__right = 0;
-    var focus_cover = fetch_val('#focus_cover');
+    var focus_card = fetch_val('#focus_card');
 
-    if(focus_cover==12273){
+    if(focus_card==12273){
         x__right = fetch_val('#focus_id');
-    } else if (focus_cover==12274){
+    } else if (focus_card==12274){
         x__down = fetch_val('#focus_id');
     }
 
@@ -549,7 +549,7 @@ function view_load_page(x__type) {
         $(e_loader).insertAfter(e_list);
     }
     $.post("/x/view_load_page", {
-        focus_cover: fetch_val('#focus_cover'),
+        focus_card: fetch_val('#focus_card'),
         focus_id: fetch_val('#focus_id'),
         x__type: x__type,
         current_page: current_page[x__type],
@@ -1489,13 +1489,13 @@ function card__save(){
 
 function load_tab(x__type, auto_load){
 
-    var focus_cover = fetch_val('#focus_cover');
-    console.log('Tab loading... from @'+focus_cover+' for @'+x__type);
+    var focus_card = fetch_val('#focus_card');
+    console.log('Tab loading... from @'+focus_card+' for @'+x__type);
 
-    if(focus_cover==12273){
+    if(focus_card==12273){
 
         $.post("/i/view_body_i", {
-            focus_cover:focus_cover,
+            focus_card:focus_card,
             x__type:x__type,
             counter:$('.headline_body_' + x__type).attr('read-counter'),
             i__id:fetch_val('#focus_id')
@@ -1509,11 +1509,11 @@ function load_tab(x__type, auto_load){
             }
         });
 
-    } else if(focus_cover==12274){
+    } else if(focus_card==12274){
 
         //Load the tab:
         $.post("/e/view_body_e", {
-            focus_cover:focus_cover,
+            focus_card:focus_card,
             x__type:x__type,
             counter:$('.headline_body_'+x__type).attr('read-counter'),
             e__id:fetch_val('#focus_id')
@@ -1573,9 +1573,9 @@ function load_tab(x__type, auto_load){
             });
         });
 
-        if((x__type==12273 || x__type==11019) || (focus_cover==12274 && x__type==6255)){
+        if((x__type==12273 || x__type==11019) || (focus_card==12274 && x__type==6255)){
             i_load_search(x__type);
-        } else if((x__type==12274 || x__type==11030) || (focus_cover==12273 && x__type==6255)) {
+        } else if((x__type==12274 || x__type==11030) || (focus_card==12273 && x__type==6255)) {
             e_load_search(x__type);
             setTimeout(function () {
                 sort_e_handle_load(x__type);
@@ -1628,7 +1628,7 @@ function i__add(x__type, link_i__id) {
     //Update backend:
     $.post("/i/i__add", {
         x__type: x__type,
-        focus_cover: fetch_val('#focus_cover'),
+        focus_card: fetch_val('#focus_card'),
         focus_id: fetch_val('#focus_id'),
         i__title: i__title,
         link_i__id: link_i__id
@@ -1699,7 +1699,7 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/e/e__add", {
 
-        focus_cover: fetch_val('#focus_cover'),
+        focus_card: fetch_val('#focus_card'),
         x__type: x__type,
         focus_id: fetch_val('#focus_id'),
         e_existing_id: e_existing_id,
@@ -2703,14 +2703,17 @@ function sort_e_handle_save(x__type) {
     }
 }
 
-function sort_e_handle_reset(){
-    var r = confirm("Reset all followers Source orders & sort alphabetically?");
+function sort_alphabetical(){
+    var r = confirm("Reset sorting alphabetically?");
     if (r == true) {
-        $('.sort_reset').html('<i class="far fa-yin-yang fa-spin"></i>');
+
+        var focus_card = fetch_val('#focus_card');
+        var focus_id = fetch_val('#focus_id');
 
         //Update via call:
-        $.post("/e/sort_e_handle_reset", {
-            e__id: fetch_val('#focus_id')
+        $.post("/x/sort_alphabetical", {
+            focus_card: focus_card,
+            focus_id: focus_id
         }, function (data) {
 
             if (!data.status) {
@@ -2721,7 +2724,11 @@ function sort_e_handle_reset(){
             } else {
 
                 //Refresh page:
-                js_redirect('/@' + fetch_val('#focus_id'));
+                if(focus_card==12273){
+                    js_redirect('/~' + focus_id);
+                } else if(focus_card==12274){
+                    js_redirect('/@' + focus_id);
+                }
 
             }
         });

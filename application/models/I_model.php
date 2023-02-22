@@ -333,7 +333,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($focus_cover, $x__type, $i__title, $x__creator, $focus_id, $link_i__id = 0)
+    function create_or_link($focus_card, $x__type, $i__title, $x__creator, $focus_id, $link_i__id = 0)
     {
 
         /*
@@ -350,12 +350,12 @@ class I_model extends CI_Model
          * */
 
         //Valid Idea Addition?
-        if(!in_array($focus_cover, $this->config->item('n___12761')) || !in_array($x__type, $this->config->item('n___11020')) || $focus_id < 1){
+        if(!in_array($focus_card, $this->config->item('n___12761')) || !in_array($x__type, $this->config->item('n___11020')) || $focus_id < 1){
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'create_or_link(): Invalid Data',
                 'x__metadata' => array(
-                    '$focus_cover' => $focus_cover,
+                    '$focus_card' => $focus_card,
                     '$x__type' => $x__type,
                     '$i__title' => $i__title,
                     '$x__creator' => $x__creator,
@@ -370,7 +370,7 @@ class I_model extends CI_Model
         }
 
         $is_upwards = in_array($x__type, $this->config->item('n___14686'));
-        $focus_is_idea = $focus_cover==12273;
+        $focus_is_idea = $focus_card==12273;
         $adding_an_idea = in_array($x__type, $this->config->item('n___11020'));
         //Validate Original idea
         if($focus_is_idea){
