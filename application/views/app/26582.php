@@ -4,14 +4,14 @@ if(!$is_u_request || isset($_GET['cron'])){
 
     //Look for messages to process, if any:
     foreach($this->X_model->fetch(array(
-        'x__privacy' => 6175, //Pending
+        'x__access' => 6175, //Pending
         'x__type' => 26582, //Send Instant Message
         'x__time <=' => date('Y-m-d H:i:s'), //Time to send it
     )) as $send_message){
 
         //Mark as sending so other cron job does not pick this up:
         $this->X_model->update($send_message['x__id'], array(
-            'x__privacy' => 6176, //Published
+            'x__access' => 6176, //Published
         ));
 
         $x__metadata = unserialize($send_message['x__metadata']);
@@ -68,7 +68,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     if(strlen($_GET['i__id'])){
         foreach($this->I_model->fetch(array(
             'i__id IN (' . $_GET['i__id'] . ')' => null,
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         )) as $i){
             echo '<h2><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></h2>';
         }
@@ -76,7 +76,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     if(strlen($_GET['e__id'])){
         foreach($this->E_model->fetch(array(
             'e__id IN (' . $_GET['e__id'] . ')' => null,
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         )) as $e){
             echo '<h2><a href="/@'.$e['e__id'].'"><span class="icon-block-img">'.view_cover(12274,$e['e__cover'], true).'</span> '.$e['e__title'].'</a></h2>';
         }
@@ -162,7 +162,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<table class="table table-condensed table-striped">';
     $displayed = false;
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
         'x__type' => 26582, //Instant Messages
         'x__website' => website_setting(0),
     ), array('x__creator')) as $fetched_e){
@@ -171,17 +171,17 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Count Emails & Messages from Ledger:
         $email_success = $this->X_model->fetch(array(
             'x__type' => 29399,
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__reference' => $fetched_e['x__id'],
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
         $sms_success = $this->X_model->fetch(array(
             'x__type' => 27676,
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__reference' => $fetched_e['x__id'],
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
         $sms_fail = $this->X_model->fetch(array(
             'x__type' => 27678,
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__reference' => $fetched_e['x__id'],
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -189,7 +189,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         $x__metadata = unserialize($fetched_e['x__metadata']);
         echo '<tr class="semail'.$fetched_e['x__id'].'">';
         echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a> <a href="javascript:x_schedule_delete('.$fetched_e['x__id'].')">x</a></td>';
-        echo '<td>'.$e___6186[$fetched_e['x__privacy']]['m__cover'].'</td>';
+        echo '<td>'.$e___6186[$fetched_e['x__access']]['m__cover'].'</td>';
         echo '<td>'. substr($fetched_e['x__time'], 0, 19).'<br />Domain: <a href="/@'.$fetched_e['x__website'].'">@'.$fetched_e['x__website'].'</a></td>';
         echo '<td><a href="/@'.$fetched_e['x__creator'].'">'. $fetched_e['e__title'].'</a></td>';
         echo '<td>'.@intval($x__metadata['stats']['target']).'<br />Targets</td>';

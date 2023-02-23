@@ -90,7 +90,7 @@ class App extends CI_Controller
                     'x__type' => 14599, //Cache App
                     'x__up' => $app_e__id,
                     'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                     $ui = $latest_cache['x__message'];
                     $cache_x__id = $latest_cache['x__id'];
@@ -157,7 +157,7 @@ class App extends CI_Controller
             if(isset($_GET['e__id']) && intval($_GET['e__id'])){
                 $es = $this->E_model->fetch(array(
                     'e__id IN (' . $_GET['e__id'] . ')' => null,
-                    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ));
                 if(count($es)){
                     $log_data['x__down'] = $es[0]['e__id'];
@@ -168,7 +168,7 @@ class App extends CI_Controller
             if(isset($_GET['i__id']) && intval($_GET['i__id'])){
                 $is = $this->I_model->fetch(array(
                     'i__id IN (' . $_GET['i__id'] . ')' => null,
-                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 ));
                 if(count($is)){
                     $log_data['x__left'] = $is[0]['i__id'];

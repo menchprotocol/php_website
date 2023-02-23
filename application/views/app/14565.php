@@ -17,7 +17,7 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 $primary_i = array();
 $secondary_i_list = array();
 foreach($this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 10573, //Watching
     'x__up' => $website_id,
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $this_i){
@@ -34,8 +34,8 @@ foreach($this->X_model->fetch(array(
     'x__up' => $website_id,
     'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
     'x__type !=' => 10573, //Not Watching
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__weight' => 'DESC')) as $this_i){
     array_push($secondary_i_list, $this_i);
 }
@@ -59,7 +59,7 @@ echo '<div class="halfbg narrow-bar slim_flat">';
 //MESSAGES
 echo '<div class="center-frame hide-subline maxwidth">';
 foreach($this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $primary_i['i__id'],
 ), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
@@ -122,8 +122,8 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
     foreach($this->X_model->fetch(array(
         'x__up' => $e_item['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
@@ -158,7 +158,7 @@ foreach($secondary_i_list as $ref_i){
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'x__up' => 30378, //Flat List Ideas
         'x__right' => $ref_i['i__id'],
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     )));
     $secondary_ideas .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], null, ($is_flat_list ? '/:' : '/' ).$ref_i['i__id'] ,$messages);
 }

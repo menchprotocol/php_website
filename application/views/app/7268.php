@@ -10,7 +10,7 @@ if(isset($_GET['e__id'])){
     foreach($this->X_model->fetch(array(
         'x__up' => $_GET['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0) as $x) {
         $x__message_md5 = substr(md5($x['x__message']), 0, 16);
         if(!isset($main_index[$x__message_md5])){
@@ -63,7 +63,7 @@ if(isset($_GET['e__id'])){
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from table__e en1 where (select count(*) from table__e en2 where en2.e__title = en1.e__title AND en2.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
+    $q = $this->db->query('select en1.* from table__e en1 where (select count(*) from table__e en2 where en2.e__title = en1.e__title AND en2.e__access IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__access IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
@@ -78,7 +78,7 @@ if(isset($_GET['e__id'])){
                 $prev_title = $en['e__title'];
             }
 
-            echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__privacy']]['m__title'].': '.$e___6177[$en['e__privacy']]['m__message'].'">' . $e___6177[$en['e__privacy']]['m__cover'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__access']]['m__title'].': '.$e___6177[$en['e__access']]['m__message'].'">' . $e___6177[$en['e__access']]['m__cover'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
         }
 
     } else {

@@ -22,8 +22,8 @@ foreach($emojis as $count => $emoji_html){
 
     $emoji_exists = $this->X_model->fetch(array(
         'e__cover' => $emoji_icon,
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => 14038,
     ), array('x__down'), 0);
@@ -34,7 +34,7 @@ foreach($emojis as $count => $emoji_html){
         $new_emoji = $this->E_model->create(array(
             'e__title' => $emoji_name,
             'e__cover' => $emoji_icon,
-            'e__privacy' => 28951,
+            'e__access' => 28951,
         ), true);
 
         if(count($new_emoji)){

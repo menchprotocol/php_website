@@ -30,7 +30,7 @@ $node_size = array(
 
 //Add Ideas:
 $is = $this->I_model->fetch(array(
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ));
 foreach($is as $in){
 
@@ -45,8 +45,8 @@ foreach($is as $in){
 
     //Fetch followers:
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0) as $next_i){
@@ -57,7 +57,7 @@ foreach($is as $in){
             'label' => $e___4593[$next_i['x__type']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['x__type'],
-            'edge_status' => $next_i['x__privacy'],
+            'edge_status' => $next_i['x__access'],
         ));
 
     }
@@ -66,7 +66,7 @@ foreach($is as $in){
 
 //Add sources:
 $es = $this->E_model->fetch(array(
-    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ));
 foreach($es as $en){
 
@@ -76,13 +76,13 @@ foreach($es as $en){
         'label' => $en['e__title'],
         'size' => $node_size[12274] ,
         'node_type' => 2, //Member
-        'node_status' => $en['e__privacy'],
+        'node_status' => $en['e__access'],
     ));
 
     //Fetch followers:
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
     ), array('x__down'), 0, 0) as $e_down){
@@ -93,7 +93,7 @@ foreach($es as $en){
             'label' => $e___4593[$e_down['x__type']]['m__title'].': '.$e_down['x__message'],
             'weight' => 1,
             'edge_type' => $e_down['x__type'],
-            'edge_status' => $e_down['x__privacy'],
+            'edge_status' => $e_down['x__access'],
         ));
 
     }

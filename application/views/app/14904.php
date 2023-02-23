@@ -9,8 +9,8 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
     //Fetch followings URLs:
     $following = $this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__down' => $_GET['e__id'],
     ), array('x__up'), 0, 0, array('e__title' => 'DESC'));
 

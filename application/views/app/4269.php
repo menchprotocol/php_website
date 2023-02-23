@@ -16,7 +16,7 @@ if(superpower_unlocked()) {
 
     $es = $this->E_model->fetch(array(
         'e__id' => $cookie_parts[0],
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
 
     if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].view_memory(6404,30863))){
@@ -362,7 +362,7 @@ if(superpower_unlocked()) {
                     $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
                     if ($sign_i__id > 0) {
                         $sign_i = $this->I_model->fetch(array(
-                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             'i__id' => $sign_i__id,
                         ));
                         if (count($sign_i)) {

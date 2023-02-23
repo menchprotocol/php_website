@@ -26,7 +26,7 @@ if($superpower_28727 && 0) {
         echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item list-group-item-action" style="border: 1px solid #999999;">'.$e['e__title'].' &nbsp;<i class="far fa-chevron-right"></i></a>';
 
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
             'x__up' => $e['e__id'],
@@ -69,7 +69,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             //See if this Source has any paymen ideas:
             $payment_is = array();
             foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                 'x__up' => $e['e__id'],
             ), array(), 0) as $pi){
@@ -83,7 +83,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 $this_revenue = 0;
                 $this_quantity = 0;
                 foreach($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SOURCE IDEAS
                     'x__left IN (' . join(',', $payment_is) . ')' => null,
                 ), array(), 0) as $pay){
@@ -132,7 +132,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
     echo '<h2>'.$es[0]['e__title'].'</h2>';
 
     $i_query = $this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
         'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
         'x__up' => $_GET['e__id'],
@@ -153,14 +153,14 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $currencies = array();
 
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $i['i__id'],
         ), array(), 0, 0, array('x__creator' => 'ASC')) as $x){
 
             if(isset($_GET['include_e']) && strlen($_GET['include_e']) && !count($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__up IN (' . $_GET['include_e'] . ')' => null,
                     'x__down' => $x['x__creator'],
                 )))){
@@ -170,7 +170,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                     'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
                     'x__down' => $x['x__creator'],
                     'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 continue;
             }
@@ -277,7 +277,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $gross_payout += $payout;
 
         $has_limits = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
             'x__right' => $i['i__id'],
             'x__up' => 26189,
@@ -319,7 +319,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
 
     $filters = array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
         'x__up' => $_GET['e__id'], //Member
     );
@@ -458,7 +458,7 @@ if(count($i_query)){
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->X_model->fetch(array(
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
                             'x__right' => $origin,
                             'x__up' => 30564, //None Promoter

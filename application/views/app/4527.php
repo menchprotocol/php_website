@@ -26,17 +26,17 @@ if($memory_detected){
 //CONFIG VARS
 foreach($this->X_model->fetch(array(
     'x__up' => 4527,
-    'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+    'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-    'e__privacy IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
+    'e__access IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its followers:
     $down__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
-        'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-        'e__privacy IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
+        'e__access IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
 
@@ -57,9 +57,9 @@ foreach($this->X_model->fetch(array(
         $down_up_ids = array(); //To be populated soon
         foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
-            'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+            'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-            'e__privacy IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
+            'e__access IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
         ), array('x__up'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }

@@ -27,29 +27,29 @@ if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
     }
 }
 
-if(isset($_GET['e__privacy']) && strlen($_GET['e__privacy']) > 0){
+if(isset($_GET['e__access']) && strlen($_GET['e__access']) > 0){
     if(isset($_GET['x__type']) && $_GET['x__type']==4251){ //SOURCE Created
 
         //Filter idea status based on
         $joined_by = array('x__down');
 
-        if (substr_count($_GET['e__privacy'], ',') > 0) {
+        if (substr_count($_GET['e__access'], ',') > 0) {
             //This is multiple:
-            $query_filters['( e__privacy IN (' . $_GET['e__privacy'] . '))'] = null;
+            $query_filters['( e__access IN (' . $_GET['e__access'] . '))'] = null;
         } else {
-            $query_filters['e__privacy'] = intval($_GET['e__privacy']);
+            $query_filters['e__access'] = intval($_GET['e__access']);
         }
     } else {
-        unset($_GET['e__privacy']);
+        unset($_GET['e__access']);
     }
 }
 
-if(isset($_GET['x__privacy']) && strlen($_GET['x__privacy']) > 0){
-    if (substr_count($_GET['x__privacy'], ',') > 0) {
+if(isset($_GET['x__access']) && strlen($_GET['x__access']) > 0){
+    if (substr_count($_GET['x__access'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__privacy IN (' . $_GET['x__privacy'] . '))'] = null;
+        $query_filters['( x__access IN (' . $_GET['x__access'] . '))'] = null;
     } else {
-        $query_filters['x__privacy'] = intval($_GET['x__privacy']);
+        $query_filters['x__access'] = intval($_GET['x__access']);
     }
 }
 
@@ -169,7 +169,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 //Fetch unique transaction types recorded so far:
 $ini_filter = array();
 foreach($query_filters as $key => $value){
-    if(!includes_any($key, array('i__type', 'e__privacy'))){
+    if(!includes_any($key, array('i__type', 'e__access'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -203,11 +203,11 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
     $(document).ready(function () {
 
-        check_i_e__privacy();
+        check_i_e__access();
 
         //Watch for Idea status change:
         $("#x__type").change(function () {
-            check_i_e__privacy();
+            check_i_e__access();
         });
 
         //Load first page of transactions:
@@ -216,7 +216,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
     });
 
 
-    function check_i_e__privacy(){
+    function check_i_e__access(){
         //Checks to see if the Idea/Source status filter should be visible
         //Would only make visible if Transaction type is Created Idea/Member
 
@@ -326,7 +326,7 @@ echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" nam
 
 echo '<td><span class="mini-header">PARENT TRANSACTION:</span><input type="text" name="x__reference" value="' . ((isset($_GET['x__reference'])) ? $_GET['x__reference'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__privacy" value="' . ((isset($_GET['x__privacy'])) ? $_GET['x__privacy'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__access" value="' . ((isset($_GET['x__access'])) ? $_GET['x__access'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -425,7 +425,7 @@ echo '</div>';
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
-echo '<div class="filter-statuses e_privacy_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__privacy" value="' . ((isset($_GET['e__privacy'])) ? $_GET['e__privacy'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses e_privacy_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__access" value="' . ((isset($_GET['e__access'])) ? $_GET['e__access'] : '') . '" class="form-control border"></div>';
 
 echo '</td>';
 
