@@ -1007,14 +1007,17 @@ class X_model extends CI_Model
             $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom" ' : null );
             $tooltip_underdot = ( $tooltip_info ? ' underdot ' : null );
 
-
-            if(!$is_discovery_mode && e_of_e($es[0]['e__id'])){
-                $tooltip_class .= ' class="inline-block ignore-click" card__type="12274" card__id="' . $es[0]['e__id'] . '" ';
-                $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover(12274,$es[0]['e__cover'], true).'</span> ';
-            } else {
-                $tooltip_class .= ' class="inline-block" ';
-                $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover'], true).'</span> ';
+            $edit_btn = false;
+            if(strlen($es[0]['e__cover'])){
+                if(!$is_discovery_mode && e_of_e($es[0]['e__id'])){
+                    $tooltip_class .= ' class="inline-block ignore-click" card__type="12274" card__id="' . $es[0]['e__id'] . '" ';
+                    $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover(12274,$es[0]['e__cover'], true).'</span> ';
+                } else {
+                    $tooltip_class .= ' class="inline-block" ';
+                    $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover'], true).'</span> ';
+                }
             }
+
 
             $on_its_own_line = false;
             $new_lines = 0;
