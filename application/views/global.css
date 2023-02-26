@@ -908,7 +908,7 @@ h4 .halfbg {
     border-radius: 0;
 }
 .dropdown_12274.list-adder, .dropdown_11030.list-adder{
-    border-radius: 21px;
+    border-radius: 21px !important;
 }
 .dropdown_12274 a, .dropdown_11030 a {
     border-radius: 0;
