@@ -2310,6 +2310,7 @@ input.form-control {
     padding: 8px 0 0 !important;
     margin: 0 5px 5px 5px !important;
     border: 1px solid transparent;
+    background-color: #FFF !important;
 }
 
 .icon-adder{
