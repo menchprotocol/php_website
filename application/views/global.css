@@ -352,8 +352,8 @@ img.no-frame {
 
 .algolia_pad_search{
     text-align: center;
-    margin: -6px 5px 34px;
-    border:1px solid transparent;
+    margin: 0px 5px 21px;
+    border-bottom:1px dashed transparent;
     width: auto;
 }
 
