@@ -905,7 +905,7 @@ h4 .halfbg {
 }
 
 .dropdown_12274, .dropdown_11030{
-    border-radius: 20px;
+    border-radius: 0;
 }
 .dropdown_12274 a, .dropdown_11030 a {
     border-radius: 0;
