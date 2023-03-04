@@ -1333,6 +1333,7 @@ a.headline {
     display:block !important;
 }
 .list-group-item:hover .show-on-hover,
+.card_cover:hover .inline-on-hover,
 .list-group-item:hover .inline-on-hover{
     display:inline-block !important;
 }
@@ -2697,6 +2698,7 @@ h4.css__title{
     }
 
     .list-group-item:hover .inline-on-hover,
+    .card_cover:hover .inline-on-hover,
     .list-group-item:hover .show-on-hover{
         display:inline-block !important;
     }
