@@ -133,7 +133,7 @@ if($x__creator && $top_i__id!=$i['i__id']){
 
             if(!$messages && count($query_subset)==1 && $level==1){
                 //Top referral, hide:
-                continue;
+                //continue;
             }
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
