@@ -1325,12 +1325,15 @@ a.headline {
 .show-on-hover {
     display:none !important;
 }
+.inline-on-hover {
+    display:none !important;
+}
 
 .card_cover:hover .show-on-hover{
     display:block !important;
 }
-.card_covers:hover .show-on-hover,
-.list-group-item:hover .show-on-hover{
+.list-group-item:hover .show-on-hover,
+.list-group-item:hover .inline-on-hover{
     display:inline-block !important;
 }
 .card_cover.focus-cover {
@@ -2693,7 +2696,7 @@ h4.css__title{
         display:block !important;
     }
 
-    .card_covers:hover .show-on-hover,
+    .list-group-item:hover .inline-on-hover,
     .list-group-item:hover .show-on-hover{
         display:inline-block !important;
     }
