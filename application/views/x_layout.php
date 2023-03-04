@@ -704,15 +704,19 @@ if($top_i__id) {
                     }
                 }
 
+            } elseif($i['i__type']==30350){
+
+                //Time
+                $input_type = ( count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__right' => $i['i__id'],
+                    'x__up' => 32442, //Date Only
+                ))) ? 'date' : 'datetime-local' );
+
             } elseif($i['i__type']==31794){
 
-                //Date
-                $input_type = 'number';
-
-
-            } elseif($i['i__type']==31794){
-
-                //Date & Time
+                //Number
                 $input_type = 'number';
 
             }
