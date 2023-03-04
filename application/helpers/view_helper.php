@@ -1975,7 +1975,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<div class="card_covers"><div class="show-on-hover">';
         foreach($CI->config->item('e___31916') as $menu_id => $m) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            $ui .= '<span class="hideIfEmpty '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+            $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
             $ui .= view_covers_e($menu_id,  $e['e__id']);
             $ui .= '</span>';
         }
