@@ -1325,12 +1325,13 @@ a.headline {
 .show-on-hover {
     display:none !important;
 }
+
+.card_cover:hover .show-on-hover{
+    display:block !important;
+}
 .card_covers:hover .show-on-hover,
 .list-group-item:hover .show-on-hover{
     display:inline-block !important;
-}
-.card_cover:hover .show-on-hover{
-    display:block !important;
 }
 .card_cover.focus-cover {
     padding-bottom: 5px !important;
@@ -2687,13 +2688,15 @@ h4.css__title{
     }
     .content-image{ max-height:144px; }
 
-    .list-group-item .show-on-hover{
-        display:inline-block !important;
-    }
+
     .card_cover .show-on-hover{
         display:block !important;
     }
 
+    .card_covers:hover .show-on-hover,
+    .list-group-item:hover .show-on-hover{
+        display:inline-block !important;
+    }
 
     .form-control-thick { padding-left: 26px; }
 
