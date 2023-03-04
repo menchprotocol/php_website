@@ -1544,16 +1544,16 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $coins_ui = view_covers_i($e__id_bottom_bar,  $i['i__id']);
             if(strlen($coins_ui)){
                 $active_bars++;
-                $bottom_bar_ui .= '<span class="hideIfEmpty">';
+                $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= $coins_ui;
                 $bottom_bar_ui .= '</span>';
             }
         }
 
         if($bottom_bar_ui){
-            $ui .= '<div class="card_covers"><div class="show-on-hover">';
+            $ui .= '<div class="card_covers">';
             $ui .= $bottom_bar_ui;
-            $ui .= '</div></div>';
+            $ui .= '</div>';
         }
 
     }
