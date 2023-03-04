@@ -1325,6 +1325,7 @@ a.headline {
 .show-on-hover {
     display:none !important;
 }
+.card_covers:hover .show-on-hover,
 .list-group-item:hover .show-on-hover{
     display:inline-block !important;
 }
