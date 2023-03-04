@@ -2086,7 +2086,7 @@ input.form-control {
     margin:0;
 }
 .card_covers>span{
-    padding: 0 3px;
+    padding: 0 1px;
 }
 
 .cover-text {
@@ -2104,7 +2104,7 @@ input.form-control {
 }
 .card_cover{
     position: relative;
-    margin:0 auto 5px auto !important;
+    margin:0 auto 13px auto !important;
     padding: 5px 0 !important;
     border-radius: 0 !important;
 }

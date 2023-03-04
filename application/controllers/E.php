@@ -465,7 +465,6 @@ class E extends CI_Controller
         //We need to check to ensure this is not a duplicate transaction if adding an existing source:
         $ur2 = array();
         $e_already_linked = 0;
-        $create_author_link = true;
 
         if($adding_to_idea) {
 
@@ -502,7 +501,6 @@ class E extends CI_Controller
                 $x__up = $fetch_o[0]['e__id'];
                 $x__down = $focus_e['e__id'];
                 $x__weight = 0;
-                $create_author_link = !( $x__up==$member_e['e__id'] && $x__down==$focus_e['e__id'] );
 
             }
 
@@ -543,15 +541,6 @@ class E extends CI_Controller
 
         }
 
-        if($create_author_link){
-            //Source not added as the source, let's add that:
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__up' => $member_e['e__id'],
-                'x__down' => $focus_e['e__id'],
-                'x__type' => e_x__type(),
-            ));
-        }
 
         //Return source:
         return view_json(array(
