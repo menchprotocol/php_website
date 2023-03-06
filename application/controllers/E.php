@@ -1798,7 +1798,7 @@ class E extends CI_Controller
 
         if(!count($u_emails) || !count($u_passwords)){
             //Send Email Verification Pass Code
-            email_send(array($_POST['input_email']), get_domain('m__title').' Email Verification Pass Code', 'Your pass code to create your new account is ['.substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4).']', ( count($u_emails) ? $u_emails[0]['e__id'] : 0 ));
+            email_send(array($_POST['input_email']), 'Your Email Verification Pass Code', '"'.substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4).'" is your pass code to create your new account.', ( count($u_emails) ? $u_emails[0]['e__id'] : 0 ));
         }
 
         return view_json(array(
