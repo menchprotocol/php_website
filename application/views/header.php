@@ -360,7 +360,7 @@ if(!$basic_header_footer){
 
                     echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="toggle_editor(0)" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
-                    echo '<td class="block-x icon_search icon_editor"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_search icon_editor '.( website_setting(32450) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
