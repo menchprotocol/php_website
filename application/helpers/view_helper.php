@@ -629,7 +629,7 @@ function view_body_i($x__type, $counter, $i__id){
 
 function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m_cover = false){
 
-    if(!$desc && $i__id>0){
+    if(!$desc && $i__id>0 && !intval(website_setting(32463))){
         $CI =& get_instance();
         $member_e = superpower_unlocked();
         foreach($CI->X_model->fetch(array(
