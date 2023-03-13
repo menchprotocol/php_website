@@ -599,8 +599,8 @@ class I_model extends CI_Model
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         foreach($this->X_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //Must See Idea Links
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
