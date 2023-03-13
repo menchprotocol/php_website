@@ -1154,7 +1154,7 @@ class X_model extends CI_Model
             'x__left' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i) {
 
             //Validate Find After:
