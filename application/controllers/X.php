@@ -341,7 +341,7 @@ class X extends CI_Controller
                 //$one_down_hack: Mark next level as done too? Only if Single show:
                 $is_next = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $top_i__id,
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
@@ -477,7 +477,7 @@ class X extends CI_Controller
         )))){
             //FIND NEXT IDEAS
             foreach($this->X_model->fetch(array(
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
                 'x__left' => $previous_level_id,
@@ -595,7 +595,7 @@ class X extends CI_Controller
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $member_e['e__id'],
                 'x__left' => $i__id,
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
             ), array('x__right')) as $x){
                 return redirect_message('/'.$x['x__right'].'/'.$i__id);
             }
