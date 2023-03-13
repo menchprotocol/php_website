@@ -839,8 +839,8 @@ function view_covers_i($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__weight' => 'ASC');
         $join_objects = array('x__right');
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         );
@@ -851,7 +851,7 @@ function view_covers_i($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__id' => 'DESC');
         $join_objects = array('x__creator');
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $i__id,
         );
