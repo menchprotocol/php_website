@@ -70,7 +70,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             'i__id IN (' . $_GET['i__id'] . ')' => null,
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         )) as $i){
-            echo '<h2><a href="/i/i_go/'.$i['i__id'].'">'.$i['i__title'].'</a></h2>';
+            echo '<h2><a href="/~'.$i['i__id'].'">'.$i['i__title'].'</a></h2>';
         }
     }
     if(strlen($_GET['e__id'])){

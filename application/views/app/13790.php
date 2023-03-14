@@ -30,7 +30,7 @@ if(strlen($_GET['i__id'])){
         $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
         $or_ids = $this->I_model->recursive_down_ids($loaded_i, 'OR');
 
-        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
+        echo '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
         $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
 
         echo '<div class="hidden idea_list">';
@@ -41,7 +41,7 @@ if(strlen($_GET['i__id'])){
                 'i__id' => $recursive_down_id,
             ), 0, 0, array('i__id' => 'ASC')) as $this_i){
                 $count++;
-                echo '<p>'.$count.') <a href="/i/i_go/'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
+                echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
 
                 if(!strlen($_GET['custom_grid'])){
                     foreach($this->X_model->fetch(array(
@@ -67,7 +67,7 @@ if(strlen($_GET['i__id'])){
                 'i__id' => $recursive_down_id,
             ), 0, 0, array('i__id' => 'ASC')) as $this_i){
                 $count++;
-                echo '<p>'.$count.') <a href="/i/i_go/'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
+                echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
                 if(!strlen($_GET['custom_grid']) && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
                     array_push($column_ideas, $this_i);
                 }

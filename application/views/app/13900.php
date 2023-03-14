@@ -10,7 +10,7 @@ if(strlen($_GET['i__id'])){
 
 
         //Main Idea:
-        echo '<h2><a href="/i/i_go/'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> '.count($all_ids).' IDEAS</h2>';
+        echo '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> '.count($all_ids).' IDEAS</h2>';
 
         echo '<div class="row justify-content">';
         foreach($all_ids as $recursive_down_id){

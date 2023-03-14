@@ -70,7 +70,7 @@ if($search_for_set){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/i/i_go/'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/~'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
 
             if($replace_with_set){
 
@@ -89,7 +89,7 @@ if($search_for_set){
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $in['i__id'],
                 ), array('x__left')) as $i_previous) {
-                    echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/i/i_go/' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__title'] . '" data-placement="bottom">' . $e___4737[$i_previous['i__type']]['m__cover'] . '</a> &nbsp;</span>';
+                    echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/~' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__title'] . '" data-placement="bottom">' . $e___4737[$i_previous['i__type']]['m__cover'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';

@@ -301,7 +301,7 @@ function view_card_x($x, $has_x__reference = false)
 
             //IDEA
             foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_i){
-                $ui .= '<div class="simple-line"><a href="/i/i_go/'.$focus_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/~'.$focus_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="css__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
             }
 
 
@@ -1279,7 +1279,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     } elseif(strlen($e___13369[$x__type]['m__message'])){
         $href = $e___13369[$x__type]['m__message'].$i['i__id'];
     } else {
-        $href = '/i/i_go/'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
+        $href = '/~'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
     }
 
     $has_discovered = ( isset($member_e['e__id']) && count($CI->X_model->fetch(array(

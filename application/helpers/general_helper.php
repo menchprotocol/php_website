@@ -1833,7 +1833,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //See if this idea has a time-range:
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['i__id']);
-                //$export_row['s__url'] = '/i/i_go/' . $s['i__id'];
+                //$export_row['s__url'] = '/~' . $s['i__id'];
                 $export_row['s__url'] = '/' . $s['i__id'];
                 $export_row['s__access'] = intval($s['i__access']);
                 $export_row['s__cover'] = '';

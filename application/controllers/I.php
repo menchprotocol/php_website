@@ -16,22 +16,6 @@ class I extends CI_Controller {
 
 
 
-    function i_go($i__id = 0){
-        /*
-         *
-         * The next section is very important as it
-         * manages the entire search traffic that
-         * comes through /iID
-         *
-         * */
-        if(!$i__id){
-            die('missing valid ID');
-        }
-        $member_e = superpower_unlocked(10939);
-        return redirect_message(( $member_e ? '/~' : '/' ) . $i__id . ( $member_e && isset($_GET['load__e']) ? '?load__e='.$_GET['load__e'] : '' ) );
-    }
-
-
     function i_copy(){
 
         //Auth member and check required variables:

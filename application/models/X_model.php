@@ -151,7 +151,7 @@ class X_model extends CI_Model
 
                     //IDEA
                     foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                        $plain_message .= $m['m__title'] . ': '.$this_i['i__title'].':'."\n".$this->config->item('base_url').'/i/i_go/' . $this_i['i__id']."\n\n";
+                        $plain_message .= $m['m__title'] . ': '.$this_i['i__title'].':'."\n".$this->config->item('base_url').'/~' . $this_i['i__id']."\n\n";
                     }
 
                 } elseif (in_array(6160 , $m['m__following'])) {
