@@ -1267,9 +1267,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $i_title = view_i_title($i);
 
     if($discovery_mode) {
-        if($top_i__id){
+        if($link_creator && $top_i__id){
             $href = '/'.$top_i__id.'/'.$i['i__id'];
-        } elseif($x__id && $i['x__left']>0 && $i['x__right']>0) {
+        } elseif($link_creator && $x__id && $i['x__left']>0 && $i['x__right']>0) {
             $href = '/'.$i['x__right'].'/'.$i['x__left'];
         } elseif($e_of_i) {
             $href = '/~'.$i['i__id'];
