@@ -814,7 +814,7 @@ if(!$top_i__id){
     if(count($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__right' => $i['i__type'],
+        'x__right' => $i['i__id'],
         'x__up' => 4235,
     )))){
 
