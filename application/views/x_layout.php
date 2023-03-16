@@ -824,7 +824,7 @@ if(!$top_i__id){
 
     } else {
 
-        $_GET['open'] = true;
+        $_GET['open'] = 2;
 
     }
 
@@ -899,7 +899,7 @@ if(!$top_i__id){
 
 
 //NEXT IDEAS:
-if(!$is_or_idea){
+if(!$is_or_idea || (isset($_GET['open']) && $_GET['open']==2)){
     echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
 }
 
