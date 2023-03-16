@@ -792,10 +792,6 @@ if($top_i__id) {
         echo '</form>';
         echo '</div>';
 
-    } elseif ($i['i__type']==30350) {
-
-        //Set Date
-
     } elseif ($i['i__type']==30874) {
 
         //Event
@@ -815,9 +811,22 @@ if($top_i__id) {
 
 if(!$top_i__id){
 
-    //Get Started
-    echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
-    echo '<div class="doclear">&nbsp;</div>';
+    if(count($this->X_model->fetch(array(
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__right' => $i['i__type'],
+        'x__up' => 4235,
+    )))){
+
+        //Get Started
+        echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
+        echo '<div class="doclear">&nbsp;</div>';
+
+    } else {
+
+        $_GET['open'] = true;
+
+    }
 
 } else {
 

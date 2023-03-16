@@ -314,6 +314,15 @@ class X extends CI_Controller
                 return redirect_message('/'.$i_is_available['return_i__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
             }
 
+            //Is startable?
+            if(!count($this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__right' => $i__id,
+                'x__up' => 4235,
+            )))){
+                return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not startable.</div>');
+            }
 
             //Make sure not previously added to this Member's discoveries:
             $xs = $this->X_model->fetch(array(
