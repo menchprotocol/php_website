@@ -1077,14 +1077,14 @@ function view_e_settings($list_id, $is_open){
 
         } elseif ($acc_e__id == 3288 /* Email */) {
 
-            $u_emails = $CI->X_model->fetch(array(
+            $u_accounts = $CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $member_e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Email
             ));
 
-            $tab_ui .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_emails) > 0 ? $u_emails[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
+            $tab_ui .= '<span><input type="email" id="e_email" class="form-control border dotransparent" value="' . (count($u_accounts) > 0 ? $u_accounts[0]['x__message'] : '') . '" placeholder="you@gmail.com" /></span>
                 <a href="javascript:void(0)" onclick="e_email()" class="btn btn-default">Save</a>
                 <span class="saving-account save_email"></span>';
 
@@ -1114,12 +1114,6 @@ function view_e_settings($list_id, $is_open){
             $tab_ui .= '<span><input type="text" id="e_fullname" class="form-control border dotransparent" value="' . (count($u_names) > 0 ? $u_names[0]['x__message'] : '') . '" placeholder="Will Smith" /></span>
                 <a href="javascript:void(0)" onclick="e_fullname()" class="btn btn-default">Save</a>
                 <span class="saving-account save_name"></span>';
-
-        } elseif ($acc_e__id == 3286 /* Password */) {
-
-            $tab_ui .= '<span><input type="password" id="input_password" class="form-control border dotransparent" data-lpignore="true" autocomplete="new-password" placeholder="New Password..." /></span>
-                <a href="javascript:void(0)" onclick="e_password()" class="btn btn-default">Save</a>
-                <span class="saving-account save_password"></span>';
 
         } elseif ($has_multi_selectable || $has_single_selectable) {
 

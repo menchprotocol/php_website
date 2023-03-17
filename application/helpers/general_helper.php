@@ -735,6 +735,15 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
 
 }
 
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
 
 function redirect_message($url, $message = null, $log_error = false)
 {
@@ -1257,7 +1266,77 @@ function clean_phone($phone){
     return $phone_numbers;
 }
 
-function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0){
+function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true){
+
+    $twilio_account_sid = website_setting(30859);
+    $twilio_auth_token = website_setting(30860);
+    $twilio_from_number = website_setting(27673);
+    if(!$twilio_from_number || !$twilio_auth_token || !$twilio_account_sid){
+
+        //No way to send an SMS:
+        if($log_tr){
+            $this->X_model->create(array(
+                'x__message' => 'send_sms() missing either: '.$twilio_account_sid.' / '.$twilio_auth_token.' / '.$twilio_from_number,
+                'x__type' => 4246, //Platform Bug Reports
+                'x__creator' => $e__id,
+                'x__website' => $x__website,
+                'x__metadata' => array(
+                    '$to_phone' => $to_phone,
+                    '$single_message' => $single_message,
+                    '$template_id' => $template_id,
+                    '$x_data' => $x_data,
+                ),
+            ));
+        }
+
+        return false;
+    }
+
+    $post = array(
+        'From' => $twilio_from_number,
+        'Body' => $single_message,
+        'To' => $to_phone,
+    );
+
+    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$twilio_account_sid."/SMS/Messages");
+    curl_setopt($x, CURLOPT_POST, true);
+    curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($x, CURLOPT_USERPWD, $twilio_account_sid.":".$twilio_auth_token);
+    curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
+    $y = curl_exec($x);
+    curl_close($x);
+
+
+    if(substr_count($y, '<Code>21211</Code>')){
+
+        //Invalid input, must be returned:
+        return false;
+
+    }
+
+    $sms_success = substr_count($y, '<SMSMessage><Sid>');
+
+    //Log transaction:
+    if($log_tr){
+        $this->X_model->create(array_merge($x_data, array(
+            'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
+            'x__creator' => $e__id,
+            'x__message' => $single_message,
+            'x__down' => $template_id,
+            'x__metadata' => array(
+                'post' => $post,
+                'response' => $y,
+            ),
+        )));
+    }
+
+    return true;
+
+}
+
+function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true){
 
     $CI =& get_instance();
     $domain_email = '"'.get_domain('m__title', $e__id, $x__website).'" <'.website_setting(28614, $e__id, $x__website).'>';
@@ -1343,18 +1422,20 @@ function email_send($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     ));
 
     //Log transaction:
-    $CI->X_model->create(array_merge($x_data, array(
-        'x__type' => 29399,
-        'x__down' => $template_id,
-        'x__creator' => $e__id,
-        'x__message' => $subject."\n\n".$email_message,
-        'x__metadata' => array(
-            'to' => $to_emails,
-            'subject' => $subject,
-            'message' => $email_message,
-            'response' => $response,
-        ),
-    )));
+    if($log_tr){
+        $CI->X_model->create(array_merge($x_data, array(
+            'x__type' => 29399,
+            'x__down' => $template_id,
+            'x__creator' => $e__id,
+            'x__message' => $subject."\n\n".$email_message,
+            'x__metadata' => array(
+                'to' => $to_emails,
+                'subject' => $subject,
+                'message' => $email_message,
+                'response' => $response,
+            ),
+        )));
+    }
 
 
     return $response;

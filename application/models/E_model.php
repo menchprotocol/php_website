@@ -291,7 +291,7 @@ class E_model extends CI_Model
 
 
 
-    function add_member($full_name, $email, $phone_number = null, $image_url = null, $x__website = 0, $importing_full_names = false){
+    function add_member($full_name, $email = null, $phone_number = null, $image_url = null, $x__website = 0, $importing_full_names = false){
 
         //Set website if not set:
         if(!$x__website){
@@ -303,10 +303,15 @@ class E_model extends CI_Model
         if(!$added_e['status']){
             //We had an error, return it:
             return $added_e;
-        } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        } elseif($email && !filter_var($email, FILTER_VALIDATE_EMAIL)){
             return array(
                 'status' => 0,
                 'message' => 'Invalid Email',
+            );
+        } elseif($phone_number && (!intval($phone_number) || strlen($phone_number)<7)){
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Phone',
             );
         }
 
@@ -318,16 +323,21 @@ class E_model extends CI_Model
             'x__down' => $added_e['new_e']['e__id'],
             'x__website' => $x__website,
         ));
-        $this->X_model->create(array(
-            'x__type' => e_x__type(trim(strtolower($email))),
-            'x__message' => trim(strtolower($email)),
-            'x__up' => 3288, //Email
-            'x__creator' => $added_e['new_e']['e__id'],
-            'x__down' => $added_e['new_e']['e__id'],
-            'x__website' => $x__website,
-        ));
 
-        if(strlen($phone_number)>8){
+        //Add email?
+        if($email){
+            $this->X_model->create(array(
+                'x__type' => e_x__type(trim(strtolower($email))),
+                'x__message' => trim(strtolower($email)),
+                'x__up' => 3288, //Email
+                'x__creator' => $added_e['new_e']['e__id'],
+                'x__down' => $added_e['new_e']['e__id'],
+                'x__website' => $x__website,
+            ));
+        }
+
+        //Add Number?
+        if($phone_number){
             $this->X_model->create(array(
                 'x__up' => 4783, //Phone
                 'x__type' => e_x__type($phone_number),
@@ -358,9 +368,12 @@ class E_model extends CI_Model
         } else {
 
             //Send Welcome Email if any:
-            foreach($this->E_model->scissor_e($x__website, 14929) as $e_item) {
-                $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
+            if($phone_number || $email){
+                foreach($this->E_model->scissor_e($x__website, 14929) as $e_item){
+                    $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
+                }
             }
+
 
             //Update Algolia:
             update_algolia(12274,  $added_e['new_e']['e__id']);

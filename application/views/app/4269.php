@@ -120,6 +120,15 @@ if(superpower_unlocked()) {
                 }
             });
 
+            //COde Input
+            const ELS_pinEntry = document.querySelectorAll(".pinEntry");
+            const selectAllIfFull = (evt) => {
+                const EL_input = evt.currentTarget;
+                if (EL_input.value.length >= 4) EL_input.select();
+            };
+            ELS_pinEntry.forEach(el => {
+                el.addEventListener("focusin", selectAllIfFull);
+            });
 
 
             var go_next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
@@ -131,8 +140,19 @@ if(superpower_unlocked()) {
 
             $(document).ready(function () {
 
+
+                const ELS_pinEntry = document.querySelectorAll(".pinEntry");
+                const selectAllIfFull = (evt) => {
+                    const EL_input = evt.currentTarget;
+                    if (EL_input.value.length >= 4) EL_input.select();
+                };
+                ELS_pinEntry.forEach(el => {
+                    el.addEventListener("focusin", selectAllIfFull);
+                });
+
+
                 //Watch for email address change:
-                $('#input_email').on('input',function(e){
+                $('#account_email_phone').on('input',function(e){
                     if($(this).length){
                         $('#step2buttons').removeClass('hidden');
                     } else {
@@ -146,11 +166,9 @@ if(superpower_unlocked()) {
                     //Watch for action keys:
                     if (e.keyCode == 13) {
                         if(step_count==2){
-                            search_email();
+                            contact_search();
                         } else if(step_count==3){
-                            e_signin_password();
-                        } else if(step_count==4){
-                            add_account();
+                            contact_auth();
                         }
                     }
                 });
@@ -172,7 +190,7 @@ if(superpower_unlocked()) {
 
 
             var email_searching = false;
-            function search_email(){
+            function contact_search(){
 
                 if(email_searching){
                     return false;
@@ -181,14 +199,14 @@ if(superpower_unlocked()) {
                 //Lock fields:
                 email_searching = true;
                 $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-                $('#input_email').prop('disabled', true);
-                $('#password_errors').html('');
+                $('#account_email_phone').prop('disabled', true);
+                $('#sign_code_errors').html('');
                 $('#flash_message').html(''); //Delete previous errors, if any
 
                 //Check email and validate:
-                $.post("/e/e_signin_email", {
+                $.post("/e/contact_search", {
 
-                    input_email: $('#input_email').val(),
+                    account_email_phone: $('#account_email_phone').val(),
                     sign_i__id: sign_i__id,
 
                 }, function (data) {
@@ -196,86 +214,31 @@ if(superpower_unlocked()) {
                     //Release field lock:
                     email_searching = false;
                     $('#email_check_next').html(go_next_icon);
-                    $('#input_email').prop('disabled', false);
+                    $('#account_email_phone').prop('disabled', false);
 
                     if (data.status) {
 
                         //Update email:
-                        $('#input_email').val(data.clean_email_input);
-                        $('.focus_email').html(data.clean_email_input);
-                        $('#email_errors').html('');
+                        $('#account_email_phone_errors').html('');
+                        $('#account_id').val(data.account_id);
+                        $('#account_email_phone').val(data.clean_contact);
+                        $('.code_sent_to').html(data.clean_contact);
 
-                        if(data.email_existed_previously && !data.password_existed_previously){
-                            //Did social login before, but now trying to directly login:
-                            $('.full_name').addClass('hidden');
+                        if(!data.account_id){
+                            //Allow to create new account with email/phone
+                            $('.new_account').removeClass('hidden');
                         } else {
-                            $('.full_name').removeClass('hidden');
+                            $('.new_account').addClass('hidden');
                         }
 
-                        if(data.email_existed_previously && data.password_existed_previously){
-                            //Update source id IF existed previously:
-                            $('#sign_e__id').val(data.sign_e__id);
-                        }
-
-                        //Go to next read:
-                        goto_step(( data.email_existed_previously && data.password_existed_previously ? 3 /* To ask for password */ : 4 /* To check their email and create new account */ ));
-
-                    } else {
-                        //Show errors:
-                        $('#email_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
-                        $('#input_email').focus();
-                    }
-                });
-
-            }
-
-            var account_adding = false;
-            function add_account(){
-
-                if(account_adding){
-                    return false;
-                }
-
-                //Lock fields:
-                account_adding = true;
-                $('#add_acount_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-                $('#input_name, #password_reset').prop('disabled', true);
-
-                //Check email and validate:
-                $.post("/e/e_signin_create", {
-                    new_account_passcode: $('#new_account_passcode').val(),
-                    input_email: $('#input_email').val(),
-                    input_name: $('#input_name').val(),
-                    password_reset: $('#password_reset').val(),
-                    referrer_url: referrer_url,
-                    sign_i__id: sign_i__id,
-                }, function (data) {
-
-                    if (data.status) {
-
-                        //Release field lock:
-                        $('#add_acount_next').html(js_e___11035[14424]['m__cover']);
-                        $('#account_errors').html('');
-
-                        setTimeout(function () {
-                            //Redirect to next read:
-                            js_redirect(data.sign_url);
-                        }, 377);
+                        //Go to final step:
+                        goto_step(3);
 
                     } else {
 
-                        //Release field lock:
-                        account_adding = false;
-                        $('#add_acount_next').html(go_next_icon);
-                        $('#password_reset, #input_name').prop('disabled', false);
-
-                        //Do we know which field to focus on?
-                        if(data.focus_input_field.length>0) {
-                            $('#' + data.focus_input_field).focus();
-                        }
-
                         //Show errors:
-                        $('#account_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                        $('#account_email_phone_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                        $('#account_email_phone').focus();
 
                     }
 
@@ -283,69 +246,47 @@ if(superpower_unlocked()) {
 
             }
 
-            var password_checking = false;
-            function e_signin_password(){
 
-                if(password_checking){
+            var code_checking = false;
+            function contact_auth(){
+
+                if(code_checking){
                     return false;
                 }
 
                 //Lock fields:
-                password_checking = true;
-                $('#password_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-                $('#input_password').prop('disabled', true);
+                code_checking = true;
+                $('#code_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+                $('#input_code').prop('disabled', true);
 
-                //Check email and validate:
-                $.post("/e/e_signin_password", {
-                    sign_e__id: $('#sign_e__id').val(),
-                    input_password: $('#input_password').val(),
+                //Check email/phone and validate:
+                $.post("/e/contact_auth", {
+                    account_email_phone: $('#account_email_phone').val(),
+                    account_id: $('#account_id').val(), //Might be zero if new account
+                    new_account_title: $('#new_account_title').val(),
+                    input_code: $('#input_code').val(),
                     referrer_url: referrer_url,
                     sign_i__id: sign_i__id,
                 }, function (data) {
 
                     if (data.status) {
 
-                        //Release field lock:
-                        $('#password_check_next').html(js_e___11035[14424]['m__cover']);
-                        $('#password_errors').html('');
-
-                        //Redirect
                         js_redirect(data.sign_url);
 
                     } else {
 
                         //Release field lock:
-                        password_checking = false;
-                        $('#password_check_next').html(go_next_icon);
-                        $('#input_password').prop('disabled', false).focus();
+                        code_checking = false;
+                        $('#code_check_next').html(go_next_icon);
+                        $('#input_code').prop('disabled', false).focus();
+                        $('#sign_code_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
 
-                        //Show errors:
-                        $('#password_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
                     }
 
                 });
 
             }
 
-            function e_magic_email(){
-                //Update UI:
-                goto_step(5); //To check their email and create new account
-                $('.magic_result').html('<div><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Sending Email...</div>');
-
-                //Check email and validate:
-                $.post("/e/e_magic_email", {
-                    input_email: $('#input_email').val(),
-                    sign_i__id: sign_i__id,
-                }, function (data) {
-                    if (data.status) {
-                        //All good, they can close window:
-                        $('.magic_result').html('<div><span class="icon-block"><i class="fas fa-eye"></i></span>Check Your Email (Also Spam Folder)</div>').hide().fadeIn();
-                    } else {
-                        //Show errors:
-                        $('.magic_result').html('<div class="zq6255 css__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</div>').hide().fadeIn();
-                    }
-                });
-            }
         </script>
 
 
@@ -380,8 +321,8 @@ if(superpower_unlocked()) {
 
                     <?php
 
+                    //SOCIAL LOGIN:
                     if(strlen(website_setting(14881)) && strlen(website_setting(14882))){
-                        //SOCIAL LOGIN:
                         echo '<div class="social-frame">';
                         echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
                         echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
@@ -393,117 +334,70 @@ if(superpower_unlocked()) {
                     ?>
 
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
-                    <div class="form-group"><input type="email" placeholder="your@email.com" id="input_email" <?= isset($_GET['input_email']) ? ' value="'.$_GET['input_email'].'" ' : '' ?> class="form-control border white-border white-border"></div>
-                    <div id="email_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
-                    <span id="step2buttons" class="<?= isset($_GET['input_email']) ? '' : ' hidden ' ?>" >
-                    <a href="javascript:void(0)" onclick="search_email()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
-                <div class="doclear">&nbsp;</div>
-                </span>
+                    <div class="form-group"><input type="text" placeholder="your@email.com or 7781234567" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
+                    <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+                    <span id="step2buttons" class="<?= isset($_GET['account_email_phone']) ? '' : ' hidden ' ?>" >
+                    <a href="javascript:void(0)" onclick="contact_search()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
+                    <div class="doclear">&nbsp;</div>
+                    </span>
 
                     <?php
-
                     //GUEST LOGIN:
-                    if($sign_i__id && 0){
-                        echo '<div class="mid-text-line"><span>OR</span></div>';
+                    if(view_memory(6404,6197)){
+                        echo '<div class="social-frame">';
                         echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
                         echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
+                        echo ( strlen($e___11035[14938]['m__message']) ? ': '.$e___11035[14938]['m__message'] : '' );
                         echo '</a></div>';
+                        echo '<div class="mid-text-line"><span>OR</span></div>';
+                        echo '</div>';
                     }
                     ?>
 
                 </div>
 
 
-
-
-
-                <!-- Step 3: Enter password (IF FOUND) -->
+                <!-- Step 3: Enter Sign in Code (and Maybe signup if not found) -->
                 <div id="step3" class="signup-steps hidden">
 
-                    <!-- To be updated to >0 IF email was found -->
-                    <input type="hidden" id="sign_e__id" value="0" />
+                    <!-- To be updated to >0 IF account was found -->
+                    <input type="hidden" id="account_id" value="0" />
 
 
 
+                    <!-- New Account ( If not found) -->
+                    <div class="margin-top-down new_account hidden">
 
-                    <?php
-                    echo '<div class="social-frame">';
-                    echo '<div class="full-width-btn center top-margin"><a href="javascript:void(0)" onclick="e_magic_email()" class="btn btn-large btn-default">';
-                    echo $e___11035[11068]['m__title'].' '.$e___11035[11068]['m__cover'];
-                    echo '</a></div>';
-                    echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '</div>';
-                    ?>
+                        <!-- Phone/Email -->
+                        <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                        <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="code_sent_to"></span></div>
+
+                        <!-- Enter Full Name -->
+                        <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
+                        <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
+
+                        <div class="doclear">&nbsp;</div>
+                    </div>
 
 
+                    <!-- Sign in Code -->
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32078]['m__cover'].'</span>'.$e___4269[32078]['m__title'] ?></span>
-                    <div class="form-group"><input type="password" id="input_password" class="form-control border white-border"></div>
-                    <div id="password_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
-
+                    <div class="pinBox form-group">
+                        <input maxlength="4" autocomplete="off" type="text" id="input_code" class="form-control border white-border pinEntry">
+                    </div>
+                    <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                     <div class="doclear">&nbsp;</div>
+
+
 
                     <div id="step3buttons">
                         <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
-                        <a href="javascript:void(0)" onclick="e_signin_password()" id="password_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
+                        <a href="javascript:void(0)" onclick="contact_auth()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                     </div>
 
                     <div class="doclear">&nbsp;</div>
 
                 </div>
-
-
-
-
-
-                <!-- Step 4: Create New Account (IF NOT FOUND) -->
-                <div id="step4" class="signup-steps hidden">
-
-                    <!-- pre-set Email -->
-                    <div class="margin-top-down">
-                        <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
-                        <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="focus_email"></span></div>
-                    </div>
-
-
-                    <!-- Email Verification Pass Code -->
-                    <div class="margin-top-down">
-                        <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[28782]['m__cover'].'</span>'.$e___4269[28782]['m__title'] ?></span>
-                        <p><?= $e___4269[28782]['m__message'] ?></p>
-                        <div class="form-group"><input type="number" step="1" id="new_account_passcode" maxlength="4" class="form-control border css__title white-border"></div>
-                    </div>
-
-
-                    <!-- Full Name -->
-                    <div class="margin-top-down full_name">
-                        <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
-                        <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="input_name" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
-                    </div>
-
-
-                    <!-- New Password -->
-                    <div class="margin-top-down">
-                        <span class="css__title" style="padding-bottom: 3px; display:block;"><span class="icon-block"><?= $e___4269[14027]['m__cover'] ?></span><?= $e___4269[14027]['m__title'] ?></span>
-                        <div class="form-group"><input type="password" id="password_reset" class="form-control border white-border"></div>
-                    </div>
-
-
-                    <!-- Signup Buttons -->
-                    <div id="account_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
-                    <span>
-                    <a href="javascript:void(0)" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="add_account()" id="add_acount_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
-                    <div class="doclear">&nbsp;</div>
-                </span>
-
-                </div>
-
-
-                <!-- Step 5: Check your email -->
-                <div id="step5" class="signup-steps hidden">
-                    <div style="padding-bottom: 10px;"><span class="icon-block"><i class="fas fa-envelope-open"></i></span><span class="focus_email"></span></div>
-                    <span class="medium-header magic_result"></span>
-                </div>
-
 
             </div>
         </div>

@@ -2434,36 +2434,6 @@ function e_fullname(){
 }
 
 
-function e_password(){
-
-    //Show spinner:
-    $('.save_password').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12695)).hide().fadeIn();
-
-    //Save the rest of the content:
-    $.post("/e/e_password", {
-        input_password: $('#input_password').val(),
-    }, function (data) {
-
-        if (!data.status) {
-
-            //Ooops there was an error!
-            $('.save_password').html('<b class="zq6255 css__title"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</b>').hide().fadeIn();
-
-        } else {
-
-            //Show success:
-            $('.save_password').html(js_e___11035[14424]['m__cover'] + ' ' + data.message + '</span>').hide().fadeIn();
-
-            //Disappear in a while:
-            setTimeout(function () {
-                $('.save_password').html('');
-            }, 2584);
-
-        }
-    });
-
-}
-
 
 function isNormalInteger(str) {
     var n = Math.floor(Number(str));

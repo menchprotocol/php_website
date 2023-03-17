@@ -961,18 +961,18 @@ class E extends CI_Controller
 
 
         //Fetch existing email:
-        $u_emails = $this->X_model->fetch(array(
+        $u_accounts = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $member_e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
         ));
-        if (count($u_emails) > 0) {
+        if (count($u_accounts) > 0) {
 
             if (strlen($_POST['e_email']) == 0) {
 
                 //Delete email:
-                $this->X_model->update($u_emails[0]['x__id'], array(
+                $this->X_model->update($u_accounts[0]['x__id'], array(
                     'x__access' => 6173, //Transaction Removed
                 ), $member_e['e__id'], 6224 /* Member Account Updated */);
 
@@ -981,10 +981,10 @@ class E extends CI_Controller
                     'message' => 'Email deleted',
                 );
 
-            } elseif ($u_emails[0]['x__message'] != $_POST['e_email']) {
+            } elseif ($u_accounts[0]['x__message'] != $_POST['e_email']) {
 
                 //Update if not duplicate:
-                $this->X_model->update($u_emails[0]['x__id'], array(
+                $this->X_model->update($u_accounts[0]['x__id'], array(
                     'x__message' => $_POST['e_email'],
                 ), $member_e['e__id'], 6224 /* Member Account Updated */);
 
@@ -1271,226 +1271,27 @@ class E extends CI_Controller
 
 
 
-    function e_password()
-    {
-
-        $member_e = superpower_unlocked();
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < view_memory(6404,11066)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'New password must be '.view_memory(6404,11066).' characters or more',
-            ));
-        }
-
-        //Fetch existing password:
-        $u_passwords = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3286, //Password
-            'x__down' => $member_e['e__id'],
-        ));
-
-        $hashed_password = strtolower(hash('sha256', view_memory(6404,30863) . $_POST['input_password'] . $member_e['e__id']));
-
-
-        if (count($u_passwords) > 0) {
-
-            if ($hashed_password == $u_passwords[0]['x__message']) {
-
-                $return = array(
-                    'status' => 0,
-                    'message' => 'Password Unchanged',
-                );
-
-            } else {
-
-                //Update password:
-                $this->X_model->update($u_passwords[0]['x__id'], array(
-                    'x__message' => $hashed_password,
-                ), $member_e['e__id'], 7578 /* Member Updated Password  */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Password Updated',
-                );
-
-            }
-
-        } else {
-
-            //Create new transaction:
-            $this->X_model->create(array(
-                'x__type' => e_x__type($hashed_password),
-                'x__up' => 3286, //Password
-                'x__creator' => $member_e['e__id'],
-                'x__down' => $member_e['e__id'],
-                'x__message' => $hashed_password,
-            ), true);
-
-            $return = array(
-                'status' => 1,
-                'message' => 'Password Added',
-            );
-
-        }
-
-
-        //Log Account Update transaction type:
-        if($return['status']){
-            $_POST['account_update_function'] = 'e_password'; //Add this variable to indicate which My Account function created this transaction
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 6224, //My Account Updated
-                'x__message' => 'My Account '.$return['message'],
-                'x__metadata' => $_POST,
-            ));
-        }
-
-
-        //Return results:
-        return view_json($return);
-
-    }
 
 
 
 
+    function contact_auth(){
 
 
-
-
-
-    function e_signin_create(){
-
-        if (!isset($_POST['sign_i__id']) || !isset($_POST['referrer_url'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing core data',
-            ));
-        } elseif (!isset($_POST['input_email'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Email',
-            ));
-        } elseif (!isset($_POST['input_name'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing name',
-                'focus_input_field' => 'input_name',
-            ));
-        } elseif ($_POST['new_account_passcode'] != substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invaid passcode. Check your email (and spam folder) and try again.',
-                'focus_input_field' => 'new_account_passcode',
-            ));
-        } elseif (strlen($_POST['password_reset'])>0 && strlen($_POST['password_reset']) < view_memory(6404,11066)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'New password must be '.view_memory(6404,11066).' characters or longer',
-                'focus_input_field' => 'password_reset',
-            ));
-        }
-
-
-
-        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
-        $u_emails = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__message' => $_POST['input_email'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Email
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down'));
-
-
-
-        if(count($u_emails)){
-
-            //Member already exists:
-            $member_result['e'] = $u_emails[0];
-
-            //Assign session & log login transaction:
-            $this->E_model->activate_session($member_result['e']);
-
-        } else {
-
-            //Prep inputs & validate further:
-            $_POST['input_name'] = trim($_POST['input_name']);
-            if (strlen($_POST['input_name']) < view_memory(6404,12232)) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Name must longer than '.view_memory(6404,12232).' characters',
-                    'focus_input_field' => 'input_name',
-                ));
-            } elseif (strlen($_POST['input_name']) > view_memory(6404,6197)) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Name must be less than '.view_memory(6404,6197).' characters',
-                    'focus_input_field' => 'input_name',
-                ));
-            }
-
-            $member_result = $this->E_model->add_member(trim($_POST['input_name']), $_POST['input_email']);
-            if (!$member_result['status']) {
-                return view_json($member_result);
-            }
-
-        }
-
-
-
-        //Add Password if any:
-        if(strlen($_POST['password_reset'])){
-            $hash = strtolower(hash('sha256', view_memory(6404,30863) . $_POST['password_reset'] . $member_result['e']['e__id']));
-            $this->X_model->create(array(
-                'x__type' => e_x__type($hash),
-                'x__message' => $hash,
-                'x__up' => 3286, //Password
-                'x__creator' => $member_result['e']['e__id'],
-                'x__down' => $member_result['e']['e__id'],
-            ));
-
-        }
-
-        if (strlen(urldecode($_POST['referrer_url'])) > 1) {
-
-            $sign_url = urldecode($_POST['referrer_url']);
-
-        } else {
-
-            //Go to home page and let them continue from there:
-            $sign_url = new_member_redirect($member_result['e']['e__id'], intval($_POST['sign_i__id']));
-
-        }
-
-        //Created account:
-        return view_json(array(
-            'status' => 1,
-            'sign_url' => $sign_url,
-        ));
-
-    }
-
-
-
-    function e_signin_password(){
-
-        if (!isset($_POST['sign_e__id']) || intval($_POST['sign_e__id'])<1) {
+        if (!isset($_POST['account_id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing user ID',
             ));
-        } elseif (!isset($_POST['input_password']) || strlen($_POST['input_password']) < view_memory(6404,11066)) {
+        } elseif (!isset($_POST['input_code']) || !intval($_POST['input_code'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Password',
+                'message' => 'Invalid code',
+            ));
+        } elseif (!isset($_POST['account_email_phone'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing account_email_phone',
             ));
         } elseif (!isset($_POST['referrer_url'])) {
             return view_json(array(
@@ -1505,44 +1306,80 @@ class E extends CI_Controller
         }
 
 
+        //Auth Code:
+        $is_authenticated = false;
+        foreach($this->X_model->fetch(array(
+            'x__type' => 32078, //4-Digit Sign In Key
+            'x__access' => 6175, //Still Pending
+            'x__message' => $_POST['account_email_phone'],
+        )) as $sent_key){
 
-        //Validaye member ID
-        $es = $this->E_model->fetch(array(
-            'e__id' => $_POST['sign_e__id'],
-        ));
-        if (!in_array($es[0]['e__access'], $this->config->item('n___7358'))) {
+            $x__metadata = unserialize($sent_key['x__metadata']);
+            $sesssion_key = $this->session->userdata('sesssion_key');
+
+            if(strtotime($sent_key['x__time']) + view_memory(6404,11065) < time()){
+                //Expired:
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Time has expired.',
+                ));
+            } elseif(strlen($sesssion_key) && $x__metadata['hash_code']==md5($sesssion_key.$_POST['input_code'])){
+
+                //Complete access code:
+                $is_authenticated = $this->X_model->update($sent_key['x__id'], array(
+                    'x__access' => 6176, //Published
+                ));
+
+            }
+        }
+        if(!$is_authenticated){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Your account source is not active. Contact us to adjust your account.',
+                'message' => 'Invalid code, try again.',
             ));
         }
 
 
-        //Authenticate password:
-        $es[0]['is_masterpass_login'] = 0;
 
-        //Is this the master password?
-        if(hash('sha256', view_memory(6404,30863) . $_POST['input_password']) == view_memory(6404,13014)){
+        //Validate member ID
+        if($_POST['account_id'] > 0){
 
-            $es[0]['is_masterpass_login'] = 1;
-
-        } elseif(!count($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3286, //Password
-            'x__message' => hash('sha256', view_memory(6404,30863) . $_POST['input_password'] . $es[0]['e__id']),
-            'x__down' => $es[0]['e__id'],
-        )))) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Incorrect password',
+            $es = $this->E_model->fetch(array(
+                'e__id' => $_POST['account_id'],
             ));
+            if(!count($es)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid account ID.',
+                ));
+            }
+
+            //Assign session & log transaction:
+            $this->E_model->activate_session($es[0]);
+
+        } else {
+
+            $_POST['new_account_title'] = trim($_POST['new_account_title']);
+            if(strlen($_POST['new_account_title'])<2){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Account name should be longer than 2 characters',
+                ));
+            }
+
+            //Add new account
+            $_POST['account_email_phone'] =  trim(strtolower($_POST['account_email_phone']));
+            $is_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
+
+            //Prep inputs & validate further:
+            $member_result = $this->E_model->add_member($_POST['new_account_title'], ( $is_email ? $_POST['account_email_phone'] : '' ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
+            if (!$member_result['status']) {
+                return view_json($member_result);
+            }
+
+            $es[0] = $member_result['e'];
 
         }
-
-        //Assign session & log transaction:
-        $this->E_model->activate_session($es[0]);
 
 
         if (intval($_POST['sign_i__id']) > 0) {
@@ -1565,70 +1402,6 @@ class E extends CI_Controller
     }
 
 
-
-
-    function e_magic_email(){
-
-
-        if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Email',
-            ));
-        } elseif (!isset($_POST['sign_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing core data',
-            ));
-        }
-
-        $has_i = ( intval($_POST['sign_i__id']) > 0 );
-        if($has_i){
-            $is = $this->I_model->fetch(array('i__id' => $_POST['sign_i__id']));
-            $has_i = count($is);
-        }
-
-
-        //Cleanup/validate email:
-        $_POST['input_email'] = trim(strtolower($_POST['input_email']));
-        $u_emails = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__message' => $_POST['input_email'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Email
-        ), array('x__down'));
-        if(count($u_emails) < 1){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Email not associated with a registered account',
-            ));
-        }
-
-        //Log email search attempt:
-        $reset_x = $this->X_model->create(array(
-            'x__type' => 7563, //Member Signin Magic Email
-            'x__creator' => $u_emails[0]['e__id'], //Member making request
-            'x__message' => $_POST['input_email'],
-            'x__left' => intval($_POST['sign_i__id']),
-        ));
-
-        //This is a new email, send invitation to join:
-
-        ##Email Subject
-        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-        $subject = $e___11035[11068]['m__title'].' | '.get_domain('m__title', $u_emails[0]['e__id']);
-
-        ##Email Body
-        $magic_x_expiry_hours = (view_memory(6404,11065)/3600);
-
-        //Send email:
-        $this->X_model->send_dm($u_emails[0]['e__id'], $subject, 'Login within the next '.$magic_x_expiry_hours.' hour'.view__s($magic_x_expiry_hours).( $has_i ? ' to discover '.$is[0]['i__title'] : '' ).':'."\n" . $this->config->item('base_url').'/e/e_magic_sign/' . $reset_x['x__id'] . '?email='.$_POST['input_email']);
-
-        //Return success
-        return view_json(array(
-            'status' => 1,
-        ));
-    }
 
     function e_toggle_e(){
 
@@ -1699,68 +1472,29 @@ class E extends CI_Controller
 
     }
 
-    function e_magic_sign($x__id){
 
-        //Remove Session:
-        session_delete();
+    function contact_search(){
 
-        //Validate email:
-        if(!isset($_GET['email']) || !filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
-            //Missing email input:
-            return redirect_message('/-4269', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing Email</div>', true);
+        //Cleanup input email:
+        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+        $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
+        $valid_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
+        $possible_phone = strlen($_POST['account_email_phone'])>=10;
+        if($possible_phone){
+            $_POST['account_email_phone'] = preg_replace('/[^0-9]+/', '', $_POST['account_email_phone']);
         }
 
-        //Validate DISCOVERY ID and matching email:
-        $validate_x = $this->X_model->fetch(array(
-            'x__id' => $x__id,
-            'x__message' => $_GET['email'],
-            'x__type' => 7563, //Member Signin Magic Email
-        )); //The member making the request
-        if(count($validate_x) < 1){
-            //Probably previously completed the reset password:
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid data source</div>', true);
-        } elseif(strtotime($validate_x[0]['x__time']) + view_memory(6404,11065) < time()){
-            //Probably previously completed the reset password:
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Magic transaction has expired. Try again.</div>');
-        }
-
-
-
-        //Fetch source:
-        $es = $this->E_model->fetch(array(
-            'e__id' => $validate_x[0]['x__creator'],
-        ));
-        if(count($es) < 1){
-            return redirect_message('/-4269?input_email='.$_GET['email'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Member not found</div>', true);
-        }
-
-
-        //Log them in:
-        $this->E_model->activate_session($es[0]);
-
-
-        //Take them to DISCOVERY HOME
-        return redirect_message(($validate_x[0]['x__left'] > 0 ? '/x/x_start/'.$validate_x[0]['x__left'] : home_url() ), '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully signed in.</div>');
-
-    }
-
-    function e_signin_email(){
-
-        if (!isset($_POST['input_email']) || !filter_var($_POST['input_email'], FILTER_VALIDATE_EMAIL)) {
+        if (!isset($_POST['account_email_phone']) || (!$valid_email && !$possible_phone)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Email',
+                'message' => 'Invalid Email Address or Phone Number',
             ));
         } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing core data',
+                'message' => 'Missing data ID',
             ));
         }
-
-
-        //Cleanup input email:
-        $_POST['input_email'] =  trim(strtolower($_POST['input_email']));
 
 
         if(intval($_POST['sign_i__id']) > 0){
@@ -1774,39 +1508,55 @@ class E extends CI_Controller
         }
 
 
-        //Search for email to see if it exists...
-        $u_emails = $this->X_model->fetch(array(
+        //Search for email/phone to see if it exists...
+        $u_accounts = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__message' => $_POST['input_email'],
+            'x__message' => $_POST['account_email_phone'],
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Email
+            'x__up IN (' . join(',', $this->config->item('n___32078')) . ')' => null, //Phone or Email
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'));
 
 
-        $u_passwords = array();
-        if(count($u_emails)){
-            //See if this user has set a password before:
-            $u_passwords = $this->X_model->fetch(array(
-                'x__up' => 3286, //Password
-                'x__down' => $u_emails[0]['e__id'],
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            ));
-        }
+
+        $x__creator = ( count($u_accounts) ? $u_accounts[0]['e__id'] : 0 );
+
+        //Send 4-Digit Pass Code
+        $passcode = rand(1000,9999);
+        $sesssion_key = generateRandomString(55);
+
+        //Append to session:
+        $session_data = $this->session->all_userdata();
+        $session_data['sesssion_key'] = $sesssion_key;
+        $this->session->set_userdata($session_data);
 
 
-        if(!count($u_emails) || !count($u_passwords)){
-            //Send Email Verification Pass Code
-            email_send(array($_POST['input_email']), 'Your Email Verification Pass Code', '"'.substr(preg_replace('/[^0-9.]+/', '', md5($_POST['input_email'])), 0, 4).'" is your pass code to create your new account.', ( count($u_emails) ? $u_emails[0]['e__id'] : 0 ));
+        //Log email search attempt:
+        $this->X_model->create(array(
+            'x__type' => 32078, //4-Digit Sign In Key
+            'x__access' => 6175, //Pending until used (if used)
+            'x__creator' => $x__creator, //Member making request
+            'x__message' => $_POST['account_email_phone'],
+            'x__metadata' => array(
+                'hash_code' => md5($sesssion_key.$passcode),
+            ),
+            'x__left' => intval($_POST['sign_i__id']),
+        ));
+
+        $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].'.';
+
+        if($valid_email) {
+            //Email:
+            send_email(array($_POST['account_email_phone']), $e___11035[32078]['m__title'], $plain_message, 0, array(), 0, 0, false);
+        } elseif($possible_phone) {
+            //SMS:
+            send_sms($_POST['account_email_phone'], $plain_message, 0, array(), 0, 0, false);
         }
 
         return view_json(array(
             'status' => 1,
-            'email_existed_previously' => ( count($u_emails) ? 1 : 0 ),
-            'password_existed_previously' => ( count($u_passwords) ? 1 : 0 ),
-            'sign_e__id' => ( count($u_emails) ? $u_emails[0]['e__id'] : 0 ),
-            'clean_email_input' => $_POST['input_email'],
+            'account_id' => $x__creator,
+            'clean_contact' => $_POST['account_email_phone'],
         ));
 
     }

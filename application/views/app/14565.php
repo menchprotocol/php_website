@@ -153,13 +153,7 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
 $secondary_ideas = '';
 foreach($secondary_i_list as $ref_i){
     $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
-    $is_flat_list = count($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
-        'x__up' => 30378, //Flat List Ideas
-        'x__right' => $ref_i['i__id'],
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    )));
-    $secondary_ideas .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], null, ($is_flat_list ? '/:' : '/' ).$ref_i['i__id'] ,$messages);
+    $secondary_ideas .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], null, '/'.$ref_i['i__id'] ,$messages);
 }
 if(strlen($secondary_ideas)){
     echo '<div class="list-group list-border glossy-bg maxwidth">';
