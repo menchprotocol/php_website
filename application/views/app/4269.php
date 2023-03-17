@@ -366,19 +366,22 @@ if(superpower_unlocked()) {
                     <input type="hidden" id="account_id" value="0" />
 
 
-                    <div class="css__title new_account hidden"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
-                    <div style="padding:8px 0;">Enter the <?= $e___4269[13025]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
-
-
                     <!-- New Account ( If not found) -->
                     <div class="margin-top-down new_account hidden">
+
+                        <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+
+
                         <!-- Enter Full Name -->
+                        <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
                         <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
+
                     </div>
 
 
+
+                    <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
                     <!-- Sign in Code -->
-                    <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32078]['m__cover'].'</span>'.$e___4269[32078]['m__title'] ?></span>
                     <div class="pinBox"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntry"></div>
                     <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                     <div class="doclear">&nbsp;</div>

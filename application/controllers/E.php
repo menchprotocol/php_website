@@ -1568,7 +1568,8 @@ class E extends CI_Controller
             ),
         ));
 
-        $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].'.';
+
+        $plain_message = 'Your '.$e___11035[32078]['m__title'].' is '.$passcode.'.';
 
         if($valid_email) {
             //Email:

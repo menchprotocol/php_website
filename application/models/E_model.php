@@ -24,6 +24,13 @@ class E_model extends CI_Model
          *
          * */
 
+        //Assign session key:
+        $session_data = $this->session->all_userdata();
+        $session_data['is_anonymous'] = 0;
+        $this->session->set_userdata($session_data);
+
+        //Remove from Anonymous:
+
 
 
     }

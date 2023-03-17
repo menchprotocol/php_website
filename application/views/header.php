@@ -532,4 +532,8 @@ if(strlen($flash_message) > 0) {
 
 }
 
+if(intval($this->session->userdata('is_anonymous'))>0){
+    echo '<div class="'.( $basic_header_footer ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">Add <a href="javascript:void(0);" x__type="6225" class="trigger_modal">email or phone</a> to save your discovceries & claim your account.</div>';
+}
+
 ?>
