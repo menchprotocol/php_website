@@ -414,6 +414,11 @@ if(!$basic_header_footer){
                             $href = 'href="javascript:void(0);"';
                             $extra_class = ' trigger_modal ';
 
+                        } elseif($x__type==7291 && intval($this->session->userdata('is_anonymous'))>0){
+
+                            //FINAL logout Warning:
+                            $href = 'href="javascript:final_logout();"';
+
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
                             //APP

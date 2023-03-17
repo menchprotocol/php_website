@@ -2440,7 +2440,15 @@ function isNormalInteger(str) {
     return n !== Infinity && String(n) === str && n >= 0;
 }
 
-
+function final_logout(){
+    var r = confirm("WARNING: You are about to lose access to your anonymous account! Since you have not added a phone or email yet you will lose access to your account. Are you sure you want to logout and lose your account?");
+    if (r == true) {
+        //Redirect:
+        js_redirect('/-7291');
+    } else {
+        return false;
+    }
+}
 
 function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
