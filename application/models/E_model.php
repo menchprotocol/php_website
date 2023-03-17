@@ -24,7 +24,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-            'x__up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
+            'x__up IN (' . join(',', $this->config->item('n___32540')) . ')' => null, //Unsubscribers
             'x__down' => $e__id,
         )) as $unsubscriber_x){
             $this->X_model->update($unsubscriber_x['x__id'], array(
