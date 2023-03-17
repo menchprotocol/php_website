@@ -1609,6 +1609,7 @@ class E extends CI_Controller
         return view_json(array(
             'status' => 1,
             'account_id' => $x__creator,
+            'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover(12274,$u_accounts[0]['e__cover'], true). '</span>'.$u_accounts[0]['e__title'] : '' ),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
