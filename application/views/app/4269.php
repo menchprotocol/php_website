@@ -305,7 +305,7 @@ if(superpower_unlocked()) {
         <div class="login-content" style="margin-top:40px;">
 
 
-            <div>
+            <div id="step1" class="signup-steps">
                 <?php
                 //Back only if coming from an idea:
                 $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
