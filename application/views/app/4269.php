@@ -118,7 +118,7 @@ if(superpower_unlocked()) {
 
                 //Watch for 4 digit code:
                 $("#input_code").on("input", function() {
-                    if($(this).val().length==4 && !$('#sign_code_errors').html().length){
+                    if($(this).val().length==4){
                         contact_auth();
                     }
                 });
