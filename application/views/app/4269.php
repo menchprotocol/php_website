@@ -370,7 +370,6 @@ if(superpower_unlocked()) {
                 <input type="hidden" id="account_id" value="0" />
                 <div id="account_preview"></div>
 
-
                 <!-- New Account ( If not found) -->
                 <div class="margin-top-down new_account hidden">
 
