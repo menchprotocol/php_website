@@ -314,14 +314,13 @@ if(superpower_unlocked()) {
                             $intro_message = str_replace('%s','<br /><a href="/' . $sign_i__id . '"><u>'.$sign_i[0]['i__title'].'</u></a>', $e___4269[7560]['m__message']);
                         }
                     }
-
-
-                    echo '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>';
                     ?>
                 </div>
 
                 <!-- Step 1: Enter Email -->
                 <div id="step2" class="signup-steps hidden">
+
+                    <?= '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>'; ?>
 
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
                     <div class="form-group"><input type="text" placeholder="your@email.com or 7781234567" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
