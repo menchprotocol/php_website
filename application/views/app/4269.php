@@ -388,7 +388,7 @@ if(superpower_unlocked()) {
                     <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border" /></div>
 
                     <!-- Enter Email -->
-                    <div class="new_email hidden">
+                    <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
                         <div class="css__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
                         <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border css__title white-border" /></div>
                     </div>
