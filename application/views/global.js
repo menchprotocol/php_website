@@ -2441,7 +2441,7 @@ function isNormalInteger(str) {
 }
 
 function final_logout(){
-    var r = confirm("WARNING: You are about to lose access to your anonymous account! Since you have not added a phone or email yet you will lose access to your account. Are you sure you want to logout and lose your account?");
+    var r = confirm("WARNING: You are about to permanently delete your anonymous account since you have not added a phone or email you will lose access to your account. Are you sure you want to logout and delete your account?");
     if (r == true) {
         //Redirect:
         js_redirect('/-7291');

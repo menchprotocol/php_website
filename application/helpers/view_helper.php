@@ -1111,7 +1111,7 @@ function view_e_settings($list_id, $is_open){
                 'x__up' => 30198, //Full Name
             ));
 
-            $tab_ui .= '<span><input type="text" id="e_fullname" class="form-control border dotransparent" value="' . (count($u_names) > 0 ? $u_names[0]['x__message'] : '') . '" placeholder="Will Smith" /></span>
+            $tab_ui .= '<span><input type="text" id="e_fullname" class="form-control border dotransparent" value="' . (count($u_names) > 0 ? $u_names[0]['x__message'] : '') . '" placeholder="Full Name" /></span>
                 <a href="javascript:void(0)" onclick="e_fullname()" class="btn btn-default">Save</a>
                 <span class="saving-account save_name"></span>';
 
