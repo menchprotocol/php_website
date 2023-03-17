@@ -378,7 +378,7 @@ if(superpower_unlocked()) {
 
                     <!-- Enter Full Name -->
                     <span class="css__title" style="padding:34px 0 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
-                    <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
+                    <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border" /></div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden">
@@ -390,7 +390,7 @@ if(superpower_unlocked()) {
 
 
                 <!-- Sign in Code -->
-                <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
+                <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>::</div>
                 <div class="pinBox"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntry" /></div>
                 <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
