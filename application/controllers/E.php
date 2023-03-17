@@ -954,7 +954,7 @@ class E extends CI_Controller
                 //This is a duplicate, disallow:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Email previously in-use. Use another email or contact support for assistance.',
+                    'message' => 'Email already in-use by another account. Enter another Email or contact support for assistance.',
                 ));
             }
         }
@@ -1012,6 +1012,8 @@ class E extends CI_Controller
                 'x__up' => 3288, //Email
                 'x__message' => $_POST['e_email'],
             ), true);
+
+            $this->E_model->activate_subscription($member_e['e__id']);
 
             $return = array(
                 'status' => 1,
@@ -1177,8 +1179,29 @@ class E extends CI_Controller
         }
 
 
-        //Cleanup:
-        $_POST['e_phone'] = preg_replace("/[^0-9]/", "", $_POST['e_phone'] );
+
+        if (strlen($_POST['e_phone']) > 0) {
+
+            //Cleanup digits only:
+            $_POST['e_phone'] = trim(preg_replace("/[^0-9]/", "", $_POST['e_phone'] ));
+
+            //Check to make sure not duplicate:
+            $duplicates = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__up' => 4783, //Phone
+                'x__down !=' => $member_e['e__id'],
+                'x__message' => $_POST['e_phone'],
+            ));
+            if (count($duplicates) > 0) {
+                //This is a duplicate, disallow:
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Phone already in-use by another account. Enter another phone or contact support for assistance.',
+                ));
+            }
+
+        }
 
 
         //Fetch existing phone:
@@ -1225,7 +1248,7 @@ class E extends CI_Controller
 
         } elseif (strlen($_POST['e_phone']) > 0) {
 
-            //Create new transaction:
+            //Add Phone:
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
@@ -1233,6 +1256,8 @@ class E extends CI_Controller
                 'x__up' => 4783, //Phone
                 'x__message' => $_POST['e_phone'],
             ), true);
+
+            $this->E_model->activate_subscription($member_e['e__id']);
 
             $return = array(
                 'status' => 1,

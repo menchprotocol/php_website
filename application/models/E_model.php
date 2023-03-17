@@ -17,6 +17,17 @@ class E_model extends CI_Model
 
 
 
+    function activate_subscription($e__id){
+
+        /*
+         *
+         *
+         * */
+
+
+
+    }
+
 
     function activate_session($e, $update_session = false, $is_cookie = false){
 
@@ -34,7 +45,7 @@ class E_model extends CI_Model
 
 
         //Check & Adjust their subscription, IF needed:
-        //Remove their ubscribe:
+        //Remove their subscribe:
         $resubscribed = 0;
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
@@ -340,16 +351,12 @@ class E_model extends CI_Model
         }
 
         if($email || $phone_number){
-            //Add to Subscriber:
-            $this->X_model->create(array(
-                'x__up' => 4430, //Active Member
-                'x__type' => e_x__type(),
-                'x__creator' => $added_e['new_e']['e__id'],
-                'x__down' => $added_e['new_e']['e__id'],
-                'x__website' => $x__website,
-            ));
+
+            $this->E_model->activate_subscription( $added_e['new_e']['e__id'] );
+
         } else {
-            //Must be anonymous:
+
+            //Add to anonymous:
             $this->X_model->create(array(
                 'x__up' => 14938, //Anonymous Login
                 'x__type' => e_x__type(),
@@ -357,6 +364,7 @@ class E_model extends CI_Model
                 'x__down' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
             ));
+
         }
 
 
