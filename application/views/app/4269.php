@@ -115,6 +115,14 @@ if(superpower_unlocked()) {
 
             //Disable social login for Instagram as it has a bug within auth0
             $(document).ready(function () {
+
+                //Watch for 4 digit code:
+                $("#input_code").on("input", function() {
+                    if($(this).val().length==4 && !$('#sign_code_errors').html().length){
+                        contact_auth();
+                    }
+                });
+
                 var ua = navigator.userAgent || navigator.vendor || window.opera;
                 var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
                 if (document.documentElement.classList ){
