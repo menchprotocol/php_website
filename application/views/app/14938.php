@@ -22,7 +22,7 @@ if($member_e['e__id']){
             break;
         }
     }
-    $random_title = random_adjective().' '.$color.str_replace('Badger Honey','',str_replace('Honey Badger','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
+    $random_title = random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 
     $member_result = $this->E_model->add_member($random_title, null, null, $random_cover);
     js_php_redirect(( $i__id ? '/'.$i__id : '/@'.$member_result['e']['e__id'] ), 13);
