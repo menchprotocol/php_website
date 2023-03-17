@@ -319,20 +319,6 @@ if(superpower_unlocked()) {
                 <!-- Step 1: Enter Email -->
                 <div id="step2" class="signup-steps hidden">
 
-                    <?php
-
-                    //SOCIAL LOGIN:
-                    if(strlen(website_setting(14881)) && strlen(website_setting(14882))){
-                        echo '<div class="social-frame">';
-                        echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
-                        echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
-                        echo '</a></div>';
-                        echo '<div class="mid-text-line"><span>OR</span></div>';
-                        echo '</div>';
-                    }
-
-                    ?>
-
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
                     <div class="form-group"><input type="text" placeholder="your@email.com or 7781234567" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
                     <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
@@ -342,14 +328,27 @@ if(superpower_unlocked()) {
                     </span>
 
                     <?php
+
+                    //SOCIAL LOGIN:
+                    if(strlen(website_setting(14881)) && strlen(website_setting(14882))){
+                        echo '<div class="social-frame">';
+                        echo '<div class="mid-text-line"><span>OR</span></div>';
+                        echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
+                        echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
+                        echo '</a></div>';
+                        echo '</div>';
+                    }
+
+
+
                     //GUEST LOGIN:
                     if(view_memory(6404,6197)){
                         echo '<div class="social-frame">';
+                        echo '<div class="mid-text-line"><span>OR</span></div>';
                         echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
                         echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
                         echo ( strlen($e___11035[14938]['m__message']) ? ': '.$e___11035[14938]['m__message'] : '' );
                         echo '</a></div>';
-                        echo '<div class="mid-text-line"><span>OR</span></div>';
                         echo '</div>';
                     }
                     ?>
