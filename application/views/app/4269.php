@@ -304,7 +304,6 @@ if(superpower_unlocked()) {
 
         <div class="login-content" style="margin-top:40px;">
 
-
             <div id="step1" class="signup-steps">
                 <?php
                 //Back only if coming from an idea:
@@ -327,11 +326,13 @@ if(superpower_unlocked()) {
                 <?= '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>'; ?>
 
                 <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
+
                 <div class="form-group"><input type="text" autocapitalize="none" placeholder="your@email.com or 7781234567" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
+
                 <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+
                 <span id="step2buttons" class="<?= isset($_GET['account_email_phone']) ? '' : ' hidden ' ?>" >
                     <a href="javascript:void(0)" onclick="contact_search()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
-                    <div class="doclear">&nbsp;</div>
                     </span>
 
                 <?php
@@ -388,13 +389,11 @@ if(superpower_unlocked()) {
                 </div>
 
 
-
-                <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
                 <!-- Sign in Code -->
-                <div class="pinBox"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntry"></div>
+                <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
+                <div class="pinBox"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntry" /></div>
                 <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
-
 
 
                 <div id="step3buttons">
