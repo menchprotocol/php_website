@@ -188,15 +188,15 @@ if(superpower_unlocked()) {
         }
 
 
-        var email_searching = false;
+        var contact_searching = false;
         function contact_search(){
 
-            if(email_searching){
+            if(contact_searching){
                 return false;
             }
 
             //Lock fields:
-            email_searching = true;
+            contact_searching = true;
             $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
             $('#account_email_phone').prop('disabled', true);
             $('#sign_code_errors').html('');
@@ -211,7 +211,7 @@ if(superpower_unlocked()) {
             }, function (data) {
 
                 //Release field lock:
-                email_searching = false;
+                contact_searching = false;
                 $('#email_check_next').html(go_next_icon);
                 $('#account_email_phone').prop('disabled', false);
 
@@ -223,9 +223,16 @@ if(superpower_unlocked()) {
                     $('#account_email_phone').val(data.clean_contact);
                     $('.code_sent_to').html(data.clean_contact);
 
-                    if(!data.account_id){
+                    if(!data.account_id && data.valid_email){
+
                         //Allow to create new account with email/phone
                         $('.new_account').removeClass('hidden');
+
+                    } else if(!data.account_id && !data.valid_email){
+
+                        //Allow to create new account with email/phone
+                        $('.new_account').removeClass('hidden');
+
                     } else {
                         $('.new_account').addClass('hidden');
                     }
@@ -264,6 +271,7 @@ if(superpower_unlocked()) {
                 account_email_phone: $('#account_email_phone').val(),
                 account_id: $('#account_id').val(), //Might be zero if new account
                 new_account_title: $('#new_account_title').val(),
+                new_account_email: $('#new_account_email').val(),
                 input_code: $('#input_code').val(),
                 referrer_url: referrer_url,
                 sign_i__id: sign_i__id,
@@ -371,6 +379,12 @@ if(superpower_unlocked()) {
                     <!-- Enter Full Name -->
                     <span class="css__title" style="padding:34px 0 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
                     <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
+
+                    <!-- Enter Email -->
+                    <div class="new_email hidden">
+                        <div class="css__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
+                        <div class="form-group"><input type="email" placeholder="<?= $e___4269[3288]['m__message'] ?>" id="new_account_email" class="form-control border css__title white-border"></div>
+                    </div>
 
                 </div>
 

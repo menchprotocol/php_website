@@ -538,7 +538,7 @@ if(strlen($flash_message) > 0) {
 }
 
 if(intval($this->session->userdata('is_anonymous'))>0){
-    echo '<div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span><a href="javascript:void(0);" x__type="6225" class="trigger_modal"><b><u>Add email/phone</u></b></a> to save your account.</div>';
+    echo '<div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span><a href="javascript:void(0);" x__type="6225" class="trigger_modal" onclick="toggle_headline(3288)"><b><u>Add email</u></b></a> to save your account.</div>';
 
 }
 

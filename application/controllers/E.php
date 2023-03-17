@@ -1354,6 +1354,14 @@ class E extends CI_Controller
                 ));
             }
 
+            $_POST['new_account_email'] = trim($_POST['new_account_email']);
+            if(!filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) && !filter_var($_POST['new_account_email'], FILTER_VALIDATE_EMAIL)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Enter your email to continue',
+                ));
+            }
+
         }
 
 
@@ -1409,7 +1417,7 @@ class E extends CI_Controller
             $is_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
 
             //Prep inputs & validate further:
-            $member_result = $this->E_model->add_member($_POST['new_account_title'], ( $is_email ? $_POST['account_email_phone'] : '' ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
+            $member_result = $this->E_model->add_member($_POST['new_account_title'], ( $is_email ? $_POST['account_email_phone'] : $_POST['new_account_email'] ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
             if (!$member_result['status']) {
                 return view_json($member_result);
             }
@@ -1609,6 +1617,7 @@ class E extends CI_Controller
         return view_json(array(
             'status' => 1,
             'account_id' => $x__creator,
+            'valid_email' => intval($valid_email),
             'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover(12274,$u_accounts[0]['e__cover'], true). '</span>'.$u_accounts[0]['e__title'] : '' ),
             'clean_contact' => $_POST['account_email_phone'],
         ));
