@@ -318,6 +318,7 @@ if(superpower_unlocked()) {
                     }
                 }
                 ?>
+                <div class="doclear">&nbsp;</div>
             </div>
 
             <!-- Step 1: Enter Email -->
@@ -334,6 +335,10 @@ if(superpower_unlocked()) {
                 <span id="step2buttons" class="<?= isset($_GET['account_email_phone']) ? '' : ' hidden ' ?>" >
                     <a href="javascript:void(0)" onclick="contact_search()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                     </span>
+
+
+                <div class="doclear">&nbsp;</div>
+
 
                 <?php
 
@@ -360,6 +365,8 @@ if(superpower_unlocked()) {
                     echo '</div>';
                 }
                 ?>
+
+                <div class="doclear">&nbsp;</div>
 
             </div>
 
