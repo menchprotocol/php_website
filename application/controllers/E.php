@@ -1568,27 +1568,42 @@ class E extends CI_Controller
         $this->session->set_userdata($session_data);
 
 
-        //Log email search attempt:
-        $this->X_model->create(array(
-            'x__creator' => $x__creator, //Member making request
-            'x__left' => intval($_POST['sign_i__id']),
-            'x__type' => 32078, //Sign In Key
-            'x__access' => 6175, //Pending until used (if used)
-            'x__message' => $_POST['account_email_phone'],
-            'x__metadata' => array(
-                'hash_code' => md5($session_key.$passcode),
-            ),
-        ));
-
-
         $plain_message = 'Your '.$e___11035[32078]['m__title'].' is '.$passcode.'.';
 
         if($valid_email) {
+
             //Email:
             send_email(array($_POST['account_email_phone']), $e___11035[32078]['m__title'], $plain_message, 0, array(), 0, 0, false);
+
+            //Log new key:
+            $this->X_model->create(array(
+                'x__creator' => $x__creator, //Member making request
+                'x__left' => intval($_POST['sign_i__id']),
+                'x__type' => 32078, //Sign In Key
+                'x__access' => 6175, //Pending until used (if used)
+                'x__message' => $_POST['account_email_phone'],
+                'x__metadata' => array(
+                    'hash_code' => md5($session_key.$passcode),
+                ),
+            ));
+
         } elseif($possible_phone) {
+
             //SMS:
             send_sms($_POST['account_email_phone'], $plain_message, 0, array(), 0, 0, false);
+
+            //Log new key:
+            $this->X_model->create(array(
+                'x__creator' => $x__creator, //Member making request
+                'x__left' => intval($_POST['sign_i__id']),
+                'x__type' => 32078, //Sign In Key
+                'x__access' => 6175, //Pending until used (if used)
+                'x__message' => $_POST['account_email_phone'],
+                'x__metadata' => array(
+                    'hash_code' => md5($session_key.$passcode),
+                ),
+            ));
+
         }
 
         return view_json(array(
