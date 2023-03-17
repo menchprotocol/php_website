@@ -1309,13 +1309,13 @@ class E extends CI_Controller
         //Auth Code:
         $is_authenticated = false;
         foreach($this->X_model->fetch(array(
-            'x__type' => 32078, //4-Digit Sign In Key
+            'x__type' => 32078, //Sign In Key
             'x__access' => 6175, //Still Pending
             'x__message' => $_POST['account_email_phone'],
         )) as $sent_key){
 
             $x__metadata = unserialize($sent_key['x__metadata']);
-            $sesssion_key = $this->session->userdata('sesssion_key');
+            $session_key = $this->session->userdata('session_key');
 
             if(strtotime($sent_key['x__time']) + view_memory(6404,11065) < time()){
                 //Expired:
@@ -1323,7 +1323,7 @@ class E extends CI_Controller
                     'status' => 0,
                     'message' => 'Time has expired.',
                 ));
-            } elseif(strlen($sesssion_key) && $x__metadata['hash_code']==md5($sesssion_key.$_POST['input_code'])){
+            } elseif(strlen($session_key) && $x__metadata['hash_code']==md5($session_key.$_POST['input_code'])){
 
                 //Complete access code:
                 $is_authenticated = $this->X_model->update($sent_key['x__id'], array(
@@ -1479,10 +1479,10 @@ class E extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
         $valid_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
-        $possible_phone = strlen($_POST['account_email_phone'])>=10;
-        if($possible_phone){
+        if(!$valid_email && strlen($_POST['account_email_phone'])>=10){
             $_POST['account_email_phone'] = preg_replace('/[^0-9]+/', '', $_POST['account_email_phone']);
         }
+        $possible_phone = !$valid_email && strlen($_POST['account_email_phone'])>=10;
 
         if (!isset($_POST['account_email_phone']) || (!$valid_email && !$possible_phone)) {
             return view_json(array(
@@ -1521,26 +1521,26 @@ class E extends CI_Controller
 
         $x__creator = ( count($u_accounts) ? $u_accounts[0]['e__id'] : 0 );
 
-        //Send 4-Digit Pass Code
+        //Send Sign In Key
         $passcode = rand(1000,9999);
-        $sesssion_key = generateRandomString(55);
+        $session_key = generateRandomString(55);
 
         //Append to session:
         $session_data = $this->session->all_userdata();
-        $session_data['sesssion_key'] = $sesssion_key;
+        $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
 
         //Log email search attempt:
         $this->X_model->create(array(
-            'x__type' => 32078, //4-Digit Sign In Key
-            'x__access' => 6175, //Pending until used (if used)
             'x__creator' => $x__creator, //Member making request
+            'x__left' => intval($_POST['sign_i__id']),
+            'x__type' => 32078, //Sign In Key
+            'x__access' => 6175, //Pending until used (if used)
             'x__message' => $_POST['account_email_phone'],
             'x__metadata' => array(
-                'hash_code' => md5($sesssion_key.$passcode),
+                'hash_code' => md5($session_key.$passcode),
             ),
-            'x__left' => intval($_POST['sign_i__id']),
         ));
 
         $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].'.';
