@@ -109,6 +109,10 @@ if(superpower_unlocked()) {
 
         <script type="text/javascript">
 
+            function load_away(){
+                $('.login-content').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+            }
+
             //Disable social login for Instagram as it has a bug within auth0
             $(document).ready(function () {
                 var ua = navigator.userAgent || navigator.vendor || window.opera;
@@ -333,7 +337,7 @@ if(superpower_unlocked()) {
                     if(strlen(website_setting(14881)) && strlen(website_setting(14882))){
                         echo '<div class="social-frame">';
                         echo '<div class="mid-text-line"><span>OR</span></div>';
-                        echo '<div class="full-width-btn center top-margin"><a href="/-14436" class="btn btn-large btn-default">';
+                        echo '<div class="full-width-btn center top-margin"><a href="/-14436" onclick="load_away()" class="btn btn-large btn-default">';
                         echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
                         echo '</a></div>';
                         echo '</div>';
@@ -345,7 +349,7 @@ if(superpower_unlocked()) {
                     if(view_memory(6404,6197)){
                         echo '<div class="social-frame">';
                         echo '<div class="mid-text-line"><span>OR</span></div>';
-                        echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" class="btn btn-large btn-default">';
+                        echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" onclick="load_away()" class="btn btn-large btn-default">';
                         echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
                         echo ( strlen($e___11035[14938]['m__message']) ? ': '.$e___11035[14938]['m__message'] : '' );
                         echo '</a></div>';
@@ -363,19 +367,14 @@ if(superpower_unlocked()) {
                     <input type="hidden" id="account_id" value="0" />
 
 
+                    <div class="css__title new_account hidden"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                    <div style="padding:8px 0;"><span class="icon-block">Code sent to </span><span class="code_sent_to"></span></div>
 
                     <!-- New Account ( If not found) -->
                     <div class="margin-top-down new_account hidden">
-
-                        <!-- Phone/Email -->
-                        <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
-                        <div style="padding:8px 0;"><span class="icon-block">&nbsp;</span><span class="code_sent_to"></span></div>
-
                         <!-- Enter Full Name -->
                         <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
                         <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
-
-                        <div class="doclear">&nbsp;</div>
                     </div>
 
 

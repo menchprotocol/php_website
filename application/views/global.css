@@ -804,8 +804,8 @@ p.menu_header {
 .mid-text-line{
     border-bottom: 1px solid #999999;
     text-align: center;
-    margin: 21px 0;
-    height: 15px;
+    margin: 21px 0 34px;
+    height: 17px;
 }
 .mid-text-line span{
     display: inline-block;

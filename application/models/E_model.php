@@ -47,7 +47,7 @@ class E_model extends CI_Model
             ), $e['e__id'], 31064 /* Login Resubscribe */);
         }
         if($resubscribed > 0){
-            //Add Back to Subscirbers:
+            //Add Back to Subscribers:
             $this->X_model->create(array(
                 'x__type' => e_x__type(),
                 'x__up' => 4430, //Active Member
@@ -315,15 +315,6 @@ class E_model extends CI_Model
             );
         }
 
-        //Add Member:
-        $this->X_model->create(array(
-            'x__up' => 4430, //Active Member
-            'x__type' => e_x__type(),
-            'x__creator' => $added_e['new_e']['e__id'],
-            'x__down' => $added_e['new_e']['e__id'],
-            'x__website' => $x__website,
-        ));
-
         //Add email?
         if($email){
             $this->X_model->create(array(
@@ -348,8 +339,28 @@ class E_model extends CI_Model
             ));
         }
 
+        if($email || $phone_number){
+            //Add to Subscriber:
+            $this->X_model->create(array(
+                'x__up' => 4430, //Active Member
+                'x__type' => e_x__type(),
+                'x__creator' => $added_e['new_e']['e__id'],
+                'x__down' => $added_e['new_e']['e__id'],
+                'x__website' => $x__website,
+            ));
+        } else {
+            //Must be anonymous:
+            $this->X_model->create(array(
+                'x__up' => 14938, //Anonymous Login
+                'x__type' => e_x__type(),
+                'x__creator' => $added_e['new_e']['e__id'],
+                'x__down' => $added_e['new_e']['e__id'],
+                'x__website' => $x__website,
+            ));
+        }
 
-        //Add member to Domain Member Groups if not already there:
+
+        //Add member to Domain Member Group(s):
         $this->E_model->scissor_add_e($x__website, 30095, $added_e['new_e']['e__id'], null);
 
 
