@@ -437,7 +437,8 @@ function update_description($before_string, $after_string){
 function random_cover($e__id){
     $CI =& get_instance();
     $fetch = $CI->config->item('e___'.$e__id);
-    return one_two_explode('class="','"',$fetch[array_rand($fetch)]['m__cover']);
+    $colors = array(' ',' ',' ',' ',' ',' ',' zq12273',' zq12274',' zq12274',' zq6255',' zq6255',' zq6255');
+    return trim(one_two_explode('class="','"',$fetch[array_rand($fetch)]['m__cover']).$colors[array_rand($colors)]);
 }
 
 function format_percentage($percent){

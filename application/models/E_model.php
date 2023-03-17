@@ -310,7 +310,7 @@ class E_model extends CI_Model
         }
 
         //All good, create new source:
-        $added_e = $this->E_model->verify_create($full_name, 0, ( filter_var($image_url, FILTER_VALIDATE_URL) ? $image_url : random_cover(12279) ));
+        $added_e = $this->E_model->verify_create($full_name, 0, ( $image_url ? $image_url : random_cover(12279) ));
         if(!$added_e['status']){
             //We had an error, return it:
             return $added_e;

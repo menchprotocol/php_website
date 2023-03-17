@@ -10,17 +10,9 @@ if($member_e['e__id']){
 } else {
 
     //Create a new account for them:
-    $member_result = $this->E_model->add_member('Anonymous User');
-
-    //Update to a more fun name:
-    $member_result['e']['e__title'] = random_adjective().' '.str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$member_result['e']['e__cover'])))).' '.$member_result['e']['e__id'];
-    $res = $this->E_model->update($member_result['e']['e__id'], array(
-        'e__title' => $member_result['e']['e__title'],
-    ), true, $member_result['e']['e__id']);
-
-    //Assign session & log transaction:
-    $this->E_model->activate_session($member_result['e']);
-
+    $random_cover = random_cover(12279);
+    $random_title = random_adjective().' '.str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover))));
+    $member_result = $this->E_model->add_member($random_title, null, null, $random_cover);
     js_php_redirect(( $i__id ? '/'.$i__id : '/@'.$member_result['e']['e__id'] ), 13);
 
 }
