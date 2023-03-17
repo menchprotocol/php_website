@@ -50,7 +50,6 @@ foreach($is_next as $in_key => $in_value){
 $i['i__title'] = str_replace('"','',$i['i__title']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $x__creator>0 ? $top_i__id : 0 );
-$one_down_hack = (count($first_down) && count($is_next)==1 && !$top_i__id);
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -130,11 +129,6 @@ if($x__creator && $top_i__id!=$i['i__id']){
                 'x__type' => 4231, //IDEA NOTES Messages
                 'x__right' => $followings_i['i__id'],
             )));
-
-            if(!$messages && count($query_subset)==1 && $level==1){
-                //Top referral, hide:
-                //continue;
-            }
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
             $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$followings_i['i__id'].'"><u>'.$followings_i['i__title'].'</u></a>';
@@ -230,25 +224,7 @@ foreach($this->X_model->fetch(array(
 
 
 
-//$one_down_hack Get the message for the single follower, if any:
-if($one_down_hack){
-    echo '<h3 class="msg-frame" style="text-align: left; padding: 13px 0 0 !important;">'.$i['i__title'].'</h3>';
-    $messages_string .= '<h1 class="msg-frame" style="text-align: left; padding: 13px 0 !important; font-size:2.5em;">'.$first_down['i__title'].'</h1>';
-    foreach($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 4231, //IDEA NOTES Messages
-        'x__right' => $first_down['i__id'],
-    ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
-        $messages_string .= $this->X_model->message_view(
-            $message_x['x__message'],
-            true,
-            $member_e
-        );
-    }
-} else {
-    echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i['i__title'].'</h1>';
-}
-
+echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i['i__title'].'</h1>';
 
 if($messages_string){
     echo $messages_string;

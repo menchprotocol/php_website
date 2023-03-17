@@ -347,24 +347,6 @@ class X extends CI_Controller
                     'x__creator' => $member_e['e__id'],
                 ));
 
-                //$one_down_hack: Mark next level as done too? Only if Single show:
-                $is_next = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                    'x__left' => $top_i__id,
-                ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
-                if(count($is_next)==1){
-                    foreach($is_next as $single_down){
-                        if($single_down['i__type']==6677){
-                            $this->X_model->mark_complete($top_i__id, $single_down, array(
-                                'x__type' => 4559, //Read Statement
-                                'x__creator' => $member_e['e__id'],
-                            ));
-                        }
-                    }
-                }
-
             }
 
             //Now return next idea:

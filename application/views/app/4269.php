@@ -367,12 +367,12 @@ if(superpower_unlocked()) {
 
 
                     <div class="css__title new_account hidden"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
-                    <div style="padding:8px 0;">Enter the code sent to <span class="code_sent_to"></span>:</div>
+                    <div style="padding:8px 0;">Enter the <?= $e___4269[13025]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
+
 
                     <!-- New Account ( If not found) -->
                     <div class="margin-top-down new_account hidden">
                         <!-- Enter Full Name -->
-                        <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
                         <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border"></div>
                     </div>
 
