@@ -2129,7 +2129,7 @@ input.form-control {
 }
 .card_cover{
     position: relative;
-    margin:0 auto 13px auto !important;
+    margin:0 0 13px 0 !important;
     padding: 5px 0 !important;
     border-radius: 0 !important;
 }
