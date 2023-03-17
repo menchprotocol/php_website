@@ -533,7 +533,11 @@ if(strlen($flash_message) > 0) {
 }
 
 if(intval($this->session->userdata('is_anonymous'))>0){
-    echo '<div class="'.( $basic_header_footer ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;">Add <a href="javascript:void(0);" x__type="6225" class="trigger_modal">email or phone</a> to save your discovceries & claim your account.</div>';
+    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span><a href="javascript:void(0);" x__type="6225" class="trigger_modal"><b><u>Add your email or phone</u></b></a> to save your account.</div>';
+
+
+
+    echo '<div class="'.( $basic_header_footer ? ' center-info ' : '' ).'" id="flash_message" style="padding-bottom: 10px;"></div>';
 }
 
 ?>
