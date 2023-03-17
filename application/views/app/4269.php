@@ -110,7 +110,7 @@ if(superpower_unlocked()) {
         <script type="text/javascript">
 
             function load_away(){
-                $('.login-content').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+                $('.login-content').html('<div class="center"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');
             }
 
             //Disable social login for Instagram as it has a bug within auth0

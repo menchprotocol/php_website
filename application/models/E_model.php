@@ -589,11 +589,6 @@ class E_model extends CI_Model
             $before_data = $this->E_model->fetch(array('e__id' => $id));
         }
 
-        //Transform text:
-        if(isset($update_columns['e__title'])){
-            $update_columns['e__title'] = $update_columns['e__title'];
-        }
-
         //Update:
         $this->db->where('e__id', $id);
         $this->db->update('table__e', $update_columns);
