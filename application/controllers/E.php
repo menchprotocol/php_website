@@ -1331,6 +1331,34 @@ class E extends CI_Controller
         }
 
 
+        //Validate member ID
+        if($_POST['account_id'] > 0){
+
+            $es = $this->E_model->fetch(array(
+                'e__id' => $_POST['account_id'],
+            ));
+            if(!count($es)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid account ID.',
+                ));
+            }
+
+        } else {
+
+            $_POST['new_account_title'] = trim($_POST['new_account_title']);
+            if(strlen($_POST['new_account_title'])<2){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Account name should be longer than 2 characters',
+                ));
+            }
+
+        }
+
+
+
+
         //Auth Code:
         $is_authenticated = false;
         foreach($this->X_model->fetch(array(
@@ -1366,31 +1394,15 @@ class E extends CI_Controller
 
 
 
+
+
         //Validate member ID
         if($_POST['account_id'] > 0){
-
-            $es = $this->E_model->fetch(array(
-                'e__id' => $_POST['account_id'],
-            ));
-            if(!count($es)){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid account ID.',
-                ));
-            }
 
             //Assign session & log transaction:
             $this->E_model->activate_session($es[0]);
 
         } else {
-
-            $_POST['new_account_title'] = trim($_POST['new_account_title']);
-            if(strlen($_POST['new_account_title'])<2){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Account name should be longer than 2 characters',
-                ));
-            }
 
             //Add new account
             $_POST['account_email_phone'] =  trim(strtolower($_POST['account_email_phone']));
