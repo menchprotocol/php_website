@@ -383,7 +383,7 @@ if(superpower_unlocked()) {
                     <!-- Enter Email -->
                     <div class="new_email hidden">
                         <div class="css__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
-                        <div class="form-group"><input type="email" placeholder="<?= $e___4269[3288]['m__message'] ?>" id="new_account_email" class="form-control border css__title white-border" /></div>
+                        <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border css__title white-border" /></div>
                     </div>
 
                 </div>
