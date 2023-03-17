@@ -368,7 +368,7 @@ if(superpower_unlocked()) {
 
 
                     <div class="css__title new_account hidden"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
-                    <div style="padding:8px 0;"><span class="icon-block">Code sent to </span><span class="code_sent_to"></span></div>
+                    <div style="padding:8px 0;">Enter the code sent to <span class="code_sent_to"></span>:</div>
 
                     <!-- New Account ( If not found) -->
                     <div class="margin-top-down new_account hidden">
@@ -380,9 +380,7 @@ if(superpower_unlocked()) {
 
                     <!-- Sign in Code -->
                     <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32078]['m__cover'].'</span>'.$e___4269[32078]['m__title'] ?></span>
-                    <div class="pinBox form-group">
-                        <input maxlength="4" autocomplete="off" type="text" id="input_code" class="form-control border white-border pinEntry">
-                    </div>
+                    <div class="pinBox"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntry"></div>
                     <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                     <div class="doclear">&nbsp;</div>
 
