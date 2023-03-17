@@ -17,19 +17,34 @@ class E_model extends CI_Model
 
 
 
-    function activate_subscription($e__id){
+    function activate_subscription($e__id, $x__website = 0){
 
-        /*
-         *
-         *
-         * */
 
-        //Assign session key:
+        //Remove from Anonymous:
+        foreach($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
+            'x__down' => $e__id,
+        )) as $unsubscriber_x){
+            $this->X_model->update($unsubscriber_x['x__id'], array(
+                'x__access' => 6173,
+            ), $e__id, 10673 /* IDEA NOTES Unpublished */);
+        }
+        //Remove is_anonymous session:
         $session_data = $this->session->all_userdata();
         $session_data['is_anonymous'] = 0;
         $this->session->set_userdata($session_data);
 
-        //Remove from Anonymous:
+
+        //Add to Subscriber:
+        $this->X_model->create(array(
+            'x__up' => 4430, //Subscriber
+            'x__type' => e_x__type(),
+            'x__creator' => $e__id,
+            'x__down' => $e__id,
+            'x__website' => $x__website,
+        ));
 
 
 
@@ -359,7 +374,7 @@ class E_model extends CI_Model
 
         if($email || $phone_number){
 
-            $this->E_model->activate_subscription( $added_e['new_e']['e__id'] );
+            $this->E_model->activate_subscription( $added_e['new_e']['e__id'], $x__website );
 
         } else {
 
