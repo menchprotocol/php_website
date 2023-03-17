@@ -386,6 +386,9 @@ if(superpower_unlocked()) {
                         <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border css__title white-border" /></div>
                     </div>
 
+                    <div class="doclear">&nbsp;</div>
+
+
                 </div>
 
 
