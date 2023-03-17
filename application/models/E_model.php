@@ -387,6 +387,11 @@ class E_model extends CI_Model
                 'x__website' => $x__website,
             ));
 
+            //Assign session key:
+            $session_data = $this->session->all_userdata();
+            $session_data['is_anonymous'] = 1;
+            $this->session->set_userdata($session_data);
+
         }
 
 
@@ -414,7 +419,6 @@ class E_model extends CI_Model
                     $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
                 }
             }
-
 
             //Update Algolia:
             update_algolia(12274,  $added_e['new_e']['e__id']);
