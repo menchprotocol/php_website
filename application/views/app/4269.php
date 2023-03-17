@@ -216,6 +216,7 @@ if(superpower_unlocked()) {
                 $('#account_email_phone').prop('disabled', false);
 
                 if (data.status) {
+
                     //Update email:
                     $('#account_email_phone_errors').html('');
                     $('#account_id').val(data.account_id);
@@ -223,15 +224,16 @@ if(superpower_unlocked()) {
                     $('#account_email_phone').val(data.clean_contact);
                     $('.code_sent_to').html(data.clean_contact);
 
-                    if(!data.account_id && data.valid_email){
+                    if(!data.account_id){
 
                         //Allow to create new account with email/phone
                         $('.new_account').removeClass('hidden');
 
-                    } else if(!data.account_id && !data.valid_email){
-
-                        //Allow to create new account with email/phone
-                        $('.new_account').removeClass('hidden');
+                        if(!data.valid_email){
+                            $('.new_email').removeClass('hidden');
+                        } else {
+                            $('.new_email').addClass('hidden');
+                        }
 
                     } else {
                         $('.new_account').addClass('hidden');
@@ -268,15 +270,14 @@ if(superpower_unlocked()) {
 
             //Check email/phone and validate:
             $.post("/e/contact_auth", {
-                account_email_phone: $('#account_email_phone').val(),
                 account_id: $('#account_id').val(), //Might be zero if new account
+                account_email_phone: $('#account_email_phone').val(),
                 new_account_title: $('#new_account_title').val(),
                 new_account_email: $('#new_account_email').val(),
                 input_code: $('#input_code').val(),
                 referrer_url: referrer_url,
                 sign_i__id: sign_i__id,
             }, function (data) {
-
                 if (data.status) {
 
                     js_redirect(data.sign_url);
@@ -290,7 +291,6 @@ if(superpower_unlocked()) {
                     $('#sign_code_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
 
                 }
-
             });
 
         }
