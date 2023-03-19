@@ -1386,7 +1386,7 @@ class E extends CI_Controller
                 ), $_POST['account_id'], 32570); //Code Expired
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Time has expired: code was sent at '.$sent_key['x__time'].' which expired '.(time()-(strtotime($sent_key['x__time']) + view_memory(6404,11065))).' seconds ago.',
+                    'message' => 'Time has expired: code was sent at '.$sent_key['x__time'].' which expired '.(time()-(strtotime($sent_key['x__time']) + view_memory(6404,11065))).' seconds ago considering it is '.date("Y-m-d H:i:s").'.',
                 ));
 
             } elseif(strlen($session_key) && $x__metadata['hash_code']==md5($session_key.$_POST['input_code'])){
