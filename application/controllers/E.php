@@ -1378,20 +1378,33 @@ class E extends CI_Controller
             $x__metadata = unserialize($sent_key['x__metadata']);
             $session_key = $this->session->userdata('session_key');
 
-            if(0 && (strtotime($sent_key['x__time']) + view_memory(6404,11065) < time())){
+            if(strtotime($sent_key['x__time']) + view_memory(6404,11065) < time()){
+
                 //Expired:
+                $this->X_model->update($sent_key['x__id'], array(
+                    'x__access' => 6173, //Transaction Removed
+                ), $_POST['account_id'], 32570); //Code Expired
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Time has expired.',
+                    'message' => 'Time has expired: code was sent at '.$sent_key['x__time'].' which expired '.(time()-(strtotime($sent_key['x__time']) + view_memory(6404,11065))).' seconds ago.',
                 ));
+
             } elseif(strlen($session_key) && $x__metadata['hash_code']==md5($session_key.$_POST['input_code'])){
 
                 //Complete access code:
                 $is_authenticated = $this->X_model->update($sent_key['x__id'], array(
                     'x__access' => 6176, //Published
-                ));
+                ), $_POST['account_id'], 32569); //Code Verified
+
+            } else {
+
+                //Remove:
+                $this->X_model->update($sent_key['x__id'], array(
+                    'x__access' => 6173, //Transaction Removed
+                ), $_POST['account_id'], 32570); //Code Expired
 
             }
+
         }
         if(!$is_authenticated){
             return view_json(array(
@@ -1575,13 +1588,13 @@ class E extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-
-        $plain_message = 'Your '.$e___11035[32078]['m__title'].' is '.$passcode.'.';
+        $plain_subject = 'Your '.$e___11035[32078]['m__title'].' is '.$passcode;
+        $plain_message = $plain_subject.' and it will be valid for '.intval(view_memory(6404,11065)/60).' minutes.';
 
         if($valid_email) {
 
             //Email:
-            send_email(array($_POST['account_email_phone']), $e___11035[32078]['m__title'], $plain_message, 0, array(), 0, 0, false);
+            send_email(array($_POST['account_email_phone']), $plain_subject, $plain_message, 0, array(), 0, 0, false);
 
             //Log new key:
             $this->X_model->create(array(
