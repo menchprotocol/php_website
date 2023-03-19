@@ -1371,7 +1371,7 @@ class E extends CI_Controller
         $is_authenticated = false;
         foreach($this->X_model->fetch(array(
             'x__type' => 32078, //Sign In Key
-            'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,11065))), //Not Expired
+            //'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,11065))), //Not Expired
             'x__access' => 6175, //Still Pending
             'x__message' => $_POST['account_email_phone'],
         ), array(), 1, 0, array('x__id' => 'DESC')) as $sent_key){
