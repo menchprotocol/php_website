@@ -41,7 +41,12 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 echo '</ul>';
 echo $body_content;
 $focus_tab = 0;
-foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
+foreach($this->config->item(($member_e && ($member_e['e__id']==$e['e__id'] || count($this->X_model->fetch(array(
+                'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
+                'x__down' => $member_e['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ))) ? 'e___30820' : 'e___32596' ))) as $x__type => $m) { //Load Focus Tab:
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
         echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
