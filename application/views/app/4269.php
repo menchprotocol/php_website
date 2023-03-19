@@ -241,7 +241,7 @@ if(superpower_unlocked()) {
 
                     //Go to final step:
                     goto_step(3);
-                    $("#input_code").focus();
+                    $("#input_code").val('').focus();
 
                 } else {
 
