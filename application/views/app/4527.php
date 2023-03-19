@@ -59,7 +59,7 @@ foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
             'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-            'e__access IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
+            'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
