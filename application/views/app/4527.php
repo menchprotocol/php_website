@@ -10,14 +10,14 @@ $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed
 if($memory_detected){
 
     //EASY:
-    $n___7358 = $this->config->item('n___7358');
+    $n___7357 = $this->config->item('n___7357');
     $n___7359 = $this->config->item('n___7359');
     $n___4592 = $this->config->item('n___4592');
 
 } else {
 
     //Define Manually (Might need to be updated)
-    $n___7358 = array(6181,30826);
+    $n___7357 = array(6181,30826);
     $n___7359 = array(6176);
     $n___4592 = array(4259,4257,4261,4260,4319,7657,4230,4255,4318,4256,4258,12827,26091,26092,26123);
 
@@ -28,7 +28,7 @@ foreach($this->X_model->fetch(array(
     'x__up' => 4527,
     'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-    'e__access IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
+    'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its followers:
@@ -36,7 +36,7 @@ foreach($this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-        'e__access IN (' . join(',', $n___7358) . ')' => null, //ACTIVE
+        'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
 
@@ -59,7 +59,7 @@ foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
             'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
-            'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC
         ), array('x__up'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
