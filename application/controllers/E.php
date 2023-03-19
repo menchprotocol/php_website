@@ -1378,7 +1378,7 @@ class E extends CI_Controller
             $x__metadata = unserialize($sent_key['x__metadata']);
             $session_key = $this->session->userdata('session_key');
 
-            if(strtotime($sent_key['x__time']) + view_memory(6404,11065) < time()){
+            if(0 && strtotime($sent_key['x__time']) + view_memory(6404,11065) < time()){
 
                 //Expired:
                 $this->X_model->update($sent_key['x__id'], array(
