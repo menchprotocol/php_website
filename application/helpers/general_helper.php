@@ -787,7 +787,7 @@ function cookie_delete(){
     setcookie('auth_cookie', null, -1, '/');
 }
 
-function cookie_check() {
+function universal_check() {
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);

@@ -10,7 +10,7 @@ class E extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        cookie_check();
+        universal_check();
 
     }
 
@@ -1371,37 +1371,20 @@ class E extends CI_Controller
         $is_authenticated = false;
         foreach($this->X_model->fetch(array(
             'x__type' => 32078, //Sign In Key
+            'x__time <' => date("Y-m-d H:i:s", (time() - view_memory(6404,11065))), //Not Expired
             'x__access' => 6175, //Still Pending
             'x__message' => $_POST['account_email_phone'],
-        )) as $sent_key){
+        ), array(), 1, 0, array('x__id' => 'DESC')) as $sent_key){
 
             $x__metadata = unserialize($sent_key['x__metadata']);
             $session_key = $this->session->userdata('session_key');
 
-            if(0 && strtotime($sent_key['x__time']) + view_memory(6404,11065) < time()){
-
-                //Expired:
-                $this->X_model->update($sent_key['x__id'], array(
-                    'x__access' => 6173, //Transaction Removed
-                ), $_POST['account_id'], 32570); //Code Expired
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Time has expired: code was sent at '.$sent_key['x__time'].' which expired '.(time()-(strtotime($sent_key['x__time']) + view_memory(6404,11065))).' seconds ago considering it is '.date("Y-m-d H:i:s").'.',
-                ));
-
-            } elseif(strlen($session_key) && $x__metadata['hash_code']==md5($session_key.$_POST['input_code'])){
+            if(strlen($session_key) && $x__metadata['hash_code']==md5($session_key.$_POST['input_code'])){
 
                 //Complete access code:
                 $is_authenticated = $this->X_model->update($sent_key['x__id'], array(
                     'x__access' => 6176, //Published
                 ), $_POST['account_id'], 32569); //Code Verified
-
-            } else {
-
-                //Remove:
-                $this->X_model->update($sent_key['x__id'], array(
-                    'x__access' => 6173, //Transaction Removed
-                ), $_POST['account_id'], 32570); //Code Expired
 
             }
 

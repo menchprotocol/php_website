@@ -9,7 +9,7 @@ class I extends CI_Controller {
 
         $this->output->enable_profiler(FALSE);
 
-        cookie_check();
+        universal_check();
 
     }
 
