@@ -1263,8 +1263,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     if($discovery_mode) {
         if($link_creator && $top_i__id){
             $href = '/'.$top_i__id.'/'.$i['i__id'];
-        } elseif($link_creator && $x__id && $i['x__left']>0 && $i['x__right']>0) {
-            $href = '/'.$i['x__right'].'/'.$i['x__left'];
         } elseif($e_of_i) {
             $href = '/~'.$i['i__id'];
         } else {
@@ -1292,7 +1290,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
-     ' : ' edge-cover card_i_click col-md-4 col-6 ' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'" title="['.intval($can_click).'] ['.intval($focus_card).'] ['.intval($has_discovered).'] ['.intval($e_of_i).']'.'">';
+     ' : ' edge-cover card_i_click col-md-4 col-6 ' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
     //Determine Link Type
