@@ -64,6 +64,13 @@ foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
         break;
     }
 }
+if(!$focus_tab){
+    foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
+        $focus_tab = $x__type;
+        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
+        break;
+    }
+}
 
 
 
