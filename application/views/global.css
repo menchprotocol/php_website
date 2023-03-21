@@ -3140,11 +3140,7 @@ h4.css__title{
 .headline.zq12274 i {
     color: #007AFD !important;
 }
-.btn.btn-12274,
-.coinType12274 {
-    border:1px solid #007AFD;
-    border-radius:50% !important;
-}
+
 .coinType6287 {
     border:1px solid #999999;
     border-radius:21px !important;
@@ -3218,9 +3214,17 @@ h4.css__title{
     color:#FFC500 !important;
 }
 .coinType12273 {
-    border:1px solid #FFC500 !important;
+    /*border:1px solid #FFC500 !important;*/
     background-color:#FFFFFF !important;
     border-radius: 0;
+}
+.btn.btn-12274,
+.coinType12274 {
+    /*border:1px solid #007AFD;*/
+    border-radius:50% !important;
+}
+.coinType6255{
+    /*border: 1px solid #FC1B44 !important;*/
 }
 .coin-12273 .cover-content {
     /* background: rgba(255,197,0,0.82); */
@@ -3282,9 +3286,7 @@ h4.css__title{
     border: 0 !important;
     background-color: #FC1B44;
 }
-.coinType6255{
-    border: 1px solid #FC1B44 !important;
-}
+
 
 .zq6255,
 .zq6255 i,
