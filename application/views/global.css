@@ -2343,7 +2343,6 @@ input.form-control {
 .list-adder{
     padding: 8px 0 0 !important;
     margin: 0 5px 5px 5px !important;
-    border: 1px solid transparent;
     background-color: #FFF !important;
 }
 
@@ -3228,6 +3227,9 @@ h4.css__title{
 }
 .coin-12273 .cover-content {
     /* background: rgba(255,197,0,0.82); */
+}
+.list-adder{
+    /* border: 1px solid transparent; */
 }
 .bg12273,
 .btn-12273 {
