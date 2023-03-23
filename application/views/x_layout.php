@@ -191,6 +191,30 @@ if($top_completed || $is_or_idea || count($this->X_model->fetch(array(
 
 
 
+//Audio Playback
+$require_playback = count($this->X_model->fetch(array(
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => $i['i__id'],
+    'x__up' => 33253, //Auto Play Audio
+)));
+echo '<input type="hidden" id="requires_audio_play" value="'.( $require_playback ? 1 : 0 ).'">';
+if($require_playback){
+    //Try to auto play audio as it may work in certain cases with certain browsers
+    echo '<script type="text/javascript"> $(document).ready(function () { $(\'audio\')[0].play(); }); </script>';
+}
+
+
+
+if(count($this->X_model->fetch(array(
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => $i['i__id'],
+    'x__up' => 33253, //Auto Play Audio
+)))){
+}
+
+
 echo '<div class="light-bg large-frame">';
 
 //MESSAGES
@@ -918,7 +942,14 @@ echo '</div>';
 
 <script type="text/javascript">
 
+    var audio_played = false;
     $(document).ready(function () {
+
+        $("audio").on({
+            play:function(){ // the audio is playing!
+                audio_played = true;
+            }
+        });
 
         //Make progress more visible if possible:
         var top_id = parseInt($('#top_i__id').val());
@@ -1027,6 +1058,12 @@ echo '</div>';
 
         var go_next_url = $('#go_next_url').val();
         var is_logged_in = (js_pl_id > 0);
+        var require_playback = <?= ( $require_playback ? 1 : 0 ) ?>;
+
+        if(require_playback && !audio_played){
+            alert('You must play the audio before going next.');
+            return false;
+        }
 
         //Attempts to go next if no submissions:
         if(is_logged_in && js_n___31796.includes(focus_i__type)) {

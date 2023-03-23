@@ -928,6 +928,7 @@ $(document).ready(function () {
 
     load_covers();
 
+
     //Should we auto start?
     if (isAdvancedUpload) {
         var droppedFiles = false;
@@ -2439,6 +2440,8 @@ function isNormalInteger(str) {
     var n = Math.floor(Number(str));
     return n !== Infinity && String(n) === str && n >= 0;
 }
+
+
 
 function final_logout(){
     var r = confirm("FINAL WARNING: You are about to permanently lose access to your anonymous account since you have not yet added your email. Are you sure you want to continue?");
