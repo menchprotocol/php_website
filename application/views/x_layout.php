@@ -180,7 +180,12 @@ if($top_i__id){
 
 }
 
-if($top_completed || $is_or_idea){
+if($top_completed || $is_or_idea || count($this->X_model->fetch(array(
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => $i['i__id'],
+    'x__up' => 33246, //Show Tree
+)))){
     $_GET['open'] = true;
 }
 
