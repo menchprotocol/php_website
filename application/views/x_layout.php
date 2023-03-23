@@ -1076,16 +1076,10 @@ echo '</div>';
             //SELECT ONE/SOME
             return x_select(go_next_url);
 
-        } else if (is_logged_in && focus_i__type==7637 ) {
+        } else if (is_logged_in && focus_i__type==7637 && (!can_skip && !$('.file_saving_result').html().length) ) {
 
-            if(!can_skip && !$('.file_saving_result').html().length){
-                //Must upload file first:
-                alert('Please upload a file before going next.');
-            } else {
-                if(x_upload(droppedFiles, 'file')){
-                    js_redirect(go_next_url);
-                }
-            }
+            //Must upload file first:
+            alert('Please upload a file before going next.');
 
         } else if (is_logged_in && focus_i__type==26560 ) {
 
@@ -1094,7 +1088,7 @@ echo '</div>';
 
         } else if(go_next_url && go_next_url.length > 0) {
 
-            if (is_logged_in && parseInt($('#top_i__id').val()) > 0) {
+            if (is_logged_in && focus_i__type==6677 && parseInt($('#top_i__id').val()) > 0) {
 
                 //READ:
                 return x_read(go_next_url);
