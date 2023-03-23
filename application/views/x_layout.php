@@ -1061,7 +1061,7 @@ echo '</div>';
         var require_playback = <?= ( $require_playback ? 1 : 0 ) ?>;
 
         if(require_playback && !audio_played){
-            alert('You must play the audio before going next.');
+            alert('Please listen to the audio message before going next.');
             return false;
         }
 
@@ -1079,7 +1079,7 @@ echo '</div>';
         } else if (is_logged_in && focus_i__type==7637 && (!can_skip && !($('.file_saving_result').html().length)) ) {
 
             //Must upload file first:
-            alert('You must upload file before going next.');
+            alert('Please upload a file before going next.');
 
         } else if (is_logged_in && focus_i__type==26560 ) {
 
