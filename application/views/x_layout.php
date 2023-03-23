@@ -1076,7 +1076,7 @@ echo '</div>';
             //SELECT ONE/SOME
             return x_select(go_next_url);
 
-        } else if (is_logged_in && focus_i__type==7637) ) {
+        } else if (is_logged_in && focus_i__type==7637 ) {
 
             if(!can_skip && !$('.file_saving_result').html().length){
                 //Must upload file first:
