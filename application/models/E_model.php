@@ -276,7 +276,7 @@ class E_model extends CI_Model
             'x__up' => $main_id,
             'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+            'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
         //Remove if not in the secondary group:
@@ -285,7 +285,7 @@ class E_model extends CI_Model
                 'x__up' => $sub_id,
                 'x__down' => $primary_list['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC/OWNER
             ), array(), 0))){
                 unset($all_results[$key]);
             }

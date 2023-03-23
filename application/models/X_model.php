@@ -908,7 +908,6 @@ class X_model extends CI_Model
             ));
             if (count($es) < 1) {
                 //Remove Source:
-
                 continue;
             }
 
