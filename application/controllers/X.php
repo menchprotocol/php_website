@@ -1008,7 +1008,7 @@ class X extends CI_Controller
         } elseif($is[0]['i__type']!=6677){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Idea Type',
+                'message' => 'Invalid idea type',
             ));
         }
 
