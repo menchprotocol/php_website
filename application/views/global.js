@@ -1441,6 +1441,7 @@ function e_load_search(x__type) {
                     icons_listed.push(item_key);
                     $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26013, suggestion, x__type));
                 }
+                return false;
             },
             header: function (data) {
                 if(data.query && data.query.length){
