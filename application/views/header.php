@@ -402,6 +402,11 @@ if(!$basic_header_footer){
                             }
                             $href = 'href="/~'.$edit_i__id.'" ';
 
+                        } elseif($x__type==30795 && substr($first_segment, 0, 1)=='~') {
+
+                            //Discovery Mode:
+                            $href = 'href="/'.substr($first_segment, 1).'" ';
+
                         } elseif($x__type==33287 && substr($first_segment, 0, 1)=='-') {
 
                             $href = 'href="/@'.substr($first_segment, 1).'" ';
