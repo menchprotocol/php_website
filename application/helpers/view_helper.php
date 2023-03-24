@@ -1181,7 +1181,7 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
     $href = 'href="javascript:void(0);"'.( $spots_remaining==0 && !$previously_selected ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="toggle_answer(' . $i['i__id'] . ')"' );
 
-    $ui  = '<div class="card_cover col-6 col-md-4 no-padding">';
+    $ui  = '<div class="card_cover coin-6255 col-6 col-md-4 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<table class="card_covers"></table>'; //For UI height adjustment
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'">';
@@ -1388,9 +1388,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                         //Discover Idea
                         $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==31911 && $discovery_mode && $e_of_i){
+                    } elseif($e__id_dropdown==33286 && $discovery_mode && $e_of_i){
 
-                        //Edit Idea
+                        //Ideation Mode
                         $action_buttons .= '<a href="/~'.$i['i__id'].'" class="dropdown-item css__title">'.$anchor.'</a>';
 
                     } elseif($e__id_dropdown==13571 && $x__id > 0 && $e_of_i){

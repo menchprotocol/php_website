@@ -393,18 +393,16 @@ if(!$basic_header_footer){
                             $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__id'].'</div>';
                             $href = 'href="/@'.$member_e['e__id'].'" ';
 
-                        } elseif($x__type==31911 && intval($first_segment)==$first_segment) {
+                        } elseif($x__type==33286 && intval($first_segment)==$first_segment) {
 
-                            //Edit Idea:
+                            //Ideation Mode:
                             $edit_i__id = ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment );
                             if(!e_of_i($edit_i__id)){
                                 continue;
                             }
-
-                            //They can edit:
                             $href = 'href="/~'.$edit_i__id.'" ';
 
-                        } elseif($x__type==31912 && substr($first_segment, 0, 1)=='-') {
+                        } elseif($x__type==33287 && substr($first_segment, 0, 1)=='-') {
 
                             $href = 'href="/@'.substr($first_segment, 1).'" ';
 
