@@ -2017,9 +2017,6 @@ i, .btn .show-max {
     max-height: 68%;
     top:43px;
 }
-.coin-6255 .cover-content{
-    max-height: 78%;
-}
 
 .list-answers .cover-content{
     top:48px;
@@ -2615,10 +2612,6 @@ h4.css__title{
 }
 
 @media (max-width:600px) {
-
-    .coin-6255 .cover-content{
-        max-height: 68%;
-    }
 
     .slim_flat{
         border-radius: 0 !important;
