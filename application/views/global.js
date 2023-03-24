@@ -1398,7 +1398,6 @@ function e_load_search(x__type) {
     }
 
     //Load Search:
-    var items_loaded = [];
     $('.new-list-'+x__type + ' .add-input').keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -1435,8 +1434,7 @@ function e_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                if(!items_loaded.includes(suggestion.s__id)) {
-                    items_loaded.push(suggestion.s__id);
+                if(!$('.new-list-'+x__type+' .algolia_pad_search').hasClass('coin-id-'+suggestion.s__id)) {
                     $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26013, suggestion, x__type));
                 }
             },
