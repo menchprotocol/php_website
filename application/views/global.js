@@ -1398,7 +1398,6 @@ function e_load_search(x__type) {
     }
 
     //Load Search:
-    var icons_listed = [];
     $('.new-list-'+x__type + ' .add-input').keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -1420,6 +1419,8 @@ function e_load_search(x__type) {
 
         source: function (q, cb) {
 
+            var icons_listed = [];
+
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
 
             algolia_index.search(q, {
@@ -1435,13 +1436,11 @@ function e_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                console.log(suggestion);
-                var item_key = $('.new-list-'+x__type+' .add-input').val()+'_'+suggestion.s__type+'_'+suggestion.s__id;
+                var item_key = suggestion.s__type+'_'+suggestion.s__id;
                 if(!icons_listed.includes(item_key)) {
                     icons_listed.push(item_key);
                     $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26013, suggestion, x__type));
                 }
-                return false;
             },
             header: function (data) {
                 if(data.query && data.query.length){
