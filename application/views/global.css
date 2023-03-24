@@ -2014,8 +2014,11 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     margin: 0 5px;
-    max-height: 78%;
+    max-height: 68%;
     top:43px;
+}
+.coin-6255 .cover-content{
+    max-height: 78%;
 }
 
 .list-answers .cover-content{
@@ -2618,6 +2621,9 @@ h4.css__title{
     }
 
     .cover-content{
+        /* max-height: 44%; */
+    }
+    .coin-6255 .cover-content{
         max-height: 68%;
     }
 
