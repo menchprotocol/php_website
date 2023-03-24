@@ -2017,18 +2017,22 @@ i, .btn .show-max {
     max-height: 68%;
     top:43px;
 }
-
-.coin-6287 .cover-content{
-    width: calc(100% - 12px) !important;
-    margin: 0 6px;
+.coin-6255 .cover-content{
+    max-height: 76%;
 }
 
 .list-answers .cover-content{
     top:48px;
 }
+.coin-6255 .list-answers .cover-content{
+    top:42px;
+}
 
 
-
+.coin-6287 .cover-content{
+    width: calc(100% - 12px) !important;
+    margin: 0 6px;
+}
 .coin-6287 .cover-content{
     top:28px;
 }

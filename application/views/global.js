@@ -1417,6 +1417,7 @@ function e_load_search(x__type) {
         }
 
     }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
+
         source: function (q, cb) {
 
             $('.new-list-'+x__type+' .algolia_pad_search').html('');
