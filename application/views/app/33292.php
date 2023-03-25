@@ -32,7 +32,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     }
 }
 
-echo '<style> .list-covers .card_cover { padding:0 8px !important; } </style>';
+echo '<style> .list-covers .card_cover { padding:8px !important; } </style>';
 
 
 
