@@ -370,24 +370,28 @@ if(!$basic_header_footer){
                         //Ideation Mode:
                         $quick_href = '/~'.$discovery_i__id;
                         $quick_id = 33286;
+                        $body_class .= ' .qz'.$quick_id.' ';
 
                     } elseif(substr($first_segment, 0, 1)=='~') {
 
                         //Discovery Mode:
                         $quick_href = '/' . substr($first_segment, 1);
                         $quick_id = 30795;
+                        $body_class .= ' .qz'.$quick_id.' ';
 
                     } elseif(substr($first_segment, 0, 1)=='-') {
 
                         //Source Mode:
                         $quick_href = '/@' . substr($first_segment, 1);
                         $quick_id = 33287;
+                        $body_class .= ' .qz'.$quick_id.' ';
 
                     } elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
 
                         //App Store:
                         $quick_href = '/-' . substr($first_segment, 1);
                         $quick_id = 6287;
+                        $body_class .= ' .qz'.$quick_id.' .qz'.$quick_id.'_'.substr($first_segment, 1).' ';
 
                     }
 
