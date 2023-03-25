@@ -63,6 +63,12 @@ $can_skip = count($this->X_model->fetch(array(
     'x__right' => $i['i__id'],
     'x__up' => 28239, //Can Skip
 )));
+$can_edit_response = !count($this->X_model->fetch(array(
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__right' => $i['i__id'],
+    'x__up' => 33330, //No Editing
+)));
 
 
 
@@ -884,7 +890,7 @@ if(!$top_i__id){
             //NEXT
             $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span></div>';
 
-        } elseif($x__type==31796 && $top_completed && in_array($i['i__type'], $this->config->item('n___31796'))){
+        } elseif($x__type==31796 && $can_edit_response && $top_completed && in_array($i['i__type'], $this->config->item('n___31796'))){
 
             //Save Response
             $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span></div>';

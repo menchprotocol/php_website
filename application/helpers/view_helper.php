@@ -931,7 +931,7 @@ function view_radio_e($focus_id, $down___id, $enable_mulitiselect){
         array_push($already_selected, $sel['x__up']);
     }
 
-    if(!count($already_selected) && in_array($focus_id, $CI->config->item('n___6684')) && superpower_unlocked()){
+    if(!count($already_selected) && in_array($focus_id, $CI->config->item('n___33331')) && superpower_unlocked()){
         //FIND DEFAULT if set in session of this user:
         foreach($CI->config->item('e___'.$focus_id) as $e__id2 => $m2){
             $var_id = @$CI->session->userdata('session_custom_ui_'.$focus_id);
@@ -1012,8 +1012,8 @@ function view_e_settings($list_id, $is_open){
 
         //Print account fields that are either Single Selectable or Multi Selectable:
         $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__following']);
-        $has_multi_selectable = in_array(7231, $acc_detail['m__following']);
-        $has_single_selectable = in_array(6684, $acc_detail['m__following']);
+        $has_multi_selectable = in_array(33332, $acc_detail['m__following']);
+        $has_single_selectable = in_array(33331, $acc_detail['m__following']);
         $tab_ui = null;
 
         //Switch if part of domain settings:
