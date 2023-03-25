@@ -22,12 +22,12 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         //Mench Ledger
         $query = $this->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-        echo '<div class="row justify-content list-covers" style="font-size: 1.8em; padding-top: 55px; line-height: 130%;"><div style="min-height:40px; width: 100%; text-align: center;"><b class="card_count_x css__title">'.number_format($query[0]['totals'], 0).'</b></div><div class="css__title" style="text-align: center;"><a href="/-'.$e__id1.'">'.trim($m1['m__title'].' '.$m1['m__message']).'</a></div></div>';
+        echo '<div class="row justify-content list-covers" style="font-size: 1.8em; padding-top: 55px; line-height: 130%;"><div style="min-height:40px; width: 100%; text-align: center;"><b class="card_count_x css__title">'.number_format($query[0]['totals'], 0).'</b></div><div class="css__title" style="text-align: center;"><a href="/-'.$e__id1.'" title="'.( strlen($m1['m__message']) ? $m1['m__title'] : '' ).'">'.( strlen($m1['m__message']) ? $m1['m__message'] : $m1['m__title'] ).'</a></div></div>';
 
     } elseif($e__id1==6287) {
 
         //Mench Ledger
-        echo '<div class="row justify-content list-covers" style="font-size: 1.8em; padding-top: 55px; line-height: 130%;"><div style="min-height:40px; width: 100%; text-align: center;"><b class="card_count_x css__title">'.number_format(count($this->config->item('n___6287')), 0).'</b></div><div class="css__title" style="text-align: center;"><a href="/-'.$e__id1.'">'.trim($m1['m__title'].' '.$m1['m__message']).'</a></div></div>';
+        echo '<div class="row justify-content list-covers" style="font-size: 1.8em; padding-top: 55px; line-height: 130%;"><div style="min-height:40px; width: 100%; text-align: center;"><b class="card_count_x css__title">'.number_format(count($this->config->item('n___6287')), 0).'</b></div><div class="css__title" style="text-align: center;"><a href="/-'.$e__id1.'" title="'.( strlen($m1['m__message']) ? $m1['m__title'] : '' ).'">'.( strlen($m1['m__message']) ? $m1['m__message'] : $m1['m__title'] ).'</a></div></div>';
 
     }
 }
