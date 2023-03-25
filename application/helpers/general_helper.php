@@ -1626,6 +1626,23 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0){
     return $e___14870[$domain_source][$var_field];
 }
 
+function count__xs(){
+    $CI =& get_instance();
+    $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
+    return $query[0]['totals'];
+}
+
+function count__apps(){
+    $CI =& get_instance();
+    $query = $CI->X_model->fetch(array(
+        'x__up' => 6287, //Featured Apps
+        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
+    return $query[0]['totals'];
+}
+
 function e_of_e($e__id, $member_e = array()){
 
     if(!$member_e){

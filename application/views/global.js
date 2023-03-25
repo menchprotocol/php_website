@@ -665,6 +665,9 @@ function load_card_count(){
         if($(".card_count_x:first").text()!=data.count__x){
             $(".card_count_x").text(data.count__x).hide().fadeIn().hide().fadeIn();
         }
+        if($(".card_count_app:first").text()!=data.count__app){
+            $(".card_count_app").text(data.count__app).hide().fadeIn().hide().fadeIn();
+        }
         if($(".card_count_12273:first").text()!=data.count__12273){
             $(".card_count_12273").text(data.count__12273).hide().fadeIn().hide().fadeIn();
         }

@@ -1480,12 +1480,11 @@ class X extends CI_Controller
 
     }
 
-
     function load_card_count(){
         //Count transactions:
-        $query = $this->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
         $return_array = array(
-            'count__x' => number_format($query[0]['totals'], 0),
+            'count__x' => number_format(count__xs(), 0),
+            'count__app' => number_format(count__apps(), 0),
         );
         foreach($this->config->item('e___14874') as $e__id => $m) {
             $return_array['count__'.$e__id] = number_format(count_unique_covers($e__id), 0);
