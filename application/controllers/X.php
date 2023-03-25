@@ -796,6 +796,7 @@ class X extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
+                'status' => $_POST,
                 'message' => 'Missing IDEA',
             ));
 
