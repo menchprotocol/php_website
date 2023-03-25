@@ -249,7 +249,6 @@ li a {
     margin-bottom: 5px;
     padding:0px 0 5px 8px !important;
     width: 100%;
-
 }
 
 .large-icon{
@@ -432,18 +431,6 @@ img.no-frame {
     max-height:250px;
 }
 
-
-
-
-
-.aa-input-container {
-}
-.aa-input-search {
-}
-.aa-dropdown-menu {
-}
-.aa-suggestion {
-}
 
 .aa-dropdown-menu .aa-suggestion,
 .suggestion {
