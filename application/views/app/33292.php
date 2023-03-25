@@ -3,7 +3,6 @@
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     if($e__id1==14874) {
 
-        echo '<h2>'.$m1['m__title'].'</h2>';
         echo '<div class="row justify-content list-covers">';
         foreach($this->config->item('e___14874') as $e__id => $m) {
             echo '<div class="card_cover no-padding col-12 col-md-4">';
@@ -32,6 +31,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
     }
 }
+
+echo '<style> .list-covers .card_cover { padding:0 !important; } </style>';
 
 
 
