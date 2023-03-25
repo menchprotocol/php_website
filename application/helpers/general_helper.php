@@ -1636,9 +1636,9 @@ function count__apps(){
     $CI =& get_instance();
     $query = $CI->X_model->fetch(array(
         'x__up' => 6287, //Featured Apps
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
     ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
     return $query[0]['totals'];
 }
