@@ -1483,8 +1483,8 @@ class X extends CI_Controller
     function load_card_count(){
         //Count transactions:
         $return_array = array(
-            'count__x' => number_format(count__xs(), 0),
-            'count__app' => number_format(count__apps(), 0),
+            'count__4341' => number_format(count_unique_covers(4341), 0),
+            'count__6287' => number_format(count_unique_covers(6287), 0),
         );
         foreach($this->config->item('e___14874') as $e__id => $m) {
             $return_array['count__'.$e__id] = number_format(count_unique_covers($e__id), 0);
