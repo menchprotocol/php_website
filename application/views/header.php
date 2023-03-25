@@ -392,7 +392,7 @@ if(!$basic_header_footer){
                     }
 
                     if($quick_id > 0){
-                        echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___31966[$quick_id]['m__cover'].'">'.$e___31966[$quick_id]['m__title'].'</a></td>';
+                        echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___31966[$quick_id]['m__title'].'">'.$e___31966[$quick_id]['m__cover'].'</a></td>';
                     }
 
 
