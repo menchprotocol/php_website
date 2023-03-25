@@ -882,7 +882,13 @@ if(!$top_i__id){
         } elseif($x__type==12211 && !$top_completed){
 
             //NEXT
-            $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'<div class="extra_progress hideIfEmpty"></div></span></div>';
+            $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span></div>';
+
+        } elseif($x__type==28239 && $can_skip){
+
+            //SKIP
+            $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span></div>';
+
 
         }
 
@@ -950,14 +956,6 @@ echo '</div>';
                 audio_played = true;
             }
         });
-
-        //Make progress more visible if possible:
-        var top_id = parseInt($('#top_i__id').val());
-        var top_progress = parseInt($('.list_26000 div:first-child .progress-done').attr('prograte'));
-        if(top_id>0 && top_progress>0){
-            //Display this progress:
-            $('.extra_progress').text(top_progress+'% Complete');
-        }
 
         //Auto next a single answer:
         if(js_n___7712.includes(parseInt($('.list-answers').attr('i__type')))){
