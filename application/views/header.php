@@ -393,7 +393,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
 
 
-                    echo '<td class="block-x icon_search icon_editor"><a href="/" style="margin-left: 0;">'.$e___31966[33286]['m__cover'].'</a></td>';
+                    echo '<td class="block-x"><a href="/" style="margin-left: 0;">'.$e___31966[33286]['m__cover'].'</a></td>';
 
                     echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[7256]['m__cover'].'</a></td>';
 
