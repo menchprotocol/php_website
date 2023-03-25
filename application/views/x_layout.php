@@ -975,8 +975,8 @@ echo '</div>';
         set_autosize($('#x_reply'));
 
         //Watchout for file uplods:
-        $('.boxUpload').find('input[type="file"]').change(function () {
-            x_upload(droppedFiles, 'file');
+        $('.boxUpload .inputfile').on('change', function () {
+            x_upload(this.files, 'file');
         });
 
         //Should we auto start?
