@@ -796,7 +796,7 @@ class X extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing IDEA',
+                'message' => 'Missing IDEA ['.$_POST['i__id'].']',
             ));
 
         } elseif (!isset($_POST['top_i__id'])) {
