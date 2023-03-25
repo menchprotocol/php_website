@@ -283,6 +283,37 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 <?php
 
 
+$quick_id = 0;
+$discovery_i__id = ( intval($first_segment)==$first_segment ? strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment : 0 );
+if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
+
+    //Ideation Mode:
+    $quick_href = '/~'.$discovery_i__id;
+    $quick_id = 33286;
+    $body_class .= ' .qz'.$quick_id.' ';
+
+} elseif(substr($first_segment, 0, 1)=='~') {
+
+    //Discovery Mode:
+    $quick_href = '/' . substr($first_segment, 1);
+    $quick_id = 30795;
+    $body_class .= ' .qz'.$quick_id.' ';
+
+} elseif(substr($first_segment, 0, 1)=='-') {
+
+    //Source Mode:
+    $quick_href = '/@' . substr($first_segment, 1);
+    $quick_id = 33287;
+    $body_class .= ' .qz'.$quick_id.' ';
+
+} elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
+
+    //App Store:
+    $quick_href = '/-' . substr($first_segment, 1);
+    $quick_id = 6287;
+    $body_class .= ' .qz'.$quick_id.' .qz'.$quick_id.'_'.substr($first_segment, 1).' ';
+
+}
 
 
 echo '<body class="'.$body_class.'">';
@@ -361,39 +392,6 @@ if(!$basic_header_footer){
                     echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="toggle_editor(0)" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
 
-
-                    $discovery_i__id = ( intval($first_segment)==$first_segment ? strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment : 0 );
-
-                    $quick_id = 0;
-                    if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
-
-                        //Ideation Mode:
-                        $quick_href = '/~'.$discovery_i__id;
-                        $quick_id = 33286;
-                        $body_class .= ' .qz'.$quick_id.' ';
-
-                    } elseif(substr($first_segment, 0, 1)=='~') {
-
-                        //Discovery Mode:
-                        $quick_href = '/' . substr($first_segment, 1);
-                        $quick_id = 30795;
-                        $body_class .= ' .qz'.$quick_id.' ';
-
-                    } elseif(substr($first_segment, 0, 1)=='-') {
-
-                        //Source Mode:
-                        $quick_href = '/@' . substr($first_segment, 1);
-                        $quick_id = 33287;
-                        $body_class .= ' .qz'.$quick_id.' ';
-
-                    } elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
-
-                        //App Store:
-                        $quick_href = '/-' . substr($first_segment, 1);
-                        $quick_id = 6287;
-                        $body_class .= ' .qz'.$quick_id.' .qz'.$quick_id.'_'.substr($first_segment, 1).' ';
-
-                    }
 
                     if($quick_id > 0){
                         echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___31966[$quick_id]['m__title'].'">'.$e___31966[$quick_id]['m__cover'].'</a></td>';
