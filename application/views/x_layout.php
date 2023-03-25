@@ -975,7 +975,7 @@ echo '</div>';
         set_autosize($('#x_reply'));
 
         //Watchout for file uplods:
-        $('.boxUpload .inputfile').on('change', function () {
+        $('.boxUpload:file').on('change', function () {
             console.log('file uploading');
             console.log(this);
             x_upload(this.files, 'file');
