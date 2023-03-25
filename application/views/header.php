@@ -350,37 +350,6 @@ if(!$basic_header_footer){
 
 
 
-                    /*
-                     *
-                     * if(0 && intval($first_segment)==$first_segment) {
-
-                        //Ideation Mode:
-                        $edit_i__id = ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment );
-                        if(!e_of_i($edit_i__id)){
-                            continue;
-                        }
-                        $href = 'href="/~'.$edit_i__id.'" ';
-
-                        echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___31966[33286]['m__title'].'"></form></div>';
-
-                    } elseif($x__type==30795 && substr($first_segment, 0, 1)=='~') {
-
-                        //Discovery Mode:
-                        $href = 'href="/'.substr($first_segment, 1).'" ';
-
-                    } elseif($x__type==33287 && substr($first_segment, 0, 1)=='-') {
-
-                        //Source Mode:
-                        $href = 'href="/@'.substr($first_segment, 1).'" ';
-
-                    } elseif($x__type==6287 && substr($first_segment, 0, 1)=='@') {
-
-                        //App Store:
-                        $href = 'href="/-' . substr($first_segment, 1) . '" ';
-
-                    }
-                     * */
-
 
                     //SEARCH
                     echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___31966[7256]['m__title'].'"></form></div>';
@@ -393,7 +362,37 @@ if(!$basic_header_footer){
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
 
 
-                    echo '<td class="block-x"><a href="/" style="margin-left: 0;">'.$e___31966[33286]['m__cover'].'</a></td>';
+                    $discovery_i__id = ( intval($first_segment)==$first_segment ? strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment : 0 );
+
+                    if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
+
+                        //Ideation Mode:
+                        $quick_href = '/~'.$discovery_i__id;
+                        $quick_id = 33286;
+
+                    } elseif(substr($first_segment, 0, 1)=='~') {
+
+                        //Discovery Mode:
+                        $quick_href = '/' . substr($first_segment, 1);
+                        $quick_id = 30795;
+
+                    } elseif(substr($first_segment, 0, 1)=='-') {
+
+                        //Source Mode:
+                        $quick_href = '/@' . substr($first_segment, 1);
+                        $quick_id = 33287;
+
+                    } elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
+
+                        //App Store:
+                        $quick_href = '/-' . substr($first_segment, 1);
+                        $quick_id = 6287;
+
+                    }
+
+
+                    echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___31966[$quick_id]['m__cover'].'">'.$e___31966[$quick_id]['m__title'].'</a></td>';
+
 
                     echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[7256]['m__cover'].'</a></td>';
 
