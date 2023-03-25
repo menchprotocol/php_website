@@ -304,7 +304,7 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     //Source Mode:
     $quick_href = '/@' . substr($first_segment, 1);
     $quick_id = 33287;
-    $body_class .= ' .qz'.$quick_id.' .qz'.$quick_id.'_'.substr($first_segment, 1).' ';
+    $body_class .= ' .qz'.$quick_id.' .qz6287_'.substr($first_segment, 1).' ';
 
 } elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
 
