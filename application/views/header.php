@@ -364,6 +364,7 @@ if(!$basic_header_footer){
 
                     $discovery_i__id = ( intval($first_segment)==$first_segment ? strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment : 0 );
 
+                    $quick_id = 0;
                     if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
 
                         //Ideation Mode:
@@ -390,8 +391,10 @@ if(!$basic_header_footer){
 
                     }
 
+                    if($quick_id > 0){
+                        echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___31966[$quick_id]['m__cover'].'">'.$e___31966[$quick_id]['m__title'].'</a></td>';
+                    }
 
-                    echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___31966[$quick_id]['m__cover'].'">'.$e___31966[$quick_id]['m__title'].'</a></td>';
 
 
                     echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[7256]['m__cover'].'</a></td>';
