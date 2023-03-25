@@ -839,6 +839,7 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
     if($x__type==12274){
 
         //SOURCES
+        $joined_by = array();
         $query_filters = array(
             'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -848,6 +849,7 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
     } elseif($x__type==12273){
 
         //IDEAS
+        $joined_by = array();
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
@@ -856,10 +858,28 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
     } elseif($x__type==6255){
 
         //DISCOVERIES
+        $joined_by = array();
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
         );
+
+    } elseif($x__type==6287){
+
+        //App Store
+        $joined_by = array('x__down');
+        $query_filters = array(
+            'x__up' => 6287, //Featured Apps
+            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        );
+
+    } elseif($x__type==4341){
+
+        //Ledger Transactions
+        $joined_by = array();
+        $query_filters = array();
 
     } else {
 
@@ -875,7 +895,7 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
     }
 
     //Fetch Results:
-    $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+    $query = $CI->X_model->fetch($query_filters, $joined_by, 1, 0, array(), 'COUNT(x__id) as totals');
     return intval($query[0]['totals']);
 
 }
@@ -1626,22 +1646,7 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0){
     return $e___14870[$domain_source][$var_field];
 }
 
-function count__xs(){
-    $CI =& get_instance();
-    $query = $CI->X_model->fetch(array(), array(), 1, 0, array(), 'COUNT(x__id) as totals');
-    return $query[0]['totals'];
-}
 
-function count__apps(){
-    $CI =& get_instance();
-    $query = $CI->X_model->fetch(array(
-        'x__up' => 6287, //Featured Apps
-        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
-        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
-    return $query[0]['totals'];
-}
 
 function e_of_e($e__id, $member_e = array()){
 
