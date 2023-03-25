@@ -879,7 +879,7 @@ if(!$top_i__id){
             //Ideas
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.count($is_next).' '.$m2['m__title'].'</span>';
 
-        } elseif($x__type==12211 && !$top_completed){
+        } elseif($x__type==12211){
 
             //NEXT
             $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span></div>';
