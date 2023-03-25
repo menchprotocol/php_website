@@ -976,6 +976,8 @@ echo '</div>';
 
         //Watchout for file uplods:
         $('.boxUpload .inputfile').on('change', function () {
+            console.log('file uploading');
+            console.log(this);
             x_upload(this.files, 'file');
         });
 
