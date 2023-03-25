@@ -662,11 +662,11 @@ function x_create(add_fields){
 
 function load_card_count(){
     $.post("/x/load_card_count", {}, function (data) {
-        if($(".card_count_x:first").text()!=data.count__4341){
-            $(".card_count_x").text(data.count__4341).hide().fadeIn().hide().fadeIn();
+        if($(".card_count_4341:first").text()!=data.count__4341){
+            $(".card_count_4341").text(data.count__4341).hide().fadeIn().hide().fadeIn();
         }
-        if($(".card_count_app:first").text()!=data.count__6287){
-            $(".card_count_app").text(data.count__6287).hide().fadeIn().hide().fadeIn();
+        if($(".card_count_6287:first").text()!=data.count__6287){
+            $(".card_count_6287").text(data.count__6287).hide().fadeIn().hide().fadeIn();
         }
         if($(".card_count_12273:first").text()!=data.count__12273){
             $(".card_count_12273").text(data.count__12273).hide().fadeIn().hide().fadeIn();
