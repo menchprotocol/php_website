@@ -24,7 +24,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             echo '<div class="card_frame dropdown_'.$e__id.'">';
             echo '<div class="large_cover">'.$m['m__cover'].'</div>';
             echo '<div class="css__title large_title zq'.$e__id.' "><b class="card_count_'.$e__id.'">'.number_format(count_unique_covers($e__id), 0).'</b></div>';
-            echo '<div class="css__title large_title zq'.$e__id.'"><a href="/-'.$e__id.'" title="'.( strlen($m1['m__message']) ? $m1['m__title'] : '' ).'"><u>'.( strlen($m1['m__message']) ? $m1['m__message'] : $m1['m__title'] ).'</u></a></div>';
+            echo '<div class="css__title large_title zq'.$e__id.'"><a href="/-'.$e__id.'" title="'.( strlen($m['m__message']) ? $m['m__title'] : '' ).'"><u>'.( strlen($m['m__message']) ? $m['m__message'] : $m['m__title'] ).'</u></a></div>';
             echo '</div>';
             echo '</div>';
         }
