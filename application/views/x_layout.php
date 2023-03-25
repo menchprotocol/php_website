@@ -887,7 +887,7 @@ if(!$top_i__id){
         } elseif($x__type==28239 && $can_skip){
 
             //SKIP
-            $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span></div>';
+            $control_btn = '<div style="padding-left: 21px;"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title css__title">'.$m2['m__title'].'</span></div>';
 
 
         }
