@@ -2609,9 +2609,9 @@ h4.css__title{
 
 @media (max-width:600px) {
 
-    .qz6287_33292 .list-covers .card_cover { padding:3px !important; }
-    .card_cover .large_cover i { font-size:3em !important; }
-    .card_cover .large_title { font-size:1em !important; }
+    .qz6287_33292 .list-covers .card_cover { padding:1px !important; }
+    .card_cover .large_cover i { font-size:4em !important; }
+    .card_cover .large_title { font-size:1.1em !important; }
     .slim_flat{
         border-radius: 0 !important;
     }
