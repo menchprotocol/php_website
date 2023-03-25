@@ -383,7 +383,7 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___31966[7256]['m__title'].'"></form><a href="/">'.$e___31966[13401]['m__cover'].'</a></div>';
+                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___31966[7256]['m__title'].'"></form></div>';
 
 
                     echo '</div>';
@@ -393,6 +393,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
 
 
+                    echo '<td class="block-x icon_search icon_editor"><a href="/" style="margin-left: 0;">'.$e___31966[33286]['m__cover'].'</a></td>';
 
                     echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[7256]['m__cover'].'</a></td>';
 
