@@ -977,8 +977,9 @@ echo '</div>';
         //Watchout for file uplods:
         $('.boxUpload:file').on('change', function () {
             console.log('file uploading');
-            console.log(this);
-            x_upload(this.files, 'file');
+            console.log($(this));
+            console.log($(this).prop('files'));
+            x_upload($(this).prop('files'), 'file');
         });
 
         //Should we auto start?
