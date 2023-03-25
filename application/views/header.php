@@ -335,9 +335,8 @@ if(!$basic_header_footer){
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav " style="text-align: left;">';
 
-                    //Domain Source
+                    //Transaction Website
                     $domain_cover = get_domain('m__cover');
                     $domain_logo = one_two_explode('"','"', $domain_cover);
                     if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
@@ -347,20 +346,58 @@ if(!$basic_header_footer){
                     } else {
                         $padding_hack = 7; //For Emoji
                     }
-                    echo '<a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a>';
+                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
 
-                    echo '</div>';
+
+
+                    /*
+                     *
+                     * if(0 && intval($first_segment)==$first_segment) {
+
+                        //Ideation Mode:
+                        $edit_i__id = ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment );
+                        if(!e_of_i($edit_i__id)){
+                            continue;
+                        }
+                        $href = 'href="/~'.$edit_i__id.'" ';
+
+                        echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___31966[33286]['m__title'].'"></form></div>';
+
+                    } elseif($x__type==30795 && substr($first_segment, 0, 1)=='~') {
+
+                        //Discovery Mode:
+                        $href = 'href="/'.substr($first_segment, 1).'" ';
+
+                    } elseif($x__type==33287 && substr($first_segment, 0, 1)=='-') {
+
+                        //Source Mode:
+                        $href = 'href="/@'.substr($first_segment, 1).'" ';
+
+                    } elseif($x__type==6287 && substr($first_segment, 0, 1)=='@') {
+
+                        //App Store:
+                        $href = 'href="/-' . substr($first_segment, 1) . '" ';
+
+                    }
+                     * */
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___31966[7256]['m__title'].'"></form></div>';
+
+
+                    echo '<a href="/">'.$e___31966[13401]['m__cover'].'</a>';
+
 
                     echo '</div>';
                     echo '</td>';
 
-                    echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="toggle_editor(0)" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
-                    echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
-                    echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="toggle_editor(0)" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
+
+
+
+                    echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[7256]['m__cover'].'</a></td>';
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
@@ -392,24 +429,6 @@ if(!$basic_header_footer){
                             $m['m__cover'] = view_cover(12274,$member_e['e__cover'], 1);
                             $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__id'].'</div>';
                             $href = 'href="/@'.$member_e['e__id'].'" ';
-
-                        } elseif($x__type==33286 && intval($first_segment)==$first_segment) {
-
-                            //Ideation Mode:
-                            $edit_i__id = ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment );
-                            if(!e_of_i($edit_i__id)){
-                                continue;
-                            }
-                            $href = 'href="/~'.$edit_i__id.'" ';
-
-                        } elseif($x__type==30795 && substr($first_segment, 0, 1)=='~') {
-
-                            //Discovery Mode:
-                            $href = 'href="/'.substr($first_segment, 1).'" ';
-
-                        } elseif($x__type==33287 && substr($first_segment, 0, 1)=='-') {
-
-                            $href = 'href="/@'.substr($first_segment, 1).'" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
