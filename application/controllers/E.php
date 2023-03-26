@@ -1571,7 +1571,7 @@ class E extends CI_Controller
         $this->session->set_userdata($session_data);
 
         $plain_subject = 'Your '.get_domain('m__title').' '.$e___11035[32078]['m__title'].' is '.$passcode;
-        $plain_message = $plain_subject.' which is valid for 5 minutes.';
+        $plain_message = $plain_subject.' and its valid for 5 minutes.';
 
         if($valid_email) {
 
