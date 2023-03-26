@@ -773,7 +773,7 @@ if($top_i__id) {
             }
 
 
-            $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content  x_input" placeholder="" value="'.$previous_response.'" id="x_reply" />';
+            $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content greybg x_input" placeholder="" value="'.$previous_response.'" id="x_reply" />';
 
         }
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
