@@ -1690,7 +1690,7 @@ i, .btn .show-max {
 
 .sub_note{
     padding:0 13px 0 0;
-    font-size: 1em !important;
+    font-size: 1.3em !important;
     font-weight: bold;
     line-height: 120%;
 }
@@ -2607,6 +2607,8 @@ h4.css__title{
 }
 
 @media (max-width:600px) {
+
+    .sub_note{ font-size: 1em !important; }
 
     .qz6287_33292 .list-covers .card_cover { padding:1px !important; }
     .card_cover .large_title { font-size:1em !important; }
