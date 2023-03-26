@@ -1992,12 +1992,12 @@ i, .btn .show-max {
 }
 .cover-content{
     padding: 0;
-    width: calc(100% - 10px) !important;
+    width: calc(100% - 4px) !important;
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
     display: block;
-    margin: 0 5px;
+    margin: 0 2px;
     max-height: 68%;
     top:43px;
 }
@@ -2041,9 +2041,10 @@ input.form-control {
 }
 
 #container_search .mini-cover .cover-content {
-    top: 8px;
+    top: 5px;
     padding-top: 1px;
     padding-bottom: 1px;
+    border-radius: 10px;
 }
 
 .coin-cover{
@@ -2172,7 +2173,7 @@ input.form-control {
     margin: 0;
     padding: 0;
     line-height: 128%;
-    font-size: 0.69em;
+    font-size: 0.75em;
     display: block;
     border-radius: 0;
     vertical-align: middle;
