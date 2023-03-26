@@ -680,7 +680,7 @@ if($top_i__id) {
         if (in_array($i['i__type'], $this->config->item('n___31812'))) {
 
             //Open text response
-            $message_ui = '<textarea class="border i_content  x_input" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
+            $message_ui = '<textarea class="border i_content x_input greybg" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
 
         } else {
 
