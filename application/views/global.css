@@ -1943,7 +1943,7 @@ i, .btn .show-max {
 
 .cover-wrapper {
     border:0;
-    margin:0 5px;
+    margin:0 1px;
 }
 .form-check{
     padding: 8px 0 8px 60px;
@@ -3736,7 +3736,7 @@ h4.css__title{
 }
 .inner-content .css__title{
     text-align: left;
-    padding: 0 1px !important;
+    padding: 0 2px !important;
 }
 .coin-12274 .inner-content .css__title,
 .coin-6287 .inner-content .css__title{
