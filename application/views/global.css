@@ -2596,6 +2596,12 @@ h4.css__title{
     background-color: transparent;
 }
 
+.centerh {
+    padding: 8px 0 3px;
+    margin: 0 0 0 3px;
+    border-bottom: 1px solid #FFFFF;
+}
+
 @media (max-width:600px) {
 
     .qz6287_33292 .list-covers .card_cover { padding:1px !important; }
