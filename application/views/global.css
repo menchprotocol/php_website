@@ -843,6 +843,10 @@ p.menu_header {
     padding: 6px 1px 5px;
 }
 
+form-control.border {
+    padding: 6px 5px 5px;
+}
+
 textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     line-height: 128%;
 }
