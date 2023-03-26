@@ -812,6 +812,7 @@ function toggle_search(){
 
         //Turn OFF
         search_on = false; //Reverse
+        $('.max_width').removeClass('visible_background');
         $('.top_nav, #container_content').removeClass('hidden');
         $('.nav_search, #container_search').addClass('hidden');
 
@@ -819,6 +820,7 @@ function toggle_search(){
 
         //Turn ON
         search_on = true; //Reverse
+        $('.max_width').addClass('visible_background');
         $('.top_nav, #container_content').addClass('hidden');
         $('.nav_search, #container_search').removeClass('hidden');
         $("#container_search .row").html(''); //Reset results view
