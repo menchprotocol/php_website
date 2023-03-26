@@ -903,7 +903,7 @@ h4 .halfbg {
     padding: 2px 3px;
     margin-top: 5px;
     display: block;
-    border: 1px dotted #999;
+    border: 1px dotted #999 !important;
 }
 .dropdown-menu {
     border: 1px solid transparent;
