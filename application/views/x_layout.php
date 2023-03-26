@@ -790,7 +790,7 @@ if($top_i__id) {
 
         if (count($x_completes)) {
 
-            echo '<div class="file_saving_result">';
+            echo '<div class="file_saving_result greybg">';
             echo view_headline(13977, null, $e___11035[13977], $this->X_model->message_view($x_completes[0]['x__message'], true), true);
             echo '</div>';
 
