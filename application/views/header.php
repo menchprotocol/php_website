@@ -366,7 +366,7 @@ if(!$basic_header_footer){
                     <?php
 
                     echo '<td>';
-                    echo '<div class="search_bar max_width">';
+                    echo '<div class="max_width">';
 
 
                     //Transaction Website
