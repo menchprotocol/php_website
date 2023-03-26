@@ -78,9 +78,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo '<script type="text/javascript"> ';
     //MEMBER VARIABLES
     echo ' var js_session_superpowers_activated = ' . json_encode( ($member_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
-    echo ' var superpower_js_10939 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(10939, $this->session->userdata('session_superpowers_activated'))) . '; ';
-    echo ' var superpower_js_12701 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(12701, $this->session->userdata('session_superpowers_activated'))) . '; ';
-    echo ' var superpower_js_13422 = ' . intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array(13422, $this->session->userdata('session_superpowers_activated'))) . '; ';
+
+    foreach($this->config->item('e___33412') as $x__type => $m){
+        ${"session_superpowers_" . $x__type} = intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array($x__type, $this->session->userdata('session_superpowers_activated')));
+        echo ' var superpower_js_'.$x__type.' = ' . ${"session_superpowers_" . $x__type} . '; ';
+    }
 
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
@@ -301,7 +303,7 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $quick_id = 30795;
     $body_class .= ' .qz'.$quick_id.' ';
 
-} elseif(substr($first_segment, 0, 1)=='-') {
+} elseif(substr($first_segment, 0, 1)=='-' && $session_superpowers_13422) {
 
     //Source Mode:
     $quick_href = '/@' . substr($first_segment, 1);
