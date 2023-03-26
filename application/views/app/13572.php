@@ -3,6 +3,8 @@
 if(isset($_POST)){
     echo 'POST FOUND';
     print_r($_POST);
+    print_r($_GET);
+    print_r($_REQUEST);
 }
 
 ?>
@@ -17,12 +19,7 @@ if(isset($_POST)){
 
     $(':file').on('change', function () {
         var file = this.files[0];
-
-        if (file.size > 1024) {
-            alert('max upload size is 1k');
-        }
-
-        // Also see .name, .type
+        console.log(file);
     });
 
     $(':button').on('click', function () {
