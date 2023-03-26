@@ -1570,13 +1570,12 @@ class E extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $plain_subject = $passcode.' is your '.$e___11035[32078]['m__title'].' for '.get_domain('m__title');
-        $plain_message = $plain_subject.' and its valid for 5 minutes.';
+        $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].' for '.get_domain('m__title');
 
         if($valid_email) {
 
             //Email:
-            send_email(array($_POST['account_email_phone']), $plain_subject, $plain_message, 0, array(), 0, 0, false);
+            send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', 0, array(), 0, 0, false);
 
             //Log new key:
             $this->X_model->create(array(
