@@ -1170,6 +1170,20 @@ function view__load__e($e){
 
 
 
+function view_add_item($focus_card, $x__type){
+
+    //TODO make add buttons like idea/source cards
+
+    if($focus_card==12273){
+        //Idea adder
+
+    } elseif($focus_card==12274){
+        //Source adder
+
+    }
+
+}
+
 function view_card_x_select($i, $x__creator, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
