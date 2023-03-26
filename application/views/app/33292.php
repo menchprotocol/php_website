@@ -2,7 +2,7 @@
 
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
-    echo '<h3 class="center" style="padding: 21px 0 0; margin: 0;">'.$m1['m__title'].'</h3>';
+    echo '<h3 class="center" style="padding: 13px 0 5px; margin: 0;">'.$m1['m__title'].'</h3>';
 
     if($e__id1==14874) {
 
