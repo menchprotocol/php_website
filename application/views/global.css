@@ -839,6 +839,10 @@ p.menu_header {
     line-height: 100%;
 }
 
+.form-control {
+    padding: 3px;
+}
+
 textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     line-height: 128%;
 }
@@ -1614,6 +1618,8 @@ i, .btn .show-max {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+#searchFrontForm .icon-block { width:30px !important; }
+#searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-xxs{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-xxs i{ font-size: 1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
