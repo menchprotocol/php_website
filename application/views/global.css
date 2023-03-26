@@ -2597,9 +2597,9 @@ h4.css__title{
 }
 
 .centerh {
-    padding: 13px 0 5px;
-    margin:0 0 5px 0;
-    border-bottom: 1px solid #FFFFFF;
+    padding: 13px 0 8px;
+    margin:0 0 8px 0;
+    border-bottom: 1px solid #000000;
 }
 
 @media (max-width:600px) {
