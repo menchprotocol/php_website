@@ -1169,15 +1169,14 @@ a.headline {
 }
 
 
-.search_bar {
-    margin-left: 5px;
-    width: calc(100% - 8px) !important;
-}
 .left_nav, .max_width{
     width: 100% !important;
     max-width: none !important;
 }
-
+.search_bar {
+    margin-left: 5px;
+    width: calc(100% - 8px) !important;
+}
 
 .platform-navigation {
     width: 100%;
