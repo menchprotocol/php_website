@@ -2172,7 +2172,7 @@ input.form-control {
     margin: 0;
     padding: 0;
     line-height: 128%;
-    font-size: 0.85em;
+    font-size: 0.69em;
     display: block;
     border-radius: 0;
     vertical-align: middle;
@@ -3736,7 +3736,7 @@ h4.css__title{
 }
 .inner-content .css__title{
     text-align: left;
-    padding: 0 5px !important;
+    padding: 0 1px !important;
 }
 .coin-12274 .inner-content .css__title,
 .coin-6287 .inner-content .css__title{
