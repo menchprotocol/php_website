@@ -1,6 +1,9 @@
 <?php
 
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
+
+    echo '<h3>'.$m1['m__title'].'</h3>';
+
     if($e__id1==14874) {
 
         echo '<div class="row justify-content list-covers">';
