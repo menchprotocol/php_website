@@ -1371,7 +1371,6 @@ class E extends CI_Controller
         $is_authenticated = false;
         foreach($this->X_model->fetch(array(
             'x__type' => 32078, //Sign In Key
-            //'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,11065))), //Not Expired
             'x__access' => 6175, //Still Pending
             'x__message' => $_POST['account_email_phone'],
         ), array(), 1, 0, array('x__id' => 'DESC')) as $sent_key){
@@ -1571,8 +1570,8 @@ class E extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $plain_subject = 'Your '.$e___11035[32078]['m__title'].' is '.$passcode;
-        $plain_message = $plain_subject.' and it will be valid for '.intval(view_memory(6404,11065)/60).' minutes.';
+        $plain_subject = 'Your '.get_domain('m__title').' '.$e___11035[32078]['m__title'].' is '.$passcode;
+        $plain_message = $plain_subject.' which is valid for 5 minutes.';
 
         if($valid_email) {
 

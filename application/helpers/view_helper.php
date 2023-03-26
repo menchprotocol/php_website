@@ -1706,6 +1706,8 @@ function view_e_line($e)
 function view_card_e($x__type, $e, $extra_class = null)
 {
 
+    return 'hii';
+
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___14690'))){
         //Not a valid Source List
