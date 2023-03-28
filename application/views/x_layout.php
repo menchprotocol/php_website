@@ -677,9 +677,9 @@ if($top_i__id) {
         $input_attributes = '';
         $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
 
-        if (in_array($i['i__type'], $this->config->item('n___31812'))) {
+        if ($i['i__type']==6683) {
 
-            //Open text response
+            //Text response
             $message_ui = '<textarea class="border i_content x_input greybg" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
 
         } else {
