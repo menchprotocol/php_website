@@ -2333,7 +2333,7 @@ input.form-control {
 }
 .list-adder{
     padding: 8px 0 0 !important;
-    margin: 0 5px 5px 5px !important;
+    margin:0 0 5px !important;
     background-color: #FFF !important;
 }
 
