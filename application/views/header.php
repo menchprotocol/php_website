@@ -4,7 +4,6 @@ $first_segment = $this->uri->segment(1);
 $second_segment = $this->uri->segment(2);
 $i__id = ( isset($i['i__id']) ? $i['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$e___31966 = $this->config->item('e___31966');
 $e___4527 = $this->config->item('e___4527');
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 $current_card_id = current_card_id();
@@ -387,23 +386,23 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___31966[7256]['m__cover'].'</span><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___31966[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
 
                     echo '</div>';
                     echo '</td>';
 
-                    echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="toggle_editor(0)" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
-                    echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[13401]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="toggle_editor(0)" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
 
 
                     if($quick_id > 0){
-                        echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___31966[$quick_id]['m__title'].'">'.$e___31966[$quick_id]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
                     }
 
 
 
-                    echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___31966[7256]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
@@ -411,7 +410,7 @@ if(!$basic_header_footer){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___31966[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
