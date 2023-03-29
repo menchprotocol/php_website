@@ -1324,7 +1324,7 @@ a.headline {
 }
 
 .url_truncate {
-    max-width: calc(100% - 40px);
+    max-width: calc(100% - 0px);
     overflow: hidden;
     display: inline-block;
 }
