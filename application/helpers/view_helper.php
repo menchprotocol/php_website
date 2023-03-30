@@ -1709,7 +1709,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___14690'))){
         //Not a valid Source List
-        return 'Invalid x__type e '.$x__type;
+        return 'Invalid x__type e @'.$x__type.' is missing from @14690';
     }
     if(!isset($e['e__id']) || !isset($e['e__title'])){
         $CI->X_model->create(array(
