@@ -1517,7 +1517,7 @@ class E extends CI_Controller
 
         //Cleanup input email:
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-        $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
+        //$_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
         $valid_email = intval(filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL));
         if(!$valid_email && strlen($_POST['account_email_phone'])>=10){
             $_POST['account_email_phone'] = preg_replace('/[^0-9]+/', '', $_POST['account_email_phone']);
