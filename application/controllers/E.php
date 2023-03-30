@@ -1517,17 +1517,7 @@ class E extends CI_Controller
 
         //Cleanup input email:
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-        //$_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
-        $valid_email = intval(filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL));
-
-        echo '['.$_POST['account_email_phone'].']';
-        if (filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL)) {
-            echo("$email is a valid email address");
-        } else {
-            echo("$email is not a valid email address");
-        }
-        die();
-
+        $valid_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
         if(!$valid_email && strlen($_POST['account_email_phone'])>=10){
             $_POST['account_email_phone'] = preg_replace('/[^0-9]+/', '', $_POST['account_email_phone']);
         }
@@ -1620,7 +1610,7 @@ class E extends CI_Controller
         return view_json(array(
             'status' => 1,
             'account_id' => $x__creator,
-            'valid_email' => $valid_email,
+            'valid_email' => ( $valid_email ? 1 : 0 ),
             'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover(12274,$u_accounts[0]['e__cover'], true). '</span>'.$u_accounts[0]['e__title'] : '' ),
             'clean_contact' => $_POST['account_email_phone'],
         ));
