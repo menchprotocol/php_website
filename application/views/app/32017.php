@@ -13,7 +13,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
     $paid_ticket_types = 0;
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'x__up' => $_GET['e__id'],
     ), array('x__right')) as $ticket_type){
 

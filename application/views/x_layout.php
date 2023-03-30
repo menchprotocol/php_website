@@ -14,7 +14,7 @@ $is_or_idea = in_array($i['i__type'], $this->config->item('n___7712'));
 //Any Hard Redirects?
 foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i['i__id'],
     'x__up' => 30811, //Hard Redirect
 )) as $redirect){
@@ -59,13 +59,13 @@ $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $can_skip = count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i['i__id'],
     'x__up' => 28239, //Can Skip
 )));
 $can_edit_response = !count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i['i__id'],
     'x__up' => 33330, //No Editing
 )));
@@ -188,7 +188,7 @@ if($top_i__id){
 
 if($top_completed || $is_or_idea || count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i['i__id'],
     'x__up' => 33246, //Show Tree
 )))){
@@ -200,7 +200,7 @@ if($top_completed || $is_or_idea || count($this->X_model->fetch(array(
 //Audio Playback
 $require_playback = count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i['i__id'],
     'x__up' => 33253, //Auto Play Audio
 )));
@@ -214,7 +214,7 @@ if($require_playback){
 
 if(count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i['i__id'],
     'x__up' => 33253, //Auto Play Audio
 )))){
@@ -260,7 +260,7 @@ if(in_array($i['i__type'], $this->config->item('n___33139'))){
     $relevant_sources = '';
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'x__right' => $i['i__id'],
         'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
@@ -455,19 +455,19 @@ if($top_i__id) {
 
             $total_dues = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $i['i__id'],
                 'x__up' => 26562, //Total Due
             ));
             $cart_max = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $i['i__id'],
                 'x__up' => 29651, //Cart Max Quantity
             ));
             $cart_min = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $i['i__id'],
                 'x__up' => 31008, //Cart Min Quantity
             ));
@@ -495,13 +495,13 @@ if($top_i__id) {
 
                     $digest_fees = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                         'x__right' => $i['i__id'],
                         'x__up' => 30589, //Digest Fees
                     ));
                     $allow_refunds = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                         'x__right' => $i['i__id'],
                         'x__up' => 30615, //Is Refundable
                     ));
@@ -694,7 +694,7 @@ if($top_i__id) {
                 //Steps
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $i['i__id'],
                     'x__up' => 31813, //Steps
                 )) as $num_steps){
@@ -706,7 +706,7 @@ if($top_i__id) {
                 //Min Value
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $i['i__id'],
                     'x__up' => 31800, //Min Value
                 )) as $num_steps){
@@ -718,7 +718,7 @@ if($top_i__id) {
                 //Max Value
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $i['i__id'],
                     'x__up' => 31801, //Max Value
                 )) as $num_steps){
@@ -733,7 +733,7 @@ if($top_i__id) {
 
                 if(count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $i['i__id'],
                     'x__up' => 32442, //Select Day
                 )))){
@@ -742,7 +742,7 @@ if($top_i__id) {
 
                 } elseif(count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $i['i__id'],
                     'x__up' => 32446, //Select Week
                 )))){
@@ -751,7 +751,7 @@ if($top_i__id) {
 
                 } elseif(count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $i['i__id'],
                     'x__up' => 32447, //Select Month
                 )))){
@@ -830,7 +830,7 @@ if(!$top_i__id){
 
     if(count($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'x__right' => $i['i__id'],
         'x__up' => 4235,
     )))){

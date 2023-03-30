@@ -1731,7 +1731,7 @@ class X_model extends CI_Model
         //Can they skip without selecting anything?
         $can_skip = count($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right' => $focus_i__id,
             'x__up' => 28239, //Can Skip
         )));
@@ -1747,7 +1747,7 @@ class X_model extends CI_Model
         if(!$can_skip){
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $focus_i__id,
                 'x__up' => 26613, //Min Selection
             ), array(), 1) as $limit){
@@ -1764,7 +1764,7 @@ class X_model extends CI_Model
         //How about  max selection?
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right' => $focus_i__id,
             'x__up' => 26614, //Max Selection
         ), array(), 1) as $limit){

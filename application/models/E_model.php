@@ -300,7 +300,7 @@ class E_model extends CI_Model
 
         $all_results = $this->X_model->fetch(array(
             'x__up' => $main_id,
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
@@ -310,7 +310,7 @@ class E_model extends CI_Model
             if(!count($this->X_model->fetch(array(
                 'x__up' => $sub_id,
                 'x__right' => $primary_list['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 unset($all_results[$key]);

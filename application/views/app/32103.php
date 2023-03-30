@@ -13,7 +13,7 @@ echo '<h2>' . $is[0]['i__title'] . '</h2>';
 
 $preg_query = $this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i__id,
     'x__up' => 32103,
 ));

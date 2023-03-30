@@ -296,7 +296,7 @@ class E extends CI_Controller
         //Ideas:
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__up' => $_POST['e__id'],
         ), array(), 0) as $x){
             $this->X_model->create(array(
@@ -469,7 +469,7 @@ class E extends CI_Controller
         if($adding_to_idea) {
 
             $e_already_linked = count($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

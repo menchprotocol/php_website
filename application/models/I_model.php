@@ -466,7 +466,7 @@ class I_model extends CI_Model
                 //Duplicate Check:
                 if(count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $link_i[0]['i__id'],
                 )))){
@@ -671,7 +671,7 @@ class I_model extends CI_Model
         //Always Link Sources:
         $filters = array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right' => $i__id,
         );
         if(count($exclude_es)){
@@ -865,7 +865,7 @@ class I_model extends CI_Model
                 $e__up_id = intval(one_two_explode('@',' ',$action_command1));
                 $i_has_e = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $next_i['i__id'],
                     'x__up' => $e__up_id,
                 ));

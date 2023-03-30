@@ -22,7 +22,7 @@ function referral_line($i){
 
     $is_locked = count($CI->X_model->fetch(array(
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //SOURCE IDEAS
+        'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'x__right' => $i['i__id'],
     ))) >= 3; //Too many sources, cannot edit
 
