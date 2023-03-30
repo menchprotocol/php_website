@@ -1527,7 +1527,7 @@ class E extends CI_Controller
         if (!isset($_POST['account_email_phone']) || (!$valid_email && !$possible_phone)) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Email Address or Phone Number',
+                'message' => '['.$_POST['account_email_phone'].'] is an Invalid Email Address or Phone Number',
             ));
         } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
