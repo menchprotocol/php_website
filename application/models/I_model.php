@@ -671,7 +671,7 @@ class I_model extends CI_Model
         //Always Link Sources:
         $filters = array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
             'x__right' => $i__id,
         );
         if(count($exclude_es)){

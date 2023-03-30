@@ -718,7 +718,7 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $join_objects = array('x__right');
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
             'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31870' /* PUBLIC */ : 'n___31874' /* FEATURED */  ))) . ')' => null,
             'x__up' => $e__id,
         );
