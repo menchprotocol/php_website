@@ -1296,6 +1296,7 @@ function random_adjective(){
 
 function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true){
 
+    $CI =& get_instance();
     $twilio_account_sid = website_setting(30859);
     $twilio_auth_token = website_setting(30860);
     $twilio_from_number = website_setting(27673);
@@ -1303,7 +1304,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
 
         //No way to send an SMS:
         if($log_tr){
-            $this->X_model->create(array(
+            $CI->X_model->create(array(
                 'x__message' => 'send_sms() missing either: '.$twilio_account_sid.' / '.$twilio_auth_token.' / '.$twilio_from_number,
                 'x__type' => 4246, //Platform Bug Reports
                 'x__creator' => $e__id,
@@ -1348,7 +1349,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
 
     //Log transaction:
     if($log_tr){
-        $this->X_model->create(array_merge($x_data, array(
+        $CI->X_model->create(array_merge($x_data, array(
             'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
             'x__creator' => $e__id,
             'x__message' => $single_message,
