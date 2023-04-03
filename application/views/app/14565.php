@@ -54,7 +54,7 @@ if(!count($primary_i)){
 
 
 echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . $primary_i['i__title'] . '</h1>';
-echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.$primary_i['i__title'].'\'); }); </script> ';
+echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.stripslashes($primary_i['i__title']).'\'); }); </script> ';
 
 
 //Start darker background:
