@@ -150,7 +150,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 
     $custom_css = website_setting(33818);
-    if(strlen($custom_css)){
+    if(strlen($custom_css) || isset($_GET['css'])){
         echo '<link href="'.$custom_css.'?cache_buster='.$this->config->item('cache_buster').'" rel="stylesheet">';
     }
 
