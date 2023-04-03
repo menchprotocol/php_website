@@ -1611,7 +1611,7 @@ function view_list_sources($x__creator, $x){
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
-        . '<div class="payment_box">'. ( $x['e__id']==30976 /* Hack: Location loads with Google Maps */ ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
+        . '<div class="payment_box">'. ( in_array($x['e__id'], $this->config->item('n___33349')) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note css__title">'.$x['x__message'].'</a>' : '<div class="sub_note css__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
         . '</div>';
 
     /*
