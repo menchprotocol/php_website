@@ -148,6 +148,15 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <!-- Load Fonts Dynamically -->
     <?php
 
+
+    $custom_css = website_setting(33818);
+    if(strlen($custom_css)){
+        echo '<link href="'.$custom_css.'?cache_buster='.$this->config->item('cache_buster').'" rel="stylesheet">';
+    }
+
+
+
+
     echo '<style> ';
 
     //Font Helps:
@@ -198,11 +207,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             }
             ';
         }
-    }
-
-    $custom_css = website_setting(33818);
-    if(strlen($custom_css)){
-        echo '<link href="'.$custom_css.'?cache_buster='.$this->config->item('cache_buster').'" rel="stylesheet">';
     }
 
 
