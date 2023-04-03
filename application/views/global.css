@@ -4094,7 +4094,8 @@ main {
 }
 
 
-.home_black_font h1 { color:#000000 !important; }
+.home_black_font h1 { color:#000000 !important; text-shadow: 2px 2px 5px #FFFFFF; }
+.home_white_font h1 { color:#FFFFFF !important; text-shadow: 2px 2px 5px #000000; }
 
 .halfbg .halfbg,
 .halfbg .msg>span,

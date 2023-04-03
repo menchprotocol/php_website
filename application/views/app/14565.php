@@ -8,6 +8,8 @@ $expanded_space = in_array($website_id , $this->config->item('n___31025'));
 $double_contact = in_array($website_id , $this->config->item('n___31029'));
 if(in_array($website_id, $this->config->item('n___30984'))){
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_black_font\'); }); </script> ';
+} else {
+    echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_white_font\'); }); </script> ';
 }
 
 
