@@ -94,7 +94,7 @@ class App extends CI_Controller
                 ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                     $ui = $latest_cache['x__message'];
                     $cache_x__id = $latest_cache['x__id'];
-                    $cache_x__time = '<div class="texttransparent center css__title">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
+                    $cache_x__time = '<div class="texttransparent center main__title">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
                 }
                 if(!$ui){
                     //No recent cache found, create a new one:
@@ -245,7 +245,7 @@ class App extends CI_Controller
         if($total_items_loaded > 0){
 
             //Subsequent messages:
-            $message .= '<div class="css__title x-info grey">'.( $x_count[0]['total_count']>$total_items_loaded ? ( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) : '') . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
+            $message .= '<div class="main__title x-info grey">'.( $x_count[0]['total_count']>$total_items_loaded ? ( $has_more_x && $query_offset==0  ? 'FIRST ' : ($query_offset+1).' - ' ) . ( $total_items_loaded >= ($query_offset+1) ?  $total_items_loaded . ' OF ' : '' ) : '') . number_format($x_count[0]['total_count'] , 0) .' TRANSACTIONS:</div>';
 
         }
 

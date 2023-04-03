@@ -204,7 +204,7 @@ li a {
     border-top-width: 0 !important;
     border-radius: 21px !important;
 }
-.itemsetting.active .css__title {
+.itemsetting.active .main__title {
     color: #000000;
 }
 .avatar-item.active i, .btn-group a.active i, .itemsetting.active i, .itemsetting:hover i{
@@ -228,7 +228,7 @@ li a {
 }
 
 /* FONTS */
-.css__title, .headline, .btn {
+.main__title, .headline, .btn {
     font-weight: bold;
     text-decoration: none;
 }
@@ -1393,7 +1393,7 @@ label {
 .dropdown-item:focus,
 .dropdown-item:hover,
 .dropdown-item:hover i,
-.dropdown-item:hover .css__title{
+.dropdown-item:hover .main__title{
     color: #000000 !important;
 }
 .dropdown-item, .dropdown-item {
@@ -1406,7 +1406,7 @@ label {
     cursor: default !important;
 }
 
-.list-group-item .css__title, .list-group-item{
+.list-group-item .main__title, .list-group-item{
     text-decoration: none;
 }
 
@@ -2149,7 +2149,7 @@ input.form-control {
     min-height: 25px;
     line-height: 75%;
 }
-.card_cover div.css__title{
+.card_cover div.main__title{
     padding: 0;
 }
 .mini-cover{
@@ -2209,13 +2209,13 @@ input.form-control {
     margin-top:0;
 }
 
-.cover-content .inner-content .css__title {
+.cover-content .inner-content .main__title {
     padding:3px 0 0;
     display: block;
     min-height: 21px;
 }
 
-#container_search .cover-content .inner-content .css__title {
+#container_search .cover-content .inner-content .main__title {
     max-height: 110px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -2509,7 +2509,7 @@ input.form-control {
 .the_counter b i{
     font-size: 1em !important;
 }
-.the_counter .css__title, .the_counter.css__title{
+.the_counter .main__title, .the_counter.main__title{
     color:#000000 !important;
 }
 textarea {
@@ -2528,7 +2528,7 @@ textarea {
 .focus-cover .inner-content textarea {
     line-height: 220%;
 }
-.focus-cover .inner-content .css__title {
+.focus-cover .inner-content .main__title {
     font-size: 1.15em;
     line-height: 128%;
     padding: 13px !important;
@@ -2576,7 +2576,7 @@ textarea {
     font-size: 1.2rem;
     margin-bottom: 13px;
 }
-h4.css__title{
+h4.main__title{
     margin-bottom: 0;
 }
 
@@ -2752,7 +2752,7 @@ h4.css__title{
 
 
 
-    .focus-cover .inner-content .css__title {
+    .focus-cover .inner-content .main__title {
         font-size: 1.15em;
     }
     .the_counter{
@@ -2863,7 +2863,7 @@ h4.css__title{
     color: #FFFFFF !important;
 }
 .custom_ui_13884_13886 .list-group-item,
-.custom_ui_13884_13886 .cover-content .css__title,
+.custom_ui_13884_13886 .cover-content .main__title,
 .custom_ui_13884_13886 .cover-content a,
 .custom_ui_13884_13886 .cover-content,
 .custom_ui_13884_13886 .texttype__lg,
@@ -2884,7 +2884,7 @@ h4.css__title{
 .custom_ui_13884_13886 .cover-btn i,
 .custom_ui_13884_13886 .icon-block i,
 .custom_ui_13884_13886 .platform-navigation a,
-.custom_ui_13884_13886 .css__title,
+.custom_ui_13884_13886 .main__title,
 .custom_ui_13884_13886 a,
 .custom_ui_13884_13886 .close span,
 .custom_ui_13884_13886 .fa-gif-wrap,
@@ -3008,7 +3008,7 @@ h4.css__title{
 .alert a,
 .alert i,
 .custom_ui_13884_13885 .list-group-item,
-.custom_ui_13884_13885 .cover-content .css__title,
+.custom_ui_13884_13885 .cover-content .main__title,
 .custom_ui_13884_13885 .cover-content a,
 .custom_ui_13884_13885 .cover-content,
 .custom_ui_13884_13885 .texttype__lg,
@@ -3307,7 +3307,7 @@ h4.css__title{
     border-color: #FC1B44 !important;
 }
 
-.coin-12273 .cover-content .css__title,
+.coin-12273 .cover-content .main__title,
 .coin-12273 .cover-content a {
     color: #000000 !important;
 }
@@ -3750,12 +3750,12 @@ h4.css__title{
     text-align: left;
     margin-top: 10px;
 }
-.inner-content .css__title{
+.inner-content .main__title{
     text-align: left;
     padding: 0 2px !important;
 }
-.coin-12274 .inner-content .css__title,
-.coin-6287 .inner-content .css__title{
+.coin-12274 .inner-content .main__title,
+.coin-6287 .inner-content .main__title{
     text-align: center;
 }
 .coin-12274 .cover-content,
@@ -3855,7 +3855,7 @@ h4.css__title{
     width: calc(100% - 55px);
     padding-top: 16px;
 }
-h4.css__title{
+h4.main__title{
     width:100%;
 }
 
@@ -4120,7 +4120,7 @@ main {
 
 
 .halfbg .glossy-bg .list-group-item-action:hover,
-.halfbg .glossy-bg .list-group-item-action:hover .css__title{
+.halfbg .glossy-bg .list-group-item-action:hover .main__title{
     background: #FFFFFF !important;
     color: #000000 !important;
 }

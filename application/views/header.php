@@ -161,10 +161,10 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         if(isset($e___29711[$e__id]) && isset($e___29763[$e__id])){
             array_push($google_fonts, $e___29711[$e__id]['m__message']);
             echo '
-            .custom_ui_14506_'.$e__id.'.css__title.itemsetting,
+            .custom_ui_14506_'.$e__id.'.main__title.itemsetting,
             .custom_ui_14506_'.$e__id.' h1,
             .custom_ui_14506_'.$e__id.' h2,
-            .custom_ui_14506_'.$e__id.' .css__title,
+            .custom_ui_14506_'.$e__id.' .main__title,
             .custom_ui_14506_'.$e__id.' .headline,
             .custom_ui_14506_'.$e__id.' .btn,
             .custom_ui_14506_'.$e__id.' .algolia_pad_search,
@@ -188,7 +188,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         if(isset($e___29711[$e__id]) && isset($e___29763[$e__id])){
             array_push($google_fonts, $e___29711[$e__id]['m__message']);
             echo '
-            .custom_ui_29700_'.$e__id.'.css__title.itemsetting,
+            .custom_ui_29700_'.$e__id.'.main__title.itemsetting,
             .custom_ui_29700_'.$e__id.' div,
             .custom_ui_29700_'.$e__id.' p,
             .custom_ui_29700_'.$e__id.' html,
@@ -198,6 +198,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             }
             ';
         }
+    }
+
+    $custom_css = website_setting(33818);
+    if(strlen($custom_css)){
+        echo '<link href="'.$custom_css.'?cache_buster='.$this->config->item('cache_buster').'" rel="stylesheet">';
     }
 
 
@@ -380,7 +385,7 @@ if(!$basic_header_footer){
                     } else {
                         $padding_hack = 7; //For Emoji
                     }
-                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="css__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
+                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
 
 
 
@@ -479,7 +484,7 @@ if(!$basic_header_footer){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' x__type="'.$x__type.'" class="dropdown-item css__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' x__type="'.$x__type.'" class="dropdown-item main__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 
@@ -503,7 +508,7 @@ if(!$basic_header_footer){
 
 <div class="container top_message_box hidden">
 
-    <h5 class="css__title"><?= $e___11035[27963]['m__title'] ?></h5>
+    <h5 class="main__title"><?= $e___11035[27963]['m__title'] ?></h5>
 
     <input type="hidden" id="modal_i__id" value="0" />
     <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>

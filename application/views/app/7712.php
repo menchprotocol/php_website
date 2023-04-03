@@ -30,7 +30,7 @@ foreach($this->I_model->fetch(array(
 
         echo '<li>';
         echo '<a href="/~'.$down_or['i__id'].'">'.view_i_title($down_or).'</a>';
-        echo ( $x_covers[0]['totals'] > 0 ? ' <span class="zq6255 css__title"><i class="fas fa-circle zq6255"></i> '.$x_covers[0]['totals'].'</span>' : '' );
+        echo ( $x_covers[0]['totals'] > 0 ? ' <span class="zq6255 main__title"><i class="fas fa-circle zq6255"></i> '.$x_covers[0]['totals'].'</span>' : '' );
         echo '</li>';
 
     }

@@ -235,7 +235,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
     function app_4341(x_filters, x_joined_by, page_num){
 
         //Show spinner:
-        $('#x_page_'+page_num).html('<div class="css__title center"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
+        $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
         $.post("/app/app_4341", {
@@ -262,7 +262,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 <?php
 
 
-echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="css__title">'.$e___11035[12707]['m__title'].'</a></div>';
+echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">'.$e___11035[12707]['m__title'].'</a></div>';
 
 
 echo '<div class="show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';

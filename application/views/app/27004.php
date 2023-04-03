@@ -53,7 +53,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
 
         echo '<table class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
-        echo '<tr style="vertical-align: baseline;" class="css__title">';
+        echo '<tr style="vertical-align: baseline;" class="main__title">';
         echo '<th id="th_primary">&nbsp;</th>';
         echo '<th style="text-align: right;" id="th_paid">Tickets<br />/Payout</th>';
         echo '</tr>';
@@ -94,7 +94,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
                 //See if this payment idea has any payments?
                 echo '<tr>';
-                echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="css__title">'.$e['e__title'].'</a></td>';
+                echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></td>';
                 echo '<td style="text-align: right;">'.number_format($this_quantity, 0).'x $'.number_format($this_revenue, 0).'</td>';
                 echo '</tr>';
 
@@ -106,7 +106,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         }
 
         //Totals
-        echo '<tr class="css__title" style="font-size: 1.3em;">';
+        echo '<tr class="main__title" style="font-size: 1.3em;">';
         echo '<td>Totals</td>';
         echo '<td style="text-align: right;">'.number_format($total_quantity, 0).'x $'.number_format($total_revenue, 0).'</td>';
         echo '</tr>';
@@ -288,7 +288,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $transaction_content .= '<tr class="transaction_columns hidden"></tr>';
         }
 
-        $sale_type_content .= '<tr class="css__title">';
+        $sale_type_content .= '<tr class="main__title">';
         $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
@@ -334,7 +334,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $e___4593 = $this->config->item('e___4593');
 
         //Show Other Sources:
-        $other_source_content .= '<tr class="css__title">';
+        $other_source_content .= '<tr class="main__title">';
         $other_source_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$e___4593[29393]['m__title'].'</u></a></td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
@@ -376,7 +376,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 if(count($i_query)){
 
     echo '<table id="sortable_table" class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
-    echo '<tr style="vertical-align: baseline;" class="css__title">';
+    echo '<tr style="vertical-align: baseline;" class="main__title">';
     echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
@@ -393,7 +393,7 @@ if(count($i_query)){
     echo $other_source_content;
     echo $sale_type_content;
 
-    echo '<tr class="css__title">';
+    echo '<tr class="main__title">';
     echo '<th style="text-align: left; font-weight: bold;" id="th_primary">Totals</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">'.$gross_transactions.'</th>';
     echo '<th style="text-align: right; font-weight: bold;" class="advance_columns hidden">&nbsp;</th>';

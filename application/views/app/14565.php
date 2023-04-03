@@ -133,10 +133,10 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
         $info_item .= '<div class="info_box">';
         if(filter_var($info_element['e__cover'], FILTER_VALIDATE_URL)){
             $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';
-            $info_item .= '<div class="info_box_title css__title">'.$info_element['e__title'].'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['e__title'].'</div>';
         } else {
             $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_element['e__cover']).'</div>';
-            $info_item .= '<div class="info_box_title css__title">'.$info_element['e__title'].'</div>';
+            $info_item .= '<div class="info_box_title main__title">'.$info_element['e__title'].'</div>';
         }
         if(strlen($info_element['x__message'])){
             $info_item .= '<div class="info_box_message">'.$info_element['x__message'].'</div>';

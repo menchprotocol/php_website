@@ -17,7 +17,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
                     <div class="modal-header">
-                        <h5 class="modal-title css__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
+                        <h5 class="modal-title main__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -37,7 +37,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 $editor_counter++;
                                 $dropdown_options .= '<option value="' . $action_e__id . '" title="'.$e_list_action['m__message'].'">' .$e_list_action['m__title'] . '</option>';
-                                $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' css__title ' : false );
+                                $is_upper = ( in_array($action_e__id, $this->config->item('n___12577') /* SOURCE UPDATER UPPERCASE */) ? ' main__title ' : false );
 
 
                                 //Start with the input wrapper:
@@ -160,7 +160,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
                     <div class="modal-header">
-                        <h5 class="modal-title css__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
+                        <h5 class="modal-title main__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -189,7 +189,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 //Source search box:
 
                                 //String command:
-                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border css__title">';
+                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border main__title">';
 
                                 //We don't need the second value field here:
                                 $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -199,7 +199,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 //Source search box:
 
                                 //String command:
-                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border css__title">';
+                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border main__title">';
 
                                 //We don't need the second value field here:
                                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -207,7 +207,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             } elseif(in_array($action_e__id, array(12611,12612,27240,28801))){
 
                                 //String command:
-                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border css__title">';
+                                $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border main__title">';
 
                                 //We don't need the second value field here:
                                 $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -246,7 +246,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal6225Label"><?= $e___11035[6225]['m__cover'].' '.$e___11035[6225]['m__title'] ?></h5>
+                    <h5 class="modal-title main__title" id="modal6225Label"><?= $e___11035[6225]['m__cover'].' '.$e___11035[6225]['m__title'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -265,7 +265,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal13571Label"><?= $e___11035[13571]['m__cover'].' '.$e___11035[13571]['m__title'] ?></h5>
+                    <h5 class="modal-title main__title" id="modal13571Label"><?= $e___11035[13571]['m__cover'].' '.$e___11035[13571]['m__title'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -300,7 +300,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
+                    <h5 class="modal-title main__title" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -317,7 +317,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <a name="preview_cover" style="height: 1px;">&nbsp;</a>
                                 <div class="card_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
                                     <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                                    <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="card__title" class="form-control css__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
+                                    <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="card__title" class="form-control main__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
                                 </div>
 
 
@@ -388,12 +388,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
                 <div class="modal-header">
-                    <h5 class="modal-title css__title" id="modal14073Label"><?= $e___11035[14073]['m__cover'].' '.$e___11035[14073]['m__title'] ?></h5>
+                    <h5 class="modal-title main__title" id="modal14073Label"><?= $e___11035[14073]['m__cover'].' '.$e___11035[14073]['m__title'] ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="modal_x__type" value="0" />
-                    <input type="text" class="form-control text-edit border css__title images_query" placeholder="Search GIFs..." onkeyup="images_search($('.images_query').val())" data-lpignore="true" />
+                    <input type="text" class="form-control text-edit border main__title images_query" placeholder="Search GIFs..." onkeyup="images_search($('.images_query').val())" data-lpignore="true" />
                     <div class="row new_images margin-top-down hideIfEmpty"></div>
                 </div>
             </div>

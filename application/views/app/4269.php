@@ -246,7 +246,7 @@ if(superpower_unlocked()) {
                 } else {
 
                     //Show errors:
-                    $('#account_email_phone_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                    $('#account_email_phone_errors').html('<b class="main__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
                     $('#account_email_phone').focus();
 
                 }
@@ -288,7 +288,7 @@ if(superpower_unlocked()) {
                     code_checking = false;
                     $('#code_check_next').html(go_next_icon);
                     $('#input_code').prop('disabled', false).focus();
-                    $('#sign_code_errors').html('<b class="css__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                    $('#sign_code_errors').html('<b class="main__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
 
                 }
             });
@@ -326,7 +326,7 @@ if(superpower_unlocked()) {
 
                 <?= '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>'; ?>
 
-                <span class="css__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
+                <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
 
                 <div class="form-group"><input type="text" autocapitalize="none" placeholder="your@email.com or 7781234567" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
 
@@ -381,16 +381,16 @@ if(superpower_unlocked()) {
                 <!-- New Account (If not found) -->
                 <div class="margin-top-down new_account hidden">
 
-                    <div class="css__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+                    <div class="main__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
 
                     <!-- Enter Full Name -->
-                    <span class="css__title" style="padding:34px 0 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
-                    <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border css__title white-border" /></div>
+                    <span class="main__title" style="padding:34px 0 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
+                    <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border main__title white-border" /></div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
-                        <div class="css__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
-                        <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border css__title white-border" /></div>
+                        <div class="main__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
+                        <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title white-border" /></div>
                     </div>
 
                     <div class="doclear">&nbsp;</div>

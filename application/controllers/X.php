@@ -108,7 +108,7 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => '<b class="css__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
+            'x__type_preview' => '<b class="main__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
             'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">' . preview_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true) . '</span>' : '' ),
             'in_history' => $in_history,
             'x__history_preview' => $x__history_preview,
