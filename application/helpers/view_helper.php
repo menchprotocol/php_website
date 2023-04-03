@@ -56,7 +56,7 @@ function preview_x__message($x__message, $x__type, $full_message = null, $has_di
 
     } elseif ($x__type == 4260 /* Image URL */) {
 
-        return '<img src="' . $x__message . '" class="content-image" />';
+        return '<img src="' . trim($x__message) . '" class="content-image" />';
 
     } elseif ($x__type == 4259 /* Audio URL */) {
 
