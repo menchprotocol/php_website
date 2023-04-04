@@ -2004,7 +2004,7 @@ i, .btn .show-max {
     display: block;
     margin: 0 2px;
     max-height: 68%;
-    top:43px;
+    top:36px;
 }
 
 .list-answers .cover-content{
@@ -2029,7 +2029,7 @@ input.form-control {
 }
 
 .coin-12273 .cover-content{
-    top:43px;
+    top:36px;
 }
 .coin-12273.focus-cover .cover-content{
     top:42px;
