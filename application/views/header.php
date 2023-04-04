@@ -150,7 +150,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 
     $custom_css = website_setting(33818);
-    if(strlen($custom_css) || isset($_GET['css'])){
+    if(strlen($custom_css)){
         echo '<link href="'.$custom_css.'?cache_buster='.$this->config->item('cache_buster').'" rel="stylesheet">';
     }
 
@@ -268,7 +268,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo '}';
 
             echo ' .halfbg, .msg>span { background: rgba(0, 0, 0, 0.69) !important; border-radius: 21px; } ';
-            echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 21px; } ';
+            echo ' .fixed-top { background: #000000 !important; border-radius: 21px; } ';
             echo ' .top-header-position.fixed-top { background: none !important; } ';
 
             echo ' .msg>span { display: block; padding: 0; } ';
