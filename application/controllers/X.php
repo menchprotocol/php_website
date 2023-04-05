@@ -1077,7 +1077,6 @@ class X extends CI_Controller
         $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
             'x__type' => 31022, //Skipped
             'x__creator' => $member_e['e__id'],
-            'x__message' => $_POST['x_reply'],
         ));
         //All good:
         return view_json(array(
