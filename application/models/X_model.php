@@ -1577,7 +1577,7 @@ class X_model extends CI_Model
         //Now let's check possible expansions:
         foreach($this->X_model->fetch(array(
             //'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
-            'x__type' => 12336,
+            'x__type' => 6157,
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             //'x__right IN (' . join(',', $this->I_model->recursive_down_ids($i, 'ALL') ) . ')' => null, //Constrain to this tree TODO Expensive operation maybe remove or optimize somehow
