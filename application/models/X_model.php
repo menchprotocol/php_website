@@ -1579,6 +1579,7 @@ class X_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
+            'x__right IN (' . join(',', $this->I_model->recursive_down_ids($i, 'ALL') ) . ')' => null, //Constrain to this tree TODO Expensive operation maybe remove or optimize somehow
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right')) as $expansion_in) {
