@@ -1233,6 +1233,10 @@ class X_model extends CI_Model
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $add_fields['x__creator'],
                         'x__left' => $next_i['i__id'],
+                    ))) && !count($this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type' => 4231, //IDEA NOTES Messages
+                        'x__right' => $next_i['i__id'],
                     )))){
                     //Mark as complete:
                     $this->X_model->mark_complete($top_i__id, $next_i, array(
