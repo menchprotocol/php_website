@@ -829,7 +829,7 @@ class X extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Unknown error 2 while trying to save file.',
+                'message' => 'Unknown error (2) while trying to save file.',
             ));
 
         } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
@@ -1042,6 +1042,47 @@ class X extends CI_Controller
         return view_json(array(
             'status' => 1,
             'message' => 'Saved & Next...',
+        ));
+
+    }
+
+    function x_skip(){
+
+
+        //Validate/Fetch idea:
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        } elseif (!isset($_POST['top_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top idea ID.',
+            ));
+        }
+
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ));
+
+        //Log Skip:
+        $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
+            'x__type' => 31022, //Skipped
+            'x__creator' => $member_e['e__id'],
+            'x__message' => $_POST['x_reply'],
+        ));
+        //All good:
+        return view_json(array(
+            'status' => 1,
+            'message' => 'Skipped & Next...',
         ));
 
     }

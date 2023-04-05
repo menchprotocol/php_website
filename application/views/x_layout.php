@@ -1088,10 +1088,14 @@ echo '</div>';
             //SELECT ONE/SOME
             return x_select(go_next_url);
 
-        } else if (is_logged_in && focus_i__type==7637 && (!can_skip && !$('.file_saving_result').html().length) ) {
+        } else if (is_logged_in && focus_i__type==7637 && !$('.file_saving_result').html().length ) {
 
-            //Must upload file first:
-            alert('Please upload a file before going next.');
+            if(!can_skip){
+                //Must upload file first:
+                alert('Please upload a file before going next.');
+            } else {
+                x_skip(go_next_url);
+            }
 
         } else if (is_logged_in && focus_i__type==26560 ) {
 
@@ -1204,6 +1208,24 @@ echo '</div>';
             }
         });
     }
+
+
+    function x_skip(go_next_url){
+        $.post("/x/x_skip", {
+            top_i__id:$('#top_i__id').val(),
+            i__id:fetch_val('#focus_id'),
+        }, function (data) {
+            if (data.status) {
+                //Go to redirect message:
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                js_redirect(go_next_url);
+            } else {
+                //Show error:
+                alert(data.message);
+            }
+        });
+    }
+
 
     function x_free_ticket(go_next_url){
         $.post("/x/x_free_ticket", {
