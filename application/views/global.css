@@ -2003,7 +2003,7 @@ i, .btn .show-max {
     overflow-y: auto;
     display: block;
     margin: 0 2px;
-    max-height: 68%;
+    max-height: 72%;
     top:36px;
 }
 
@@ -2011,7 +2011,7 @@ i, .btn .show-max {
     top:48px;
 }
 .list-answers .coin-6255 .cover-content{
-    top:42px;
+    top:40px;
 }
 
 
@@ -2032,7 +2032,7 @@ input.form-control {
     top:36px;
 }
 .coin-12273.focus-cover .cover-content{
-    top:42px;
+    top:40px;
 }
 .hide-subline .subtle-line {
     display: none;
