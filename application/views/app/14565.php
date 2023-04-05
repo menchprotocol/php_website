@@ -85,7 +85,7 @@ echo '</div>';
 
 
 
-$minimal_home = intval(website_setting(32463));
+$minimal_home = intval(website_setting(33922));
 
 //SOCIAL FOOTER
 $domain_phone =  website_setting(28615);
