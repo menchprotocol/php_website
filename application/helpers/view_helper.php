@@ -1942,7 +1942,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="'.($discovery_mode ? 'coinType12274 coinType6255' : 'coinType12274' ) . ' card_privacy_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_privacy_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
     $ui .= '</div>';
