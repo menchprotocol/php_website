@@ -653,7 +653,12 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
       <h4 class="main__title"><b>'.( strlen($s__cover) ? '<span class="icon-block-lg title-left">'.( $m_cover ? $s__cover : view_cover(($e__id>0 ? 12274 : 12273),$s__cover) ).'</span><span class="title-right">'.$s__title.'</span>' : $s__title ).'</b></h4>
       <small style="padding: 1px 3px 0 0;"><i class="far fa-chevron-right"></i></small>
     </div>
-    '.( strlen($desc) ? '<p>'.$desc.'</p>' : '' ) .'
+    '.( strlen($desc) && !count($CI->X_model->fetch(array(
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__right' => $i__id,
+            'x__up' => 33922, //Disable Cover Photo
+        ))) ? '<p>'.$desc.'</p>' : '' ) .'
     
   </a>';
 
