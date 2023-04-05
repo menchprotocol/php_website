@@ -997,12 +997,12 @@ class X_model extends CI_Model
                 } elseif(count($e_links)==1){
 
                     //Just show one:
-                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'"><span class="icon-block-xxs">' . view_cover(12274,$es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
+                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'"><span class="icon-block-xs">' . view_cover(12274,$es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
 
                 } else {
 
                     //List all links:
-                    $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xxs">' . view_cover(12274,$es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
+                    $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover(12274,$es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
                     foreach($e_links as $e_link){
                         $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover(12274,$e_link['e__cover'], true).'</span>'.$e_link['e__title'].'</a>';
                     }
