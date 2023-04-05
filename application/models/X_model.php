@@ -945,18 +945,13 @@ class X_model extends CI_Model
 
                     if (in_array($e_up['x__type'], $this->config->item('n___12524'))) {
 
+                        if($e_up['x__type'] == 4256 /* URL */) {
+                            array_push($e_links, $e_up);
+                        }
+
                         //SOURCE LINK VISUAL
                         $e_media_count++;
                         $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_up['x__message'], $e_up['x__type'], $message_input, $is_discovery_mode) . '</div>';
-
-                    } elseif($e_up['x__type'] == 4256 /* URL */) {
-
-                        array_push($e_links, $e_up);
-
-                    } else {
-
-                        //Text and Percentage, etc...
-                        //$e_appendix .= '<div class="e-appendix paddingup"><span class="icon-block-xs">' . view_cover(12274,$e_up['e__cover'], true).'</span>' . $e_up['e__title'].': ' . $e_up['x__message'] . '</div>';
 
                     }
                 }
