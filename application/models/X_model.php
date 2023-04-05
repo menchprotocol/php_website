@@ -922,8 +922,6 @@ class X_model extends CI_Model
             $e_links = array();
             $first_segment = $this->uri->segment(1);
             $is_current_e = ( $first_segment == '@'.$referenced_e );
-            $tooltip_info = null;
-
 
             //Determine what type of Media this reference has:
             if(!$is_current_e || $string_references['ref_time_found']){
@@ -945,12 +943,7 @@ class X_model extends CI_Model
 
                     $e_count++;
 
-                    if (in_array($e_up['x__type'], $this->config->item('n___13899'))) {
-
-                        //TOOLTIP INFO
-                        $tooltip_info .= ( strlen($tooltip_info) ? ' | ' : '' ).$e_up['e__title'].': ' . str_replace("\n",' ',$e_up['x__message']);
-
-                    } elseif (in_array($e_up['x__type'], $this->config->item('n___12524'))) {
+                    if (in_array($e_up['x__type'], $this->config->item('n___12524'))) {
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
@@ -973,16 +966,12 @@ class X_model extends CI_Model
 
             //Append any appendix generated:
             $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
-            $tooltip_class = ( $tooltip_info ? ' title="'.$tooltip_info.'" data-toggle="tooltip" data-placement="bottom" ' : null );
-            $tooltip_underdot = ( $tooltip_info ? ' underdot ' : null );
 
             $edit_btn = false;
             if(strlen($es[0]['e__cover'])){
                 if(!$is_discovery_mode && e_of_e($es[0]['e__id'])){
-                    $tooltip_class .= ' class="inline-block ignore-click" card__type="12274" card__id="' . $es[0]['e__id'] . '" ';
                     $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover(12274,$es[0]['e__cover'], true).'</span> ';
                 } else {
-                    $tooltip_class .= ' class="inline-block" ';
                     $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover(12274,$es[0]['e__cover'], true).'</span> ';
                 }
             }
@@ -1031,16 +1020,16 @@ class X_model extends CI_Model
             //Displays:
             if($on_its_own_line){
 
-                $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span>';
+                $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>';
                 $the_title = false; //TODO Remove later if wanted subtitles back...
 
                 if($new_lines <= 1){
-                    $output_body_message = $e_appendix.str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? '<span '.$tooltip_class.'>'.$the_title.'</span>' : '' ).$e_dropdown, $output_body_message); //'.$edit_btn.'
+                    $output_body_message = $e_appendix.str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $the_title : '' ).$e_dropdown, $output_body_message); //'.$edit_btn.'
                 } else {
-                    $output_body_message = str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? '<span '.$tooltip_class.'>'.$edit_btn.$the_title.'</span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
+                    $output_body_message = str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $edit_btn.$the_title : '' ).$e_dropdown, $output_body_message).$e_appendix;
                 }
             } else {
-                $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? '<span '.$tooltip_class.'>'.$edit_btn.'<span class="text__6197_'.$es[0]['e__id'].$tooltip_underdot.'">' . $es[0]['e__title'] . '</span></span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
+                $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? $edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
             }
 
         }
