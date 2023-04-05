@@ -317,7 +317,7 @@ if($top_i__id) {
                 //See if this answer was selected:
                 if (count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY IDEA LINK
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
                     'x__left' => $i['i__id'],
                     'x__right' => $x['i__id'],
                     'x__creator' => $x__creator,
@@ -350,7 +350,7 @@ if($top_i__id) {
                 //Has this been previously selected?
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
                     'x__left' => $i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__creator' => $x__creator,

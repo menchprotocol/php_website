@@ -1061,7 +1061,7 @@ class X_model extends CI_Model
             $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
             $is_selected = count($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
                 'x__left' => $i_previous['i__id'],
                 'x__right' => $i__id,
                 'x__creator' => $e__id,
@@ -1122,7 +1122,7 @@ class X_model extends CI_Model
             $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
             $is_selected = count($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
                 'x__left' => $i['i__id'],
                 'x__right' => $next_i['i__id'],
                 'x__creator' => $e__id,
@@ -1222,7 +1222,7 @@ class X_model extends CI_Model
         if(in_array($i['i__type'], $this->config->item('n___7712'))){
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY ANSWERED
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
                 'x__creator' => $add_fields['x__creator'],
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0) as $next_i){
@@ -1576,11 +1576,9 @@ class X_model extends CI_Model
 
         //Now let's check possible expansions:
         foreach($this->X_model->fetch(array(
-            //'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //DISCOVERY EXPANSIONS
-            'x__type' => 6157,
+            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
-            //'x__right IN (' . join(',', $this->I_model->recursive_down_ids($i, 'ALL') ) . ')' => null, //Constrain to this tree TODO Expensive operation maybe remove or optimize somehow
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right')) as $expansion_in) {
