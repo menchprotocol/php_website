@@ -354,8 +354,8 @@ if(superpower_unlocked()) {
 
 
 
-                //GUEST LOGIN:
-                if(view_memory(6404,6197)){
+                //ANONYMOUS LOGIN:
+                if(intval(view_memory(6404,14938))){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
                     echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" onclick="load_away()" class="btn btn-large btn-default">';
