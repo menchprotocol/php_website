@@ -794,6 +794,15 @@ class X extends CI_Controller
 
         } elseif (!isset($_POST['i__id'])) {
 
+            //Log this error!
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'x_upload() Missing POST ERROR',
+                'x__metadata' => array(
+                    'post' => $_POST,
+                ),
+            ));
+
             return view_json(array(
                 'status' => 0,
                 'post' => $_POST,
