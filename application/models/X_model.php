@@ -943,11 +943,11 @@ class X_model extends CI_Model
 
                     $e_count++;
 
-                    if (in_array($e_up['x__type'], $this->config->item('n___12524'))) {
+                    if($e_up['x__type'] == 4256 /* URL */) {
 
-                        if($e_up['x__type'] == 4256 /* URL */) {
-                            array_push($e_links, $e_up);
-                        }
+                        array_push($e_links, $e_up);
+
+                    } elseif (in_array($e_up['x__type'], $this->config->item('n___12524'))) {
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
