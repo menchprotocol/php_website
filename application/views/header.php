@@ -97,9 +97,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         }
     }
     echo '</script>';
-    //    <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
 
-
+    //Latest version of twitter bootstrap:
     echo view_memory(6404,4523);
     ?>
 
