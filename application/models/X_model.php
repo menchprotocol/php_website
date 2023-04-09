@@ -435,7 +435,7 @@ class X_model extends CI_Model
 
         } elseif($element_id==6177){
 
-            //SOURCE TYPE
+            //SOURCE ACCESS
 
             //Delete?
             if(!in_array($new_e__id, $this->config->item('n___7358'))){
@@ -485,7 +485,7 @@ class X_model extends CI_Model
 
         } elseif($element_id==31004){
 
-            //IDEA PRIVACY
+            //IDEA ACCESS
 
             //Delete?
             if(!in_array($new_e__id, $this->config->item('n___31871'))){

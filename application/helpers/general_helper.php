@@ -221,7 +221,7 @@ function detect_data_type($string)
 
         return array(
             'status' => 1,
-            'x__type' => 4230, //Follow Source
+            'x__type' => 34162, //Null
         );
 
     } elseif($has_space){
