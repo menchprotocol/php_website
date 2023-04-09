@@ -8,7 +8,7 @@ echo '<div class="row">';
 foreach($this->X_model->fetch(array(
     'x__up' => 30841, //Featured Apps
     'x__down NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
@@ -33,7 +33,7 @@ foreach($this->X_model->fetch(array(
 foreach($this->X_model->fetch(array(
     'x__up' => 6287, //Featured Apps
     'x__down NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {

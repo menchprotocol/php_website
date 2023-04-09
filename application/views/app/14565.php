@@ -125,7 +125,7 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
     $info_item = null;
     foreach($this->X_model->fetch(array(
         'x__up' => $e_item['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC')) as $info_element) {

@@ -83,7 +83,7 @@ foreach($es as $en){
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__up' => $en['e__id'],
     ), array('x__down'), 0, 0) as $e_down){
 

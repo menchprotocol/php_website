@@ -75,7 +75,7 @@ class I extends CI_Controller {
                     'x__up' => $append_e__id,
                     'x__down' => $x['x__creator'],
                     'x__message' => $x['x__message'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                     //Add source link:
@@ -85,7 +85,7 @@ class I extends CI_Controller {
                         'x__up' => $append_e__id,
                         'x__down' => $x['x__creator'],
                         'x__message' => $x['x__message'],
-                        'x__type' => e_x__type($x['x__message']),
+                        'x__type' => 4230,
                     ));
                 }
             }

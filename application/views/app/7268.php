@@ -9,7 +9,7 @@ if(isset($_GET['e__id'])){
     $duplicates_found = array();
     foreach($this->X_model->fetch(array(
         'x__up' => $_GET['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0) as $x) {
         $x__message_md5 = substr(md5($x['x__message']), 0, 16);

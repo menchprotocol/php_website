@@ -2405,6 +2405,7 @@ input.form-control {
     display: block;
     overflow: hidden;
     margin: 0 auto;
+    background-color: #FFFFFF;
 }
 .info-head{
     display: block;

@@ -52,13 +52,12 @@ if(count($preg_query)){
                         foreach($this->X_model->fetch(array(
                             'x__up' => $x_tag['e__id'],
                             'x__down' => $x['x__creator'],
-                            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         ), array(), 0) as $follow_appended) {
                             $links_updated++;
                             $this->X_model->update($follow_appended['x__id'], array(
                                 'x__message' => $new_form,
-                                'x__type' => e_x__type($new_form),
                             ));
                         }
                     }
@@ -79,7 +78,7 @@ if(count($preg_query)){
                         foreach($this->X_model->fetch(array(
                             'x__up' => $x_tag['e__id'],
                             'x__down' => $x['x__creator'],
-                            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         ), array(), 0) as $follow_appended) {
                             $links_removed++;

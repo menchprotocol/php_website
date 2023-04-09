@@ -157,14 +157,6 @@ function extract_cover_type($cover_code, $append_zq){
     }
 }
 
-function e_x__type($string = null){
-    $detected_x_type = x_detect_type($string);
-    if ($detected_x_type['status']){
-        return $detected_x_type['x__type'];
-    }
-    return 0;
-}
-
 function current_card_id(){
 
     /*
@@ -212,7 +204,7 @@ function int_hash($string){
 }
 
 
-function x_detect_type($string)
+function detect_data_type($string)
 {
 
     /*
@@ -229,7 +221,7 @@ function x_detect_type($string)
 
         return array(
             'status' => 1,
-            'x__type' => 4230, //Raw
+            'x__type' => 4230, //Follow Source
         );
 
     } elseif($has_space){
@@ -642,7 +634,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         if($x__creator > 0){
             foreach($fetch_13865 as $e_pre){
                 if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
                         'x__down' => $x__creator,
@@ -671,7 +663,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         if($x__creator > 0){
             foreach($fetch_27984 as $e_pre){
                 if($x__creator && (( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
                         'x__down' => $x__creator,
@@ -702,7 +694,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         if($x__creator > 0){
             foreach($fetch_26600 as $e_pre){
                 if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__up' => $e_pre['x__up'],
                         'x__down' => $x__creator,
@@ -870,7 +862,7 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
         $joined_by = array('x__down');
         $query_filters = array(
             'x__up' => 6287, //Featured Apps
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
         );
@@ -1385,7 +1377,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             $e_emails = $CI->X_model->fetch(array(
                 'x__up' => 3288, //Email
                 'x__down' => $e__id,
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
             if(count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)){
@@ -1540,7 +1532,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
     if(strlen($e__id)){
         $query = array_merge($query, $CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__up IN (' . $e__id . ')' => null,
@@ -1557,7 +1549,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         if (!count($CI->X_model->fetch(array(
             'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Subscriber
             'x__down' => $subscriber['e__id'],
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )))) {
             continue;
@@ -1565,7 +1557,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
         //Any exclusions?
         if(strlen($exclude_e) && count($CI->X_model->fetch(array(
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__up IN (' . $exclude_e . ')' => null,
                 'x__down' => $subscriber['e__id'],
@@ -1574,7 +1566,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         }
 
         if(strlen($include_e) && !count($CI->X_model->fetch(array(
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__up IN (' . $include_e . ')' => null,
                 'x__down' => $subscriber['e__id'],
@@ -1589,13 +1581,13 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $e_emails = $CI->X_model->fetch(array(
             'x__up' => 3288, //Email
             'x__down' => $subscriber['e__id'],
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
         $e_phones = $CI->X_model->fetch(array(
             'x__up' => 4783, //Phone
             'x__down' => $subscriber['e__id'],
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
 
@@ -1628,7 +1620,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
         $u_names = $CI->X_model->fetch(array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $subscriber['e__id'],
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 30198, //Full Name
         ));
 
@@ -1679,7 +1671,7 @@ function e_of_e($e__id, $member_e = array()){
 
         //If Source Follows this Member
         || count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
@@ -1736,7 +1728,7 @@ function sources_currently_sorted($e__id){
     return count( $CI->X_model->fetch(array(
         'x__weight >' => 0, //Sorted
         'x__up' => $e__id,
-        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 1) );
 }
@@ -1882,7 +1874,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             $db_rows[$loop_obj] = $CI->X_model->fetch(array(
                 'x__up' => 6287, //Featured Apps
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
             ), array('x__down'), 0);
@@ -2022,7 +2014,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                 //Fetch Following:
                 foreach($CI->X_model->fetch(array(
-                    'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__down' => $s['e__id'], //This follower source
                     'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -2064,7 +2056,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                 //Fetch Following:
                 foreach($CI->X_model->fetch(array(
-                    'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__down' => $s['e__id'], //This follower source
                     'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE

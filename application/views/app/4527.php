@@ -12,14 +12,14 @@ if($memory_detected){
     //EASY:
     $n___7357 = $this->config->item('n___7357'); //PUBLIC/OWNER
     $n___7359 = $this->config->item('n___7359');
-    $n___4592 = $this->config->item('n___4592');
+    $n___32292 = $this->config->item('n___32292');
 
 } else {
 
     //Define Manually (Might need to be updated)
     $n___7357 = array(6181,30826);
     $n___7359 = array(6176);
-    $n___4592 = array(4259,4257,4261,4260,4319,7657,4230,4255,4318,4256,4258,12827,26091,26092,26123);
+    $n___32292 = array(4259,4257,4261,4260,4319,7657,4230,4255,4318,4256,4258,12827,26091,26092,26123);
 
 }
 
@@ -27,7 +27,7 @@ if($memory_detected){
 foreach($this->X_model->fetch(array(
     'x__up' => 4527,
     'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
+    'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
     'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
 ), array('x__down'), 0) as $en){
 
@@ -35,7 +35,7 @@ foreach($this->X_model->fetch(array(
     $down__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
         'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
@@ -58,7 +58,7 @@ foreach($this->X_model->fetch(array(
         foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
             'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $n___4592) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
             'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
         ), array('x__up'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));

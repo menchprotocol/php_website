@@ -23,7 +23,7 @@ class E_model extends CI_Model
         //Remove from Anonymous:
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up IN (' . join(',', $this->config->item('n___32540')) . ')' => null, //Unsubscribers
             'x__down' => $e__id,
         )) as $unsubscriber_x){
@@ -40,7 +40,7 @@ class E_model extends CI_Model
         //Add to Subscriber:
         $this->X_model->create(array(
             'x__up' => 4430, //Subscriber
-            'x__type' => e_x__type(),
+            'x__type' => 4230,
             'x__creator' => $e__id,
             'x__down' => $e__id,
             'x__website' => $x__website,
@@ -72,7 +72,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
             'x__down' => $e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $unsubscribe){
             $resubscribed += $this->X_model->update($unsubscribe['x__id'], array(
@@ -82,7 +82,7 @@ class E_model extends CI_Model
         if($resubscribed > 0){
             //Add Back to Subscribers:
             $this->X_model->create(array(
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
                 'x__up' => 4430, //Active Member
                 'x__creator' => $e['e__id'],
                 'x__down' => $e['e__id'],
@@ -120,7 +120,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
             'x__down' => 6404, //Platform Default
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x) {
             array_push($platform_theme, intval($x['x__up']));
@@ -131,7 +131,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
             'x__down' => website_setting(0), //Website ID
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x) {
             array_push($website_theme, intval($x['x__up']));
@@ -142,7 +142,7 @@ class E_model extends CI_Model
         $user_theme = array();
         foreach($this->X_model->fetch(array(
             'x__down' => $e['e__id'], //This follower source
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0) as $e_up){
@@ -226,7 +226,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
             'x__down' => $e['e__id'], //This follower source
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $unsubscribed){
             $unsubscribed_time = $unsubscribed['x__time'];
@@ -237,7 +237,7 @@ class E_model extends CI_Model
         if($unsubscribed_time){
             //Add to subscribed again:
             $this->X_model->create(array(
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
                 'x__up' => 4430, //Active Member
                 'x__creator' => $e['e__id'],
                 'x__down' => $e['e__id'],
@@ -255,14 +255,14 @@ class E_model extends CI_Model
             //Add if link not already there:
             if(!count($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => $e_item['e__id'],
                 'x__down' => $e__id,
                 'x__message' => $x__message,
             )))){
                 $this->X_model->create(array(
                     'x__creator' => $e__id, //Belongs to this Member
-                    'x__type' => e_x__type($x__message),
+                    'x__type' => 4230,
                     'x__message' => $x__message,
                     'x__up' => $e_item['e__id'],
                     'x__down' => $e__id,
@@ -274,7 +274,7 @@ class E_model extends CI_Model
 
         $all_results = $this->X_model->fetch(array(
             'x__up' => $main_id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
@@ -284,7 +284,7 @@ class E_model extends CI_Model
             if(!count($this->X_model->fetch(array(
                 'x__up' => $sub_id,
                 'x__down' => $primary_list['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC/OWNER
             ), array(), 0))){
                 unset($all_results[$key]);
@@ -351,7 +351,7 @@ class E_model extends CI_Model
         //Add email?
         if($email){
             $this->X_model->create(array(
-                'x__type' => e_x__type(trim(strtolower($email))),
+                'x__type' => 4230,
                 'x__message' => trim(strtolower($email)),
                 'x__up' => 3288, //Email
                 'x__creator' => $added_e['new_e']['e__id'],
@@ -364,7 +364,7 @@ class E_model extends CI_Model
         if($phone_number){
             $this->X_model->create(array(
                 'x__up' => 4783, //Phone
-                'x__type' => e_x__type($phone_number),
+                'x__type' => 4230,
                 'x__message' => $phone_number,
                 'x__creator' => $added_e['new_e']['e__id'],
                 'x__down' => $added_e['new_e']['e__id'],
@@ -381,7 +381,7 @@ class E_model extends CI_Model
             //Add to anonymous:
             $this->X_model->create(array(
                 'x__up' => 14938, //Anonymous Login
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
                 'x__creator' => $added_e['new_e']['e__id'],
                 'x__down' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
@@ -404,7 +404,7 @@ class E_model extends CI_Model
             //Also create legal name link:
             $this->X_model->create(array(
                 'x__up' => 30198, //Full Name
-                'x__type' => e_x__type($full_name),
+                'x__type' => 4230,
                 'x__message' => $full_name,
                 'x__creator' => $added_e['new_e']['e__id'],
                 'x__down' => $added_e['new_e']['e__id'],
@@ -540,7 +540,7 @@ class E_model extends CI_Model
             $join_objects = array('x__down');
             $query_filters = array(
                 'x__up' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
         } elseif($direction == 11030){
@@ -549,7 +549,7 @@ class E_model extends CI_Model
             $join_objects = array('x__up');
             $query_filters = array(
                 'x__down' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
         }
@@ -562,7 +562,7 @@ class E_model extends CI_Model
             if(count($include_any_e) && !count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $include_any_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 //Must include all sources, skip:
@@ -571,7 +571,7 @@ class E_model extends CI_Model
             if(count($exclude_all_e) && count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $exclude_all_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 //Must exclude all sources, skip:
@@ -760,7 +760,7 @@ class E_model extends CI_Model
                 'x__creator' => $x__creator,
                 'x__down' => $x__creator,
                 'x__up' => $set_e_down_id,
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
                 'x__reference' => $updated_x__id,
             ));
         }
@@ -777,7 +777,7 @@ class E_model extends CI_Model
         //Check followings to see if there are duplicates:
         foreach($this->X_model->fetch(array(
             'x__down' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0, 0, array('x__up' => 'ASC', 'x__id' => 'ASC')) as $x) {
@@ -931,7 +931,7 @@ class E_model extends CI_Model
 
         //Assign to Creator:
         $this->X_model->create(array(
-            'x__type' => e_x__type(),
+            'x__type' => 4230,
             'x__creator' => $member_e['e__id'],
             'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
@@ -942,7 +942,7 @@ class E_model extends CI_Model
 
             //Add Pending Review:
             $this->X_model->create(array(
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
                 'x__creator' => $member_e['e__id'],
                 'x__up' => 12775, //PENDING REVIEW
                 'x__down' => $e__id,
@@ -1061,7 +1061,6 @@ class E_model extends CI_Model
         //Remember if source name was passed:
         $page_title_generic = 0;
         $name_was_passed = ( $page_title ? true : false );
-        $e___4537 = $this->config->item('e___4537');
         $e___4592 = $this->config->item('e___4592');
 
         if(substr_count($url, 'e__title=')==1){
@@ -1176,7 +1175,7 @@ class E_model extends CI_Model
             $url_x = $this->X_model->fetch(array(
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__message' => $url,
             ), array('x__down'));
 
@@ -1249,7 +1248,7 @@ class E_model extends CI_Model
             //Transaction URL to its followings domain?
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
                 'x__up' => $e_url['e__id'],
                 'x__down' => $add_to_down_e__id,
             ));
@@ -1324,7 +1323,7 @@ class E_model extends CI_Model
         //Fetch all followers:
         $followers = $this->X_model->fetch(array(
             'x__up' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0);
@@ -1362,7 +1361,7 @@ class E_model extends CI_Model
                 //Go through all followings and add the ones missing:
                 foreach($this->X_model->fetch(array(
                     'x__up' => $focus_id,
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__down'), 0, 0) as $e__up){
@@ -1371,7 +1370,7 @@ class E_model extends CI_Model
                     if(!count($this->X_model->fetch(array(
                         'x__up' => $e__up['e__id'],
                         'x__down' => $x['e__id'],
-                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
 
@@ -1380,7 +1379,7 @@ class E_model extends CI_Model
                             'x__creator' => $x__creator,
                             'x__up' => $e__up['e__id'],
                             'x__down' => $x['e__id'],
-                            'x__type' => e_x__type($e__up['x__message']),
+                            'x__type' => 4230,
                             'x__message' => $e__up['x__message'],
                         ));
 
@@ -1396,7 +1395,7 @@ class E_model extends CI_Model
 
                 //See if follower source has searched followings source:
                 $down_up_e = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__down' => $x['e__id'], //This follower source
                     'x__up' => $focus_id,
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -1406,7 +1405,7 @@ class E_model extends CI_Model
 
                     $add_fields = array(
                         'x__creator' => $x__creator,
-                        'x__type' => e_x__type(),
+                        'x__type' => 4230,
                         'x__down' => $x['e__id'], //This follower source
                         'x__up' => $focus_id,
                     );
@@ -1449,7 +1448,7 @@ class E_model extends CI_Model
                         //Add as a followings because it meets the condition
                         $this->X_model->create(array(
                             'x__creator' => $x__creator,
-                            'x__type' => e_x__type(),
+                            'x__type' => 4230,
                             'x__down' => $x['e__id'], //This follower source
                             'x__up' => $followings_new_e__id,
                         ));
@@ -1498,7 +1497,6 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $new_message,
-                    'x__type' => e_x__type($new_message),
                 ), $x__creator, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
@@ -1507,7 +1505,6 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $action_command1,
-                    'x__type' => e_x__type($action_command1),
                 ), $x__creator, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;

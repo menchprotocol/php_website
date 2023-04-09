@@ -28,13 +28,12 @@ class X extends CI_Controller
             ));
         }
 
-        //Will Contain every possible Member Transaction Connector:
-        $e___4592 = $this->config->item('e___4592');
+        $e___4592 = $this->config->item('e___4592'); //DATA TYPES
 
         //See what this is:
-        $detected_x_type = x_detect_type($_POST['x__message']);
+        $detect_data_type = detect_data_type($_POST['x__message']);
 
-        if(!$_POST['x__id'] && !in_array($detected_x_type['x__type'], $this->config->item('n___4537'))){
+        if(!$_POST['x__id'] && !in_array($detect_data_type['x__type'], $this->config->item('n___4537'))){
 
             //NOT SOURCE LINK URLS
             return view_json(array(
@@ -42,18 +41,17 @@ class X extends CI_Controller
                 'message' => 'Invalid URL',
             ));
 
-        } elseif (!$detected_x_type['status'] && isset($detected_x_type['url_previously_existed']) && $detected_x_type['url_previously_existed']) {
+        } elseif (!$detect_data_type['status'] && isset($detect_data_type['url_previously_existed']) && $detect_data_type['url_previously_existed']) {
 
             //See if this is duplicate to either transaction:
             $e_x = $this->X_model->fetch(array(
                 'x__id' => $_POST['x__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
             ));
 
             //Are they both different?
-            if (count($e_x) < 1 || ($e_x[0]['x__up'] != $detected_x_type['e_url']['e__id'] && $e_x[0]['x__down'] != $detected_x_type['e_url']['e__id'])) {
+            if (count($e_x) < 1 || ($e_x[0]['x__up'] != $detect_data_type['e_url']['e__id'] && $e_x[0]['x__down'] != $detect_data_type['e_url']['e__id'])) {
                 //return error:
-                return view_json($detected_x_type);
+                return view_json($detect_data_type);
             }
 
         }
@@ -108,8 +106,8 @@ class X extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => '<b class="main__title">' . $e___4592[$detected_x_type['x__type']]['m__cover'] . ' ' . $e___4592[$detected_x_type['x__type']]['m__title'] . '</b>',
-            'x__message_preview' => ( in_array($detected_x_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">' . preview_x__message($_POST['x__message'], $detected_x_type['x__type'], null, true) . '</span>' : '' ),
+            'x__type_preview' => '<b class="main__title">' . $e___4592[$detect_data_type['x__type']]['m__cover'] . ' ' . $e___4592[$detect_data_type['x__type']]['m__title'] . '</b>',
+            'x__message_preview' => ( in_array($detect_data_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">' . preview_x__message($_POST['x__message'], $detect_data_type['x__type'], null, true) . '</span>' : '' ),
             'in_history' => $in_history,
             'x__history_preview' => $x__history_preview,
         ));
@@ -510,13 +508,13 @@ class X extends CI_Controller
             && count($this->X_model->fetch(array(
                 'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
                 'x__down' => $member__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))
             && !count($this->X_model->fetch(array(
                 'x__up' => $append__id,
                 'x__down' => $member__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))
         ){
@@ -528,7 +526,7 @@ class X extends CI_Controller
 
                 //Add source link:
                 $this->X_model->create(array(
-                    'x__type' => e_x__type(),
+                    'x__type' => 4230,
                     'x__creator' => $x__creator,
                     'x__up' => $append__id,
                     'x__down' => $x__creator,
@@ -702,7 +700,7 @@ class X extends CI_Controller
             //Sources reset order
             foreach($this->X_model->fetch(array(
                 'x__up' => $_POST['focus_id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ), array('x__down'), 0, 0, array()) as $x) {
@@ -1492,7 +1490,7 @@ class X extends CI_Controller
         } else {
 
             //Change transaction type ONLY if source link:
-            if(!in_array($e_x[0]['x__type'], $this->config->item('n___4592'))){
+            if(!in_array($e_x[0]['x__type'], $this->config->item('n___32292'))){
 
                 $x__message = $_POST['x__message'];
                 $x__message_type = $e_x[0]['x__type'];
@@ -1504,14 +1502,14 @@ class X extends CI_Controller
 
                 //it is a source link! We should update this:
                 //Transaction content has changed:
-                $detected_x_type = x_detect_type($_POST['x__message']);
-                if (!$detected_x_type['status']) {
-                    return view_json($detected_x_type);
+                $detect_data_type = detect_data_type($_POST['x__message']);
+                if (!$detect_data_type['status']) {
+                    return view_json($detect_data_type);
                 }
 
                 //Update variables:
                 $x__message = $_POST['x__message'];
-                $x__message_type = $detected_x_type['x__type'];
+                $x__message_type = $detect_data_type['x__type'];
 
 
                 $this->X_model->update($_POST['x__id'], array(

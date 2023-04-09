@@ -22,7 +22,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
         //Make sure member:
         if(!count($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up IN (' . join(',', $this->config->item('n___32537')) . ')' => null, //Interested Member
             'x__down' => $es[0]['e__id'],
         )))){

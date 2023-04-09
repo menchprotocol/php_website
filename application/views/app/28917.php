@@ -10,7 +10,7 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
 
         foreach($this->X_model->fetch(array(
             'x__up' => $x__type,
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0) as $x) {
@@ -24,7 +24,7 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
 
                 //Add to subscribers:
                 $this->X_model->create(array(
-                    'x__type' => e_x__type(),
+                    'x__type' => 4230,
                     'x__up' => 4430, //Active Member
                     'x__creator' => $x['x__creator'],
                     'x__down' => $x['x__creator'],

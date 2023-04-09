@@ -64,7 +64,7 @@ if(isset($_GET['i__id'])){
         $member_emails = $this->X_model->fetch(array(
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
             'x__message' => $userInfo['email'],
         ), array('x__down'));

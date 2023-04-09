@@ -159,7 +159,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         ), array(), 0, 0, array('x__creator' => 'ASC')) as $x){
 
             if(isset($_GET['include_e']) && strlen($_GET['include_e']) && !count($this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__up IN (' . $_GET['include_e'] . ')' => null,
                     'x__down' => $x['x__creator'],
@@ -169,7 +169,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
                     'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
                     'x__down' => $x['x__creator'],
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 continue;
@@ -320,7 +320,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
     $filters = array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Source Links
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__up' => $_GET['e__id'], //Member
     );
     if(count($all_sources)){

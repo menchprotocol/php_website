@@ -28,21 +28,13 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
     //Source Following Search:
     foreach($this->X_model->fetch(array( //SOURCE PROFILE
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___14756')) . ')' => null, //Inherit Cover Types
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__down' => $o['e__id'], //This follower source
     ), array('x__up'), 0, 0, array()) as $fetched_e){
-
-        if($fetched_e['x__type']==4260){
+        $detect_data_type = detect_data_type($fetched_e['x__message']);
+        if($detect_data_type['x__type']==4260){
             $found_image = $fetched_e['x__message'];
             break;
-        } elseif($fetched_e['x__type']==4257){
-            //Embed: [DISABLED FOR NOW - Duplicated code: search "TIGER"]
-            $video_id = extract_youtube_id($fetched_e['x__message']);
-            if($video_id){
-                //Use the YouTube video image:
-                $found_image = 'https://img.youtube.com/vi/'.$video_id.'/hqdefault.jpg';
-                break;
-            }
         }
     }
 
@@ -50,7 +42,7 @@ foreach($this->E_model->fetch(array('e__cover IS NULL' => null)) as $o) {
         //Following Sources:
         foreach($this->X_model->fetch(array(
             'x__down' => $o['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $linked_e){

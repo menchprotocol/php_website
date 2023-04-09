@@ -126,7 +126,7 @@ if(strlen($_GET['i__id'])){
 
         $column_sources = $this->X_model->fetch(array(
             'x__up' => $_GET['custom_grid'], //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
@@ -170,7 +170,7 @@ if(strlen($_GET['i__id'])){
         if(isset($_GET['include_e']) && intval($_GET['include_e']) && count($this->X_model->fetch(array(
                 'x__up IN (' . $_GET['include_e'] . ')' => null, //All of these
                 'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ))) != count(explode(',',$_GET['include_e']))){
             continue;
@@ -178,7 +178,7 @@ if(strlen($_GET['i__id'])){
         if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
                 'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
                 'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
             continue;
@@ -285,7 +285,7 @@ if(strlen($_GET['i__id'])){
             $fetch_data = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => $e['e__id'],
             ));
 
@@ -310,7 +310,7 @@ if(strlen($_GET['i__id'])){
         $e_emails = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $x['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
         ));
 

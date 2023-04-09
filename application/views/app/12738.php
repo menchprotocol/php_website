@@ -4,7 +4,7 @@ if(isset($_GET['update_u_icons'])){
 
     $base_filters = array(
         'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     );

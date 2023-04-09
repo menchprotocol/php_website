@@ -449,7 +449,7 @@ if($top_i__id) {
 
             $valid_paid_ticket = false; //Unless proven otherwise
             $min_allowed = 1;
-            $detected_x_type = 0;
+            $detect_data_type = 0;
 
             $paypal_email =  website_setting(30882);
 
@@ -488,8 +488,8 @@ if($top_i__id) {
 
 
             if(count($total_dues) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
-                $detected_x_type = x_detect_type($total_dues[0]['x__message']);
-                if ($detected_x_type['status'] && $detected_x_type['x__type']==26661){
+                $detect_data_type = detect_data_type($total_dues[0]['x__message']);
+                if ($detect_data_type['status'] && $detect_data_type['x__type']==26661){
 
                     $valid_paid_ticket = true;
 
@@ -660,7 +660,7 @@ if($top_i__id) {
                 foreach($this->X_model->fetch(array(
                     'x__up' => $append_source['x__up'],
                     'x__down' => $x__creator,
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0, 0) as $up_appended) {
                     if(strlen($up_appended['x__message'])){

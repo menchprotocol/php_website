@@ -141,7 +141,7 @@ class E extends CI_Controller
             //Count followers:
             $list_e_count = $this->X_model->fetch(array(
                 'x__up' => $_POST['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
@@ -257,7 +257,7 @@ class E extends CI_Controller
         //Followers:
         foreach($this->X_model->fetch(array(
             'x__up' => $_POST['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
@@ -277,7 +277,7 @@ class E extends CI_Controller
         //Followings:
         foreach($this->X_model->fetch(array(
             'x__down' => $_POST['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
@@ -508,31 +508,28 @@ class E extends CI_Controller
             if (isset($url_e['url_root']) && $url_e['url_root']) {
 
                 $x__message = $url_e['clean_url'];
-                $x__type = e_x__type($x__message);
 
             } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
 
                 $x__message = $url_e['clean_url'];
-                $x__type = $url_e['x__type'];
 
             } else {
 
                 $x__message = null;
-                $x__type = e_x__type($x__message);
 
             }
 
             $e_already_linked = count($this->X_model->fetch(array(
                 'x__down' => $x__down,
                 'x__up' => $x__up,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )));
 
             //Create transaction:
             $ur2 = $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
-                'x__type' => $x__type,
+                'x__type' => 4230,
                 'x__message' => $x__message,
                 'x__down' => $x__down,
                 'x__up' => $x__up,
@@ -787,7 +784,7 @@ class E extends CI_Controller
             //Fetch all possible answers based on followings source:
             $query_filters = array(
                 'x__up' => $_POST['focus_id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             );
@@ -807,7 +804,7 @@ class E extends CI_Controller
             foreach($this->X_model->fetch(array(
                 'x__up IN (' . join(',', $possible_answers) . ')' => null,
                 'x__down' => $member_e['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )) as $delete){
                 //Should usually delete a single option:
@@ -824,7 +821,7 @@ class E extends CI_Controller
                 'x__up' => $_POST['selected_e__id'],
                 'x__down' => $member_e['e__id'],
                 'x__creator' => $member_e['e__id'],
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
             ));
         }
 
@@ -945,7 +942,7 @@ class E extends CI_Controller
             //Check to make sure not duplicate:
             $duplicates = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Email
                 'x__down !=' => $member_e['e__id'],
                 'LOWER(x__message)' => $_POST['e_email'],
@@ -964,7 +961,7 @@ class E extends CI_Controller
         $u_accounts = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
         ));
         if (count($u_accounts) > 0) {
@@ -1008,7 +1005,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
-                'x__type' => e_x__type($_POST['e_email']),
+                'x__type' => 4230,
                 'x__up' => 3288, //Email
                 'x__message' => $_POST['e_email'],
             ), true);
@@ -1078,7 +1075,7 @@ class E extends CI_Controller
         $u_names = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 30198, //Name
         ));
         if (count($u_names) > 0) {
@@ -1122,7 +1119,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
-                'x__type' => e_x__type($_POST['e_fullname']),
+                'x__type' => 4230,
                 'x__up' => 30198, //Full Name
                 'x__message' => $_POST['e_fullname'],
             ), true);
@@ -1188,7 +1185,7 @@ class E extends CI_Controller
             //Check to make sure not duplicate:
             $duplicates = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 4783, //Phone
                 'x__down !=' => $member_e['e__id'],
                 'x__message' => $_POST['e_phone'],
@@ -1208,7 +1205,7 @@ class E extends CI_Controller
         $u_phones = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 4783, //Phone
         ));
         if (count($u_phones) > 0) {
@@ -1252,7 +1249,7 @@ class E extends CI_Controller
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__down' => $member_e['e__id'],
-                'x__type' => e_x__type($_POST['e_phone']),
+                'x__type' => 4230,
                 'x__up' => 4783, //Phone
                 'x__message' => $_POST['e_phone'],
             ), true);
@@ -1473,7 +1470,7 @@ class E extends CI_Controller
             $already_added = $this->X_model->fetch(array(
                 'x__up' => $_POST['e__id'],
                 'x__down' => $_POST['x__creator'],
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
 
@@ -1496,7 +1493,7 @@ class E extends CI_Controller
                     'x__up' => $_POST['e__id'],
                     'x__down' => $_POST['x__creator'],
                     'x__creator' => $member_e['e__id'],
-                    'x__type' => e_x__type(),
+                    'x__type' => 4230,
                 ));
 
                 $e___28714 = $this->config->item('e___28714');
@@ -1551,7 +1548,7 @@ class E extends CI_Controller
         $u_accounts = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up IN (' . join(',', $this->config->item('n___32078')) . ')' => null, //Phone or Email
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'));

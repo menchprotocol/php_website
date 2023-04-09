@@ -15,7 +15,7 @@ foreach($this->E_model->fetch() as $en) {
 
     $is_u = count($this->X_model->fetch(array(
         'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__down' => $en['e__id'],
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 1));
@@ -36,7 +36,7 @@ foreach($this->E_model->fetch() as $en) {
     if($is_x && !$is_u){
         $stats['x_not_e_count']++;
         $this->X_model->create(array(
-            'x__type' => e_x__type(),
+            'x__type' => 4230,
             'x__up' => 4430, //Active Member
             'x__creator' => $en['e__id'],
             'x__down' => $en['e__id'],

@@ -445,7 +445,7 @@ class X_model extends CI_Model
 
                     //Find Published Followings:
                     foreach($this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         'x__down' => $o__id,
@@ -566,7 +566,7 @@ class X_model extends CI_Model
             $notification_levels = $this->X_model->fetch(array(
                 'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
                 'x__down' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
             if (!count($notification_levels)) {
@@ -589,7 +589,7 @@ class X_model extends CI_Model
         //Send Emails:
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 3288, //Email
             'x__down' => $e__id,
         )) as $e_data){
@@ -630,7 +630,7 @@ class X_model extends CI_Model
             //Send SMS
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 4783, //Phone
                 'x__down' => $e__id,
             )) as $e_data){
@@ -927,31 +927,34 @@ class X_model extends CI_Model
             if(!$is_current_e || $string_references['ref_time_found']){
 
                 foreach($this->X_model->fetch(array(
-                    'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //Public/Owner Access
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___12822')) . ')' => null, //SOURCE LINK MESSAGE DISPLAY
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__down' => $referenced_e,
+                    'LENGTH(x__message)>0' => null,
                 ), array('x__up'), 0, 0, array(
                     'x__type' => 'ASC', /* Text first */
                     'e__weight' => 'DESC',
                 )) as $e_up) {
 
-                    if(in_array($e_up['e__access'], $this->config->item('n___30956'))){
-                        //ACTIVE Transactions Not Allowed:
+                    if(in_array($e_up['e__access'], $this->config->item('n___30956')) && !e_of_e($e_up['e__id'])){
+                        //PRIVATE Source with no access:
                         continue;
                     }
 
+                    $detect_data_type = detect_data_type($e_up['x__message']);
+
                     $e_count++;
 
-                    if($e_up['x__type'] == 4256 /* URL */) {
+                    if($detect_data_type['x__type'] == 4256 /* URL */) {
 
                         array_push($e_links, $e_up);
 
-                    } elseif (in_array($e_up['x__type'], $this->config->item('n___12524'))) {
+                    } elseif (in_array($detect_data_type['x__type'], $this->config->item('n___12524'))) {
 
                         //SOURCE LINK VISUAL
                         $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_up['x__message'], $e_up['x__type'], $message_input, $is_discovery_mode) . '</div>';
+                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_up['x__message'], $detect_data_type['x__type'], $message_input, $is_discovery_mode) . '</div>';
 
                     }
                 }
@@ -1255,7 +1258,7 @@ class X_model extends CI_Model
 
 
 
-        $detected_x_type = x_detect_type($add_fields['x__message']);
+        $detect_data_type = detect_data_type($add_fields['x__message']);
         if ($add_fields['x__creator'] && !in_array($add_fields['x__type'], $this->config->item('n___32248'))) {
 
             //Discovery Triggers?
@@ -1374,7 +1377,7 @@ class X_model extends CI_Model
                     //Assign tag if following/follower transaction NOT previously assigned:
                     $existing_x = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__up' => $x_tag['x__up'],
                         'x__down' => $add_fields['x__creator'],
                     ));
@@ -1392,7 +1395,6 @@ class X_model extends CI_Model
                         //Content value has changed, update the transaction:
                         $this->X_model->update($existing_x[0]['x__id'], array(
                             'x__message' => $add_fields['x__message'],
-                            'x__type' => $detected_x_type['x__type'],
                         ), $add_fields['x__creator'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                         $this->X_model->create(array(
@@ -1409,7 +1411,7 @@ class X_model extends CI_Model
                         //Create transaction:
                         $x_added++;
                         $this->X_model->create(array(
-                            'x__type' => $detected_x_type['x__type'],
+                            'x__type' => 4230, //Follow Source
                             'x__message' => $add_fields['x__message'],
                             'x__creator' => $add_fields['x__creator'],
                             'x__up' => $x_tag['x__up'],
@@ -1446,7 +1448,7 @@ class X_model extends CI_Model
                 //Remove Following IF previously assigned:
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__up' => $x_tag['x__up'], //CERTIFICATES saved here
                     'x__down' => $add_fields['x__creator'],
                 )) as $existing_x){
@@ -1485,7 +1487,7 @@ class X_model extends CI_Model
                 $u_clean_phone = '';
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__down' => $add_fields['x__creator'],
                     'x__up' => 4783, //Phone
                 )) as $x_progress){

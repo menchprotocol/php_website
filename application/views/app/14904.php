@@ -6,14 +6,6 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 } else {
 
-    //Fetch followings URLs:
-    $following = $this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___4537')) . ')' => null, //SOURCE LINK URLS
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__down' => $_GET['e__id'],
-    ), array('x__up'), 0, 0, array('e__title' => 'DESC'));
-
 
     echo '<div class="center-info">';
     echo '<div class="text-center platform-large">'.get_domain('m__cover').'</div>';
@@ -21,14 +13,24 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
     echo '</div>';
 
 
-    if(!count($following)){
+    //Fetch followings URLs:
+    $url_found = false;
+    foreach($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__down' => $_GET['e__id'],
+        'LENGTH(x__message)>0' => null,
+    ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $f_url){
+        if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
+            $url_found = true;
+            js_php_redirect($f_url['x__message'], 1);
+            break;
+        }
+    }
 
+    if(!$url_found){
         js_php_redirect(home_url(), 1);
-
-    } else {
-
-        js_php_redirect($following[0]['x__message'], 1);
-
     }
 
 }

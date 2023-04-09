@@ -24,7 +24,7 @@ foreach($emojis as $count => $emoji_html){
         'e__cover' => $emoji_icon,
         'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__up' => 14038,
     ), array('x__down'), 0);
 
@@ -43,7 +43,7 @@ foreach($emojis as $count => $emoji_html){
             $this->X_model->create(array(
                 'x__up' => 14038,
                 'x__down' => $new_emoji['e__id'],
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
             ));
 
             $added++;

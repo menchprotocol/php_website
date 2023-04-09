@@ -41,7 +41,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         $email_e__id = 0;
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__message' => $email_address,
             'x__up' => 3288, //Email
         ), array('x__down')) as $email_found){

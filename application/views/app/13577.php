@@ -16,7 +16,7 @@ $count = 0;
 $animal = 0;
 foreach($this->X_model->fetch(array(
     'x__up' => 14986,
-    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0, 0) as $e){
@@ -35,7 +35,7 @@ foreach($this->X_model->fetch(array(
             //Link to proper folder:
             $this->X_model->create(array(
                 'x__up' => $type_id,
-                'x__type' => e_x__type(),
+                'x__type' => 4230,
                 'x__creator' => $x__creator,
                 'x__down' => $added_e['new_e']['e__id'],
             ));
@@ -43,7 +43,7 @@ foreach($this->X_model->fetch(array(
             if(in_array($e['e__id'], $this->config->item('n___12279'))){
                 $this->X_model->create(array(
                     'x__up' => 12279, //Animals
-                    'x__type' => e_x__type(),
+                    'x__type' => 4230,
                     'x__creator' => $x__creator,
                     'x__down' => $added_e['new_e']['e__id'],
                 ));
@@ -83,7 +83,7 @@ foreach(array(
                 //Check if exists:
                 if(!count($this->X_model->fetch(array( //SOURCE PROFILE
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__up' => $type_id,
                     'e__cover' => $icon_code,
                 ), array('x__down')))){
@@ -95,7 +95,7 @@ foreach(array(
                         //Link to proper folder:
                         $this->X_model->create(array(
                             'x__up' => $type_id, //MEMBERS
-                            'x__type' => e_x__type(),
+                            'x__type' => 4230,
                             'x__creator' => $x__creator,
                             'x__down' => $added_e['new_e']['e__id'],
                         ));

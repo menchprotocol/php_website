@@ -686,7 +686,7 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $join_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  ))) . ')' => null,
         );
@@ -699,7 +699,7 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $join_objects = array('x__up');
         $query_filters = array(
             'x__down' => $e__id,
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  ))) . ')' => null,
         );
@@ -930,7 +930,7 @@ function view_radio_e($focus_id, $down___id, $enable_mulitiselect){
     foreach($CI->X_model->fetch(array(
         'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null,
         'x__down' => $down___id,
-        'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $sel){
         array_push($already_selected, $sel['x__up']);
@@ -1085,7 +1085,7 @@ function view_e_settings($list_id, $is_open){
             $u_accounts = $CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $member_e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Email
             ));
 
@@ -1099,7 +1099,7 @@ function view_e_settings($list_id, $is_open){
             $u_phones = $CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $member_e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 4783, //Phone
             ));
 
@@ -1112,7 +1112,7 @@ function view_e_settings($list_id, $is_open){
             $u_names = $CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $member_e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 30198, //Full Name
             ));
 
@@ -1587,7 +1587,7 @@ function view_list_sources($x__creator, $x){
         $member_follows = $CI->X_model->fetch(array(
             'x__up' => $x['e__id'],
             'x__down' => $x__creator,
-            'x__type IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
     }
@@ -1833,7 +1833,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 if(!$x__id){
                     $focus_dropdown = 12887; //Source Dropdown
-                } elseif($link_type_id==4592){ //Source/Source Links
+                } elseif($link_type_id==32292){ //Source/Source Links
                     $focus_dropdown = 14956; //Source/Source Dropdown
                 } elseif($link_type_id==6255){ //Discoveries
                     $focus_dropdown = 32070; //Source>Discoveries Dropdown
