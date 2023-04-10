@@ -1280,7 +1280,7 @@ function edit_source(e__id){
 
         if (data.status) {
 
-            $('#card__id').val(card__id);
+            $('#card__id').val(e__id);
             $('#card__title').val(data.card__title);
             $('#card__cover').val(data.card__cover).focus();
             update_cover_main(data.card__cover, '.demo_cover');
