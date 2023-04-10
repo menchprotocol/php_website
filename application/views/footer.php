@@ -270,7 +270,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <h5 class="main__title"><?= $e___11035[27963]['m__title'] ?></h5>
 
                     <input type="hidden" id="modal_i__id" value="0" />
-                    <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    <textarea class="form-control note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
 
                     <table>
