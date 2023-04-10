@@ -189,14 +189,6 @@ function htmlentitiesjs(rawStr){
 
 function apply_all_load(apply_id, card__id){
 
-    x_create({
-        x__creator: js_pl_id,
-        x__type: 14576, //MODAL VIEWED
-        x__up: apply_id,
-        x__down: ( card__type==4997 ? card__id : 0 ),
-        x__right: ( card__type==12589 ? card__id : 0 ),
-    });
-
     //Select first:
     var first_id = $('#modal'+apply_id+' .mass_action_toggle option:first').val();
     $('.mass_action_item').addClass('hidden');
@@ -297,7 +289,7 @@ function view_s__title(suggestion){
 
 
 function view_s_js_line(suggestion){
-    return '<span class="icon-block">'+ view_cover_js(suggestion.s__type, suggestion.s__cover) +'</span><span class="main__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
+    return '<span class="icon-block">'+ view_cover_js(suggestion.s__cover) +'</span><span class="main__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__id + '</span>';
 }
 
 function view_s_js_cover(x__type, suggestion, action_id){
@@ -314,7 +306,7 @@ function view_s_js_cover(x__type, suggestion, action_id){
         if(validURL(suggestion.s__cover)){
             background_image = 'style="background-image:url(\''+suggestion.s__cover+'\')"';
         } else {
-            icon_image = view_cover_js(suggestion.s__type, suggestion.s__cover);
+            icon_image = view_cover_js(suggestion.s__cover);
         }
     }
 
@@ -331,8 +323,8 @@ function view_s_js_cover(x__type, suggestion, action_id){
     }
 
 }
-function view_s_mini_js(s__type,s__cover,s__title){
-    return '<span class="block-icon" title="'+s__title+'">'+ view_cover_js(s__type, s__cover) +'</span>';
+function view_s_mini_js(s__cover,s__title){
+    return '<span class="block-icon" title="'+s__title+'">'+ view_cover_js(s__cover) +'</span>';
 }
 
 
@@ -684,10 +676,10 @@ function update__cover(new_cover){
     $('#card__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
     //Save and close:
-    card__save();
+    source_edit_save();
 }
 function image_cover(cover_preview, cover_apply, new_title){
-    return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(12274, cover_preview, new_title) + '</a>';
+    return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
 }
 
 
@@ -714,8 +706,7 @@ function cover_upload(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('card__type', $('#card__type').val());
-        ajaxData.append('card__id', $('#card__id').val());
+        ajaxData.append('edit_e__id', $('#edit_e__id').val());
 
         $.ajax({
             url: '/x/cover_upload',
@@ -838,29 +829,26 @@ function toggle_search(){
 
 
 var editor_on = false;
-function toggle_editor(i__id){
-
-    $('.left_nav').addClass('hidden');
-    $('.icon_editor').toggleClass('hidden');
+function edit_idea(i__id){
 
     if(editor_on || !i__id){
 
         //Turn OFF
         editor_on = false; //Reverse
-        $('.top_nav, #container_content, .container_content').removeClass('hidden');
-        $('.top_message_box').addClass('hidden');
+        $('#modal31911').modal('hide');
 
     } else {
 
         //Turn ON
         editor_on = true; //Reverse
-        $('.top_nav, #container_content, .container_content').addClass('hidden');
-        $('.top_message_box').removeClass('hidden');
-        $('.input_note_4231').val(''); //Reset until loaded
+        $('#modal31911').modal('show');
+
+        //Reset until loaded
+        $('.input_note_4231').val('');
         $('.note_error_4231').html('');
         $('#modal_i__id').val(i__id);
 
-        $.post("/i/toggle_editor", {
+        $.post("/i/edit_idea", {
             i__id:i__id,
         }, function (data) {
             if(data.status){
@@ -1225,7 +1213,7 @@ function update_cover_main(cover_code, target_css){
     }
 }
 
-function view_cover_js(card__type, cover_code){
+function view_cover_js(cover_code){
     if(cover_code && cover_code.length){
         if(validURL(cover_code)){
             return '<img src="'+cover_code+'" />';
@@ -1235,25 +1223,17 @@ function view_cover_js(card__type, cover_code){
             return cover_code;
         }
     } else {
-        return '<i class="fas fa-circle zq'+card__type+'"></i>';
-        //return '<img src="/img/'+card__type+'.png" />';
+        return '<i class="fas fa-circle zq12274"></i>';
     }
 }
 
-function update_cover_mini(card__type, cover_code, target_css){
+function update_cover_mini(cover_code, target_css){
     //Update:
-    $(target_css).html(view_cover_js(card__type, cover_code));
+    $(target_css).html(view_cover_js(cover_code));
 }
 
 
 function x_message_load(x__id) {
-
-    x_create({
-        x__creator: js_pl_id,
-        x__type: 14576, //MODAL VIEWED
-        x__up: 13571,
-        x__reference: x__id,
-    });
 
     //Load current Source:
     $.post("/x/x_message_load", {
@@ -1284,30 +1264,20 @@ function x_message_load(x__id) {
     });
 }
 
-function card__load(card__type, card__id){
+function edit_source(e__id){
 
-    x_create({
-        x__creator: js_pl_id,
-        x__type: 14576, //MODAL VIEWED
-        x__up: 14937, //Edit
-        x__down: ( card__type==12274 ? card__id : 0 ),
-        x__right: ( card__type==12273 ? card__id : 0 ),
-    });
-
-    $('#modal14937').modal('show');
+    $('#modal31912').modal('show');
     $('#search_cover').val('').focus();
     $("#upload_results, #icon_suggestions, #img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
     $('#card__title, #card__cover').val('LOADING...');
-    $('#modal14937 .black-background-obs').removeClass('isSelected').removeClass('coinType12274').addClass('coinType'+card__type);
+    $('#modal31912 .black-background-obs').removeClass('isSelected').removeClass('coinType12274').addClass('coinType12274');
 
-    $.post("/e/card__load", {
-        card__type: card__type,
-        card__id: card__id
+    $.post("/e/edit_source", {
+        e__id: e__id
     }, function (data) {
 
         if (data.status) {
 
-            $('#card__type').val(card__type);
             $('#card__id').val(card__id);
             $('#card__title').val(data.card__title);
             $('#card__cover').val(data.card__cover).focus();
@@ -1461,11 +1431,10 @@ function e_load_search(x__type) {
 }
 
 
-function card__save(){
+function source_edit_save(){
 
-    $.post("/x/card__save", {
-        card__type: $('#card__type').val(),
-        card__id: $('#card__id').val(),
+    $.post("/e/source_edit_save", {
+        edit_e__id: $('#edit_e__id').val(),
         card__title: $('#card__title').val(),
         card__cover: $('#card__cover').val()
     }, function (data) {
@@ -1473,22 +1442,17 @@ function card__save(){
         if (data.status) {
 
             //Update Icon/Title on Page:
-            $('#modal14937').modal('hide');
+            $('#modal31912').modal('hide');
 
             //Update Title:
-            if($('#card__type').val()==12273){
-                var text_field = 4736;
-            } else if($('#card__type').val()==12274){
-                var text_field = 6197;
-            }
-            update_text_name(text_field, $('#card__id').val(), $('#card__title').val());
+            update_text_name(6197, $('#edit_e__id').val(), $('#card__title').val());
 
             //Update Mini Icon:
-            update_cover_mini($('#card__type').val(), $('#card__cover').val(), '.mini_'+text_field+'_'+$('#card__id').val());
+            update_cover_mini($('#card__cover').val(), '.mini_6197_'+$('#edit_e__id').val());
 
 
             //Update Main Icons:
-            update_cover_main($('#card__cover').val(), '.card___'+$('#card__type').val()+'_'+$('#card__id').val());
+            update_cover_main($('#card__cover').val(), '.card___12274_'+$('#edit_e__id').val());
 
         } else {
 
@@ -2605,7 +2569,7 @@ function save_editor(){
 
         } else {
 
-            toggle_editor(i__id);
+            edit_idea(i__id);
 
             //Reset errors:
             $(".note_error_"+x__type).html('');

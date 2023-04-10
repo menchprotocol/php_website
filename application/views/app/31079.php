@@ -9,7 +9,7 @@ function referral_line($i){
     $CI =& get_instance();
 
 
-    $plays = view_covers_i(6255, $i['i__id'], 0, false);
+    $plays = view_i_covers(6255, $i['i__id'], 0, false);
     $x_count = $CI->X_model->fetch(array(
         'x__right' => $i['i__id'],
         'x__type' => 7610, //MEMBER VIEWED DISCOVERY
@@ -71,7 +71,7 @@ if(count($is)){
 
     //Referrals:
     echo '<div class="list-group list-group-flush">';
-    foreach(view_covers_i(11019, $_GET['i__id'], 1, false) as $referral_i){
+    foreach(view_i_covers(11019, $_GET['i__id'], 1, false) as $referral_i){
         echo referral_line($referral_i);
     }
     echo '</div>';

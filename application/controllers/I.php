@@ -234,9 +234,9 @@ class I extends CI_Controller {
                 $e___6177 = $this->config->item('e___6177'); //Source Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                foreach(view_covers_i($_POST['x__type'], $_POST['i__id'], 1, false) as $source_e) {
+                foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $source_e) {
                     if(isset($source_e['e__id'])){
-                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__access']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], preview_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__access']]['m__cover'], view_cover($source_e['e__cover'], true), $source_e['e__title'], preview_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
                 }
@@ -250,7 +250,7 @@ class I extends CI_Controller {
                 $superpower_10939 = superpower_active(10939, true);
                 $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
 
-                foreach(view_covers_i($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
+                foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
                         $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__access']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
@@ -269,7 +269,7 @@ class I extends CI_Controller {
     }
 
 
-    function toggle_editor(){
+    function edit_idea(){
 
         //Authenticate Member:
         $member_e = superpower_unlocked(10939); //Superpower not required as it may be just a comment

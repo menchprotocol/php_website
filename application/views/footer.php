@@ -258,6 +258,60 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
+    <!-- Edit Idea Modal -->
+    <div class="modal fade indifferent" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content slim_flat">
+                <div class="modal-header">
+                    <h5 class="modal-title main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="main__title"><?= $e___11035[27963]['m__title'] ?></h5>
+
+                    <input type="hidden" id="modal_i__id" value="0" />
+                    <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
+
+                    <table>
+                        <tr>
+                            <td style="width: 100%;">
+                                <?php
+
+                                //CONTROLLER
+                                echo '<div class="no-padding add_notes_4231">';
+                                echo '<div class="add_notes_form note_pad indifferent">';
+                                echo '<form class="box box4231" method="post" enctype="multipart/form-data">';
+
+                                //UPLOAD
+                                echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4231" />';
+                                echo '<label class="hidden"></label>';
+                                echo '<label class="btn inline-block btn-compact file_label_4231" for="fileIdeaType4231" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+
+                                //GIF
+                                echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="images_modal(4231)" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
+
+                                //EMOJI
+                                echo '<span class="btn btn-compact inline-block" id="emoji_pick_type4231" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span>';
+
+
+                                echo '</form>';
+                                echo '</div>';
+                                echo '</div>';
+                                ?>
+                            </td>
+                            <td style="width: 50px;">
+                                <?= '<div class="save_button inline-block"><a href="javascript:save_editor()" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
 
     <!-- EDIT MESSAGE Modal -->
@@ -295,12 +349,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="modal14937" tabindex="-1" role="dialog" aria-labelledby="modal14937Label" aria-hidden="true">
+    <!-- Edit Source Modal -->
+    <div class="modal fade" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
                 <div class="modal-header">
-                    <h5 class="modal-title main__title" id="modal14937Label"><?= $e___11035[14937]['m__cover'].' '.$e___11035[14937]['m__title'] ?></h5>
+                    <h5 class="modal-title main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -320,10 +374,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="card__title" class="form-control main__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
                                 </div>
 
-
-                                    <input type="hidden" id="card__type" value="0" />
-                                    <input type="hidden" id="card__id" value="0" />
-
+                                    <input type="hidden" id="edit_e__id" value="0" />
 
                                     <!-- IMAGE DROP ENDS -->
                             </form>
@@ -351,7 +402,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                     <td>
                                         <!-- SAVE -->
-                                        <button type="button" onclick="card__save()" class="btn btn-default">SAVE</button>
+                                        <button type="button" onclick="source_edit_save()" class="btn btn-default">SAVE</button>
                                     </td>
                                 </tr>
                             </table>

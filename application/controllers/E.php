@@ -77,9 +77,9 @@ class E extends CI_Controller
                 $e___6177 = $this->config->item('e___6177'); //Source Status
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
-                foreach(view_covers_e($_POST['x__type'], $_POST['e__id'], 1, false) as $source_e) {
+                foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $source_e) {
                     if(isset($source_e['e__id'])){
-                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__access']]['m__cover'], view_cover(12274,$source_e['e__cover'], true), $source_e['e__title'], preview_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $e___4593[$source_e['x__type']]['m__cover'], $e___6177[$source_e['e__access']]['m__cover'], view_cover($source_e['e__cover'], true), $source_e['e__title'], preview_x__message($source_e['x__message'],$source_e['x__type']));
                         $listed_items++;
                     }
                 }
@@ -92,7 +92,7 @@ class E extends CI_Controller
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
-                foreach(view_covers_e($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
+                foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
                         $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__access']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
@@ -608,7 +608,7 @@ class E extends CI_Controller
     }
 
 
-    function card__load()
+    function edit_source()
     {
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -616,12 +616,7 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['card__type']) || !in_array($_POST['card__type'] , $this->config->item('n___12761'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Coin Type',
-            ));
-        } elseif (!isset($_POST['card__id'])) {
+        } elseif (!isset($_POST['e__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
@@ -629,86 +624,129 @@ class E extends CI_Controller
         }
 
 
+        //Log Modal View:
+        $this->X_model->create(array(
+            'x__creator' => $member_e['e__id'],
+            'x__type' => 14576, //MODAL VIEWED
+            'x__up' => 31912, //Edit Source
+            'x__down' => $_POST['e__id'],
+        ));
+
 
         //Any suggestions?
         $icon_suggestions = array();
 
-        if($_POST['card__type']==12274){
 
-
-            //Find Past Selected Icons for Source:
-            $unique_covers = array();
-            foreach($this->X_model->fetch(array(
-                'x__down' => $_POST['card__id'],
-                'x__type' => 10653, //Source Icon Update
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
-                $x__metadata = unserialize($x['x__metadata']);
-                if(strlen($x__metadata['before'])){
-                    $cover = ( substr_count($x__metadata['before'], 'class="') ? one_two_explode('class="','"',$x__metadata['before']) : $x__metadata['before'] );
-                    if(strlen($cover) && !in_array($cover, $unique_covers)){
-                        array_push($unique_covers, $cover);
-                        array_push($icon_suggestions, array(
-                            'cover_preview' => $cover,
-                            'cover_apply' => $cover,
-                            'new_title' => $x['x__time'],
-                        ));
-                    }
-                }
-            }
-
-            if($member_e['e__id']==$_POST['card__id']){
-                //Show animal icons:
-                foreach($this->config->item('e___12279') as $e__id => $m) {
-                    $cover = one_two_explode('class="','"',$m['m__cover']);
+        //Find Past Selected Icons for Source:
+        $unique_covers = array();
+        foreach($this->X_model->fetch(array(
+            'x__down' => $_POST['e__id'],
+            'x__type' => 10653, //Source Icon Update
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
+            $x__metadata = unserialize($x['x__metadata']);
+            if(strlen($x__metadata['before'])){
+                $cover = ( substr_count($x__metadata['before'], 'class="') ? one_two_explode('class="','"',$x__metadata['before']) : $x__metadata['before'] );
+                if(strlen($cover) && !in_array($cover, $unique_covers)){
+                    array_push($unique_covers, $cover);
                     array_push($icon_suggestions, array(
                         'cover_preview' => $cover,
                         'cover_apply' => $cover,
-                        'new_title' => $cover.' ('.$m['m__title'].')',
+                        'new_title' => $x['x__time'],
                     ));
                 }
             }
-
-
         }
 
-
-
-
-        if($_POST['card__type']==12273){
-            //IDEA
-            $is = $this->I_model->fetch(array(
-                'i__id' => $_POST['card__id'],
-            ));
-            if(count($is)){
-                return view_json(array(
-                    'status' => 1,
-                    'card__title' => $is[0]['i__title'],
-                    'card__cover' => null,
-                    'icon_suggestions' => $icon_suggestions,
-                ));
-            }
-        } elseif($_POST['card__type']==12274){
-            //SOURCE
-            $es = $this->E_model->fetch(array(
-                'e__id' => $_POST['card__id'],
-                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ));
-            if(count($es)){
-                return view_json(array(
-                    'status' => 1,
-                    'card__title' => $es[0]['e__title'],
-                    'card__cover' => $es[0]['e__cover'],
-                    'icon_suggestions' => $icon_suggestions,
+        if($member_e['e__id']==$_POST['e__id']){
+            //Show animal icons:
+            foreach($this->config->item('e___12279') as $e__id => $m) {
+                $cover = one_two_explode('class="','"',$m['m__cover']);
+                array_push($icon_suggestions, array(
+                    'cover_preview' => $cover,
+                    'cover_apply' => $cover,
+                    'new_title' => $cover.' ('.$m['m__title'].')',
                 ));
             }
         }
+
+
+
+        //SOURCE
+        $es = $this->E_model->fetch(array(
+            'e__id' => $_POST['e__id'],
+            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ));
+        if(count($es)){
+            return view_json(array(
+                'status' => 1,
+                'card__title' => $es[0]['e__title'],
+                'card__cover' => $es[0]['e__cover'],
+                'icon_suggestions' => $icon_suggestions,
+            ));
+        }
+
 
         //Could not find:
         return view_json(array(
             'status' => 0,
             'message' => 'Could not find coin',
         ));
+    }
+
+
+
+
+    function source_edit_save()
+    {
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['edit_e__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Coin ID',
+            ));
+        } elseif (!isset($_POST['card__title'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source Title',
+            ));
+        } elseif (!isset($_POST['card__cover'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source Cover',
+            ));
+        }
+
+        //Reset member session data if this data belongs to the logged-in member:
+        if ($_POST['edit_e__id'] == $member_e['e__id']) {
+
+            $es = $this->E_model->fetch(array(
+                'e__id' => intval($_POST['edit_e__id']),
+            ));
+            if(count($es)){
+                //Re-activate Session with new data:
+                $es[0]['e__title'] = trim($_POST['card__title']);
+                $es[0]['e__cover'] = trim($_POST['card__cover']);
+                $this->E_model->activate_session($es[0], true);
+            }
+
+        }
+
+        //SOURCE
+        $this->E_model->update($_POST['edit_e__id'], array(
+            'e__title' => trim($_POST['card__title']),
+            'e__cover' => trim($_POST['card__cover']),
+        ), true, $member_e['e__id']);
+
+        return view_json(array(
+            'status' => 1,
+        ));
+
     }
 
 
@@ -1608,7 +1646,7 @@ class E extends CI_Controller
             'status' => 1,
             'account_id' => $x__creator,
             'valid_email' => ( $valid_email ? 1 : 0 ),
-            'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover(12274,$u_accounts[0]['e__cover'], true). '</span>'.$u_accounts[0]['e__title'] : '' ),
+            'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover($u_accounts[0]['e__cover'], true). '</span>'.$u_accounts[0]['e__title'] : '' ),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 

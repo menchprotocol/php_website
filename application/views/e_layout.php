@@ -14,7 +14,7 @@ $this->X_model->create(array(
 
 
 //Load Top:
-$counter_top = view_covers_e(11030, $e['e__id'], 0, false);
+$counter_top = view_e_covers(11030, $e['e__id'], 0, false);
 echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"></div>';
 echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 1587); }); </script>';
 
@@ -31,7 +31,7 @@ $coins_count = array();
 $body_content = '';
 echo '<ul class="nav nav-tabs nav12274">';
 foreach($this->config->item('e___14874') as $x__type => $m) {
-    $coins_count[$x__type] = view_covers_e($x__type, $e['e__id'], 0, false);
+    $coins_count[$x__type] = view_e_covers($x__type, $e['e__id'], 0, false);
     if($x__type==6255 && !$coins_count[$x__type]){
         continue;
     }

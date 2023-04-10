@@ -30,7 +30,7 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 
 
 //Load Top:
-$counter_top = view_covers_i(11019, $i['i__id'], 0, false);
+$counter_top = view_i_covers(11019, $i['i__id'], 0, false);
 echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
 echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true); }, 377); }); </script>';
 
@@ -47,7 +47,7 @@ $coins_count = array();
 $body_content = '';
 echo '<ul class="nav nav-tabs nav12273">';
 foreach($this->config->item('e___14874') as $x__type => $m) {
-    $coins_count[$x__type] = view_covers_i($x__type, $i['i__id'], 0, false);
+    $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
     if($x__type==6255 && !$coins_count[$x__type]){
         continue;
     }

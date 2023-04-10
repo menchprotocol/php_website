@@ -387,7 +387,7 @@ if(!$basic_header_footer){
                     } else {
                         $padding_hack = 7; //For Emoji
                     }
-                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover(12274, $domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
+                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover($domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
 
 
 
@@ -399,7 +399,7 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</td>';
 
-                    echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="toggle_editor(0)" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
+                    echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="edit_idea(0)" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
 
 
@@ -417,7 +417,7 @@ if(!$basic_header_footer){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover(12274,$member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e ? view_cover($member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
@@ -438,7 +438,7 @@ if(!$basic_header_footer){
                         if($x__type==26105 && $member_e) {
 
                             //Profile
-                            $m['m__cover'] = view_cover(12274,$member_e['e__cover'], 1);
+                            $m['m__cover'] = view_cover($member_e['e__cover'], 1);
                             $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__id'].'</div>';
                             $href = 'href="/@'.$member_e['e__id'].'" ';
 
@@ -505,54 +505,7 @@ if(!$basic_header_footer){
 
 }
 
-?>
 
-
-<div class="container top_message_box hidden">
-
-    <h5 class="main__title"><?= $e___11035[27963]['m__title'] ?></h5>
-
-    <input type="hidden" id="modal_i__id" value="0" />
-    <textarea class="form-control msg note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-    <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
-
-    <table>
-        <tr>
-            <td style="width: 100%;">
-                <?php
-
-                //CONTROLLER
-                echo '<div class="no-padding add_notes_4231">';
-                echo '<div class="add_notes_form note_pad indifferent">';
-                echo '<form class="box box4231" method="post" enctype="multipart/form-data">';
-
-                //UPLOAD
-                echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4231" />';
-                echo '<label class="hidden"></label>';
-                echo '<label class="btn inline-block btn-compact file_label_4231" for="fileIdeaType4231" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
-
-                //GIF
-                echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="images_modal(4231)" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
-
-                //EMOJI
-                echo '<span class="btn btn-compact inline-block" id="emoji_pick_type4231" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span>';
-
-
-                echo '</form>';
-                echo '</div>';
-                echo '</div>';
-                ?>
-            </td>
-            <td style="width: 50px;">
-                <?= '<div class="save_button inline-block"><a href="javascript:save_editor()" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
-            </td>
-        </tr>
-    </table>
-</div>
-
-
-
-<?php
 
 echo '<div id="container_search" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
 echo '<div id="container_content" class="container">';

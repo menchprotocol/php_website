@@ -562,7 +562,7 @@ class E_model extends CI_Model
             if(count($include_any_e) && !count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $include_any_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 //Must include all sources, skip:
@@ -571,7 +571,7 @@ class E_model extends CI_Model
             if(count($exclude_all_e) && count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $exclude_all_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 //Must exclude all sources, skip:
@@ -777,7 +777,7 @@ class E_model extends CI_Model
         //Check followings to see if there are duplicates:
         foreach($this->X_model->fetch(array(
             'x__down' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0, 0, array('x__up' => 'ASC', 'x__id' => 'ASC')) as $x) {
@@ -1175,7 +1175,7 @@ class E_model extends CI_Model
             $url_x = $this->X_model->fetch(array(
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                 'x__message' => $url,
             ), array('x__down'));
 
@@ -1323,7 +1323,7 @@ class E_model extends CI_Model
         //Fetch all followers:
         $followers = $this->X_model->fetch(array(
             'x__up' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0);
@@ -1361,7 +1361,7 @@ class E_model extends CI_Model
                 //Go through all followings and add the ones missing:
                 foreach($this->X_model->fetch(array(
                     'x__up' => $focus_id,
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 ), array('x__down'), 0, 0) as $e__up){
@@ -1370,7 +1370,7 @@ class E_model extends CI_Model
                     if(!count($this->X_model->fetch(array(
                         'x__up' => $e__up['e__id'],
                         'x__down' => $x['e__id'],
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
 
@@ -1395,13 +1395,13 @@ class E_model extends CI_Model
 
                 //See if follower source has searched followings source:
                 $down_up_e = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //SOURCE LINKS
                     'x__down' => $x['e__id'], //This follower source
                     'x__up' => $focus_id,
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ));
 
-                if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0) || ($action_e__id==12928 && view_covers_e(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_covers_e(12273, $x['e__id'],0, false))){
+                if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0) || ($action_e__id==12928 && view_e_covers(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_e_covers(12273, $x['e__id'],0, false))){
 
                     $add_fields = array(
                         'x__creator' => $x__creator,

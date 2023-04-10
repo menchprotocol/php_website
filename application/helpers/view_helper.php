@@ -195,7 +195,7 @@ function view_i_title($i){
 }
 
 
-function view_cover($card__type, $cover_code, $noicon_default = null, $icon_prefix = '')
+function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 {
 
     $valid_url = ( filter_var($cover_code, FILTER_VALIDATE_URL) || substr($cover_code, 0, 2)=='//' );
@@ -225,8 +225,6 @@ function view_cover($card__type, $cover_code, $noicon_default = null, $icon_pref
 
         //Standard Icon if none:
         return null;
-        //return '<i class="fas fa-circle zq'.$card__type.'"></i>';
-        //return '<img src="/img/'.$card__type.'.png" />';
 
     }
 }
@@ -294,7 +292,7 @@ function view_card_x($x, $has_x__reference = false)
 
             //SOURCE
             foreach($CI->E_model->fetch(array('e__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_e){
-                $ui .= '<div class="simple-line"><a href="/@'.$focus_e['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover(12274,$focus_e['e__cover'], true). '</span>'.$focus_e['e__title'].'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/@'.$focus_e['e__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover($focus_e['e__cover'], true). '</span>'.$focus_e['e__title'].'</a></div>';
             }
 
         } elseif(in_array(6202 , $m['m__following']) && intval($x[$e___32088[$e__id]['m__message']])>0){
@@ -464,7 +462,7 @@ function view_body_e($x__type, $counter, $e__id){
     $limit = view_memory(6404,11064);
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $list_results = view_covers_e($x__type, $e__id, 1);
+    $list_results = view_e_covers($x__type, $e__id, 1);
     $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
     $es = $CI->E_model->fetch(array(
         'e__id' => $e__id,
@@ -544,7 +542,7 @@ function view_body_i($x__type, $counter, $i__id){
 
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $list_results = view_covers_i($x__type, $i__id, 1);
+    $list_results = view_i_covers($x__type, $i__id, 1);
     $ui = '';
     $is = $CI->I_model->fetch(array(
         'i__id' => $i__id,
@@ -650,7 +648,7 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
 
     return '<a href="'.$link.'" class="list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex justify-content-between">
-      <h4 class="main__title"><b>'.( strlen($s__cover) ? '<span class="icon-block-lg title-left">'.( $m_cover ? $s__cover : view_cover(($e__id>0 ? 12274 : 12273),$s__cover) ).'</span><span class="title-right">'.$s__title.'</span>' : $s__title ).'</b></h4>
+      <h4 class="main__title"><b>'.( strlen($s__cover) ? '<span class="icon-block-lg title-left">'.( $m_cover ? $s__cover : ($e__id>0 ? view_cover($s__cover) : '' ) ).'</span><span class="title-right">'.$s__title.'</span>' : $s__title ).'</b></h4>
       <small style="padding: 1px 3px 0 0;"><i class="far fa-chevron-right"></i></small>
     </div>
     '.( strlen($desc) && !count($CI->X_model->fetch(array(
@@ -664,7 +662,7 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
 
 }
 
-function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true){
+function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true){
 
     /*
      *
@@ -799,7 +797,7 @@ function view_covers_e($x__type, $e__id, $page_num = 0, $append_card_icon = true
 }
 
 
-function view_covers_i($x__type, $i__id, $page_num = 0, $append_card_icon = true){
+function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true){
 
     /*
      *
@@ -1169,7 +1167,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
 function view__load__e($e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'] . '</span><span class="icon-block-xs">' . view_cover(12274,$e['e__cover'], true) . '</span><a href="/@'.$e['e__id'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
+    return '<div class="msg alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'] . '</span><span class="icon-block-xs">' . view_cover($e['e__cover'], true) . '</span><a href="/@'.$e['e__id'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
 }
 
 
@@ -1362,7 +1360,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             $active_bars++;
 
             $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-            $top_bar_ui .= '<a href="javascript:void(0);" onclick="toggle_editor('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+            $top_bar_ui .= '<a href="javascript:void(0);" onclick="edit_idea('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
             $top_bar_ui .= '</div></td>';
 
         } elseif($x__type_top_bar==13909 && $has_sortable){
@@ -1551,7 +1549,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
                 continue; //Does not have permission
             }
-            $coins_ui = view_covers_i($e__id_bottom_bar,  $i['i__id']);
+            $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
             if(strlen($coins_ui)){
                 $active_bars++;
                 $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
@@ -1614,7 +1612,7 @@ function view_list_sources($x__creator, $x){
 
 
     return '<div class="source-info">'
-        . '<span class="icon-block">'.view_cover(12274,$x['e__cover'], true) . '</span>'
+        . '<span class="icon-block">'.view_cover($x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
         . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['x__message'].'</a>' : '<div class="sub_note main__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
         . '</div>';
@@ -1699,7 +1697,7 @@ function view_e_line($e)
 {
 
     $ui = '<a href="/@'.$e['e__id'].'" class="doblock">';
-    $ui .= '<span class="icon-block">'.view_cover(12274, $e['e__cover'], true).'</span>';
+    $ui .= '<span class="icon-block">'.view_cover($e['e__cover'], true).'</span>';
     $ui .= '<span class="main__title">'.$e['e__title'].'<span class="grey" style="padding-left:8px;">' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span></span>';
     $ui .= '</a>';
     return $ui;
@@ -1816,7 +1814,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Edit Source
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="card__load(12274,'.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="edit_source('.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13006 && $has_sortable){
@@ -1943,7 +1941,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Coin Cover
     $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_privacy_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
-    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover(12274,$e['e__cover'], true) : '' ).'</div>';
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
     $ui .= '</div>';
 
@@ -1986,7 +1984,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         foreach($CI->config->item('e___31916') as $menu_id => $m) {
             $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-            $ui .= view_covers_e($menu_id,  $e['e__id']);
+            $ui .= view_e_covers($menu_id,  $e['e__id']);
             $ui .= '</span>';
         }
         $ui .= '</div>';

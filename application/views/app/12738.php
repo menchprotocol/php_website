@@ -23,5 +23,5 @@ if(isset($_GET['update_u_icons'])){
 }
 
 for($i=0;$i<750;$i++){
-    echo '<span class="icon-block">'.view_cover(12274,random_cover(12279), true).'</span>';
+    echo '<span class="icon-block">'.view_cover(random_cover(12279), true).'</span>';
 }

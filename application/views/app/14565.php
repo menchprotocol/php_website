@@ -135,7 +135,7 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
             $info_item .= '<div class="info_box_cover">'.'<div class="center-cropped" style="background-image: url(\''.$info_element['e__cover'].'\');"></div>'.'</div>';
             $info_item .= '<div class="info_box_title main__title">'.$info_element['e__title'].'</div>';
         } else {
-            $info_item .= '<div class="info_box_cover">'.view_cover(12274, $info_element['e__cover']).'</div>';
+            $info_item .= '<div class="info_box_cover">'.view_cover($info_element['e__cover']).'</div>';
             $info_item .= '<div class="info_box_title main__title">'.$info_element['e__title'].'</div>';
         }
         if(strlen($info_element['x__message'])){
@@ -178,7 +178,7 @@ if(strlen($secondary_ideas)){
 //Social UI and contact us
 $social_ui = '';
 foreach($this->E_model->scissor_e($website_id, 14904) as $social_box) {
-    $social_ui .= '<li><a href="/-14904?e__id='.$social_box['e__id'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover(12274, $social_box['e__cover'], true).'</a></li>';
+    $social_ui .= '<li><a href="/-14904?e__id='.$social_box['e__id'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover($social_box['e__cover'], true).'</a></li>';
 }
 if($social_ui){
     echo '<div class="social-footer">';
