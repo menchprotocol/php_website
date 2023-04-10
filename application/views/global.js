@@ -854,9 +854,8 @@ function edit_idea(i__id){
             if(data.status){
                 $('.input_note_4231').val(data.message.trim()).focus();
                 setTimeout(function () {
-                    console.log('adjusted');
                     set_autosize($('.input_note_4231'));
-                }, 987);
+                }, 237);
             } else {
                 $('.note_error_4231').html(data.message);
             }
