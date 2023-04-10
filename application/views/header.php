@@ -113,46 +113,12 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>" type="text/javascript"></script>
 
-    <script type="module">
-
-        import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@latest/dist/index.min.js';
-
-        $(".emoji-input").each(function () {
-            var x__type = $(this).attr('x__type');
-            console.log('EMOJI'+x__type);
-            const picker = new EmojiButton();
-            const trigger = document.querySelector('#emoji_pick_type'+x__type);
-            picker.on('emoji', selection => {
-                append_value($('.input_note_'+x__type), ' ' + selection.emoji);
-                set_autosize($(this));
-            });
-            trigger.addEventListener('click', () => picker.togglePicker(trigger));
-        });
-
-        $(".emoji_edit").removeClass('hidden');
-        $(".load_emoji_editor").click(function () {
-            var x__id = $(this).attr('x__id');
-            const picker = new EmojiButton();
-            const trigger = document.querySelector('#emoji_pick_id'+x__id);
-            picker.on('emoji', selection => {
-                document.querySelector('#message_body_'+x__id).value += selection.emoji;
-            });
-            trigger.addEventListener('click', () => picker.togglePicker(trigger));
-        });
-
-    </script>
-
-
     <!-- Load Fonts Dynamically -->
     <?php
-
-
     $custom_css = website_setting(33818);
     if(strlen($custom_css)){
         echo '<link href="'.$custom_css.'?cache_buster='.$this->config->item('cache_buster').'" rel="stylesheet">';
     }
-
-
 
 
     echo '<style> ';
@@ -387,9 +353,8 @@ if(!$basic_header_footer){
                     } else {
                         $padding_hack = 7; //For Emoji
                     }
+
                     echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover($domain_logo, 1).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
-
-
 
 
                     //SEARCH
@@ -399,17 +364,16 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</td>';
 
-                    echo '<td class="block-x icon_editor hidden"><a href="javascript:void(0);" onclick="edit_idea(0)" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
 
 
                     if($quick_id > 0){
-                        echo '<td class="block-x icon_search icon_editor"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_search"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
                     }
 
 
+                    echo '<td class="block-x icon_search '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
 
-                    echo '<td class="block-x icon_search icon_editor '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
 
                     //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
@@ -450,7 +414,7 @@ if(!$basic_header_footer){
 
                         } elseif($x__type==7291 && intval($this->session->userdata('is_anonymous'))>0){
 
-                            //FINAL logout Warning:
+                            //FINAL logout Warning if anonymous:
                             $href = 'href="javascript:final_logout();"';
 
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){

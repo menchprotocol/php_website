@@ -1,39 +1,5 @@
 <?php
 
-/*
-$images = 0;
-$fontawesome = 0;
-$emoji = 0;
-$none = 0;
-
-foreach($this->E_model->fetch(array()) as $e){
-
-    if(substr_count($e['e__cover'],'<img ') && substr_count($e['e__cover'],'src=')){
-        $images++;
-        $type = 'IMAGE: ';
-        $new_cover = one_two_explode('src="','"',$e['e__cover']);
-    } elseif(substr_count($e['e__cover'],'fa-') && substr_count($e['e__cover'],'<i ')){
-        $fontawesome++;
-        $type = 'FONTAWESOME: ';
-        $new_cover = one_two_explode('class="','"',$e['e__cover']);
-    } elseif(strlen($e['e__cover'])){
-        $emoji++;
-        $type = 'EMOJI: ';
-        $new_cover = $e['e__cover'];
-    } else {
-        $none++;
-        $type = 'NONE: ';
-        $new_cover = null;
-    }
-
-    echo $type.$e['e__cover'].' ('.$new_cover.') @'.$e['e__id'].'<br />';
-
-    //$this->E_model->update($e['e__id'], array('e__cover' => $new_cover));
-}
-
-echo '<br /><br />Images ('.$images.') Fontawesome ('.$fontawesome.') Emoji ('.$emoji.') None ('.$none.')<br />';
-*/
-
 //UI to compose a test message:
 echo '<form method="GET" action="">';
 

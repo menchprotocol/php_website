@@ -270,7 +270,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <h5 class="main__title"><?= $e___11035[27963]['m__title'] ?></h5>
 
                     <input type="hidden" id="modal_i__id" value="0" />
-                    <textarea class="form-control note-textarea indifferent algolia_search new-note power_editor editing-mode emoji-input input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    <textarea class="form-control note-textarea indifferent algolia_search new-note power_editor editing-mode input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
 
                     <table>
@@ -289,11 +289,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 echo '<label class="btn inline-block btn-compact file_label_4231" for="fileIdeaType4231" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
 
                                 //GIF
-                                //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="images_modal(4231)" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
-
-                                //EMOJI
-                                //echo '<span class="btn btn-compact inline-block" id="emoji_pick_type4231" title="'.$e___11035[14038]['m__title'].'"><span class="icon-block">'.$e___11035[14038]['m__cover'].'</span></span>';
-
+                                //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="image_api_search(4231)" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
 
                                 echo '</form>';
                                 echo '</div>';

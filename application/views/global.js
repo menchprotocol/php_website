@@ -828,40 +828,25 @@ function toggle_search(){
 
 
 
-var editor_on = false;
 function edit_idea(i__id){
 
-    if(editor_on || !i__id){
+    $('#modal31911').modal('show');
+    $('.input_note_4231').val('');
+    $('.note_error_4231').html('');
+    $('#modal_i__id').val(i__id);
 
-        //Turn OFF
-        editor_on = false; //Reverse
-        $('#modal31911').modal('hide');
-
-    } else {
-
-        //Turn ON
-        editor_on = true; //Reverse
-        $('#modal31911').modal('show');
-
-        //Reset until loaded
-        $('.input_note_4231').val('');
-        $('.note_error_4231').html('');
-        $('#modal_i__id').val(i__id);
-
-        $.post("/i/edit_idea", {
-            i__id:i__id,
-        }, function (data) {
-            if(data.status){
-                $('.input_note_4231').val(data.message.trim()).focus();
-                setTimeout(function () {
-                    set_autosize($('.input_note_4231'));
-                }, 237);
-            } else {
-                $('.note_error_4231').html(data.message);
-            }
-        });
-
-    }
+    $.post("/i/edit_idea", {
+        i__id:i__id,
+    }, function (data) {
+        if(data.status){
+            $('.input_note_4231').val(data.message.trim()).focus();
+            setTimeout(function () {
+                set_autosize($('.input_note_4231'));
+            }, 237);
+        } else {
+            $('.note_error_4231').html(data.message);
+        }
+    });
 
 }
 
@@ -1948,7 +1933,7 @@ jQuery.fn.extend({
 
 
 
-function images_modal(x__type){
+function image_api_search(x__type){
     x_create({
         x__creator: js_pl_id,
         x__type: 14576, //MODAL VIEWED
