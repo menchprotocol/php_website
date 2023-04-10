@@ -1195,7 +1195,7 @@ a.headline {
 
 
 .modal-content .form-control{
-    border-radius: 21px;
+    border-radius: 0;
     margin-bottom: 5px;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
