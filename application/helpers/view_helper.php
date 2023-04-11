@@ -635,13 +635,22 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $i__id,
         ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x){
-            if(substr($message_x['x__message'], 0, 1)=='@' && is_numeric(substr($message_x['x__message'], 1)) && count($CI->X_model->fetch(array(
-                    'x__type' => 4260, //IMAGES
+            if(substr($message_x['x__message'], 0, 1)=='@' && is_numeric(substr($message_x['x__message'], 1))){
+                foreach($CI->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__down' => intval(substr($message_x['x__message'], 1)),
-                )))){
-                $desc .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, 0, true);
-                break;
+                    'LENGTH(x__message)>0' => null,
+                )) as $links){
+                    $detect_data_type = detect_data_type($links['x__message']);
+                    if ($detect_data_type['status'] && $detect_data_type['x__type']==4260){
+                        $desc .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, 0, true);
+                        break;
+                    }
+                }
+                if($desc){
+                    break;
+                }
             }
         }
     }
