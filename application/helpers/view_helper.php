@@ -637,7 +637,7 @@ function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m
         ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x){
             if(substr($message_x['x__message'], 0, 1)=='@' && is_numeric(substr($message_x['x__message'], 1))){
                 foreach($CI->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__down' => intval(substr($message_x['x__message'], 1)),
                     'LENGTH(x__message)>0' => null,
