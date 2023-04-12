@@ -2560,11 +2560,11 @@ function save_editor(){
 
             $('#modal31911').modal('hide');
 
+            //Flash idea:
+            $(".card___12273_"+i__id).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+
             //Reset errors:
             $(".note_error_"+x__type).html('');
-
-            //Update DISCOVERY:
-            $('.messages_4231_'+i__id).html(data.message);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
