@@ -2561,7 +2561,7 @@ function save_editor(){
             $('#modal31911').modal('hide');
 
             //Flash idea:
-            $(".card___12273_"+i__id).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+            $(".card___12273_"+i__id).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144);
 
             //Reset errors:
             $(".note_error_"+x__type).html('');
