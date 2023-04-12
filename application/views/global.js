@@ -2567,7 +2567,7 @@ function save_editor(){
             $('.messages_4231_'+i__id).html(data.message);
 
             //Flash idea:
-            $(".card___12273_"+i__id).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144);
+            $(".card___12273_"+i__id).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
