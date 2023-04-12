@@ -2560,11 +2560,14 @@ function save_editor(){
 
             $('#modal31911').modal('hide');
 
-            //Flash idea:
-            $(".card___12273_"+i__id).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144);
-
             //Reset errors:
             $(".note_error_"+x__type).html('');
+
+            //Update Idea Message:
+            $('.messages_4231_'+i__id).html(data.message);
+
+            //Flash idea:
+            $(".card___12273_"+i__id).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144).fadeOut(144).fadeIn(144);
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
