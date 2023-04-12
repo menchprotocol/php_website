@@ -785,8 +785,8 @@ if($top_i__id || 1) {
         //Sign Agreement
 
         //Text response
-        $message_ui = '<h3>' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
-        $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" placeholder="Full Legal Name" id="x_sign" />';
+        echo '<h3>' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
+        echo '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" placeholder="Full Legal Name" id="x_sign" />';
 
     } elseif ($i['i__type'] == 7637) {
 
