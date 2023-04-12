@@ -282,7 +282,7 @@ if(in_array($i['i__type'], $this->config->item('n___33139'))){
 
 
 
-if($top_i__id) {
+if($top_i__id || 1) {
 
     if ($is_or_idea) {
 
