@@ -2552,11 +2552,13 @@ function save_editor(){
         if (!data.status) {
 
             //Show Errors:
-            $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Message not saved because:<br />'+data.message);
+            $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Idea Not Saved:<br />'+data.message);
 
         } else {
 
             edit_idea(i__id);
+
+            $('#modal31911').modal('hide');
 
             //Reset errors:
             $(".note_error_"+x__type).html('');
