@@ -126,8 +126,8 @@ if(!$is_u_request || isset($_GET['cron'])){
 
     echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');"><i class="fad fa-search-plus"></i> '.$message_list['unique_users_count'].' Unique Recipients = '.$message_list['email_count'].' Emails + '.$message_list['phone_count'].' SMS</a></div>';
 
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 13px;">'.$message_list['full_list'].'</textarea>';
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 13px;">'.$message_list['email_list'].'</textarea>';
+    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$message_list['full_list'].'</textarea>';
+    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$message_list['email_list'].'</textarea>';
 
 
     echo '<div style="padding: 0 10px 13px;">';
@@ -135,7 +135,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 
 
-    echo '<div style="border:1px solid #000000; padding:8px; border-radius: 13px;">';
+    echo '<div style="border:1px solid #000000; padding:8px; border-radius: 21px;">';
     echo '<p>'.view_shuffle_message(29749).' '.$member_e['e__title'].' '.view_shuffle_message(29750).'</p>';
     echo '<textarea class="form-control" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
     echo '<p>'.view_shuffle_message(12691).'</p>';
@@ -145,7 +145,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '<div id="msgNum"></div>';
 
 
-    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'" style="border:1px solid #000000; padding:8px; border-radius: 13px; margin-top:21px;">';
+    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'" style="border:1px solid #000000; padding:8px; border-radius: 21px; margin-top:21px;">';
 
     echo '</div>';
 
