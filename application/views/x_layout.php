@@ -780,6 +780,11 @@ if($top_i__id) {
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
+    } elseif ($i['i__type'] == 32603) {
+
+        //Sign Agreement
+        
+
     } elseif ($i['i__type'] == 7637) {
 
         //FILE UPLOAD

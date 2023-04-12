@@ -1500,7 +1500,6 @@ class X extends CI_Controller
         if ($e_x[0]['x__message'] == $_POST['x__message']) {
 
             //Transaction content has not changed:
-            $x__message_type = $e_x[0]['x__type'];
             $x__message = $e_x[0]['x__message'];
 
         } else {
@@ -1509,7 +1508,6 @@ class X extends CI_Controller
             if(!in_array($e_x[0]['x__type'], $this->config->item('n___32292'))){
 
                 $x__message = $_POST['x__message'];
-                $x__message_type = $e_x[0]['x__type'];
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $x__message,
                 ), $member_e['e__id'], 26191 /* SOURCE CONTENT UPDATE */);
@@ -1517,20 +1515,13 @@ class X extends CI_Controller
             } else {
 
                 //it is a source link! We should update this:
-                //Transaction content has changed:
-                $detect_data_type = detect_data_type($_POST['x__message']);
-                if (!$detect_data_type['status']) {
-                    return view_json($detect_data_type);
-                }
 
                 //Update variables:
                 $x__message = $_POST['x__message'];
-                $x__message_type = $detect_data_type['x__type'];
-
 
                 $this->X_model->update($_POST['x__id'], array(
                     'x__message' => $x__message,
-                    'x__type' => $x__message_type,
+                    'x__type' => 4230,
                 ), $member_e['e__id'], 10657 /* SOURCE LINK CONTENT UPDATE */);
 
             }
@@ -1538,9 +1529,10 @@ class X extends CI_Controller
 
 
         //Show success:
+        $detect_data_type = detect_data_type($x__message);
         return view_json(array(
             'status' => 1,
-            'x__message' => preview_x__message($x__message, $x__message_type),
+            'x__message' => preview_x__message($x__message, $detect_data_type['x__type']),
             'x__message_final' => $x__message, //In case content was updated
         ));
 
