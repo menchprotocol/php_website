@@ -844,7 +844,7 @@ p.menu_header {
 }
 
 .form-control.border {
-    padding: 6px 5px 5px;
+    padding: 8px 10px 10px;
 }
 
 textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
