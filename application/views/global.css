@@ -3161,8 +3161,7 @@ h4.main__title{
     border-radius: 0 !important;
 }
 
-.dropdown_6287,
-.dropdown_4341 {
+.dropdown_d33293 {
     border-color: #000000 !important;
 }
 
@@ -4194,7 +4193,7 @@ main {
 }
 
 .card_frame{
-    border: 5px solid transparent;
+    border: 2px solid transparent;
     border-radius: 21px !important;
     margin: 0;
     padding: 21px 0;
