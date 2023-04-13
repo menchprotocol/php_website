@@ -2490,9 +2490,6 @@ input.form-control {
 .focus-cover .cover-btn i {
     margin-top: -33%;
 }
-.list-covers {
-    margin-top: 34px;
-}
 .list-covers .card_cover {
     text-align: center;
     padding:0 5px !important;
@@ -2602,7 +2599,7 @@ h4.main__title{
 
 .centerh {
     padding: 5px 0 1px;
-    margin:0 0 8px 0;
+    margin:34px 0 8px 0;
 }
 
 @media (max-width:600px) {
