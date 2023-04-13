@@ -837,17 +837,6 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
         );
 
-    } elseif($x__type==6287){
-
-        //App Store
-        $joined_by = array('x__down');
-        $query_filters = array(
-            'x__up' => 6287, //Featured Apps
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        );
-
     } elseif($x__type==4341){
 
         //Ledger Transactions
@@ -856,7 +845,14 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
 
     } else {
 
-        return 0;
+        //App Store
+        $joined_by = array('x__down');
+        $query_filters = array(
+            'x__up' => $x__type,
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        );
 
     }
 
