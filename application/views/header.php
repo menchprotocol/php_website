@@ -268,6 +268,13 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $quick_id = 33286;
     $body_class .= ' .qz'.$quick_id.' ';
 
+} elseif(!strlen($first_segment) && e_of_e($website_id)) {
+
+    //Edit Website Home Page:
+    $quick_href = '/@' . $website_id;
+    $quick_id = 33287;
+    $body_class .= ' .qz'.$quick_id;
+
 } elseif(substr($first_segment, 0, 1)=='~') {
 
     //Discovery Mode:
