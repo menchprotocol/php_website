@@ -2070,7 +2070,7 @@ input.form-control {
 
 
 .coin-cover-left{
-    top: 55px;
+    top: 47px;
     left: 8px;
 }
 .focus-cover .coin-cover-left {
@@ -2194,7 +2194,7 @@ input.form-control {
 }
 
 .coinType12274.cover-link.ready-only, .coinType12274.cover-link {
-    margin-top:47px;
+    margin-top:55px;
 }
 .focus-cover .coinType12274.cover-link, .focus-cover .coinType12274.cover-link.ready-only {
     margin-top:77px;
