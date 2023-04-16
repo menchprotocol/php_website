@@ -187,7 +187,7 @@ function htmlentitiesjs(rawStr){
 }
 
 
-function apply_all_load(apply_id, card__id){
+function mass_apply_preview(apply_id, card__id){
 
     //Select first:
     var first_id = $('#modal'+apply_id+' .mass_action_toggle option:first').val();
@@ -198,12 +198,12 @@ function apply_all_load(apply_id, card__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .apply_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...');
-    $.post("/x/apply_preview", {
+    $('#modal'+apply_id+' .mass_apply_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...');
+    $.post("/x/mass_apply_preview", {
         apply_id: apply_id,
         card__id: card__id
     }, function (data) {
-        $('#modal'+apply_id+' .apply_preview').html(data);
+        $('#modal'+apply_id+' .mass_apply_preview').html(data);
     });
 
 }

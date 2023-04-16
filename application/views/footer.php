@@ -141,7 +141,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             echo $input_options;
 
                             ?>
-                            <div class="apply_preview"></div>
+                            <div class="mass_apply_preview"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-default">APPLY TO ALL</button>
@@ -226,7 +226,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         echo $input_options;
 
                         ?>
-                        <div class="apply_preview"></div>
+                        <div class="mass_apply_preview"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-default">APPLY TO ALL</button>

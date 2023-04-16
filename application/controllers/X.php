@@ -223,7 +223,7 @@ class X extends CI_Controller
 
 
 
-    function apply_preview()
+    function mass_apply_preview()
     {
 
         //Log Modal View

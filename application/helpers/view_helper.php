@@ -1407,7 +1407,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     if($e__id_dropdown==12589 && !$discovery_mode){
 
                         //Mass Apply
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                     } elseif($e__id_dropdown==30795 && !$discovery_mode && $superpower_10939){
 
@@ -1860,7 +1860,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                     if($e__id_dropdown==4997 && superpower_active(12703, true)){
 
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="apply_all_load(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                     } elseif($e__id_dropdown==13571 && $x__id > 0 && $superpower_10939){
 
