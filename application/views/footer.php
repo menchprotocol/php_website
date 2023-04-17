@@ -16,11 +16,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal fade indifferent" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
+
                     <div class="modal-header">
                         <h5 class="modal-title main__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="POST" action="/-27196?e__id=12274">
                     <input type="hidden" name="card__id" value="" />
@@ -161,9 +160,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 <div class="modal-content slim_flat">
                     <div class="modal-header">
                         <h5 class="modal-title main__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="POST" action="/-27196?e__id=12273">
                     <input type="hidden" name="card__id" value="" />
@@ -349,9 +346,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     <div class="modal fade" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
+
                 <div class="modal-header">
                     <h5 class="modal-title main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?></h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body block_search_results">

@@ -11,19 +11,6 @@ $e___31127 = $this->config->item('e___31127'); //Action Buttons Pending
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_idea = in_array($i['i__type'], $this->config->item('n___7712'));
 
-//Any Hard Redirects?
-foreach($this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-    'x__right' => $i['i__id'],
-    'x__up' => 30811, //Hard Redirect
-)) as $redirect){
-    if(filter_var($redirect['x__message'], FILTER_VALIDATE_URL)){
-        //js_php_redirect($redirect['x__message'], 13);
-        break;
-    }
-}
-
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -186,12 +173,7 @@ if($top_i__id){
 
 }
 
-if($top_completed || $is_or_idea || count($this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-    'x__right' => $i['i__id'],
-    'x__up' => 33246, //Show Tree
-)))){
+if($top_completed || $is_or_idea){
     $_GET['open'] = true;
 }
 
