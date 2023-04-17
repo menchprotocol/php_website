@@ -430,12 +430,12 @@ function new_member_redirect($e__id, $sign_i__id){
     }
 }
 
-function reset_cache($x__creator, $specific_id = 0){
+function reset_cache($x__creator){
     $CI =& get_instance();
     $count = 0;
     foreach($CI->X_model->fetch(array(
         'x__type' => 14599, //Cache App
-        'x__up IN (' . join(',', ( $specific_id ? array($specific_id) : $CI->config->item('n___14599') )) . ')' => null, //Cache Apps
+        'x__up IN (' . join(',', $CI->config->item('n___14599')) . ')' => null, //Cache Apps
         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $delete_cahce){
