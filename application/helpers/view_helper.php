@@ -1013,13 +1013,13 @@ function view_e_settings($list_id, $is_open){
         //Skip if domain specific:
         $hosted_domains = array_intersect($CI->config->item('n___14870'), $acc_detail['m__following']);
         if(count($hosted_domains) && !in_array(website_setting(0), $hosted_domains)){
-            //continue;
+            continue;
         }
 
         //Skip if missing superpower:
         $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__following']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-            //continue;
+            continue;
         }
 
         //Print account fields that are either Single Selectable or Multi Selectable:
@@ -1035,7 +1035,7 @@ function view_e_settings($list_id, $is_open){
                 //Replace with domain specific:
                 $acc_e__id = $domain_specific_id;
             } else {
-               //continue;
+               continue;
             }
         }
 
@@ -1061,7 +1061,7 @@ function view_e_settings($list_id, $is_open){
 
                 $has_unlocked = in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'));
                 $public_link = in_array($superpower_e__id, $CI->config->item('n___6404'));
-                $anchor = '<span class="icon-block main-icon" title="@'.$superpower_e__id.'">'.$m3['m__cover'].'</span><b class="main__title">'.$m3['m__title'].'</b><span class="superpower-message">'.$m3['m__message'].'</span>';
+                $anchor = '<span class="icon-block main-icon" title="@'.$superpower_e__id.'">'.$m3['m__cover'].'</span><b class="main__title">'.$m3['m__title'].':</b><span class="superpower-message">'.$m3['m__message'].'</span>';
 
                 if($has_unlocked){
 

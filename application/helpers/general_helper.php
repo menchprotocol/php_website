@@ -430,38 +430,41 @@ function new_member_redirect($e__id, $sign_i__id){
     }
 }
 
-function longest_common_substring($strs) {
+function prefix_common_words($strs) {
 
-    $match_words = array();
+    $prefix_common_words = array();
     foreach($strs as $string){
+
         $words = explode(' ',$string);
-        if(!count($match_words)){
+        if(!count($prefix_common_words)){
 
             //Initialize based on the first title:
-            $match_words = $words;
+            $prefix_common_words = $words;
 
         } else {
 
             foreach($words as $word_count => $word){
-                if(!isset($match_words[$word_count]) || !isset($words[$word_count]) || $words[$word_count]!=$match_words[$word_count]){
+
+                if(!isset($prefix_common_words[$word_count]) || !isset($words[$word_count]) || $words[$word_count]!=$prefix_common_words[$word_count]){
                     //We have some common words left, continue to remove these words onwards:
                     for($i=$word_count;$i<count($words);$i++){
-                        unset($match_words[$i]);
+                        unset($prefix_common_words[$i]);
                     }
 
-                    if(!count($match_words)){
+                    if(!count($prefix_common_words)){
                         break;  //No common words, terminate
                     }
                 }
             }
 
-            if(!count($match_words)){
+            if(!count($prefix_common_words)){
                 break;  //No common words, terminate
             }
+
         }
     }
 
-    return ( count($match_words) ? join(' ',$match_words).' '  : false );
+    return ( count($prefix_common_words) ? join(' ',$prefix_common_words).' '  : false );
 
 }
 
