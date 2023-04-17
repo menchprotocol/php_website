@@ -430,30 +430,31 @@ function new_member_redirect($e__id, $sign_i__id){
     }
 }
 
-function longest_common_substring($words)
+function longest_common_substring(array $arrayOfStrings)
 {
-    $words = array_map('strtolower', array_map('trim', $words));
-    $sort_by_strlen = create_function('$a, $b', 'if (strlen($a) == strlen($b)) { return strcmp($a, $b); } return (strlen($a) < strlen($b)) ? -1 : 1;');
-    usort($words, $sort_by_strlen);
-    $longest_common_substring = array();
-    $shortest_string = str_split(array_shift($words));
-    while (sizeof($shortest_string)) {
-        array_unshift($longest_common_substring, '');
-        foreach ($shortest_string as $ci => $char) {
-            foreach ($words as $wi => $word) {
-                if (!strstr($word, $longest_common_substring[0] . $char)) {
-                    // No match
-                    break 2;
-                } // if
-            } // foreach
-            $longest_common_substring[0].= $char;
-        } // foreach
-        array_shift($shortest_string);
+    $k = 0;
+    $firstPos = 0;
+    $longestPrefix = "";
+
+    while (true) {
+        if (count($arrayOfStrings) === 0 || !$arrayOfStrings[$firstPos][$k]) {
+            return $longestPrefix;
+        }
+
+        $nextCharacter = $arrayOfStrings[$firstPos][$k];
+
+        for ($j = 0; $j < count($arrayOfStrings); $j++) {
+            if ($arrayOfStrings[$j][$k] != $nextCharacter) {
+                return $longestPrefix;
+            }
+        }
+
+        $k++;
+        $longestPrefix = $longestPrefix . $nextCharacter;
     }
-    // If we made it here then we've run through everything
-    usort($longest_common_substring, $sort_by_strlen);
-    return array_pop($longest_common_substring);
 }
+
+
 
 function reset_cache($x__creator){
     $CI =& get_instance();
