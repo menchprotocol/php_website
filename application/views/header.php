@@ -490,7 +490,7 @@ echo '<div id="container_content" class="container">';
 
 if(isset($_GET['reset_cache'])){
     //Remove all Active Cache:
-    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Deleted '.reset_cache($member_e['e__id']).' active caches</div>';
+    echo '<div class="msg alert alert-warning" role="alert">Deleted '.reset_cache($member_e['e__id']).' active caches</div>';
 }
 
 //Any message we need to show here?
