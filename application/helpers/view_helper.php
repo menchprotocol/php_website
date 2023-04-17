@@ -1019,7 +1019,7 @@ function view_e_settings($list_id, $is_open){
         //Skip if missing superpower:
         $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__following']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-            continue;
+            //continue;
         }
 
         //Print account fields that are either Single Selectable or Multi Selectable:
