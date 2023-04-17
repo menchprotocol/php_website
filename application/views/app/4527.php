@@ -67,7 +67,7 @@ foreach($this->X_model->fetch(array(
         }
 
         $memory_text .= '     '.$follower['e__id'].' => array('."\n";
-        $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',( strlen($longest_common_substring) ? str_replace($longest_common_substring,'',$follower['e__title']) : $follower['e__title'] ))).'\','."\n";
+        $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',str_replace($longest_common_substring,'',$follower['e__title']) )).'\','.( strlen($longest_common_substring) ? ' //Common Term: '.$longest_common_substring : '' )."\n";
         $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['x__message'])).'\','."\n";
         $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view_cover($follower['e__cover'])).'\','."\n";
         $memory_text .= '        \'m__following\' => array('.join(',',$down_up_ids).'),'."\n";
