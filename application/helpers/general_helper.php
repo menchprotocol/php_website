@@ -434,20 +434,20 @@ function prefix_common_words($strs) {
 
     $prefix_common_words = array();
 
-    if(count($strs)>1){
+    if(count($strs)>=2){
         foreach($strs as $string){
 
             $words = explode(' ',$string);
+
             if(!count($prefix_common_words)){
 
-                //Initialize based on the first title:
+                //Initialize the first title:
                 $prefix_common_words = $words;
 
             } else {
 
                 foreach($words as $word_count => $word){
-
-                    if(!isset($prefix_common_words[$word_count]) || !isset($words[$word_count]) || $words[$word_count]!=$prefix_common_words[$word_count]){
+                    if(!isset($prefix_common_words[$word_count]) || $prefix_common_words[$word_count]!=$word){
 
                         //We have some common words left, continue to remove these words onwards:
                         for($i=$word_count;$i<count($words);$i++){
@@ -456,7 +456,6 @@ function prefix_common_words($strs) {
 
                         break;  //No common words, terminate
                     }
-
                 }
 
                 if(!count($prefix_common_words)){
