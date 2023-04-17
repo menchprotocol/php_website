@@ -451,10 +451,15 @@ function prefix_common_words($strs) {
 
                         if(!isset($prefix_common_words[$word_count]) || $prefix_common_words[$word_count]!=$word){
 
-                            //We have some common words left, continue to remove these words onwards:
-                            for($i=$word_count;$i<=count($prefix_common_words);$i++){
-                                if(isset($prefix_common_words[$i])){
-                                    unset($prefix_common_words[$i]);
+                            if(!$word_count){
+                                //First word is not a match, terminate!
+                                $prefix_common_words = array();
+                            } else {
+                                //We have some common words left, continue to remove these words onwards:
+                                for($i=$word_count;$i<=count($prefix_common_words);$i++){
+                                    if(isset($prefix_common_words[$i])){
+                                        unset($prefix_common_words[$i]);
+                                    }
                                 }
                             }
 
