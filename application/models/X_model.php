@@ -604,7 +604,7 @@ class X_model extends CI_Model
             if(!filter_var($e_data['x__message'], FILTER_VALIDATE_EMAIL)){
                 $this->X_model->update($e_data['x__id'], array(
                     'x__access' => 6173, //Transaction Deleted
-                ), $e__id, 27890 /* Invalid Input Removed */);
+                ), $e__id, 27890 /* Website Archive */);
                 continue;
             }
 
@@ -650,7 +650,7 @@ class X_model extends CI_Model
                         //bad number, remove it:
                         $this->X_model->update($e_data['x__id'], array(
                             'x__access' => 6173, //Transaction Deleted
-                        ), $e__id, 27890 /* Invalid Input Removed */);
+                        ), $e__id, 27890 /* Website Archive */);
                     } else {
                         //All good, sent:
 
