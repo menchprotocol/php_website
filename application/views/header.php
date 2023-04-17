@@ -488,11 +488,6 @@ if(!$basic_header_footer){
 echo '<div id="container_search" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
 echo '<div id="container_content" class="container">';
 
-if(isset($_GET['reset_cache'])){
-    //Remove all Active Cache:
-    echo '<div class="msg alert alert-warning" role="alert">Deleted '.reset_cache($member_e['e__id']).' active caches</div>';
-}
-
 //Any message we need to show here?
 if (!isset($flash_message) || !strlen($flash_message)) {
     $flash_message = $this->session->flashdata('flash_message');

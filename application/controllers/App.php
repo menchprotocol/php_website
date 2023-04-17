@@ -84,18 +84,22 @@ class App extends CI_Controller
             $title = $e___6287[$app_e__id]['m__title'].( public_app($es[0]) ? ' | '.$e___11035[6287]['m__title'] : '' );
 
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
-                //Fetch Most Recent Cache:
-                foreach($this->X_model->fetch(array(
-                    'x__website' => website_setting(0),
-                    'x__type' => 14599, //Cache App
-                    'x__up' => $app_e__id,
-                    'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
-                    $ui = $latest_cache['x__message'];
-                    $cache_x__id = $latest_cache['x__id'];
-                    $cache_x__time = '<div class="texttransparent center main__title">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
+
+                if(!isset($_GET['reset_cache'])){
+                    //Fetch Most Recent Cache:
+                    foreach($this->X_model->fetch(array(
+                        'x__website' => website_setting(0),
+                        'x__type' => 14599, //Cache App
+                        'x__up' => $app_e__id,
+                        'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
+                        $ui = $latest_cache['x__message'];
+                        $cache_x__id = $latest_cache['x__id'];
+                        $cache_x__time = '<div class="texttransparent center main__title">Updated ' . view_time_difference(strtotime($latest_cache['x__time'])) . ' Ago</div>';
+                    }
                 }
+
                 if(!$ui){
                     //No recent cache found, create a new one:
                     $new_cache = true;
