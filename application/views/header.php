@@ -278,7 +278,7 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
 } elseif(substr($first_segment, 0, 1)=='@' && intval(substr($first_segment, 1))==$website_id) {
 
     //Edit Website Home Page:
-    $quick_href = '/';
+    $quick_href = '/?reset_cache=1';
     $quick_id = 6287;
     $body_class .= ' .qz'.$quick_id.' .qz6287_'.substr($first_segment, 1).' ';
 
@@ -487,6 +487,11 @@ if(!$basic_header_footer){
 
 echo '<div id="container_search" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
 echo '<div id="container_content" class="container">';
+
+if(isset($_GET['reset_cache'])){
+    //Remove all Active Cache:
+    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Deleted '.reset_cache($member_e['e__id'], $website_id).' active caches</div>';
+}
 
 //Any message we need to show here?
 if (!isset($flash_message) || !strlen($flash_message)) {
