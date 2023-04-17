@@ -433,34 +433,37 @@ function new_member_redirect($e__id, $sign_i__id){
 function prefix_common_words($strs) {
 
     $prefix_common_words = array();
-    foreach($strs as $string){
 
-        $words = explode(' ',$string);
-        if(!count($prefix_common_words)){
+    if(count($strs)>1){
+        foreach($strs as $string){
 
-            //Initialize based on the first title:
-            $prefix_common_words = $words;
+            $words = explode(' ',$string);
+            if(!count($prefix_common_words)){
 
-        } else {
+                //Initialize based on the first title:
+                $prefix_common_words = $words;
 
-            foreach($words as $word_count => $word){
+            } else {
 
-                if(!isset($prefix_common_words[$word_count]) || !isset($words[$word_count]) || $words[$word_count]!=$prefix_common_words[$word_count]){
-                    //We have some common words left, continue to remove these words onwards:
-                    for($i=$word_count;$i<count($words);$i++){
-                        unset($prefix_common_words[$i]);
-                    }
+                foreach($words as $word_count => $word){
 
-                    if(!count($prefix_common_words)){
-                        break;  //No common words, terminate
+                    if(!isset($prefix_common_words[$word_count]) || !isset($words[$word_count]) || $words[$word_count]!=$prefix_common_words[$word_count]){
+                        //We have some common words left, continue to remove these words onwards:
+                        for($i=$word_count;$i<count($words);$i++){
+                            unset($prefix_common_words[$i]);
+                        }
+
+                        if(!count($prefix_common_words)){
+                            break;  //No common words, terminate
+                        }
                     }
                 }
-            }
 
-            if(!count($prefix_common_words)){
-                break;  //No common words, terminate
-            }
+                if(!count($prefix_common_words)){
+                    break;  //No common words, terminate
+                }
 
+            }
         }
     }
 
