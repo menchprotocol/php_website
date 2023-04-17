@@ -443,7 +443,7 @@ function longest_common_substring($strs) {
         } else {
 
             foreach($words as $word_count => $word){
-                if($words[$word_count]!=$match_words[$word_count]){
+                if(!isset($match_words[$word_count]) || !isset($words[$word_count]) || $words[$word_count]!=$match_words[$word_count]){
                     //We have some common words left, continue to remove these words onwards:
                     for($i=$word_count;$i<count($words);$i++){
                         unset($match_words[$i]);
