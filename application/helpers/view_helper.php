@@ -1013,13 +1013,13 @@ function view_e_settings($list_id, $is_open){
         //Skip if domain specific:
         $hosted_domains = array_intersect($CI->config->item('n___14870'), $acc_detail['m__following']);
         if(count($hosted_domains) && !in_array(website_setting(0), $hosted_domains)){
-            //continue;
+            continue;
         }
 
         //Skip if missing superpower:
         $superpower_actives = array_intersect($CI->config->item('n___10957'), $acc_detail['m__following']);
         if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-            //continue;
+            continue;
         }
 
         //Print account fields that are either Single Selectable or Multi Selectable:
@@ -1035,7 +1035,7 @@ function view_e_settings($list_id, $is_open){
                 //Replace with domain specific:
                 $acc_e__id = $domain_specific_id;
             } else {
-               // continue;
+               continue;
             }
         }
 
