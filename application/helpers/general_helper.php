@@ -474,7 +474,7 @@ function prefix_common_words($strs) {
         }
     }
 
-    return ( count($prefix_common_words) ? join(' ',$prefix_common_words).' '  : false );
+    return ( count($prefix_common_words) ? join(' ',$prefix_common_words).' '.print_r($prefix_common_words)  : false );
 
 }
 
