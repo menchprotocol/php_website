@@ -440,10 +440,17 @@ function prefix_common_words($strs) {
 
         foreach($strs as $string){
 
-            $word_count = 0;
+            if(!count($prefix_common_words)){
+                break;  //No common words, terminate
+            }
+
             $words = explode(' ',$string);
             foreach($words as $word_count => $word){
-                if(!isset($prefix_common_words[$word_count]) || $prefix_common_words[$word_count]!=$word){
+                if(!isset($prefix_common_words[$word_count])) {
+
+                    break;
+
+                } elseif($prefix_common_words[$word_count]!=$word){
 
                     //We have some common words left, continue to remove these words onwards:
                     $total_words = count($prefix_common_words);
@@ -457,11 +464,6 @@ function prefix_common_words($strs) {
                     break;  //No common words, terminate
                 }
             }
-
-            if(!count($prefix_common_words)){
-                break;  //No common words, terminate
-            }
-
         }
     }
 
