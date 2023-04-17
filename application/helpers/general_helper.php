@@ -446,27 +446,22 @@ function prefix_common_words($strs) {
 
             } else {
 
-                foreach($words as $word_count => $word){
+                if(count($prefix_common_words)){
+                    foreach($words as $word_count => $word){
 
-                    if(!isset($prefix_common_words[$word_count]) || $prefix_common_words[$word_count]!=$word){
+                        if(!isset($prefix_common_words[$word_count]) || $prefix_common_words[$word_count]!=$word){
 
-                        if(!$word_count){
-                            //First word is not a match, terminate!
-                            $prefix_common_words = array();
-                        } else {
                             //We have some common words left, continue to remove these words onwards:
                             for($i=$word_count;$i<=count($prefix_common_words);$i++){
                                 if(isset($prefix_common_words[$i])){
                                     unset($prefix_common_words[$i]);
                                 }
                             }
+
+                            break;  //No common words, terminate
                         }
-
-                        break;  //No common words, terminate
                     }
-                }
-
-                if(!count($prefix_common_words)){
+                } else {
                     break;  //No common words, terminate
                 }
 
