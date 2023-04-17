@@ -40,14 +40,15 @@ foreach($this->X_model->fetch(array(
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
 
-
-
     //Generate raw IDs:
     $down_ids = array();
+    $down_titles = array();
     foreach($down__e as $follower){
         array_push($down_ids , $follower['e__id']);
+        array_push($down_titles , $follower['e__title']);
     }
 
+    $longest_common_substring = longest_common_substring($down_titles); //Clean Titles
     $memory_text .= "\n".'//'.$en['e__title'].':'."\n";
     $memory_text .= '$config[\'n___'.$en['x__down'].'\'] = array('.join(',',$down_ids).');'."\n";
     $memory_text .= '$config[\'e___'.$en['x__down'].'\'] = array('."\n";
@@ -65,7 +66,7 @@ foreach($this->X_model->fetch(array(
         }
 
         $memory_text .= '     '.$follower['e__id'].' => array('."\n";
-        $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',$follower['e__title'])).'\','."\n";
+        $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',str_replace($longest_common_substring,'',$follower['e__title']))).'\','."\n";
         $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['x__message'])).'\','."\n";
         $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view_cover($follower['e__cover'])).'\','."\n";
         $memory_text .= '        \'m__following\' => array('.join(',',$down_up_ids).'),'."\n";
