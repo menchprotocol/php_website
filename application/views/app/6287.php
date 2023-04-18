@@ -42,9 +42,11 @@ foreach($this->X_model->fetch(array(
         continue;
     }
 
-    $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
-    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-        continue;
+    if(isset($e___6287[$app['e__id']])){
+        $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
+        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+            continue;
+        }
     }
 
     echo view_card_e(6287, $app);
