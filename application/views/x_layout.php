@@ -193,16 +193,6 @@ if($require_playback){
 }
 
 
-
-if(count($this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-    'x__right' => $i['i__id'],
-    'x__up' => 33253, //Auto Play Audio
-)))){
-}
-
-
 echo '<div class="light-bg large-frame">';
 
 //MESSAGES
@@ -264,7 +254,7 @@ if(in_array($i['i__type'], $this->config->item('n___33139'))){
 
 
 
-if($top_i__id || 1) {
+if($top_i__id) {
 
     if ($is_or_idea) {
 
