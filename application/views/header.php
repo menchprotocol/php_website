@@ -174,30 +174,33 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     }
 
 
-    $domain_background = website_setting(28621);
-    if(strlen($domain_background)){
 
-        $apply_css = 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span';
+    if(isset($app_e__id) && in_array($app_e__id, $this->config->item('n___28621'))){
 
-        //Make sure we have enough padding at the bottom:
-        echo '.bottom_spacer {  padding-bottom:987px !important; } ';
+        $domain_background = website_setting(28621);
+        if(strlen($domain_background)){
 
-        if(substr($domain_background, 0, 1)=='#'){
+            $apply_css = 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span';
 
-            echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
-            echo 'background:'.$domain_background.' !important; ';
-            echo '}';
+            //Make sure we have enough padding at the bottom:
+            echo '.bottom_spacer {  padding-bottom:987px !important; } ';
 
-        } elseif(substr($domain_background, 0, 2)=='//' && !strlen($first_segment)){
+            if(substr($domain_background, 0, 1)=='#'){
 
-            //Video of photo?
-            if(substr($domain_background, -4)=='.mp4'){
-                //Is Video:
-                $bgVideo = '<video autoplay loop muted playsinline class="video_contain"><source src="'.$domain_background.'" type="video/mp4"></video>';
-            } else {
+                echo 'body, .container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
+                echo 'background:'.$domain_background.' !important; ';
+                echo '}';
 
-                //Is Photo:
-                echo 'body { 
+            } elseif(substr($domain_background, 0, 2)=='//'){
+
+                //Video of photo?
+                if(substr($domain_background, -4)=='.mp4'){
+                    //Is Video:
+                    $bgVideo = '<video autoplay loop muted playsinline class="video_contain"><source src="'.$domain_background.'" type="video/mp4"></video>';
+                } else {
+
+                    //Is Photo:
+                    echo 'body { 
     background: url("'.$domain_background.'") no-repeat center center fixed !important; 
     background-size: cover !important;
     width: 100% !important;
@@ -208,9 +211,9 @@ foreach($this->config->item('e___13890') as $e__id => $m){
       left:0 !important;
     height: 100% !important;
     ';
-                echo '}';
+                    echo '}';
 
-                echo 'body:after{
+                    echo 'body:after{
       content:"" !important;
       position:fixed !important; /* stretch a fixed position to the whole screen */
       top:0 !important;
@@ -225,26 +228,27 @@ foreach($this->config->item('e___13890') as $e__id => $m){
       background-size: cover !important;
 }';
 
+                }
+
+                echo '.container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
+                echo 'background: transparent !important; ';
+                echo '}';
+
+                echo ' .halfbg, .msg>span { background: rgba(0, 0, 0, 0.69) !important; border-radius: 21px; } ';
+                echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 21px; } ';
+                echo ' .top-header-position.fixed-top { background: none !important; } ';
+
+                echo ' .msg>span { display: block; padding: 0; } ';
+                //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
+                echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
+
+                echo '.list-border, .msg { max-width:600px; margin: 0 auto !important; }';
+                echo ' @media (max-width:600px) { .list-border, .msg { max-width:100%; margin: 0 auto; } }';
+
+                //Force Dark Mode:
+                $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
+
             }
-
-            echo '.container, .chat-title span, div.dropdown-item, .mid-text-line span { ';
-            echo 'background: transparent !important; ';
-            echo '}';
-
-            echo ' .halfbg, .msg>span { background: rgba(0, 0, 0, 0.69) !important; border-radius: 21px; } ';
-            echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 21px; } ';
-            echo ' .top-header-position.fixed-top { background: none !important; } ';
-
-            echo ' .msg>span { display: block; padding: 0; } ';
-            //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
-            echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
-
-            echo '.list-border, .msg { max-width:600px; margin: 0 auto !important; }';
-            echo ' @media (max-width:600px) { .list-border, .msg { max-width:100%; margin: 0 auto; } }';
-
-            //Force Dark Mode:
-            $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
-
         }
     }
 

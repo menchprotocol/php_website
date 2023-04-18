@@ -206,6 +206,7 @@ class App extends CI_Controller
                 echo $this->load->view('header', array(
                     'title' => $title,
                     'basic_header_footer' => $basic_header,
+                    'app_e__id' => $app_e__id,
                 ), true);
                 echo $ui;
                 echo $cache_x__time;
