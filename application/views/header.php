@@ -243,7 +243,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             echo ' @media (max-width:600px) { .list-border, .msg { max-width:100%; margin: 0 auto; } }';
 
             //Force Dark Mode:
-            //$body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
+            $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
 
         }
     }
