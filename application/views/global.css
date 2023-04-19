@@ -75,10 +75,10 @@ body {
     display: inline-block;
 }
 .focus-cover .content-image {
-    max-height: 233px;
+    max-height: 500px;
 }
 .edge-cover .content-image {
-    max-height: 179px;
+    max-height: 300px;
 }
 
 .ytframe{
