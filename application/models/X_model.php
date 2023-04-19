@@ -966,17 +966,17 @@ class X_model extends CI_Model
             //Add Dropdown frame IF any:
             $e_dropdown = '';
 
-            if($simple_version){
+            if($simple_version && 0){
 
                 //Links not supported
                 $e_dropdown .= $es[0]['e__title'];
 
-            } elseif(!count($e_links)){
+            } elseif(!count($e_links) && !$is_discovery_mode){
 
                 //Just reference the source:
                 $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
 
-            } else {
+            } elseif(count($e_links) > 0) {
 
                 //List all links:
                 $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
