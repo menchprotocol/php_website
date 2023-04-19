@@ -1148,19 +1148,15 @@ class E_model extends CI_Model
         }
 
         //Return results:
-        return array_merge(
-
-            $file_extension, //Make domain analysis data available as well...
-
-            array(
-                'status' => 1,
-                'message' => 'Success',
-                'clean_url' => $url,
-                'x__type' => $x__type,
-                'page_title' => html_entity_decode($page_title, ENT_QUOTES),
-                'page_title_generic' => $page_title_generic,
-                'e_url' => $e_url,
-            )
+        return array(
+            'status' => 1,
+            'message' => 'Success',
+            'file_extension' => $file_extension,
+            'clean_url' => $url,
+            'x__type' => $x__type,
+            'page_title' => html_entity_decode($page_title, ENT_QUOTES),
+            'page_title_generic' => $page_title_generic,
+            'e_url' => $e_url,
         );
     }
 
