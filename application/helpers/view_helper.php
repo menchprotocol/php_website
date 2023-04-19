@@ -1254,6 +1254,8 @@ function convertURLs($string)
 
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
 
+    return '['.$i['i__id'].'] ';
+
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___13369'))){
