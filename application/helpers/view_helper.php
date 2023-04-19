@@ -518,7 +518,7 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= view_card_e($x__type, $e, null);
         }
         $ui .= '</div>';
-        if($x__type==11030 && $e_of_e){
+        if(in_array($x__type, $CI->config->item('n___14686')) && $e_of_e){
             $ui .= $add_button;
         }
 
@@ -767,7 +767,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         $limit = view_memory(6404,11064);
         $query = $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
-        if($x__type==11030){
+        if(in_array($x__type, $CI->config->item('n___14686'))){
             $query = array_reverse($query);
         }
         return $query;
@@ -1253,8 +1253,6 @@ function convertURLs($string)
 }
 
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
-
-    return '['.$i['i__id'].'] ';
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
