@@ -328,7 +328,7 @@ if(superpower_unlocked()) {
 
                 <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
 
-                <div class="form-group"><input type="text" autocapitalize="none" placeholder="your@email.com or 7781234567" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
+                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $e___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
 
                 <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
 
