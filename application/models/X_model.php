@@ -983,11 +983,11 @@ class X_model extends CI_Model
 
                 //Link references:
                 foreach($e_links as $e_link){
-                    $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($e_link['e__cover'], true).'</span>'.$e_link['e__title'].'</a>';
+                    $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($e_link['e__cover'], true).'</span>'.$e_link['e__title'].' <i class="far fa-external-link"></i></a>';
                 }
 
                 //Source reference:
-                $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($es[0]['e__cover'], true).'</span>'.$es[0]['e__title'].'</a>';
+                $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($es[0]['e__cover'], true).'</span>'.$es[0]['e__title'].'</a>';
 
                 $e_dropdown .= '</div></div>';
 
