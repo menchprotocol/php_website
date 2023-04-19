@@ -384,8 +384,8 @@ if(superpower_unlocked()) {
                     <div class="main__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
 
                     <!-- Enter Full Name -->
-                    <span class="main__title" style="padding:34px 0 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[13025]['m__cover'].'</span>'.$e___4269[13025]['m__title'] ?></span>
-                    <div class="form-group"><input type="text" placeholder="<?= $e___4269[13025]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border main__title white-border" /></div>
+                    <span class="main__title" style="padding:34px 0 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[30198]['m__cover'].'</span>'.$e___4269[30198]['m__title'] ?></span>
+                    <div class="form-group"><input type="text" placeholder="<?= $e___4269[30198]['m__message'] ?>" id="new_account_title" maxlength="<?= view_memory(6404,6197) ?>" class="form-control border main__title white-border" /></div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">

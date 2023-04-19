@@ -1339,7 +1339,7 @@ class X_model extends CI_Model
 
                 //Check if special profile add?
 
-                if($x_tag['x__up']==13025){
+                if($x_tag['x__up']==30198){
 
                     if(strlen(trim($add_fields['x__message']))>=2){
 
@@ -1490,29 +1490,18 @@ class X_model extends CI_Model
             if(count($es_discoverer)){
 
                 //Fetch Discoverer contact:
-                $u_list_phone = '';
-                $u_clean_phone = '';
-                foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $add_fields['x__creator'],
-                    'x__up' => 4783, //Phone
-                )) as $x_progress){
-                    $u_clean_phone = clean_phone($x_progress['x__message']);
-                    $u_list_phone .= 'Phone:'."\n".$u_clean_phone."\n";
+                $discoverer_contact = '';
+                foreach($this->config->item('e___34541') as $x__type => $m) {
+                    foreach($this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__down' => $add_fields['x__creator'],
+                        'x__up' => $x__type,
+                        'LENGTH(x__message)>0' => null,
+                    )) as $x_progress){
+                        $discoverer_contact .= $m['m__title'].':'."\n".$x_progress['x__message']."\n";
+                    }
                 }
-
-                //Fetch Full Legal Name:
-                $u_list_name = '';
-                foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__left' => 15736, //What's your Full Legal Name that Matches your ID
-                    'x__creator' => $add_fields['x__creator'],
-                )) as $x_progress){
-                    $u_list_name .= 'Full Name:'."\n".$x_progress['x__message']."\n\n";
-                }
-
 
                 //Notify Idea Watchers
                 $sent_watchers = array();
@@ -1526,8 +1515,7 @@ class X_model extends CI_Model
                             $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
                             ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
                             $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
-                            $u_list_name.
-                            $u_list_phone
+                            $discoverer_contact
                         );
                     }
                 }
