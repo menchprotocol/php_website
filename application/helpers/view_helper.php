@@ -1521,14 +1521,12 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip = '';
 
     $messages = '';
-    if(0){
-        foreach($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231,
-            'x__right' => $i['i__id'],
-        ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
-            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
-        }
+    foreach($CI->X_model->fetch(array(
+        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type' => 4231,
+        'x__right' => $i['i__id'],
+    ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
+        $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
     }
     $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.$messages.( !$can_click ? '</div>' : '</a>' );
 
