@@ -947,13 +947,8 @@ class X_model extends CI_Model
 
             $edit_btn = false;
             if(strlen($es[0]['e__cover'])){
-                if(!$is_discovery_mode && e_of_e($es[0]['e__id'])){
-                    $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover($es[0]['e__cover'], true).'</span> ';
-                } else {
-                    $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover($es[0]['e__cover'], true).'</span> ';
-                }
+                $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover($es[0]['e__cover'], true).'</span> ';
             }
-
 
             $on_its_own_line = false;
             $new_lines = 0;
@@ -970,28 +965,32 @@ class X_model extends CI_Model
 
             //Add Dropdown frame IF any:
             $e_dropdown = '';
-            if(count($e_links)){
 
-                if($simple_version){
+            if($simple_version && 0){
 
-                    //Links not supported
-                    $e_dropdown .= $es[0]['e__title'];
+                //Links not supported
+                $e_dropdown .= $es[0]['e__title'];
 
-                } elseif(count($e_links)==1){
+            } elseif(!count($e_links)){
 
-                    //Just show one:
-                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
+                //Just reference the source:
+                $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
 
-                } else {
+            } else {
 
-                    //List all links:
-                    $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
-                    foreach($e_links as $e_link){
-                        $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($e_link['e__cover'], true).'</span>'.$e_link['e__title'].'</a>';
-                    }
-                    $e_dropdown .= '</div></div>';
+                //List all links:
+                $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
 
+                //Source reference:
+                $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($es[0]['e__cover'], true).'</span>'.$es[0]['e__title'].'</a>';
+
+                //Link references:
+                foreach($e_links as $e_link){
+                    $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($e_link['e__cover'], true).'</span>'.$e_link['e__title'].'</a>';
                 }
+
+                $e_dropdown .= '</div></div>';
+
             }
 
 
@@ -1006,6 +1005,7 @@ class X_model extends CI_Model
                 } else {
                     $output_body_message = str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $edit_btn.$the_title : '' ).$e_dropdown, $output_body_message).$e_appendix;
                 }
+
             } else {
                 $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? $edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
             }
