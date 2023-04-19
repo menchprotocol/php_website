@@ -839,7 +839,7 @@ class X_model extends CI_Model
             foreach($string_references['ref_urls'] as $url_key => $input_url) {
 
                 //No source, but we have a URL that we should turn into an source if not previously:
-                $url_e = $this->E_model->url($input_url, ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 ));
+                $url_e = $this->E_model->parse_url($input_url, ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 ));
 
                 //Did we have an error?
                 if (!$url_e['status'] || !isset($url_e['e_url']['e__id']) || intval($url_e['e_url']['e__id']) < 1) {
@@ -914,7 +914,7 @@ class X_model extends CI_Model
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__down' => $referenced_e,
-                    //'LENGTH(x__message)>0' => null,
+                    'LENGTH(x__message)>0' => null,
                 ), array('x__up'), 0, 0, array(
                     'x__type' => 'ASC', /* Text first */
                     'e__weight' => 'DESC',
@@ -1194,9 +1194,6 @@ class X_model extends CI_Model
 
         $x__creator = ( isset($add_fields['x__creator']) ? $add_fields['x__creator'] : 0);
         $domain_url = get_domain('m__message', $x__creator);
-
-
-
 
 
         //Add new transaction:

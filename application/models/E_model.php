@@ -960,76 +960,8 @@ class E_model extends CI_Model
 
     }
 
-    function domain($url, $x__creator = 0, $page_title = null)
-    {
-        /*
-         *
-         * Either finds/returns existing domains or adds it
-         * to the Domains source if $x__creator > 0
-         *
-         * */
 
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid URL',
-            );
-        }
-
-
-        //Analyze domain:
-        $analyze_domain = analyze_domain($url);
-        $domain_previously_existed = 0; //Assume false
-        $e_domain = false; //Have an empty placeholder:
-
-
-        //Check to see if we have domain:
-        $url_x = $this->X_model->fetch(array(
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4256, //Generic URL (Domain home pages should always be generic, see above for logic)
-            'x__up' => 1326, //Domain Member
-            'x__message' => $analyze_domain['url_clean_domain'],
-        ), array('x__down'));
-
-        //Do we need to create an source for this domain?
-        if (count($url_x) > 0) {
-
-            $domain_previously_existed = 1;
-            $e_domain = $url_x[0];
-
-        } elseif ($x__creator) {
-
-            //Yes, let's add a new source:
-            $added_e = $this->E_model->verify_create(( $page_title ? $page_title : $analyze_domain['url_domain'] ), $x__creator);
-            $e_domain = $added_e['new_e'];
-
-            //And transaction source to the domains source:
-            $this->X_model->create(array(
-                'x__creator' => $x__creator,
-                'x__type' => 4256, //Generic URL (Domains are always generic)
-                'x__up' => 1326, //Domain Member
-                'x__down' => $e_domain['e__id'],
-                'x__message' => $analyze_domain['url_clean_domain'],
-            ));
-
-        }
-
-
-        //Return data:
-        return array_merge( $analyze_domain , array(
-            'status' => 1,
-            'message' => 'Success',
-            'domain_previously_existed' => $domain_previously_existed,
-            'e_domain' => $e_domain,
-        ));
-
-    }
-
-
-
-
-    function url($url, $x__creator = 0, $add_to_down_e__id = 0, $page_title = null)
+    function parse_url($url, $x__creator = 0, $add_to_down_e__id = 0, $page_title = null)
     {
 
         /*
@@ -1043,7 +975,6 @@ class E_model extends CI_Model
          * - $page_title:           If set it would override the source title that is auto generated (Used in Add Source Wizard to enable members to edit auto generated title)
          *
          * */
-
 
         //Validate URL:
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
@@ -1073,24 +1004,14 @@ class E_model extends CI_Model
         //Initially assume Generic URL unless we can prove otherwise:
         $x__type = 4256; //Generic URL
 
-        //We'll check to see if URL previously existed:
-        $url_previously_existed = 0;
-
         //Start with null and see if we can find/add:
         $e_url = null;
 
         //Analyze domain:
-        $analyze_domain = analyze_domain($url);
+        $file_extension = file_extension($url);
 
         //Now let's analyze further based on type:
-        if ($analyze_domain['url_root']) {
-
-            //Update URL to keep synced:
-            $url = $analyze_domain['url_clean_domain'];
-
-        } else {
-
-            /*
+        /*
              * URL Can only be non-generic if it's not the domain URL...
              *
              * Examples:
@@ -1103,36 +1024,36 @@ class E_model extends CI_Model
              *
              * */
 
-            //Is this an embed URL?
-            $embed_code = view_url_embed($url, null, true);
+        //Is this an embed URL?
+        $embed_code = view_url_embed($url, null, true);
 
-            if ($embed_code['status']) {
+        if ($embed_code['status']) {
 
-                //URL Was detected as an embed URL:
-                $x__type = 4257;
-                $url = $embed_code['clean_url'];
+            //URL Was detected as an embed URL:
+            $x__type = 4257;
+            $url = $embed_code['clean_url'];
 
-            } elseif ($analyze_domain['url_file_extension'] && is_https_url($url)) {
+        } elseif ($file_extension && is_https_url($url)) {
 
-                $detected_extension = false;
-                foreach($this->config->item('e___11080') as $e__id => $m){
-                    if(in_array($analyze_domain['url_file_extension'], explode('|' , $m['m__message']))){
-                        $x__type = $e__id;
-                        $detected_extension = true;
-                        break;
-                    }
-                }
-
-                if(!$detected_extension){
-                    //Log error to notify admin:
-                    $this->X_model->create(array(
-                        'x__message' => 'e_url() detected unknown file extension ['.$analyze_domain['url_file_extension'].'] that needs to be added to @11080',
-                        'x__type' => 4246, //Platform Bug Reports
-                        'x__up' => 11080,
-                        'x__metadata' => $analyze_domain,
-                    ));
+            $detected_extension = false;
+            foreach($this->config->item('e___11080') as $e__id => $m){
+                if(in_array($file_extension, explode('|' , $m['m__message']))){
+                    $x__type = $e__id;
+                    $detected_extension = true;
+                    break;
                 }
             }
+
+            if(!$detected_extension){
+                //Log error to notify admin:
+                $this->X_model->create(array(
+                    'x__message' => 'e_url() detected unknown file extension ['.$file_extension.'] that needs to be added to @11080',
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__up' => 11080,
+                    'x__metadata' => $file_extension,
+                ));
+            }
+
         }
 
 
@@ -1143,108 +1064,80 @@ class E_model extends CI_Model
             //Only fetch URL content in certain situations:
             $url_content = ( in_array($x__type, $this->config->item('n___11059')) /* not a direct file type */ ? null : @file_get_contents($url) );
             $page_title = e__title_validate(( $url_content ? one_two_explode('>', '', one_two_explode('<title', '</title', html_entity_decode($url_content))) : $page_title ), $x__type);
-            if(!$url_content || !substr_count($url_content, '<title')){
-                $url_previously_existed = 1;
+
+        }
+
+
+
+        //Check to see if URL previously exists:
+        $url_x = $this->X_model->fetch(array(
+            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__message' => $url,
+        ), array('x__down'));
+
+
+        //Do we need to create an source for this URL?
+        if (count($url_x) > 0) {
+
+            //Nope, source previously exists:
+            $e_url = $url_x[0];
+
+        } elseif($x__creator) {
+
+            if(!$page_title){
+                //Assign a generic source name:
+                $page_title = $e___4592[$x__type]['m__title'].' '.substr(md5($url), 0, 8);
+                $page_title_generic = 1;
             }
 
-        }
+            //Create a new source for this URL ONLY If member source is provided...
+            $added_e = $this->E_model->verify_create($page_title, $x__creator);
+            if($added_e['status']){
 
+                //All good:
+                $e_url = $added_e['new_e'];
 
-        //Fetch/Create domain source:
-        $domain_e = $this->E_model->domain($url, $x__creator, ( $analyze_domain['url_root'] && $name_was_passed ? $page_title : null ));
-        if(!$domain_e['status']){
-            //We had an issue:
-            return $domain_e;
-        }
+                //Always transaction URL to its followings domain:
+                $this->X_model->create(array(
+                    'x__creator' => $x__creator,
+                    'x__type' => $x__type,
+                    'x__down' => $e_url['e__id'],
+                    'x__message' => $url,
+                ));
 
+                //Assign to Member:
+                $this->E_model->add_source($e_url['e__id']);
 
-        //Was this not a root domain? If so, also check to see if URL exists:
-        if ($analyze_domain['url_root']) {
+                //Update Search Index:
+                update_algolia(12274, $e_url['e__id']);
 
-            //URL is the domain in this case:
-            $e_url = $domain_e['e_domain'];
+            } else {
 
-            //IF the URL exists since the domain existed and the URL is the domain!
-            if ($domain_e['domain_previously_existed']) {
-                $url_previously_existed = 1;
+                //Log error:
+                $this->X_model->create(array(
+                    'x__message' => 'e_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_e['message'],
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__creator' => $x__creator,
+                    'x__metadata' => array(
+                        'url' => $url,
+                        'x__creator' => $x__creator,
+                        'add_to_down_e__id' => $add_to_down_e__id,
+                        'page_title' => $page_title,
+                        'page_title_generic' => $page_title_generic,
+                    ),
+                ));
+
             }
 
         } else {
-
-            //Check to see if URL previously exists:
-            $url_x = $this->X_model->fetch(array(
-                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__message' => $url,
-            ), array('x__down'));
-
-
-            //Do we need to create an source for this URL?
-            if (count($url_x) > 0) {
-
-                //Nope, source previously exists:
-                $e_url = $url_x[0];
-                $url_previously_existed = 1;
-
-            } elseif($x__creator) {
-
-                if(!$page_title){
-                    //Assign a generic source name:
-                    $page_title = $e___4592[$x__type]['m__title'].' '.substr(md5($url), 0, 8);
-                    $page_title_generic = 1;
-                }
-
-                //Create a new source for this URL ONLY If member source is provided...
-                $added_e = $this->E_model->verify_create($page_title, $x__creator);
-                if($added_e['status']){
-
-                    //All good:
-                    $e_url = $added_e['new_e'];
-
-                    //Always transaction URL to its followings domain:
-                    $this->X_model->create(array(
-                        'x__creator' => $x__creator,
-                        'x__type' => $x__type,
-                        'x__up' => $domain_e['e_domain']['e__id'],
-                        'x__down' => $e_url['e__id'],
-                        'x__message' => $url,
-                    ));
-
-                    //Assign to Member:
-                    $this->E_model->add_source($e_url['e__id']);
-
-                    //Update Search Index:
-                    update_algolia(12274, $e_url['e__id']);
-
-                } else {
-
-                    //Log error:
-                    $this->X_model->create(array(
-                        'x__message' => 'e_url['.$url.'] FAILED to create ['.$page_title.'] with message: '.$added_e['message'],
-                        'x__type' => 4246, //Platform Bug Reports
-                        'x__creator' => $x__creator,
-                        'x__up' => $domain_e['e_domain']['e__id'],
-                        'x__metadata' => array(
-                            'url' => $url,
-                            'x__creator' => $x__creator,
-                            'add_to_down_e__id' => $add_to_down_e__id,
-                            'page_title' => $page_title,
-                            'page_title_generic' => $page_title_generic,
-                        ),
-                    ));
-
-                }
-
-            } else {
-                //URL not found and no member source provided to create the URL:
-                $e_url = array();
-            }
+            //URL not found and no member source provided to create the URL:
+            $e_url = array();
         }
 
-
         //Have we been asked to also add URL to another followings or follower?
-        if(!$url_previously_existed && $add_to_down_e__id){
+        if($add_to_down_e__id){
             //Transaction URL to its followings domain?
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
@@ -1254,22 +1147,18 @@ class E_model extends CI_Model
             ));
         }
 
-        $url_already_linked = $url_previously_existed && !$x__creator && isset($e_url['e__id']);
-
         //Return results:
         return array_merge(
 
-            $analyze_domain, //Make domain analysis data available as well...
+            $file_extension, //Make domain analysis data available as well...
 
             array(
-                'status' => ( $url_already_linked ? 0 : 1),
-                'message' => ( $url_already_linked ? 'URL already added to <a href="/@'.$e_url['e__id'].'">'.$e_url['e__title'].'</a>' : 'Success'),
-                'url_previously_existed' => $url_previously_existed,
+                'status' => 1,
+                'message' => 'Success',
                 'clean_url' => $url,
                 'x__type' => $x__type,
                 'page_title' => html_entity_decode($page_title, ENT_QUOTES),
                 'page_title_generic' => $page_title_generic,
-                'e_domain' => $domain_e['e_domain'],
                 'e_url' => $e_url,
             )
         );

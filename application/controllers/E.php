@@ -388,7 +388,6 @@ class E extends CI_Controller
         $_POST['x__type'] = intval($_POST['x__type']);
         $is_upwards = in_array($_POST['x__type'], $this->config->item('n___14686'));
         $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
-        $url_previously_existed = false;
         $url_e = false;
         $adding_to_existing = (intval($_POST['e_existing_id']) > 0);
 
@@ -419,31 +418,13 @@ class E extends CI_Controller
             if (filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL)) {
 
                 //Digest URL to see what type it is and if we have any errors:
-                $url_e = $this->E_model->url($_POST['e_new_string'], ( $adding_to_idea ? $member_e['e__id'] /* Will Create if Not Found */ : 0 ));
+                $url_e = $this->E_model->parse_url($_POST['e_new_string'], ( $adding_to_idea ? $member_e['e__id'] /* Will Create if Not Found */ : 0 ));
                 if (!$url_e['status']) {
                     return view_json($url_e);
                 }
 
-                $url_previously_existed = $url_e['url_previously_existed'];
-
-                //Is this a root domain? Add to domains if so:
-                if($url_e['url_root']){
-
-                    //Domain
-                    $focus_e = ( $adding_to_idea ? $url_e['e_domain'] : array('e__id' => 1326) );
-
-                    //Update domain to stay synced:
-                    $_POST['e_new_string'] = $url_e['url_clean_domain'];
-
-                } else {
-
-                    //Let's first find/add the domain:
-                    $url_domain = $this->E_model->domain($_POST['e_new_string'], $member_e['e__id']);
-
-                    //Add this source:
-                    $focus_e = ( $adding_to_idea ? $url_e['e_url'] : $url_domain['e_domain'] );
-
-                }
+                //Add this source:
+                $focus_e = $url_e['e_url'];
 
             } else {
 
@@ -483,7 +464,7 @@ class E extends CI_Controller
                 'x__right' => $fetch_o[0]['i__id'],
             ));
 
-        } elseif (!$url_previously_existed) {
+        } else {
 
             //Add Up/Down Source:
 
@@ -505,19 +486,7 @@ class E extends CI_Controller
             }
 
 
-            if (isset($url_e['url_root']) && $url_e['url_root']) {
-
-                $x__message = $url_e['clean_url'];
-
-            } elseif (isset($url_e['e_domain']) && $url_e['e_domain']) {
-
-                $x__message = $url_e['clean_url'];
-
-            } else {
-
-                $x__message = null;
-
-            }
+            $x__message = null;
 
             $e_already_linked = count($this->X_model->fetch(array(
                 'x__down' => $x__down,

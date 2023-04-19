@@ -88,19 +88,19 @@ $minimal_home = intval(website_setting(33922));
 
 //SOCIAL FOOTER
 $domain_phone =  website_setting(28615);
-$domain_email =  website_setting(28614);
+$email_domain =  website_setting(28614);
 $e___14925 = $this->config->item('e___14925'); //Domain Setting
 
 $contact_us = '';
-if(!$minimal_home && ($domain_phone || $domain_email)) {
+if(!$minimal_home && ($domain_phone || $email_domain)) {
 
     $contact_us .= '<ul class="social-footer">';
     if($domain_phone){
         $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].' '.$domain_phone.'</a></li>';
     }
 
-    if($domain_email){
-        $contact_us .= '<li><a href="mailto:'.$domain_email.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].' '.$domain_email.'</a></li>';
+    if($email_domain){
+        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].' '.$email_domain.'</a></li>';
     }
     $contact_us .= '</ul>';
 
@@ -195,8 +195,8 @@ if($social_ui){
     if($domain_phone){
         echo '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].'</a></li>';
     }
-    if($domain_email){
-        echo '<li><a href="mailto:'.$domain_email.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].'</a></li>';
+    if($email_domain){
+        echo '<li><a href="mailto:'.$email_domain.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].'</a></li>';
     }
     echo '</ul>';
     echo '</div>';

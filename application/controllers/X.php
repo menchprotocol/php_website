@@ -41,19 +41,6 @@ class X extends CI_Controller
                 'message' => 'Invalid URL',
             ));
 
-        } elseif (!$detect_data_type['status'] && isset($detect_data_type['url_previously_existed']) && $detect_data_type['url_previously_existed']) {
-
-            //See if this is duplicate to either transaction:
-            $e_x = $this->X_model->fetch(array(
-                'x__id' => $_POST['x__id'],
-            ));
-
-            //Are they both different?
-            if (count($e_x) < 1 || ($e_x[0]['x__up'] != $detect_data_type['e_url']['e__id'] && $e_x[0]['x__down'] != $detect_data_type['e_url']['e__id'])) {
-                //return error:
-                return view_json($detect_data_type);
-            }
-
         }
 
         $x__history_preview = '';
