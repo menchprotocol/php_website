@@ -1499,7 +1499,7 @@ class X_model extends CI_Model
                         'x__up' => $x__type,
                         'LENGTH(x__message)>0' => null,
                     )) as $x_progress){
-                        $discoverer_contact .= $m['m__title'].':'."\n".$x_progress['x__message']."\n";
+                        $discoverer_contact .= $m['m__title'].':'."\n".$x_progress['x__message']."\n\n";
                     }
                 }
 
