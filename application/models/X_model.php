@@ -874,13 +874,15 @@ class X_model extends CI_Model
          *
          * */
 
-        if(0){
-            //Start building the Output message body based on format:
+        //Start building the Output message body based on format:
 
-            $message_input .= ' ';//Helps with accurate source reference replacement
-            $output_body_message = htmlentities($message_input).' ';
-            $string_references = extract_e_references($message_input); //Do it again since it may be updated
-            $note_references = array();
+        $message_input .= ' ';//Helps with accurate source reference replacement
+        $output_body_message = htmlentities($message_input).' ';
+        $string_references = extract_e_references($message_input); //Do it again since it may be updated
+        $note_references = array();
+
+
+        if(0){
 
             foreach($string_references['ref_e'] as $referenced_e){
 
