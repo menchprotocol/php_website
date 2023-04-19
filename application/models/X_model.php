@@ -884,8 +884,6 @@ class X_model extends CI_Model
 
         foreach($string_references['ref_e'] as $referenced_e){
 
-            continue;
-
             //We have a reference within this message, let's fetch it to better understand it:
             $es = $this->E_model->fetch(array(
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
