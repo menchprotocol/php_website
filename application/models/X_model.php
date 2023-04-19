@@ -916,13 +916,13 @@ class X_model extends CI_Model
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__down' => $referenced_e,
-                        'LENGTH(x__message)>0' => null,
+                        //'LENGTH(x__message)>0' => null,
                     ), array('x__up'), 0, 0, array(
                         'x__type' => 'ASC', /* Text first */
                         'e__weight' => 'DESC',
                     )) as $e_up) {
 
-                        if(in_array($e_up['e__access'], $this->config->item('n___30956')) && !e_of_e($e_up['e__id'])){
+                        if(!strlen($e_up['x__message']) || (in_array($e_up['e__access'], $this->config->item('n___30956')) && !e_of_e($e_up['e__id']))){
                             //PRIVATE Source with no access:
                             continue;
                         }
