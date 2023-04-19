@@ -882,143 +882,138 @@ class X_model extends CI_Model
         $note_references = array();
 
 
-        if(0){
+        foreach($string_references['ref_e'] as $referenced_e){
 
-            foreach($string_references['ref_e'] as $referenced_e){
+            //We have a reference within this message, let's fetch it to better understand it:
+            $es = $this->E_model->fetch(array(
+                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__id' => $referenced_e,
+            ));
+            if (count($es) < 1) {
+                //Remove Source:
+                continue;
+            }
 
-                //We have a reference within this message, let's fetch it to better understand it:
-                $es = $this->E_model->fetch(array(
-                    'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                    'e__id' => $referenced_e,
-                ));
-                if (count($es) < 1) {
-                    //Remove Source:
-                    continue;
-                }
-
-                //Set as source reference:
-                array_push($note_references, intval($referenced_e));
+            //Set as source reference:
+            array_push($note_references, intval($referenced_e));
 
 
-                //See if this source has any followings transactions to be shown in this appendix
-                $e_media_count = 0;
-                $e_count = 0;
-                $e_appendix = null;
-                $e_links = array();
-                $first_segment = $this->uri->segment(1);
-                $is_current_e = ( $first_segment == '@'.$referenced_e );
+            //See if this source has any followings transactions to be shown in this appendix
+            $e_media_count = 0;
+            $e_count = 0;
+            $e_appendix = null;
+            $e_links = array();
+            $first_segment = $this->uri->segment(1);
+            $is_current_e = ( $first_segment == '@'.$referenced_e );
 
-                //Determine what type of Media this reference has:
-                if(!$is_current_e || $string_references['ref_time_found']){
+            //Determine what type of Media this reference has:
+            if(!$is_current_e || $string_references['ref_time_found']){
 
-                    foreach($this->X_model->fetch(array(
-                        'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //Public/Owner Access
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__down' => $referenced_e,
-                        //'LENGTH(x__message)>0' => null,
-                    ), array('x__up'), 0, 0, array(
-                        'x__type' => 'ASC', /* Text first */
-                        'e__weight' => 'DESC',
-                    )) as $e_up) {
+                foreach($this->X_model->fetch(array(
+                    'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //Public/Owner Access
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__down' => $referenced_e,
+                    //'LENGTH(x__message)>0' => null,
+                ), array('x__up'), 0, 0, array(
+                    'x__type' => 'ASC', /* Text first */
+                    'e__weight' => 'DESC',
+                )) as $e_up) {
 
-                        if(!strlen($e_up['x__message']) || (in_array($e_up['e__access'], $this->config->item('n___30956')) && !e_of_e($e_up['e__id']))){
-                            //PRIVATE Source with no access:
-                            continue;
-                        }
-
-                        $detect_data_type = detect_data_type($e_up['x__message']);
-
-                        $e_count++;
-
-                        if($detect_data_type['x__type'] == 4256 /* URL */) {
-
-                            array_push($e_links, $e_up);
-
-                        } elseif (in_array($detect_data_type['x__type'], $this->config->item('n___12524'))) {
-
-                            //SOURCE LINK VISUAL
-                            $e_media_count++;
-                            $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_up['x__message'], $detect_data_type['x__type'], $message_input, $is_discovery_mode) . '</div>';
-
-                        }
+                    if(!strlen($e_up['x__message']) || (in_array($e_up['e__access'], $this->config->item('n___30956')) && !e_of_e($e_up['e__id']))){
+                        //PRIVATE Source with no access:
+                        continue;
                     }
-                }
 
+                    $detect_data_type = detect_data_type($e_up['x__message']);
 
+                    $e_count++;
 
-                //Append any appendix generated:
-                $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
+                    if($detect_data_type['x__type'] == 4256 /* URL */) {
 
-                $edit_btn = false;
-                if(strlen($es[0]['e__cover'])){
-                    if(!$is_discovery_mode && e_of_e($es[0]['e__id'])){
-                        $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover($es[0]['e__cover'], true).'</span> ';
-                    } else {
-                        $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover($es[0]['e__cover'], true).'</span> ';
-                    }
-                }
+                        array_push($e_links, $e_up);
 
+                    } elseif (in_array($detect_data_type['x__type'], $this->config->item('n___12524'))) {
 
-                $on_its_own_line = false;
-                $new_lines = 0;
-                if($e_media_count > 0){
-                    foreach(explode("\n", $message_input) as $line){
-                        if(strlen($line) > 0){
-                            $new_lines++;
-                        }
-                        if(!$on_its_own_line && trim($line)==trim($identifier_string)){
-                            $on_its_own_line = true;
-                        }
-                    }
-                }
-
-                //Add Dropdown frame IF any:
-                $e_dropdown = '';
-                if(count($e_links)){
-
-                    if($simple_version){
-
-                        //Links not supported
-                        $e_dropdown .= $es[0]['e__title'];
-
-                    } elseif(count($e_links)==1){
-
-                        //Just show one:
-                        $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
-
-                    } else {
-
-                        //List all links:
-                        $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
-                        foreach($e_links as $e_link){
-                            $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($e_link['e__cover'], true).'</span>'.$e_link['e__title'].'</a>';
-                        }
-                        $e_dropdown .= '</div></div>';
+                        //SOURCE LINK VISUAL
+                        $e_media_count++;
+                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_up['x__message'], $detect_data_type['x__type'], $message_input, $is_discovery_mode) . '</div>';
 
                     }
                 }
+            }
 
 
-                //Displays:
-                if($on_its_own_line){
 
-                    $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>';
-                    $the_title = false; //TODO Remove later if wanted subtitles back...
+            //Append any appendix generated:
+            $identifier_string = '@' . $referenced_e.($string_references['ref_time_found'] ? one_two_explode('@' . $referenced_e,' ',$message_input) : '' );
 
-                    if($new_lines <= 1){
-                        $output_body_message = $e_appendix.str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $the_title : '' ).$e_dropdown, $output_body_message); //'.$edit_btn.'
-                    } else {
-                        $output_body_message = str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $edit_btn.$the_title : '' ).$e_dropdown, $output_body_message).$e_appendix;
-                    }
+            $edit_btn = false;
+            if(strlen($es[0]['e__cover'])){
+                if(!$is_discovery_mode && e_of_e($es[0]['e__id'])){
+                    $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].' ignore-click">'.view_cover($es[0]['e__cover'], true).'</span> ';
                 } else {
-                    $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? $edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
+                    $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover($es[0]['e__cover'], true).'</span> ';
                 }
+            }
 
+
+            $on_its_own_line = false;
+            $new_lines = 0;
+            if($e_media_count > 0){
+                foreach(explode("\n", $message_input) as $line){
+                    if(strlen($line) > 0){
+                        $new_lines++;
+                    }
+                    if(!$on_its_own_line && trim($line)==trim($identifier_string)){
+                        $on_its_own_line = true;
+                    }
+                }
+            }
+
+            //Add Dropdown frame IF any:
+            $e_dropdown = '';
+            if(count($e_links)){
+
+                if($simple_version){
+
+                    //Links not supported
+                    $e_dropdown .= $es[0]['e__title'];
+
+                } elseif(count($e_links)==1){
+
+                    //Just show one:
+                    $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
+
+                } else {
+
+                    //List all links:
+                    $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
+                    foreach($e_links as $e_link){
+                        $e_dropdown .= '<a href="'.$e_link['x__message'].'" target="_blank" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($e_link['e__cover'], true).'</span>'.$e_link['e__title'].'</a>';
+                    }
+                    $e_dropdown .= '</div></div>';
+
+                }
+            }
+
+
+            //Displays:
+            if($on_its_own_line){
+
+                $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>';
+                $the_title = false; //TODO Remove later if wanted subtitles back...
+
+                if($new_lines <= 1){
+                    $output_body_message = $e_appendix.str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $the_title : '' ).$e_dropdown, $output_body_message); //'.$edit_btn.'
+                } else {
+                    $output_body_message = str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $edit_btn.$the_title : '' ).$e_dropdown, $output_body_message).$e_appendix;
+                }
+            } else {
+                $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? $edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
             }
 
         }
-
 
 
 
