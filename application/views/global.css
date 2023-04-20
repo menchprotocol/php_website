@@ -2811,7 +2811,7 @@ h4.main__title{
 {
     background: rgba(16,16,16,0.80) !important;
 }
-
+.custom_ui_13884_13886 .coinType12273,
 .custom_ui_13884_13886 .search_bar,
 .custom_ui_13884_13886 .card_cover.contrast_bg:hover,
 .custom_ui_13884_13886 .coin-12274.card_cover:hover .cover-content,
@@ -2963,6 +2963,7 @@ h4.main__title{
     background: rgba(239,239,239,0.80) !important;
 }
 
+.custom_ui_13884_13885 .coinType12273,
 .custom_ui_13884_13885 .search_bar,
 .custom_ui_13884_13885 .card_cover.contrast_bg:hover,
 .custom_ui_13884_13885 .coin-12274.card_cover:hover .cover-content,
@@ -3215,7 +3216,6 @@ h4.main__title{
     color:#FFC500 !important;
 }
 .coinType12273 {
-    background-color:#FFFFFF !important;
     border-radius: 0;
 }
 .btn.btn-12274,
