@@ -189,8 +189,8 @@ foreach($this->E_model->scissor_e($website_id, 14904) as $social_box) {
     $social_ui .= '<li><a href="/-14904?e__id='.$social_box['e__id'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover($social_box['e__cover'], true).'</a></li>';
 }
 if($social_ui){
-    echo '<div class="social-footer halfbg">';
-    echo '<ul class="social-ul">';
+    echo '<div class="social-footer">';
+    echo '<ul class="social-ul halfbg">';
     echo $social_ui;
     if($domain_phone){
         echo '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].'</a></li>';
