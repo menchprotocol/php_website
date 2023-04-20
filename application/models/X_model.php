@@ -881,7 +881,7 @@ class X_model extends CI_Model
         $string_references = extract_e_references($message_input); //Do it again since it may be updated
         $note_references = array();
 
-        if(!$member_e || $member_e['e__id']!=1){
+        if(!$member_e || $member_e['e__id']!=1 || 1){
             foreach($string_references['ref_e'] as $referenced_e){
 
                 //We have a reference within this message, let's fetch it to better understand it:
