@@ -183,13 +183,13 @@ if(strlen($secondary_ideas)){
 
 
 //Social UI and contact us
-echo '<div class="halfbg narrow-bar slim_flat">';
+echo '<div class="narrow-bar slim_flat">';
 $social_ui = '';
 foreach($this->E_model->scissor_e($website_id, 14904) as $social_box) {
     $social_ui .= '<li><a href="/-14904?e__id='.$social_box['e__id'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover($social_box['e__cover'], true).'</a></li>';
 }
 if($social_ui){
-    echo '<div class="social-footer">';
+    echo '<div class="social-footer halfbg">';
     echo '<ul class="social-ul">';
     echo $social_ui;
     if($domain_phone){
