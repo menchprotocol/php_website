@@ -83,8 +83,6 @@ foreach($this->X_model->fetch(array(
 echo '</div>';
 
 
-
-
 $minimal_home = intval(website_setting(33922));
 
 //SOCIAL FOOTER
