@@ -3922,12 +3922,15 @@ h4.main__title{
 }
 
 
-.custom_ui_13884_13886 .coinType12273,
 .custom_ui_13884_13885 .glossy-bg .list-group-item {
     background-color: rgba(0, 0, 0, 0.69) !important;
     color: #000000 !important;
 }
-.custom_ui_13884_13885 .coinType12273,
+.custom_ui_13884_13885 .coinType12273 {
+    background-color: rgba(255, 255, 255, 0.69) !important;
+    color: #000000 !important;
+}
+.custom_ui_13884_13886 .coinType12273,
 .custom_ui_13884_13886 .glossy-bg .list-group-item {
     background-color: rgba(0, 0, 0, 0.69) !important;
     color: #FFFFFF !important;
