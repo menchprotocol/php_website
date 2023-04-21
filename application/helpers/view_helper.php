@@ -1232,7 +1232,7 @@ function view_card_x_select($i, $x__creator, $previously_selected){
         'x__type' => 4231, //IDEA NOTES Messages
         'x__right' => $i['i__id'],
     ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
-        $ui .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, 0, true);
+        $ui .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, $i['i__id'], true);
     }
     $ui .= '</a>';
 
@@ -1520,20 +1520,25 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     }
     $message_tooltip = '';
 
+
+    //Check to see if we have this in cache:
+
     $messages = '';
     foreach($CI->X_model->fetch(array(
         'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type' => 4231,
         'x__right' => $i['i__id'],
     ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
-        $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, 0, true);
+        $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, $i['i__id'], true);
     }
+
+
     $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.$messages.( !$can_click ? '</div>' : '</a>' );
 
 
 
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
-        $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true).( !$can_click ? '</div>' : '</a>' );
+        $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( !$can_click ? '</div>' : '</a>' );
     }
 
 
@@ -1975,7 +1980,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         } elseif(($is__featured || $has_x_progress) && strlen($e['x__message'])){
 
             //DISCOVERY PROGRESS
-            $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false).'</span>';
+            $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false, $member_e).'</span>';
 
         }
     }

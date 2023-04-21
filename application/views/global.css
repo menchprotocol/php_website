@@ -2858,6 +2858,10 @@ h4.main__title{
     background-color:transparent !important;
     color: #FFFFFF !important;
 }
+
+
+.custom_ui_13884_13886 .coin-12273 .cover-content .main__title,
+.custom_ui_13884_13886 .coin-12273 .cover-content a,
 .custom_ui_13884_13886 .list-group-item,
 .custom_ui_13884_13886 .cover-content .main__title,
 .custom_ui_13884_13886 .cover-content a,
@@ -3002,6 +3006,8 @@ h4.main__title{
 
 .alert a,
 .alert i,
+.custom_ui_13884_13885 .coin-12273 .cover-content .main__title,
+.custom_ui_13884_13885 .coin-12273 .cover-content a,
 .custom_ui_13884_13885 .list-group-item,
 .custom_ui_13884_13885 .cover-content .main__title,
 .custom_ui_13884_13885 .cover-content a,
@@ -3300,10 +3306,7 @@ h4.main__title{
     border-color: #FC1B44 !important;
 }
 
-.coin-12273 .cover-content .main__title,
-.coin-12273 .cover-content a {
-    color: #000000 !important;
-}
+
 
 
 

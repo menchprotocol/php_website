@@ -894,6 +894,7 @@ class X_model extends CI_Model
                     continue;
                 }
 
+
                 //Set as source reference:
                 array_push($note_references, intval($referenced_e));
 

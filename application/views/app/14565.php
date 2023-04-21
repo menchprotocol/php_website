@@ -69,7 +69,7 @@ foreach($this->X_model->fetch(array(
     'x__right' => $primary_i['i__id'],
 ), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
 
-    $msg = $this->X_model->message_view( $x['x__message'], true);
+    $msg = $this->X_model->message_view( $x['x__message'], true, $member_e, );
 
     if(0 && substr_count($msg, '//www.youtube.com/embed/')==1){
         //YouTube video link
