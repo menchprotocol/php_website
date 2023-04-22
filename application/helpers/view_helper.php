@@ -1540,7 +1540,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         if(strlen($messages)){
             //Save cache:
             $CI->I_model->update($i['i__id'], array(
-                'i__cache' => $i['i__cache'],
+                'i__cache' => $messages,
             ));
         }
 
