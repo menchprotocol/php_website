@@ -1522,15 +1522,32 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Check to see if we have this in cache:
-
     $messages = '';
-    foreach($CI->X_model->fetch(array(
-        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type' => 4231,
-        'x__right' => $i['i__id'],
-    ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
-        $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, $i['i__id'], true);
+    if(strlen($i['i__cache'])){
+
+        $messages .= $i['i__cache'];
+
+    } else {
+
+        foreach($CI->X_model->fetch(array(
+            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4231,
+            'x__right' => $i['i__id'],
+        ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
+            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, $i['i__id'], true);
+        }
+
+        if(strlen($messages)){
+            //Save cache:
+            $CI->I_model->update($i['i__id'], array(
+                'i__cache' => $i['i__cache'],
+            ));
+        }
+
     }
+
+
+
 
 
     $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.$messages.( !$can_click ? '</div>' : '</a>' );

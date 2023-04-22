@@ -409,6 +409,9 @@ class I extends CI_Controller {
 
         }
 
+        $this->I_model->update($is[0]['i__id'], array(
+            'i__cache' => NULL,
+        ));
 
         foreach($msg_validations as $count => $msg_validation) {
 
