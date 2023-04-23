@@ -41,15 +41,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 echo '</ul>';
 echo $body_content;
 
-$focus_menu = ($member_e && ($member_e['e__id']==$e['e__id'] || count($this->X_model->fetch(array(
-        'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
-        'x__down' => $e['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    )))) ? 'e___32600' : 'e___32596' );
-
 $focus_tab = 0;
-foreach($this->config->item($focus_menu) as $x__type => $m) {
+foreach($this->config->item('e___32596') as $x__type => $m) {
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
         echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
@@ -57,7 +50,7 @@ foreach($this->config->item($focus_menu) as $x__type => $m) {
     }
 }
 if(!$focus_tab){
-    foreach($this->config->item($focus_menu) as $x__type => $m) {
+    foreach($this->config->item('e___32596') as $x__type => $m) {
         $focus_tab = $x__type;
         echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
