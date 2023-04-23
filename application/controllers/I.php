@@ -63,6 +63,7 @@ class I extends CI_Controller {
         }
 
         //Import Discoveries?
+        $flash_message = '';
         if($append_e__id>0){
 
             $completed = 0;
@@ -90,7 +91,8 @@ class I extends CI_Controller {
                 }
             }
 
-            echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
+
+            $flash_message = '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
 
         }
 
@@ -100,6 +102,7 @@ class I extends CI_Controller {
         $this->load->view('header', array(
             'title' => first_line($is[0]['i__title']).' | '.$e___14874[12273]['m__title'],
             'i' => $is[0],
+            'flash_message' => $flash_message,
         ));
         $this->load->view('i_layout', array(
             'i' => $is[0],
