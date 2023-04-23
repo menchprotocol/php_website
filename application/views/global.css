@@ -52,7 +52,7 @@ body {
     text-align: right !important;
 }
 .media-content {
-    border-radius: 21px !important;
+    border-radius: 0 !important;
     max-width:600px !important;
 }
 .maxwidth {
@@ -62,12 +62,12 @@ body {
 }
 .x__message video {
     max-width:600px;
-    border-radius: 21px !important;
+    border-radius: 0 !important;
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
     max-height: 850px;
-    border-radius: 21px !important;
+    border-radius: 0 !important;
     display: block;
 }
 .inner-content img {
