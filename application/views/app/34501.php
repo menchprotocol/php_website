@@ -34,7 +34,7 @@ foreach($this->X_model->fetch(array(
 foreach($this->X_model->fetch(array(
     'x__up' => $website_id,
     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-    'x__type !=' => 10573, //Not Watching
+    'x__type !=' => 34513, //Pinned
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__weight' => 'DESC')) as $this_i){
