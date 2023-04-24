@@ -1304,7 +1304,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
         'To' => $to_phone,
     );
 
-    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$twilio_account_sid."/SMS/Messages");
+    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$twilio_account_sid."/Messages.json");
     curl_setopt($x, CURLOPT_POST, true);
     curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
