@@ -567,6 +567,7 @@ class X_model extends CI_Model
     function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true)
     {
 
+        $sms_subscriber = false;
         $bypass_notifications = in_array($template_id, $this->config->item('n___31779'));
 
         if(!$bypass_notifications){
@@ -583,8 +584,6 @@ class X_model extends CI_Model
                 );
             }
             $sms_subscriber = in_array($notification_levels[0]['x__up'], $this->config->item('n___28915'));
-        } else {
-            $sms_subscriber = false;
         }
 
         $stats = array(
@@ -651,9 +650,6 @@ class X_model extends CI_Model
                         $this->X_model->update($e_data['x__id'], array(
                             'x__access' => 6173, //Transaction Deleted
                         ), $e__id, 27890 /* Website Archive */);
-                    } else {
-                        //All good, sent:
-
                     }
 
                 }

@@ -1314,6 +1314,17 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
     $y = curl_exec($x);
     curl_close($x);
 
+    //Log for record
+    $CI->X_model->create(array_merge($x_data, array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__creator' => $e__id,
+        'x__message' => 'SMS Monitor: '.$single_message,
+        'x__down' => $template_id,
+        'x__metadata' => array(
+            'post' => $post,
+            'response' => $y,
+        ),
+    )));
 
     if(substr_count($y, '<Code>21211</Code>')){
 
