@@ -28,14 +28,15 @@ if(count($preg_query)){
 
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 6144, //Written Response
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        'LENGTH(x__message)>0' => null,
         'x__left' => $i__id,
     ), array(), 0) as $x) {
         $responses++;
         $new_form = preg_replace($preg_query[0]['x__message'], "", $x['x__message'] );
         $links_updated = 0;
         $links_removed = 0;
-        if($new_form != $x['x__message']) {
+        if($new_form != $x['x__message'] || 1) {
 
             if(strlen($new_form)){
                 $updated++;
