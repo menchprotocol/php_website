@@ -82,8 +82,8 @@ if($i__id > 0){
                                 }
                             }
 
+                            echo 'Updated! ';
                         }
-                        echo 'Updated! ';
 
                     } else {
 
@@ -108,8 +108,8 @@ if($i__id > 0){
                                     ));
                                 }
                             }
+                            echo 'Removed! ';
                         }
-                        echo 'Removed! ';
                     }
 
                     echo '<a href="/@'.$x['x__creator'].'">@'.$x['x__creator'].'</a> ['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
@@ -161,9 +161,8 @@ if($i__id > 0){
                                 ));
                             }
                         }
-
+                        echo 'Updated! ';
                     }
-                    echo 'Updated! ';
 
                 } else {
 
@@ -188,8 +187,8 @@ if($i__id > 0){
                                 ));
                             }
                         }
+                        echo 'Removed! ';
                     }
-                    echo 'Removed! ';
                 }
 
                 echo '<a href="/@'.$x['x__creator'].'">@'.$x['x__creator'].'</a> ['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
