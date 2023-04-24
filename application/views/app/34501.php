@@ -19,7 +19,7 @@ $primary_i = array();
 $secondary_i_list = array();
 foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 10573, //Watching
+    'x__type' => 34513, //Pinned
     'x__up' => $website_id,
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $this_i){
     if(!count($primary_i)){
