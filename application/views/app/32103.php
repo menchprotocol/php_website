@@ -18,6 +18,18 @@ $preg_query = $this->X_model->fetch(array(
     'x__up' => 32103,
 ));
 
+
+//See apply to sources:
+$apply_to = array();
+foreach($this->X_model->fetch(array(
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type' => 7545, //Following Add
+    'x__right' => $i__id,
+), array('x__up')) as $x_tag){
+    array_push($apply_to, intval($x_tag['x__up']));
+}
+
+
 if(count($preg_query)){
 
     $responses = 0;
@@ -39,19 +51,17 @@ if(count($preg_query)){
         if(strlen($new_form) != strlen($x['x__message'])) {
 
             if(strlen($new_form)){
+
                 $updated++;
                 if(isset($_GET['update'])){
+
                     $this->X_model->update($x['x__id'], array(
                         'x__message' => $new_form,
                     ));
-                    //Also update follower link?
-                    foreach($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 7545, //Following Add
-                        'x__right' => $i__id,
-                    ), array('x__up')) as $x_tag){
+
+                    foreach($apply_to as $apply_e__id){
                         foreach($this->X_model->fetch(array(
-                            'x__up' => $x_tag['e__id'],
+                            'x__up' => $apply_e__id,
                             'x__down' => $x['x__creator'],
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -62,22 +72,23 @@ if(count($preg_query)){
                             ));
                         }
                     }
+
                 }
                 echo 'Updated! ';
+
             } else {
+
                 $removed++;
                 if(isset($_GET['update'])){
+
                     $this->X_model->update($x['x__id'], array(
                         'x__access' => 6173,
                     ));
+
                     //Also update follower link?
-                    foreach($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 7545, //Following Add
-                        'x__right' => $i__id,
-                    ), array('x__up')) as $x_tag){
+                    foreach($apply_to as $apply_e__id){
                         foreach($this->X_model->fetch(array(
-                            'x__up' => $x_tag['e__id'],
+                            'x__up' => $apply_e__id,
                             'x__down' => $x['x__creator'],
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -92,7 +103,7 @@ if(count($preg_query)){
                 echo 'Removed! ';
             }
 
-            echo '['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
+            echo '<a href="/@'.$x['x__creator'].'">@'.$x['x__creator'].'</a> ['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
         }
     }
 
