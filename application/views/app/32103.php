@@ -36,7 +36,7 @@ if(count($preg_query)){
         $new_form = preg_replace($preg_query[0]['x__message'], "", $x['x__message'] );
         $links_updated = 0;
         $links_removed = 0;
-        if($new_form != $x['x__message'] || 1) {
+        if(strlen($new_form) != strlen($x['x__message'])) {
 
             if(strlen($new_form)){
                 $updated++;
