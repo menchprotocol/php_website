@@ -967,7 +967,7 @@ class X_model extends CI_Model
                 //Links not supported
                 $e_dropdown .= $es[0]['e__title'];
 
-            } elseif(!count($e_links)){
+            } elseif(!count($e_links) && !$on_its_own_line){
 
                 //Just reference the source:
                 $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
