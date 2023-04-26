@@ -767,6 +767,14 @@ if($top_i__id) {
         echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
         echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_sign" />';
 
+        echo '<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
+  <label class="form-check-label" for="DigitalSignAgreement">
+    I agree to be legally bound by this document and our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.
+  </label>
+</div>';
+
+
     } elseif ($i['i__type'] == 7637) {
 
         //FILE UPLOAD
@@ -1080,6 +1088,15 @@ echo '</div>';
             if(!can_skip){
                 //Must upload file first:
                 alert('Please upload a file before going next.');
+            } else {
+                x_skip(go_next_url);
+            }
+
+        } else if (is_logged_in && focus_i__type==32603 && !$("#DigitalSignAgreement").is(':checked') ) {
+
+            if(!can_skip){
+                //Must upload file first:
+                alert('Please agree to our terms of service before going next.');
             } else {
                 x_skip(go_next_url);
             }
