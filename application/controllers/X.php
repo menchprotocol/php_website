@@ -982,6 +982,71 @@ class X extends CI_Controller
     }
 
 
+    function x_sign(){
+
+        //Validate/Fetch idea:
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ));
+        $member_e = superpower_unlocked();
+
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        } elseif (!isset($_POST['sign_name']) || strlen($_POST['sign_name'])<4) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Sign Name.',
+            ));
+        } elseif (!isset($_POST['top_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top idea ID.',
+            ));
+        } elseif(count($is) < 1){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea not published.',
+            ));
+        } elseif($is[0]['i__type']!=32603){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Not a sign idea type',
+            ));
+        }
+
+        //Update Legal name with this name:
+        $return = source_link_message(30198, $member_e['e__id'], trim($_POST['sign_name']));
+
+        if(!count($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__creator' => $member_e['e__id'],
+            'x__left' => $is[0]['i__id'],
+        )))){
+            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
+                'x__type' => 33614, //Sign Agreement
+                'x__creator' => $member_e['e__id'],
+            ));
+        }
+
+
+        //All good:
+        return view_json(array(
+            'status' => 1,
+            'message' => 'Saved & Next...',
+        ));
+
+    }
+
     function x_read(){
 
         //Validate/Fetch idea:
@@ -1011,22 +1076,29 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
-        } elseif($is[0]['i__type']!=6677){
+        } elseif(in_array($is[0]['i__type'], $this->config->item('n___34826'))){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid idea type',
+                'message' => 'Not a read-only idea type',
             ));
         }
 
+        if($is[0]['i__type']==6677){
+            $x__type = 4559;
+        } elseif($is[0]['i__type']==32603){
+            $x__type = 33614;
+        } elseif($is[0]['i__type']==30874){
+            $x__type = 31810;
+        }
 
         if(!count($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $member_e['e__id'],
-                'x__left' => $is[0]['i__id'],
-            )))){
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__creator' => $member_e['e__id'],
+            'x__left' => $is[0]['i__id'],
+        )))){
             $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-                'x__type' => 4559, //Read Statement
+                'x__type' => $x__type, //Read Statement
                 'x__creator' => $member_e['e__id'],
             ));
         }

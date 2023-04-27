@@ -1271,6 +1271,94 @@ function random_adjective(){
     return $adjectives[array_rand($adjectives)];
 }
 
+
+
+function source_link_message($x__up, $e__id, $message_text){
+
+    $CI =& get_instance();
+
+    $e_fields = $CI->X_model->fetch(array(
+        'x__up' => $x__up,
+        'x__down' => $e__id,
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+    ));
+
+    if (count($e_fields) > 0) {
+
+        if (strlen($message_text) == 0) {
+
+            //Delete:
+            $CI->X_model->update($e_fields[0]['x__id'], array(
+                'x__access' => 6173, //Transaction Removed
+            ), $e__id, 6224 /* Member Account Updated */);
+
+            $return = array(
+                'status' => 1,
+                'message' => 'Field deleted',
+            );
+
+        } elseif ($e_fields[0]['x__message'] != $message_text) {
+
+            //Update if not the same:
+            $CI->X_model->update($e_fields[0]['x__id'], array(
+                'x__message' => $message_text,
+            ), $e__id, 6224 /* Member Account Updated */);
+
+            $return = array(
+                'status' => 1,
+                'message' => 'Field updated',
+            );
+
+        } else {
+
+            $return = array(
+                'status' => 0,
+                'message' => 'Field unchanged',
+            );
+
+        }
+
+    } elseif (strlen($message_text) > 0) {
+
+        //Create new transaction:
+        $CI->X_model->create(array(
+            'x__creator' => $e__id,
+            'x__down' => $e__id,
+            'x__type' => 4230,
+            'x__up' => $x__up,
+            'x__message' => $message_text,
+        ), true);
+
+        $return = array(
+            'status' => 1,
+            'message' => 'Field added',
+        );
+
+    } else {
+
+        $return = array(
+            'status' => 0,
+            'message' => 'Field unchanged',
+        );
+
+    }
+
+    if($return['status']){
+        //Log Account Update transaction type:
+        $CI->X_model->create(array(
+            'x__creator' => $e__id,
+            'x__type' => 6224, //My Account updated
+            'x__up' => $x__up,
+            'x__down' => $e__id,
+            'x__message' => $message_text,
+            'x__metadata' => $_POST,
+        ));
+    }
+
+    return $return;
+    
+}
 function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true){
 
     $CI =& get_instance();

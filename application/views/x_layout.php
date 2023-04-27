@@ -765,7 +765,7 @@ if($top_i__id) {
         //Text response
         echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
         echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
-        echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_sign" />';
+        echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="sign_name" />';
 
         echo '<div class="form-check">
   <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
@@ -1196,6 +1196,25 @@ echo '</div>';
         });
     }
 
+
+
+
+    function x_sign(go_next_url){
+        $.post("/x/x_sign", {
+            top_i__id:$('#top_i__id').val(),
+            i__id:fetch_val('#focus_id'),
+            sign_name:fetch_val('#sign_name'),
+        }, function (data) {
+            if (data.status) {
+                //Go to redirect message:
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                js_redirect(go_next_url);
+            } else {
+                //Show error:
+                alert(data.message);
+            }
+        });
+    }
 
     function x_read(go_next_url){
         $.post("/x/x_read", {
