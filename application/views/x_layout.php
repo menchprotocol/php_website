@@ -597,17 +597,6 @@ if($top_i__id) {
 
         echo $ticket_ui;
 
-
-    } elseif ($i['i__type']==32603) {
-
-        //Sign Agreement
-        $u_names = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => 30198, //Name
-        ));
-
     } elseif (in_array($i['i__type'], $this->config->item('n___34849'))) {
 
         //Do we have a text response from before?
