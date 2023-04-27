@@ -1610,8 +1610,13 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 function view_list_sources($x__creator, $x){
 
-    //See if this member also follows this featured source?
+    //Must have Public/Guest Access
     $CI =& get_instance();
+    if(!in_array($x['e__access'], $CI->config->item('n___33240')) && !e_of_e($x__creator)){
+        return false;
+    }
+
+    //See if this member also follows this featured source?
     $member_follows = array();
     if($x__creator>0){
         $member_follows = $CI->X_model->fetch(array(
