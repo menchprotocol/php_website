@@ -314,9 +314,6 @@ class I extends CI_Controller {
 
 
 
-
-
-
     function save_editor(){
 
         //Authenticate Member:

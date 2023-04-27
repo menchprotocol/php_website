@@ -617,6 +617,30 @@ if($top_i__id) {
 
         echo $ticket_ui;
 
+
+    } elseif ($i['i__type'] == 32603) {
+
+        //Sign Agreement
+        $u_names = $this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__down' => $member_e['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__up' => 30198, //Name
+        ));
+
+        //Text response
+        echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
+        echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
+        echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_write" />';
+
+        echo '<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
+  <label class="form-check-label" for="DigitalSignAgreement">
+    I agree to be legally bound by this document and our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.
+  </label>
+</div>';
+
+
     } elseif (in_array($i['i__type'], $this->config->item('n___34849'))) {
 
         //Do we have a text response?
@@ -751,28 +775,6 @@ if($top_i__id) {
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_write\')); $(\'#x_write\').focus(); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
-
-    } elseif ($i['i__type'] == 32603) {
-
-        //Sign Agreement
-        $u_names = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => 30198, //Name
-        ));
-
-        //Text response
-        echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
-        echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
-        echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_write" />';
-
-        echo '<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
-  <label class="form-check-label" for="DigitalSignAgreement">
-    I agree to be legally bound by this document and our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.
-  </label>
-</div>';
 
 
     } elseif ($i['i__type'] == 7637) {
