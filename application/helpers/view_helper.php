@@ -1612,7 +1612,7 @@ function view_list_sources($x__creator, $x){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
-    if(!in_array($x['e__access'], $CI->config->item('n___33240')) && !e_of_e($x__creator)){
+    if(!in_array($x['e__access'], $CI->config->item('n___33240'))){
         return false;
     }
 
