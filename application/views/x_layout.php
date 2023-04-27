@@ -379,7 +379,7 @@ if($top_i__id) {
                 }
 
                 if($x__metadata['mc_gross']>=0){
-                    $ticket_ui .= '<div class="msg"><span>Here is your QR code that you will use to check-in:</span></div>';
+                    $ticket_ui .= '<div class="msg"><span>Here is your QR Ticket that has also been emailed to you:</span></div>';
                     $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1').'</div>';
                 }
             }
@@ -617,7 +617,7 @@ if($top_i__id) {
 
         echo $ticket_ui;
 
-    } elseif (in_array($i['i__type'], $this->config->item('n___31796'))) {
+    } elseif (in_array($i['i__type'], $this->config->item('n___34849'))) {
 
         //Do we have a text response?
         $previous_response = '';
@@ -652,7 +652,7 @@ if($top_i__id) {
         if ($i['i__type']==6683) {
 
             //Text response
-            $message_ui = '<textarea class="border i_content x_input greybg" placeholder="" id="x_reply">' . $previous_response . '</textarea>';
+            $message_ui = '<textarea class="border i_content x_input greybg" placeholder="" id="x_write">' . $previous_response . '</textarea>';
 
         } else {
 
@@ -745,10 +745,10 @@ if($top_i__id) {
             }
 
 
-            $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content greybg x_input" placeholder="" value="'.$previous_response.'" id="x_reply" />';
+            $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content greybg x_input" placeholder="" value="'.$previous_response.'" id="x_write" />';
 
         }
-        $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_reply\')); $(\'#x_reply\').focus(); }); </script>';
+        $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_write\')); $(\'#x_write\').focus(); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
@@ -765,7 +765,7 @@ if($top_i__id) {
         //Text response
         echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
         echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
-        echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="sign_name" />';
+        echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_write" />';
 
         echo '<div class="form-check">
   <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
@@ -885,7 +885,7 @@ if(!$top_i__id){
             //NEXT
             $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
-        } elseif($x__type==31796 && $can_edit_response && $top_completed && in_array($i['i__type'], $this->config->item('n___31796'))){
+        } elseif($x__type==31796 && $can_edit_response && $top_completed && in_array($i['i__type'], $this->config->item('n___34849'))){
 
             //Save Response
             $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
@@ -978,7 +978,7 @@ echo '</div>';
             }
         }
 
-        set_autosize($('#x_reply'));
+        set_autosize($('#x_write'));
 
         //Watchout for file uplods:
         $('.boxUpload .inputfile').on('change', function () {
@@ -1073,24 +1073,10 @@ echo '</div>';
         }
 
         //Attempts to go next if no submissions:
-        if(is_logged_in && js_n___31796.includes(focus_i__type)) {
-
-            //TEXT RESPONSE:
-            return x_reply(go_next_url);
-
-        } else if (is_logged_in && js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
+        if (is_logged_in && js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
             //SELECT ONE/SOME
             return x_select(go_next_url);
-
-        } else if (is_logged_in && focus_i__type==7637 && !$('.file_saving_result').html().length ) {
-
-            if(!can_skip){
-                //Must upload file first:
-                alert('Please upload a file before going next.');
-            } else {
-                x_skip(go_next_url);
-            }
 
         } else if (is_logged_in && focus_i__type==32603 ) {
 
@@ -1099,11 +1085,25 @@ echo '</div>';
                 alert('Please agree to our terms of service before going next.');
             } else if (!$("#DigitalSignAgreement").is(':checked')) {
                 x_skip(go_next_url);
-            } else if ($('#sign_name').val().length<6) {
+            } else if ($('#x_write').val().length<6) {
                 alert('Enter your full legal name to sign.');
             } else {
                 //All good, sign:
-                return x_sign(go_next_url);
+                return x_write(go_next_url);
+            }
+
+        } else if(is_logged_in && js_n___34849.includes(focus_i__type)) {
+
+            //TEXT RESPONSE:
+            return x_write(go_next_url);
+
+        } else if (is_logged_in && focus_i__type==7637 && !$('.file_saving_result').html().length ) {
+
+            if(!can_skip){
+                //Must upload file first:
+                alert('Please upload a file before going next.');
+            } else {
+                x_skip(go_next_url);
             }
 
         } else if (is_logged_in && focus_i__type==26560 ) {
@@ -1184,11 +1184,11 @@ echo '</div>';
     }
 
 
-    function x_reply(go_next_url){
-        $.post("/x/x_reply", {
+    function x_write(go_next_url){
+        $.post("/x/x_write", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
-            x_reply:$('#x_reply').val(),
+            x_write:$('#x_write').val(),
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -1203,23 +1203,6 @@ echo '</div>';
 
 
 
-
-    function x_sign(go_next_url){
-        $.post("/x/x_sign", {
-            top_i__id:$('#top_i__id').val(),
-            i__id:fetch_int_val('#focus_id'),
-            sign_name:$('#sign_name').val(),
-        }, function (data) {
-            if (data.status) {
-                //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(go_next_url);
-            } else {
-                //Show error:
-                alert(data.message);
-            }
-        });
-    }
 
     function x_read(go_next_url){
         $.post("/x/x_read", {

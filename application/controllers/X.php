@@ -981,72 +981,6 @@ class X extends CI_Controller
         }
     }
 
-
-    function x_sign(){
-
-        //Validate/Fetch idea:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-        $member_e = superpower_unlocked();
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea ID.',
-            ));
-        } elseif (!isset($_POST['sign_name']) || strlen($_POST['sign_name'])<6) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Sign Name ['.$_POST['sign_name'].'].',
-            ));
-        } elseif (!isset($_POST['top_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top idea ID.',
-            ));
-        } elseif(count($is) < 1){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Idea not published.',
-            ));
-        } elseif($is[0]['i__type']!=32603){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Not a sign idea type',
-            ));
-        }
-
-        //Update Legal name with this name:
-        $return = source_link_message(30198, $member_e['e__id'], trim($_POST['sign_name']));
-
-        if(!count($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__creator' => $member_e['e__id'],
-            'x__left' => $is[0]['i__id'],
-        )))){
-            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-                'x__type' => 33614, //Sign Agreement
-                'x__creator' => $member_e['e__id'],
-            ));
-        }
-
-
-        //All good:
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Saved & Next...',
-        ));
-
-    }
-
     function x_read(){
 
         //Validate/Fetch idea:
@@ -1217,7 +1151,7 @@ class X extends CI_Controller
     }
 
 
-    function x_reply(){
+    function x_write(){
 
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -1235,12 +1169,14 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea ID.',
             ));
-        } elseif (!isset($_POST['x_reply'])) {
+        } elseif (!isset($_POST['x_write'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Response Variable.',
             ));
         }
+
+
 
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
@@ -1251,6 +1187,11 @@ class X extends CI_Controller
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea not published.',
+            ));
+        } elseif (!in_array($is[0]['i__type'] , $this->config->item('n___34849'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea Type is not writable.',
             ));
         }
 
@@ -1263,14 +1204,14 @@ class X extends CI_Controller
             'x__right' => $_POST['i__id'],
             'x__up' => 32103, //Preg Remove
         )) as $preg_query){
-            $new_form = preg_replace($preg_query['x__message'], "", $_POST['x_reply'] );
-            if($new_form != $_POST['x_reply']) {
-                $_POST['x_reply'] = $new_form;
+            $new_form = preg_replace($preg_query['x__message'], "", $_POST['x_write'] );
+            if($new_form != $_POST['x_write']) {
+                $_POST['x_write'] = $new_form;
                 //Log preg removal
                 $this->X_model->create(array(
                     'x__type' => 32103, //Preg Remove
                     'x__creator' => $member_e['e__id'],
-                    'x__message' => '['.$_POST['x_reply'].'] Transformed to ['.$new_form.']',
+                    'x__message' => '['.$_POST['x_write'].'] Transformed to ['.$new_form.']',
                     'x__left' => $_POST['top_i__id'],
                     'x__right' => $_POST['i__id'],
                 ));
@@ -1278,10 +1219,10 @@ class X extends CI_Controller
         }
 
 
-        $_POST['x_reply'] = trim($_POST['x_reply']);
+        $_POST['x_write'] = trim($_POST['x_write']);
 
         //Trying to Skip?
-        if(!strlen($_POST['x_reply'])){
+        if(!strlen($_POST['x_write'])){
             if(count($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
@@ -1292,7 +1233,7 @@ class X extends CI_Controller
                 $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
                     'x__type' => 31022, //Skipped
                     'x__creator' => $member_e['e__id'],
-                    'x__message' => $_POST['x_reply'],
+                    'x__message' => $_POST['x_write'],
                 ));
                 //All good:
                 return view_json(array(
@@ -1307,7 +1248,6 @@ class X extends CI_Controller
                 ));
             }
         }
-
 
 
 
@@ -1329,17 +1269,17 @@ class X extends CI_Controller
                 'x__up' => 26557, //Time Ends
             ), array(), 1);
 
-            if(!strtotime($_POST['x_reply'])){
+            if(!strtotime($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Error: Please enter a valid time.',
                 ));
-            } elseif(count($min_time) && strtotime($min_time[0]['x__message'])<strtotime($_POST['x_reply'])){
+            } elseif(count($min_time) && strtotime($min_time[0]['x__message'])<strtotime($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Error: Enter a date after '.$min_time[0]['x__message'],
                 ));
-            } elseif(count($max_time) && strtotime($max_time[0]['x__message'])>strtotime($_POST['x_reply'])){
+            } elseif(count($max_time) && strtotime($max_time[0]['x__message'])>strtotime($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Error: Enter a date before '.$max_time[0]['x__message'],
@@ -1363,17 +1303,17 @@ class X extends CI_Controller
                 'x__up' => 31801, //Max Value
             ), array(), 1);
 
-            if(!is_numeric($_POST['x_reply'])){
+            if(!is_numeric($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Error: Please enter a valid number.',
                 ));
-            } elseif(count($min_value) && floatval($min_value[0]['x__message'])<floatval($_POST['x_reply'])){
+            } elseif(count($min_value) && floatval($min_value[0]['x__message'])<floatval($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Error: Enter a number bigger than '.$min_value[0]['x__message'],
                 ));
-            } elseif(count($max_value) && floatval($max_value[0]['x__message'])>floatval($_POST['x_reply'])){
+            } elseif(count($max_value) && floatval($max_value[0]['x__message'])>floatval($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Error: Enter a number smaller than '.$max_value[0]['x__message'],
@@ -1384,7 +1324,7 @@ class X extends CI_Controller
 
             $x__type = 31799; //Entered URL
 
-            if(!filter_var($_POST['x_reply'], FILTER_VALIDATE_URL)){
+            if(!filter_var($_POST['x_write'], FILTER_VALIDATE_URL)){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Error: Please enter a valid URL.',
@@ -1395,12 +1335,19 @@ class X extends CI_Controller
 
             $x__type = 6144; //Text Replied
 
+        } elseif ($is[0]['i__type']==32603) {
+
+            $x__type = 33614; //Agreement Signed
+
+            //Update Legal name with this name:
+            $return = source_link_message(30198, $member_e['e__id'], $_POST['x_write']);
+
         } else {
 
             //Unknown type!
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'x_reply() Unknown text reply',
+                'x__message' => 'x_write() Unknown text reply',
                 'x__metadata' => array(
                     'post' => $_POST,
                 ),
@@ -1417,7 +1364,7 @@ class X extends CI_Controller
             'x__right' => $_POST['i__id'],
             'x__up' => 26611, //Preg Match
         )) as $preg_query){
-            if(!preg_match($preg_query['x__message'], $_POST['x_reply'])) {
+            if(!preg_match($preg_query['x__message'], $_POST['x_write'])) {
 
                 //Do we have a custom message:
                 $preg_query_message = $this->X_model->fetch(array(
@@ -1464,7 +1411,7 @@ class X extends CI_Controller
         $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
             'x__type' => $x__type,
             'x__creator' => $member_e['e__id'],
-            'x__message' => $_POST['x_reply'],
+            'x__message' => $_POST['x_write'],
         ));
 
         //All good:
