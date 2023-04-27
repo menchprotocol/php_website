@@ -1004,7 +1004,7 @@ class X extends CI_Controller
         } elseif (!isset($_POST['sign_name']) || strlen($_POST['sign_name'])<4) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing Sign Name.',
+                'message' => 'Missing Sign Name ['.$_POST['sign_name'].'].',
             ));
         } elseif (!isset($_POST['top_i__id'])) {
             return view_json(array(
