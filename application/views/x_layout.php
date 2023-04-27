@@ -1092,13 +1092,20 @@ echo '</div>';
                 x_skip(go_next_url);
             }
 
-        } else if (is_logged_in && focus_i__type==32603 && !$("#DigitalSignAgreement").is(':checked') ) {
+        } else if (is_logged_in && focus_i__type==32603 ) {
 
-            if(!can_skip){
+            var sign_name = fetch_val('#sign_name');
+
+            if(!$("#DigitalSignAgreement").is(':checked') && !can_skip){
                 //Must upload file first:
                 alert('Please agree to our terms of service before going next.');
-            } else {
+            } else if (!$("#DigitalSignAgreement").is(':checked')) {
                 x_skip(go_next_url);
+            } else if (sign_name.length<6) {
+                alert('Enter your full legal name to sign.');
+            } else {
+                //All good, sign:
+                return x_sign(go_next_url);
             }
 
         } else if (is_logged_in && focus_i__type==26560 ) {
