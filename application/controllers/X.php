@@ -1076,7 +1076,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
-        } elseif(in_array($is[0]['i__type'], $this->config->item('n___34826'))){
+        } elseif(!in_array($is[0]['i__type'], $this->config->item('n___34826'))){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Not a read-only idea type',
