@@ -1344,6 +1344,17 @@ class E extends CI_Controller
 
             $es[0] = $member_result['e'];
 
+            if(substr_count($_POST['new_account_title'], ' ')){
+                //Since the user entered two names, its likely their full name, add it to their profile:
+                $this->X_model->create(array(
+                    'x__up' => 30198, //Full Name
+                    'x__type' => 4230,
+                    'x__message' => $_POST['new_account_title'],
+                    'x__creator' => $es[0]['e__id'],
+                    'x__down' => $es[0]['e__id'],
+                ));
+            }
+
         }
 
 
