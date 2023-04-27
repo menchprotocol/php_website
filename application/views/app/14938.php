@@ -9,22 +9,7 @@ if($member_e['e__id']){
 
 } else {
 
-    //Create a new account for them:
-    $random_cover = random_cover(12279);
-    $color = '';
-    foreach(array(
-                'golden' => 'zq12273',
-                'blue' => 'zq12274',
-                'red' => 'zq6255',
-            ) as $key => $code){
-        if(substr_count($random_cover,$code)){
-            $color = ucwords($key).' ';
-            break;
-        }
-    }
-    $random_title = random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
-
-    $member_result = $this->E_model->add_member($random_title, null, null, $random_cover);
+    $member_result = $this->E_model->add_member(view_random_title(), null, null, $random_cover);
     js_php_redirect(( $i__id ? '/'.$i__id : '/@'.$member_result['e']['e__id'] ), 13);
 
 }

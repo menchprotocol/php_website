@@ -1271,14 +1271,6 @@ class E extends CI_Controller
 
         } else {
 
-            $_POST['new_account_title'] = trim($_POST['new_account_title']);
-            if(strlen($_POST['new_account_title'])<2){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Account name should be longer than 2 characters',
-                ));
-            }
-
             $_POST['new_account_email'] = trim($_POST['new_account_email']);
             if(!filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) && !filter_var($_POST['new_account_email'], FILTER_VALIDATE_EMAIL)){
                 return view_json(array(
@@ -1337,23 +1329,12 @@ class E extends CI_Controller
             $is_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
 
             //Prep inputs & validate further:
-            $member_result = $this->E_model->add_member($_POST['new_account_title'], ( $is_email ? $_POST['account_email_phone'] : $_POST['new_account_email'] ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
+            $member_result = $this->E_model->add_member(view_random_title(), ( $is_email ? $_POST['account_email_phone'] : $_POST['new_account_email'] ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
             if (!$member_result['status']) {
                 return view_json($member_result);
             }
 
             $es[0] = $member_result['e'];
-
-            if(substr_count($_POST['new_account_title'], ' ')){
-                //Since the user entered two names, its likely their full name, add it to their profile:
-                $this->X_model->create(array(
-                    'x__up' => 30198, //Full Name
-                    'x__type' => 4230,
-                    'x__message' => $_POST['new_account_title'],
-                    'x__creator' => $es[0]['e__id'],
-                    'x__down' => $es[0]['e__id'],
-                ));
-            }
 
         }
 
