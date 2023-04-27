@@ -649,7 +649,7 @@ if($top_i__id) {
             if(strlen($e___4737[$i['i__type']]['m__message'])){
                 $message_ui .= '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
             }
-            $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="Full Legal Name" id="x_write" style="width:233px !important; font-size: 1.3em !important;" />';
+            $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="Full Legal Name" id="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
 
             //Signature agreement:
             $message_ui .= '<div class="form-check">
