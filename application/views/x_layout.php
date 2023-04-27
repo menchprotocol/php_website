@@ -196,30 +196,10 @@ if($require_playback){
 echo '<div class="light-bg large-frame">';
 
 //MESSAGES
-$messages_string = false;
-foreach($this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4231, //IDEA NOTES Messages
-    'x__right' => $i['i__id'],
-), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
-    $messages_string .= $this->X_model->message_view(
-        $message_x['x__message'],
-        true,
-        $member_e
-    );
-}
-
-
-
-
-
-
-
-
 echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i['i__title'].'</h1>';
-
-if($messages_string){
-    echo $messages_string;
+$view_i__cache = view_i__cache($i);
+if($view_i__cache){
+    echo $view_i__cache;
 } elseif(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
     //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';

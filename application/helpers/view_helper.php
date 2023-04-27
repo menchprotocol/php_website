@@ -1252,6 +1252,37 @@ function convertURLs($string)
     return preg_replace($url, '<a href="$0" target="_blank" title="$0">$0</a>', $string);
 }
 
+
+function view_i__cache($i){
+
+    $CI =& get_instance();
+    $member_e = superpower_unlocked();
+    $messages = '';
+    if(strlen($i['i__cache'])){
+
+        $messages .= $i['i__cache'];
+
+    } else {
+
+        foreach($CI->X_model->fetch(array(
+            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 4231,
+            'x__right' => $i['i__id'],
+        ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
+            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, $i['i__id'], true);
+        }
+
+        if(strlen($messages)){
+            //Save cache:
+            $CI->I_model->update($i['i__id'], array(
+                'i__cache' => $messages,
+            ));
+        }
+
+    }
+    return $messages;
+}
+
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
 
     //Search to see if an idea has a thumbnail:
@@ -1521,37 +1552,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip = '';
 
 
-    //Check to see if we have this in cache:
-    $messages = '';
-    if(strlen($i['i__cache'])){
-
-        $messages .= $i['i__cache'];
-
-    } else {
-
-        foreach($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231,
-            'x__right' => $i['i__id'],
-        ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
-            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, $i['i__id'], true);
-        }
-
-        if(strlen($messages)){
-            //Save cache:
-            $CI->I_model->update($i['i__id'], array(
-                'i__cache' => $messages,
-            ));
-        }
-
-    }
-
-
-
-
-
-    $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.$messages.( !$can_click ? '</div>' : '</a>' );
-
+    $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i).( !$can_click ? '</div>' : '</a>' );
 
 
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
