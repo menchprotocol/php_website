@@ -1341,7 +1341,7 @@ class X extends CI_Controller
                     'status' => 0,
                     'message' => 'Legal Name must be longer than 4 character.',
                 ));
-            } elseif(!substr_count($_GET['x_write'], ' ')){
+            } elseif(!substr_count($_POST['x_write'], ' ')){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You must enter both your first name & last name!',
