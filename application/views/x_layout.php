@@ -655,14 +655,15 @@ if($top_i__id) {
             ));
 
             //Sign Agreement
-            echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
+            $message_ui = '';
+            $message_ui .= '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
             if(strlen($e___4737[$i['i__type']]['m__message'])){
-                echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
+                $message_ui .= '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
             }
-            echo '<input type="text" class="border greybg main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="Full Legal Name" id="x_write" style="width:233px !important; font-size: 1.3em !important;" />';
+            $message_ui .= '<input type="text" class="border greybg main__title itemsetting" value="'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="Full Legal Name" id="x_write" style="width:233px !important; font-size: 1.3em !important;" />';
 
             //Signature agreement:
-            echo '<div class="form-check">
+            $message_ui .= '<div class="form-check">
   <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
   <label class="form-check-label" for="DigitalSignAgreement">
     I agree to be legally bound by this document & our <a href="/-14373" target="_blank"><u>Terms of Service</u></a>.
