@@ -67,7 +67,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" placeholder="Search Source" />';
 
 
-                                } elseif($action_e__id == 11956){
+                                } elseif($action_e__id==11956){
 
                                     //IF HAS THIS
                                     $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
@@ -76,7 +76,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
 
 
-                                } elseif($action_e__id == 5003){
+                                } elseif($action_e__id==5003){
 
                                     //Member Status update:
 
@@ -97,7 +97,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     $input_options .= '</select>';
 
 
-                                } elseif($action_e__id == 5865){
+                                } elseif($action_e__id==5865){
 
                                     //Transaction Status update:
 

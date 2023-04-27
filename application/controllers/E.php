@@ -692,7 +692,7 @@ class E extends CI_Controller
         }
 
         //Reset member session data if this data belongs to the logged-in member:
-        if ($_POST['edit_e__id'] == $member_e['e__id']) {
+        if ($_POST['edit_e__id']==$member_e['e__id']) {
 
             $es = $this->E_model->fetch(array(
                 'e__id' => intval($_POST['edit_e__id']),
@@ -889,7 +889,7 @@ class E extends CI_Controller
         $icon_new_css = $_POST['type_css'].' '.$_POST['icon_css'];
         $validated = false;
         foreach($this->config->item('e___12279') as $e__id => $m) {
-            if(substr_count($m['m__cover'], $icon_new_css) == 1){
+            if(substr_count($m['m__cover'], $icon_new_css)==1){
                 $validated = true;
                 break;
             }
@@ -973,7 +973,7 @@ class E extends CI_Controller
         ));
         if (count($u_accounts) > 0) {
 
-            if (strlen($_POST['e_email']) == 0) {
+            if (strlen($_POST['e_email'])==0) {
 
                 //Delete email:
                 $this->X_model->update($u_accounts[0]['x__id'], array(
@@ -1138,7 +1138,7 @@ class E extends CI_Controller
         ));
         if (count($u_phones) > 0) {
 
-            if (strlen($_POST['e_phone']) == 0) {
+            if (strlen($_POST['e_phone'])==0) {
 
                 //Delete phone:
                 $this->X_model->update($u_phones[0]['x__id'], array(

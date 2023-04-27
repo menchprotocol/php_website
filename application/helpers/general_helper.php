@@ -25,7 +25,7 @@ function detect_missing_columns($add_fields, $required_columns, $x__creator)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
-        if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field]) == 0) {
+        if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field])==0) {
             return true; //Ooops, we're missing this required field
         }
     }
@@ -84,7 +84,7 @@ function extract_e_references($x__message)
 
             array_push($string_references['ref_urls'], $word);
 
-        } elseif (substr($word, 0, 1) == '@' && is_numeric(substr($word, 1, 1))) {
+        } elseif (substr($word, 0, 1)=='@' && is_numeric(substr($word, 1, 1))) {
 
             $e__id = intval(substr($word, 1));
             array_push($string_references['ref_e'], $e__id);
@@ -229,7 +229,7 @@ function detect_data_type($string)
 
     } elseif(!$has_space) {
 
-        if ((strlen(intval($string)) == strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(intval(substr($string , 1))) == strlen(substr($string , 1)))) && (intval($string) != 0 || $string == '0')) {
+        if ((strlen(intval($string))==strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(intval(substr($string , 1)))==strlen(substr($string , 1)))) && (intval($string) != 0 || $string=='0')) {
             return array(
                 'status' => 1,
                 'x__type' => 4319, //Number
@@ -287,7 +287,7 @@ function detect_data_type($string)
 function validateDate($date, $format)
 {
     $d = DateTime::createFromFormat($format, $date);
-    return $d && $d->format($format) == $date;
+    return $d && $d->format($format)==$date;
 }
 
 function current_link(){
@@ -296,15 +296,15 @@ function current_link(){
 
 
 function is_https_url($url){
-    return substr($url, 0, 8) == 'https://';
+    return substr($url, 0, 8)=='https://';
 }
 
 function is_valid_e_string($string){
-    return substr($string, 0, 1) == '@' && is_numeric(one_two_explode('@',' ',$string));
+    return substr($string, 0, 1)=='@' && is_numeric(one_two_explode('@',' ',$string));
 }
 
 function is_valid_i_string($string){
-    return substr($string, 0, 1) == '#' && is_numeric(one_two_explode('#',' ',$string));
+    return substr($string, 0, 1)=='#' && is_numeric(one_two_explode('#',' ',$string));
 }
 
 
@@ -1286,7 +1286,7 @@ function source_link_message($x__up, $e__id, $message_text){
 
     if (count($e_fields) > 0) {
 
-        if (strlen($message_text) == 0) {
+        if (strlen($message_text)==0) {
 
             //Delete:
             $CI->X_model->update($e_fields[0]['x__id'], array(
@@ -1550,7 +1550,7 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0)
 
     if(strlen($server_name)){
         foreach($CI->config->item('e___14870') as $x__type => $m) {
-            if ($server_name == $m['m__message']){
+            if ($server_name==$m['m__message']){
                 $source_id = $x__type;
                 break;
             }
@@ -1916,7 +1916,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         unset($filters);
 
         //Fetch item(s) for updates including their followings:
-        if ($loop_obj == 12273) {
+        if ($loop_obj==12273) {
 
             $filters['x__type'] = 4250;
 
@@ -1929,7 +1929,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__right'), 0);
 
-        } elseif ($loop_obj == 12274) {
+        } elseif ($loop_obj==12274) {
 
             $filters['x__type'] = 4251;
 
@@ -1942,7 +1942,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
             $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__down'), 0);
 
-        } elseif (!$s__id && $loop_obj == 6287) {
+        } elseif (!$s__id && $loop_obj==6287) {
 
             $db_rows[$loop_obj] = $CI->X_model->fetch(array(
                 'x__up' => 6287, //Featured Apps
@@ -1986,11 +1986,11 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             } else {
 
                 //Clear possible metadata algolia ID's that have been cached:
-                if ($loop_obj == 12273) {
+                if ($loop_obj==12273) {
                     $CI->I_model->update($s['i__id'], array(
                         'algolia__id' => null,
                     ));
-                } elseif ($loop_obj == 12274) {
+                } elseif ($loop_obj==12274) {
                     $CI->E_model->update($s['e__id'], array(
                         'algolia__id' => null,
                     ));
@@ -2003,7 +2003,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             $export_row['s__keywords'] = '';
 
             //Now build object-specific index:
-            if ($loop_obj == 12273) {
+            if ($loop_obj==12273) {
 
                 //IDEAS
                 //See if this idea has a time-range:
@@ -2057,7 +2057,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     array_push($export_row['_tags'], 'z_' . $x['e__id']);
                 }
 
-            } elseif ($loop_obj == 12274) {
+            } elseif ($loop_obj==12274) {
 
                 //SOURCES
                 $export_row['s__type'] = $loop_obj;
@@ -2109,7 +2109,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     $export_row['s__keywords'] .= $x['x__message'] . ' ';
                 }
 
-            } elseif ($loop_obj == 6287) {
+            } elseif ($loop_obj==6287) {
 
                 //Non-Hidden APPS
                 $export_row['s__type'] = $loop_obj;
@@ -2207,13 +2207,13 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
 
                 //Now update local database with the new objectIDs:
-                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1 ) {
+                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs'])==1 ) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        if ($s__type == 12273) {
+                        if ($s__type==12273) {
                             $CI->I_model->update($all_db_rows[$key][$focus_field_id], array(
                                 'algolia__id' => $algolia_id,
                             ));
-                        } elseif ($s__type == 12274) {
+                        } elseif ($s__type==12274) {
                             $CI->E_model->update($all_db_rows[$key][$focus_field_id], array(
                                 'algolia__id' => $algolia_id,
                             ));
@@ -2244,7 +2244,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         $algolia_results = $search_index->addObjects($all_export_rows);
 
         //Now update database with the objectIDs:
-        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows) ) {
+        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs'])==count($all_db_rows) ) {
 
             foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
 
@@ -2363,27 +2363,27 @@ function extract_youtube_id($url)
     //Attemp to extract YouTube ID from URL:
     $video_id = null;
 
-    if (substr_count($url, 'youtube.com/embed/') == 1) {
+    if (substr_count($url, 'youtube.com/embed/')==1) {
 
         //We might have start and end here too!
         $video_id = trim(one_two_explode('youtube.com/embed/', '?', $url));
 
-    } elseif (substr_count($url, 'youtube.com/watch?v=') == 1) {
+    } elseif (substr_count($url, 'youtube.com/watch?v=')==1) {
 
         $video_id = trim(one_two_explode('youtube.com/watch?v=', '&', $url));
 
-    } elseif (substr_count($url, 'youtube.com/watch') == 1 && substr_count($url, '&v=') == 1) {
+    } elseif (substr_count($url, 'youtube.com/watch')==1 && substr_count($url, '&v=')==1) {
 
         $video_id = trim(one_two_explode('&v=', '&', $url));
 
-    } elseif (substr_count($url, 'youtu.be/') == 1) {
+    } elseif (substr_count($url, 'youtu.be/')==1) {
 
         $video_id = trim(one_two_explode('youtu.be/', '?', $url));
 
     }
 
     //This should be 11 characters!
-    if (strlen($video_id) == 11) {
+    if (strlen($video_id)==11) {
         return $video_id;
     } else {
         return false;

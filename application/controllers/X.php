@@ -187,7 +187,7 @@ class X extends CI_Controller
             ), true, $member_e['e__id']);
 
             //Reset member session data if this data belongs to the logged-in member:
-            if ($es[0]['e__id'] == $member_e['e__id']) {
+            if ($es[0]['e__id']==$member_e['e__id']) {
                 //Re-activate Session with new data:
                 $es[0]['e__title'] = $e__title_validate['e__title_clean'];
                 $this->E_model->activate_session($es[0], true);
@@ -425,9 +425,9 @@ class X extends CI_Controller
             $focus_e = $focus_es[0];
 
             foreach(view_e_covers($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
-                if ($_POST['x__type'] == 12274 || $_POST['x__type'] == 11030) {
+                if ($_POST['x__type']==12274 || $_POST['x__type']==11030) {
                     echo view_card_e($_POST['x__type'], $s);
-                } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12273) {
+                } else if ($_POST['x__type']==6255 || $_POST['x__type']==12273) {
                     echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                 }
             }
@@ -441,9 +441,9 @@ class X extends CI_Controller
             $previous_i = $previous_is[0];
 
             foreach(view_i_covers($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
-                if ($_POST['x__type'] == 12273 || $_POST['x__type'] == 11019) {
+                if ($_POST['x__type']==12273 || $_POST['x__type']==11019) {
                     echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
-                } else if ($_POST['x__type'] == 6255 || $_POST['x__type'] == 12274) {
+                } else if ($_POST['x__type']==6255 || $_POST['x__type']==12274) {
                     echo view_card_e($_POST['x__type'], $s);
                 }
             }
@@ -820,7 +820,7 @@ class X extends CI_Controller
                 'message' => 'Unknown upload type.',
             ));
 
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0) {
 
             return view_json(array(
                 'status' => 0,
@@ -927,7 +927,7 @@ class X extends CI_Controller
                 'message' => 'Unknown upload type.',
             ));
 
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name']) == 0 || intval($_FILES[$_POST['upload_type']]['size']) == 0) {
+        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0) {
 
             return view_json(array(
                 'status' => 0,
@@ -1010,19 +1010,18 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
+        }
+
+        //Valid x Type?
+        if($is[0]['i__type']==6677){
+            $x__type = 4559;
+        } elseif($is[0]['i__type']==30874){
+            $x__type = 31810;
         } elseif(!in_array($is[0]['i__type'], $this->config->item('n___34826'))){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Not a read-only idea type',
             ));
-        }
-
-        if($is[0]['i__type']==6677){
-            $x__type = 4559;
-        } elseif($is[0]['i__type']==32603){
-            $x__type = 33614;
-        } elseif($is[0]['i__type']==30874){
-            $x__type = 31810;
         }
 
         if(!count($this->X_model->fetch(array(
@@ -1177,7 +1176,6 @@ class X extends CI_Controller
         }
 
 
-
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
@@ -1217,7 +1215,6 @@ class X extends CI_Controller
                 ));
             }
         }
-
 
         $_POST['x_write'] = trim($_POST['x_write']);
 
@@ -1338,6 +1335,33 @@ class X extends CI_Controller
         } elseif ($is[0]['i__type']==32603) {
 
             $x__type = 33614; //Agreement Signed
+
+            if(strlen($_POST['x_write'])<4) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Legal Name must be longer than 4 character.',
+                ));
+            } elseif(!substr_count($_GET['x_write'], ' ')){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'You must enter both your first name & last name!',
+                ));
+            }
+
+            //Make sure full name is added as a Source Link Added (Needed for Sign Agreement):
+            if(!count($this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 7545, //Following Add
+                'x__right' => $is[0]['i__id'],
+                'x__up' => 30198,
+            )))){
+                $this->X_model->create(array(
+                    'x__creator' => 14068, //Guest Member
+                    'x__type' => 7545, //Following Add
+                    'x__up' => 30198,
+                    'x__right' => $is[0]['i__id'],
+                ));
+            }
 
             //Update Legal name with this name:
             $return = source_link_message(30198, $member_e['e__id'], $_POST['x_write']);
@@ -1503,7 +1527,7 @@ class X extends CI_Controller
         }
 
         //Transaction content change?
-        if ($e_x[0]['x__message'] == $_POST['x__message']) {
+        if ($e_x[0]['x__message']==$_POST['x__message']) {
 
             //Transaction content has not changed:
             $x__message = $e_x[0]['x__message'];

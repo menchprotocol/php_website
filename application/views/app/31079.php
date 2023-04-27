@@ -96,7 +96,7 @@ if(count($is)){
         var new_title = prompt("Enter the new new referral link name to update:", current_title);
         if (new_title.length) {
             //See if anything changes:
-            if( current_title == new_title ){
+            if( current_title==new_title ){
                 //Nothing changed:
                 return false;
             }
@@ -118,7 +118,7 @@ if(count($is)){
 
     function delete_ref(i__id, x__id){
         var r = confirm("Permanently delete ["+$('#ref_id_'+i__id).text()+"] ?");
-        if (r == true) {
+        if (r==true) {
             $('.ref_item_'+i__id).fadeOut();
             $.post("/x/update_dropdown", {
                 focus_id:<?= $_GET['i__id'] ?>,

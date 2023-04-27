@@ -33,12 +33,12 @@ function preview_x__message($x__message, $x__type, $full_message = null, $has_di
 
     $CI =& get_instance();
 
-    if ($x__type == 26661 /* Currency */) {
+    if ($x__type==26661 /* Currency */) {
 
         $parts = explode(' ', $x__message, 2);
         return $parts[0].' '.number_format($parts[1], 2);
 
-    } elseif ($x__type == 4318 /* Time */) {
+    } elseif ($x__type==4318 /* Time */) {
 
         return date("D M j G:i:s T Y", strtotime($x__message));
 
@@ -50,23 +50,23 @@ function preview_x__message($x__message, $x__type, $full_message = null, $has_di
 
         return '<span style="font-family:monospace; font-size:0.7em;">' . strtolower($x__message) . '</span>';
 
-    } elseif ($x__type == 4257 /* Embed Widget URL? */) {
+    } elseif ($x__type==4257 /* Embed Widget URL? */) {
 
         return view_url_embed($x__message, $full_message);
 
-    } elseif ($x__type == 4260 /* Image URL */) {
+    } elseif ($x__type==4260 /* Image URL */) {
 
         return '<img src="' . trim($x__message) . '" class="content-image" />';
 
-    } elseif ($x__type == 4259 /* Audio URL */) {
+    } elseif ($x__type==4259 /* Audio URL */) {
 
         return  '<audio controls src="' . $x__message . '">Your Browser Does Not Support Audio</audio>' ;
 
-    } elseif ($x__type == 4258 /* Video URL */) {
+    } elseif ($x__type==4258 /* Video URL */) {
 
         return  '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="' . $x__message . '" type="video/mp4"></video>' ;
 
-    } elseif ($x__type == 4261 /* File URL */) {
+    } elseif ($x__type==4261 /* File URL */) {
 
         $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
         return '<a href="' . $x__message . '" target="_blank" class="ignore-click"><u>'.$e___11035[13573]['m__cover'].' '.$e___11035[13573]['m__title'].'</u></a>';
@@ -115,9 +115,9 @@ function view_url_embed($url, $full_message = null, $return_array = false)
     if(is_https_url($url)){
 
         //See if $url has a valid embed video in it, and transform it if it does:
-        $has_embed = (substr_count($url, 'youtube.com/embed/') == 1);
+        $has_embed = (substr_count($url, 'youtube.com/embed/')==1);
 
-        if (!substr_count($url, '&list=') && ((substr_count($url, 'youtube.com/watch') == 1) || substr_count($url, 'youtu.be/') == 1 || $has_embed)) {
+        if (!substr_count($url, '&list=') && ((substr_count($url, 'youtube.com/watch')==1) || substr_count($url, 'youtu.be/')==1 || $has_embed)) {
 
             $start_time = 0;
             $end_time = 0;
@@ -146,20 +146,20 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
             }
 
-        } elseif (substr_count($url, 'facebook.com/') == 1 && substr_count($url, '/videos/') == 1 && is_numeric(one_two_explode('/videos/','/',$url))) {
+        } elseif (substr_count($url, 'facebook.com/')==1 && substr_count($url, '/videos/')==1 && is_numeric(one_two_explode('/videos/','/',$url))) {
 
             $video_id = trim(one_two_explode('/videos/','/',$url));
             $clean_url = $url;
             $embed_html_code = '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="https://www.facebook.com/plugins/video.php?href='.urlencode($url).'&show_text=false&t=0" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe></div></div>';
 
-        } elseif (substr_count($url, 'vimeo.com/') == 1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
+        } elseif (substr_count($url, 'vimeo.com/')==1 && is_numeric(one_two_explode('vimeo.com/','?',$url))) {
 
             //Seems to be Vimeo:
             $video_id = trim(one_two_explode('vimeo.com/', '?', $url));
             $clean_url = 'https://vimeo.com/' . $video_id;
             $embed_html_code = '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="https://user.vimeo.com/video/' . $video_id . '?title=0&byline=0" class="vm-video" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div><div class="doclear">&nbsp;</div></div>';
 
-        } elseif (substr_count($url, 'wistia.com/medias/') == 1) {
+        } elseif (substr_count($url, 'wistia.com/medias/')==1) {
 
             //Seems to be Wistia:
             $video_id = trim(one_two_explode('wistia.com/medias/', '?', $url));
@@ -390,7 +390,7 @@ function view_time_difference($t, $micro = false)
     foreach($time_units as $unit => $period) {
         if ($time < $unit && $unit > 1) continue;
         $numberOfUnits = number_format(($time / $unit), 0);
-        if ($numberOfUnits < 1 && $unit == 1) {
+        if ($numberOfUnits < 1 && $unit==1) {
             $numberOfUnits = 1; //Change "0 seconds" to "1 second"
         }
 
@@ -463,7 +463,7 @@ function view_body_e($x__type, $counter, $e__id){
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $list_results = view_e_covers($x__type, $e__id, 1);
-    $focus_e = ($e__id == $member_e['e__id'] ? $member_e : false);
+    $focus_e = ($e__id==$member_e['e__id'] ? $member_e : false);
     $es = $CI->E_model->fetch(array(
         'e__id' => $e__id,
     ));
@@ -1045,7 +1045,7 @@ function view_e_settings($list_id, $is_open){
         }
 
 
-        if ($acc_e__id == 10957 /* Superpowers */) {
+        if ($acc_e__id==10957 /* Superpowers */) {
 
             if(count($CI->session->userdata('session_superpowers_unlocked')) >= 2){
                 //Mass Toggle Option:
@@ -1087,7 +1087,7 @@ function view_e_settings($list_id, $is_open){
 
             $tab_ui .= '</div>';
 
-        } elseif ($acc_e__id == 3288 /* Email */) {
+        } elseif ($acc_e__id==3288 /* Email */) {
 
             $u_accounts = $CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1101,7 +1101,7 @@ function view_e_settings($list_id, $is_open){
                 <span class="saving-account save_email"></span>';
 
 
-        } elseif ($acc_e__id == 4783 /* Phone */) {
+        } elseif ($acc_e__id==4783 /* Phone */) {
 
             $u_phones = $CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1114,7 +1114,7 @@ function view_e_settings($list_id, $is_open){
                 <a href="javascript:void(0)" onclick="e_phone()" class="btn btn-default">Save</a>
                 <span class="saving-account save_phone"></span>';
 
-        } elseif ($acc_e__id == 30198 /* Full Name */) {
+        } elseif ($acc_e__id==30198 /* Full Name */) {
 
             $u_names = $CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2148,6 +2148,6 @@ function view_ordinal($number)
 function view__s($count, $has_e = 0)
 {
     //A cute little function to either display the plural "s" or not based on $count
-    return ( intval($count) == 1 ? '' : ($has_e ? 'es' : 's'));
+    return ( intval($count)==1 ? '' : ($has_e ? 'es' : 's'));
 }
 

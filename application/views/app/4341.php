@@ -395,7 +395,7 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
         $select_ui = '';
         foreach($this->X_model->fetch($ini_filter, array('x__type'), 0, 0, array('e__title' => 'ASC'), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $x) {
             //Echo drop down:
-            $select_ui .= '<option value="' . $x['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $x['x__type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
+            $select_ui .= '<option value="' . $x['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type']==$x['x__type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];
         }
 
@@ -409,7 +409,7 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
         echo '<option value="0">ALL TRANSACTION TYPES</option>';
         foreach($this->config->item('e___4593') /* DISCOVERY Types */ as $e__id => $m){
             //Echo drop down:
-            echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type'] == $e__id) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
+            echo '<option value="' . $e__id . '" ' . ((isset($_GET['x__type']) && $_GET['x__type']==$e__id) ? 'selected="selected"' : '') . '>' . $m['m__title'] . '</option>';
         }
 
     }

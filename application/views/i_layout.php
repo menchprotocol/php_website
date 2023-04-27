@@ -86,7 +86,7 @@ if(!$focus_tab){
         //Look for power editor updates:
         $('.x_set_class_text').keypress(function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
-            if (code == 13) {
+            if (code==13) {
                 x_set_text(this);
                 e.preventDefault();
             }

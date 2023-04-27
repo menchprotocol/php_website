@@ -247,7 +247,7 @@ class X_model extends CI_Model
     {
 
         $id = intval($id);
-        if (count($update_columns) == 0) {
+        if (count($update_columns)==0) {
             return false;
         } elseif ($x__type>0 && !in_array($x__type, $this->config->item('n___4593'))) {
             $this->X_model->create(array(
@@ -293,7 +293,7 @@ class X_model extends CI_Model
         //Log changes if successful:
         if ($affected_rows > 0 && $x__creator > 0 && $x__type > 0) {
 
-            if(strlen($x__message) == 0){
+            if(strlen($x__message)==0){
                 //Log modification transaction for every field changed:
                 foreach($update_columns as $key => $value) {
 
@@ -448,7 +448,7 @@ class X_model extends CI_Model
             if(!in_array($new_e__id, $this->config->item('n___7358'))){
 
                 //Determine what to do after deleted:
-                if($o__id == $focus_id){
+                if($o__id==$focus_id){
 
                     //Find Published Followings:
                     foreach($this->X_model->fetch(array(
@@ -498,7 +498,7 @@ class X_model extends CI_Model
             if(!in_array($new_e__id, $this->config->item('n___31871'))){
 
                 //Determine what to do after deleted:
-                if($o__id == $focus_id){
+                if($o__id==$focus_id){
 
                     //Find Published Followings:
                     foreach($this->X_model->fetch(array(
@@ -900,7 +900,7 @@ class X_model extends CI_Model
             $e_appendix = null;
             $e_links = array();
             $first_segment = $this->uri->segment(1);
-            $is_current_e = ( $first_segment == '@'.$referenced_e );
+            $is_current_e = ( $first_segment=='@'.$referenced_e );
 
             //Determine what type of Media this reference has:
             if(!$is_current_e || $string_references['ref_time_found']){
@@ -922,7 +922,7 @@ class X_model extends CI_Model
 
                     $e_count++;
 
-                    if($detect_data_type['x__type'] == 4256 /* URL */) {
+                    if($detect_data_type['x__type']==4256 /* URL */) {
 
                         array_push($e_links, $e_up);
 
@@ -1100,7 +1100,7 @@ class X_model extends CI_Model
 
             //Validate Find After:
             if ($find_after_i__id && !$found_trigger) {
-                if ($next_i['i__id'] == $find_after_i__id) {
+                if ($next_i['i__id']==$find_after_i__id) {
                     $found_trigger = true;
                 }
                 continue;
@@ -1238,8 +1238,6 @@ class X_model extends CI_Model
         }
 
 
-
-
         $detect_data_type = detect_data_type($add_fields['x__message']);
         if ($add_fields['x__creator'] && !in_array($add_fields['x__type'], $this->config->item('n___32248'))) {
 
@@ -1314,24 +1312,20 @@ class X_model extends CI_Model
 
                 //Check if special profile add?
 
-                if($x_tag['x__up']==30198){
+                if($x_tag['x__up']==6197 && strlen(trim($add_fields['x__message']))>=2){
 
-                    if(strlen(trim($add_fields['x__message']))>=2){
+                    //Update Source Title:
+                    $this->E_model->update($add_fields['x__creator'], array(
+                        'e__title' => $add_fields['x__message'],
+                    ), true, $add_fields['x__creator']);
 
-                        //Update full name for current user:
-                        $this->E_model->update($add_fields['x__creator'], array(
-                            'e__title' => $add_fields['x__message'],
-                        ), true, $add_fields['x__creator']);
+                    //Update live session as well:
+                    $es_creator[0]['e__title'] = $add_fields['x__message'];
+                    $this->E_model->activate_session($es_creator[0], true);
 
-                        //Update live session as well:
-                        $es_creator[0]['e__title'] = $add_fields['x__message'];
-                        $this->E_model->activate_session($es_creator[0], true);
+                } elseif($x_tag['x__up']==6198 && intval(str_replace('@','',$add_fields['x__message']))){
 
-                    }
-
-                } elseif($x_tag['x__up']==26139){
-
-                    //Make sure submission is image source reference:
+                    //Update Source Cover:
                     foreach($this->X_model->fetch(array(
                         'x__type' => 4260, //IMAGES
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1367,7 +1361,7 @@ class X_model extends CI_Model
                     if(count($existing_x)){
 
                         //Transaction previously exists, see if content value is the same:
-                        if(strtolower($existing_x[0]['x__message']) == strtolower($add_fields['x__message'])){
+                        if(strtolower($existing_x[0]['x__message'])==strtolower($add_fields['x__message'])){
                             //Everything is the same, nothing to do here:
                             continue;
                         }
@@ -1497,9 +1491,7 @@ class X_model extends CI_Model
             }
         }
 
-
-
-
+        
 
 
         return $new_x;

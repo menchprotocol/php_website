@@ -618,7 +618,7 @@ if($top_i__id) {
         echo $ticket_ui;
 
 
-    } elseif ($i['i__type'] == 32603) {
+    } elseif ($i['i__type']==32603) {
 
         //Sign Agreement
         $u_names = $this->X_model->fetch(array(
@@ -628,22 +628,9 @@ if($top_i__id) {
             'x__up' => 30198, //Name
         ));
 
-        //Text response
-        echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
-        echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
-        echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_write" />';
-
-        echo '<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
-  <label class="form-check-label" for="DigitalSignAgreement">
-    I agree to be legally bound by this document and our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.
-  </label>
-</div>';
-
-
     } elseif (in_array($i['i__type'], $this->config->item('n___34849'))) {
 
-        //Do we have a text response?
+        //Do we have a text response from before?
         $previous_response = '';
         if($x__creator){
             //Does this have any append sources?
@@ -677,6 +664,23 @@ if($top_i__id) {
 
             //Text response
             $message_ui = '<textarea class="border i_content x_input greybg" placeholder="" id="x_write">' . $previous_response . '</textarea>';
+
+        } elseif ($i['i__type']==32603) {
+
+            //Sign Agreement
+            echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
+            if(strlen($e___4737[$i['i__type']]['m__message'])){
+                echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
+            }
+            echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_write" style="width:289px !important;" />';
+
+            //Signature agreement:
+            echo '<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
+  <label class="form-check-label" for="DigitalSignAgreement">
+    I agree to be legally bound by this document & our <a href="/-14373" target="_blank"><u>Terms of Service</u></a>.
+  </label>
+</div>';
 
         } else {
 
@@ -772,12 +776,12 @@ if($top_i__id) {
             $message_ui = '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content greybg x_input" placeholder="" value="'.$previous_response.'" id="x_write" />';
 
         }
+
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_write\')); $(\'#x_write\').focus(); }); </script>';
 
         echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
-
-    } elseif ($i['i__type'] == 7637) {
+    } elseif ($i['i__type']==7637) {
 
         //FILE UPLOAD
         echo '<div class="userUploader">';
@@ -1027,7 +1031,7 @@ echo '</div>';
         var i__type = parseInt($('.list-answers').attr('i__type'));
 
         //Clear all if single selection:
-        var is_single_selection = (i__type == 6684);
+        var is_single_selection = (i__type==6684);
         if(is_single_selection){
             //Single Selection, clear all:
             $('.answer-item').removeClass('isSelected');
@@ -1037,7 +1041,7 @@ echo '</div>';
         if($('.x_select_'+i__id).hasClass('isSelected')){
 
             //Previously Selected, delete selection:
-            if(i__type == 7231){
+            if(i__type==7231){
                 //Multi Selection
                 $('.x_select_'+i__id).removeClass('isSelected');
             }
@@ -1080,24 +1084,19 @@ echo '</div>';
             //SELECT ONE/SOME
             return x_select(go_next_url);
 
-        } else if (is_logged_in && focus_i__type==32603 ) {
-
-            if(!$("#DigitalSignAgreement").is(':checked') && !can_skip){
-                //Must upload file first:
-                alert('Please agree to our terms of service before going next.');
-            } else if (!$("#DigitalSignAgreement").is(':checked')) {
-                x_skip(go_next_url);
-            } else if ($('#x_write').val().length<6) {
-                alert('Enter your full legal name to sign.');
-            } else {
-                //All good, sign:
-                return x_write(go_next_url);
-            }
-
         } else if(is_logged_in && js_n___34849.includes(focus_i__type)) {
 
-            //TEXT RESPONSE:
-            return x_write(go_next_url);
+            if(focus_i__type==32603 && !$("#DigitalSignAgreement").is(':checked')){
+                if(can_skip){
+                    x_skip(go_next_url);
+                } else {
+                    //Must upload file first:
+                    alert('Please agree to our terms of service before going next.');
+                }
+            } else {
+                //SUBMIT TEXT RESPONSE:
+                return x_write(go_next_url);
+            }
 
         } else if (is_logged_in && focus_i__type==7637 && !$('.file_saving_result').html().length ) {
 
@@ -1146,7 +1145,7 @@ echo '</div>';
             if (droppedFiles) {
                 $.each(droppedFiles, function (i, file) {
                     var thename = $('.boxUpload').find('input[type="file"]').attr('name');
-                    if (typeof thename == typeof undefined || thename == false) {
+                    if (typeof thename==typeof undefined || thename==false) {
                         var thename = 'drop';
                     }
                     ajaxData.append(uploadType, file);

@@ -8,7 +8,7 @@ function images_api_getasync(api_id, query, callback) {
     // set the state change callback to capture when the response comes in
     xmlHttp.onreadystatechange = function()
     {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        if (xmlHttp.readyState==4 && xmlHttp.status==200)
     {
         callback(xmlHttp.responseText);
     }
@@ -579,7 +579,7 @@ function view_load_page(x__type) {
 
 function js_view_shuffle_message(e__id){
     var messages = js_e___12687[e__id]['m__message'].split("\n");
-    if(messages.length == 1){
+    if(messages.length==1){
         //Return message:
         return messages[0];
     } else {
@@ -617,7 +617,7 @@ function init_remove(){
         }
         init_in_process = (x__id + i__id);
         var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
-        if (r == true) {
+        if (r==true) {
             //Save changes:
             $.post("/x/x_remove", {
                 x__id:x__id
@@ -698,7 +698,7 @@ function cover_upload(droppedFiles, uploadType) {
         if (droppedFiles) {
             $.each(droppedFiles, function (i, file) {
                 var thename = $('.coverUpload').find('input[type="file"]').attr('name');
-                if (typeof thename == typeof undefined || thename == false) {
+                if (typeof thename==typeof undefined || thename==false) {
                     var thename = 'drop';
                 }
                 ajaxData.append(uploadType, file);
@@ -901,7 +901,7 @@ $(document).ready(function () {
 
     if(window.location.hash && 0) {
         var the_hash = window.location.hash.substring(1);
-        if(!(the_hash == $('.nav-link.active').attr('x__type')) && isNormalInteger(the_hash)){
+        if(!(the_hash==$('.nav-link.active').attr('x__type')) && isNormalInteger(the_hash)){
             toggle_pills(the_hash);
         }
     }
@@ -1074,9 +1074,9 @@ $(document).ready(function () {
                     icons_listed = [];
 
                     //Members can filter search with first word:
-                    var search_only_e = $("#top_search").val().charAt(0) == '@';
-                    var search_only_in = $("#top_search").val().charAt(0) == '#';
-                    var search_only_app = $("#top_search").val().charAt(0) == '-';
+                    var search_only_e = $("#top_search").val().charAt(0)=='@';
+                    var search_only_in = $("#top_search").val().charAt(0)=='#';
+                    var search_only_app = $("#top_search").val().charAt(0)=='-';
                     $("#container_search .row").html(''); //Reset results view
 
 
@@ -1304,7 +1304,7 @@ function i_load_search(x__type) {
     $('.new-list-'+x__type+' .add-input').keypress(function (e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
+        if ((code==13) || (e.ctrlKey && code==13)) {
             e.preventDefault();
             return i__add(x__type, 0);
         }
@@ -1365,7 +1365,7 @@ function e_load_search(x__type) {
 
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code == 13) || (e.ctrlKey && code == 13)) {
+        if ((code==13) || (e.ctrlKey && code==13)) {
             if(superpower_js_13422){
                 e__add(x__type, 0);
             }
@@ -1652,7 +1652,7 @@ function e__add(x__type, e_existing_id) {
     var original_photo = $('.mini-cover.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html();
     $('.mini-cover.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     var e_new_string = null;
-    if (e_existing_id == 0) {
+    if (e_existing_id==0) {
         e_new_string = input.val();
         if (e_new_string.length < 1) {
             alert('Missing source name or URL, try again');
@@ -1678,7 +1678,7 @@ function e__add(x__type, e_existing_id) {
 
             if(data.e_already_linked){
                 var r = confirm("This is already linked here! Are you sure you want to double link it?");
-                if (r == true) {
+                if (r==true) {
                     data.e_already_linked = false;
                 } else {
                     $('.mini-cover.coin-12274.coin-id-'+e_existing_id+' .cover-btn').html(original_photo);
@@ -1771,7 +1771,7 @@ function click_has_class(target_el, target_class){
 function e_remove(x__id, x__type) {
 
     var r = confirm("Unlink this source?");
-    if (r == true) {
+    if (r==true) {
         $.post("/e/e_remove", {
 
             x__id: x__id,
@@ -1912,7 +1912,7 @@ jQuery.fn.extend({
                 sel = document.selection.createRange();
                 sel.text = myValue;
                 this.focus();
-            } else if (this.selectionStart || this.selectionStart == '0') {
+            } else if (this.selectionStart || this.selectionStart=='0') {
                 //For browsers like Firefox and Webkit based
                 var startPos = this.selectionStart;
                 var endPos = this.selectionEnd;
@@ -1976,7 +1976,7 @@ function images_add(image_url, image_title){
 function x_set_start_text(){
     $('.x_set_class_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
+        if (code==13) {
             x_set_text(this);
             e.preventDefault();
         }
@@ -2000,7 +2000,7 @@ function x_set_text(this_handler){
     };
 
     //See if anything changes:
-    if( $(this_handler).attr('old-value') == modify_data['field_value'] ){
+    if( $(this_handler).attr('old-value')==modify_data['field_value'] ){
         //Nothing changed:
         return false;
     }
@@ -2409,7 +2409,7 @@ function isNormalInteger(str) {
 
 function final_logout(){
     var r = confirm("FINAL WARNING: You are about to permanently lose access to your anonymous account since you have not yet added your email. Are you sure you want to continue?");
-    if (r == true) {
+    if (r==true) {
         //Redirect:
         js_redirect('/-7291');
     } else {
@@ -2433,7 +2433,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
     var current_selected = parseInt($('.dropi_'+element_id+'_'+o__id+'_'+x__id+'.active').attr('current-selected'));
     new_e__id = parseInt(new_e__id);
-    if(current_selected == new_e__id){
+    if(current_selected==new_e__id){
         //Nothing changed:
         return false;
     }
@@ -2584,7 +2584,7 @@ function save_editor(){
 function e_reset_discoveries(e__id){
     //Confirm First:
     var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
-    if (r == true) {
+    if (r==true) {
         $('.e_reset_discoveries').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">REMOVING ALL...</b>');
 
         //Redirect:
@@ -2655,7 +2655,7 @@ function sort_e_handle_save(x__type) {
 
 function sort_alphabetical(){
     var r = confirm("Reset sorting alphabetically?");
-    if (r == true) {
+    if (r==true) {
 
         var focus_card = fetch_int_val('#focus_card');
         var focus_id = fetch_int_val('#focus_id');

@@ -105,7 +105,7 @@ class I_model extends CI_Model
     {
 
         $id = intval($id);
-        if (count($update_columns) == 0) {
+        if (count($update_columns)==0) {
             return false;
         }
 
@@ -126,7 +126,7 @@ class I_model extends CI_Model
             //Log modification transaction for every field changed:
             foreach($update_columns as $key => $value) {
 
-                if ($before_data[0][$key] == $value){
+                if ($before_data[0][$key]==$value){
                     //Nothing changed:
                     continue;
                 }

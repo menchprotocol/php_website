@@ -81,7 +81,7 @@ if(superpower_unlocked()) {
 
 
     //See what to do based on current matches:
-    if(count($current_sign_i_attempt) == 0){
+    if(count($current_sign_i_attempt)==0){
 
         //Log transaction:
         $current_sign_i_attempt = $this->X_model->create($this_attempt);
@@ -163,7 +163,7 @@ if(superpower_unlocked()) {
 
             $(document).keyup(function (e) {
                 //Watch for action keys:
-                if (e.keyCode == 13) {
+                if (e.keyCode==13) {
                     if(step_count==2){
                         contact_search();
                     } else if(step_count==3){

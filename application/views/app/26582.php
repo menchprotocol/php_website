@@ -266,7 +266,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
         function x_schedule_delete(x__id){
             var r = confirm("Remove Email "+x__id+"?");
-            if (r == true) {
+            if (r==true) {
                 $.post("/x/x_schedule_delete", {
                     x__id: x__id,
                 }, function (data) {

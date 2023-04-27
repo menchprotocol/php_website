@@ -534,7 +534,7 @@ class E_model extends CI_Model
         $flat_items = array();
         $s__level++;
 
-        if($direction == 12274){
+        if($direction==12274){
             //Downwards:
             $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
             $join_objects = array('x__down');
@@ -543,7 +543,7 @@ class E_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
-        } elseif($direction == 11030){
+        } elseif($direction==11030){
             //Upwards:
             $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
             $join_objects = array('x__up');
@@ -606,7 +606,7 @@ class E_model extends CI_Model
     {
 
         $id = intval($id);
-        if (count($update_columns) == 0) {
+        if (count($update_columns)==0) {
             return false;
         }
 
@@ -631,7 +631,7 @@ class E_model extends CI_Model
             //Log modification transaction for every field changed:
             foreach($update_columns as $key => $value) {
 
-                if ($before_data[0][$key] == $value){
+                if ($before_data[0][$key]==$value){
                     //Nothing changed:
                     continue;
                 }
@@ -738,7 +738,7 @@ class E_model extends CI_Model
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), view_memory(6404,11064)) as $x) {
 
-            if (!$previously_assigned && $x['x__up'] == $set_e_down_id) {
+            if (!$previously_assigned && $x['x__up']==$set_e_down_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
@@ -1217,7 +1217,7 @@ class E_model extends CI_Model
             //Logic here must match items in e_mass_actions config variable
 
             //Take command-specific action:
-            if ($action_e__id == 4998) { //Add Prefix String
+            if ($action_e__id==4998) { //Add Prefix String
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $action_command1 . $x['e__title'],
@@ -1225,7 +1225,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 4999) { //Add Postfix String
+            } elseif ($action_e__id==4999) { //Add Postfix String
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $x['e__title'] . $action_command1,
@@ -1341,7 +1341,7 @@ class E_model extends CI_Model
 
                 }
 
-            } elseif ($action_e__id == 5943) { //Member Mass Update Member Icon
+            } elseif ($action_e__id==5943) { //Member Mass Update Member Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
@@ -1349,7 +1349,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 12318 && !strlen($x['e__cover'])) { //Member Mass Update Member Icon
+            } elseif ($action_e__id==12318 && !strlen($x['e__cover'])) { //Member Mass Update Member Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
@@ -1357,7 +1357,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5000 && substr_count(strtolower($x['e__title']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
+            } elseif ($action_e__id==5000 && substr_count(strtolower($x['e__title']), strtolower($action_command1)) > 0) { //Replace Member Matching Name
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),
@@ -1365,7 +1365,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 10625 && substr_count($x['e__cover'], $action_command1) > 0) { //Replace Member Matching Icon
+            } elseif ($action_e__id==10625 && substr_count($x['e__cover'], $action_command1) > 0) { //Replace Member Matching Icon
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),
@@ -1373,7 +1373,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Transaction Matching String
+            } elseif ($action_e__id==5001 && substr_count($x['x__message'], $action_command1) > 0) { //Replace Transaction Matching String
 
                 $new_message = str_replace($action_command1, $action_command2, $x['x__message']);
 
@@ -1383,7 +1383,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 26093) { //Replace Transaction Matching String
+            } elseif ($action_e__id==26093) { //Replace Transaction Matching String
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $action_command1,
@@ -1391,7 +1391,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5003 && ($action_command1=='*' || $x['e__access']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
+            } elseif ($action_e__id==5003 && ($action_command1=='*' || $x['e__access']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
 
                 //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
@@ -1405,7 +1405,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id == 5865 && ($action_command1=='*' || $x['x__access']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Transaction Status */)) { //Update Matching Transaction Status
+            } elseif ($action_e__id==5865 && ($action_command1=='*' || $x['x__access']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Transaction Status */)) { //Update Matching Transaction Status
 
                 $this->X_model->update($x['x__id'], array(
                     'x__access' => $action_command2,
