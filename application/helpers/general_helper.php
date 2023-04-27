@@ -1249,11 +1249,11 @@ function e__title_validate($string, $x__type = 0){
     }
 }
 
-function send_qr($x__id,$x__creator){
+function send_qr($x__id, $x__creator){
     $CI =& get_instance();
-    $CI->X_model->send_dm($x__creator, 'Your Atlas QR Code', 'To get your wristband upon arrival simply show a screenshot of your QR code that you can see here:'.
-        "\n\n".'https://'.get_domain('m__message', $x__creator).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n\n".
-        'Everyone needs a QR code to enter Atlas Camp and Anyone with your QR code can check-in on your behalf.'."\n");
+    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator).' QR Ticket',
+        'We are so excited to share this experience with you! Upon arrival simply have your QR code ready to be scanned:'.
+        "\n\n".'https://'.get_domain('m__message', $x__creator).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n");
 }
 
 function clean_phone($phone){
