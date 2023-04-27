@@ -1094,14 +1094,12 @@ echo '</div>';
 
         } else if (is_logged_in && focus_i__type==32603 ) {
 
-            var sign_name = fetch_val('#sign_name');
-
             if(!$("#DigitalSignAgreement").is(':checked') && !can_skip){
                 //Must upload file first:
                 alert('Please agree to our terms of service before going next.');
             } else if (!$("#DigitalSignAgreement").is(':checked')) {
                 x_skip(go_next_url);
-            } else if (sign_name.length<6) {
+            } else if ($('#sign_name').val().length<6) {
                 alert('Enter your full legal name to sign.');
             } else {
                 //All good, sign:
@@ -1154,7 +1152,7 @@ echo '</div>';
             }
 
             ajaxData.append('upload_type', uploadType);
-            ajaxData.append('i__id', fetch_val('#focus_id'));
+            ajaxData.append('i__id', fetch_int_val('#focus_id'));
             ajaxData.append('top_i__id', $('#top_i__id').val());
 
             $.ajax({
@@ -1189,7 +1187,7 @@ echo '</div>';
     function x_reply(go_next_url){
         $.post("/x/x_reply", {
             top_i__id:$('#top_i__id').val(),
-            i__id:fetch_val('#focus_id'),
+            i__id:fetch_int_val('#focus_id'),
             x_reply:$('#x_reply').val(),
         }, function (data) {
             if (data.status) {
@@ -1209,8 +1207,8 @@ echo '</div>';
     function x_sign(go_next_url){
         $.post("/x/x_sign", {
             top_i__id:$('#top_i__id').val(),
-            i__id:fetch_val('#focus_id'),
-            sign_name:fetch_val('#sign_name'),
+            i__id:fetch_int_val('#focus_id'),
+            sign_name:$('#sign_name').val(),
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -1226,7 +1224,7 @@ echo '</div>';
     function x_read(go_next_url){
         $.post("/x/x_read", {
             top_i__id:$('#top_i__id').val(),
-            i__id:fetch_val('#focus_id'),
+            i__id:fetch_int_val('#focus_id'),
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -1243,7 +1241,7 @@ echo '</div>';
     function x_skip(go_next_url){
         $.post("/x/x_skip", {
             top_i__id:$('#top_i__id').val(),
-            i__id:fetch_val('#focus_id'),
+            i__id:fetch_int_val('#focus_id'),
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -1260,7 +1258,7 @@ echo '</div>';
     function x_free_ticket(go_next_url){
         $.post("/x/x_free_ticket", {
             top_i__id:$('#top_i__id').val(),
-            i__id:fetch_val('#focus_id'),
+            i__id:fetch_int_val('#focus_id'),
             paypal_quantity:$('#paypal_quantity').val(),
         }, function (data) {
             if (data.status) {
@@ -1288,7 +1286,7 @@ echo '</div>';
 
         //Show Loading:
         $.post("/x/x_select", {
-            focus_id:fetch_val('#focus_id'),
+            focus_id:fetch_int_val('#focus_id'),
             top_i__id:$('#top_i__id').val(),
             selection_i__id:selection_i__id,
         }, function (data) {

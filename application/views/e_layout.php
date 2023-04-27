@@ -67,7 +67,7 @@ if(!$focus_tab){
 <script type="text/javascript">
 
     $(document).ready(function () {
-        set_autosize($('.texttype__lg.text__6197_'+fetch_val('#focus_id')));
+        set_autosize($('.texttype__lg.text__6197_'+fetch_int_val('#focus_id')));
     });
 
     //Define file upload variables:

@@ -1001,7 +1001,7 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea ID.',
             ));
-        } elseif (!isset($_POST['sign_name']) || strlen($_POST['sign_name'])<4) {
+        } elseif (!isset($_POST['sign_name']) || strlen($_POST['sign_name'])<6) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Sign Name ['.$_POST['sign_name'].'].',

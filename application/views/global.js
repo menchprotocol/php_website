@@ -328,7 +328,7 @@ function view_s_mini_js(s__cover,s__title){
 }
 
 
-function fetch_val(object_name){
+function fetch_int_val(object_name){
     return ( $(object_name).length ? parseInt($(object_name).val()) : 0 );
 }
 
@@ -336,11 +336,11 @@ function toggle_headline(x__type){
 
     var x__down = 0;
     var x__right = 0;
-    var focus_card = fetch_val('#focus_card');
+    var focus_card = fetch_int_val('#focus_card');
     if(focus_card==12273){
-        x__right = fetch_val('#focus_id');
+        x__right = fetch_int_val('#focus_id');
     } else if (focus_card==12274){
-        x__down = fetch_val('#focus_id');
+        x__down = fetch_int_val('#focus_id');
     }
 
     if($('.headline_title_' + x__type+' .icon_26008').hasClass('hidden')){
@@ -428,12 +428,12 @@ function toggle_pills(x__type){
     focus_card = x__type;
     var x__down = 0;
     var x__right = 0;
-    var focus_card = fetch_val('#focus_card');
+    var focus_card = fetch_int_val('#focus_card');
 
     if(focus_card==12273){
-        x__right = fetch_val('#focus_id');
+        x__right = fetch_int_val('#focus_id');
     } else if (focus_card==12274){
-        x__down = fetch_val('#focus_id');
+        x__down = fetch_int_val('#focus_id');
     }
 
     if($('.thepill' + x__type+' .nav-link').hasClass('active')){
@@ -518,7 +518,7 @@ function view_load_page(x__type) {
     }
 
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
-    var has_more_to_load = ( current_total_count > parseInt(fetch_val('#page_limit')) * current_page[x__type] );
+    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[x__type] );
     var e_list = '#list-in-'+x__type;
     var current_top_x__id = $( e_list + ' .card_cover ' ).first().attr('x__id');
     var top_element = $('.cover_x_'+current_top_x__id);
@@ -541,8 +541,8 @@ function view_load_page(x__type) {
         $(e_loader).insertAfter(e_list);
     }
     $.post("/x/view_load_page", {
-        focus_card: fetch_val('#focus_card'),
-        focus_id: fetch_val('#focus_id'),
+        focus_card: fetch_int_val('#focus_card'),
+        focus_id: fetch_int_val('#focus_id'),
         x__type: x__type,
         current_page: current_page[x__type],
     }, function (data) {
@@ -1454,7 +1454,7 @@ function source_edit_save(){
 
 function load_tab(x__type, auto_load){
 
-    var focus_card = fetch_val('#focus_card');
+    var focus_card = fetch_int_val('#focus_card');
     console.log('Tab loading... from @'+focus_card+' for @'+x__type);
 
     if(focus_card==12273){
@@ -1463,7 +1463,7 @@ function load_tab(x__type, auto_load){
             focus_card:focus_card,
             x__type:x__type,
             counter:$('.headline_body_' + x__type).attr('read-counter'),
-            i__id:fetch_val('#focus_id')
+            i__id:fetch_int_val('#focus_id')
         }, function (data) {
             $('.headline_body_' + x__type).html(data);
             if(auto_load){ // && js_n___14686.includes(x__type)
@@ -1481,7 +1481,7 @@ function load_tab(x__type, auto_load){
             focus_card:focus_card,
             x__type:x__type,
             counter:$('.headline_body_'+x__type).attr('read-counter'),
-            e__id:fetch_val('#focus_id')
+            e__id:fetch_int_val('#focus_id')
         }, function (data) {
             $('.headline_body_'+x__type).html(data);
             if(auto_load){ // && js_n___14686.includes(x__type)
@@ -1563,7 +1563,7 @@ function i__add(x__type, link_i__id) {
      *
      * Either creates an IDEA transaction between focus_id & link_i__id
      * OR will create a new idea based on input text and then transaction it
-     * to fetch_val('#focus_id') (In this case link_i__id=0)
+     * to fetch_int_val('#focus_id') (In this case link_i__id=0)
      *
      * */
 
@@ -1593,8 +1593,8 @@ function i__add(x__type, link_i__id) {
     //Update backend:
     $.post("/i/i__add", {
         x__type: x__type,
-        focus_card: fetch_val('#focus_card'),
-        focus_id: fetch_val('#focus_id'),
+        focus_card: fetch_int_val('#focus_card'),
+        focus_id: fetch_int_val('#focus_id'),
         i__title: i__title,
         link_i__id: link_i__id
     }, function (data) {
@@ -1664,9 +1664,9 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/e/e__add", {
 
-        focus_card: fetch_val('#focus_card'),
+        focus_card: fetch_int_val('#focus_card'),
         x__type: x__type,
-        focus_id: fetch_val('#focus_id'),
+        focus_id: fetch_int_val('#focus_id'),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
 
@@ -1938,7 +1938,7 @@ function image_api_search(x__type){
         x__creator: js_pl_id,
         x__type: 14576, //MODAL VIEWED
         x__up: 14073,
-        x__right: fetch_val('#focus_id'),
+        x__right: fetch_int_val('#focus_id'),
     });
     $('#modal14073').modal('show');
     $('#modal_x__type').val(x__type);
@@ -2138,7 +2138,7 @@ function sort_i_handle_load(x__type){
         }
 
         //Make sure beow minimum sorting requirement:
-        if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(fetch_val('#page_limit'))){
+        if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(fetch_int_val('#page_limit'))){
             return false;
         }
 
@@ -2474,7 +2474,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/x/update_dropdown", {
-        focus_id:fetch_val('#focus_id'),
+        focus_id:fetch_int_val('#focus_id'),
         o__id: o__id,
         element_id: element_id,
         new_e__id: new_e__id,
@@ -2643,7 +2643,7 @@ function sort_e_handle_save(x__type) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/sort_e_handle_save", {e__id: fetch_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
+        $.post("/e/sort_e_handle_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -2657,8 +2657,8 @@ function sort_alphabetical(){
     var r = confirm("Reset sorting alphabetically?");
     if (r == true) {
 
-        var focus_card = fetch_val('#focus_card');
-        var focus_id = fetch_val('#focus_id');
+        var focus_card = fetch_int_val('#focus_card');
+        var focus_id = fetch_int_val('#focus_id');
 
         //Update via call:
         $.post("/x/sort_alphabetical", {
