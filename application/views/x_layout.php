@@ -647,12 +647,19 @@ if($top_i__id) {
 
         } elseif ($i['i__type']==32603) {
 
+            $u_names = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__down' => $member_e['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__up' => 30198, //Name
+            ));
+
             //Sign Agreement
             echo '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
             if(strlen($e___4737[$i['i__type']]['m__message'])){
                 echo '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
             }
-            echo '<input type="text" class="border greybg sign_box custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : '' ).'" placeholder="Full Legal Name" id="x_write" style="width:289px !important;" />';
+            echo '<input type="text" class="border greybg main__title itemsetting" value="'.( count($u_names) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="Full Legal Name" id="x_write" style="width:233px !important; font-size: 1.3em !important;" />';
 
             //Signature agreement:
             echo '<div class="form-check">
