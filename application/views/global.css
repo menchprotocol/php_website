@@ -2369,11 +2369,11 @@ input.form-control {
 }
 .pay-btn{
     padding: 21px;
-    background-color: #999;
+    background-color: #000000;
     color: #FFF;
     border-radius: 21px;
-    margin-top: 13px;
-    font-size: 1.8em;
+    margin-top: 34px;
+    font-size: 2.1em;
 }
 
 .info_box{

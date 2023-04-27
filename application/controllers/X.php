@@ -1336,10 +1336,10 @@ class X extends CI_Controller
 
             $x__type = 33614; //Agreement Signed
 
-            if(strlen($_POST['x_write'])<4) {
+            if(strlen($_POST['x_write'])<5) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Legal Name must be longer than 4 character.',
+                    'message' => 'Legal Name is too short',
                 ));
             } elseif(!substr_count($_POST['x_write'], ' ')){
                 return view_json(array(

@@ -967,6 +967,11 @@ class X_model extends CI_Model
                 //Links not supported
                 $e_dropdown .= $es[0]['e__title'];
 
+            } elseif(count($e_links) && $is_discovery_mode && in_array($es[0]['e__id'] , $this->config->item('n___34866'))){
+
+                //Just reference the source:
+                $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$e_links[0]['x__message'].'</u></a>';
+
             } elseif(!count($e_links) && !$on_its_own_line && $is_discovery_mode){
 
                 //Just reference the source:
