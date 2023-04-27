@@ -1249,11 +1249,30 @@ function e__title_validate($string, $x__type = 0){
     }
 }
 
-function send_qr($x__id, $x__creator){
+function user_website($x__creator){
     $CI =& get_instance();
-    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator).' QR Ticket',
+    foreach($CI->X_model->fetch(array(
+        'x__down' => $x__creator,
+        'x__type' => 4251, //New Source Created
+    ), array(), 1) as $source_created){
+        return $source_created['x__website'];
+    }
+    foreach($CI->X_model->fetch(array(
+        'x__creator' => $x__creator,
+    ), array(), 1) as $source_created){
+        return $source_created['x__website'];
+    }
+    return 0;
+}
+
+function send_qr($x__id, $x__creator){
+
+    $CI =& get_instance();
+    $user_website = user_website($x__creator);
+    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website, true).' QR Ticket',
         'We are so excited to share this experience with you! Upon arrival simply have your QR code ready to be scanned:'.
-        "\n\n".'https://'.get_domain('m__message', $x__creator).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n");
+        "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website, true).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n");
+
 }
 
 function clean_phone($phone){
@@ -1535,7 +1554,11 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
 }
 
-function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0){
+function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = false){
+
+    if($force_website && $x__website){
+        return $x__website;
+    }
 
     $CI =& get_instance();
     $source_id = 0; //Assume no domain unless found below...
@@ -1557,7 +1580,7 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0)
         }
     }
 
-    $source_id = ( $source_id ? $source_id : ( $x__website > 0 ? $x__website : 13601 /* Atlas */ ) );
+    $source_id = ( $source_id ? $source_id : ( $x__website > 0 ? $x__website : 2738 /* Mench */ ) );
 
     if(!$setting_id){
         return $source_id;
@@ -1704,9 +1727,9 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
 
 }
 
-function get_domain($var_field, $initiator_e__id = 0, $x__website = 0){
+function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_website = false){
     $CI =& get_instance();
-    $domain_source = website_setting(0, $initiator_e__id, $x__website);
+    $domain_source = website_setting(0, $initiator_e__id, $x__website, $force_website);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
     return $e___14870[$domain_source][$var_field];
 }
