@@ -59,25 +59,35 @@ echo '<div class="halfbg narrow-bar slim_flat">';
 
 
 //MESSAGES
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty">';
+$messages = '';
 foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
     'x__right' => $primary_i['i__id'],
 ), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
 
+    if(!strlen($x['x__message'])){
+        continue;
+    }
+
     $msg = $this->X_model->message_view( $x['x__message'], true);
 
     if(0 && substr_count($msg, '//www.youtube.com/embed/')==1){
         //YouTube video link
-        echo '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
-        echo '<div class="video-frame hidden">'.$msg.'</div>';
+        $messages .= '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
+        $messages .= '<div class="video-frame hidden">'.$msg.'</div>';
     } else {
-        echo $msg;
+        $messages .= $msg;
     }
 
 }
-echo '</div>';
+
+if(strlen($messages)){
+    echo '<div class="center-frame hide-subline maxwidth hideIfEmpty">';
+    echo $messages;
+    echo '</div>';
+}
+
 
 
 
