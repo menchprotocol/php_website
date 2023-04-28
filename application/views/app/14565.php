@@ -59,7 +59,7 @@ echo '<div class="halfbg narrow-bar slim_flat">';
 
 
 //MESSAGES
-echo '<div class="center-frame hide-subline maxwidth">';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty">';
 foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages

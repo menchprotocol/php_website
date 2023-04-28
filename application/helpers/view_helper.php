@@ -1526,7 +1526,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Bottom Bar
-    if(!$focus_card && (!$discovery_mode || $superpower_10939)){
+    if(!$cache_app && !$focus_card && (!$discovery_mode || $superpower_10939)){
 
         $active_bars = 0;
         $bottom_bar_ui = '';
