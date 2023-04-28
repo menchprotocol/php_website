@@ -625,52 +625,6 @@ function view_body_i($x__type, $counter, $i__id){
 
 }
 
-function view_item($e__id, $i__id, $s__title, $s__cover, $link, $desc = null, $m_cover = false){
-
-    if(!$desc && $i__id>0 && !intval(website_setting(33922))){
-        $CI =& get_instance();
-        $member_e = superpower_unlocked();
-        foreach($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $i__id,
-        ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x){
-            if(substr($message_x['x__message'], 0, 1)=='@' && is_numeric(substr($message_x['x__message'], 1))){
-                foreach($CI->X_model->fetch(array(
-                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__down' => intval(substr($message_x['x__message'], 1)),
-                    'LENGTH(x__message)>0' => null,
-                )) as $links){
-                    $detect_data_type = detect_data_type($links['x__message']);
-                    if ($detect_data_type['status'] && $detect_data_type['x__type']==4260){
-                        $desc .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, 0, true);
-                        break;
-                    }
-                }
-                if($desc){
-                    break;
-                }
-            }
-        }
-    }
-
-    return '<a href="'.$link.'" class="list-group-item list-group-item-action flex-column align-items-start">
-    <div class="d-flex justify-content-between">
-      <h4 class="main__title"><b>'.( strlen($s__cover) ? '<span class="icon-block-lg title-left">'.( $m_cover ? $s__cover : ($e__id>0 ? view_cover($s__cover) : '' ) ).'</span><span class="title-right">'.$s__title.'</span>' : $s__title ).'</b></h4>
-      <small style="padding: 1px 3px 0 0;"><i class="far fa-chevron-right"></i></small>
-    </div>
-    '.( strlen($desc) && !count($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__right' => $i__id,
-            'x__up' => 33922, //Disable Cover Photo
-        ))) ? '<p>'.$desc.'</p>' : '' ) .'
-    
-  </a>';
-
-}
-
 function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true){
 
     /*

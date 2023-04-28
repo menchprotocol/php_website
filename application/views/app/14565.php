@@ -15,9 +15,6 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 
 
 
-
-
-
 $primary_i = array();
 $secondary_i_list = array();
 foreach($this->X_model->fetch(array(
@@ -69,7 +66,7 @@ foreach($this->X_model->fetch(array(
     'x__right' => $primary_i['i__id'],
 ), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
 
-    $msg = $this->X_model->message_view( $x['x__message'], true, $member_e, );
+    $msg = $this->X_model->message_view( $x['x__message'], true);
 
     if(0 && substr_count($msg, '//www.youtube.com/embed/')==1){
         //YouTube video link
@@ -81,6 +78,10 @@ foreach($this->X_model->fetch(array(
 
 }
 echo '</div>';
+
+
+
+
 
 
 $minimal_home = intval(website_setting(33922));
@@ -152,14 +153,21 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
 
 
 
+echo '</div>';
+
+
+
+
+
+
+
 //List Relevant Ideas in order:
 $secondary_ideas = '';
 foreach($secondary_i_list as $ref_i){
-    $messages = ( strlen($ref_i['x__message']) ? '<div class="msg"><span>' . nl2br($ref_i['x__message']) . '</span></div>' : '');
-    $secondary_ideas .= view_item(0,$ref_i['i__id'], $ref_i['i__title'], null, '/'.$ref_i['i__id'] ,$messages);
+    $secondary_ideas .= view_card_i(14565, 0, null, $ref_i);
 }
 if(strlen($secondary_ideas)){
-    echo '<div class="list-group list-border glossy-bg maxwidth">';
+    echo '<div class="row justify-content">';
     echo $secondary_ideas;
     echo '</div>';
     echo '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
@@ -171,9 +179,8 @@ if(strlen($secondary_ideas)){
 
 
 
-
-
 //Social UI and contact us
+echo '<div class="narrow-bar slim_flat">';
 $social_ui = '';
 foreach($this->E_model->scissor_e($website_id, 14904) as $social_box) {
     $social_ui .= '<li><a href="/-14904?e__id='.$social_box['e__id'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover($social_box['e__cover'], true).'</a></li>';
@@ -193,8 +200,8 @@ if($social_ui){
 } elseif(!$minimal_home) {
     echo $contact_us;
 }
-
 echo '</div>';
+
 
 
 
