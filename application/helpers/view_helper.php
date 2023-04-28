@@ -1207,7 +1207,7 @@ function convertURLs($string)
 }
 
 
-function view_i__cache($i){
+function view_i__cache($i, $simple_version = false){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
@@ -1234,7 +1234,7 @@ function view_i__cache($i){
         }
 
     }
-    return $messages;
+    return ( $simple_version ? strip_tags($messages) : $messages );
 }
 
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
@@ -1506,7 +1506,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip = '';
 
 
-    $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i).( !$can_click ? '</div>' : '</a>' );
+    $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( !$can_click ? '</div>' : '</a>' );
 
 
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
