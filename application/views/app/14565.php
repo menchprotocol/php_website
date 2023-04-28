@@ -54,12 +54,15 @@ echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377p
 echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',$primary_i['i__title']).'\'); }); </script> ';
 
 
-//Start darker background:
-echo '<div class="halfbg narrow-bar slim_flat">';
+
+$messages = '';
+
+
+
 
 
 //MESSAGES
-$messages = '';
+$top_messages = '';
 foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 4231, //IDEA NOTES Messages
@@ -74,20 +77,20 @@ foreach($this->X_model->fetch(array(
 
     if(0 && substr_count($msg, '//www.youtube.com/embed/')==1){
         //YouTube video link
-        $messages .= '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
-        $messages .= '<div class="video-frame hidden">'.$msg.'</div>';
+        $top_messages .= '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
+        $top_messages .= '<div class="video-frame hidden">'.$msg.'</div>';
     } else {
-        $messages .= $msg;
+        $top_messages .= $msg;
     }
 
 }
 
-if(strlen($messages)){
-    echo '<div class="center-frame hide-subline maxwidth hideIfEmpty">';
-    echo $messages;
-    echo '</div>';
+//Did we find any?
+if(strlen($top_messages)){
+    $messages .= '<div class="center-frame hide-subline maxwidth hideIfEmpty">';
+    $messages .= $top_messages;
+    $messages .= '</div>';
 }
-
 
 
 
@@ -117,9 +120,9 @@ if(!$minimal_home && ($domain_phone || $email_domain)) {
 }
 
 if($double_contact && !$minimal_home){
-    echo '<div style="padding: 20px 0;">';
-    echo $contact_us;
-    echo '</div>';
+    $messages .= '<div style="padding: 20px 0;">';
+    $messages .= $contact_us;
+    $messages .= '</div>';
 }
 
 
@@ -155,17 +158,19 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
     }
 
     if($info_item){
-        echo '<h2 class="info-head">'.$e_item['e__title'].'</h2>';
-        echo '<div class="row justify-content" style="margin-bottom: 89px;">'.$info_item.'</div>';
+        $messages .= '<h2 class="info-head">'.$e_item['e__title'].'</h2>';
+        $messages .= '<div class="row justify-content" style="margin-bottom: 89px;">'.$info_item.'</div>';
     }
 
 }
 
 
-
-echo '</div>';
-
-
+//Start darker background:
+if($messages){
+    echo '<div class="halfbg narrow-bar slim_flat">';
+    echo $messages;
+    echo '</div>';
+}
 
 
 
