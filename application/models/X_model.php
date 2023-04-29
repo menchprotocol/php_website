@@ -972,7 +972,7 @@ class X_model extends CI_Model
                 //Just reference the source:
                 $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
 
-            } elseif(count($e_links)==1 && $is_discovery_mode && 0){
+            } elseif(count($e_links)==1 && $is_discovery_mode){
 
                 //Just show one:
                 $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'">'.( in_array($es[0]['e__id'] , $this->config->item('n___34866')) ? '<u>'.$e_links[0]['x__message'].'</u>' : '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' ).'</a>';
@@ -1008,7 +1008,7 @@ class X_model extends CI_Model
                 }
 
             } else {
-                $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? $edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
+                $output_body_message = str_replace($identifier_string, $e_dropdown, $output_body_message).$e_appendix;
             }
 
         }
