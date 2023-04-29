@@ -1008,7 +1008,9 @@ class X_model extends CI_Model
                 }
 
             } else {
+
                 $output_body_message = str_replace($identifier_string, $e_dropdown, $output_body_message).$e_appendix;
+
             }
 
         }
