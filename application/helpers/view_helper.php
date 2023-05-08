@@ -685,7 +685,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
-            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31870' /* PUBLIC */ : 'n___31874' /* FEATURED */  ))) . ')' => null,
+            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
             'x__up' => $e__id,
         );
 
@@ -706,7 +706,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__creator' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31870' /* PUBLIC */ : 'n___31874' /* FEATURED */  ))) . ')' => null,
+            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
         );
 
     } else {

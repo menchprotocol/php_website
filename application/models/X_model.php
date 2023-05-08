@@ -503,7 +503,7 @@ class X_model extends CI_Model
                     //Find Published Followings:
                     foreach($this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+                        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                         'x__right' => $o__id,
                     ), array('x__left'), 1) as $previous_i) {
