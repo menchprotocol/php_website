@@ -1323,9 +1323,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top Bar
+    $top_bar_ui = '';
+    $active_bars = 0;
     if(!$cache_app){
-        $top_bar_ui = '';
-        $active_bars = 0;
         foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
             //Determine hover state:
@@ -1480,11 +1480,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             }
         }
-
-        $ui .= '<table class="card_covers active_bars_'.$active_bars.'"><tr>';
-        $ui .= $top_bar_ui;
-        $ui .= '</tr></table>';
     }
+
+    $ui .= '<table class="card_covers active_bars_'.$active_bars.'"><tr>';
+    $ui .= $top_bar_ui;
+    $ui .= '</tr></table>';
 
 
     //Coin Cover
