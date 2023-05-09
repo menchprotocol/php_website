@@ -2003,6 +2003,10 @@ i, .btn .show-max {
     top:36px;
 }
 
+.is-cache .cover-content{
+    max-height: 80%;
+}
+
 .list-answers .cover-content{
     top:48px;
 }
