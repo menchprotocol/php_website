@@ -1234,7 +1234,7 @@ function view_i__cache($i, $simple_version = false){
         }
 
     }
-    return ( $simple_version ? strip_tags($messages) : $messages );
+    return ( $simple_version ? str_replace('<a','<span',str_replace('</a','</span',$messages)) : $messages );
 }
 
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){

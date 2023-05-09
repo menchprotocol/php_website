@@ -962,7 +962,7 @@ class X_model extends CI_Model
             //Add Dropdown frame IF any:
             $e_dropdown = '';
 
-            if($simple_version && 0){
+            if($simple_version){
 
                 //Links not supported
                 $e_dropdown .= $es[0]['e__title'];
