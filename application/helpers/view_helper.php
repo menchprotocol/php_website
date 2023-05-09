@@ -1271,7 +1271,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $has_sortable = !$focus_card && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
-    if($discovery_mode) {
+    if($discovery_mode || $cache_app) {
         if($link_creator && $top_i__id){
             $href = '/'.$top_i__id.'/'.$i['i__id'];
         } else {
