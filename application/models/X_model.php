@@ -965,7 +965,7 @@ class X_model extends CI_Model
             if($simple_version){
 
                 //Links not supported
-                $e_dropdown .= $es[0]['e__title'];
+                //$e_dropdown .= $es[0]['e__title'];
 
             } elseif(!count($e_links) && !$on_its_own_line && $is_discovery_mode){
 
@@ -988,7 +988,7 @@ class X_model extends CI_Model
                 }
 
                 //Source reference:
-                //$e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($es[0]['e__cover'], true).'</span>'.$es[0]['e__title'].'</a>';
+                $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" class="dropdown-item main__title ignore-click"><span class="icon-block">'.view_cover($es[0]['e__cover'], true).'</span>'.$es[0]['e__title'].'</a>';
 
                 $e_dropdown .= '</div></div>';
 
