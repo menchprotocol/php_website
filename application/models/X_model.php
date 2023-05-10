@@ -1015,7 +1015,7 @@ class X_model extends CI_Model
 
 
 
-        $output_body_message = '';
+        $message_input = '';
 
 
         //Return results:
