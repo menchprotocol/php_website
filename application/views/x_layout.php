@@ -747,6 +747,11 @@ if($top_i__id) {
                 //Number
                 $input_type = 'number';
 
+            } elseif($i['i__type']==31795){
+
+                //URL
+                $input_type = 'url';
+
             }
 
 
