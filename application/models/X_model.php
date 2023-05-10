@@ -965,7 +965,7 @@ class X_model extends CI_Model
             if($simple_version){
 
                 //Links not supported
-                //$e_dropdown .= $es[0]['e__title'];
+                $e_dropdown .= $es[0]['e__title'];
 
             } elseif(!count($e_links) && !$on_its_own_line && $is_discovery_mode){
 
@@ -993,6 +993,7 @@ class X_model extends CI_Model
                 $e_dropdown .= '</div></div>';
 
             }
+            $e_dropdown = '';
 
 
             //Displays:
