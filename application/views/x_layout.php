@@ -461,8 +461,8 @@ if($top_i__id) {
                     //Break down amount & currency
                     $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
                     $unit_currency = $currency_parts[0];
-                    $unit_price = number_format($currency_parts[1], 2);
-                    $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2);
+                    $unit_price = number_format($currency_parts[1], 2, ".", "");
+                    $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2, ".", "");
 
                     //Append information to cart:
                     $info_append .= '<div class="sub_note main__title">';
