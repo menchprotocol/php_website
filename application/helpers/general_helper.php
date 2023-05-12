@@ -643,6 +643,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
+    $double_check = 'if you believe you have this source then make sure to login with the same email address that we sent you the email.';
 
     //Any Inclusion Any Requirements?
     $fetch_13865 = $CI->X_model->fetch(array(
@@ -668,7 +669,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
             }
         }
         if(!$meets_inc1_prereq && $x__creator > 0){
-            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement, make sure you are logged in with the same email address that we sent you the email.",$x__creator, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement, ".$double_check,$x__creator, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -700,7 +701,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         }
         if($meets_inc2_prereq < count($fetch_27984) && $x__creator > 0){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", make sure you are logged in with the same email address that we sent you the email.",$x__creator, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check,$x__creator, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
