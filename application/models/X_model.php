@@ -1003,9 +1003,9 @@ class X_model extends CI_Model
                 $the_title = false; //TODO Remove later if wanted subtitles back...
 
                 if($new_lines <= 1){
-                    $output_body_message = $e_appendix.str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $the_title : '' ).$e_dropdown, $output_body_message); //'.$edit_btn.'
+                    $output_body_message = $e_appendix.str_replace($identifier_string, $e_dropdown, $output_body_message); //'.$edit_btn.'
                 } else {
-                    $output_body_message = str_replace($identifier_string, ( $the_title && (!count($e_links) || !$is_discovery_mode) ? $edit_btn.$the_title : '' ).$e_dropdown, $output_body_message).$e_appendix;
+                    $output_body_message = str_replace($identifier_string, $e_dropdown, $output_body_message).$e_appendix;
                 }
 
             } else {
