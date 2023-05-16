@@ -966,7 +966,7 @@ class X_model extends CI_Model
             if($simple_version && !$e_media_count && !count($e_links)){
 
                 //Links not supported
-                $e_dropdown .= $es[0]['e__title'];
+                //$e_dropdown .= $es[0]['e__title'];
 
             } elseif(!count($e_links) && !$on_its_own_line && $is_discovery_mode){
 
