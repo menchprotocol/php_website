@@ -1008,7 +1008,7 @@ class X_model extends CI_Model
                 }
 
             } else {
-                $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? $edit_btn.'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>' : '' ).$e_dropdown, $output_body_message).$e_appendix;
+                $output_body_message = str_replace($identifier_string, ( !count($e_links) || !$is_discovery_mode ? $edit_btn : '' ).$e_dropdown, $output_body_message).$e_appendix; //'<span class="text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>'
             }
 
         }
