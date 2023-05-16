@@ -971,7 +971,7 @@ class X_model extends CI_Model
             } elseif(!count($e_links) && !$on_its_own_line && $is_discovery_mode){
 
                 //Just reference the source:
-                $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
+                //$e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
 
             } elseif(count($e_links)==1 && $is_discovery_mode){
 
