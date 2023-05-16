@@ -945,6 +945,7 @@ class X_model extends CI_Model
             if(strlen($es[0]['e__cover'])){
                 $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover($es[0]['e__cover'], true).'</span> ';
             }
+            $edit_btn = false;
 
             $on_its_own_line = false;
             $new_lines = 0;
@@ -998,7 +999,7 @@ class X_model extends CI_Model
             //Displays:
             if($on_its_own_line){
 
-                $the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>';
+                //$the_title = '<span class="subtle-line mini-grey text__6197_'.$es[0]['e__id'].'">' . $es[0]['e__title'] . '</span>';
                 $the_title = false; //TODO Remove later if wanted subtitles back...
 
                 if($new_lines <= 1){
