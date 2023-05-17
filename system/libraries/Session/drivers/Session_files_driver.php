@@ -169,9 +169,9 @@ class CI_Session_files_driver extends CI_Session_driver implements SessionHandle
 		{
 			$this->_file_new = ! file_exists($this->_file_path.$session_id);
 
-			if (($this->_file_handle = fopen($this->_file_path.$session_id, 'c+b')) === FALSE)
+			if (($this->_file_handle = @fopen($this->_file_path.$session_id, 'c+b')) === FALSE)
 			{
-				log_message('error', "Session: Unable to open file '".$this->_file_path.$session_id."'.");
+				//log_message('error', "Session: Unable to open file '".$this->_file_path.$session_id."'.");
 				return $this->_failure;
 			}
 
