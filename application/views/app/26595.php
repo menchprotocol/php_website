@@ -35,7 +35,20 @@ if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $
                 'x__metadata' => $_POST,
             ));
 
-        } elseif($pay_amount < 0 && ($_POST['payment_status']=='Refunded' || $_POST['payment_status']=='Pending')){
+        } elseif($pay_amount > 0 && $_POST['payment_status']=='Pending'){
+
+            //Pending Payment:
+            $is_good = true;
+
+            //Log Payment:
+            $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
+                'x__type' => 35572,
+                'x__weight' => intval($_POST['quantity']),
+                'x__creator' => $x__creator,
+                'x__metadata' => $_POST,
+            ));
+
+        } elseif($pay_amount < 0){
 
             //Refunded:
             $is_good = true;
