@@ -60,16 +60,14 @@ $can_edit_response = !count($this->X_model->fetch(array(
 
 
 //Open URL?
-    echo '.';
 foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__right' => $i['i__id'],
     'x__up' => 34461, //Redirect URL
 )) as $redirect_url){
-    echo $redirect_url['x__message'];
     if(filter_var($redirect_url['x__message'], FILTER_VALIDATE_URL)){
-        js_php_redirect($redirect_url['x__message'], 13);
+        js_php_redirect($redirect_url['x__message'], 0);
         break;
     }
 }
