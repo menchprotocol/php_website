@@ -792,6 +792,7 @@ class X extends CI_Controller
             //Log this error!
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
+                'x__creator' => $member_e['e__id'],
                 'x__message' => 'x_upload() Missing POST ERROR',
                 'x__metadata' => array(
                     'post' => $_POST,
