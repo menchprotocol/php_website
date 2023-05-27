@@ -12,7 +12,7 @@ foreach($this->I_model->fetch(array(
 
     $found_idea = true;
 
-    if(isset($_POST['x_write']) && isset($_POST['x_email']) && isset($_POST['x_phone']) && isset($_POST['DigitalSignAgreement'])){
+    if(isset($_POST)){
 
         //Process Signature to make sure it's all ok:
         if (strlen($_POST['x_write'])<5 || !substr_count($_POST['x_write'] , ' ')) {
