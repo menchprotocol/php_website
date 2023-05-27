@@ -9,7 +9,7 @@ foreach($this->I_model->fetch(array(
     $found_idea = true;
     //Allow user to sign instantly:
     $this->load->view('x_layout', array(
-        'top_i__id' => 0,
+        'top_i__id' => $i_sign['i__id'],
         'i' => $i_sign,
         'member_e' => superpower_unlocked(),
     ));
