@@ -652,7 +652,7 @@ function view_sign($i, $previous_response = null){
 
     //Signature agreement:
     $message_ui .= '<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement" name="DigitalSignAgreement">
+  <input class="form-check-input" type="checkbox" value="1" id="DigitalSignAgreement" name="DigitalSignAgreement">
   <label class="form-check-label" for="DigitalSignAgreement">
     I agree to be legally bound by this document & our <a href="/-14373" target="_blank"><u>Terms of Service</u></a>.
   </label>
