@@ -42,9 +42,9 @@ foreach($this->I_model->fetch(array(
         echo '<form method="POST" action="">';
         echo view_sign($i_sign, ( isset($_POST['x_write']) ? $_POST['x_write'] : '' ));
         echo '<h4>Email Address:</h4>';
-        echo '<input type="email" class="border greybg main__title itemsetting" style="width:289px !important;" value="'.( isset($_POST['x_email']) ? $_POST['x_email'] : '' ).'" placeholder="" name="x_email" />';
+        echo '<input type="email" class="border greybg main__title itemsetting" style="width:289px !important; margin:0 5px;" value="'.( isset($_POST['x_email']) ? $_POST['x_email'] : '' ).'" placeholder="" name="x_email" />';
         echo '<h4>Phone Number:</h4>';
-        echo '<input type="text" class="border greybg main__title itemsetting" style="width:289px !important;" value="'.( isset($_POST['x_phone']) ? $_POST['x_phone'] : '' ).'" placeholder="" name="x_phone" />';
+        echo '<input type="text" class="border greybg main__title itemsetting" style="width:289px !important; margin:0 5px;" value="'.( isset($_POST['x_phone']) ? $_POST['x_phone'] : '' ).'" placeholder="" name="x_phone" />';
         echo '<br /><input type="submit" class="btn btn-default" value="Sign Agreement">';
         echo '</form>';
     }
