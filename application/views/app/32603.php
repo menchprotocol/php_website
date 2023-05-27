@@ -17,14 +17,15 @@ foreach($this->I_model->fetch(array(
         //Process Signature to make sure it's all ok:
         if (strlen($_POST['x_write'])<5 || !substr_count($_POST['x_write'] , ' ')) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter Your First & Last Name</div>';
-        } elseif (filter_var($_POST['x_email'], FILTER_VALIDATE_EMAIL)) {
+        } elseif (!filter_var($_POST['x_email'], FILTER_VALIDATE_EMAIL)) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Email Address</div>';
         } elseif (strlen(intval($_POST['x_phone']))<10) {
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Phone Number</div>';
+        } elseif (!intval($_POST['DigitalSignAgreement'])) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Phone Number</div>';
         } else {
             //Input validated, process signature:
             $signed_idea = true;
-            echo '['.$_POST['DigitalSignAgreement'].']';
         }
 
     }
