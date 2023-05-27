@@ -34,14 +34,14 @@ foreach($this->I_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Email
-                'LOWER(x__message)' => $email,
+                'LOWER(x__message)' => $email.'',
             ), array('x__down'));
             if(!count($map_users)){
                 $map_users = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__up' => 4783, //Phone
-                    'x__message' => $phone,
+                    'x__message' => $phone.'',
                 ), array('x__down'));
             }
 
