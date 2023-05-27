@@ -2,6 +2,7 @@
 
 $found_idea = false;
 $signed_idea = false;
+print_r($_POST);
 
 foreach($this->I_model->fetch(array(
     'i__id' => ( isset($_GET['i__id']) && $_GET['i__id'] > 0 ? $_GET['i__id'] : 0 ),
