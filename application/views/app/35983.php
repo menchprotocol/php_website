@@ -9,6 +9,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
     $emails = explode("\n",$_POST['list_emails']);
 
     foreach($emails as $email){
+
         if (filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
 
             $total_emails++;
@@ -18,7 +19,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__up' => 3288, //Email
-                'x__message' => strtolower($email),
+                'x__message' => trim(strtolower($email)),
             )) as $e_data){
 
                 $found_emails++;
