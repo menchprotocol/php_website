@@ -53,24 +53,22 @@ foreach($this->I_model->fetch(array(
                 }
             }
 
-            if(count($map_users)){
-
+            foreach($map_users as $map_user){
                 //Sign agreement:
                 $this->X_model->mark_complete($i_sign['i__id'], $i_sign, array(
                     'x__type' => 33614,
-                    'x__creator' => $map_users[0]['e__id'],
+                    'x__creator' => $map_user['e__id'],
                     'x__message' => $_POST['x_write'],
                 ));
 
                 //Log transaction:
                 $this->X_model->create(array(
-                    'x__creator' => $map_users[0]['e__id'],
+                    'x__creator' => $map_user['e__id'],
                     'x__type' => 32603,
                     'x__left' => $i_sign['i__id'],
                 ));
-
             }
-            
+
 
             echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show your ID at the door to enter.</div>';
 
