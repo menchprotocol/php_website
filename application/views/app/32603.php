@@ -22,7 +22,7 @@ foreach($this->I_model->fetch(array(
         } elseif (strlen(intval($_POST['x_phone']))<10) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Phone Number</div>';
         } elseif (!isset($_POST['DigitalSignAgreement']) || !intval($_POST['DigitalSignAgreement'])) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Phone Number</div>';
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You must agree to be legally bound by this document.</div>';
         } else {
             //Input validated, process signature:
             $signed_idea = true;
