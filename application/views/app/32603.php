@@ -9,9 +9,14 @@ foreach($this->I_model->fetch(array(
     $found_idea = true;
 
     //Allow user to sign instantly:
+    echo '<form method="post" action="">';
     echo '<h1 class="msg-frame" style="text-align: center; padding: 21px 0 !important; font-size:2.1em;">'.$i_sign['i__title'].'</h1>';
     echo view_i__cache($i_sign);
     echo view_sign($i_sign);
+    echo '<input type="text" class="border greybg main__title itemsetting" value="" placeholder="Email Address" id="x_email" />';
+    echo '<input type="text" class="border greybg main__title itemsetting" value="" placeholder="Phone Number" id="x_phone" />';
+    echo '<input type="submit" class="btn btn-default" value="Sign Agreement">';
+    echo '</form>';
 
 }
 
