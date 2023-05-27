@@ -37,8 +37,8 @@ foreach($this->I_model->fetch(array(
 
         echo '<form method="POST" action="">';
         echo view_sign($i_sign, ( isset($_POST['x_write']) ? $_POST['x_write'] : '' ));
-        echo '<input type="email" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_write']) ? $_POST['x_write'] : '' ).'" placeholder="Email Address" name="x_email" />';
-        echo '<input type="text" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_write']) ? $_POST['x_write'] : '' ).'" placeholder="Phone Number" name="x_phone" />';
+        echo '<input type="email" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_email']) ? $_POST['x_email'] : '' ).'" placeholder="Email Address" name="x_email" />';
+        echo '<input type="text" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_phone']) ? $_POST['x_phone'] : '' ).'" placeholder="Phone Number" name="x_phone" />';
         echo '<input type="submit" class="btn btn-default" value="Sign Agreement">';
         echo '</form>';
     }
