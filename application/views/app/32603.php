@@ -21,7 +21,7 @@ foreach($this->I_model->fetch(array(
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Email Address</div>';
         } elseif (strlen(intval($_POST['x_phone']))<10) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Phone Number</div>';
-        } elseif (!intval($_POST['DigitalSignAgreement'])) {
+        } elseif (!isset($_POST['DigitalSignAgreement']) || !intval($_POST['DigitalSignAgreement'])) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Phone Number</div>';
         } else {
             //Input validated, process signature:
