@@ -118,7 +118,7 @@ foreach(array(
 if(!$processed){
 
     //SHow Form:
-    echo '<form method="post" action="">';
+    echo '<form method="POST" action="">';
 
     //Latest version
     echo '<p>Check <a href="https://fontawesome.com/pro" target="_blank"><u>Latest Version</u></a> in the middle of page & Update config value for <a href="/@13577" target="_blank"><u>@13577</u></a> ['.view_memory(6404,13577).']</p><br /><br />';

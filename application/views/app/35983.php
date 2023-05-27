@@ -56,7 +56,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 }
 
 //SHow Form:
-echo '<form method="post" action="">';
+echo '<form method="POST" action="">';
 
 echo '<textarea class="form-control text-edit border no-padding" style="height:200px;" name="list_emails" data-lpignore="true" placeholder="Paste Emails (One per line)...">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
 
