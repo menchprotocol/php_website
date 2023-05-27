@@ -26,6 +26,10 @@ foreach($this->I_model->fetch(array(
         } else {
             //Input validated, process signature:
             $signed_idea = true;
+
+            echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Agreement signed successfully for "'.$_POST['x_write'].'". Show your matching ID at the door.</div>';
+
+
         }
 
     }
