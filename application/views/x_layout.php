@@ -651,31 +651,9 @@ if($top_i__id) {
 
         } elseif ($i['i__type']==32603) {
 
-            $u_names = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__down' => $member_e['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__up' => 30198, //Name
-            ));
-
-            //Sign Agreement
-            $message_ui = '';
-            $message_ui .= '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
-            if(strlen($e___4737[$i['i__type']]['m__message'])){
-                $message_ui .= '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
-            }
-            $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="Full Legal Name" id="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
-
-            //Signature agreement:
-            $message_ui .= '<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="DigitalSignAgreement">
-  <label class="form-check-label" for="DigitalSignAgreement">
-    I agree to be legally bound by this document & our <a href="/-14373" target="_blank"><u>Terms of Service</u></a>.
-  </label>
-</div>';
+            $message_ui = view_sign($i, $previous_response);
 
         } else {
-
 
             //Determine type:
             if($i['i__type']==31794){
