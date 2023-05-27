@@ -8,10 +8,10 @@ foreach($this->I_model->fetch(array(
     'i__type' => 32603, //Sign Agreement
     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 )) as $i_sign){
-    
+
     $found_idea = true;
 
-    if(isset($_POST)){
+    if(isset($_POST) && isset($_POST['x_write'])){
 
         //Process Signature to make sure it's all ok:
         if (strlen($_POST['x_write'])<5 || !substr_count($_POST['x_write'] , ' ')) {
