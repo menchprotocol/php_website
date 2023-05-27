@@ -2,7 +2,6 @@
 
 $found_idea = false;
 $signed_idea = false;
-print_r($_POST);
 
 foreach($this->I_model->fetch(array(
     'i__id' => ( isset($_GET['i__id']) && $_GET['i__id'] > 0 ? $_GET['i__id'] : 0 ),
@@ -12,7 +11,7 @@ foreach($this->I_model->fetch(array(
 
     $found_idea = true;
 
-    if(isset($_POST)){
+    if(isset($_POST) && count($_POST)){
 
         //Process Signature to make sure it's all ok:
         if (strlen($_POST['x_write'])<5 || !substr_count($_POST['x_write'] , ' ')) {
