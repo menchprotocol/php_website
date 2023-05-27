@@ -16,18 +16,63 @@ foreach($this->I_model->fetch(array(
         //Process Signature to make sure it's all ok:
         if (strlen($_POST['x_write'])<5 || !substr_count($_POST['x_write'] , ' ')) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter Your First & Last Name</div>';
+        } elseif (!isset($_POST['DigitalSignAgreement']) || !intval($_POST['DigitalSignAgreement'])) {
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You must agree to be legally bound by this document.</div>';
         } elseif (!filter_var($_POST['x_email'], FILTER_VALIDATE_EMAIL)) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a valid Email Address</div>';
         } elseif (strlen(intval($_POST['x_phone']))<10) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a valid Phone Number</div>';
-        } elseif (!isset($_POST['DigitalSignAgreement']) || !intval($_POST['DigitalSignAgreement'])) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You must agree to be legally bound by this document.</div>';
         } else {
 
             //Input validated, process signature:
             $signed_idea = true;
+            $phone = intval($_POST['x_phone']);
+            $email = trim($_POST['x_email']);
 
-            echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show matching ID at the door to enter.</div>';
+            //See if we can find this user with their email:
+            $map_users = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__up' => 3288, //Email
+                'LOWER(x__message)' => $email,
+            ));
+            if(!count($map_users)){
+                $map_users = $this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__up' => 4783, //Phone
+                    'x__message' => $phone,
+                ));
+            }
+
+            //Still missing user?
+            if(!count($map_users)){
+                $member_result = $this->E_model->add_member($_POST['x_write'], $email, $phone, null, 0, true);
+                if($member_result['status']) {
+                    $map_users[0] = $member_result['e'];
+                }
+            }
+
+            if(count($map_users)){
+
+                //Sign agreement:
+                $this->X_model->mark_complete($i_sign['i__id'], $i_sign, array(
+                    'x__type' => 33614,
+                    'x__creator' => $map_users[0]['e__id'],
+                    'x__message' => $_POST['x_write'],
+                ));
+
+                //Log transaction:
+                $this->X_model->create(array(
+                    'x__creator' => $map_users[0]['e__id'],
+                    'x__type' => 32603,
+                    'x__left' => $i_sign['i__id'],
+                ));
+
+            }
+            
+
+            echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show your ID at the door to enter.</div>';
 
         }
 
@@ -35,6 +80,7 @@ foreach($this->I_model->fetch(array(
 
 
     if(!$signed_idea){
+
         //Allow user to sign:
         echo '<h1 class="msg-frame sign_text">'.$i_sign['i__title'].'</h1>';
         echo view_i__cache($i_sign);
@@ -47,6 +93,7 @@ foreach($this->I_model->fetch(array(
         echo '<input type="text" class="border greybg main__title itemsetting" style="width:289px !important; margin:0 5px;" value="'.( isset($_POST['x_phone']) ? $_POST['x_phone'] : '' ).'" placeholder="" name="x_phone" />';
         echo '<br /><input type="submit" class="btn btn-default" value="Sign Agreement">';
         echo '</form>';
+
     }
 }
 
