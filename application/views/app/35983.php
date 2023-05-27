@@ -13,7 +13,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
         if (filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
 
             $total_emails++;
-            echo $email.'<hr />';
+            //echo $email.'<hr />';
 
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -58,10 +58,10 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 //SHow Form:
 echo '<form method="post" action="">';
 
-echo '<textarea class="form-control text-edit border no-padding" style="height:200px;" name="list_emails" data-lpignore="true" placeholder="Paste Emails (One per line)..."></textarea><br /><br />';
+echo '<textarea class="form-control text-edit border no-padding" style="height:200px;" name="list_emails" data-lpignore="true" placeholder="Paste Emails (One per line)...">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
 
 
-echo '<input type="number" class="form-control white-border border maxout" name="import_e__id" value="" placeholder="Import Source ID"><br />';
+echo '<input type="number" class="form-control white-border border maxout" name="import_e__id" value="'.( isset($_POST['import_e__id']) ? $_POST['import_e__id'] : '' ).'" placeholder="Import Source ID"><br />';
 
 //Apply
 echo '<button type="submit" class="btn btn-lrg btn-6255 go-next top-margin">Map Emails</button>';
