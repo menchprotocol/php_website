@@ -17,17 +17,17 @@ foreach($this->I_model->fetch(array(
         if (strlen($_POST['x_write'])<5 || !substr_count($_POST['x_write'] , ' ')) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter Your First & Last Name</div>';
         } elseif (!filter_var($_POST['x_email'], FILTER_VALIDATE_EMAIL)) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Email Address</div>';
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a valid Email Address</div>';
         } elseif (strlen(intval($_POST['x_phone']))<10) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a Valid Phone Number</div>';
+            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a valid Phone Number</div>';
         } elseif (!isset($_POST['DigitalSignAgreement']) || !intval($_POST['DigitalSignAgreement'])) {
             echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You must agree to be legally bound by this document.</div>';
         } else {
+
             //Input validated, process signature:
             $signed_idea = true;
 
             echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show matching ID at the door to enter.</div>';
-
 
         }
 
@@ -41,9 +41,11 @@ foreach($this->I_model->fetch(array(
 
         echo '<form method="POST" action="">';
         echo view_sign($i_sign, ( isset($_POST['x_write']) ? $_POST['x_write'] : '' ));
-        echo '<input type="email" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_email']) ? $_POST['x_email'] : '' ).'" placeholder="Email Address" name="x_email" />';
-        echo '<input type="text" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_phone']) ? $_POST['x_phone'] : '' ).'" placeholder="Phone Number" name="x_phone" />';
-        echo '<input type="submit" class="btn btn-default" value="Sign Agreement">';
+        echo '<h4>Email Address:</h4>';
+        echo '<input type="email" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_email']) ? $_POST['x_email'] : '' ).'" placeholder="" name="x_email" />';
+        echo '<h4>Phone Number:</h4>';
+        echo '<input type="text" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_phone']) ? $_POST['x_phone'] : '' ).'" placeholder="" name="x_phone" />';
+        echo '<br /><input type="submit" class="btn btn-default" value="Sign Agreement">';
         echo '</form>';
     }
 }
