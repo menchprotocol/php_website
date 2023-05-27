@@ -32,12 +32,13 @@ foreach($this->I_model->fetch(array(
 
     if(!$signed_idea){
         //Allow user to sign:
-        echo '<form method="POST" action="">';
         echo '<h1 class="msg-frame sign_text">'.$i_sign['i__title'].'</h1>';
         echo view_i__cache($i_sign);
-        echo view_sign($i_sign, @$_POST['x_write']);
-        echo '<input type="text" class="border greybg main__title itemsetting sign_text" value="'.@$_POST['x_email'].'" placeholder="Email Address" id="x_email" />';
-        echo '<input type="text" class="border greybg main__title itemsetting sign_text" value="'.@$_POST['x_phone'].'" placeholder="Phone Number" id="x_phone" />';
+
+        echo '<form method="POST" action="">';
+        echo view_sign($i_sign, ( isset($_POST['x_write']) ? $_POST['x_write'] : '' ));
+        echo '<input type="email" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_write']) ? $_POST['x_write'] : '' ).'" placeholder="Email Address" name="x_email" />';
+        echo '<input type="text" class="border greybg main__title itemsetting sign_text" value="'.( isset($_POST['x_write']) ? $_POST['x_write'] : '' ).'" placeholder="Phone Number" name="x_phone" />';
         echo '<input type="submit" class="btn btn-default" value="Sign Agreement">';
         echo '</form>';
     }
