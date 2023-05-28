@@ -651,14 +651,12 @@ function view_sign($i, $previous_response = null){
     $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="" id="x_write" name="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
 
     //Signature agreement:
-    $message_ui .= '<div class="form-check">
+    $message_ui .= '<br /><br /><div class="form-check">
   <input class="form-check-input" type="checkbox" value="1" id="DigitalSignAgreement" name="DigitalSignAgreement">
-  <br />
   <label class="form-check-label" for="DigitalSignAgreement">
     I agree to be legally bound by this document & our <a href="/-14373" target="_blank"><u>Terms of Service</u></a>.
   </label>
-  <br />
-</div>';
+</div><br />';
 
     return $message_ui;
     
