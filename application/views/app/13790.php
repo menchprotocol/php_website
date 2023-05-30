@@ -60,9 +60,9 @@ if(strlen($_GET['i__id'])){
             }
         }
 
-        echo '<div>'.count($all_ids).' OR Ideas (Responses vary per user)</div>';
+        echo '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
         $count = 0;
-        foreach($all_ids as $recursive_down_id){
+        foreach($or_ids as $recursive_down_id){
             foreach($this->I_model->fetch(array(
                 'i__id' => $recursive_down_id,
             ), 0, 0, array('i__id' => 'ASC')) as $this_i){
