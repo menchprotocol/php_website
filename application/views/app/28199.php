@@ -75,5 +75,5 @@ echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expi
 
 if(isset($filters['x__right'])){
     //We were deleting a single item, redirect back:
-    js_php_redirect('/'.$_GET['top_i__id'].'/'.$filters['x__right'], 0);
+    js_php_redirect('/'.$filters['x__right'], 0);
 }
