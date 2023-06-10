@@ -72,6 +72,12 @@ foreach($this->I_model->fetch(array(
 
             echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show your ID at the door to enter'.( isset($map_user['e__id']) ? '<a href="/@'.$map_user['e__id'].'" style="text-decoration: none;">.</a>' : '.' ).'</div>';
 
+            //Tickets:
+            echo '<p>Need Tickets?</p>';
+
+            echo '<div><a class="btn btn-lrg btn-6255 go-next" href="https://ra.co/events/1713038">Buy Tickets Here</a></div>';
+
+
         }
 
     }
