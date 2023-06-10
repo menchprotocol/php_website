@@ -32,7 +32,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
         //Now see if the answer is completed:
         $answer_completed = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //Discoveries
+            'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
             'x__left' => $x_progress['x__right'],
             'x__creator' => $x_progress['e__id'],
         ));
