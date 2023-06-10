@@ -15,6 +15,8 @@ if(isset($_GET['i__id']) && intval($_GET['i__id'])>0){
     $buffer_time = 180;
 }
 
+print_r($filters);
+
 $links_deleted = 0;
 //Go through all expire seconds ideas:
 foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
