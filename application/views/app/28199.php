@@ -2,6 +2,7 @@
 
 $filters = array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__right' => 0,
     'x__type' => 4983, //References
     'x__up' => 28199,
 );
@@ -72,5 +73,5 @@ if(isset($filters['x__right']) && isset($_GET['do_delete'])){
     //We were deleting a single item, redirect back:
     js_php_redirect('/'.$_GET['top_i__id'].'/'.$filters['x__right'], 0);
 } elseif(!isset($_GET['do_delete'])){
-    echo '<div><a href="&do_delete=1">Delete All</a></div>';
+    echo '<div><a href="/-28199?i__id='.$filters['x__right'].'&do_delete=1" class="btn btn-lrg">Delete All</a></div>';
 }
