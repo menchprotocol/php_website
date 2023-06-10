@@ -38,7 +38,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
         ));
         $seconds_left = intval( intval( $expires['x__message']) + $buffer_time - (time() - strtotime($x_progress['x__time'])));
 
-        if(!count($answer_completed) && $seconds_left <= 0){
+        if(!count($answer_completed) && intval( $expires['x__message'])>0 && $seconds_left <= 0){
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
@@ -49,8 +49,9 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
                 'x__creator' => $x_progress['e__id'],
             ), array(), 0) as $delete){
 
+                $deleted = true;
+
                 if(isset($_GET['do_delete'])){
-                    $deleted = true;
                     $this->X_model->update($delete['x__id'], array(
                         'x__access' => 6173, //Transaction Deleted
                     ), $member_e['e__id'], 29085); //Time Expired
