@@ -47,11 +47,11 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
                 'x__creator' => $x_progress['e__id'],
             ), array(), 0) as $delete){
 
-                /*
-                $this->X_model->update($delete['x__id'], array(
-                    'x__access' => 6173, //Transaction Deleted
-                ), $member_e['e__id'], 29085); //Time Expired
-                */
+                if(isset($_GET['do_delete'])){
+                    $this->X_model->update($delete['x__id'], array(
+                        'x__access' => 6173, //Transaction Deleted
+                    ), $member_e['e__id'], 29085); //Time Expired
+                }
                 $links_deleted++;
 
             }
@@ -68,7 +68,9 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
 echo '<div style="text-align: center">'.$links_deleted.' expired ideas removed.</div>';
 
-if(isset($filters['x__right'])){
+if(isset($filters['x__right']) && isset($_GET['do_delete'])){
     //We were deleting a single item, redirect back:
-    js_redirect('/'.$_GET['top_i__id'].'/'.$filters['x__right'], 0);
+    js_php_redirect('/'.$_GET['top_i__id'].'/'.$filters['x__right'], 0);
+} elseif(!isset($_GET['do_delete'])){
+    echo '<div><a href="&do_delete=1">Delete All</a></div>';
 }
