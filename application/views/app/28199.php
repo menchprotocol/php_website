@@ -14,8 +14,6 @@ if(isset($_GET['i__id']) && intval($_GET['i__id'])>0){
     $buffer_time = 180;
 }
 
-print_r($filters);
-
 $links_deleted = 0;
 //Go through all expire seconds ideas:
 foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
@@ -26,7 +24,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
     $counter = 0;
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
+        'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansions
         'x__left' => $expires['i__id'],
     ), array('x__creator'), 0) as $x_progress){
 
