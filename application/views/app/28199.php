@@ -1,7 +1,7 @@
 <?php
 
 $filters = array(
-    'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //Select Next
     'x__type' => 4983, //References
     'x__up' => 28199,
@@ -24,14 +24,14 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
     //Now go through everyone who discovered this selection:
     $counter = 0;
     foreach($this->X_model->fetch(array(
-        'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___12326')) . ')' => null, //Discovery Expansions
         'x__left' => $expires['i__id'],
     ), array('x__source'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->X_model->fetch(array(
-            'x__status IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //Discoveries
             'x__left' => $x_progress['x__right'],
             'x__source' => $x_progress['e__id'],
@@ -42,7 +42,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
             //Answer not yet completed and no time left, delete response:
             foreach($this->X_model->fetch(array(
-                'x__status IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
                 'x__left' => $expires['i__id'],
                 'x__source' => $x_progress['e__id'],
@@ -50,7 +50,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
                 /*
                 $this->X_model->update($delete['x__id'], array(
-                    'x__status' => 6173, //Transaction Deleted
+                    'x__access' => 6173, //Transaction Deleted
                 ), $member_e['e__id'], 29085); //Time Expired
                 */
                 $links_deleted++;
