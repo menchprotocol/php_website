@@ -41,6 +41,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
         if(!count($answer_completed) && $seconds_left <= 0){
 
             //Answer not yet completed and no time left, delete response:
+            $deleted = false;
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
@@ -49,14 +50,19 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
             ), array(), 0) as $delete){
 
                 if(isset($_GET['do_delete'])){
+                    $deleted = true;
                     $this->X_model->update($delete['x__id'], array(
                         'x__access' => 6173, //Transaction Deleted
                     ), $member_e['e__id'], 29085); //Time Expired
                 }
-                $links_deleted++;
-                echo '<div style="padding-left: 21px;">'.$counter.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
 
             }
+
+            if($deleted){
+                $links_deleted++;
+                echo '<div style="padding-left: 21px;">'.$counter.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
+            }
+
 
         }
 
