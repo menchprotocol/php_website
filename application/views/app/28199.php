@@ -7,7 +7,7 @@ $filters = array(
     'x__up' => 28199,
 );
 
-if($member_e && isset($_GET['i__id']) && intval($_GET['i__id'])>0){
+if(isset($_GET['i__id']) && intval($_GET['i__id'])>0){
     $filters['x__right'] = intval($_GET['i__id']);
     $buffer_time = 0;
 } else {
