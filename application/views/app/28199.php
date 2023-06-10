@@ -40,14 +40,23 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
         if(!count($answer_completed) && $seconds_left <= 0){
 
-            if($member_e && isset($_GET['do_delete'])){
-                $this->X_model->update($x_progress['x__id'], array(
-                    'x__access' => 6173, //Transaction Deleted
-                ), $member_e['e__id'], 29085); //Time Expired
-            }
-            $links_deleted++;
-            echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
+            //Answer not yet completed and no time left, delete response:
+            foreach($this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+                'x__left' => $expires['i__id'],
+                'x__creator' => $x_progress['e__id'],
+            ), array(), 0) as $delete){
 
+                if(isset($_GET['do_delete'])){
+                    $this->X_model->update($delete['x__id'], array(
+                        'x__access' => 6173, //Transaction Deleted
+                    ), $member_e['e__id'], 29085); //Time Expired
+                }
+                $links_deleted++;
+                echo '<div style="padding-left: 21px;">'.$counter.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
+
+            }
 
         }
 
@@ -58,7 +67,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
 }
 
-echo '<div style="text-align: center">'.$links_deleted.'/$counter ideas are expired.</div>';
+echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
 
 if(isset($filters['x__right']) && isset($_GET['do_delete'])){
     //We were deleting a single item, redirect back:
