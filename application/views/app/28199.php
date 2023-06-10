@@ -42,7 +42,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
             //Answer not yet completed and no time left, delete response:
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___12227')) . ')' => null,
+                'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
                 'x__left' => $expires['i__id'],
                 'x__creator' => $x_progress['e__id'],
             ), array(), 0) as $delete){
