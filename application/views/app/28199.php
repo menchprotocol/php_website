@@ -2,7 +2,6 @@
 
 $filters = array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //Select Next
     'x__type' => 4983, //References
     'x__up' => 28199,
 );
