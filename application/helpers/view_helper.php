@@ -1615,7 +1615,7 @@ function view_random_title(){
     return random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 }
 
-function view_list_sources($x__creator, $x){
+function view_list_sources($i, $x__creator, $x){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
@@ -1658,7 +1658,12 @@ function view_list_sources($x__creator, $x){
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover($x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
-        . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['x__message'].'</a>' : '<div class="sub_note main__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
+        . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__right' => $i['i__id'],
+            'x__up' => 37639, //Event Address Approximate
+        ))) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['x__message'].'</a>' : '<div class="sub_note main__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
         . '</div>';
 
     /*
