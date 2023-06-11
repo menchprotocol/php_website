@@ -16,7 +16,7 @@ if(superpower_unlocked()) {
 
     $es = $this->E_model->fetch(array(
         'e__id' => $cookie_parts[0],
-        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ));
 
     if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].view_memory(6404,30863))){

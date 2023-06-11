@@ -805,8 +805,6 @@ function cookie_delete(){
 
 function universal_check() {
 
-    return false; //Disabled for now
-
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
