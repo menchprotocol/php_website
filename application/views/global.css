@@ -1622,7 +1622,7 @@ i, .btn .show-max {
 .icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 #searchFrontForm .icon-block { width:30px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
-.icon-block-xxs{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+.icon-block-xxs{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-xxs i{ font-size: 1em !important; }
 .icon-block-xs{ width:33px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
@@ -2104,9 +2104,6 @@ input.form-control {
     height: 37px;
     text-align: center;
     margin:0;
-}
-.card_covers>span{
-    padding: 0 1px;
 }
 
 .cover-text {
@@ -2630,9 +2627,6 @@ h4.main__title{
         font-size: 1.15em;
     }
 
-    .card_covers>span{
-        padding: 0 2px;
-    }
 
     .vid-padding { padding:55px 0; }
 
