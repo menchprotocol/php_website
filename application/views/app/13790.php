@@ -11,6 +11,7 @@ $e___6287 = $this->config->item('e___6287'); //APP
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
+$has_grid = isset($_GET['custom_grid']) && intval($_GET['custom_grid']);
 $column_sources = array();
 $column_ideas = array();
 
@@ -23,59 +24,62 @@ if(strlen($_GET['i__id'])){
     $is_with_action_es = array();
     $es_added = array();
 
-    foreach($this->I_model->fetch(array(
-        'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
-    ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
+    if(!$has_grid){
+        foreach($this->I_model->fetch(array(
+            'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
+        ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
 
-        $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
-        $or_ids = $this->I_model->recursive_down_ids($loaded_i, 'OR');
+            $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
+            $or_ids = $this->I_model->recursive_down_ids($loaded_i, 'OR');
 
-        echo '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
-        $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
+            echo '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
+            $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
 
-        echo '<div class="hidden idea_list">';
-        echo '<div>'.count($all_ids).' Total Ideas:</div>';
-        $count = 0;
-        foreach($all_ids as $recursive_down_id){
-            foreach($this->I_model->fetch(array(
-                'i__id' => $recursive_down_id,
-            ), 0, 0, array('i__id' => 'ASC')) as $this_i){
-                $count++;
-                echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
+            echo '<div class="hidden idea_list">';
+            echo '<div>'.count($all_ids).' Total Ideas:</div>';
+            $count = 0;
+            foreach($all_ids as $recursive_down_id){
+                foreach($this->I_model->fetch(array(
+                    'i__id' => $recursive_down_id,
+                ), 0, 0, array('i__id' => 'ASC')) as $this_i){
+                    $count++;
+                    echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
 
-                if(!strlen($_GET['custom_grid'])){
-                    foreach($this->X_model->fetch(array(
-                        'x__right' => $this_i['i__id'],
-                        'x__type IN (' . join(',', $this->config->item('n___31023')) . ')' => null, //Idea Source Action Links
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                    ), array('x__up'), 0) as $this_e){
-                        if(!in_array($this_e['e__id'], $es_added) && (!strlen($_GET['include_e']) || !in_array($this_e['e__id'], explode(',',$_GET['include_e'])))){
-                            array_push($column_sources, $this_e);
-                            array_push($es_added, $this_e['e__id']);
+                    if(!$has_grid){
+                        foreach($this->X_model->fetch(array(
+                            'x__right' => $this_i['i__id'],
+                            'x__type IN (' . join(',', $this->config->item('n___31023')) . ')' => null, //Idea Source Action Links
+                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                        ), array('x__up'), 0) as $this_e){
+                            if(!in_array($this_e['e__id'], $es_added) && (!strlen($_GET['include_e']) || !in_array($this_e['e__id'], explode(',',$_GET['include_e'])))){
+                                array_push($column_sources, $this_e);
+                                array_push($es_added, $this_e['e__id']);
+                            }
+                            array_push($is_with_action_es, $this_i['i__id']);
                         }
-                        array_push($is_with_action_es, $this_i['i__id']);
                     }
                 }
             }
-        }
 
-        echo '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
-        $count = 0;
-        foreach($or_ids as $recursive_down_id){
-            foreach($this->I_model->fetch(array(
-                'i__id' => $recursive_down_id,
-            ), 0, 0, array('i__id' => 'ASC')) as $this_i){
-                $count++;
-                echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
-                if(!strlen($_GET['custom_grid']) && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
-                    array_push($column_ideas, $this_i);
+            echo '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
+            $count = 0;
+            foreach($or_ids as $recursive_down_id){
+                foreach($this->I_model->fetch(array(
+                    'i__id' => $recursive_down_id,
+                ), 0, 0, array('i__id' => 'ASC')) as $this_i){
+                    $count++;
+                    echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
+                    if(!strlen($_GET['custom_grid']) && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
+                        array_push($column_ideas, $this_i);
+                    }
                 }
             }
-        }
-        echo '</div>';
+            echo '</div>';
 
+        }
     }
+
 
     echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
 
@@ -122,7 +126,7 @@ if(strlen($_GET['i__id'])){
 
 
 
-    if(isset($_GET['custom_grid']) && strlen($_GET['custom_grid'])){
+    if($has_grid){
 
         $column_sources = $this->X_model->fetch(array(
             'x__up' => $_GET['custom_grid'], //ACTIVE
