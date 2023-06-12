@@ -1388,15 +1388,30 @@ class E extends CI_Controller
 
             if(count($already_added)){
 
-                //Already exists, let's remove:
-                $this->X_model->update($already_added[0]['x__id'], array(
-                    'x__access' => 6173, //Transaction Deleted
-                ), $member_e['e__id'], 10673 /* Member Transaction Unpublished */);
+                if(intval($_POST['input_modal']) && trim($_POST['modal_value'])!=$already_added[0]['x__message']){
 
-                return view_json(array(
-                    'status' => 1,
-                    'message' => ' ',
-                ));
+                    //Updating current value:
+                    $this->X_model->update($already_added[0]['x__id'], array(
+                        'x__message' => trim($_POST['modal_value']),
+                    ));
+                    return view_json(array(
+                        'status' => 1,
+                        'message' => trim($_POST['modal_value']),
+                    ));
+
+                } else {
+
+                    //Already exists, let's remove:
+                    $this->X_model->update($already_added[0]['x__id'], array(
+                        'x__access' => 6173, //Transaction Deleted
+                    ), $member_e['e__id'], 10673 /* Member Transaction Unpublished */);
+
+                    return view_json(array(
+                        'status' => 1,
+                        'message' => ' ',
+                    ));
+
+                }
 
             } else {
 
