@@ -1362,13 +1362,12 @@ class E extends CI_Controller
 
     function e_toggle_e(){
 
-        $member_e = superpower_unlocked();
-
+        $member_e = superpower_unlocked(28714);
         if(!$member_e){
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'You must login to continue...',
+                'message' => view_unauthorized_message(28714),
             ));
 
         } elseif(!isset($_POST['x__creator']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
@@ -1376,13 +1375,6 @@ class E extends CI_Controller
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variable',
-            ));
-
-        } elseif( !in_array($_POST['e__id'], $this->config->item('n___28714'))){
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'This source is not editable via @28714',
             ));
 
         } else {
@@ -1408,20 +1400,26 @@ class E extends CI_Controller
 
             } else {
 
-                //Does not exist, Add:
-                $this->X_model->create(array(
-                    'x__up' => $_POST['e__id'],
-                    'x__down' => $_POST['x__creator'],
-                    'x__creator' => $member_e['e__id'],
-                    'x__type' => 4230,
-                ));
+                foreach($this->E_model->fetch(array(
+                    'e__id' => $_POST['e__id'],
+                )) as $e){
 
-                $e___28714 = $this->config->item('e___28714');
+                    //Does not exist, Add:
+                    $this->X_model->create(array(
+                        'x__up' => $_POST['e__id'],
+                        'x__down' => $_POST['x__creator'],
+                        'x__creator' => $member_e['e__id'],
+                        'x__type' => 4230,
+                    ));
 
-                return view_json(array(
-                    'status' => 1,
-                    'message' => $e___28714[$_POST['e__id']]['m__cover'],
-                ));
+                    return view_json(array(
+                        'status' => 1,
+                        'message' => $e['e__cover'],
+                    ));
+
+                }
+
+
 
             }
 
