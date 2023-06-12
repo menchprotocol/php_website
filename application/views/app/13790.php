@@ -282,6 +282,13 @@ if(strlen($_GET['i__id'])){
         //SOURCES
         foreach($column_sources as $e){
 
+            $input_modal = count($this->X_model->fetch(array(
+                'x__up IN (' . join(',', $this->config->item('n___37707')) . ')' => null, //SOURCE LINKS
+                'x__down' => $e['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )));
+
             $fetch_data = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__down' => $x['e__id'],
@@ -289,10 +296,10 @@ if(strlen($_GET['i__id'])){
                 'x__up' => $e['e__id'],
             ));
 
-            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) || in_array($e['e__id'], $this->config->item('n___37694')) ? preview_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover($e['e__cover'], '✔️', ' ').'</span>' ) : '<span class="icon-block-xxs">'.view_cover($e['e__cover'], '✔️', ' ').'</span>' ) : '' );
+            $message_clean = ( count($fetch_data) ? ( strlen($fetch_data[0]['x__message']) ? ( isset($_GET['expand']) || in_array($e['e__id'], $this->config->item('n___37694')) || $input_modal ? preview_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']) : '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover($e['e__cover'], '✔️', ' ').'</span>' ) : '<span class="icon-block-xxs">'.view_cover($e['e__cover'], '✔️', ' ').'</span>' ) : '' );
 
 
-            $body_content .= '<td class="'.( superpower_active(28714, true) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__creator_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__creator="'.$x['e__id'].'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
+            $body_content .= '<td class="'.( superpower_active(28714, true) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__creator_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__creator="'.$x['e__id'].'" input_modal="'.( $input_modal ? 1 : 0 ).'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
 
             if(strlen($message_clean)>0){
                 if(!isset($count_totals['e'][$e['e__id']])){
@@ -435,11 +442,23 @@ if(strlen($_GET['i__id'])){
 
             $('.editable').click(function (e) {
 
+                var input_modal = parseInt($(this).attr('input_modal'));
+                var modal_value = '';
+                if(input_modal){
+                    modal_value = prompt("Enter value:", $('.x__creator_' + $(this).attr('e__id') + '_' + $(this).attr('x__creator')).text());
+                    if (!modal_value.length) {
+                        alert('Missing value');
+                        return false;
+                    }
+                }
+
                 var modify_data = {
                     i__id: $(this).attr('i__id'),
                     e__id: $(this).attr('e__id'),
                     x__creator: $(this).attr('x__creator'),
                     x__id: $(this).attr('x__id'),
+                    input_modal: input_modal,
+                    modal_value: modal_value,
                 };
 
                 $('.x__creator_' + modify_data['e__id'] + '_' + modify_data['x__creator']).html('<i class="far fa-yin-yang fa-spin"></i>');

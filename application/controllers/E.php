@@ -1409,12 +1409,13 @@ class E extends CI_Controller
                         'x__up' => $_POST['e__id'],
                         'x__down' => $_POST['x__creator'],
                         'x__creator' => $member_e['e__id'],
+                        'x__message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : null ),
                         'x__type' => 4230,
                     ));
 
                     return view_json(array(
                         'status' => 1,
-                        'message' => $e['e__cover'],
+                        'message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : $e['e__cover'] ),
                     ));
 
                 }
