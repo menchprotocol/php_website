@@ -594,6 +594,16 @@ function view_body_i($x__type, $counter, $i__id){
     } elseif($x__type==6255) {
 
         //DISCOVERIES
+        if(superpower_active(12701, true)){
+            $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[37959]['m__title'].'">
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
+        }
+
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $item){
             $ui .= view_card_e(6255, $item);
