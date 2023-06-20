@@ -449,20 +449,40 @@ class E extends CI_Controller
 
         if($adding_to_idea) {
 
-            $e_already_linked = count($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__up' => $focus_e['e__id'],
-                'x__right' => $fetch_o[0]['i__id'],
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            )));
+            if($_POST['x__type']==6255){
 
-            //Add Reference:
-            $ur2 = $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 4983, //IDEA SOURCES
-                'x__up' => $focus_e['e__id'],
-                'x__right' => $fetch_o[0]['i__id'],
-            ));
+                $e_already_linked = count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__creator' => $focus_e['e__id'],
+                    'x__left' => $fetch_o[0]['i__id'],
+                )));
+
+                //Add Reference:
+                $ur2 = $this->X_model->mark_complete($fetch_o[0]['i__id'], $fetch_o[0], array(
+                    'x__type' => 38000, //Suggested
+                    'x__creator' => $focus_e['e__id'],
+                    'x__up' => $member_e['e__id'], //TODO replace with x__creator for all discovery transactions
+                ));
+
+            } else {
+
+                $e_already_linked = count($this->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__up' => $focus_e['e__id'],
+                    'x__right' => $fetch_o[0]['i__id'],
+                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )));
+
+                //Add Reference:
+                $ur2 = $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__type' => 4983, //IDEA SOURCES
+                    'x__up' => $focus_e['e__id'],
+                    'x__right' => $fetch_o[0]['i__id'],
+                ));
+
+            }
 
         } else {
 
