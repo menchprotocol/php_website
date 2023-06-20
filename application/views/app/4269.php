@@ -21,15 +21,10 @@ if(superpower_unlocked()) {
 
     if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].view_memory(6404,30863))){
 
-        die('match');
-
         //Assign session & log transaction:
         $this->E_model->activate_session($es[0], false, true);
 
     } else {
-
-        die('delete');
-
 
         //Cookie was invalid
         cookie_delete();
