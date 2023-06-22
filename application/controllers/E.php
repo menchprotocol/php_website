@@ -1404,7 +1404,7 @@ class E extends CI_Controller
                 'x__down' => $_POST['x__creator'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
+            ), array('x__up'));
 
             if(count($already_added)){
 
@@ -1416,7 +1416,7 @@ class E extends CI_Controller
                     ));
                     return view_json(array(
                         'status' => 1,
-                        'message' => trim($_POST['modal_value']),
+                        'message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : $already_added[0]['e__cover'] ),
                     ));
 
                 } else {

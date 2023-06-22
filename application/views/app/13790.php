@@ -446,10 +446,6 @@ if(strlen($_GET['i__id'])){
                 var modal_value = '';
                 if(input_modal){
                     modal_value = prompt("Enter value:", $('.x__creator_' + $(this).attr('e__id') + '_' + $(this).attr('x__creator')).text());
-                    if (!modal_value.length) {
-                        alert('Missing value');
-                        return false;
-                    }
                 }
 
                 var modify_data = {
