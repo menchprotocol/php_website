@@ -63,14 +63,14 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     //Do we have Google Analytics?
     $google_analytics_code = website_setting(30033);
     if(strlen($google_analytics_code) > 0){
-        echo '<script async src="https://www.googletagmanager.com/gtag/js?id='.$google_analytics_code.'"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag(\'js\', new Date());
+        echo view_google_tag($google_analytics_code);
+    }
 
-  gtag(\'config\', \''.$google_analytics_code.'\');
-</script>';
+
+    //Do we have Google Tags?
+    $google_tag_code = website_setting(38216);
+    if(strlen($google_tag_code) > 0){
+        echo view_google_tag($google_analytics_code);
     }
 
 

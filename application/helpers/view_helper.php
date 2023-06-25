@@ -536,7 +536,16 @@ function view_body_e($x__type, $counter, $e__id){
 
 }
 
+function view_google_tag($google_analytics_code){
+    return '<script async src="https://www.googletagmanager.com/gtag/js?id='.$google_analytics_code.'"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag(\'js\', new Date());
 
+  gtag(\'config\', \''.$google_analytics_code.'\');
+</script>';
+}
 
 function view_body_i($x__type, $counter, $i__id){
 
