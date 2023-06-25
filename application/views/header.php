@@ -70,7 +70,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     //Do we have Google Tags?
     $google_tag_code = website_setting(38216);
     if(strlen($google_tag_code) > 0){
-        echo view_google_tag($google_analytics_code);
+        echo view_google_tag($google_tag_code);
     }
 
 
