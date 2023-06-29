@@ -32,9 +32,6 @@ $body_content = '';
 echo '<ul class="nav nav-tabs nav12274">';
 foreach($this->config->item('e___14874') as $x__type => $m) {
     $coins_count[$x__type] = view_e_covers($x__type, $e['e__id'], 0, false);
-    if($x__type==6255 && !$coins_count[$x__type]){
-        continue;
-    }
     $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'"></div>';
     echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'. view_number($coins_count[$x__type]) . '</span></a></li>';
 }
