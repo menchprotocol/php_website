@@ -1312,7 +1312,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = $top_i__id>0 || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $discovery_mode = false;
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
