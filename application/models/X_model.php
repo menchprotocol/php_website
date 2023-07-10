@@ -967,12 +967,12 @@ class X_model extends CI_Model
                 //Links not supported
                 $e_dropdown .= $es[0]['e__title'];
 
-            } elseif(!count($e_links) && !$on_its_own_line && $is_discovery_mode){
+            } elseif(!count($e_links) && $is_discovery_mode && !($on_its_own_line && $e_media_count)){
 
                 //Just reference the source:
                 $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
 
-            } elseif(count($e_links)==1 && $is_discovery_mode){
+            } elseif(0 && count($e_links)==1 && $is_discovery_mode){
 
                 //Just show one:
                 $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'">'.( in_array($es[0]['e__id'] , $this->config->item('n___34866')) ? '<u>'.$e_links[0]['x__message'].'</u>' : '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' ).'</a>';
@@ -980,7 +980,7 @@ class X_model extends CI_Model
             } elseif(count($e_links) > 0) {
 
                 //List all links:
-                $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span></button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">';
+                $e_dropdown .= '<div class="dropdown inline-block inline-dropdown"><button type="button" class="btn-transparent no-left-padding no-right-padding ignore-click" id="externalRef'.$es[0]['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.( $is_discovery_mode ? '<span class="icon-block-xs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' : '' ).'</button><div class="dropdown-menu" aria-labelledby="externalRef'.$es[0]['e__id'].'">'; //<span class="icon-block-xs" style="font-size:0.89em;"><i class="far fa-angle-down"></i></span>
 
                 //Link references:
                 foreach($e_links as $e_link){

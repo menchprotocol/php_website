@@ -1273,6 +1273,11 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing idea referrer',
             ));
+        } elseif (!isset($_POST['new_account_name'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing account name',
+            ));
         }
 
 
@@ -1344,12 +1349,19 @@ class E extends CI_Controller
 
         } else {
 
+            if(strlen($_POST['new_account_name'])<2){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Missing account name.',
+                ));
+            }
+
             //Add new account
             $_POST['account_email_phone'] =  trim(strtolower($_POST['account_email_phone']));
             $is_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
 
             //Prep inputs & validate further:
-            $member_result = $this->E_model->add_member(view_random_title(), ( $is_email ? $_POST['account_email_phone'] : $_POST['new_account_email'] ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
+            $member_result = $this->E_model->add_member($_POST['new_account_name'], ( $is_email ? $_POST['account_email_phone'] : $_POST['new_account_email'] ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
             if (!$member_result['status']) {
                 return view_json($member_result);
             }

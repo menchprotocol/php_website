@@ -273,6 +273,7 @@ if(superpower_unlocked()) {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),
+                new_account_name: $('#new_account_name').val(),
                 input_code: $('#input_code').val(),
                 referrer_url: referrer_url,
                 sign_i__id: sign_i__id,
@@ -377,20 +378,27 @@ if(superpower_unlocked()) {
                 <input type="hidden" id="account_id" value="0" />
                 <div id="account_preview"></div>
 
+
+
+
+
                 <!-- New Account (If not found) -->
                 <div class="margin-top-down new_account hidden">
 
                     <div class="main__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
+
+                    <!-- Full Name -->
+                    <div style="padding:21px 0 3px; display:block;">
+                        <div class="main__title"><span class="icon-block"><?= $e___4269[30198]['m__cover'] ?></span><?= $e___4269[30198]['m__title'] ?></div>
+                        <div class="form-group"><input type="text" placeholder="" id="new_account_name" class="form-control border main__title white-border" /></div>
+                    </div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
                         <div class="main__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
                         <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title white-border" /></div>
                     </div>
-
                     <div class="doclear">&nbsp;</div>
-
-
                 </div>
 
 
