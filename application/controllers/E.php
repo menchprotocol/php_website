@@ -1296,6 +1296,14 @@ class E extends CI_Controller
 
         } else {
 
+            if(strlen($_POST['new_account_name'])<2){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Missing account name.',
+                ));
+            }
+
+
             $_POST['new_account_email'] = trim($_POST['new_account_email']);
             if(!filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) && !filter_var($_POST['new_account_email'], FILTER_VALIDATE_EMAIL)){
                 return view_json(array(
@@ -1305,7 +1313,6 @@ class E extends CI_Controller
             }
 
         }
-
 
 
 
@@ -1348,13 +1355,6 @@ class E extends CI_Controller
             $this->E_model->activate_session($es[0]);
 
         } else {
-
-            if(strlen($_POST['new_account_name'])<2){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Missing account name.',
-                ));
-            }
 
             //Add new account
             $_POST['account_email_phone'] =  trim(strtolower($_POST['account_email_phone']));
