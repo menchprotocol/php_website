@@ -4205,7 +4205,7 @@ main {
 }
 
 .isSelected {
-    border:0px solid #FC1B44 !important;
+    border:1px solid #FC1B44 !important;
 }
 
 
