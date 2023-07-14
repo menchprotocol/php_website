@@ -3266,14 +3266,14 @@ h4.main__title{
 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:hover {
     background-color: #FFFFFF;
     color: #FC1B44;
-    /* border:1px solid #FC1B44; */
+    /* border:0px solid #FC1B44; */
 }
 .btn-6255 i,
 .btn-superpower.active i.zq6255 {
     color:#FC1B44 !important;
 }
 .btn.btn-6255 {
-    border:1px solid #FC1B44;
+    border:0px solid #FC1B44;
     color: #FC1B44;
 }
 .btn-6255{
@@ -3281,7 +3281,7 @@ h4.main__title{
     background-color: #FC1B44;
 }
 .coinType6255 {
-    border:1px solid #FC1B44;
+    border:0px solid #FC1B44;
 }
 
 
@@ -4205,7 +4205,7 @@ main {
 }
 
 .isSelected {
-    border:1px solid #FC1B44 !important;
+    border:0px solid #FC1B44 !important;
 }
 
 
