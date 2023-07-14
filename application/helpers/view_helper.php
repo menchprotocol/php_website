@@ -1545,7 +1545,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Coin Cover
     $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
+    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $has_discovered && $discovery_mode ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
     $ui .= ( !$can_click ? '</div>' : '</a>' );
     $ui .= '</div>';
 
