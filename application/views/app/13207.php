@@ -3,9 +3,8 @@
 $community_pills = '';
 $is_open = true;
 
-foreach($this->E_model->scissor_e(website_setting(0), 13207) as $e_item) {
+foreach(( isset($_GET['e__id']) && intval($_GET['e__id']) ? $this->E_model->fetch(array('e__id' => $_GET['e__id'])) : $this->E_model->scissor_e(website_setting(0), 13207) ) as $e_item) {
 
-    //Community Members?
     foreach($this->X_model->fetch(array(
         'x__up' => $e_item['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
