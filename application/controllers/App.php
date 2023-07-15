@@ -70,6 +70,8 @@ class App extends CI_Controller
 
 
         //Cache App?
+        $x__left = ( isset($_GET['i__id']) && intval($_GET['i__id']) ? $_GET['i__id'] : 0 );
+        $x__down = ( isset($_GET['e__id']) && intval($_GET['e__id']) ? $_GET['e__id'] : 0 );
         $title = null;
         $ui = null;
         $new_cache = false;
@@ -91,6 +93,8 @@ class App extends CI_Controller
                         'x__website' => website_setting(0),
                         'x__type' => 14599, //Cache App
                         'x__up' => $app_e__id,
+                        'x__left' => $x__left,
+                        'x__down' => $x__down,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
@@ -127,13 +131,14 @@ class App extends CI_Controller
             $ui .= $raw_app;
         }
 
-
         if($new_cache){
             $cache_x = $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__type' => 14599, //Cache App
                 'x__up' => $app_e__id,
                 'x__message' => $ui,
+                'x__left' => $x__left,
+                'x__down' => $x__down,
             ));
             $cache_x__id = $cache_x['x__id'];
         }
