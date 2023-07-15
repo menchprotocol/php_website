@@ -5,6 +5,8 @@ $is_open = true;
 
 foreach(( isset($_GET['e__id']) && intval($_GET['e__id']) ? $this->E_model->fetch(array('e__id' => $_GET['e__id'])) : $this->E_model->scissor_e(website_setting(0), 13207) ) as $e_item) {
 
+
+
     foreach($this->X_model->fetch(array(
         'x__up' => $e_item['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -36,6 +38,7 @@ foreach(( isset($_GET['e__id']) && intval($_GET['e__id']) ? $this->E_model->fetc
 if(strlen($community_pills)){
 
     //Community
+    echo '<h2>'.$e_item['e__title'].'</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 
