@@ -38,7 +38,7 @@ foreach(( isset($_GET['e__id']) && intval($_GET['e__id']) ? $this->E_model->fetc
 if(strlen($community_pills)){
 
     //Community
-    echo '<h1 class="center">'.$e_item['e__title'].'</h1>';
+    echo '<h2 class="center">'.$e_item['e__title'].'</h2>';
     echo '<ul class="nav nav-tabs nav12274"></ul>';
     echo $community_pills;
 
