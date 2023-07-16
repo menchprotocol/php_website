@@ -972,7 +972,7 @@ class X_model extends CI_Model
                 //Just reference the source:
                 $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" target="_blank" class="ignore-click"><span class="icon-block-xxs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
 
-            } elseif(0 && count($e_links)==1 && $is_discovery_mode){
+            } elseif(count($e_links)==1 && $is_discovery_mode){
 
                 //Just show one:
                 $e_dropdown .= '<a href="'.$e_links[0]['x__message'].'" target="_blank" class="ignore-click" title="'.$e_links[0]['e__title'].'">'.( in_array($es[0]['e__id'] , $this->config->item('n___34866')) ? '<u>'.$e_links[0]['x__message'].'</u>' : '<span class="icon-block-xxs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u>' ).'</a>';
