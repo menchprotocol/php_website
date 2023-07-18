@@ -1162,7 +1162,7 @@ function view_unauthorized_message($superpower_e__id = 0){
 
         $CI =& get_instance();
         $e___10957 = $CI->config->item('e___10957');
-        return 'You are missing the '.$e___10957[$superpower_e__id]['m__title'];
+        return 'Error: You are missing access to '.$e___10957[$superpower_e__id]['m__title'];
 
     } else {
 
