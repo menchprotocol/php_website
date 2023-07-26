@@ -4,7 +4,7 @@ $new_x = array();
 $is_good = false;
 
 //Called when the paypal payment is complete:
-if(isset($_POST['payment_status']) && ($_POST['payment_status']=='Refunded' || $_POST['payment_status']=='Completed')){
+if(isset($_POST['payment_status'])){
 
     //Log New Payment:
     $item_numbers = explode('-', $_POST['item_number']);
