@@ -727,14 +727,11 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //Determine Sort:
         $order_columns = array();
-        /*
         foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['x__weight'] = 'ASC';
-        $order_columns['i__title'] = 'ASC';
-        */
-        $order_columns['x__weight'] = 'ASC';
+        //$order_columns['i__title'] = 'ASC';
         $order_columns['x__id'] = 'DESC';
 
         $join_objects = array('x__right');
