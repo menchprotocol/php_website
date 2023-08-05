@@ -22,35 +22,24 @@ if(isset($_POST['payment_status'])){
 
     if ($top_i__id > 0 && $i__id > 0 && $x__creator > 0 && count($next_is)) {
 
-        if($pay_amount > 0 && $_POST['payment_status']=='Completed'){
+        $is_pending = ($_POST['payment_status']=='Pending');
+
+        if($pay_amount > 0){
 
             //Paid:
             $is_good = true;
 
             //Log Payment:
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
-                'x__type' => 26595,
+                'x__type' => ( $is_pending ? 35572 /* Pending Payment */ : 26595 ),
                 'x__weight' => intval($_POST['quantity']),
                 'x__creator' => $x__creator,
                 'x__metadata' => $_POST,
             ));
 
-        } elseif($pay_amount > 0 && $_POST['payment_status']=='Pending'){
+        } else {
 
-            //Pending Payment:
-            $is_good = true;
-
-            //Log Payment:
-            $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
-                'x__type' => 35572,
-                'x__weight' => intval($_POST['quantity']),
-                'x__creator' => $x__creator,
-                'x__metadata' => $_POST,
-            ));
-
-        } elseif($pay_amount < 0){
-
-            //Refunded:
+            //Refund Completed:
             $is_good = true;
 
             //Find original payment:
@@ -62,7 +51,7 @@ if(isset($_POST['payment_status'])){
 
             //Log Refund:
             $new_x = $this->X_model->mark_complete($top_i__id, $next_is[0], array(
-                'x__type' => 31967,
+                'x__type' => ( $is_pending ? 39597 /* Pending Refund */ : 31967 ) ,
                 'x__weight' => (-1 * ( isset($original_payment[0]['x__weight']) ? $original_payment[0]['x__weight'] : 1 )),
                 'x__creator' => $x__creator,
                 'x__metadata' => $_POST,
