@@ -96,7 +96,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
             //Count only if a payment idea:
             if(!in_array($i['i__type'], $this->config->item('n___30469'))){
-                continue;
+                $x__metadata['mc_gross'] = 0;
             }
 
             $total_sales += $this_quantity;
