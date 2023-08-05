@@ -52,21 +52,10 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
         echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
 
-        echo '<table class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
-        echo '<tr style="vertical-align: baseline;" class="main__title">';
-        echo '<th id="th_primary">&nbsp;</th>';
-        echo '<th style="text-align: right;" id="th_paid">Tickets<br />/Payout</th>';
-        echo '</tr>';
-
-
-        $total_tickets = 0;
-        $total_revenue = 0;
-        $total_quantity = 0;
-
         //$member_e
         foreach($this->E_model->fetch_recursive(12274, $member_e['e__id'], array(27004)) as $e){
 
-            //See if this Source has any paymen ideas:
+            //See if this Source has any payment ideas:
             $payment_is = array();
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -79,40 +68,11 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             if(count($payment_is)){
 
                 //Sum Payments?
-                $this_tickets = count($payment_is);
-                $this_revenue = 0;
-                $this_quantity = 0;
-                foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //SOURCE IDEAS
-                    'x__left IN (' . join(',', $payment_is) . ')' => null,
-                ), array(), 0) as $pay){
-                    $x__metadata = unserialize($pay['x__metadata']);
-                    $this_quantity += ( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? $x__metadata['quantity'] : 1 );
-                    $this_revenue += $x__metadata['mc_gross']-$x__metadata['mc_fee']-($x__metadata['mc_gross']*$commission_rate);
-                }
-
                 //See if this payment idea has any payments?
-                echo '<tr>';
-                echo '<td><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></td>';
-                echo '<td style="text-align: right;">'.number_format($this_quantity, 0).'x $'.number_format($this_revenue, 0).'</td>';
-                echo '</tr>';
-
-                $total_tickets += $this_tickets;
-                $total_revenue += $this_revenue;
-                $total_quantity += $this_quantity;
+                echo '<div><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></div>';
 
             }
         }
-
-        //Totals
-        echo '<tr class="main__title" style="font-size: 1.3em;">';
-        echo '<td>Totals</td>';
-        echo '<td style="text-align: right;">'.number_format($total_quantity, 0).'x $'.number_format($total_revenue, 0).'</td>';
-        echo '</tr>';
-
-
-        echo '</table>';
 
 
     } else {
