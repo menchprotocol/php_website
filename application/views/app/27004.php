@@ -15,56 +15,15 @@ $daily_sales = array();
 $origin_sales = array();
 $all_sources = array();
 
-if($superpower_28727 && 0) {
-
-    //Fetch all assigned ideas:
-    $assigned_i_ids = array();
-    echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
-    echo '<div class="list-group" style="max-width:600px; margin: 0 auto; display: block;">';
-    foreach($payment_es as $e){
-
-        echo '<a href="/-27004?e__id='.$e['e__id'].'" class="list-group-item list-group-item-action" style="border: 1px solid #999999;">'.$e['e__title'].' &nbsp;<i class="far fa-chevron-right"></i></a>';
-
-        foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
-            'x__up' => $e['e__id'],
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $i_assigned){
-            array_push($assigned_i_ids, $i_assigned['x__right']);
-        }
-    }
-    echo '</div>';
-
-    //Show all non-assigned payment ideas:
-    $i_query = $this->I_model->fetch(array(
-        'i__id NOT IN (' . join(',', $assigned_i_ids) . ')' => null,
-        'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Strict Payment Idea
-    ), 0, 0, array('i__title' => 'ASC'));
-
-}
 
 
 if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
 
-    if($member_e){
-
-        echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
-
-        //$member_e
-        foreach($this->E_model->fetch_recursive(12274, $member_e['e__id'], array(27004)) as $e){
-
-            //Sum Payments?
-            //See if this payment idea has any payments?
-            echo '<div><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></div>';
-        }
-
-
-    } else {
-        echo 'You must login to see your payments';
+    echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
+    foreach($this->E_model->fetch_recursive(12274, $member_e['e__id'], array(27004)) as $e){
+        echo '<div><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></div>';
     }
-
 
 } else {
 
