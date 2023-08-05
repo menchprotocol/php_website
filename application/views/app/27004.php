@@ -55,23 +55,9 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         //$member_e
         foreach($this->E_model->fetch_recursive(12274, $member_e['e__id'], array(27004)) as $e){
 
-            //See if this Source has any payment ideas:
-            $payment_is = array();
-            foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__up' => $e['e__id'],
-            ), array(), 0) as $pi){
-                array_push($payment_is, $pi['x__right']);
-            }
-
-            if(count($payment_is)){
-
-                //Sum Payments?
-                //See if this payment idea has any payments?
-                echo '<div><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></div>';
-
-            }
+            //Sum Payments?
+            //See if this payment idea has any payments?
+            echo '<div><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></div>';
         }
 
 
