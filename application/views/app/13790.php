@@ -312,7 +312,7 @@ if(strlen($_GET['i__id'])){
                         'x__down' => $e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__up IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
-                    ))) ? doubleval(preg_replace('/[^0-9.]+/', '', $e['x__message'])) : 1 );
+                    ))) ? 3 : 1 );
             }
         }
 
