@@ -302,10 +302,13 @@ if(strlen($_GET['i__id'])){
             $body_content .= '<td class="'.( superpower_active(28714, true) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__creator_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__creator="'.$x['e__id'].'" input_modal="'.( $input_modal ? 1 : 0 ).'" x__id="'.$x['x__id'].'">'.$message_clean.'</td>';
 
             if(strlen($message_clean)>0){
+
                 if(!isset($count_totals['e'][$e['e__id']])){
                     $count_totals['e'][$e['e__id']] = 0;
                 }
-                $count_totals['e'][$e['e__id']]++;
+
+                $detect_data_type = detect_data_type($e['x__message']);
+                $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( in_array($detect_data_type['x__type'], $this->config->item('n___39609')) ? doubleval($e['x__message']) : 1 );
             }
         }
 
