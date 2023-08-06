@@ -307,8 +307,12 @@ if(strlen($_GET['i__id'])){
                     $count_totals['e'][$e['e__id']] = 0;
                 }
 
-                $detect_data_type = detect_data_type($e['x__message']);
-                $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( in_array($detect_data_type['x__type'], $this->config->item('n___39609')) ? doubleval($e['x__message']) : 1 );
+                $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( count($this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__down' => $e['e__id'],
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__up IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
+                    ))) ? doubleval($e['x__message']) : 1 );
             }
         }
 
