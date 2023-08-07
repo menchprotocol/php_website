@@ -699,7 +699,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
                 }
             }
         }
-        if($meets_inc2_prereq < count($fetch_27984) && $x__creator > 0){
+        if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
             return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check,$x__creator, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
@@ -732,7 +732,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
             }
         }
 
-        if(!$excludes_all && $x__creator > 0){
+        if(!$excludes_all){
             return access_blocked($log_tnx, "You cannot play this note because you belong to [".$e_pre['e__title']."]",$x__creator, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
