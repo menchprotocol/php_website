@@ -22,7 +22,7 @@ $is_next = $this->X_model->fetch(array(
 //Filter Next Ideas:
 foreach($is_next as $in_key => $in_value){
     $i_is_available = i_is_available($in_value['i__id'], false);
-    if(!$i_is_available['status'] || 1){
+    if(!$i_is_available['status']){
         //Remove this option:
         unset($is_next[$in_key]);
     }
