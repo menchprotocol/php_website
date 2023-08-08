@@ -24,7 +24,22 @@ if(strlen($_GET['i__id'])){
     $is_with_action_es = array();
     $es_added = array();
 
-    if(!$has_grid){
+    if($has_grid){
+
+        foreach($this->I_model->fetch(array(
+            'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
+        ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
+            echo '<h2><a href="/~' . $loaded_i['i__id'] . '">' . $loaded_i['i__title'] . '</a></h2>';
+        }
+
+        foreach($this->E_model->fetch(array(
+            'e__id' => intval($_GET['custom_grid']),
+        )) as $grid){
+            echo '<h4><a href="/@' . $grid['e__id'] . '">' . $grid['e__title'] . '</a></h4>';
+        }
+
+    } else {
+
         foreach($this->I_model->fetch(array(
             'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
         ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
