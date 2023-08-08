@@ -368,7 +368,10 @@ img.no-frame {
     padding: 34px 0;
     text-align: center;
 }
-
+.limit_height{
+    max-height: 20px;
+    overflow-y: auto;
+}
 .algolia_pad_search{
     text-align: center;
     margin: 0px 5px 21px;
