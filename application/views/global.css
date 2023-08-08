@@ -369,7 +369,7 @@ img.no-frame {
     text-align: center;
 }
 .limit_height{
-    max-height: 20px;
+    max-height: 29px;
     overflow-y: auto;
 }
 .algolia_pad_search{
