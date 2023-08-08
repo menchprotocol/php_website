@@ -29,7 +29,7 @@ if(strlen($_GET['i__id'])){
         foreach($this->I_model->fetch(array(
             'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
         ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
-            echo '<h2><a href="/~' . $loaded_i['i__id'] . '">' . $loaded_i['i__title'] . '</a></h2>';
+            echo '<h2><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
         }
 
         foreach($this->E_model->fetch(array(
@@ -96,7 +96,7 @@ if(strlen($_GET['i__id'])){
     }
 
 
-    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
+    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-cog"></i> Toggle Settings</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a></div>';
 
     echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
     echo '<table class="table table-sm maxout filter_table"><tr>';
