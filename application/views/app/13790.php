@@ -35,7 +35,7 @@ if(strlen($_GET['i__id'])){
         foreach($this->E_model->fetch(array(
             'e__id' => intval($_GET['custom_grid']),
         )) as $grid){
-            echo '<h4><a href="/@' . $grid['e__id'] . '">' . $grid['e__title'] . '</a></h4>';
+            echo '<h3><a href="/@' . $grid['e__id'] . '"><span class="icon-block-lg">'.view_cover($grid['e__cover'], true). '</span>' . $grid['e__title'] . '</a></h3>';
         }
 
     } else {
