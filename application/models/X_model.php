@@ -1691,38 +1691,62 @@ class X_model extends CI_Model
         }
         $did_skip = ( $can_skip && !count($answer_i__ids) );
 
-        //How about the min selection?
-        if(!$can_skip){
-            foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $focus_i__id,
-                'x__up' => 26613, //Min Selection
-            ), array(), 1) as $limit){
-                if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
-                    return array(
-                        'status' => 0,
-                        'message' => 'You must select at-least '.$limit['x__message'].' items.',
-                    );
+
+
+        //Can they avoid min/max selection limits?
+        $avoid_selection_limits = false; //Only if an answer is linked to @39658
+        if(count($answer_i__ids)){
+            foreach($answer_i__ids as $answer_i__id){
+                if(count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__right' => $answer_i__ids,
+                    'x__up' => 39658, //Avoid Selection Limits
+                ), array(), 1))){
+                    $avoid_selection_limits = true;
+                    break;
                 }
             }
         }
 
+        if(!$avoid_selection_limits){
 
-        //How about  max selection?
-        foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__right' => $focus_i__id,
-            'x__up' => 26614, //Max Selection
-        ), array(), 1) as $limit){
-            if(intval($limit['x__message']) > 0 && count($answer_i__ids) > intval($limit['x__message'])){
-                return array(
-                    'status' => 0,
-                    'message' => 'You cannot select more than '.$limit['x__message'].' items.',
-                );
+            //You can't avoid it! Let's check...
+
+            //How about the min selection?
+            if(!$can_skip){
+                foreach($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__right' => $focus_i__id,
+                    'x__up' => 26613, //Min Selection
+                ), array(), 1) as $limit){
+                    if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
+                        return array(
+                            'status' => 0,
+                            'message' => 'You must select at-least '.$limit['x__message'].' items.',
+                        );
+                    }
+                }
             }
+
+            //How about  max selection?
+            foreach($this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $focus_i__id,
+                'x__up' => 26614, //Max Selection
+            ), array(), 1) as $limit){
+                if(intval($limit['x__message']) > 0 && count($answer_i__ids) > intval($limit['x__message'])){
+                    return array(
+                        'status' => 0,
+                        'message' => 'You cannot select more than '.$limit['x__message'].' items.',
+                    );
+                }
+            }
+
         }
+
 
 
         //Define completion transactions for each answer:
@@ -1738,14 +1762,10 @@ class X_model extends CI_Model
             'x__creator' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )) as $x_progress){
-
             $this->X_model->update($x_progress['x__id'], array(
                 'x__access' => 6173, //Transaction Deleted
             ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
-
             //TODO Also remove the discovery of the selected if not a payment type:
-
-
         }
 
         //Add New Answers
