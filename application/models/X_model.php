@@ -1694,7 +1694,7 @@ class X_model extends CI_Model
 
 
         //Can they avoid min/max selection limits? Only if an answer is linked to @39658
-        $avoid_selection_limits = count($this->X_model->fetch(array(
+        $avoid_selection_limits = count($answer_i__ids) && count($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right IN (' . join(',', $answer_i__ids) . ')' => null,
