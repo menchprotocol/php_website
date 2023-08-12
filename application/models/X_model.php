@@ -1693,21 +1693,13 @@ class X_model extends CI_Model
 
 
 
-        //Can they avoid min/max selection limits?
-        $avoid_selection_limits = false; //Only if an answer is linked to @39658
-        if(count($answer_i__ids)){
-            foreach($answer_i__ids as $answer_i__id){
-                if(count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $answer_i__ids,
-                    'x__up' => 39658, //Avoid Selection Limits
-                ), array(), 1))){
-                    $avoid_selection_limits = true;
-                    break;
-                }
-            }
-        }
+        //Can they avoid min/max selection limits? Only if an answer is linked to @39658
+        $avoid_selection_limits = count($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__right IN (' . join(',', $answer_i__ids) . ')' => null,
+            'x__up' => 39658, //Avoid Selection Limits
+        ), array(), 1));
 
         if(!$avoid_selection_limits){
 
