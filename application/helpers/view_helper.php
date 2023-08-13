@@ -1299,11 +1299,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     }
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $locked_privacy = in_array($i['i__access'], $CI->config->item('n___32145')); //Locked Dropdown
+    $access_locked = in_array($i['i__access'], $CI->config->item('n___32145')); //Locked Dropdown
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
 
     $member_e = superpower_unlocked();
-    $e_of_i = ( $cache_app || $locked_privacy ? false : e_of_i($i['i__id']) );
+    $e_of_i = ( $cache_app || $access_locked ? false : e_of_i($i['i__id']) );
     $user_input = $focus_e;
     $superpower_10939 = superpower_active(10939, true);
 
@@ -1396,7 +1396,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31004 && ($e_of_i || $locked_privacy) && !$discovery_mode){
+            } elseif($x__type_top_bar==31004 && ($e_of_i || $access_locked) && !$discovery_mode){
 
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__access'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
@@ -1418,7 +1418,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_handle">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==14980 && !$cache_app && !$locked_privacy){
+            } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
 
                 $action_buttons = null;
 
@@ -1791,8 +1791,10 @@ function view_card_e($x__type, $e, $extra_class = null)
         return 'Missing core variables';
     }
 
-    $locked_privacy = in_array($e['e__access'], $CI->config->item('n___32145')); //Locked Dropdown
-    $e_of_e = ( $locked_privacy ? false :  e_of_e($e['e__id']) );
+    $access_locked = in_array($e['e__access'], $CI->config->item('n___32145')); //Locked Dropdown
+    $access_public = in_array($e['e__access'], $CI->config->item('n___33240'));
+
+    $e_of_e = ( $access_locked ? false :  e_of_e($e['e__id']) );
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
@@ -1866,7 +1868,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==6177 && ($e_of_e || $locked_privacy || $always_see || in_array($e['e__access'], $CI->config->item('n___32172')))){
+            } elseif($x__type_top_bar==6177 && ($e_of_e || $access_locked || $always_see || in_array($e['e__access'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
                 $active_bars++;
@@ -1890,7 +1892,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_handle">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==14980 && !$cache_app && !$locked_privacy){
+            } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
 
                 $action_buttons = null;
 
@@ -2005,7 +2007,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_privacy_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
     $ui .= '</div>';
@@ -2022,7 +2024,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         //Static:
         $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
-    $grant_access = $is__featured || $e_of_e || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
+    $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
 

@@ -227,7 +227,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         if($("#x__type").val()==4250){
             $(".filter-in-status").removeClass('hidden');
         } else if($("#x__type").val()==4251){
-            $(".e_privacy_filter").removeClass('hidden');
+            $(".e_access_filter").removeClass('hidden');
         }
     }
 
@@ -425,7 +425,7 @@ echo '</div>';
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
-echo '<div class="filter-statuses e_privacy_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__access" value="' . ((isset($_GET['e__access'])) ? $_GET['e__access'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses e_access_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__access" value="' . ((isset($_GET['e__access'])) ? $_GET['e__access'] : '') . '" class="form-control border"></div>';
 
 echo '</td>';
 

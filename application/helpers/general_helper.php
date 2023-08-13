@@ -1876,10 +1876,10 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
     if($s__type==12273){
         $focus_field_id = 'i__id';
-        $focus_field_privacy = 'i__access';
+        $focus_field_access = 'i__access';
     } elseif($s__type==12274 || $s__type==6287){
         $focus_field_id = 'e__id';
-        $focus_field_privacy = 'e__access';
+        $focus_field_access = 'e__access';
     }
 
 
@@ -2200,7 +2200,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
 
         //What's the status? Is it active or should it be deleted?
-        if (in_array($all_db_rows[0][$focus_field_privacy], array(6178 /* Source Deleted */, 6182 /* Idea Deleted */))) {
+        if (in_array($all_db_rows[0][$focus_field_access], array(6178 /* Source Deleted */, 6182 /* Idea Deleted */))) {
 
             if (isset($all_export_rows[0]['objectID'])) {
 

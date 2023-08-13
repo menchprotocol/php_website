@@ -2494,7 +2494,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
             if(element_id==6177){
                 //Update source status:
-                $('.card___12274_'+o__id+' .cover-link').removeClass('card_privacy_'+selected_e__id).addClass('card_privacy_'+new_e__id);
+                $('.card___12274_'+o__id+' .cover-link').removeClass('card_access_'+selected_e__id).addClass('card_access_'+new_e__id);
             }
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
