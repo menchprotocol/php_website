@@ -1716,7 +1716,7 @@ class X_model extends CI_Model
                     if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
                         return array(
                             'status' => 0,
-                            'message' => 'You must select at-least '.$limit['x__message'].' items.',
+                            'message' => 'You must select '.$limit['x__message'].' items or more.',
                         );
                     }
                 }
