@@ -159,6 +159,9 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
 
     if($info_item){
         $messages .= '<h2 class="info-head">'.$e_item['e__title'].'</h2>';
+        if(strlen($e_item['x__messages'])){
+            $messages .= '<div class="row justify-content" style="margin-bottom: 89px;">'.$e_item['x__messages'].'</div>';
+        }
         $messages .= '<div class="row justify-content" style="margin-bottom: 89px;">'.$info_item.'</div>';
     }
 
