@@ -404,7 +404,7 @@ if(superpower_unlocked()) {
 
                 <!-- Sign in Code -->
                 <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
-                <div class="pinBox"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntryOFF" /></div>
+                <div class="pinBoxOFF"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntryOFF" /></div>
                 <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
