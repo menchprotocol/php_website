@@ -3888,10 +3888,12 @@ h4.main__title{
 
 .filter_table {
     border:1px solid #000;
+    border-radius: 21px;
 }
 .filter_table input {
     border-radius: 21px;
     color: #000;
+    border:1px solid #000;
 }
 .filter_table td {
     padding: 13px 8px;
