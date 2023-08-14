@@ -3888,11 +3888,13 @@ h4.main__title{
 
 .filter_table {
     background-color: #FFF;
+    border-radius: 21px !important;
     color: #000;
 }
 .filter_table input {
     background-color: #FFF;
-    border-radius: 21px;
+    border-radius: 21px !important;
+    border:1px solid #000 !important;
     color: #000;
 }
 .filter_table td {
