@@ -17,7 +17,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         $x__metadata = unserialize($send_message['x__metadata']);
 
         //Determine Recipients:
-        $message_list = message_list($x__metadata['i__id'], $x__metadata['e__id'], $x__metadata['exclude_e'], $x__metadata['include_e']);
+        $message_list = message_list($x__metadata['i__id'], $x__metadata['e__id'], $x__metadata['exclude_e'], $x__metadata['include_e'], $x__metadata['exclude_i'], $x__metadata['include_i']);
 
         //Loop through all contacts and send messages:
         $stats = array(
@@ -58,7 +58,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
     //Show UI to schedule new messages:
 
-    foreach(array('i__id','e__id','exclude_e','include_e') as $input){
+    foreach(array('i__id','e__id','exclude_e','include_e','exclude_i','include_i') as $input){
         if(!isset($_GET[$input])){
             $_GET[$input] = '';
         }
@@ -82,14 +82,14 @@ if(!$is_u_request || isset($_GET['cron'])){
         }
     }
 
-    $message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e']);
+    $message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e'], $_GET['exclude_i'], $_GET['include_i']);
     $e___6287 = $this->config->item('e___6287'); //APP
     $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
     $twilio_setup = website_setting(30859) && website_setting(30860) && website_setting(27673);
 
 
-    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a> | '.( $twilio_setup ? '<span><i class="fas fa-check-circle"></i> Twilio Activated</span>' : '<span style="color:#FF0000;"><i class="fas fa-times-circle"></i> Twilio SMS is Pending Setup</span>' ).'</div>';
+    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'&include_i='.$_GET['include_i'].'&exclude_i='.$_GET['exclude_i'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a> | '.( $twilio_setup ? '<span><i class="fas fa-check-circle"></i> Twilio Activated</span>' : '<span style="color:#FF0000;"><i class="fas fa-times-circle"></i> Twilio SMS is Pending Setup</span>' ).'</div>';
 
     echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
     echo '<table class="table table-sm maxout filter_table"><tr>';
@@ -105,14 +105,20 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '</tr><tr>';
 
     echo '<td><div>';
-    echo '<span class="mini-header">Includes Following Source:</span>';
+    echo '<span class="mini-header">Includes Source(s):</span>';
     echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
     echo '</div></td>';
 
+    echo '<td><span class="mini-header">Excludes Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+
+    echo '</tr><tr>';
+
     echo '<td><div>';
+    echo '<span class="mini-header">Discovered Idea(s):</span>';
+    echo '<input type="text" name="include_i" placeholder="id1,id2" value="' . $_GET['include_i'] . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">Excludes Following Source:</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Undiscovered Idea(s):</span><input type="text" name="exclude_i" placeholder="id1,id2" value="' . $_GET['exclude_i'] . '" class="form-control border"></td>';
 
     echo '</tr><tr>';
 
@@ -245,6 +251,8 @@ if(!$is_u_request || isset($_GET['cron'])){
                 e__id: '<?= $_GET['e__id'] ?>',
                 exclude_e: '<?= $_GET['exclude_e'] ?>',
                 include_e: '<?= $_GET['include_e'] ?>',
+                exclude_i: '<?= $_GET['exclude_i'] ?>',
+                include_i: '<?= $_GET['include_i'] ?>',
                 message_subject: $('#message_subject').val(),
                 message_text: $('#message_text').val(),
                 message_time: $('#message_time').val(),

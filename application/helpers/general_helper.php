@@ -1603,7 +1603,7 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
 
 
 
-function message_list($i__id, $e__id, $exclude_e, $include_e){
+function message_list($i__id, $e__id, $exclude_e, $include_e, $exclude_i, $include_i){
 
     $CI =& get_instance();
     $message_list = array(
@@ -1652,7 +1652,6 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             continue;
         }
 
-        //Any exclusions?
         if(strlen($exclude_e) && count($CI->X_model->fetch(array(
                 'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1671,7 +1670,23 @@ function message_list($i__id, $e__id, $exclude_e, $include_e){
             continue;
         }
 
+        if(strlen($exclude_i) && count($CI->X_model->fetch(array(
+                'x__creator' => $subscriber['e__id'],
+                'x__left IN (' . $exclude_i . ')' => null,
+                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))){
+            continue;
+        }
 
+        if(strlen($include_i) && !count($CI->X_model->fetch(array(
+                'x__creator' => $subscriber['e__id'],
+                'x__left IN (' . $include_i . ')' => null,
+                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))){
+            continue;
+        }
 
 
         //Fetch email & phone:
