@@ -3887,7 +3887,7 @@ h4.main__title{
 }
 
 .filter_table {
-    background-color: #000;
+    border:1px solid #000;
     color: #FFF;
 }
 .filter_table input {
