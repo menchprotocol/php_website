@@ -113,31 +113,6 @@ table td { border: none !important; }
 
 .texttype__lg { font-size:3.3em; }
 
-.pinBox {
-    --width: 296px;
-    --height: 74px;
-    --spacing: 47px;
-
-    display: inline-block;
-    position: relative;
-    width: var(--width);
-    height: var(--height);
-    background-image: url(https://i.stack.imgur.com/JbkZl.png);
-}
-
-.pinEntry {
-    position: absolute;
-    padding-left: 21px;
-    font-family: courier, monospaced;
-    font-size: var(--spacing);
-    height: var(--height);
-    letter-spacing: var(--spacing);
-    background-color: transparent;
-    border: 0;
-    outline: none;
-    clip: rect(0px, calc(var(--width) - 21px), var(--height), 0px);
-}
-
 h1 {
     padding:21px 8px !important;
     margin:0;

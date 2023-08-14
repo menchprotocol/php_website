@@ -120,16 +120,6 @@ if(superpower_unlocked()) {
             }
         });
 
-        //COde Input
-        const ELS_pinEntry = document.querySelectorAll(".pinEntry");
-        const selectAllIfFull = (evt) => {
-            const EL_input = evt.currentTarget;
-            if (EL_input.value.length >= 4) EL_input.select();
-        };
-        ELS_pinEntry.forEach(el => {
-            el.addEventListener("focusin", selectAllIfFull);
-        });
-
 
         var go_next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
         var sign_i__id = <?= $sign_i__id ?>;
@@ -139,16 +129,6 @@ if(superpower_unlocked()) {
         var step_count = 0;
 
         $(document).ready(function () {
-
-
-            const ELS_pinEntry = document.querySelectorAll(".pinEntry");
-            const selectAllIfFull = (evt) => {
-                const EL_input = evt.currentTarget;
-                if (EL_input.value.length >= 4) EL_input.select();
-            };
-            ELS_pinEntry.forEach(el => {
-                el.addEventListener("focusin", selectAllIfFull);
-            });
 
             //Watch for email address change:
             $('#account_email_phone').on('input',function(e){
@@ -404,7 +384,7 @@ if(superpower_unlocked()) {
 
                 <!-- Sign in Code -->
                 <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
-                <div class="pinBoxOFF"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="pinEntryOFF form-control border white-border white-border" /></div>
+                <div><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border white-border white-border" /></div>
                 <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
