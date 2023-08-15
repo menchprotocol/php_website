@@ -352,7 +352,7 @@ if(strlen($_GET['i__id'])){
     $table_sortable = array('#th_primary','#th_done');
     $e___6287 = $this->config->item('e___6287'); //APP
     $e___6177 = $this->config->item('e___6177'); //Source Status
-    $e___4737 = $CI->config->item('e___4737'); //Idea Status
+    $e___4737 = $this->config->item('e___4737'); //Idea Status
 
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
@@ -375,7 +375,7 @@ if(strlen($_GET['i__id'])){
 
         array_push($table_sortable, '#th_i_'.$i['i__id']);
 
-        echo '<th id="th_i_'.$i['i__id'].'"><div><span class="icon-block-xxs">'.$e___4737[$i['i__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i['i__type']]['m__cover'].'</a><span class="vertical_col"><a class="filter_box hidden" href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&custom_grid='.$_GET['custom_grid'].'&include_i='.$i['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i['x__message']) ? $i['x__message'] : $i['i__title'] ).'</span></th>';
+        echo '<th id="th_i_'.$i['i__id'].'"><div><span class="icon-block-xxs">'.$e___4737[$i['i__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i['i__type']]['m__cover'].'</a><span class="vertical_col"><a class="filter_box hidden" href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&custom_grid='.$_GET['custom_grid'].'&include_i='.$i['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a class="filter_box hidden" href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i['x__message']) ? $i['x__message'] : $i['i__title'] ).'</span></th>';
 
     }
     //echo '<th>STARTED</th>';
