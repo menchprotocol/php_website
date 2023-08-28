@@ -44,10 +44,10 @@ if(strlen($_GET['i__id'])){
 
         echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
-        echo '<tr class="panel-title down-border print-only" style="font-weight:bold !important;">';
-        echo '<td style="text-align: left; width: 65%">Member</td>';
-        echo '<td style="text-align: left;">Start Time</td>';
-        echo '<td style="text-align: left;">End Time</td>';
+        echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+        echo '<td style="text-align: left; width: 65%;">Member</td>';
+        echo '<td>Start Time</td>';
+        echo '<td>End Time</td>';
         echo '</tr>';
 
         foreach($discoveries as $x){
@@ -60,9 +60,9 @@ if(strlen($_GET['i__id'])){
             ));
 
             echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-            echo '<td style="text-align: left; width: 65%;">'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</td>';
-            echo '<td style="text-align: left;">&nbsp;</td>';
-            echo '<td style="text-align: left;">&nbsp;</td>';
+            echo '<td>'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</td>';
+            echo '<td>&nbsp;</td>';
+            echo '<td>&nbsp;</td>';
             echo '</tr>';
 
         }
