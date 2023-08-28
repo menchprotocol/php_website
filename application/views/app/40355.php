@@ -6,6 +6,9 @@ foreach(array('i__id','custom_grid') as $input){
     }
 }
 
+$e___6287 = $this->config->item('e___6287'); //APP
+
+
 //Fetch Main Idea:
 if(strlen($_GET['i__id'])){
 
@@ -46,7 +49,7 @@ if(strlen($_GET['i__id'])){
 
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
         echo '<td style="text-align: left; width: 65%;">&nbsp;</td>';
-        echo '<td>Sign<br /><span style="font-size: 0.8em;">When completed your shift</span></td>';
+        echo '<td>'.$e___6287[40355]['m__title'].'</td>';
         echo '</tr>';
 
         foreach($discoveries as $x){
