@@ -17,7 +17,7 @@ if(strlen($_GET['i__id'])){
     foreach($this->I_model->fetch(array(
         'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
     ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
-        echo '<h2><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
+        echo '<h2 class="no-print"><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
     }
 
 

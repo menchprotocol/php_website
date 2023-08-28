@@ -3839,6 +3839,13 @@ h4.main__title{
     margin: 2px 8px;
 }
 
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
 
 
 .large-frame{

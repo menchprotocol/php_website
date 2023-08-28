@@ -352,7 +352,7 @@ if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
-    <div class="container fixed-top top-header-position slim_flat" style="padding-bottom: 0 !important; min-height: 38px;">
+    <div class="container fixed-top top-header-position slim_flat no-print" style="padding-bottom: 0 !important; min-height: 38px;">
         <div class="row justify-content">
             <table class="platform-navigation">
                 <tr>
