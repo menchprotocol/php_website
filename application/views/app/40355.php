@@ -38,6 +38,7 @@ if(strlen($_GET['i__id'])){
             continue;
         }
 
+        echo '<div class="frame">';
         echo '<h3 style="margin-top: 55px;">'.$link_i['i__title'].'</h3>';
 
         foreach($discoveries as $x){
@@ -53,6 +54,9 @@ if(strlen($_GET['i__id'])){
 
         }
 
+        echo '</div>';
+
+
     }
 
 } else {
@@ -60,3 +64,13 @@ if(strlen($_GET['i__id'])){
     echo 'Missing Idea ID';
 
 }
+
+?>
+
+<style>
+    @media print {
+        .frame {
+            break-inside: avoid;
+        }
+    }
+</style>
