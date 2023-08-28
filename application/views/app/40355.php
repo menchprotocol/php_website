@@ -41,6 +41,15 @@ if(strlen($_GET['i__id'])){
         echo '<div class="frame">';
         echo '<h3 style="margin-top: 55px;">'.$link_i['i__title'].'</h3>';
 
+
+        echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
+
+        echo '<tr class="panel-title down-border print-only" style="font-weight:bold !important;">';
+        echo '<td style="text-align: left; width: 65%">Member</td>';
+        echo '<td style="text-align: left;">Start Time</td>';
+        echo '<td style="text-align: left;">End Time</td>';
+        echo '</tr>';
+
         foreach($discoveries as $x){
 
             $u_names = $this->X_model->fetch(array(
@@ -50,10 +59,15 @@ if(strlen($_GET['i__id'])){
                 'x__up' => 30198, //Full Name
             ));
 
-            echo '<p style="padding-left: 21px;">'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</p>';
+            echo '<tr class="panel-title down-border print-only" style="font-weight:bold !important;">';
+            echo '<td style="text-align: left; width: 65%;">'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</td>';
+            echo '<td style="text-align: left;"></td>';
+            echo '<td style="text-align: left;"></td>';
+            echo '</tr>';
 
         }
 
+        echo '</table>';
         echo '</div>';
 
 

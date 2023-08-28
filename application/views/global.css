@@ -3839,11 +3839,21 @@ h4.main__title{
     margin: 2px 8px;
 }
 
+.print-only
+{
+    display: none !important;
+}
+
 @media print
 {
     .no-print, .no-print *
     {
         display: none !important;
+    }
+
+    .print-only
+    {
+        display: block !important;
     }
 }
 
