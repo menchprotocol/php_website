@@ -59,7 +59,7 @@ if(strlen($_GET['i__id'])){
                 'x__up' => 30198, //Full Name
             ));
 
-            echo '<tr class="panel-title down-border print-only" style="font-weight:bold !important;">';
+            echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
             echo '<td style="text-align: left; width: 65%;">'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</td>';
             echo '<td style="text-align: left;"></td>';
             echo '<td style="text-align: left;"></td>';
