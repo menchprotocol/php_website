@@ -45,9 +45,9 @@ if(strlen($_GET['i__id'])){
         echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-        echo '<td style="text-align: left; width: 65%;">Member</td>';
-        echo '<td>Start Time</td>';
-        echo '<td>End Time</td>';
+        echo '<td style="text-align: left; width: 65%;">&nbsp;</td>';
+        echo '<td><div>Start Time</div></td>';
+        echo '<td><div>End Time</div></td>';
         echo '</tr>';
 
         foreach($discoveries as $x){
