@@ -86,6 +86,5 @@ if(strlen($_GET['i__id'])){
     td>div { padding: 21px !important; font-size:1.3em; }
     .frame {
         page-break-inside: avoid;
-        page-break-after:always;
     }
 </style>
