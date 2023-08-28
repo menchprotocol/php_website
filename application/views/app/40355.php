@@ -20,12 +20,6 @@ if(strlen($_GET['i__id'])){
         echo '<h2><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
     }
 
-    foreach($this->E_model->fetch(array(
-        'e__id' => intval($_GET['custom_grid']),
-    )) as $grid){
-        echo '<h3><a href="/@' . $grid['e__id'] . '"><span class="icon-block">'.view_cover($grid['e__cover'], true). '</span><u>' . $grid['e__title'] . '</u></a></h3>';
-    }
-
 
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
