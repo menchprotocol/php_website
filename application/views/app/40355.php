@@ -60,7 +60,7 @@ if(strlen($_GET['i__id'])){
             ));
 
             echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-            echo '<td>'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</td>';
+            echo '<td><div>'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</div></td>';
             echo '<td>&nbsp;</td>';
             echo '<td>&nbsp;</td>';
             echo '</tr>';
@@ -83,5 +83,5 @@ if(strlen($_GET['i__id'])){
 
 <style>
     .frame {page-break-after:always;}
-    td { padding: 21px; font-size:1.3em; }
+    td>div { padding: 21px !important; font-size:1.3em; }
 </style>
