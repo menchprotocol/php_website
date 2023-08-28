@@ -46,8 +46,7 @@ if(strlen($_GET['i__id'])){
 
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
         echo '<td style="text-align: left; width: 65%;">&nbsp;</td>';
-        echo '<td>Start Time</td>';
-        echo '<td>End Time</td>';
+        echo '<td>Sign<br /><span style="font-size: 0.8em;">When completed your shift</span></td>';
         echo '</tr>';
 
         foreach($discoveries as $x){
@@ -61,7 +60,6 @@ if(strlen($_GET['i__id'])){
 
             echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
             echo '<td><div>'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</div></td>';
-            echo '<td>&nbsp;</td>';
             echo '<td>&nbsp;</td>';
             echo '</tr>';
 
