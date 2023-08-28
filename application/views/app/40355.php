@@ -34,7 +34,7 @@ if(strlen($_GET['i__id'])){
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $link_i['i__id'],
-        ), array('x__source'), 0) as $x){
+        ), array('x__creator'), 0) as $x){
 
             $u_names = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
