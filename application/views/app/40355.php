@@ -28,13 +28,19 @@ if(strlen($_GET['i__id'])){
         'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
     ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
 
-        echo '<h3>'.$link_i['i__title'].'</h3>';
-
-        foreach($this->X_model->fetch(array(
+        $discoveries = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__left' => $link_i['i__id'],
-        ), array('x__creator'), 0) as $x){
+        ), array('x__creator'), 0);
+
+        if(!count($discoveries)){
+            continue;
+        }
+
+        echo '<h3 style="margin-top: 55px;">'.$link_i['i__title'].'</h3>';
+
+        foreach($discoveries as $x){
 
             $u_names = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
