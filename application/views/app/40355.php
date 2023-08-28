@@ -68,9 +68,5 @@ if(strlen($_GET['i__id'])){
 ?>
 
 <style>
-    @media print {
-        .frame {
-            break-inside: avoid;
-        }
-    }
+    .frame {page-break-after:always;}
 </style>
