@@ -140,7 +140,7 @@ echo '</form>';
     function mass_delete(){
         console.log("delete:");
         $( ".result_row" ).each(function() {
-            console.log($( this ).getAttribute( "idea_id" ));
+            console.log($( this ).attr( "idea_id" ));
         });
     }
 
