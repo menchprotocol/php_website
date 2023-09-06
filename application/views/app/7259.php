@@ -68,7 +68,7 @@ if($search_for_set){
                 ), true, $member_e['e__id']);
             }
 
-            echo '<tr class="panel-title down-border">';
+            echo '<tr class="panel-title down-border result_row" id="row_'.$in['i__id'].'" idea_id="'.$in['i__id'].'">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
             echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/~'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
 
@@ -114,6 +114,11 @@ if($search_for_set && count($matching_results) > 0 && !$completed_replacements){
     //now give option to replace with:
     echo '<div class="mini-header">Append Text:</div>';
     echo '<input type="text" class="form-control border maxout" name="append_text" value="'.@$_GET['append_text'].'"><br />';
+
+    //Mass Delete:
+    if($member_e['e__id']==1){
+        echo '<a href="javascript:void(0)" onclick="mass_delete()" class="btn btn-far"><i class="fas fa-trash-alt"></i></a>';
+    }
 }
 
 if($replace_with_set && !$completed_replacements){
@@ -129,3 +134,14 @@ if($replace_with_set && !$completed_replacements){
 
 echo '<input type="submit" class="btn btn-12273" value="Go">';
 echo '</form>';
+?>
+
+<script>
+    function mass_delete(){
+        console.log("delete:");
+        $( ".result_row" ).each(function() {
+            console.log($( this ).getAttribute( "idea_id" ));
+        });
+    }
+    //update_dropdown(31004, 6182, 15735, 0, 0)
+</script>
