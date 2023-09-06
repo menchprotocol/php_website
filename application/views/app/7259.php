@@ -139,9 +139,15 @@ echo '</form>';
 <script>
     function mass_delete(){
         console.log("delete:");
+        var counter = 0;
         $( ".result_row" ).each(function() {
-            console.log($( this ).attr( "idea_id" ));
+            setTimeout(function(){
+                counter++;
+                console.log($( this ).attr( "idea_id" ));
+                $( this ).hide();
+            }, 50);
         });
+        console.log(counter + " deleted");
     }
 
     //update_dropdown(31004, 6182, 15735, 0, 0)
