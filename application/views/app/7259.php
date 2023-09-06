@@ -143,5 +143,6 @@ echo '</form>';
             console.log($( this ).getAttribute( "idea_id" ));
         });
     }
+
     //update_dropdown(31004, 6182, 15735, 0, 0)
 </script>
