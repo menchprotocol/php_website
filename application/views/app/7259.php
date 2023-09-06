@@ -138,14 +138,18 @@ echo '</form>';
 
 <script>
     function mass_delete(){
-        console.log("delete:");
-        var counter = 0;
-        $( ".result_row" ).each(function() {
-            counter++;
-            console.log($( this ).attr( "idea_id" ));
-            $( this ).hide();
-        });
-        console.log(counter + " deleted");
+
+        var r = confirm("WARNING: You are about to PERMANENTLY DELETE all results! Continue?");
+        if (r==true) {
+            console.log("deleting:");
+            var counter = 0;
+            $( ".result_row" ).each(function() {
+                counter++;
+                console.log(parseInt($( this ).attr( "idea_id" )));
+                $( this ).hide();
+            });
+            console.log(counter + " deleted");
+        }
     }
 
     //update_dropdown(31004, 6182, 15735, 0, 0)
