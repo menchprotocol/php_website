@@ -141,11 +141,9 @@ echo '</form>';
         console.log("delete:");
         var counter = 0;
         $( ".result_row" ).each(function() {
-            setTimeout(function(){
-                counter++;
-                console.log($( this ).attr( "idea_id" ));
-                $( this ).hide();
-            }, 50);
+            counter++;
+            console.log($( this ).attr( "idea_id" ));
+            $( this ).hide();
         });
         console.log(counter + " deleted");
     }
