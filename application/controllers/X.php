@@ -1585,7 +1585,15 @@ class X extends CI_Controller
 
     function update_dropdown(){
 
-        return view_json($this->X_model->update_dropdown($_POST['focus_id'],$_POST['o__id'],$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__id'],$_POST['x__id']));
+        if(is_array($_POST['o__id'])){
+            $mass_result = array();
+            foreach($_POST['o__id'] as $o__id){
+                array_push($mass_result, $this->X_model->update_dropdown($_POST['focus_id'],$o__id,$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__id'],$_POST['x__id']));
+            }
+            return view_json($mass_result);
+        } else {
+            return view_json($this->X_model->update_dropdown($_POST['focus_id'],$_POST['o__id'],$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__id'],$_POST['x__id']));
+        }
 
     }
 

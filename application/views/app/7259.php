@@ -150,16 +150,25 @@ echo '</form>';
             });
             console.log(counter + " to be deleted...");
 
-            $.each(icons_listed, function( index, value ) {
-                setTimeout(function () {
-                    $( '#row_'+value ).hide();
-                    console.log(value + ' deleted');
-                }, 34);
+            $.post("/x/update_dropdown", {
+                focus_id:0,
+                o__id: icons_listed,
+                element_id: 31004,
+                new_e__id: 6182,
+                migrate_s__id: 0,
+                x__id: 0
+            }, function (data) {
+                console.log(data);
+                if (data.status) {
+                    alert(counter + ' ideas successfully deleted');
+                } else {
+                    alert('Processing error');
+                }
             });
 
 
         }
     }
 
-    //update_dropdown(31004, 6182, 15735, 0, 0)
+    //update_dropdown(, 6182, 15735, 0, 0)
 </script>
