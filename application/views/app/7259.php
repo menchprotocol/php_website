@@ -141,14 +141,23 @@ echo '</form>';
 
         var r = confirm("WARNING: You are about to PERMANENTLY DELETE all results! Continue?");
         if (r==true) {
+            var icons_listed = [];
             console.log("deleting:");
             var counter = 0;
             $( ".result_row" ).each(function() {
                 counter++;
-                console.log(parseInt($( this ).attr( "idea_id" )));
-                $( this ).hide();
+                icons_listed.push(parseInt($( this ).attr( "idea_id" )));
             });
-            console.log(counter + " deleted");
+            console.log(counter + " to be deleted...");
+
+            $.each(icons_listed, function( index, value ) {
+                setTimeout(function () {
+                    $( '#row_'+value ).hide();
+                    console.log(value + ' deleted');
+                }, 34);
+            });
+
+
         }
     }
 
