@@ -162,7 +162,7 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
         if(strlen($e_item['x__message'])){
             $messages .= '<div class="row justify-content center" style="margin-bottom: 89px; padding: 0 34px;">'.$e_item['x__message'].'</div>';
         }
-        $messages .= '<div class="row justify-content" style="margin-bottom: 89px; padding: 0 34px;">'.$info_item.'</div>';
+        $messages .= '<div class="row justify-content" style="margin-bottom: 89px; padding: 34px 0;">'.$info_item.'</div>';
     }
 
 }
