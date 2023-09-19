@@ -1635,9 +1635,6 @@ function view_list_sources($i, $x__creator, $x){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
-    if(!in_array($x['e__access'], $CI->config->item('n___33240'))){
-        return false;
-    }
 
     //See if this member also follows this featured source?
     $member_follows = array();
@@ -1660,6 +1657,10 @@ function view_list_sources($i, $x__creator, $x){
         if(strlen($member_follow['x__message'])){
             $messages .= '<h2 style="padding:0 0 8px;">' . $member_follow['x__message'] . '</h2>';
         }
+    }
+
+    if(!in_array($x['e__access'], $CI->config->item('n___33240')) && !$messages){
+        return false;
     }
 
     if(!$is__featured && !$messages){
