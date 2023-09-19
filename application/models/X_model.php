@@ -962,10 +962,14 @@ class X_model extends CI_Model
             //Add Dropdown frame IF any:
             $e_dropdown = '';
 
-            if($simple_version && !$e_media_count && !count($e_links)){
+            if(!$e_media_count && !count($e_links)){
 
                 //Links not supported
-                $e_dropdown .= $es[0]['e__title'];
+                if($simple_version){
+                    $e_dropdown .= $es[0]['e__title'];
+                } else {
+                    $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" class="ignore-click"><span class="icon-block-xxs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
+                }
 
             } elseif(!count($e_links) && $is_discovery_mode && !($on_its_own_line && $e_media_count)){
 
