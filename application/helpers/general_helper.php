@@ -1206,7 +1206,7 @@ function e__title_validate($string, $x__type = 0){
             'message' => 'Name missing',
         );
 
-    } elseif(strlen(trim($string)) < view_memory(6404,12232)){
+    } elseif(strlen(trim($string)) < 1){
 
         if($x__type){
             $title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
@@ -1214,7 +1214,7 @@ function e__title_validate($string, $x__type = 0){
 
         $errors = array(
             'status' => 0,
-            'message' => 'Name is shorter than the minimum ' . view_memory(6404,12232) . ' characters.',
+            'message' => 'Enter name to continue.',
         );
 
     } elseif (strlen($string) > view_memory(6404,6197)) {

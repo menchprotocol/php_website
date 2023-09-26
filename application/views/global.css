@@ -2144,7 +2144,7 @@ input.form-control {
 
 .cover-content .inner-content {
     margin:0;
-    padding: 5px 1px 0;
+    padding: 5px 0 0;
     line-height: 120%;
     font-size: 1em;
     display: block;
