@@ -174,11 +174,6 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $total_commission = ( $commission_rate * $total_revenue );
         $payout = $total_revenue-$total_commission-$total_paypal_fee;
 
-
-        if($i['i__type']==6183 && !$total_transactions){
-            continue;
-        }
-
         $gross_sales += $total_sales;
         $gross_transactions += $total_transactions;
         $gross_revenue += $total_revenue;
