@@ -857,7 +857,7 @@ if(!$top_i__id){
             //Save Response
             $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
-        } elseif($x__type==28239 && $can_skip){ // && !count($x_completes)
+        } elseif($x__type==28239 && $can_skip && !$top_completed){ // && !count($x_completes)
 
             //SKIP
             $control_btn = '<div style="padding-left: 13px;"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
