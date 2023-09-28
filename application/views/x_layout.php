@@ -244,7 +244,7 @@ if(in_array($i['i__type'], $this->config->item('n___33139'))){
 }
 
 
-
+$x_selects = array();
 if($top_i__id) {
 
     if ($is_or_idea) {
@@ -270,7 +270,6 @@ if($top_i__id) {
         } else {
 
             //First fetch answers based on correct order:
-            $x_selects = array();
             foreach ($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
@@ -292,16 +291,9 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
                 //MODIFY ANSWER
                 echo '<div class="edit_toggle_answer">';
-
                 echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
-
-                //Edit response:
-                echo '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13495]['m__cover'] . ' ' . $e___11035[13495]['m__title'] . '</a></div>';
-
                 echo '</div>';
-
             }
-
 
 
             //Open for list to be printed:
@@ -861,6 +853,11 @@ if(!$top_i__id){
 
             //NEXT
             $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
+
+        } elseif($x__type==13495 && count($x_selects)){
+
+            //Edit response:
+            $control_btn = '<div style="padding-left: 8px;" id="next_div" class="edit_toggle_answer"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
         } elseif($x__type==31796 && $can_edit_response && $top_completed && in_array($i['i__type'], $this->config->item('n___34849'))){
 
