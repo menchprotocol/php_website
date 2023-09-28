@@ -849,7 +849,8 @@ if(!$top_i__id){
         } elseif($x__type==13495 && count($x_selects)){
 
             //Edit response:
-            $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');"><span class="edit_toggle_answer">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></span><span class="edit_toggle_answer hidden">'.$e___11035[40639]['m__cover'].'</a><span class="nav-title main__title">'.$e___11035[40639]['m__title'].'</span></span></div>';
+            $control_btn = '<div style="padding-left: 8px;" class="edit_toggle_answer"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
+            $control_btn .= '<div style="padding-left: 8px;" class="edit_toggle_answer hidden"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">'.$e___11035[40639]['m__cover'].'</a><span class="nav-title main__title">'.$e___11035[40639]['m__title'].'</span></div>';
 
         } elseif($x__type==31796 && $can_edit_response && $top_completed && in_array($i['i__type'], $this->config->item('n___34849'))){
 
