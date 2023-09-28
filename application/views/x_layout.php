@@ -315,16 +315,7 @@ if($top_i__id) {
 
             }
 
-
             $select_answer .= '</div>';
-
-
-            if (count($x_selects) > 0) {
-
-                //Cancel Saving...
-                $select_answer .= '<div class="select-btns"><a class="btn btn-6255" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">' . $e___11035[13502]['m__cover'] . ' ' . $e___11035[13502]['m__title'] . '</a></div>'; //&nbsp;&nbsp;<a class="btn btn-6255" href="javascript:void(0);" onclick="x_select(\'/x/x_next/' . $top_i__id . '/' . $i['i__id'] . '\')">' . $e___11035[13524]['m__title'] . ' ' . $e___11035[13524]['m__cover'] . '</a>
-
-            }
 
             //HTML:
             echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
