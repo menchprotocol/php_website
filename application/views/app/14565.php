@@ -97,15 +97,13 @@ if(strlen($top_messages)){
 
 
 
-$minimal_home = intval(website_setting(33922));
-
 //SOCIAL FOOTER
 $domain_phone =  website_setting(28615);
 $email_domain =  website_setting(28614);
 $e___14925 = $this->config->item('e___14925'); //Domain Setting
 
 $contact_us = '';
-if(!$minimal_home && ($domain_phone || $email_domain)) {
+if($domain_phone || $email_domain) {
 
     $contact_us .= '<ul class="social-footer">';
     if($domain_phone){
@@ -119,7 +117,7 @@ if(!$minimal_home && ($domain_phone || $email_domain)) {
 
 }
 
-if($double_contact && !$minimal_home){
+if($double_contact){
     $messages .= '<div style="padding: 20px 0;">';
     $messages .= $contact_us;
     $messages .= '</div>';
@@ -215,7 +213,7 @@ if($social_ui){
     }
     echo '</ul>';
     echo '</div>';
-} elseif(!$minimal_home) {
+} else {
     echo $contact_us;
 }
 echo '</div>';
