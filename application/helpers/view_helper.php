@@ -1685,7 +1685,7 @@ function view_list_source_items($i, $x__creator, $x){
     }
 
     return '<div class="source-info">'
-        . '<span class="icon-block">'.view_cover($x['e__cover'], true) . '</span>'
+        . '<span class="icon-block-sm">'.view_cover($x['e__cover'], true) . '</span>'
         . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
         . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC

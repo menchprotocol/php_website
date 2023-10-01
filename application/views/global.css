@@ -4076,6 +4076,10 @@ main {
 .payment_box{
     padding-top: 5px; padding-left: 40px; line-height:120%;
 }
+.cover-content .payment_box{
+    padding-top: 3px; padding-left:15px;
+}
+
 .adjust_counter{
     padding:8px 2px;
     display: inline-block;
@@ -4092,6 +4096,9 @@ main {
 
 .source-info{
     padding: 10px 0;
+}
+.cover-content .source-info{
+    padding: 2px 0;
 }
 
 
