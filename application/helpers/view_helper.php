@@ -1241,6 +1241,7 @@ function view_card_x_select($i, $x__creator, $previously_selected){
     ), array(), 0, 0, array('x__weight' => 'ASC')) as $message_x) {
         $ui .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, $i['i__id'], true);
     }
+    $ui .= view_list_sources($i, $x__creator);
     $ui .= '</a>';
 
     $ui .= '</div>';

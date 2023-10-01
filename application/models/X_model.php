@@ -703,6 +703,7 @@ class X_model extends CI_Model
         $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, 0, $message_i__id, false, $simple_version);
 
 
+
         //Did we have ane error in message validation?
         if(!isset($msg_validation['output_messages'])){
 
@@ -725,6 +726,7 @@ class X_model extends CI_Model
             return false;
 
         }
+
 
         //Message validation passed...
         return $msg_validation['output_messages'];
