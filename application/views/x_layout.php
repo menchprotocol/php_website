@@ -220,7 +220,7 @@ if($view_i__cache){
 }
 
 //Featured Sources:
-//echo view_list_sources($i, $x__creator);
+echo view_list_sources($i, $x__creator);
 
 
 
