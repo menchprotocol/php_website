@@ -4100,6 +4100,9 @@ main {
 .cover-content .source-info{
     padding: 2px 0;
 }
+.cover-content .source-info .icon-block{
+    width:33px !important;
+}
 
 
 .home_black_font h1 { color:#000000 !important; text-shadow: 1px 1px 3px #FFFFFF; }
