@@ -209,9 +209,6 @@ echo '<div class="light-bg large-frame">';
 //Title:
 echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i['i__title'].'</h1>';
 
-//Featured Sources:
-echo view_list_sources($i, $x__creator);
-
 //Messages:
 $view_i__cache = view_i__cache($i);
 if($view_i__cache){
@@ -221,6 +218,8 @@ if($view_i__cache){
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
 
+//Featured Sources:
+echo view_list_sources($i, $x__creator);
 
 
 
