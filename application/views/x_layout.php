@@ -219,9 +219,6 @@ if($view_i__cache){
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
 
-//Featured Sources:
-echo view_list_sources($i, $x__creator);
-
 
 
     $x_selects = array();
