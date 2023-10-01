@@ -430,6 +430,8 @@ class I extends CI_Controller {
 
         }
 
+        $textarea_content .= view_list_sources($is[0]);
+
         if(!strlen($textarea_content)){
             $textarea_content = '<i class="no-message"> </i>';
         }
