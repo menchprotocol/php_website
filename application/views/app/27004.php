@@ -439,7 +439,7 @@ if(count($i_query)){
         padding-bottom: 8px;
     }
     .col_stat{
-        height:55px;
+        height:71px;
         display:inline-block;
         text-align: left;
         width: 8px;
