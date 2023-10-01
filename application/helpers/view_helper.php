@@ -1662,13 +1662,6 @@ function view_list_source_items($i, $x__creator, $x){
     //Must have Public/Guest Access
     $CI =& get_instance();
 
-    if(!$x__creator){
-        $member_e = superpower_unlocked();
-        if($member_e && $member_e['e__id']>0){
-            $x__creator = $member_e['e__id'];
-        }
-    }
-
     //See if this member also follows this featured source?
     $member_follows = array();
     if($x__creator>0){
