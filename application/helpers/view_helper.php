@@ -1633,19 +1633,20 @@ function view_random_title(){
 
 function view_list_sources($i, $x__creator){
 
+    $CI =& get_instance();
     $relevant_sources = '';
-    foreach($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+    foreach($CI->X_model->fetch(array(
+        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'x__right' => $i['i__id'],
-        'x__up IN (' . join(',', $this->config->item('n___40671')) . ')' => null, //View List Sources
+        'x__up IN (' . join(',', $CI->config->item('n___40671')) . ')' => null, //View List Sources
         'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
         $relevant_sources .= view_list_source_items($i, $x__creator, $x);
     }
 
     //Idea Setting Source Types:
-    foreach($this->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
+    foreach($CI->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
         //Show full legal name for agreement:
         $relevant_sources .= view_list_source_items($i, $x__creator, $e_item);
     }
