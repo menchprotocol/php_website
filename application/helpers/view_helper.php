@@ -1279,6 +1279,8 @@ function view_i__cache($i, $simple_version = false){
             $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, $i['i__id'], true);
         }
 
+        $messages .= view_list_sources($i);
+
         if(strlen($messages)){
             //Save cache:
             $CI->I_model->update($i['i__id'], array(
@@ -1631,7 +1633,7 @@ function view_random_title(){
     return random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 }
 
-function view_list_sources($i, $x__creator){
+function view_list_sources($i, $x__creator = 0){
 
     $CI =& get_instance();
     $relevant_sources = '';
@@ -1659,6 +1661,13 @@ function view_list_source_items($i, $x__creator, $x){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
+
+    if(!$x__creator){
+        $member_e = superpower_unlocked();
+        if($member_e && $member_e['e__id']>0){
+            $x__creator = $member_e['e__id'];
+        }
+    }
 
     //See if this member also follows this featured source?
     $member_follows = array();

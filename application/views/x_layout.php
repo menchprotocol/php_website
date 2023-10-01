@@ -834,7 +834,7 @@ if(!$top_i__id){
 
         } elseif($x__type==31796 && $can_edit_response && $top_completed && in_array($i['i__type'], $this->config->item('n___34849'))){
 
-            //Save Response
+            //Update Response
             $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
         } elseif($x__type==28239 && $can_skip && !$top_completed){ // && !count($x_completes)
