@@ -1631,7 +1631,30 @@ function view_random_title(){
     return random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 }
 
-function view_list_sources($i, $x__creator, $x){
+function view_list_sources($i, $x__creator){
+
+    $relevant_sources = '';
+    foreach($this->X_model->fetch(array(
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+        'x__right' => $i['i__id'],
+        'x__up IN (' . join(',', $this->config->item('n___40671')) . ')' => null, //View List Sources
+        'x__up !=' => website_setting(0),
+    ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
+        $relevant_sources .= view_list_source_items($i, $x__creator, $x);
+    }
+
+    //Idea Setting Source Types:
+    foreach($this->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
+        //Show full legal name for agreement:
+        $relevant_sources .= view_list_source_items($i, $x__creator, $e_item);
+    }
+
+    return ( strlen($relevant_sources) ? '<div class="source-featured">'.$relevant_sources.'</div>' : false );
+
+}
+
+function view_list_source_items($i, $x__creator, $x){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
@@ -1647,11 +1670,6 @@ function view_list_sources($i, $x__creator, $x){
         ));
     }
 
-    $is__featured = in_array($x['e__access'], $CI->config->item('n___30977'));
-    if(!$is__featured && !count($member_follows)){
-        return false;
-    }
-
     $messages = '';
     foreach($member_follows as $member_follow){
         if(strlen($member_follow['x__message'])){
@@ -1659,18 +1677,9 @@ function view_list_sources($i, $x__creator, $x){
         }
     }
 
-    if(!in_array($x['e__access'], $CI->config->item('n___33240')) && !$messages){
-        return false;
-    }
-
-    if(!$is__featured && !$messages){
-        return false;
-    }
-
     if(strlen($messages)){
         $x['x__message'] = ( strlen($x['x__message']) ? $messages.nl2br($x['x__message']) : $messages );
     }
-
 
     return '<div class="source-info">'
         . '<span class="icon-block">'.view_cover($x['e__cover'], true) . '</span>'

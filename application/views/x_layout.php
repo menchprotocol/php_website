@@ -217,31 +217,8 @@ if($view_i__cache){
 }
 
 
-if(in_array($i['i__type'], $this->config->item('n___33139'))){
-
-    //Featured Sources:
-    $relevant_sources = '';
-    foreach($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-        'x__right' => $i['i__id'],
-        'x__up !=' => website_setting(0),
-    ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
-        $relevant_sources .= view_list_sources($i, $x__creator, $x);
-    }
-
-    //Idea Setting Source Types:
-    foreach($this->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
-        $relevant_sources .= view_list_sources($i, $x__creator, $e_item);
-    }
-
-    if(strlen($relevant_sources)){
-        echo '<div class="source-featured">';
-        echo $relevant_sources;
-        echo '</div>';
-    }
-
-}
+//Featured Sources:
+echo view_list_sources($i, $x__creator);
 
 
 $x_selects = array();
