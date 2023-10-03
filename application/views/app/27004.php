@@ -98,6 +98,14 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             if(!in_array($x['x__type'], $this->config->item('n___30469'))){
                 $x__metadata['mc_gross'] = 0;
                 $x__metadata['mc_fee'] = 0;
+                $x__metadata['mc_currency'] = '';
+                $x__metadata['item_number'] = '';
+                $x__metadata['first_name'] = '';
+                $x__metadata['last_name'] = '';
+            }
+
+            if(!isset($x__metadata['mc_currency'])){
+                continue;
             }
 
             $total_sales += $this_quantity;
