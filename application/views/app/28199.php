@@ -2,7 +2,6 @@
 
 $filters = array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__right' => 0,
     'x__type' => 4983, //References
     'x__up' => 28199,
 );
@@ -12,17 +11,18 @@ if(isset($_GET['i__id']) && intval($_GET['i__id'])>0){
     $buffer_time = 0;
 } else {
     //Give it some extra time in case they are in Paypal making the payment
-    $buffer_time = 180;
+    $buffer_time = 300;
 }
 
 $links_deleted = 0;
+$counter = 0;
+
 //Go through all expire seconds ideas:
 foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
     //echo '<hr /><div><a href="/~'.$expires['i__id'].'">'.$expires['i__title'].'</a></div>';
 
     //Now go through everyone who discovered this selection:
-    $counter = 0;
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansions
