@@ -1577,7 +1577,7 @@ class X extends CI_Controller
                 array_push($return_array , array(
                     'top_id' => $x__type,
                     'sub_id' => $x__type2,
-                    'count' => count_interactions($x__type2),
+                    'sub_counter' => count_interactions($x__type2),
                 ));
             }
         }

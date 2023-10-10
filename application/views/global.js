@@ -654,29 +654,11 @@ function x_create(add_fields){
 
 function load_platform_stats(){
     $.post("/x/load_platform_stats", {}, function (data) {
-
         data.forEach(function(item) {
-            if(!($('#img_results_tenor').html().indexOf(item["media"][0]["nanogif"]["url"]) > -1)){
-                $("#img_results_tenor").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
+            if($(".card_count_"+item.sub_id+":first").text()!=item.sub_counter){
+                $(".card_count_"+item.sub_id).text(item.sub_counter).hide().fadeIn().hide().fadeIn();
             }
         });
-
-
-        if($(".card_count_4341:first").text()!=data.count__4341){
-            $(".card_count_4341").text(data.count__4341).hide().fadeIn().hide().fadeIn();
-        }
-        if($(".card_count_6287:first").text()!=data.count__6287){
-            $(".card_count_6287").text(data.count__6287).hide().fadeIn().hide().fadeIn();
-        }
-        if($(".card_count_12273:first").text()!=data.count__12273){
-            $(".card_count_12273").text(data.count__12273).hide().fadeIn().hide().fadeIn();
-        }
-        if($(".card_count_12274:first").text()!=data.count__12274){
-            $(".card_count_12274").text(data.count__12274).hide().fadeIn().hide().fadeIn();
-        }
-        if($(".card_count_6255:first").text()!=data.count__6255){
-            $(".card_count_6255").text(data.count__6255).hide().fadeIn().hide().fadeIn();
-        }
     });
 }
 
