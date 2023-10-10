@@ -654,6 +654,14 @@ function x_create(add_fields){
 
 function load_platform_stats(){
     $.post("/x/load_platform_stats", {}, function (data) {
+
+        data.forEach(function(item) {
+            if(!($('#img_results_tenor').html().indexOf(item["media"][0]["nanogif"]["url"]) > -1)){
+                $("#img_results_tenor").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
+            }
+        });
+
+
         if($(".card_count_4341:first").text()!=data.count__4341){
             $(".card_count_4341").text(data.count__4341).hide().fadeIn().hide().fadeIn();
         }
@@ -934,7 +942,7 @@ $(document).ready(function () {
     if ($(".list-covers")[0]){
         //Update COINS every 3 seconds:
         $(function () {
-            setInterval(load_platform_stats, js_e___6404[31003]['m__message']);
+            setInterval(load_platform_stats, js_e___6404[33292]['m__message']);
         });
     }
 
