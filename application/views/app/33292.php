@@ -26,11 +26,11 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         }
         echo '</div>';
 
-    } elseif($e__id1==33293) {
+    } elseif($e__id1==31770) {
 
         //Mench Links
         echo '<div class="row justify-content list-covers">';
-        foreach($this->config->item('e___33293') as $e__id => $m) {
+        foreach($this->config->item('e___31770') as $e__id => $m) {
             if(in_array($e__id, $displayed)){
                 //continue;
             }
