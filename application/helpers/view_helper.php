@@ -1918,75 +1918,77 @@ function view_card_e($x__type, $e, $extra_class = null)
                     $focus_dropdown = 28792; //Source/Idea Dropdown
                 }
 
-                foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
+                if(is_array($CI->config->item('e___'.$focus_dropdown))){
+                    foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
-                    //Skip if missing superpower:
-                    $superpower_actives = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
-                    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                        continue;
-                    }
+                        //Skip if missing superpower:
+                        $superpower_actives = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
+                        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                            continue;
+                        }
 
-                    $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
+                        $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
-                    if($e__id_dropdown==4997 && superpower_active(12703, true)){
+                        if($e__id_dropdown==4997 && superpower_active(12703, true)){
 
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==13571 && $x__id > 0 && $superpower_10939){
+                        } elseif($e__id_dropdown==13571 && $x__id > 0 && $superpower_10939){
 
-                        //Edit Message
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Edit Message
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==6287 && $is_app_store){
+                        } elseif($e__id_dropdown==6287 && $is_app_store){
 
-                        //App Store
-                        $action_buttons .= '<a href="/-'.$e['e__id'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //App Store
+                            $action_buttons .= '<a href="/-'.$e['e__id'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==30873){
+                        } elseif($e__id_dropdown==30873){
 
-                        //Template:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].', 1)" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Template:
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].', 1)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==29771){
+                        } elseif($e__id_dropdown==29771){
 
-                        //Clone:
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Clone:
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==10673 && $x__id > 0 && $superpower_13422){
+                        } elseif($e__id_dropdown==10673 && $x__id > 0 && $superpower_13422){
 
-                        //UNLINK
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
+                            //UNLINK
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_remove(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
 
-                    } elseif($e__id_dropdown==6178 && $superpower_13422){
+                        } elseif($e__id_dropdown==6178 && $superpower_13422){
 
-                        //Delete Permanently
-                        $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__access'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            //Delete Permanently
+                            $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__access'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==13007){
+                        } elseif($e__id_dropdown==13007){
 
-                        //Reset Alphabetic order
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="sort_alphabetical()" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Reset Alphabetic order
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="sort_alphabetical()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==26560 && isset($e['x__type']) && in_array($e['x__type'], $CI->config->item('n___32014')) && ($e['x__creator']==$member_e['e__id'] || $superpower_13422)){
+                        } elseif($e__id_dropdown==26560 && isset($e['x__type']) && in_array($e['x__type'], $CI->config->item('n___32014')) && ($e['x__creator']==$member_e['e__id'] || $superpower_13422)){
 
-                        //Ticket Details
-                        $action_buttons .= '<a href="/-26560?x__id='.$e['x__id'].'&x__creator='.$e['x__creator'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Ticket Details
+                            $action_buttons .= '<a href="/-26560?x__id='.$e['x__id'].'&x__creator='.$e['x__creator'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==6415){
+                        } elseif($e__id_dropdown==6415){
 
-                        //Reset my discoveries
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Reset my discoveries
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown=13670 && substr($CI->uri->segment(1), 0, 1)=='~') {
+                        } elseif($e__id_dropdown=13670 && substr($CI->uri->segment(1), 0, 1)=='~') {
 
-                        //Filter applies only when browsing an idea
-                        $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?load__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Filter applies only when browsing an idea
+                            $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?load__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif(substr($m_dropdown['m__message'], 0, 1)=='/' && !$discovery_mode){
+                        } elseif(substr($m_dropdown['m__message'], 0, 1)=='/' && !$discovery_mode){
 
-                        //Standard button
-                        $action_buttons .= '<a href="' . $m_dropdown['m__message'] . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
+                            //Standard button
+                            $action_buttons .= '<a href="' . $m_dropdown['m__message'] . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
 
+                        }
                     }
                 }
 
