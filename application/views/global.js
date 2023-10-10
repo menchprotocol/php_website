@@ -652,8 +652,8 @@ function x_create(add_fields){
     return $.post("/x/x_create", add_fields);
 }
 
-function load_card_count(){
-    $.post("/x/load_card_count", {}, function (data) {
+function load_platform_stats(){
+    $.post("/x/load_platform_stats", {}, function (data) {
         if($(".card_count_4341:first").text()!=data.count__4341){
             $(".card_count_4341").text(data.count__4341).hide().fadeIn().hide().fadeIn();
         }
@@ -934,7 +934,7 @@ $(document).ready(function () {
     if ($(".list-covers")[0]){
         //Update COINS every 3 seconds:
         $(function () {
-            setInterval(load_card_count, js_e___6404[31003]['m__message']);
+            setInterval(load_platform_stats, js_e___6404[31003]['m__message']);
         });
     }
 

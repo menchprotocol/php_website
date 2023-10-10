@@ -1569,14 +1569,12 @@ class X extends CI_Controller
 
     }
 
-    function load_card_count(){
+    function load_platform_stats(){
         //Count transactions:
-        $return_array = array(
-            'count__4341' => number_format(count_unique_covers(4341), 0),
-            'count__6287' => number_format(count_unique_covers(6287), 0),
-        );
-        foreach($this->config->item('e___14874') as $e__id => $m) {
-            $return_array['count__'.$e__id] = number_format(count_unique_covers($e__id), 0);
+        foreach($this->config->item('e___6287') as $x__type => $m) {
+            foreach($this->config->item('e___'.$x__type) as $x__type2 => $m2) {
+                $return_array['count__'.$x__type2] = number_format(count_interactions($x__type2), 0);
+            }
         }
         return view_json($return_array);
     }

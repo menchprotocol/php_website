@@ -848,7 +848,7 @@ function round_minutes($seconds){
 
 
 
-function count_unique_covers($x__type, $x__time_start = null, $x__time_end = null){
+function count_interactions($x__type, $x__time_start = null, $x__time_end = null){
 
     $CI =& get_instance();
 
@@ -886,6 +886,15 @@ function count_unique_covers($x__type, $x__time_start = null, $x__time_end = nul
         //Ledger Transactions
         $joined_by = array();
         $query_filters = array();
+
+    } elseif($x__type==4341){
+
+        //Platform Links
+        $joined_by = array();
+        $query_filters = array(
+            'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null, //All these link types
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        );
 
     } else {
 

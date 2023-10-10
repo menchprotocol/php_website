@@ -15,8 +15,8 @@ $plain_message = 'Here is what happened in the last '.$last_x_days.' day'.view__
 
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
-    $unique = count_unique_covers($x__type, null, $x__time_end);
-    $this_week = count_unique_covers($x__type, $x__time_start, $x__time_end);
+    $unique = count_interactions($x__type, null, $x__time_end);
+    $this_week = count_interactions($x__type, $x__time_start, $x__time_end);
     $growth = format_percentage(($unique / ( $unique - $this_week ) * 100) - 100);
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
