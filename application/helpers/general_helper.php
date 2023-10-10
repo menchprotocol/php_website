@@ -887,13 +887,13 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
         $joined_by = array();
         $query_filters = array();
 
-    } elseif(in_array($x__type, $this->config->item('n___31770'))){
+    } elseif(in_array($x__type, $CI->config->item('n___31770'))){
 
         //Platform Links
         $joined_by = array();
         $query_filters = array(
-            'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null, //All these link types
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //All these link types
+            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         );
 
     } else {
