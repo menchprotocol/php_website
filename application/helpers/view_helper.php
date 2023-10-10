@@ -1918,7 +1918,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     $focus_dropdown = 28792; //Source/Idea Dropdown
                 }
 
-                if(is_array($CI->config->item('e___'.$focus_dropdown))){
+                if(@$CI->config->item('e___'.$focus_dropdown)){
                     foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
                         //Skip if missing superpower:
