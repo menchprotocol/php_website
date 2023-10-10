@@ -887,7 +887,7 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
         $joined_by = array();
         $query_filters = array();
 
-    } elseif($x__type==4341){
+    } elseif(in_array($x__type, $this->config->item('n___31770'))){
 
         //Platform Links
         $joined_by = array();
