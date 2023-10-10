@@ -40,7 +40,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             $list_e_count = $this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___'.$e__id)) . ')' => null, //All these link types
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array(), 0, 0, array(), 'COUNT(e__id) as totals');
+            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
             echo '<div class="card_cover no-padding col-4">';
             echo '<div class="card_frame dropdown_d33293 dropdown_'.$e__id.'">';
