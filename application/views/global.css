@@ -4206,10 +4206,10 @@ main {
 }
 
 .card_frame{
-    border: 5px solid transparent;
+    border: 0;
     border-radius: 21px !important;
     margin: 0;
-    padding: 34px 0;
+    padding: 21px 0;
     background-color: #FFFFFF;
 }
 
