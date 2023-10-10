@@ -1348,9 +1348,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $can_click = !$focus_card && (!$discovery_mode || isset($_GET['open']) || $has_discovered || $e_of_i);
-
-
+    $can_click = !$focus_card && (in_array($x__type, $CI->config->item('n___12149')) || $has_discovered || $e_of_i);
 
 
     //Top action menu:
