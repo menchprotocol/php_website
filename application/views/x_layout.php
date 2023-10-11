@@ -596,7 +596,9 @@ if($top_i__id || 1) {
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         ), array('x__up'), 0) as $setting_link){
-            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__up']));
+            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['e__id']));
+            //Print on screen:
+            echo '<h3><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></h3>';
         }
         //Now search for these settings across ideas:
         foreach($this->X_model->fetch(array(
@@ -605,7 +607,9 @@ if($top_i__id || 1) {
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right'), 0) as $setting_link){
-            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__right']));
+            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['i__id']));
+            //Print on screen:
+            echo '<h3><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></h3>';
         }
 
         //Can only have one focus view, pick first:
@@ -624,23 +628,9 @@ if($top_i__id || 1) {
             $setting_links[40791] = array($i['i__id']);
         }
 
-        print_r($setting_links);
 
-        if($setting_links[34513]){
-
-            foreach($this->I_model->fetch(array(
-                'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
-            ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
-                echo '<h2><span class="icon-block" title="'.$e___40787[40791]['m__title'].'">'.$e___40787[40791]['m__cover'].'</span><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
-            }
-
-            foreach($this->E_model->fetch(array(
-                'e__id' => $setting_links[34513],
-            )) as $grid){
-                echo '<h3><a href="/@' . $grid['e__id'] . '"><span class="icon-block">'.view_cover($grid['e__cover'], true). '</span><u>' . $grid['e__title'] . '</u></a></h3>';
-            }
-
-        } else {
+        //Auto generate ALL columns:
+        if(!$setting_links[34513]){
 
             foreach($this->I_model->fetch(array(
                 'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
