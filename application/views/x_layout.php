@@ -598,6 +598,7 @@ if($top_i__id) {
             }
         }
 
+        $message_ui = '';
         $input_attributes = '';
         $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
 
@@ -1217,7 +1218,8 @@ if($top_i__id) {
 
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_write\')); $(\'#x_write\').focus(); }); </script>';
 
-        echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
+        echo $message_ui;
+        //echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
 
     } elseif ($i['i__type']==7637) {
 
