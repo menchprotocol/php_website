@@ -624,6 +624,8 @@ if($top_i__id || 1) {
             $setting_links[40791] = array($i['i__id']);
         }
 
+        print_r($setting_links);
+
         if($setting_links[34513]){
 
             foreach($this->I_model->fetch(array(
