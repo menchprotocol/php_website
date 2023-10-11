@@ -609,12 +609,13 @@ if($top_i__id || 1) {
         }
 
         //Can only have one focus view, pick first:
-        $setting_links[34513] = 0;
         if(count($setting_links[34513])){
             foreach($setting_links[34513] as $first_frame){
                 $setting_links[34513] = $first_frame;
                 break;
             }
+        } else {
+            $setting_links[34513] = 0;
         }
 
         //Fetch Main Idea:
