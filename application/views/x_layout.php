@@ -221,8 +221,8 @@ if($view_i__cache){
 
 
 
-    $x_selects = array();
-if($top_i__id) {
+$x_selects = array();
+if($top_i__id || 1) {
 
     if ($is_or_idea) {
 
@@ -305,7 +305,6 @@ if($top_i__id) {
     } elseif ($i['i__type']==26560) {
 
         //TICKET
-
         $ticket_ui = '';
 
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
@@ -1253,10 +1252,6 @@ if($top_i__id) {
     } elseif ($i['i__type']==30874) {
 
         //Event
-
-    } else {
-
-        //echo '<div class="msg alert alert-danger" role="alert">Error: Missing core variables.</div>';
 
     }
 
