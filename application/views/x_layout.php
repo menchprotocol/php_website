@@ -605,7 +605,7 @@ if($top_i__id || 1) {
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right'), 0) as $setting_link){
-            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__left']));
+            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__right']));
         }
 
         //Can only have one focus view, pick first:
