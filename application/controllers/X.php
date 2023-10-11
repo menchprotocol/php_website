@@ -1576,7 +1576,7 @@ class X extends CI_Controller
             foreach($this->config->item('e___'.$x__type) as $x__type2 => $m2) {
                 array_push($return_array , array(
                     'sub_id' => $x__type2,
-                    'sub_counter' => count_interactions($x__type2),
+                    'sub_counter' => number_format(count_interactions($x__type2), 0),
                 ));
             }
         }
