@@ -606,7 +606,7 @@ if($top_i__id) {
             //Text response
             $message_ui = '<textarea class="border i_content x_input greybg" placeholder="" id="x_write">' . $previous_response . '</textarea>';
 
-        } elseif ($i['i__type']==40787 && $x__creator==1) {
+        } elseif ($i['i__type']==40787) {
 
             //Sheet
             $e___6287 = $this->config->item('e___6287'); //APP
