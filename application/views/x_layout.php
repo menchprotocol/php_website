@@ -598,7 +598,7 @@ if($top_i__id || 1) {
         ), array('x__up'), 0) as $setting_link){
             array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['e__id']));
             //Print on screen:
-            echo '<h3><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></h3>';
+            echo '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
         }
         //Now search for these settings across ideas:
         foreach($this->X_model->fetch(array(
@@ -609,7 +609,7 @@ if($top_i__id || 1) {
         ), array('x__right'), 0) as $setting_link){
             array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['i__id']));
             //Print on screen:
-            echo '<h3><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></h3>';
+            echo '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
         }
 
         //Can only have one focus view, pick first:
