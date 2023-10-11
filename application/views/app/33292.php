@@ -2,6 +2,7 @@
 
 $displayed = array();
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
+    
     echo '<h3 class="center centerh grey">'.$m1['m__title'].'</h3>';
     echo '<div class="row justify-content list-covers">';
     foreach($this->config->item('e___'.$e__id1) as $e__id => $m) {
