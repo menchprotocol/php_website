@@ -1348,7 +1348,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $can_click = !$focus_card && (in_array($x__type, $CI->config->item('n___40784')) || $has_discovered || $e_of_i);
 
 
     //Top action menu:
@@ -1543,8 +1542,8 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Coin Cover
     $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
-    $ui .= ( !$can_click ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
+    $ui .= ( $focus_card ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
@@ -1554,7 +1553,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     if($e_of_i && !$discovery_mode){
         //Editable title:
         $ui .= view_input(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
-    } elseif($can_click){
+    } elseif(!$focus_card){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
@@ -1562,11 +1561,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip = '';
 
 
-    $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( !$can_click ? '</div>' : '</a>' );
+    $message_tooltip .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( $focus_card ? '</div>' : '</a>' );
 
 
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
-        $message_tooltip .= ( !$can_click ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( !$can_click ? '</div>' : '</a>' );
+        $message_tooltip .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $focus_card ? '</div>' : '</a>' );
     }
 
 

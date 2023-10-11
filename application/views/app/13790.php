@@ -1,6 +1,6 @@
 <?php
 
-foreach(array('i__id','e__id','exclude_e','include_e','custom_grid') as $input){
+foreach(array('i__id','e__id','exclude_e','include_e','exclude_i','include_i','custom_grid') as $input){
     if(!isset($_GET[$input])){
         $_GET[$input] = '';
     }
@@ -16,8 +16,32 @@ $column_sources = array();
 $column_ideas = array();
 
 
+
+//Compile key settings for this sheet:
+$e___40787 = $this->config->item('e___40787'); //Sheet Link Types
+foreach($e___40787 as $x__type => $m) {
+    $setting_links[intval($x__type)] = array(); //Assume no links for this type
+}
+foreach($this->X_model->fetch(array(
+    'x__right' => $i['i__id'],
+    'x__type IN (' . join(',', $this->config->item('n___40787')) . ')' => null, //Sheets
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+), array('x__up'), 0) as $setting_link){
+    array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__up']));
+}
+foreach($this->X_model->fetch(array(
+    'x__left' => $i['i__id'],
+    'x__type IN (' . join(',', $this->config->item('n___40787')) . ')' => null, //Sheets
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+), array('x__right'), 0) as $setting_link){
+    array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__left']));
+}
+
+
 //Fetch Main Idea:
-if(strlen($_GET['i__id'])){
+if(count($setting_links[40791])){
 
 
     $recursive_i_ids = array();
@@ -27,9 +51,9 @@ if(strlen($_GET['i__id'])){
     if($has_grid){
 
         foreach($this->I_model->fetch(array(
-            'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
+            'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
         ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
-            echo '<h2><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
+            echo '<h2><span class="icon-block" title="'.$e___40787[40791]['m__title'].'">'.$e___40787[40791]['m__cover'].'</span><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
         }
 
         foreach($this->E_model->fetch(array(
@@ -41,7 +65,7 @@ if(strlen($_GET['i__id'])){
     } else {
 
         foreach($this->I_model->fetch(array(
-            'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
+            'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
         ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
 
             $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
@@ -96,7 +120,7 @@ if(strlen($_GET['i__id'])){
     }
 
 
-    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-cog"></i> Toggle Settings</a> | <a href="/-26582?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.$_GET['i__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'&custom_grid='.$_GET['custom_grid'].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
+    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-cog"></i> Toggle Settings</a> | <a href="/-26582?i__id='.join(',', $setting_links[40791]).'&e__id='.join(',', $setting_links[34513]).'&include_e='.$_GET['include_e'].'&exclude_e='.join(',', $setting_links[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $setting_links[40791]).'&include_e='.$_GET['include_e'].'&exclude_e='.join(',', $setting_links[26600]).'&custom_grid='.$_GET['custom_grid'].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
 
     echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
     echo '<table class="table table-sm maxout filter_table"><tr>';
@@ -104,10 +128,10 @@ if(strlen($_GET['i__id'])){
     //ANY IDEA
     echo '<td><div>';
     echo '<span class="mini-header">Discovered Idea(s):</span>';
-    echo '<input type="text" name="i__id" placeholder="id1,id2" value="' . $_GET['i__id'] . '" class="form-control border">';
+    echo '<input type="text" name="include_i" placeholder="id1,id2" value="' . join(',', $setting_links[40791]) . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">Belongs to Source(s):</span><input type="text" name="e__id" placeholder="id1,id2" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">NOT Discovered Idea(s):</span><input type="text" name="exclude_i" placeholder="id1,id2" value="' . join(',', $setting_links[40793]) . '" class="form-control border"></td>';
 
     echo '</tr><tr>';
 
@@ -116,7 +140,7 @@ if(strlen($_GET['i__id'])){
     echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
     echo '</div></td>';
 
-    echo '<td><span class="mini-header">Excludes Following Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
+    echo '<td><span class="mini-header">Excludes Following Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . join(',', $setting_links[26600]) . '" class="form-control border"></td>';
 
     echo '</tr><tr>';
 
@@ -179,7 +203,7 @@ if(strlen($_GET['i__id'])){
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__left IN (' . join(',', array($_GET['i__id'])) . ')' => null, //IDEA LINKS
+        'x__left IN (' . join(',', $setting_links[40791]) . ')' => null, //IDEA LINKS
     ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) as $x){
 
         if(in_array($x['e__id'], $unique_users_count)){
@@ -194,8 +218,8 @@ if(strlen($_GET['i__id'])){
             ))) != count(explode(',',$_GET['include_e']))){
             continue;
         }
-        if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
-                'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
+        if(count($setting_links[26600]) && count($this->X_model->fetch(array(
+                'x__up IN (' . join(',', $setting_links[26600]) . ')' => null, //All of these
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -240,10 +264,10 @@ if(strlen($_GET['i__id'])){
         $idea_content = '';
         $this_quantity = 1;
         $name = '';
-        foreach($column_ideas as $i){
+        foreach($column_ideas as $i2){
 
             $discoveries = $this->X_model->fetch(array(
-                'x__left' => $i['i__id'],
+                'x__left' => $i2['i__id'],
                 'x__creator' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -258,25 +282,25 @@ if(strlen($_GET['i__id'])){
 
                 if($this_quantity<2){
                     for($t=20;$t>=2;$t--){
-                        if(substr_count(strtolower($i['i__title']),$t.'x')==1){
+                        if(substr_count(strtolower($i2['i__title']),$t.'x')==1){
                             $this_quantity = $t;
                             break;
                         }
                     }
                 }
 
-                if($i['i__id']==15736){
+                if($i2['i__id']==15736){
                     $name = $discoveries[0]['x__message'];
                 }
             }
 
-            $idea_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.$i['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.$i['i__title'].': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.$i['i__title'].' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
+            $idea_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.$i2['i__title'].': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.$i2['i__title'].': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.$i2['i__title'].' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
 
             if(count($discoveries)){
-                if(!isset($count_totals['i'][$i['i__id']])){
-                    $count_totals['i'][$i['i__id']] = 0;
+                if(!isset($count_totals['i'][$i2['i__id']])){
+                    $count_totals['i'][$i2['i__id']] = 0;
                 }
-                $count_totals['i'][$i['i__id']]++;
+                $count_totals['i'][$i2['i__id']]++;
             }
 
         }
@@ -357,25 +381,25 @@ if(strlen($_GET['i__id'])){
     echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
     echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-    echo '<th id="th_primary" style="width:200px;">'.( isset($_GET['include_i']) || isset($_GET['include_e']) ? '<a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&custom_grid='.$_GET['custom_grid'].'"><u><div class="filter_box hidden">REMOVE FILTERS <i class="fas fa-filter"></i></u></a></div><br />' : '' ).$count.' MEMBERS</th>';
+    echo '<th id="th_primary" style="width:200px;">'.( isset($_GET['include_i']) || count($setting_links[27984]) ? '<a href="/-13790?i__id='.join(',', $setting_links[40791]).'&e__id='.join(',', $setting_links[34513]).'&custom_grid='.$_GET['custom_grid'].'"><u><div class="filter_box hidden">REMOVE FILTERS <i class="fas fa-filter"></i></u></a></div><br />' : '' ).$count.' MEMBERS</th>';
     foreach($column_sources as $e){
         array_push($table_sortable, '#th_e_'.$e['e__id']);
-        echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><a class="filter_box hidden" href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&custom_grid='.$_GET['custom_grid'].'&include_e='.$e['e__id'].'&include_i='.( isset($_GET['include_i']) ? $_GET['include_i'] : '' ).'">'.( isset($_GET['include_e']) && $_GET['include_e']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a class="filter_box hidden" href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
+        echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><a class="filter_box hidden" href="/-13790?i__id='.join(',', $setting_links[40791]).'&e__id='.join(',', $setting_links[34513]).'&custom_grid='.$_GET['custom_grid'].'&include_e='.$e['e__id'].'&include_i='.( isset($_GET['include_i']) ? $_GET['include_i'] : '' ).'">'.( isset($_GET['include_e']) && $_GET['include_e']==$e['e__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a class="filter_box hidden" href="/-26582?e__id='.$e['e__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
     }
-    foreach($column_ideas as $i){
+    foreach($column_ideas as $i2){
 
         $has_limits = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__right' => $i['i__id'],
+            'x__right' => $i2['i__id'],
             'x__up' => 26189,
         ), array(), 1);
-        $current_x = ( isset($count_totals['i'][$i['i__id']]) ? $count_totals['i'][$i['i__id']] : 0 );
+        $current_x = ( isset($count_totals['i'][$i2['i__id']]) ? $count_totals['i'][$i2['i__id']] : 0 );
         $max_limit = (count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? intval($has_limits[0]['x__message']) : 0 );
 
-        array_push($table_sortable, '#th_i_'.$i['i__id']);
+        array_push($table_sortable, '#th_i_'.$i2['i__id']);
 
-        echo '<th id="th_i_'.$i['i__id'].'"><div><span class="icon-block-xxs">'.$e___31004[$i['i__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/~'.$i['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i['i__type']]['m__cover'].'</a><span class="vertical_col"><a class="filter_box hidden" href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&custom_grid='.$_GET['custom_grid'].'&include_i='.$i['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a class="filter_box hidden" href="/-26582?i__id='.$i['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i['x__message']) ? $i['x__message'] : $i['i__title'] ).'</span></th>';
+        echo '<th id="th_i_'.$i2['i__id'].'"><div><span class="icon-block-xxs">'.$e___31004[$i2['i__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/~'.$i2['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><a class="filter_box hidden" href="/-13790?i__id='.join(',', $setting_links[40791]).'&e__id='.join(',', $setting_links[34513]).'&custom_grid='.$_GET['custom_grid'].'&include_i='.$i2['i__id'].'&include_e='.( isset($_GET['include_e']) ? $_GET['include_e'] : '' ).'">'.( isset($_GET['include_i']) && $_GET['include_i']==$i2['i__id'] ? '<i class="fas fa-filter"></i>' : '<i class="fal fa-filter"></i>' ).'</a><a class="filter_box hidden" href="/-26582?i__id='.$i2['i__id'].'" target="_blank" title="'.$e___6287[26582]['m__title'].'">'.$e___6287[26582]['m__cover'].'</a><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : $i2['i__title'] ).'</span></th>';
 
     }
     //echo '<th>STARTED</th>';

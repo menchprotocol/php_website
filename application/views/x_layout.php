@@ -437,7 +437,7 @@ if($top_i__id) {
                     $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2, ".", "");
 
                     //Append information to cart:
-                    $info_append .= '<div class="sub_note main__title">';
+                    $info_append .= '<div class="sub_note">';
                     if(!count($allow_refunds)){
                         $info_append .= 'Final sale. ';
                     }
