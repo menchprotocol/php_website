@@ -703,7 +703,7 @@ if($top_i__id || 1) {
         if($setting_links[34513]){
 
             $column_sources = $this->X_model->fetch(array(
-                'x__up' => $setting_links[34513], //ACTIVE
+                'x__up IN (' . join(',', $setting_links[34513]) . ')' => null,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -712,7 +712,7 @@ if($top_i__id || 1) {
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__up' => $setting_links[34513], //ACTIVE
+                'x__up IN (' . join(',', $setting_links[34513]) . ')' => null,
                 'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
                 array_push($column_ideas, $link_i);
