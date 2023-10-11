@@ -610,9 +610,11 @@ if($top_i__id || 1) {
 
         //Can only have one focus view, pick first:
         $setting_links[34513] = 0;
-        foreach($setting_links[34513] as $first_frame){
-            $setting_links[34513] = $first_frame;
-            break;
+        if(count($setting_links[34513])){
+            foreach($setting_links[34513] as $first_frame){
+                $setting_links[34513] = $first_frame;
+                break;
+            }
         }
 
         //Fetch Main Idea:
@@ -620,9 +622,6 @@ if($top_i__id || 1) {
             //Set the current idea as default if not set...
             $setting_links[40791] = array($i['i__id']);
         }
-
-        echo 'hiiiiiiiii';
-        print_r($setting_links);
 
         if($setting_links[34513]){
 
