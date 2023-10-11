@@ -664,13 +664,13 @@ if($top_i__id) {
                 foreach($this->I_model->fetch(array(
                     'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
                 ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
-                    echo '<h2><span class="icon-block" title="'.$e___40787[40791]['m__title'].'">'.$e___40787[40791]['m__cover'].'</span><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
+                    $message_ui .= '<h2><span class="icon-block" title="'.$e___40787[40791]['m__title'].'">'.$e___40787[40791]['m__cover'].'</span><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
                 }
 
                 foreach($this->E_model->fetch(array(
                     'e__id' => $setting_links[34513],
                 )) as $grid){
-                    echo '<h3><a href="/@' . $grid['e__id'] . '"><span class="icon-block">'.view_cover($grid['e__cover'], true). '</span><u>' . $grid['e__title'] . '</u></a></h3>';
+                    $message_ui .= '<h3><a href="/@' . $grid['e__id'] . '"><span class="icon-block">'.view_cover($grid['e__cover'], true). '</span><u>' . $grid['e__title'] . '</u></a></h3>';
                 }
 
             } else {
@@ -682,18 +682,18 @@ if($top_i__id) {
                     $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
                     $or_ids = $this->I_model->recursive_down_ids($loaded_i, 'OR');
 
-                    echo '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
+                    $message_ui .= '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
                     $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
 
-                    echo '<div class="hidden idea_list">';
-                    echo '<div>'.count($all_ids).' Total Ideas:</div>';
+                    $message_ui .= '<div class="hidden idea_list">';
+                    $message_ui .= '<div>'.count($all_ids).' Total Ideas:</div>';
                     $count = 0;
                     foreach($all_ids as $recursive_down_id){
                         foreach($this->I_model->fetch(array(
                             'i__id' => $recursive_down_id,
                         ), 0, 0, array('i__id' => 'ASC')) as $this_i){
                             $count++;
-                            echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
+                            $message_ui .= '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
 
                             if(!$setting_links[34513]){
                                 foreach($this->X_model->fetch(array(
@@ -712,26 +712,26 @@ if($top_i__id) {
                         }
                     }
 
-                    echo '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
+                    $message_ui .= '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
                     $count = 0;
                     foreach($or_ids as $recursive_down_id){
                         foreach($this->I_model->fetch(array(
                             'i__id' => $recursive_down_id,
                         ), 0, 0, array('i__id' => 'ASC')) as $this_i){
                             $count++;
-                            echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
+                            $message_ui .= '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
                             if(!$setting_links[34513] && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
                                 array_push($column_ideas, $this_i);
                             }
                         }
                     }
-                    echo '</div>';
+                    $message_ui .= '</div>';
 
                 }
             }
 
 
-            echo '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $setting_links[40791]).'&e__id='.join(',', $setting_links[34513]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $setting_links[40791]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'&custom_grid='.$setting_links[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
+            $message_ui .= '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $setting_links[40791]).'&e__id='.join(',', $setting_links[34513]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $setting_links[40791]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'&custom_grid='.$setting_links[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
 
 
 
@@ -934,13 +934,13 @@ if($top_i__id) {
 
 
             $table_sortable = array('#th_primary','#th_done');
-            echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
+            $message_ui .= '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
-            echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-            echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
+            $message_ui .= '<tr style="font-weight:bold; vertical-align: baseline;">';
+            $message_ui .= '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
             foreach($column_sources as $e){
                 array_push($table_sortable, '#th_e_'.$e['e__id']);
-                echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
+                $message_ui .= '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
             }
             foreach($column_ideas as $i2){
 
@@ -955,12 +955,12 @@ if($top_i__id) {
 
                 array_push($table_sortable, '#th_i_'.$i2['i__id']);
 
-                echo '<th id="th_i_'.$i2['i__id'].'"><div><span class="icon-block-xxs">'.$e___31004[$i2['i__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/~'.$i2['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : $i2['i__title'] ).'</span></th>';
+                $message_ui .= '<th id="th_i_'.$i2['i__id'].'"><div><span class="icon-block-xxs">'.$e___31004[$i2['i__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/~'.$i2['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : $i2['i__title'] ).'</span></th>';
 
             }
-            echo '</tr>';
-            echo $body_content;
-            echo '</table>';
+            $message_ui .= '</tr>';
+            $message_ui .= $body_content;
+            $message_ui .= '</table>';
 
             ?>
 
