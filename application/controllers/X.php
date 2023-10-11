@@ -1572,7 +1572,7 @@ class X extends CI_Controller
     function load_platform_stats(){
         //Count transactions:
         $return_array = array();
-        foreach($this->config->item('e___6287') as $x__type => $m) {
+        foreach($this->config->item('e___33292') as $x__type => $m) {
             foreach($this->config->item('e___'.$x__type) as $x__type2 => $m2) {
                 array_push($return_array , array(
                     'sub_id' => $x__type2,
