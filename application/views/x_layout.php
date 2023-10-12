@@ -694,7 +694,7 @@ if($top_i__id) {
         if($setting_links[34513]){
 
             $column_sources = $this->X_model->fetch(array(
-                'x__up' => $setting_links[34513], //ACTIVE
+                'x__up' => $setting_links[34513],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -703,7 +703,7 @@ if($top_i__id) {
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__up' => $setting_links[34513], //ACTIVE
+                'x__up' => $setting_links[34513],
                 'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
                 array_push($column_ideas, $link_i);
@@ -730,10 +730,12 @@ if($top_i__id) {
             ), array('x__creator'), 0, 500, array('x__id' => 'DESC'));
         } elseif(count($setting_links[27984])){
             $query_string = $this->X_model->fetch(array(
-                'x__up IN (' . join(',', $setting_links[27984]) . ')' => null, //IDEA LINKS
+                'x__up IN (' . join(',', $setting_links[27984]) . ')' => null,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+
+            echo 'hiiiiii ['.count($query_string).']';
         }
 
         foreach($query_string as $x){
