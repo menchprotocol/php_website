@@ -1269,9 +1269,17 @@ if(!$top_i__id){
     } else {
 
         //Show Link to Top, if any:
-        echo 'hiiiiiiii';
         foreach($this->I_model->recursive_up_ids($i['i__id']) as $top_id){
-            echo '<'.$top_id.'>';
+            foreach($this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $top_id,
+                'x__up' => 4235,
+            ), array('x__right')) as $top_start){
+                echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="/'.$top_start['i__id'].'" title="'.$top_start['i__title'].'">'.$e___11035[40798]['m__title'].' '.$e___11035[40798]['m__cover'].'</a></div>';
+                echo '<div class="doclear">&nbsp;</div>';
+                break;
+            }
         }
 
         $_GET['open'] = true;
