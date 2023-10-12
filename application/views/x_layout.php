@@ -621,12 +621,6 @@ if($top_i__id) {
             $setting_links[34513] = 0;
         }
 
-        //Fetch Main Idea:
-        if(!count($setting_links[40791])){
-            //Set the current idea as default if not set...
-            $setting_links[40791] = array($i['i__id']);
-        }
-
 
         //Auto generate ALL columns:
         if(!$setting_links[34513]){
