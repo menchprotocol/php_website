@@ -728,7 +728,7 @@ if($top_i__id) {
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__creator'), 0, 500, array('x__id' => 'DESC'));
-        } elseif(count($setting_links[27984])){
+        } elseif(count($setting_links[27984])>0){
             $query_string = $this->X_model->fetch(array(
                 'x__up IN (' . join(',', $setting_links[27984]) . ')' => null,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -736,9 +736,9 @@ if($top_i__id) {
             ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
         }
 
-        echo $this->db->last_query();
-        echo 'hiiiiii ['.join(',', $setting_links[27984]).']['.count($query_string).']';
+        echo 'hiiiiii ['.( count($setting_links[27984])>0? 'YES' : 'NO' ).']['.join(',', $setting_links[27984]).']['.count($query_string).']';
         print_r($setting_links);
+        echo $this->db->last_query();
 
         foreach($query_string as $x){
 
