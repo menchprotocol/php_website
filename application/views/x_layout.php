@@ -727,7 +727,7 @@ if($top_i__id) {
                 'x__left IN (' . join(',', $setting_links[40791]) . ')' => null,
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__creator'), 0, 500, array('x__time' => 'DESC'));
+            ), array('x__creator'), 0, 500, array('x__id' => 'DESC'));
         } elseif(count($setting_links[27984])){
             $query_string = $this->X_model->fetch(array(
                 'x__up IN (' . join(',', $setting_links[27984]) . ')' => null, //IDEA LINKS
@@ -760,7 +760,6 @@ if($top_i__id) {
                 //Must follow NONE of these sources:
                 continue;
             }
-
             if(count($setting_links[40793]) && count($this->X_model->fetch(array(
                     'x__left IN (' .join(',', $setting_links[40793]) . ')' => null, //All of these
                     'x__creator' => $x['e__id'],
@@ -774,18 +773,6 @@ if($top_i__id) {
 
             array_push($unique_users_count, $x['e__id']);
             $body_content .= '<tr class="body_tr">';
-
-            $this_top = $this->I_model->fetch(array(
-                'i__id' => $x['x__left'],
-            ));
-
-            //Member
-            $tree_progress = $this->X_model->tree_progress($x['e__id'], $this_top[0]);
-            $perfect_point = str_pad($tree_progress['fixed_completed_percentage'], 3, '0', STR_PAD_LEFT);
-            $perfect_point = ( $perfect_point>100 ? 100 : $perfect_point );
-
-
-
 
             //IDEAS
             $idea_content = '';
