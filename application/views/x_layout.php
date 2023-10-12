@@ -1286,8 +1286,9 @@ if($top_i__id){
         }
         echo $starting_point;
 
-
-        $_GET['open'] = true;
+        if(!$starting_point){
+            $_GET['open'] = true;
+        }
 
     }
 
