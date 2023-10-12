@@ -721,11 +721,17 @@ if($top_i__id || 1) {
         $unique_users_count = array();
         $count = 0;
 
-        foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        $query_string = ( count($setting_links[40791]) ? $this->X_model->fetch(array(
             'x__left IN (' . join(',', $setting_links[40791]) . ')' => null, //IDEA LINKS
-        ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) as $x){
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) : $this->X_model->fetch(array(
+            'x__up IN (' . join(',', $setting_links[40791]) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) );
+
+        foreach($query_string as $x){
 
             if(in_array($x['e__id'], $unique_users_count)){
                 continue;
