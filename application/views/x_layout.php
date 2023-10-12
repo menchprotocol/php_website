@@ -734,9 +734,10 @@ if($top_i__id) {
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-
-            echo 'hiiiiii ['.count($query_string).']';
         }
+
+        echo 'hiiiiii ['.count($query_string).']';
+        print_r($setting_links);
 
         foreach($query_string as $x){
 
