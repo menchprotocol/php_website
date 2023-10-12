@@ -222,7 +222,7 @@ if($view_i__cache){
 
 
 $x_selects = array();
-if($top_i__id || 1) {
+if($top_i__id) {
     if ($is_or_idea) {
 
         //Has no followers:
