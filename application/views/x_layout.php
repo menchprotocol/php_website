@@ -736,6 +736,7 @@ if($top_i__id) {
             ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
         }
 
+        echo $this->db->last_query();
         echo 'hiiiiii ['.join(',', $setting_links[27984]).']['.count($query_string).']';
         print_r($setting_links);
 
