@@ -223,7 +223,6 @@ if($view_i__cache){
 
 $x_selects = array();
 if($top_i__id || 1) {
-
     if ($is_or_idea) {
 
         //Has no followers:
@@ -1268,6 +1267,11 @@ if(!$top_i__id){
         echo '<div class="doclear">&nbsp;</div>';
 
     } else {
+
+        //Show Link to Top, if any:
+        foreach($this->I_model->recursive_up_ids($i['i__id']) as $top_id){
+            echo '<'.$top_id.'>';
+        }
 
         $_GET['open'] = true;
 
