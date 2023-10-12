@@ -721,15 +721,20 @@ if($top_i__id) {
         $unique_users_count = array();
         $count = 0;
 
-        $query_string = ( count($setting_links[40791]) ? $this->X_model->fetch(array(
-            'x__left IN (' . join(',', $setting_links[40791]) . ')' => null, //IDEA LINKS
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) : $this->X_model->fetch(array(
-            'x__up IN (' . join(',', $setting_links[40791]) . ')' => null, //IDEA LINKS
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) );
+        $query_string = array();
+        if(count($setting_links[40791])){
+            $query_string = $this->X_model->fetch(array(
+                'x__left IN (' . join(',', $setting_links[40791]) . ')' => null,
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array('x__creator'), 0, 500, array('x__time' => 'DESC'));
+        } elseif(count($setting_links[27984])){
+            $query_string = $this->X_model->fetch(array(
+                'x__left IN (' . join(',', $setting_links[27984]) . ')' => null,
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array('x__creator'), 0, 500, array('x__time' => 'DESC'));
+        }
 
         foreach($query_string as $x){
 
@@ -737,7 +742,7 @@ if($top_i__id) {
                 continue;
             }
 
-            if(count($setting_links[27984])>0 && count($setting_links[27984])!=count($this->X_model->fetch(array(
+            if(count($setting_links[40791]) && count($setting_links[27984]) && count($setting_links[27984])!=count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $setting_links[27984]) . ')' => null, //All of these
                     'x__down' => $x['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
