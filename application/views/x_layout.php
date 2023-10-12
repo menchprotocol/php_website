@@ -730,10 +730,6 @@ if($top_i__id) {
             ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
         }
 
-        echo 'hiiiiii ['.( count($setting_links[27984])>0? 'YES' : 'NO' ).']['.join(',', $setting_links[27984]).']['.count($query_string).']';
-        print_r($setting_links);
-        echo $this->db->last_query();
-
         foreach($query_string as $x){
 
             if(in_array($x['e__id'], $unique_users_count)){
