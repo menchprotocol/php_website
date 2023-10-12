@@ -1259,7 +1259,7 @@ if($top_i__id) {
 
 
 
-if($top_i__id){
+if(!$top_i__id){
 
     if(count($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
