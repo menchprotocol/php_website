@@ -584,6 +584,10 @@ if($top_i__id) {
         $is_with_action_es = array();
         $es_added = array();
 
+
+        echo '<div class="settings_frame"><a href="javascript:void(0);" onclick="$(\'.settings_frame\').toggleClass(\'hidden\')"><i class="fal fa-cog"></i></a></div>';
+        echo '<div class="settings_frame hidden">';
+
         //Compile key settings for this sheet:
         foreach($e___40787 as $x__type => $m) {
             $setting_links[intval($x__type)] = array(); //Assume no links for this type
@@ -682,6 +686,9 @@ if($top_i__id) {
 
 
         echo '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $setting_links[40791]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $setting_links[40791]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'&custom_grid='.$setting_links[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
+
+
+        echo '</div>';
 
 
 
