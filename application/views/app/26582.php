@@ -56,7 +56,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 } else {
 
-    //Show UI to schedule new messages:
+    //Show status of current messages:
 
     foreach(array('i__id','e__id','exclude_e','include_e','exclude_i','include_i') as $input){
         if(!isset($_GET[$input])){

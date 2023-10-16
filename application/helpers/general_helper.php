@@ -848,6 +848,213 @@ function round_minutes($seconds){
 
 
 
+function list_settings($i__id){
+
+    //Compile key settings for this sheet:
+    $filters_ui = '<div class="settings_frame"><a href="javascript:void(0);" onclick="$(\'.settings_frame\').toggleClass(\'hidden\')"><i class="fal fa-cog"></i></a></div>'.'<div class="settings_frame hidden">';
+
+
+    $CI =& get_instance();
+    $e___40787 = $CI->config->item('e___40787'); //Sheet Link Types
+    $e___6287 = $CI->config->item('e___6287'); //APP
+    $list_config = array(); //To compile the settings of this sheet:
+    $column_sources = array();
+    $column_ideas = array();
+
+    foreach($e___40787 as $x__type => $m) {
+        $list_config[intval($x__type)] = array(); //Assume no links for this type
+    }
+    //Now search for these settings across sources:
+    foreach($CI->X_model->fetch(array(
+        'x__right' => $i__id,
+        'x__type IN (' . join(',', $CI->config->item('n___40787')) . ')' => null, //Sheets
+        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+    ), array('x__up'), 0) as $setting_link){
+        array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
+        //Print on screen:
+        $filters_ui .= '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].': '.$e___40787[$setting_link['x__type']]['m__message'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block-xss">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
+    }
+    //Now search for these settings across ideas:
+    foreach($CI->X_model->fetch(array(
+        'x__left' => $i__id,
+        'x__type IN (' . join(',', $CI->config->item('n___40787')) . ')' => null, //Sheets
+        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
+    ), array('x__right'), 0) as $setting_link){
+        array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
+        //Print on screen:
+        $filters_ui .= '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].': '.$e___40787[$setting_link['x__type']]['m__message'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
+    }
+
+    //Can only have one focus view, pick first one if any:
+    if(count($list_config[34513])){
+        foreach($list_config[34513] as $first_frame){
+            $list_config[34513] = $first_frame;
+            break;
+        }
+    } else {
+        $list_config[34513] = 0;
+    }
+
+
+
+    //Generate filter:
+    $query_string = array();
+    if(count($list_config[40791])){
+        $query_string = $CI->X_model->fetch(array(
+            'x__left IN (' . join(',', $list_config[40791]) . ')' => null,
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array('x__creator'), 0, 500, array('x__id' => 'DESC'));
+    } elseif(count($list_config[27984])>0){
+        $query_string = $CI->X_model->fetch(array(
+            'x__up IN (' . join(',', $list_config[27984]) . ')' => null,
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+    }
+
+    //Clean list:
+    $unique_users_count = array();
+    foreach($query_string as $key => $x) {
+
+        if (in_array($x['e__id'], $unique_users_count)) {
+
+            unset($query_string[$key]);
+
+        } elseif (count($list_config[40791]) && count($list_config[27984]) && count($list_config[27984]) != count($CI->X_model->fetch(array(
+                'x__up IN (' . join(',', $list_config[27984]) . ')' => null, //All of these
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))) {
+
+            //Must be included in ALL Sources, since not lets continue:
+            unset($query_string[$key]);
+
+        } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
+                'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))) {
+
+            //Must follow NONE of these sources:
+            unset($query_string[$key]);
+
+        } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
+                'x__left IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
+                'x__creator' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))) {
+
+            //They have discovered at-least one, so skip this:
+            unset($query_string[$key]);
+
+        }
+
+        array_push($unique_users_count, $x['e__id']);
+
+    }
+
+
+
+
+    //Determine columns if any:
+    //Any PINs?
+    if($list_config[34513]){
+
+        $column_sources = $CI->X_model->fetch(array(
+            'x__up' => $list_config[34513],
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
+
+        foreach($CI->X_model->fetch(array(
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__up' => $list_config[34513],
+            'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+            array_push($column_ideas, $link_i);
+        }
+
+    } elseif(0) {
+
+        foreach($CI->I_model->fetch(array(
+            'i__id IN (' . join(',', $list_config[40791]) . ')' => null, //SOURCE LINKS
+        ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
+
+            $all_ids = $CI->I_model->recursive_down_ids($loaded_i, 'ALL');
+            $or_ids = $CI->I_model->recursive_down_ids($loaded_i, 'OR');
+
+            $filters_ui .= '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
+            $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
+
+            $filters_ui .= '<div class="hidden idea_list">';
+            $filters_ui .= '<div>'.count($all_ids).' Total Ideas:</div>';
+            $count = 0;
+            foreach($all_ids as $recursive_down_id){
+                foreach($CI->I_model->fetch(array(
+                    'i__id' => $recursive_down_id,
+                ), 0, 0, array('i__id' => 'ASC')) as $focus_i){
+                    $count++;
+                    $filters_ui .= '<p>'.$count.') <a href="/~'.$focus_i['i__id'].'">'.$CI-_i['i__title'].'</a></p>';
+
+                    if(!$list_config[34513]){
+                        foreach($CI->X_model->fetch(array(
+                            'x__right' => $focus_i['i__id'],
+                            'x__type IN (' . join(',', $CI->config->item('n___31023')) . ')' => null, //Idea Source Action Links
+                            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+                        ), array('x__up'), 0) as $focus_e){
+                            if(!in_array($focus_e['e__id'], $es_added) && (!count($list_config[27984]) || !in_array($focus_e['e__id'], $list_config[27984]))){
+                                array_push($column_sources, $focus_e);
+                                array_push($es_added, $focus_e['e__id']);
+                            }
+                            array_push($is_with_action_es, $focus_i['i__id']);
+                        }
+                    }
+                }
+            }
+
+            $filters_ui .= '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
+            $count = 0;
+            foreach($or_ids as $recursive_down_id){
+                foreach($CI->I_model->fetch(array(
+                    'i__id' => $recursive_down_id,
+                ), 0, 0, array('i__id' => 'ASC')) as $focus_i){
+                    $count++;
+                    $filters_ui .= '<p>'.$count.') <a href="/~'.$focus_i['i__id'].'">'.$focus_i['i__title'].'</a></p>';
+                    if(!$list_config[34513] && !in_array($focus_i['i__id'], $is_with_action_es)){ // && isset($_GET['all_ideas'])
+                        array_push($column_ideas, $focus_i);
+                    }
+                }
+            }
+            $filters_ui .= '</div>';
+
+        }
+
+    }
+
+
+    $filters_ui .= '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $list_config[40791]).'&include_e='.join(',', $list_config[27984]).'&exclude_e='.join(',', $list_config[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $list_config[40791]).'&include_e='.join(',', $list_config[27984]).'&exclude_e='.join(',', $list_config[26600]).'&custom_grid='.$list_config[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>'.'</div>';
+
+
+    return array(
+        'list_config' => $list_config,
+        'column_sources' => $column_sources,
+        'column_ideas' => $column_ideas,
+        'query_string' => $query_string,
+        'filters_ui' => $filters_ui,
+    );
+
+}
+
+
 function count_interactions($x__type, $x__time_start = null, $x__time_end = null){
 
     $CI =& get_instance();

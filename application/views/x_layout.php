@@ -231,212 +231,33 @@ if($top_i__id) {
         $e___4737 = $this->config->item('e___4737'); //Idea Types
         $e___6177 = $this->config->item('e___6177'); //Source Status
         $e___31004 = $this->config->item('e___31004'); //Idea Status
-        $e___40787 = $this->config->item('e___40787'); //Sheet Link Types
 
         $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
-        $column_sources = array();
-        $column_ideas = array();
-        $setting_links = array(); //To compile the settings of this sheet:
         $recursive_i_ids = array();
         $is_with_action_es = array();
         $es_added = array();
-
-
-        echo '<div class="settings_frame"><a href="javascript:void(0);" onclick="$(\'.settings_frame\').toggleClass(\'hidden\')"><i class="fal fa-cog"></i></a></div>';
-        echo '<div class="settings_frame hidden">';
-
-        //Compile key settings for this sheet:
-        foreach($e___40787 as $x__type => $m) {
-            $setting_links[intval($x__type)] = array(); //Assume no links for this type
-        }
-        //Now search for these settings across sources:
-        foreach($this->X_model->fetch(array(
-            'x__right' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___40787')) . ')' => null, //Sheets
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-        ), array('x__up'), 0) as $setting_link){
-            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['e__id']));
-            //Print on screen:
-            echo '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].': '.$e___40787[$setting_link['x__type']]['m__message'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block-xss">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
-        }
-        //Now search for these settings across ideas:
-        foreach($this->X_model->fetch(array(
-            'x__left' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___40787')) . ')' => null, //Sheets
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
-        ), array('x__right'), 0) as $setting_link){
-            array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['i__id']));
-            //Print on screen:
-            echo '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].': '.$e___40787[$setting_link['x__type']]['m__message'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
-        }
-
-        //Can only have one focus view, pick first:
-        if(count($setting_links[34513])){
-            foreach($setting_links[34513] as $first_frame){
-                $setting_links[34513] = $first_frame;
-                break;
-            }
-        } else {
-            $setting_links[34513] = 0;
-        }
-
-
-        //Auto generate ALL columns:
-        if(!$setting_links[34513] && 0){
-
-            foreach($this->I_model->fetch(array(
-                'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
-            ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
-
-                $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
-                $or_ids = $this->I_model->recursive_down_ids($loaded_i, 'OR');
-
-                echo '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
-                $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
-
-                echo '<div class="hidden idea_list">';
-                echo '<div>'.count($all_ids).' Total Ideas:</div>';
-                $count = 0;
-                foreach($all_ids as $recursive_down_id){
-                    foreach($this->I_model->fetch(array(
-                        'i__id' => $recursive_down_id,
-                    ), 0, 0, array('i__id' => 'ASC')) as $this_i){
-                        $count++;
-                        echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
-
-                        if(!$setting_links[34513]){
-                            foreach($this->X_model->fetch(array(
-                                'x__right' => $this_i['i__id'],
-                                'x__type IN (' . join(',', $this->config->item('n___31023')) . ')' => null, //Idea Source Action Links
-                                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                            ), array('x__up'), 0) as $this_e){
-                                if(!in_array($this_e['e__id'], $es_added) && (!count($setting_links[27984]) || !in_array($this_e['e__id'], $setting_links[27984]))){
-                                    array_push($column_sources, $this_e);
-                                    array_push($es_added, $this_e['e__id']);
-                                }
-                                array_push($is_with_action_es, $this_i['i__id']);
-                            }
-                        }
-                    }
-                }
-
-                echo '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
-                $count = 0;
-                foreach($or_ids as $recursive_down_id){
-                    foreach($this->I_model->fetch(array(
-                        'i__id' => $recursive_down_id,
-                    ), 0, 0, array('i__id' => 'ASC')) as $this_i){
-                        $count++;
-                        echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
-                        if(!$setting_links[34513] && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
-                            array_push($column_ideas, $this_i);
-                        }
-                    }
-                }
-                echo '</div>';
-
-            }
-        }
-
-
-        echo '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $setting_links[40791]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $setting_links[40791]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'&custom_grid='.$setting_links[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
-
-
-        echo '</div>';
-
-
-
-        if($setting_links[34513]){
-
-            $column_sources = $this->X_model->fetch(array(
-                'x__up' => $setting_links[34513],
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
-
-            foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__up' => $setting_links[34513],
-                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
-            ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
-                array_push($column_ideas, $link_i);
-            }
-
-        }
-
-
-        //Return UI:
+        $count = 0;
         $body_content = '';
         $count_totals = array(
             'e' => array(),
             'i' => array(),
         );
-        $unique_users_count = array();
-        $count = 0;
-
-        $query_string = array();
-        if(count($setting_links[40791])){
-            $query_string = $this->X_model->fetch(array(
-                'x__left IN (' . join(',', $setting_links[40791]) . ')' => null,
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__creator'), 0, 500, array('x__id' => 'DESC'));
-        } elseif(count($setting_links[27984])>0){
-            $query_string = $this->X_model->fetch(array(
-                'x__up IN (' . join(',', $setting_links[27984]) . ')' => null,
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-        }
-
-        foreach($query_string as $x){
-
-            if(in_array($x['e__id'], $unique_users_count)){
-                continue;
-            }
-
-            if(count($setting_links[40791]) && count($setting_links[27984]) && count($setting_links[27984])!=count($this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $setting_links[27984]) . ')' => null, //All of these
-                    'x__down' => $x['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-                //Must be included in ALL Sources, since not lets continue:
-                continue;
-            }
-            if(count($setting_links[26600]) && count($this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $setting_links[26600]) . ')' => null, //All of these
-                    'x__down' => $x['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-                //Must follow NONE of these sources:
-                continue;
-            }
-            if(count($setting_links[40793]) && count($this->X_model->fetch(array(
-                    'x__left IN (' .join(',', $setting_links[40793]) . ')' => null, //All of these
-                    'x__creator' => $x['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-                //They have discovered at-least one, so skip this:
-                continue;
-            }
 
 
-            array_push($unique_users_count, $x['e__id']);
+        //Generate list & settings:
+        $list_settings = list_settings($i['i__id']);
+        echo $list_settings['filters_ui'];
+
+
+        foreach($list_settings['query_string'] as $x){
+
             $body_content .= '<tr class="body_tr">';
 
             //IDEAS
             $idea_content = '';
             $this_quantity = 1;
             $name = '';
-            foreach($column_ideas as $i2){
+            foreach($list_settings['column_ideas'] as $i2){
 
                 $discoveries = $this->X_model->fetch(array(
                     'x__left' => $i2['i__id'],
@@ -491,7 +312,7 @@ if($top_i__id) {
 
 
             //SOURCES
-            foreach($column_sources as $e){
+            foreach($list_settings['column_sources'] as $e){
 
                 $input_modal = count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $this->config->item('n___37707')) . ')' => null, //SOURCE LINKS
@@ -550,11 +371,11 @@ if($top_i__id) {
 
         echo '<tr style="font-weight:bold; vertical-align: baseline;">';
         echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
-        foreach($column_sources as $e){
+        foreach($list_settings['column_sources'] as $e){
             array_push($table_sortable, '#th_e_'.$e['e__id']);
             echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
         }
-        foreach($column_ideas as $i2){
+        foreach($list_settings['column_ideas'] as $i2){
 
             $max_available = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -581,7 +402,7 @@ if($top_i__id) {
             <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
 
-            <?php if($setting_links[34513]>0){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
+            <?php if($list_settings['list_config'][34513]>0){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
 
 
 

@@ -13,7 +13,7 @@ $column_ideas = array();
 
 //Compile key settings for this sheet:
 foreach($e___40787 as $x__type => $m) {
-    $setting_links[intval($x__type)] = array(); //Assume no links for this type
+    $list_settings['list_config'][intval($x__type)] = array(); //Assume no links for this type
 }
 foreach($this->X_model->fetch(array(
     'x__right' => $i['i__id'],
@@ -21,7 +21,7 @@ foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
 ), array('x__up'), 0) as $setting_link){
-    array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__up']));
+    array_push($list_settings['list_config'][intval($setting_link['x__type'])], intval($setting_link['x__up']));
 }
 foreach($this->X_model->fetch(array(
     'x__left' => $i['i__id'],
@@ -29,34 +29,34 @@ foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
 ), array('x__right'), 0) as $setting_link){
-    array_push($setting_links[intval($setting_link['x__type'])], intval($setting_link['x__left']));
+    array_push($list_settings['list_config'][intval($setting_link['x__type'])], intval($setting_link['x__left']));
 }
 
-$setting_links[34513] = 0;
-foreach($setting_links[34513] as $first_frame){
-    $setting_links[34513] = $first_frame;
+$list_settings['list_config'][34513] = 0;
+foreach($list_settings['list_config'][34513] as $first_frame){
+    $list_settings['list_config'][34513] = $first_frame;
     break;
 }
 
 
 //Fetch Main Idea:
-if(count($setting_links[40791])){
+if(count($list_settings['list_config'][40791])){
 
 
     $recursive_i_ids = array();
     $is_with_action_es = array();
     $es_added = array();
 
-    if($setting_links[34513]){
+    if($list_settings['list_config'][34513]){
 
         foreach($this->I_model->fetch(array(
-            'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
+            'i__id IN (' . join(',', $list_settings['list_config'][40791]) . ')' => null, //SOURCE LINKS
         ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
             echo '<h2><span class="icon-block" title="'.$e___40787[40791]['m__title'].'">'.$e___40787[40791]['m__cover'].'</span><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
         }
 
         foreach($this->E_model->fetch(array(
-            'e__id' => $setting_links[34513],
+            'e__id' => $list_settings['list_config'][34513],
         )) as $grid){
             echo '<h3><a href="/@' . $grid['e__id'] . '"><span class="icon-block">'.view_cover($grid['e__cover'], true). '</span><u>' . $grid['e__title'] . '</u></a></h3>';
         }
@@ -64,7 +64,7 @@ if(count($setting_links[40791])){
     } else {
 
         foreach($this->I_model->fetch(array(
-            'i__id IN (' . join(',', $setting_links[40791]) . ')' => null, //SOURCE LINKS
+            'i__id IN (' . join(',', $list_settings['list_config'][40791]) . ')' => null, //SOURCE LINKS
         ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
 
             $all_ids = $this->I_model->recursive_down_ids($loaded_i, 'ALL');
@@ -83,14 +83,14 @@ if(count($setting_links[40791])){
                     $count++;
                     echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
 
-                    if(!$setting_links[34513]){
+                    if(!$list_settings['list_config'][34513]){
                         foreach($this->X_model->fetch(array(
                             'x__right' => $this_i['i__id'],
                             'x__type IN (' . join(',', $this->config->item('n___31023')) . ')' => null, //Idea Source Action Links
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         ), array('x__up'), 0) as $this_e){
-                            if(!in_array($this_e['e__id'], $es_added) && (!count($setting_links[27984]) || !in_array($this_e['e__id'], $setting_links[27984]))){
+                            if(!in_array($this_e['e__id'], $es_added) && (!count($list_settings['list_config'][27984]) || !in_array($this_e['e__id'], $list_settings['list_config'][27984]))){
                                 array_push($column_sources, $this_e);
                                 array_push($es_added, $this_e['e__id']);
                             }
@@ -108,7 +108,7 @@ if(count($setting_links[40791])){
                 ), 0, 0, array('i__id' => 'ASC')) as $this_i){
                     $count++;
                     echo '<p>'.$count.') <a href="/~'.$this_i['i__id'].'">'.$this_i['i__title'].'</a></p>';
-                    if(!$setting_links[34513] && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
+                    if(!$list_settings['list_config'][34513] && !in_array($this_i['i__id'], $is_with_action_es) && isset($_GET['all_ideas'])){
                         array_push($column_ideas, $this_i);
                     }
                 }
@@ -119,16 +119,16 @@ if(count($setting_links[40791])){
     }
 
 
-    echo '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $setting_links[40791]).'&e__id='.join(',', $setting_links[34513]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $setting_links[40791]).'&include_e='.join(',', $setting_links[27984]).'&exclude_e='.join(',', $setting_links[26600]).'&custom_grid='.$setting_links[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
+    echo '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $list_settings['list_config'][40791]).'&e__id='.join(',', $list_settings['list_config'][34513]).'&include_e='.join(',', $list_settings['list_config'][27984]).'&exclude_e='.join(',', $list_settings['list_config'][26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $list_settings['list_config'][40791]).'&include_e='.join(',', $list_settings['list_config'][27984]).'&exclude_e='.join(',', $list_settings['list_config'][26600]).'&custom_grid='.$list_settings['list_config'][34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>';
 
 
 
 
 
-    if($setting_links[34513]){
+    if($list_settings['list_config'][34513]){
 
         $column_sources = $this->X_model->fetch(array(
-            'x__up' => $setting_links[34513], //ACTIVE
+            'x__up' => $list_settings['list_config'][34513], //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -137,7 +137,7 @@ if(count($setting_links[40791])){
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__up' => $setting_links[34513], //ACTIVE
+            'x__up' => $list_settings['list_config'][34513], //ACTIVE
             'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
             array_push($column_ideas, $link_i);
@@ -163,15 +163,15 @@ if(count($setting_links[40791])){
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__left IN (' . join(',', $setting_links[40791]) . ')' => null, //IDEA LINKS
+        'x__left IN (' . join(',', $list_settings['list_config'][40791]) . ')' => null, //IDEA LINKS
     ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) as $x){
 
         if(in_array($x['e__id'], $unique_users_count)){
             continue;
         }
 
-        if(count($setting_links[27984])>0 && count($setting_links[27984])!=count($this->X_model->fetch(array(
-                'x__up IN (' . join(',', $setting_links[27984]) . ')' => null, //All of these
+        if(count($list_settings['list_config'][27984])>0 && count($list_settings['list_config'][27984])!=count($this->X_model->fetch(array(
+                'x__up IN (' . join(',', $list_settings['list_config'][27984]) . ')' => null, //All of these
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -179,8 +179,8 @@ if(count($setting_links[40791])){
             //Must be included in ALL Sources, since not lets continue:
             continue;
         }
-        if(count($setting_links[26600]) && count($this->X_model->fetch(array(
-                'x__up IN (' . join(',', $setting_links[26600]) . ')' => null, //All of these
+        if(count($list_settings['list_config'][26600]) && count($this->X_model->fetch(array(
+                'x__up IN (' . join(',', $list_settings['list_config'][26600]) . ')' => null, //All of these
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -189,8 +189,8 @@ if(count($setting_links[40791])){
             continue;
         }
 
-        if(count($setting_links[40793]) && count($this->X_model->fetch(array(
-                'x__left IN (' .join(',', $setting_links[40793]) . ')' => null, //All of these
+        if(count($list_settings['list_config'][40793]) && count($this->X_model->fetch(array(
+                'x__left IN (' .join(',', $list_settings['list_config'][40793]) . ')' => null, //All of these
                 'x__creator' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
