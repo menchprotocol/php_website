@@ -867,7 +867,6 @@ if($top_i__id) {
 
 
             $valid_paid_ticket = false; //Unless proven otherwise
-            $min_allowed = 1;
             $detect_data_type = 0;
 
             $paypal_email =  website_setting(30882);
@@ -902,7 +901,7 @@ if($top_i__id) {
             $spots_remaining = i_spots_remaining($i['i__id']);
             $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
             $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
-            $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
+            $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message'])>0 : 1 );
             $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
 
 
