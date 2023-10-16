@@ -1714,7 +1714,7 @@ class X_model extends CI_Model
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $focus_i__id,
-                    'x__up' => 26613, //Min Selection
+                    'x__up' => 40834, //Min Selection
                 ), array(), 1) as $limit){
                     if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
                         return array(
@@ -1730,7 +1730,7 @@ class X_model extends CI_Model
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $focus_i__id,
-                'x__up' => 26614, //Max Selection
+                'x__up' => 40833, //Max Selection
             ), array(), 1) as $limit){
                 if(intval($limit['x__message']) > 0 && count($answer_i__ids) > intval($limit['x__message'])){
                     return array(

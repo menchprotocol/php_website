@@ -531,13 +531,13 @@ function i_spots_remaining($i__id){
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
-    $has_limits = $CI->X_model->fetch(array(
+    $max_available = $CI->X_model->fetch(array(
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'x__right' => $i__id,
         'x__up' => 26189,
     ), array(), 1);
-    if(count($has_limits) && strlen($has_limits[0]['x__message']) && is_numeric($has_limits[0]['x__message'])){
+    if(count($max_available) && strlen($max_available[0]['x__message']) && is_numeric($max_available[0]['x__message'])){
         //We have a limit! See if we've met it already:
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -549,7 +549,7 @@ function i_spots_remaining($i__id){
             $query_filters['x__creator !='] = $member_e['e__id'];
         }
         $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
-        $spots_remaining = intval($has_limits[0]['x__message'])-$query[0]['totals'];
+        $spots_remaining = intval($max_available[0]['x__message'])-$query[0]['totals'];
         if($spots_remaining < 0){
             $spots_remaining = 0;
         }

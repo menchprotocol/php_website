@@ -339,14 +339,14 @@ if(count($setting_links[40791])){
     }
     foreach($column_ideas as $i2){
 
-        $has_limits = $this->X_model->fetch(array(
+        $max_available = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right' => $i2['i__id'],
             'x__up' => 26189,
         ), array(), 1);
         $current_x = ( isset($count_totals['i'][$i2['i__id']]) ? $count_totals['i'][$i2['i__id']] : 0 );
-        $max_limit = (count($has_limits) && is_numeric($has_limits[0]['x__message']) && intval($has_limits[0]['x__message'])>0 ? intval($has_limits[0]['x__message']) : 0 );
+        $max_limit = (count($max_available) && is_numeric($max_available[0]['x__message']) && intval($max_available[0]['x__message'])>0 ? intval($max_available[0]['x__message']) : 0 );
 
         array_push($table_sortable, '#th_i_'.$i2['i__id']);
 

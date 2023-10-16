@@ -194,13 +194,13 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $gross_commission += $total_commission;
         $gross_payout += $payout;
 
-        $has_limits = $this->X_model->fetch(array(
+        $max_available = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right' => $i['i__id'],
             'x__up' => 26189,
         ), array(), 1);
-        $available_transactions = (count($has_limits) && is_numeric($has_limits[0]['x__message']) ? intval($has_limits[0]['x__message']) : '∞');
+        $available_transactions = (count($max_available) && is_numeric($max_available[0]['x__message']) ? intval($max_available[0]['x__message']) : '∞');
 
         if(fmod($total_transactions, 2)==1){
             $transaction_content .= '<tr class="transaction_columns hidden"></tr>';
