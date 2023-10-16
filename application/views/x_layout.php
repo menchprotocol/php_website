@@ -580,10 +580,11 @@ if($top_i__id) {
 
             <?php if(!isset($_GET['expand'])){ echo ' #sortable_table td{ max-width: 89px !important; max-height: 89px !important; overflow: scroll; } '; } else { echo ' #sortable_table td{ font-size:1em !important; } '; } ?>
 
-            .container{
-                margin-left: 8px;
-                max-width: calc(100% - 16px) !important;
-            }
+
+            <?php if($setting_links[34513]>0){ echo ' .container{ margin-left: 8px; max-width: calc(100% - 16px) !important; } '; } ?>
+
+
+
             .mini-header,
             #sortable_table td>p{
                 display: block;
