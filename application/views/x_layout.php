@@ -9,7 +9,7 @@ if(!in_array($i['i__access'], $this->config->item('n___31870')) && !e_of_i($i['i
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___31127 = $this->config->item('e___31127'); //Action Buttons Pending
 $e___4737 = $this->config->item('e___4737'); //Idea Types
-$is_or_idea = in_array($i['i__type'], $this->config->item('n___7712'));
+$is_or_7712 = in_array($i['i__type'], $this->config->item('n___7712'));
 $is_single_click = in_array($i['i__type'], $this->config->item('n___40680'));
 
 //NEXT IDEAS
@@ -185,7 +185,7 @@ if($top_i__id){
 
 }
 
-if($top_completed || $is_or_idea){
+if($top_completed || $is_or_7712){
     $_GET['open'] = true;
 }
 
@@ -223,349 +223,8 @@ if($view_i__cache){
 
 $x_selects = array();
 if($top_i__id) {
-    if ($is_or_idea) {
 
-        //Has no options to choose from?
-        if (!count($is_next)) {
-
-            //Mark this as complete since there is nothing to choose from:
-            if (!count($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $x__creator,
-                'x__left' => $i['i__id'],
-            )))) {
-                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i, array(
-                    'x__type' => 31022, //Skipped
-                    'x__creator' => $x__creator,
-                )));
-            }
-
-        } else {
-
-            //First fetch answers based on correct order:
-            foreach ($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $i['i__id'],
-            ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
-                //See if this answer was selected:
-                if (count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__left' => $i['i__id'],
-                    'x__right' => $x['i__id'],
-                    'x__creator' => $x__creator,
-                )))) {
-                    array_push($x_selects, $x);
-                }
-            }
-
-            if (count($x_selects) > 0) {
-                //MODIFY ANSWER
-                echo '<div class="edit_toggle_answer">';
-                echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
-                echo '</div>';
-            }
-
-
-            //Open for list to be printed:
-            $select_answer = '<div class="row list-answers" i__type="' . $i['i__type'] . '">';
-
-            //List followers to choose from:
-            foreach ($is_next as $key => $next_i) {
-
-                //Has this been previously selected?
-                $previously_selected = count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__left' => $i['i__id'],
-                    'x__right' => $next_i['i__id'],
-                    'x__creator' => $x__creator,
-                )));
-
-                $select_answer .= view_card_x_select($next_i, $x__creator, $previously_selected);
-
-            }
-
-
-            $select_answer .= '</div>';
-
-            //HTML:
-            echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-            echo view_headline($i['i__type'], null, $e___4737[$i['i__type']], $select_answer, true);
-            echo '</div>';
-
-        }
-
-    } elseif ($i['i__type']==26560) {
-
-        //TICKET
-        $ticket_ui = '';
-
-        if(isset($_GET['cancel_pay']) && !count($x_completes)){
-            $ticket_ui .= '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
-        }
-
-
-        if(isset($_GET['process_pay']) && !count($x_completes)){
-
-            $ticket_ui .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
-
-            //Referesh soon so we can check if completed or not
-            js_php_redirect('/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1', 2584);
-
-        } elseif(count($x_completes)){
-
-            foreach($x_completes as $x_complete){
-                $x__metadata = unserialize($x_complete['x__metadata']);
-                $quantity = ( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? $x__metadata['quantity'] : ( $x_complete['x__weight'] > 0 ? $x_complete['x__weight'] : 1 ) );
-
-                if($x__metadata['mc_gross']!=0){
-                    $ticket_ui .= '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
-                }
-
-                if($x__metadata['mc_gross']>=0){
-                    $ticket_ui .= '<div class="msg"><span>Here is your QR Ticket that has also been emailed to you:</span></div>';
-                    $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1').'</div>';
-                }
-            }
-
-
-            $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$x__metadata['mc_gross'].'">';
-            $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
-
-            //Invite Your Friends (If 2 or more items):
-            if($x__metadata['quantity']>1 && 0){
-
-                //TODO Complete
-
-                $ticket_ui .= '<h2>Invite Your Friends</h2>';
-                $ticket_ui .= '<p>So they can get inside independantly. If not invited, they must check-in with you.</p>';
-
-                for($f=2;$f<=$x__metadata['quantity'];$f++) {
-                    $ticket_ui .= '<div class="row">';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3">Ticket #'.$f.' Name:</div>';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="text" id="invite_name_'.$f.'" placeholder="Full Name" class="form-control white-border border maxout" /></div>';
-                    $ticket_ui .= '</div>';
-                    $ticket_ui .= '<div class="row">';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="email" id="invite_email_'.$f.'" placeholder="Email" class="form-control white-border border maxout" /></div>';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="number" id="invite_phone_'.$f.'" placeholder="Cell Phone" class="form-control white-border border maxout" /></div>';
-                    $ticket_ui .= '</div>';
-                    $ticket_ui .= '<br /><br />';
-                }
-
-                $ticket_ui .= '<h3>Custom Message</h3>';
-                $ticket_ui .= '<textarea class="border i_content  x_input" placeholder="" id="invite_message"></textarea>';
-                $ticket_ui .= '<script> $(document).ready(function () { set_autosize($(\'#invite_message\')); }); </script>';
-
-            }
-
-
-
-        } else {
-
-
-            $valid_paid_ticket = false; //Unless proven otherwise
-            $min_allowed = 1;
-            $detect_data_type = 0;
-
-            $paypal_email =  website_setting(30882);
-
-            $total_dues = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i['i__id'],
-                'x__up' => 26562, //Total Due
-            ));
-            $cart_max = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i['i__id'],
-                'x__up' => 29651, //Cart Max Quantity
-            ));
-            $cart_min = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i['i__id'],
-                'x__up' => 31008, //Cart Min Quantity
-            ));
-
-
-
-            //Payments Must have Unit Price, otherwise they are NOT a payment until added...
-            $info_append = '';
-            $unit_currency = '';
-            $unit_price = 0;
-            $unit_fee = 0;
-            $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
-            $spots_remaining = i_spots_remaining($i['i__id']);
-            $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
-            $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
-            $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
-            $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
-
-
-            if(count($total_dues) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
-                $detect_data_type = detect_data_type($total_dues[0]['x__message']);
-                if ($detect_data_type['status'] && $detect_data_type['x__type']==26661){
-
-                    $valid_paid_ticket = true;
-
-                    $digest_fees = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                        'x__right' => $i['i__id'],
-                        'x__up' => 30589, //Digest Fees
-                    ));
-                    $allow_refunds = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                        'x__right' => $i['i__id'],
-                        'x__up' => 30615, //Is Refundable
-                    ));
-
-                    //Break down amount & currency
-                    $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-                    $unit_currency = $currency_parts[0];
-                    $unit_price = number_format($currency_parts[1], 2, ".", "");
-                    $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2, ".", "");
-
-                    //Append information to cart:
-                    $info_append .= '<div class="sub_note">';
-                    if(!count($allow_refunds)){
-                        $info_append .= 'Final sale. ';
-                    }
-
-                    $info_append .= 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
-                    $info_append .= '</div>';
-
-                }
-            }
-
-
-
-
-
-
-
-
-            //Is multi selectable, allow show down for quantity:
-
-            $ticket_ui .= '<div class="source-info ticket-notice">'
-                . '<span class="icon-block">'. $e___11035[31837]['m__cover'] . '</span>'
-                . '<span>'.$e___11035[31837]['m__title'] . '</span>'
-                . '<div class="payment_box">'
-                . ( strlen($e___11035[31837]['m__message']) ? '<div class="sub_note main__title">'.nl2br($e___11035[31837]['m__message']).'</div>' : '' );
-
-
-            if($max_allowed > 1 || $min_allowed > 1){
-                $ticket_ui .= '<div>';
-                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1)" class="adjust_counter"><i class="fas fa-minus-circle"></i></a>';
-                $ticket_ui .= '<span id="current_sales" class="main__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
-                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1)" class="adjust_counter"><i class="fas fa-plus-circle"></i></a>';
-                $ticket_ui .= '</div>';
-            } else {
-                $ticket_ui .= '<span id="current_sales" style="display: none;">'.$min_allowed.'</span>';
-            }
-
-
-            if($unit_price > 0){
-                $ticket_ui .= '<div style="padding: 8px 0 21px;" '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' + '.$unit_fee.' in Fees" data-toggle="tooltip" data-placement="top" ' : '' ).'><span id="total_ui" class="main__title">'.(($unit_fee+$unit_price)*$min_allowed).'</span> '.$unit_currency.'</div>';
-            } else {
-                $ticket_ui .= '<span id="total_ui" style="display: none;">0</span>';
-            }
-
-            $ticket_ui .= $info_append;
-
-            $ticket_ui .= '</div>';
-            $ticket_ui .= '</div>';
-
-
-            if($valid_paid_ticket){
-
-                //Load Paypal Pay button:
-                $ticket_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
-
-                $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
-                $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
-                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i['i__title'].'">';
-                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-0-'.$x__creator.'">';
-
-                $ticket_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
-                $ticket_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
-                $ticket_ui .= '<input type="hidden" name="no_shipping" value="1">';
-                $ticket_ui .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
-                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?cancel_pay=1">';
-                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1">';
-                $ticket_ui .= '<input type="hidden" name="cmd" value="_xclick">';
-                $ticket_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
-
-                $ticket_ui .= '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
-
-                $ticket_ui .= '</form>';
-
-                //Hide Standard Next Button:
-                $ticket_ui .= '<script type="text/javascript"> $(document).ready(function () { $("#next_div").hide(); }); </script>';
-
-            } else {
-
-                //FREE TICKET
-                $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
-                $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
-
-            }
-
-            ?>
-
-            <script type="text/javascript">
-                var busy_processing = false;
-                function sale_increment(increment){
-
-                    var new_quantity = parseInt($('#current_sales').text()) + increment;
-                    var max_allowed = <?= $max_allowed ?>;
-                    var min_allowed = <?= $min_allowed ?>;
-                    if(new_quantity<1){
-                        //Invalid new quantity
-                        return false;
-                    } else if (new_quantity<min_allowed){
-                        if(min_allowed>1){
-                            alert('Error: Minimum Allowed is '+min_allowed);
-                        }
-                        return false;
-                    } else if (new_quantity>max_allowed){
-                        alert('Error: Maximum Allowed is '+max_allowed);
-                        return false;
-                    } else if(busy_processing){
-                        return false;
-                    }
-
-                    busy_processing = true;
-                    var unit_total = <?= ($unit_fee+$unit_price); ?>;
-                    var unit_fee = <?= $unit_fee; ?>;
-                    var handling_total = ( unit_fee * new_quantity );
-                    var new_total = ( unit_total * new_quantity );
-
-                    //Update UI:
-                    $("#paypal_quantity").val(new_quantity);
-                    $("#paypal_handling").val(handling_total);
-                    $("#current_sales").text(new_quantity);
-                    $("#total_ui").text(new_total.toFixed(2));
-
-                    busy_processing = false;
-
-                }
-            </script>
-
-            <?php
-
-
-        }
-
-        echo $ticket_ui;
-
-    } elseif ($i['i__type'] == 40787) {
+    if ($i['i__type'] == 40787) {
 
         //Sheet
         $e___6287 = $this->config->item('e___6287'); //APP
@@ -1061,8 +720,349 @@ if($top_i__id) {
                     });
             });
         </script>
-
         <?php
+
+    } elseif ($is_or_7712) {
+
+        //Has no options to choose from?
+        if (!count($is_next)) {
+
+            //Mark this as skipped since there is nothing to choose from:
+            if (!count($this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__creator' => $x__creator,
+                'x__left' => $i['i__id'],
+            )))) {
+                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i, array(
+                    'x__type' => 31022, //Skipped
+                    'x__creator' => $x__creator,
+                )));
+            }
+
+        } else {
+
+            //First fetch answers based on correct order:
+            foreach ($this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                'x__left' => $i['i__id'],
+            ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
+                //See if this answer was selected:
+                if (count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
+                    'x__left' => $i['i__id'],
+                    'x__right' => $x['i__id'],
+                    'x__creator' => $x__creator,
+                )))) {
+                    array_push($x_selects, $x);
+                }
+            }
+
+            if (count($x_selects) > 0) {
+                //MODIFY ANSWER
+                echo '<div class="edit_toggle_answer">';
+                echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
+                echo '</div>';
+            }
+
+
+            //Open for list to be printed:
+            $select_answer = '<div class="row list-answers" i__type="' . $i['i__type'] . '">';
+
+            //List followers to choose from:
+            foreach ($is_next as $key => $next_i) {
+
+                //Has this been previously selected?
+                $previously_selected = count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
+                    'x__left' => $i['i__id'],
+                    'x__right' => $next_i['i__id'],
+                    'x__creator' => $x__creator,
+                )));
+
+                $select_answer .= view_card_x_select($next_i, $x__creator, $previously_selected);
+
+            }
+
+
+            $select_answer .= '</div>';
+
+            //HTML:
+            echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
+            echo view_headline($i['i__type'], null, $e___4737[$i['i__type']], $select_answer, true);
+            echo '</div>';
+
+        }
+
+    } elseif ($i['i__type']==26560) {
+
+        //TICKET
+        $ticket_ui = '';
+
+        if(isset($_GET['cancel_pay']) && !count($x_completes)){
+            $ticket_ui .= '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
+        }
+
+
+        if(isset($_GET['process_pay']) && !count($x_completes)){
+
+            $ticket_ui .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
+
+            //Referesh soon so we can check if completed or not
+            js_php_redirect('/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1', 2584);
+
+        } elseif(count($x_completes)){
+
+            foreach($x_completes as $x_complete){
+                $x__metadata = unserialize($x_complete['x__metadata']);
+                $quantity = ( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? $x__metadata['quantity'] : ( $x_complete['x__weight'] > 0 ? $x_complete['x__weight'] : 1 ) );
+
+                if($x__metadata['mc_gross']!=0){
+                    $ticket_ui .= '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
+                }
+
+                if($x__metadata['mc_gross']>=0){
+                    $ticket_ui .= '<div class="msg"><span>Here is your QR Ticket that has also been emailed to you:</span></div>';
+                    $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1').'</div>';
+                }
+            }
+
+
+            $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$x__metadata['mc_gross'].'">';
+            $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
+
+            //Invite Your Friends (If 2 or more items):
+            if($x__metadata['quantity']>1 && 0){
+
+                //TODO Complete
+
+                $ticket_ui .= '<h2>Invite Your Friends</h2>';
+                $ticket_ui .= '<p>So they can get inside independantly. If not invited, they must check-in with you.</p>';
+
+                for($f=2;$f<=$x__metadata['quantity'];$f++) {
+                    $ticket_ui .= '<div class="row">';
+                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3">Ticket #'.$f.' Name:</div>';
+                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="text" id="invite_name_'.$f.'" placeholder="Full Name" class="form-control white-border border maxout" /></div>';
+                    $ticket_ui .= '</div>';
+                    $ticket_ui .= '<div class="row">';
+                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="email" id="invite_email_'.$f.'" placeholder="Email" class="form-control white-border border maxout" /></div>';
+                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="number" id="invite_phone_'.$f.'" placeholder="Cell Phone" class="form-control white-border border maxout" /></div>';
+                    $ticket_ui .= '</div>';
+                    $ticket_ui .= '<br /><br />';
+                }
+
+                $ticket_ui .= '<h3>Custom Message</h3>';
+                $ticket_ui .= '<textarea class="border i_content  x_input" placeholder="" id="invite_message"></textarea>';
+                $ticket_ui .= '<script> $(document).ready(function () { set_autosize($(\'#invite_message\')); }); </script>';
+
+            }
+
+
+
+        } else {
+
+
+            $valid_paid_ticket = false; //Unless proven otherwise
+            $min_allowed = 1;
+            $detect_data_type = 0;
+
+            $paypal_email =  website_setting(30882);
+
+            $total_dues = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $i['i__id'],
+                'x__up' => 26562, //Total Due
+            ));
+            $cart_max = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $i['i__id'],
+                'x__up' => 29651, //Cart Max Quantity
+            ));
+            $cart_min = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $i['i__id'],
+                'x__up' => 31008, //Cart Min Quantity
+            ));
+
+
+
+            //Payments Must have Unit Price, otherwise they are NOT a payment until added...
+            $info_append = '';
+            $unit_currency = '';
+            $unit_price = 0;
+            $unit_fee = 0;
+            $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
+            $spots_remaining = i_spots_remaining($i['i__id']);
+            $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
+            $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
+            $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message']) : $min_allowed );
+            $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
+
+
+            if(count($total_dues) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
+                $detect_data_type = detect_data_type($total_dues[0]['x__message']);
+                if ($detect_data_type['status'] && $detect_data_type['x__type']==26661){
+
+                    $valid_paid_ticket = true;
+
+                    $digest_fees = $this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                        'x__right' => $i['i__id'],
+                        'x__up' => 30589, //Digest Fees
+                    ));
+                    $allow_refunds = $this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                        'x__right' => $i['i__id'],
+                        'x__up' => 30615, //Is Refundable
+                    ));
+
+                    //Break down amount & currency
+                    $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
+                    $unit_currency = $currency_parts[0];
+                    $unit_price = number_format($currency_parts[1], 2, ".", "");
+                    $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2, ".", "");
+
+                    //Append information to cart:
+                    $info_append .= '<div class="sub_note">';
+                    if(!count($allow_refunds)){
+                        $info_append .= 'Final sale. ';
+                    }
+
+                    $info_append .= 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
+                    $info_append .= '</div>';
+
+                }
+            }
+
+
+
+
+
+
+
+
+            //Is multi selectable, allow show down for quantity:
+
+            $ticket_ui .= '<div class="source-info ticket-notice">'
+                . '<span class="icon-block">'. $e___11035[31837]['m__cover'] . '</span>'
+                . '<span>'.$e___11035[31837]['m__title'] . '</span>'
+                . '<div class="payment_box">'
+                . ( strlen($e___11035[31837]['m__message']) ? '<div class="sub_note main__title">'.nl2br($e___11035[31837]['m__message']).'</div>' : '' );
+
+
+            if($max_allowed > 1 || $min_allowed > 1){
+                $ticket_ui .= '<div>';
+                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1)" class="adjust_counter"><i class="fas fa-minus-circle"></i></a>';
+                $ticket_ui .= '<span id="current_sales" class="main__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
+                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1)" class="adjust_counter"><i class="fas fa-plus-circle"></i></a>';
+                $ticket_ui .= '</div>';
+            } else {
+                $ticket_ui .= '<span id="current_sales" style="display: none;">'.$min_allowed.'</span>';
+            }
+
+
+            if($unit_price > 0){
+                $ticket_ui .= '<div style="padding: 8px 0 21px;" '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' + '.$unit_fee.' in Fees" data-toggle="tooltip" data-placement="top" ' : '' ).'><span id="total_ui" class="main__title">'.(($unit_fee+$unit_price)*$min_allowed).'</span> '.$unit_currency.'</div>';
+            } else {
+                $ticket_ui .= '<span id="total_ui" style="display: none;">0</span>';
+            }
+
+            $ticket_ui .= $info_append;
+
+            $ticket_ui .= '</div>';
+            $ticket_ui .= '</div>';
+
+
+            if($valid_paid_ticket){
+
+                //Load Paypal Pay button:
+                $ticket_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
+
+                $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
+                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i['i__title'].'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-0-'.$x__creator.'">';
+
+                $ticket_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
+                $ticket_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
+                $ticket_ui .= '<input type="hidden" name="no_shipping" value="1">';
+                $ticket_ui .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
+                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?cancel_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="cmd" value="_xclick">';
+                $ticket_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
+
+                $ticket_ui .= '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
+
+                $ticket_ui .= '</form>';
+
+                //Hide Standard Next Button:
+                $ticket_ui .= '<script type="text/javascript"> $(document).ready(function () { $("#next_div").hide(); }); </script>';
+
+            } else {
+
+                //FREE TICKET
+                $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
+
+            }
+
+            ?>
+
+            <script type="text/javascript">
+                var busy_processing = false;
+                function sale_increment(increment){
+
+                    var new_quantity = parseInt($('#current_sales').text()) + increment;
+                    var max_allowed = <?= $max_allowed ?>;
+                    var min_allowed = <?= $min_allowed ?>;
+                    if(new_quantity<1){
+                        //Invalid new quantity
+                        return false;
+                    } else if (new_quantity<min_allowed){
+                        if(min_allowed>1){
+                            alert('Error: Minimum Allowed is '+min_allowed);
+                        }
+                        return false;
+                    } else if (new_quantity>max_allowed){
+                        alert('Error: Maximum Allowed is '+max_allowed);
+                        return false;
+                    } else if(busy_processing){
+                        return false;
+                    }
+
+                    busy_processing = true;
+                    var unit_total = <?= ($unit_fee+$unit_price); ?>;
+                    var unit_fee = <?= $unit_fee; ?>;
+                    var handling_total = ( unit_fee * new_quantity );
+                    var new_total = ( unit_total * new_quantity );
+
+                    //Update UI:
+                    $("#paypal_quantity").val(new_quantity);
+                    $("#paypal_handling").val(handling_total);
+                    $("#current_sales").text(new_quantity);
+                    $("#total_ui").text(new_total.toFixed(2));
+
+                    busy_processing = false;
+
+                }
+            </script>
+
+            <?php
+
+
+        }
+
+        echo $ticket_ui;
 
     } elseif (in_array($i['i__type'], $this->config->item('n___34849'))) {
 
@@ -1324,7 +1324,7 @@ if(!$top_i__id){
             }
 
 
-        } elseif($x__type==12273 && !$is_or_idea && count($is_next)){
+        } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
 
             //Ideas
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.count($is_next).' '.$m2['m__title'].'</span>';
@@ -1377,7 +1377,7 @@ if(!$top_i__id){
 
 
 //NEXT IDEAS:
-if(!($is_or_idea && $top_i__id)){
+if(!($is_or_7712 && $top_i__id)){
     echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
 }
 
