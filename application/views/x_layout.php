@@ -598,12 +598,6 @@ if($top_i__id) {
             }
 
             /* CSS Adjustments for Printing View */
-            .fixed-top{
-                background-color: transparent !important;
-            }
-            .top_nav{
-                display:none !important;
-            }
             #sortable_table .table-striped tr:nth-of-type(odd) td {
                 background-color: #FFFFFF !important;
                 -webkit-print-color-adjust:exact;
