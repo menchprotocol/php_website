@@ -113,14 +113,10 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>" type="text/javascript"></script>
 
-    <!-- Load Fonts Dynamically -->
+
     <?php
-    $custom_css = website_setting(33818);
-    if(strlen($custom_css)){
-        echo '<link href="'.$custom_css.'?cache_buster='.$this->config->item('cache_buster').'" rel="stylesheet">';
-    }
 
-
+    //Load Fonts Dynamically
     echo '<style> ';
 
     //Font Helps:
