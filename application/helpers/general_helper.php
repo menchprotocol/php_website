@@ -1487,9 +1487,9 @@ function send_qr($x__id, $x__creator){
 
     $CI =& get_instance();
     $user_website = user_website($x__creator);
-    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website, true).' QR Ticket',
+    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket',
         'We are so excited to share this experience with you! Upon arrival simply have your QR code ready to be scanned:'.
-        "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website, true).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n", array(), 0, $user_website);
+        "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n", array(), 0, $user_website);
 
 }
 
@@ -1774,7 +1774,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
 function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = false){
 
-    if($force_website && $x__website){
+    if($x__website && $force_website){
         return $x__website;
     }
 
@@ -1960,7 +1960,7 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $exclude_i, $inclu
 
 }
 
-function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_website = false){
+function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_website = true){
     $CI =& get_instance();
     $domain_source = website_setting(0, $initiator_e__id, $x__website, $force_website);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
