@@ -1774,13 +1774,8 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
 function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = true){
 
-    if($x__website && $force_website){
-        return $x__website;
-    }
-
     $CI =& get_instance();
     $source_id = 0; //Assume no domain unless found below...
-    $server_name = get_server('SERVER_NAME');
 
     if(!$initiator_e__id){
         $member_e = superpower_unlocked();
@@ -1789,16 +1784,26 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
         }
     }
 
-    if(strlen($server_name)){
-        foreach($CI->config->item('e___14870') as $x__type => $m) {
-            if ($server_name==$m['m__message']){
-                $source_id = $x__type;
-                break;
+    if($x__website && $force_website){
+
+        $source_id = $x__website;
+
+    } else {
+
+        $server_name = get_server('SERVER_NAME');
+        if(strlen($server_name)){
+            foreach($CI->config->item('e___14870') as $x__type => $m) {
+                if ($server_name==$m['m__message']){
+                    $source_id = $x__type;
+                    break;
+                }
             }
         }
+
+        $source_id = ( $source_id ? $source_id : ( $x__website > 0 ? $x__website : 2738 /* Mench */ ) );
+
     }
 
-    $source_id = ( $source_id ? $source_id : ( $x__website > 0 ? $x__website : 2738 /* Mench */ ) );
 
     if(!$setting_id){
         return $source_id;
