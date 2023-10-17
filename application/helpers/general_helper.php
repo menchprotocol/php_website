@@ -1487,8 +1487,18 @@ function send_qr($x__id, $x__creator){
 
     $CI =& get_instance();
     $user_website = user_website($x__creator);
-    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket',
-        'We are so excited to share this experience with you! Upon arrival simply have your QR code ready to be scanned:'.
+
+    $additional_info = '';
+    foreach($CI->X_model->fetch(array(
+        'x__id' => $x__id,
+        'x__right > 0' => null,
+    ), array('x__right')) as $top_idea){
+        $additional_info = ' for '.$top_idea['i__title'];
+        break;
+    }
+
+    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket'.$additional_info,
+        'Upon arrival simply have your QR code ready to be scanned:'.
         "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n", array(), 0, $user_website);
 
 }
