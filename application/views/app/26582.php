@@ -2,6 +2,43 @@
 
 if(!$is_u_request || isset($_GET['cron'])){
 
+
+    foreach($this->X_model->fetch(array(
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 33600, //Drafting Link
+        'x__up' => 26582,
+    ), array('x__right'), 0) as $drafting_message){
+
+        //Determine if its time to send this message:
+        $time_starts = $this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__right' => $drafting_message['i__id'],
+            'x__up' => 26556, //Time Starts
+        ), array(), 1);
+        $time_ends = $this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__right' => $drafting_message['i__id'],
+            'x__up' => 26557, //Time Ends
+        ), array(), 1);
+
+
+        $messages = '';
+        foreach($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4231, //IDEA NOTES Messages
+            'x__right' => $drafting_message['i__id'],
+        ), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
+            $messages .= '';
+        }
+
+        $this->X_model->send_dm($drafting_message['x__up'], $i['i__title'], $clone_urls);
+    }
+
+
+
+
     //Look for messages to process, if any:
     foreach($this->X_model->fetch(array(
         'x__access' => 6175, //Pending

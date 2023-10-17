@@ -1254,13 +1254,13 @@ class X extends CI_Controller
 
             $x__type = 31798; //Set Time
 
-            $min_time = $this->X_model->fetch(array(
+            $time_starts = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $_POST['i__id'],
                 'x__up' => 26556, //Time Starts
             ), array(), 1);
-            $max_time = $this->X_model->fetch(array(
+            $time_ends = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $_POST['i__id'],
@@ -1272,15 +1272,15 @@ class X extends CI_Controller
                     'status' => 0,
                     'message' => 'Error: Please enter a valid time.',
                 ));
-            } elseif(count($min_time) && strtotime($min_time[0]['x__message'])<strtotime($_POST['x_write'])){
+            } elseif(count($time_starts) && strtotime($time_starts[0]['x__message'])<strtotime($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Error: Enter a date after '.$min_time[0]['x__message'],
+                    'message' => 'Error: Enter a date after '.$time_starts[0]['x__message'],
                 ));
-            } elseif(count($max_time) && strtotime($max_time[0]['x__message'])>strtotime($_POST['x_write'])){
+            } elseif(count($time_ends) && strtotime($time_ends[0]['x__message'])>strtotime($_POST['x_write'])){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Error: Enter a date before '.$max_time[0]['x__message'],
+                    'message' => 'Error: Enter a date before '.$time_ends[0]['x__message'],
                 ));
             }
 

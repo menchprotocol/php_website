@@ -62,7 +62,7 @@ class E_model extends CI_Model
         );
 
         //Make sure they also belong to this website's members:
-        $this->E_model->scissor_add_e(website_setting(0), 30095, $e['e__id'], null);
+        $this->E_model->regular_add_e(website_setting(0), $e['e__id']);
 
 
         //Check & Adjust their subscription, IF needed:
@@ -249,30 +249,30 @@ class E_model extends CI_Model
 
     }
 
-    function scissor_add_e($main_id, $sub_id, $e__id, $x__message = null) {
-        foreach($this->E_model->scissor_e($main_id, $sub_id) as $e_item) {
-            //Add if link not already there:
-            if(!count($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__up' => $e_item['e__id'],
-                'x__down' => $e__id,
+
+    function regular_add_e($x__up, $x__down, $x__message = null) {
+        //Add if link not already there:
+        if(!count($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__up' => $x__up,
+            'x__down' => $x__down,
+            'x__message' => $x__message,
+        )))){
+            $this->X_model->create(array(
+                'x__creator' => $x__down, //Belongs to this Member
+                'x__type' => 4230,
                 'x__message' => $x__message,
-            )))){
-                $this->X_model->create(array(
-                    'x__creator' => $e__id, //Belongs to this Member
-                    'x__type' => 4230,
-                    'x__message' => $x__message,
-                    'x__up' => $e_item['e__id'],
-                    'x__down' => $e__id,
-                ));
-            }
+                'x__up' => $x__up,
+                'x__down' => $x__down,
+            ));
         }
     }
-    function scissor_e($main_id, $sub_id){
+
+    function scissor_e($x__up, $sub_id){
 
         $all_results = $this->X_model->fetch(array(
-            'x__up' => $main_id,
+            'x__up' => $x__up,
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
@@ -295,10 +295,10 @@ class E_model extends CI_Model
 
     }
 
-    function scissor_i($main_id, $sub_id){
+    function scissor_i($x__up, $sub_id){
 
         $all_results = $this->X_model->fetch(array(
-            'x__up' => $main_id,
+            'x__up' => $x__up,
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -395,7 +395,7 @@ class E_model extends CI_Model
 
 
         //Add member to Domain Member Group(s):
-        $this->E_model->scissor_add_e($x__website, 30095, $added_e['new_e']['e__id'], null);
+        $this->E_model->regular_add_e($x__website, $added_e['new_e']['e__id']);
 
 
         if($importing_full_names){

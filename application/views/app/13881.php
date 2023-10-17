@@ -47,7 +47,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         ), array('x__down')) as $email_found){
             //Existing Member, Add to This Website:
             $email_e__id = $email_found['e__id'];
-            $this->E_model->scissor_add_e(website_setting(0), 30095, $email_e__id, null);
+            $this->E_model->regular_add_e(website_setting(0), $email_e__id);
             $stats['already_there']++;
             break;
         }

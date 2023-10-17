@@ -303,8 +303,6 @@ if($top_i__id) {
 
 
 
-
-
             $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
 
             $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xxs">'.view_cover($x['e__cover'], true).'</span><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$name.$plus_info.'</td>';
@@ -1227,14 +1225,8 @@ echo '</div>';
     var audio_played = false;
     $(document).ready(function () {
 
-        $("audio").on({
-            play:function(){ // the audio is playing!
-                audio_played = true;
-            }
-        });
-
         //Auto next a single answer:
-        if(js_n___7712.includes(parseInt($('.list-answers').attr('i__type')))){
+        if(!can_skip && js_n___7712.includes(parseInt($('.list-answers').attr('i__type')))){
             //It is, see if it has only 1 option:
             var single_id = 0;
             var answer_count = 0;
@@ -1243,7 +1235,7 @@ echo '</div>';
                 answer_count++;
             });
             if(answer_count==1){
-                //Only 1 option, select and go next:
+                //Only 1 option, select and go next only if the user cannot skip:
                 toggle_answer(single_id);
             }
         }
