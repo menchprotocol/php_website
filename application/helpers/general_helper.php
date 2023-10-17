@@ -1772,7 +1772,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
 }
 
-function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = false){
+function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = true){
 
     if($x__website && $force_website){
         return $x__website;
