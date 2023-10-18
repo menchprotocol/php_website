@@ -262,7 +262,6 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $other_source_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
         $other_source_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
         $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-        $other_source_content .= '<td style="text-align: right;"><a href="/@'.$_GET['e__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
         $other_source_content .= '</tr>';
 
 
