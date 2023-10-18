@@ -1628,10 +1628,10 @@ function toggle_max_view(css_class){
     //Toggle main class:
     $('.'+css_class).toggleClass('hidden');
 
-    if($('.fixed-top').find('maxcontain').length > 0){
+    if($( ".fixed-top" ).hasClass( "maxcontain" )){
         //Minimize:
         $('.maxcontain').addClass('container').removeClass('maxcontain');
-    } else if($('.fixed-top').find('container').length > 0){
+    } else {
         //Maximize:
         $('.container').addClass('maxcontain').removeClass('container');
     }
