@@ -95,10 +95,10 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 }
             }
 
-            if(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
-                $this_quantity = $x__metadata['quantity'];
-            } elseif(isset($x__metadata2) && $x__metadata2['quantity']>1){
+            if(isset($x__metadata2) && $x__metadata2['quantity']>1){
                 $this_quantity = $x__metadata2['quantity'];
+            } elseif(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
+                $this_quantity = $x__metadata['quantity'];
             } else {
                 for($t=20;$t>=2;$t--){
                     if(substr_count(strtolower($i['i__title']),$t.'x')==1){
