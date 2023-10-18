@@ -408,8 +408,8 @@ if(count($i_query)){
     .fixed-top{
         background-color: transparent !important;
     }
-    .main__title{
-        background-color: #CCCCCC;
+    tr.main__title{
+        background-color: #CCCCCC !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;
