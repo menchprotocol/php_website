@@ -209,7 +209,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $sale_type_content .= '<tr class="main__title">';
         $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).' <a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
-        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$available_transactions.'</td>';
+        $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
         $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales!=0 ? '$'.number_format($total_revenue, 2) : '&nbsp;' ).'</td>';
         $sale_type_content .= '<td class="advance_columns hidden" style="text-align: right;">'.( $total_sales!=0 ? '$'.number_format($total_commission, 2) : '&nbsp;' ).'</td>';

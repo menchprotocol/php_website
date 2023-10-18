@@ -1631,7 +1631,7 @@ function toggle_max_view(css_class){
     if($('.fixed-top').find('container_max').length > 0){
         //Already maxed, minimize:
         $('.container_max').addClass('container').removeClass('container_max');
-    } else {
+    } else if($('.fixed-top').find('container').length > 0){
         //Maximize:
         $('.container').addClass('container_max').removeClass('container');
     }
