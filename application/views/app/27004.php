@@ -407,6 +407,7 @@ if(count($i_query)){
     /* CSS Adjustments for Printing View */
     .fixed-top{
         background-color: transparent !important;
+        border-top:1px solid #000000;
     }
     tr.main__title{
         background-color: #CCCCCC !important;
