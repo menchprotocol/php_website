@@ -1623,6 +1623,19 @@ function i__add(x__type, link_i__id) {
 
 }
 
+function toggle_max_view(css_class){
+
+    //Toggle main class:
+    $('.'+css_class).toggleClass('hidden');
+
+    if($('.fixed-top').find('container_max').length > 0){
+        //Already maxed, minimize:
+        $('.container_max').addClass('container').removeClass('container_max');
+    } else {
+        //Maximize:
+        $('.container').addClass('container_max').removeClass('container');
+    }
+}
 
 
 //Adds OR transactions sources to sources

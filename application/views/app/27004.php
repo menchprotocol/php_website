@@ -119,21 +119,6 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             }
 
 
-            //Half only if not halfed before
-            if(isset($_GET['half']) && !isset($x__metadata['mc_gross_old'])){
-                $this->X_model->update($x['x__id'], array(
-                    'x__message' => number_format(($x__metadata['mc_gross']/2),2),
-                ));
-                x__metadata_update($x['x__id'], array(
-                    'mc_fee' => number_format(($x__metadata['mc_fee']/2),2),
-                    'mc_gross' => number_format(($x__metadata['mc_gross']/2),2),
-                    'mc_gross_old' => $x__metadata['mc_gross'],
-                    'mc_fee_old' => $x__metadata['mc_fee'],
-                ));
-                $x_updated++;
-            }
-
-
 
             $item_parts = explode('-',$x__metadata['item_number']);
             $this_sourced = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__creator'] );
@@ -147,7 +132,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $this_payout = $x__metadata['mc_gross']-$x__metadata['mc_fee']-$this_commission;
 
             $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden">';
-            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block source_cover_micro">'.view_cover($es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
+            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-xs source_cover_micro">'.view_cover($es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">1</td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
@@ -295,7 +280,7 @@ if(count($i_query)){
 
     echo '<table id="sortable_table" class="table table-sm table-striped image-mini" style="margin: 0 5px; width:calc(100% - 10px) !important;">';
     echo '<tr style="vertical-align: baseline;" class="main__title">';
-    echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.advance_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-arrows-h"></i></a></th>';
+    echo '<th id="th_primary">&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="$(\'.transaction_columns\').toggleClass(\'hidden\');" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Transactions"><i class="fas fa-arrows-v"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="toggle_max_view(\'advance_columns\')" style="font-weight:bold;" data-toggle="tooltip" data-placement="top" title="Toggle Advanced Columns"><i class="fas fa-arrows-h"></i></a></th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Transactions</th>';
     echo '<th style="text-align: right;" id="th_paid" class="advance_columns hidden">Limit</th>';
     echo '<th style="text-align: right;" id="th_paid">Quantity</th>';
