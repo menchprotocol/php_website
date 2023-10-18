@@ -366,7 +366,7 @@ if(!$basic_header_footer){
                     } elseif(string_is_icon($domain_logo)){
                         $padding_hack = 4; //For Icon (4 before)
                     } else {
-                        $padding_hack = 7; //For Emoji
+                        $padding_hack = 2; //For Emoji
                     }
 
                     echo '<div class="left_nav top_nav " style="text-align: left;" title="Hi '.$domain_cover.'"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover($domain_logo).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';

@@ -496,7 +496,7 @@ img.no-frame {
     width: 100%;
     max-width:380px !important;
     padding: 15px;
-    padding-top: 0;
+    padding-top: 55px;
     margin: 0 auto;
 }
 .center{
@@ -1646,7 +1646,7 @@ i, .btn .show-max {
 }
 .platform-large{
     font-size: 8em !important;
-    padding:0 0 13px 0;
+    padding:0 0 34px 0;
 }
 .image-mini img{
     line-height: 100%;
