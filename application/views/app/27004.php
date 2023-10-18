@@ -85,6 +85,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $this_quantity = 1;//Default assumption:
 
             //Source for quantity?
+            unset($x__metadata2);
             if($x['x__reference']>0){
                 //This is a refund, fetch quantity from original transaction:
                 foreach($this->X_model->fetch(array(
