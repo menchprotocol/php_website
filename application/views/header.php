@@ -14,6 +14,19 @@ $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
 $logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_card_id.'.png' ));
 $bgVideo = null;
 
+//Transaction Website
+$domain_cover = get_domain('m__cover');
+$domain_logo = ( substr_count($domain_cover, '"')>0 ? one_two_explode('"','"', $domain_cover) : $domain_cover );
+$is_emoji = false;
+if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
+    $padding_hack = 1; //For URL
+} elseif(string_is_icon($domain_logo)){
+    $padding_hack = 4; //For Icon (4 before)
+} else {
+    $padding_hack = 2; //For Emoji
+    $is_emoji = true;
+}
+
 //Generate Body Class String:
 $body_class = 'platform-'.$current_card_id; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
@@ -49,8 +62,13 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     <meta name="theme-color" content="#FFFFFF">
     <link rel="icon" id="favicon" href="<?= $logo ?>">
-    <link rel="mask-icon" href="<?= $logo ?>" color="#000000">
     <?php
+    if($is_emoji){
+        echo '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>'.$domain_logo.'</text></svg>">';
+    } else {
+        echo '<link rel="mask-icon" href="'.$logo.'" color="#000000">';
+    }
+
     if(isset($_SERVER['SERVER_NAME'])){
         echo '<link rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'" />';
     }
@@ -356,18 +374,6 @@ if(!$basic_header_footer){
 
                     echo '<td>';
                     echo '<div class="max_width">';
-
-
-                    //Transaction Website
-                    $domain_cover = get_domain('m__cover');
-                    $domain_logo = ( substr_count($domain_cover, '"')>0 ? one_two_explode('"','"', $domain_cover) : $domain_cover );
-                    if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
-                        $padding_hack = 1; //For URL
-                    } elseif(string_is_icon($domain_logo)){
-                        $padding_hack = 4; //For Icon (4 before)
-                    } else {
-                        $padding_hack = 2; //For Emoji
-                    }
 
                     echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover($domain_logo).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
 
