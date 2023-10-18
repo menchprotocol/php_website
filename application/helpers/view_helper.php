@@ -213,18 +213,13 @@ function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 
         return $icon_prefix.'<i class="'.$cover_code.'"></i>';
 
-    } elseif(strlen($cover_code)) {
-
-        return $icon_prefix.$cover_code;
-
     } elseif($noicon_default && $noicon_default!=1) {
 
         return $icon_prefix.$noicon_default;
 
     } else {
 
-        //Standard Icon if none:
-        return null;
+        return $icon_prefix.$cover_code;
 
     }
 }
