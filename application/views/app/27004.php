@@ -98,6 +98,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
             if(isset($x__metadata2) && $x__metadata2['quantity']>1){
                 $this_quantity = $x__metadata2['quantity'];
+                $x__metadata['mc_fee'] = $x__metadata2['mc_fee'];
             } elseif(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
                 $this_quantity = $x__metadata['quantity'];
             } else {
