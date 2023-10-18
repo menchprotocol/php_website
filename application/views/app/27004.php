@@ -272,14 +272,13 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $other_source_content .= '<td><span class="icon-block source_cover_micro">'.view_cover($other_e['e__cover'],true).'</span><a href="/@'.$other_e['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
             $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $other_source_content .= '<td style="text-align: right;">1&nbsp;x</td>';
+            $other_source_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
             $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_source_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
             $other_source_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
             $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $other_source_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
             $other_source_content .= '</tr>';
             $gross_sales++;
         }
@@ -410,7 +409,7 @@ if(count($i_query)){
     }
     tr.main__title{
         background-color: #CCCCCC !important;
-        border-top:1px solid #000000 !important;
+        border-bottom:1px solid #000000 !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;
