@@ -407,10 +407,10 @@ if(count($i_query)){
     /* CSS Adjustments for Printing View */
     .fixed-top{
         background-color: transparent !important;
-        border-top:1px solid #000000 !important;
     }
     tr.main__title{
         background-color: #CCCCCC !important;
+        border-top:1px solid #000000 !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;
