@@ -83,8 +83,21 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             $x__metadata = unserialize($x['x__metadata']);
             $total_transactions++;
             $this_quantity = 1;//Default assumption:
+
+            //Source for quantity?
+            if($x__metadata['mc_gross']<0 && $x['x__reference']>0){
+                //This is a refund, fetch quantity from original transaction:
+                foreach($this->X_model->fetch(array(
+                    'x__up' => $x['x__reference'],
+                ), array(), 0) as $x2){
+                    $x__metadata2 = unserialize($x2['x__metadata']);
+                }
+            }
+
             if(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
                 $this_quantity = $x__metadata['quantity'];
+            } elseif(isset($x__metadata2) && $x__metadata2['quantity']>1){
+                $this_quantity = $x__metadata2['quantity'];
             } else {
                 for($t=20;$t>=2;$t--){
                     if(substr_count(strtolower($i['i__title']),$t.'x')==1){
