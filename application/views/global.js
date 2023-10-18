@@ -1628,13 +1628,14 @@ function toggle_max_view(css_class){
     //Toggle main class:
     $('.'+css_class).toggleClass('hidden');
 
-    if($('.fixed-top').find('container_max').length > 0){
+    if($('.fixed-top').find('maxcontain').length > 0){
         //Already maxed, minimize:
-        $('.container_max').addClass('container').removeClass('container_max');
+        $('.maxcontain').addClass('container').removeClass('maxcontain');
     } else if($('.fixed-top').find('container').length > 0){
         //Maximize:
-        $('.container').addClass('container_max').removeClass('container');
+        $('.container').addClass('maxcontain').removeClass('container');
     }
+
 }
 
 

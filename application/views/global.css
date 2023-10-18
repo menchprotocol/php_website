@@ -3846,7 +3846,7 @@ h4.main__title{
 }
 
 
-.container_max {
+.maxcontain {
     margin-left: 5px;
     max-width: calc(100% - 10px) !important;
 }
