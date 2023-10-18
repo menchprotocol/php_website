@@ -1629,7 +1629,7 @@ function toggle_max_view(css_class){
     $('.'+css_class).toggleClass('hidden');
 
     if($('.fixed-top').find('maxcontain').length > 0){
-        //Already maxed, minimize:
+        //Minimize:
         $('.maxcontain').addClass('container').removeClass('maxcontain');
     } else if($('.fixed-top').find('container').length > 0){
         //Maximize:
