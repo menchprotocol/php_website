@@ -360,7 +360,7 @@ if(!$basic_header_footer){
 
                     //Transaction Website
                     $domain_cover = get_domain('m__cover');
-                    $domain_logo = one_two_explode('"','"', $domain_cover);
+                    $domain_logo = ( substr_count($domain_cover, '"') ? one_two_explode('"','"', $domain_cover) : $domain_cover );
                     if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
                         $padding_hack = 1; //For URL
                     } elseif(string_is_icon($domain_logo)){
