@@ -89,7 +89,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             if($x['x__reference']>0){
                 //This is a refund, fetch quantity from original transaction:
                 foreach($this->X_model->fetch(array(
-                    'x__up' => $x['x__reference'],
+                    'x__id' => $x['x__reference'],
                 )) as $x2){
                     $x__metadata2 = unserialize($x2['x__metadata']);
                     break;
