@@ -203,23 +203,23 @@ function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
     //A simple function to display the Member Icon OR the default icon if not available:
     if($valid_url && $noicon_default){
 
-        return $icon_prefix.'<div class="img" style="background-image:url(\''.$cover_code.'\');"></div>';
+        return $icon_prefix.'<div class="img" style="background-image:url(\''.$cover_code.'\');"></div>'.'555';
 
     } elseif($valid_url){
 
-        return $icon_prefix.'<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode('class=','&', $cover_code)).'" ' : '' ).'/>';
+        return $icon_prefix.'<img src="'.$cover_code.'"'.( substr_count($cover_code, 'class=') ? ' class="'.str_replace(',',' ',one_two_explode('class=','&', $cover_code)).'" ' : '' ).'/>'.'444';
 
     } elseif (string_is_icon($cover_code)) {
 
-        return $icon_prefix.'<i class="'.$cover_code.'"></i>';
+        return $icon_prefix.'<i class="'.$cover_code.'"></i>'.'333';
 
     } elseif($noicon_default && $noicon_default!=1) {
 
-        return $icon_prefix.$noicon_default;
+        return $icon_prefix.$noicon_default.'222';
 
     } else {
 
-        return $icon_prefix.$cover_code;
+        return $icon_prefix.$cover_code.'111';
 
     }
 }
