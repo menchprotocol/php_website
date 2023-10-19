@@ -279,7 +279,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 
 $quick_id = 0;
-$discovery_i__id = ( intval($first_segment)==$first_segment ? strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment : 0 );
+$discovery_i__id = ( intval($first_segment)==$first_segment ? strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment : ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 ) );
 if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
 
     //Ideation Mode:
@@ -307,6 +307,13 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $quick_href = '/' . substr($first_segment, 1);
     $quick_id = 30795;
     $body_class .= ' .qz'.$quick_id.' ';
+
+} elseif(isset($_GET['e__id']) && intval($_GET['e__id'])) {
+
+    //Source Mode:
+    $quick_href = '/@' . $_GET['e__id'];
+    $quick_id = 33287;
+    $body_class .= ' .qz'.$quick_id.' .qz6287_'.$_GET['e__id'].' ';
 
 } elseif(substr($first_segment, 0, 1)=='-' && $session_superpowers_13422) {
 
