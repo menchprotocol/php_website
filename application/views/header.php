@@ -279,11 +279,18 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 
 $quick_id = 0;
-$discovery_i__id = ( intval($first_segment)==$first_segment ? strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment : ( isset($_GET['i__id']) ? intval($_GET['i__id']) : 0 ) );
+$discovery_i__id = ( intval($first_segment)==$first_segment ? ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment ) : 0 );
 if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
 
     //Ideation Mode:
     $quick_href = '/~'.$discovery_i__id;
+    $quick_id = 33286;
+    $body_class .= ' .qz'.$quick_id.' ';
+
+} elseif(isset($_GET['i__id']) && intval($_GET['i__id'])) {
+
+    //Ideation Mode:
+    $quick_href = '/~'.$_GET['i__id'];
     $quick_id = 33286;
     $body_class .= ' .qz'.$quick_id.' ';
 
