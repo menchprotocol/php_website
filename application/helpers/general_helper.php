@@ -977,6 +977,7 @@ function list_settings($i__id){
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__up' => $list_config[34513],
+            'x__up !=' => $i__id,
             'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
             array_push($column_ideas, $link_i);
