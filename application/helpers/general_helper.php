@@ -855,36 +855,36 @@ function list_settings($i__id){
 
 
     $CI =& get_instance();
-    $e___40787 = $CI->config->item('e___40787'); //Sheet Link Types
+    $e___13790 = $CI->config->item('e___13790'); //Sheet Link Types
     $e___6287 = $CI->config->item('e___6287'); //APP
     $list_config = array(); //To compile the settings of this sheet:
     $column_sources = array();
     $column_ideas = array();
 
-    foreach($e___40787 as $x__type => $m) {
+    foreach($e___13790 as $x__type => $m) {
         $list_config[intval($x__type)] = array(); //Assume no links for this type
     }
     //Now search for these settings across sources:
     foreach($CI->X_model->fetch(array(
         'x__right' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___40787')) . ')' => null, //Sheets
+        'x__type IN (' . join(',', $CI->config->item('n___13790')) . ')' => null, //Sheets
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up'), 0) as $setting_link){
         array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
         //Print on screen:
-        $filters_ui .= '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].': '.$e___40787[$setting_link['x__type']]['m__message'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block-xss">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
+        $filters_ui .= '<div><span class="icon-block" title="'.$e___13790[$setting_link['x__type']]['m__title'].': '.$e___13790[$setting_link['x__type']]['m__message'].'">'.$e___13790[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block-xss">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
     }
     //Now search for these settings across ideas:
     foreach($CI->X_model->fetch(array(
         'x__left' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___40787')) . ')' => null, //Sheets
+        'x__type IN (' . join(',', $CI->config->item('n___13790')) . ')' => null, //Sheets
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
     ), array('x__right'), 0) as $setting_link){
         array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
         //Print on screen:
-        $filters_ui .= '<div><span class="icon-block" title="'.$e___40787[$setting_link['x__type']]['m__title'].': '.$e___40787[$setting_link['x__type']]['m__message'].'">'.$e___40787[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
+        $filters_ui .= '<div><span class="icon-block" title="'.$e___13790[$setting_link['x__type']]['m__title'].': '.$e___13790[$setting_link['x__type']]['m__message'].'">'.$e___13790[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
     }
 
     //Can only have one focus view, pick first one if any:
