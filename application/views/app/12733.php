@@ -18,7 +18,7 @@ echo $list_settings['filters_ui'];
 
 
 //List the idea:
-view_json(array(
+print_r(array(
     'find_next' => $this->X_model->find_next($_GET['e__id'], $list_settings['i']['i__id'], $list_settings['i'], 0, false),
     'tree_progress' => $this->X_model->tree_progress($_GET['e__id'], $list_settings['i']),
 ));
