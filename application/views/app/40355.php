@@ -29,7 +29,7 @@ foreach($this->X_model->fetch(array(
     }
 
     echo '<div class="frame">';
-    echo '<h3 style="margin-top: 55px;">'.$link_i['i__title'].'</h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__id'].'">'.$link_i['i__title'].'</a></h3>';
 
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
