@@ -116,7 +116,7 @@ foreach($list_settings['query_string'] as $x){
             if(strlen($fetch_data[0]['x__message'])){
                 if(in_array($e['e__id'], $this->config->item('n___40945'))){
                     //Sheet Click to Expand
-                    $message_clean = '<span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view_cover($e['e__cover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].' hidden">'.preview_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']).'</span>';
+                    $message_clean = '<span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['x__message'].' [Click to Expand]">'.view_cover($e['e__cover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].' hidden">'.preview_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']).'</span>';
                 } elseif(isset($_GET['expand']) || $input_modal || in_array($e['e__id'], $this->config->item('n___37694'))){
                     $message_clean = preview_x__message($fetch_data[0]['x__message'], $fetch_data[0]['x__type']);
                 } else {
