@@ -1304,7 +1304,7 @@ class E extends CI_Controller
             }
 
 
-            $_POST['new_account_email'] = trim($_POST['new_account_email']);
+            $_POST['new_account_email'] = trim(strtolower($_POST['new_account_email']));
             if(!filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) && !filter_var($_POST['new_account_email'], FILTER_VALIDATE_EMAIL)){
                 return view_json(array(
                     'status' => 0,
