@@ -28,10 +28,10 @@ foreach($this->X_model->fetch(array(
         continue;
     }
 
-    echo '<div class="frame">';
+    echo '<div class="this_frame">';
     echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__id'].'">'.$link_i['i__title'].'</a></h3>';
 
-    echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
+    echo '<table class="table table-sm table-striped stats-table mini-stats-table this_table">';
 
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     echo '<td style="text-align: left; width: 65%;">&nbsp;</td>';
@@ -53,8 +53,8 @@ foreach($this->X_model->fetch(array(
 ?>
 
 <style>
-    td>div { padding: 8px !important; font-size:1.3em; }
-    .frame {
+    .this_table>tr>td>div { padding: 8px !important; font-size:1.3em; }
+    .this_frame {
         page-break-inside: avoid;
     }
 </style>
