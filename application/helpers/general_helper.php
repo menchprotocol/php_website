@@ -919,8 +919,6 @@ function list_settings($i__id){
     $unique_users_count = array();
     foreach($query_string as $key => $x) {
 
-        break;
-
         if (in_array($x['e__id'], $unique_users_count)) {
 
             unset($query_string[$key]);
@@ -939,7 +937,7 @@ function list_settings($i__id){
                 }
             }
 
-        } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
+        } elseif (0 && count($list_config[26600]) && count($CI->X_model->fetch(array(
                 'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
                 'x__down' => $x['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -949,7 +947,7 @@ function list_settings($i__id){
             //Must follow NONE of these sources:
             unset($query_string[$key]);
 
-        } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
+        } elseif (0 && count($list_config[40793]) && count($CI->X_model->fetch(array(
                 'x__left IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
                 'x__creator' => $x['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
