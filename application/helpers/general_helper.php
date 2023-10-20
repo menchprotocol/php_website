@@ -923,15 +923,19 @@ function list_settings($i__id){
 
             unset($query_string[$key]);
 
-        } elseif (count($list_config[40791]) && count($list_config[27984]) && count($list_config[27984]) != count($CI->X_model->fetch(array(
-                'x__up IN (' . join(',', $list_config[27984]) . ')' => null, //All of these
-                'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))) {
+        } elseif (count($list_config[40791]) && count($list_config[27984])>0) {
 
-            //Must be included in ALL Sources, since not lets continue:
-            unset($query_string[$key]);
+            foreach($list_config[27984] as $limit_27984){
+                if(!count($CI->X_model->fetch(array(
+                    'x__up' => $limit_27984,
+                    'x__down' => $x['e__id'],
+                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                )))){
+                    //Must be included in ALL Sources, since not lets continue:
+                    unset($query_string[$key]);
+                }
+            }
 
         } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
                 'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
