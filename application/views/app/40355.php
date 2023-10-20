@@ -1,100 +1,52 @@
 <?php
 
-foreach(array('i__id','custom_grid') as $input){
-    if(!isset($_GET[$input])){
-        $_GET[$input] = '';
-    }
+if(!isset($_GET['i__id'])){
+    die('Missing Idea ID i__id');
 }
 
-$e___6287 = $this->config->item('e___6287'); //APP
+
+//Generate list & settings:
+$list_settings = list_settings($_GET['i__id'], true);
+echo '<h1 class="no-print">' . view_i_title($list_settings['i']) . '</h1>';
+echo $list_settings['filters_ui'];
 
 
-//Fetch Main Idea:
-if(strlen($_GET['i__id'])){
-
-    $recursive_i_ids = array();
-    $is_with_action_es = array();
-    $es_added = array();
+if(!$list_settings['list_config'][34513]){
+    die('Missing Pin Link @34513');
+}
 
 
-    foreach($this->I_model->fetch(array(
-        'i__id IN (' . $_GET['i__id'] . ')' => null, //SOURCE LINKS
-    ), 0, 0, array('i__id' => 'ASC')) as $loaded_i) {
-        echo '<h2 class="no-print"><a href="/~' . $loaded_i['i__id'] . '"><u>' . $loaded_i['i__title'] . '</u></a></h2>';
+foreach($this->X_model->fetch(array(
+    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+    'x__up' => $list_settings['list_config'][34513],
+    'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+
+    $sub_list_settings = list_settings($link_i['i__id'], true);
+    if(!count($sub_list_settings['query_string'])){
+        continue;
     }
 
+    echo '<div class="frame">';
+    echo '<h3 style="margin-top: 55px;">'.$link_i['i__title'].'</h3>';
 
-    foreach($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-        'x__up' => $_GET['custom_grid'], //ACTIVE
-        'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
-    ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+    echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
 
-        $discoveries = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__left' => $link_i['i__id'],
-        ), array('x__creator'), 0);
+    echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+    echo '<td style="text-align: left; width: 65%;">&nbsp;</td>';
+    echo '<td>&nbsp;</td>';
+    echo '</tr>';
 
-        if(!count($discoveries)){
-            continue;
-        }
-
-        echo '<div class="frame">';
-        echo '<h3 style="margin-top: 55px;">'.$link_i['i__title'].'</h3>';
-
-
-        echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
-
+    foreach($sub_list_settings['query_string'] as $x){
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-        echo '<td style="text-align: left; width: 65%;">&nbsp;</td>';
-        echo '<td>'.$e___6287[40355]['m__title'].'</td>';
+        echo '<td><div>'.$x['extension_name'].'</div></td>';
+        echo '<td>&nbsp;</td>';
         echo '</tr>';
-
-        foreach($discoveries as $x){
-
-
-            if(isset($_GET['include_e']) && intval($_GET['include_e']) && count($this->X_model->fetch(array(
-                    'x__up IN (' . $_GET['include_e'] . ')' => null, //All of these
-                    'x__down' => $x['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ))) != count(explode(',',$_GET['include_e']))){
-                continue;
-            }
-            if(isset($_GET['exclude_e']) && intval($_GET['exclude_e']) && count($this->X_model->fetch(array(
-                    'x__up IN (' . $_GET['exclude_e'] . ')' => null, //All of these
-                    'x__down' => $x['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-                continue;
-            }
-
-            $u_names = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__up' => 30198, //Full Name
-            ));
-
-            echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-            echo '<td><div>'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $x['e__title'] ).'</div></td>';
-            echo '<td>&nbsp;</td>';
-            echo '</tr>';
-
-        }
-
-        echo '</table>';
-        echo '</div>';
-
-
     }
 
-} else {
-
-    echo 'Missing Idea ID';
+    echo '</table>';
+    echo '</div>';
 
 }
 
