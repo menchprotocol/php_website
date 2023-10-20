@@ -918,7 +918,7 @@ function list_settings($i__id){
             'x__left' => $i__id,
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+        ), array('x__creator'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
     }
 
     //Clean list:
