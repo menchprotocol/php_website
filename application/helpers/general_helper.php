@@ -914,6 +914,15 @@ function list_settings($i__id){
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
     } else {
+        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+
+        foreach($CI->I_model->fetch(array(
+            'i__id' => $i__id,
+        )) as $this_i){
+            $filters_ui .= '<div><span class="icon-block">'.$e___11035[6255]['m__cover'].'</span><a href="/~' . $i__id . '"><u>'.$e___11035[6255]['m__title'].': ' . $this_i['i__title'] . '</u></a></div>';
+        }
+
+
         $query_string = $CI->X_model->fetch(array(
             'x__left' => $i__id,
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
