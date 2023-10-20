@@ -1102,10 +1102,6 @@ function list_settings($i__id, $fetch_contact = false){
         }
     }
 
-
-    $filters_ui .= '<div style="padding: 10px;"><a href="/-26582?i__id='.$i__id.'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $list_config[40791]).'&include_e='.join(',', $list_config[27984]).'&exclude_e='.join(',', $list_config[26600]).'&custom_grid='.$list_config[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>'.'</div>';
-
-
     return array(
         'i' => $is[0],
         'list_config' => $list_config,
