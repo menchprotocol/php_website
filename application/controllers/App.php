@@ -52,7 +52,12 @@ class App extends CI_Controller
             $member_e = superpower_unlocked();
             $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
             if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
-                die(view_unauthorized_message(end($superpower_actives)));
+                if(!$member_e){
+                    //No user, maybe they can login to get it:
+                    return redirect_message('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to gain access.</div>');
+                } else {
+                    die(view_unauthorized_message(end($superpower_actives)));
+                }
             }
         }
 
