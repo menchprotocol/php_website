@@ -909,7 +909,9 @@ function list_settings($i__id){
         ), array('x__creator'), 0, 500, array('x__id' => 'DESC'));
     } elseif(count($list_config[27984])>0){
         $query_string = $CI->X_model->fetch(array(
-            'x__up IN (' . join(',', $list_config[27984]) . ')' => null,
+            //'x__up IN (' . join(',', $list_config[27984]) . ')' => null,
+            'x__up' => 40580,
+            'x__up' => 40581,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__down'), 0, 500, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
