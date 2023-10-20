@@ -919,11 +919,31 @@ function list_settings($i__id){
     $unique_users_count = array();
     foreach($query_string as $key => $x) {
 
-        if (0 && in_array($x['e__id'], $unique_users_count)) {
+        if (in_array($x['e__id'], $unique_users_count)) {
 
             unset($query_string[$key]);
 
-        } elseif (count($list_config[40791]) && count($list_config[27984])>0) {
+        } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
+                'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))) {
+
+            //Must follow NONE of these sources:
+            unset($query_string[$key]);
+
+        } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
+                'x__left IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
+                'x__creator' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))) {
+
+            //They have discovered at-least one, so skip this:
+            unset($query_string[$key]);
+
+        } elseif (count($list_config[40791]) && count($list_config[27984])) {
 
             foreach($list_config[27984] as $limit_27984){
                 if(!count($CI->X_model->fetch(array(
@@ -934,28 +954,9 @@ function list_settings($i__id){
                 )))){
                     //Must be included in ALL Sources, since not lets continue:
                     unset($query_string[$key]);
+                    break;
                 }
             }
-
-        } elseif (0 && count($list_config[26600]) && count($CI->X_model->fetch(array(
-                'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
-                'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))) {
-
-            //Must follow NONE of these sources:
-            unset($query_string[$key]);
-
-        } elseif (0 && count($list_config[40793]) && count($CI->X_model->fetch(array(
-                'x__left IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
-                'x__creator' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))) {
-
-            //They have discovered at-least one, so skip this:
-            unset($query_string[$key]);
 
         }
 
