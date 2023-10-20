@@ -919,7 +919,7 @@ function list_settings($i__id){
     $unique_users_count = array();
     foreach($query_string as $key => $x) {
 
-        if (in_array($x['e__id'], $unique_users_count)) {
+        if (0 && in_array($x['e__id'], $unique_users_count)) {
 
             unset($query_string[$key]);
 
