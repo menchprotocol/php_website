@@ -1086,15 +1086,15 @@ function list_settings($i__id, $fetch_contact = false){
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
 
-            $query_string[$count]['extension_emails'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
-            $query_string[$count]['extension_emails'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
+            $query_string[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
+            $query_string[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
             $query_string[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
 
-            $contact_details['full_list'] .= $query_string[$count]['extension_emails']."\t".$query_string[$count]['extension_emails']."\t".$query_string[$count]['extension_phone']."\n";
+            $contact_details['full_list'] .= $query_string[$count]['extension_name']."\t".$query_string[$count]['extension_email']."\t".$query_string[$count]['extension_phone']."\n";
 
-            if($query_string[$count]['extension_emails']){
+            if($query_string[$count]['extension_email']){
                 $contact_details['email_count']++;
-                $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string[$count]['extension_emails'];
+                $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string[$count]['extension_email'];
             }
             if($query_string[$count]['extension_phone']){
                 $contact_details['phone_count']++;
@@ -1908,8 +1908,6 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $exclude_i, $inclu
         'email_list' => '',
         'email_count' => 0,
         'phone_count' => 0,
-        'phone_array' => array(),
-        'email_array' => array(),
     );
 
     $query = array();
