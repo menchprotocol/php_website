@@ -12,8 +12,8 @@ echo $list_settings['filters_ui'];
 
 
 //Generate the contact list of the input idea:
-echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$list_settings['contact_details']['full_list'].'</textarea>';
-echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$list_settings['contact_details']['email_list'].'</textarea>';
+echo '<textarea class="mono-space subscriber_data" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$list_settings['contact_details']['full_list'].'</textarea>';
+echo '<textarea class="mono-space subscriber_data" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$list_settings['contact_details']['email_list'].'</textarea>';
 
 
-print_r($list_settings, true);
+print_r($list_settings);
