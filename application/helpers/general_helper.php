@@ -915,12 +915,9 @@ function list_settings($i__id){
         ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
     }
 
-    print_r($list_config);
     //Clean list:
     $unique_users_count = array();
     foreach($query_string as $key => $x) {
-
-        echo '[['.$x['e__id'].']'.$key.']';
 
         if (in_array($x['e__id'], $unique_users_count)) {
 
@@ -966,8 +963,6 @@ function list_settings($i__id){
         array_push($unique_users_count, $x['e__id']);
 
     }
-
-    print_r($query_string);
 
 
 
