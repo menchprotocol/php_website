@@ -945,6 +945,10 @@ function list_settings($i__id){
 
         } elseif (count($list_config[40791]) && count($list_config[27984])) {
 
+            if($x['e__id']==29417){
+                echo 'hiiiii';
+            }
+
             foreach($list_config[27984] as $limit_27984){
                 if(!count($CI->X_model->fetch(array(
                     'x__up' => $limit_27984,
@@ -953,6 +957,7 @@ function list_settings($i__id){
                     'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                     //Must be included in ALL Sources, since not lets continue:
+                    echo '{'.$limit_27984.'}';
                     unset($query_string[$key]);
                     break;
                 }
