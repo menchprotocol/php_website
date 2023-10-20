@@ -1280,6 +1280,7 @@ class E extends CI_Controller
             ));
         }
 
+        $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
 
         //Validate member ID
         if($_POST['account_id'] > 0){
