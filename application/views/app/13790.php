@@ -32,7 +32,7 @@ $list_settings = list_settings($_GET['i__id']);
 
 echo '<h1>' . view_i_title($is[0]) . '</h1>';
 echo $list_settings['filters_ui'];
-
+echo '{'.count($list_settings['query_string']).'}';
 
 foreach($list_settings['query_string'] as $x){
 

@@ -967,7 +967,6 @@ function list_settings($i__id){
 
 
     //Determine columns if any:
-    //Any PINs?
     if($list_config[34513]){
 
         $column_sources = $CI->X_model->fetch(array(
