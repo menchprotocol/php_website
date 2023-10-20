@@ -286,22 +286,18 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $_GET['i__id'] = $discovery_i__id;
     $idea_view = 30795;
     $quick_href = '/~'.$discovery_i__id;
-    $quick_id = 33286;
-    $body_class .= ' .qz'.$quick_id.' ';
 
 } elseif(!strlen($first_segment) && e_of_e($website_id)) {
 
     //Edit Website Home Page:
     $quick_href = '/@' . $website_id;
     $quick_id = 33287;
-    $body_class .= ' .qz'.$quick_id;
 
 } elseif(substr($first_segment, 0, 1)=='@' && intval(substr($first_segment, 1))==$website_id) {
 
     //Edit Website Home Page:
     $quick_href = '/?reset_cache=1';
     $quick_id = 6287;
-    $body_class .= ' .qz'.$quick_id.' .qz6287_'.substr($first_segment, 1).' ';
 
 } elseif(substr($first_segment, 0, 1)=='~') {
 
@@ -309,8 +305,6 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $_GET['i__id'] = substr($first_segment, 1);
     $idea_view = 33286;
     $quick_href = '/' . $_GET['i__id'];
-    $quick_id = 30795;
-    $body_class .= ' .qz'.$quick_id.' ';
 
 } elseif(substr($first_segment, 0, 1)=='-' && $session_superpowers_13422) {
 
@@ -318,10 +312,10 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $app_id = substr($first_segment, 1);
     if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
         $idea_view = $app_id;
+    } else {
+        $quick_id = 33287;
     }
     $quick_href = '/@' . $app_id;
-    $quick_id = 33287;
-    $body_class .= ' .qz'.$quick_id.' .qz6287_'.substr($first_segment, 1).' ';
 
 } elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
 
@@ -329,24 +323,22 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $app_id = substr($first_segment, 1);
     if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
         $idea_view = $app_id;
+    } else {
+        $quick_id = 6287;
     }
     $quick_href = '/-' . substr($first_segment, 1);
-    $quick_id = 6287;
-    $body_class .= ' .qz'.$quick_id.' ';
 
 } elseif(isset($_GET['e__id']) && intval($_GET['e__id'])) {
 
     //Source Mode:
     $quick_href = '/@' . $_GET['e__id'];
     $quick_id = 33287;
-    $body_class .= ' .qz'.$quick_id.' .qz6287_'.$_GET['e__id'].' ';
 
 } elseif(isset($_GET['i__id']) && intval($_GET['i__id'])) {
 
     //Ideation Mode:
     $quick_href = '/~'.$_GET['i__id'];
     $quick_id = 33286;
-    $body_class .= ' .qz'.$quick_id.' ';
 
 }
 
