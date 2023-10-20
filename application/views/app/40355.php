@@ -30,21 +30,13 @@ foreach($this->X_model->fetch(array(
 
     echo '<div class="this_frame">';
     echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__id'].'">'.$link_i['i__title'].'</a></h3>';
-
-    echo '<table class="table table-sm table-striped stats-table mini-stats-table this_table">';
-
-    echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-    echo '<td style="text-align: left; width: 65%;">&nbsp;</td>';
-    echo '<td>&nbsp;</td>';
-    echo '</tr>';
-
+    echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     foreach($sub_list_settings['query_string'] as $x){
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-        echo '<td><div>'.$x['extension_name'].'</div></td>';
+        echo '<td><div class="this_name">'.$x['extension_name'].'</div></td>';
         echo '<td>&nbsp;</td>';
         echo '</tr>';
     }
-
     echo '</table>';
     echo '</div>';
 
@@ -53,7 +45,7 @@ foreach($this->X_model->fetch(array(
 ?>
 
 <style>
-    .this_table>tr>td>div { padding: 8px !important; font-size:1.3em; }
+    .this_name { padding: 8px !important; font-size:1.3em; }
     .this_frame {
         page-break-inside: avoid;
     }
