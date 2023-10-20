@@ -1,13 +1,8 @@
 <?php
 
-$is = $this->I_model->fetch(array(
-    'i__id' => @$_GET['i__id'],
-));
-if(!count($is)){
+if(!isset($_GET['i__id'])){
     die('Missing Idea ID i__id');
 }
-
-
 
 //Sheet
 $e___6287 = $this->config->item('e___6287'); //APP
@@ -29,8 +24,7 @@ $count_totals = array(
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id']);
-
-echo '<h1>' . view_i_title($is[0]) . '</h1>';
+echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
 echo $list_settings['filters_ui'];
 
 foreach($list_settings['query_string'] as $x){

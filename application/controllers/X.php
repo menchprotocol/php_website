@@ -641,12 +641,6 @@ class X extends CI_Controller
     }
 
 
-    function x_schedule_delete(){
-        $this->X_model->update($_POST['x__id'], array(
-            'x__access' => 6173, //Deleted
-        ));
-    }
-
 
     function sort_alphabetical()
     {
@@ -707,65 +701,6 @@ class X extends CI_Controller
     }
 
 
-
-    function x_schedule_message(){
-
-        //Authenticate Member:
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-
-        } elseif (!isset($_POST['message_subject']) || !strlen($_POST['message_subject'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Subject',
-            ));
-
-        } elseif (!isset($_POST['message_text']) || !strlen($_POST['message_text'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Message Body',
-            ));
-
-        } elseif (!isset($_POST['message_time']) || !strtotime($_POST['message_time'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Message Time',
-            ));
-
-        }
-
-        //Log mass message transaction:
-        $log_x = $this->X_model->create(array(
-            'x__type' => 26582, //Send Instant Message
-            'x__access' => 6175, //Drafting until it's sent via Cron Job
-            'x__time' => date('Y-m-d H:i:s', strtotime($_POST['message_time'])),
-            'x__creator' => $member_e['e__id'],
-            'x__message' => $_POST['message_subject'],
-            'x__metadata' => array(
-                'message_subject' => $_POST['message_subject'],
-                'message_text' => $_POST['message_text'],
-                'message_time' => $_POST['message_time'],
-                'i__id' => $_POST['i__id'],
-                'e__id' => $_POST['e__id'],
-                'exclude_e' => $_POST['exclude_e'],
-                'include_e' => $_POST['include_e'],
-            ),
-        ));
-
-        return view_json(array(
-            'status' => ( isset($log_x['x__id']) ? 1 : 0 ),
-            'message' => 'Scheduled messages for '.$_POST['message_time'],
-        ));
-
-    }
 
     function x_upload()
     {

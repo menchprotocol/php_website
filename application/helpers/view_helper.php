@@ -656,7 +656,7 @@ function view_sign($i, $previous_response = null){
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $member_e['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => 30198, //Name
+            'x__up' => 30198, //Full Legal Name
         ));
     }
 

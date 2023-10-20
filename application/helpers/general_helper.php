@@ -848,43 +848,53 @@ function round_minutes($seconds){
 
 
 
-function list_settings($i__id){
+function list_settings($i__id, $fetch_contact = false){
 
     //Compile key settings for this sheet:
     $filters_ui = '<div class="settings_frame"><a href="javascript:void(0);" onclick="$(\'.settings_frame\').toggleClass(\'hidden\')"><i class="fal fa-cog"></i></a></div>'.'<div class="settings_frame hidden">';
 
-
     $CI =& get_instance();
-    $e___13790 = $CI->config->item('e___13790'); //Sheet Link Types
     $e___6287 = $CI->config->item('e___6287'); //APP
+    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e___40946 = $CI->config->item('e___40946'); //Source List Controllers
     $list_config = array(); //To compile the settings of this sheet:
     $column_sources = array();
     $column_ideas = array();
+    $contact_details = array(
+        'full_list' => '',
+        'email_list' => '',
+        'email_count' => 0,
+        'phone_count' => 0,
+    );
 
-    foreach($e___13790 as $x__type => $m) {
+    $is = $CI->I_model->fetch(array(
+        'i__id' => $i__id,
+    ));
+
+    foreach($e___40946 as $x__type => $m) {
         $list_config[intval($x__type)] = array(); //Assume no links for this type
     }
     //Now search for these settings across sources:
     foreach($CI->X_model->fetch(array(
         'x__right' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___13790')) . ')' => null, //Sheets
+        'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up'), 0) as $setting_link){
         array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
         //Print on screen:
-        $filters_ui .= '<div><span class="icon-block" title="'.$e___13790[$setting_link['x__type']]['m__title'].': '.$e___13790[$setting_link['x__type']]['m__message'].'">'.$e___13790[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block-xss">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
+        $filters_ui .= '<div><span class="icon-block" title="'.$e___40946[$setting_link['x__type']]['m__title'].': '.$e___40946[$setting_link['x__type']]['m__message'].'">'.$e___40946[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block-xss">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
     }
     //Now search for these settings across ideas:
     foreach($CI->X_model->fetch(array(
         'x__left' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___13790')) . ')' => null, //Sheets
+        'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
     ), array('x__right'), 0) as $setting_link){
         array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
         //Print on screen:
-        $filters_ui .= '<div><span class="icon-block" title="'.$e___13790[$setting_link['x__type']]['m__title'].': '.$e___13790[$setting_link['x__type']]['m__message'].'">'.$e___13790[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
+        $filters_ui .= '<div><span class="icon-block" title="'.$e___40946[$setting_link['x__type']]['m__title'].': '.$e___40946[$setting_link['x__type']]['m__message'].'">'.$e___40946[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
     }
 
     //Can only have one focus view, pick first one if any:
@@ -914,15 +924,7 @@ function list_settings($i__id){
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
     } else {
-        $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-
-        foreach($CI->I_model->fetch(array(
-            'i__id' => $i__id,
-        )) as $this_i){
-            $filters_ui .= '<div><span class="icon-block">'.$e___11035[6255]['m__cover'].'</span><a href="/~' . $i__id . '"><u>'.$e___11035[6255]['m__title'].': ' . $this_i['i__title'] . '</u></a></div>';
-        }
-
-
+        $filters_ui .= '<div><span class="icon-block">'.$e___11035[6255]['m__cover'].'</span><a href="/~' . $i__id . '"><u>'.$e___11035[6255]['m__title'].': ' . $is[0]['i__title'] . '</u></a></div>';
         $query_string = $CI->X_model->fetch(array(
             'x__left' => $i__id,
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1059,17 +1061,59 @@ function list_settings($i__id){
         }
 
     }
+    
+    
+    if($fetch_contact){
+        foreach($query_string as $count => $x){
+
+            //Fetch email & phone:
+            $fetch_names = $CI->X_model->fetch(array(
+                'x__up' => 30198, //Full Legal Name
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+            $fetch_emails = $CI->X_model->fetch(array(
+                'x__up' => 3288, //Email
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+            $fetch_phones = $CI->X_model->fetch(array(
+                'x__up' => 4783, //Phone
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ));
+
+            $query_string[$count]['extension_emails'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
+            $query_string[$count]['extension_emails'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
+            $query_string[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
+
+            $contact_details['full_list'] .= $query_string[$count]['extension_emails']."\t".$query_string[$count]['extension_emails']."\t".$query_string[$count]['extension_phone']."\n";
+
+            if($query_string[$count]['extension_emails']){
+                $contact_details['email_count']++;
+                $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string[$count]['extension_emails'];
+            }
+            if($query_string[$count]['extension_phone']){
+                $contact_details['phone_count']++;
+            }
+        }
+    }
 
 
-    $filters_ui .= '<div style="padding: 10px;"><a href="/-26582?i__id='.join(',', $list_config[40791]).'&include_e='.join(',', $list_config[27984]).'&exclude_e='.join(',', $list_config[26600]).'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $list_config[40791]).'&include_e='.join(',', $list_config[27984]).'&exclude_e='.join(',', $list_config[26600]).'&custom_grid='.$list_config[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>'.'</div>';
+    $filters_ui .= '<div style="padding: 10px;"><a href="/-26582?i__id='.$i__id.'">'.$e___6287[26582]['m__cover'].' '.$e___6287[26582]['m__title'].'</a> | <a href="/-40355?i__id='.join(',', $list_config[40791]).'&include_e='.join(',', $list_config[27984]).'&exclude_e='.join(',', $list_config[26600]).'&custom_grid='.$list_config[34513].'">'.$e___6287[40355]['m__cover'].' '.$e___6287[40355]['m__title'].'</a></div>'.'</div>';
 
 
     return array(
+        'i' => $is[0],
         'list_config' => $list_config,
         'column_sources' => $column_sources,
         'column_ideas' => $column_ideas,
         'query_string' => $query_string,
         'filters_ui' => $filters_ui,
+        'contact_details' => $contact_details, //Optional addon
     );
 
 }
@@ -1713,14 +1757,14 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             $name = $es[0]['e__title'];
 
             //Also fetch email for this user to populate the reply to:
-            $e_emails = $CI->X_model->fetch(array(
+            $fetch_emails = $CI->X_model->fetch(array(
                 'x__up' => 3288, //Email
                 'x__down' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
-            if(count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)){
-                array_push($ReplyToAddresses, trim($e_emails[0]['x__message']));
+            if(count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)){
+                array_push($ReplyToAddresses, trim($fetch_emails[0]['x__message']));
             }
         }
     }
@@ -1857,7 +1901,7 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
 function message_list($i__id, $e__id, $exclude_e, $include_e, $exclude_i, $include_i){
 
     $CI =& get_instance();
-    $message_list = array(
+    $contact_details = array(
         'unique_users_id' => array(),
         'unique_users_count' => 0,
         'full_list' => '',
@@ -1941,21 +1985,21 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $exclude_i, $inclu
 
 
         //Fetch email & phone:
-        $e_emails = $CI->X_model->fetch(array(
+        $fetch_emails = $CI->X_model->fetch(array(
             'x__up' => 3288, //Email
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
-        $e_phones = $CI->X_model->fetch(array(
+        $fetch_phones = $CI->X_model->fetch(array(
             'x__up' => 4783, //Phone
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ));
 
-        $e_email = ( count($e_emails) && filter_var($e_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $e_emails[0]['x__message'] : false );
-        $e_phone = ( count($e_phones) && strlen($e_phones[0]['x__message'])>=10 ? $e_phones[0]['x__message'] : false );
+        $e_email = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
+        $e_phone = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
 
         $contacrt_forms = ( $e_email ? 1 : 0 ) + ( $e_phone ? 1 : 0 );
 
@@ -1968,30 +2012,30 @@ function message_list($i__id, $e__id, $exclude_e, $include_e, $exclude_i, $inclu
             //continue;
         }
 
-        $message_list['unique_users_count']++;
+        $contact_details['unique_users_count']++;
         if($e_email){
-            $message_list['email_count']++;
-            $message_list['email_list'] .= ( strlen($message_list['email_list']) ? ", " : '' ).$e_email;
+            $contact_details['email_count']++;
+            $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$e_email;
         }
         if($e_phone){
-            $message_list['phone_count']++;
+            $contact_details['phone_count']++;
         }
 
         $first_name = one_two_explode('',' ', $subscriber['e__title']);
-        array_push( $message_list['unique_users_id'],  intval($subscriber['e__id']));
+        array_push( $contact_details['unique_users_id'],  intval($subscriber['e__id']));
 
-        $u_names = $CI->X_model->fetch(array(
+        $fetch_names = $CI->X_model->fetch(array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $subscriber['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 30198, //Full Name
         ));
 
-        $message_list['full_list'] .= ( count($u_names) ? $u_names[0]['x__message'] : $subscriber['e__title'] )."\t".$e_email."\t".$e_phone."\n";
+        $contact_details['full_list'] .= ( count($fetch_names) ? $fetch_names[0]['x__message'] : $subscriber['e__title'] )."\t".$e_email."\t".$e_phone."\n";
 
     }
 
-    return $message_list;
+    return $contact_details;
 
 }
 

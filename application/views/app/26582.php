@@ -2,7 +2,6 @@
 
 if(!$is_u_request || isset($_GET['cron'])){
 
-
     foreach($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 33600, //Drafting Link
@@ -54,18 +53,18 @@ if(!$is_u_request || isset($_GET['cron'])){
         $x__metadata = unserialize($send_message['x__metadata']);
 
         //Determine Recipients:
-        $message_list = message_list($x__metadata['i__id'], $x__metadata['e__id'], $x__metadata['exclude_e'], $x__metadata['include_e'], $x__metadata['exclude_i'], $x__metadata['include_i']);
+        $contact_details = message_list($x__metadata['i__id'], $x__metadata['e__id'], $x__metadata['exclude_e'], $x__metadata['include_e'], $x__metadata['exclude_i'], $x__metadata['include_i']);
 
         //Loop through all contacts and send messages:
         $stats = array(
-            'target' => count($message_list['unique_users_id']),
+            'target' => count($contact_details['unique_users_id']),
             'unique' => 0,
             'phone_count' => 0,
             'error_count' => 0,
             'email_count' => 0,
         );
 
-        foreach($message_list['unique_users_id'] as $send_e__id){
+        foreach($contact_details['unique_users_id'] as $send_e__id){
 
             $results = $this->X_model->send_dm($send_e__id, $x__metadata['message_subject'], $x__metadata['message_text'], array('x__reference' => $send_message['x__id']), 0, $send_message['x__website']);
 
@@ -82,7 +81,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         $this->X_model->update($send_message['x__id'], array(
             'x__metadata' => array(
                 'stats' => $stats,
-                'all_recipients' => $message_list['unique_users_id'],
+                'all_recipients' => $contact_details['unique_users_id'],
             ),
         ));
 
@@ -119,14 +118,14 @@ if(!$is_u_request || isset($_GET['cron'])){
         }
     }
 
-    $message_list = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e'], $_GET['exclude_i'], $_GET['include_i']);
+    $contact_details = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e'], $_GET['exclude_i'], $_GET['include_i']);
     $e___6287 = $this->config->item('e___6287'); //APP
     $e___6186 = $this->config->item('e___6186'); //Transaction Status
 
     $twilio_setup = website_setting(30859) && website_setting(30860) && website_setting(27673);
 
 
-    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a> | <a href="/-13790?i__id='.$_GET['i__id'].'&e__id='.$_GET['e__id'].'&include_e='.$_GET['include_e'].'&exclude_e='.$_GET['exclude_e'].'&include_i='.$_GET['include_i'].'&exclude_i='.$_GET['exclude_i'].'">'.$e___6287[13790]['m__cover'].' '.$e___6287[13790]['m__title'].'</a> | '.( $twilio_setup ? '<span><i class="fas fa-check-circle"></i> Twilio Activated</span>' : '<span style="color:#FF0000;"><i class="fas fa-times-circle"></i> Twilio SMS is Pending Setup</span>' ).'</div>';
+    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a></div>';
 
     echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
     echo '<table class="table table-sm maxout filter_table"><tr>';
@@ -167,10 +166,10 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '</form>';
 
 
-    echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');"><i class="fad fa-search-plus"></i> '.$message_list['unique_users_count'].' Unique Recipients = '.$message_list['email_count'].' Emails + '.$message_list['phone_count'].' SMS</a></div>';
+    echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');"><i class="fad fa-search-plus"></i> '.$contact_details['unique_users_count'].' Unique Recipients = '.$contact_details['email_count'].' Emails + '.$contact_details['phone_count'].' SMS</a></div>';
 
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$message_list['full_list'].'</textarea>';
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$message_list['email_list'].'</textarea>';
+    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$contact_details['full_list'].'</textarea>';
+    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$contact_details['email_list'].'</textarea>';
 
 
     echo '<div style="padding: 0 10px 13px;">';
@@ -193,7 +192,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     echo '</div>';
 
 
-    echo '<div id="schedule_message_btn" style="padding: 10px;"><a class="btn btn-default" href="javascript:void(0);"  onclick="schedule_message();">Schedule for '.$message_list['unique_users_count'].' Members <i class="fas fa-arrow-right"></i></a></div>';
+    echo '<div id="schedule_message_btn" style="padding: 10px;"><a class="btn btn-default" href="javascript:void(0);"  onclick="schedule_message();">Schedule for '.$contact_details['unique_users_count'].' Members <i class="fas fa-arrow-right"></i></a></div>';
 
     echo '<div id="message_result"></div>';
 
@@ -251,76 +250,5 @@ if(!$is_u_request || isset($_GET['cron'])){
         echo '<p>Nothing yet...</p>';
     }
     echo '</table>';
-
-    ?>
-
-    <script type="text/javascript">
-
-        $(document).ready(function(){
-            countChar();
-            set_autosize($('#message_text'));
-        });
-
-        function countChar() {
-            $('#msgNum').html(( $('#message_subject').val().length + $('#message_text').val().length + 2 /* For the [: ] that connects the subject to body in SMS */ )+'/<?= view_memory(6404,27891) ?> Characters (Subject + Body)');
-        }
-
-        var is_processing = false;
-        function schedule_message(){
-
-            if(is_processing){
-                alert('currently processing... be patient :)');
-                return false;
-            }
-
-            is_processing = true;
-
-            //Make sure there is a message:
-            if(!$('#message_text').val().length){
-                alert('You must enter a message before sending...');
-                return false;
-            }
-
-            $('#message_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span> Sending Messages...');
-
-            $.post("/x/x_schedule_message", {
-                i__id: '<?= $_GET['i__id'] ?>',
-                e__id: '<?= $_GET['e__id'] ?>',
-                exclude_e: '<?= $_GET['exclude_e'] ?>',
-                include_e: '<?= $_GET['include_e'] ?>',
-                exclude_i: '<?= $_GET['exclude_i'] ?>',
-                include_i: '<?= $_GET['include_i'] ?>',
-                message_subject: $('#message_subject').val(),
-                message_text: $('#message_text').val(),
-                message_time: $('#message_time').val(),
-            }, function (data) {
-
-                if (data.status) {
-                    //Hide button:
-                    $('#schedule_message_btn').addClass('hidden');
-                    $('#message_result').html(data.message);
-                } else {
-                    //Show error:
-                    is_processing = false; //Allow resubmissions
-                    $('#message_result').html('ERROR: '+data.message);
-                }
-
-            });
-
-        }
-
-        function x_schedule_delete(x__id){
-            var r = confirm("Remove Email "+x__id+"?");
-            if (r==true) {
-                $.post("/x/x_schedule_delete", {
-                    x__id: x__id,
-                }, function (data) {
-                    $('.semail'+x__id).remove();
-                });
-            }
-        }
-
-    </script>
-    <?php
 
 }
