@@ -906,15 +906,16 @@ function list_settings($i__id){
             'x__left IN (' . join(',', $list_config[40791]) . ')' => null,
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__creator'), 500, 0, array('x__id' => 'DESC'));
+        ), array('x__creator'), 1000, 0, array('x__id' => 'DESC'));
     } elseif(count($list_config[27984])>0){
         $query_string = $CI->X_model->fetch(array(
             'x__up IN (' . join(',', $list_config[27984]) . ')' => null,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__down'), 500, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+        ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
     }
 
+    print_r($list_config);
     //Clean list:
     $unique_users_count = array();
     foreach($query_string as $key => $x) {
