@@ -277,20 +277,15 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 <?php
 
-
+$idea_view = 0;
 $quick_id = 0;
 $discovery_i__id = ( intval($first_segment)==$first_segment ? ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment ) : 0 );
 if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
 
     //Ideation Mode:
+    $_GET['i__id'] = $discovery_i__id;
+    $idea_view = 30795;
     $quick_href = '/~'.$discovery_i__id;
-    $quick_id = 33286;
-    $body_class .= ' .qz'.$quick_id.' ';
-
-} elseif(isset($_GET['i__id']) && intval($_GET['i__id'])) {
-
-    //Ideation Mode:
-    $quick_href = '/~'.$_GET['i__id'];
     $quick_id = 33286;
     $body_class .= ' .qz'.$quick_id.' ';
 
@@ -311,8 +306,32 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
 } elseif(substr($first_segment, 0, 1)=='~') {
 
     //Discovery Mode:
-    $quick_href = '/' . substr($first_segment, 1);
+    $_GET['i__id'] = substr($first_segment, 1);
+    $idea_view = 33286;
+    $quick_href = '/' . $_GET['i__id'];
     $quick_id = 30795;
+    $body_class .= ' .qz'.$quick_id.' ';
+
+} elseif(substr($first_segment, 0, 1)=='-' && $session_superpowers_13422) {
+
+    //Source Mode:
+    $app_id = substr($first_segment, 1);
+    if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
+        $idea_view = $app_id;
+    }
+    $quick_href = '/@' . $app_id;
+    $quick_id = 33287;
+    $body_class .= ' .qz'.$quick_id.' .qz6287_'.substr($first_segment, 1).' ';
+
+} elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
+
+    //App Store:
+    $app_id = substr($first_segment, 1);
+    if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
+        $idea_view = $app_id;
+    }
+    $quick_href = '/-' . substr($first_segment, 1);
+    $quick_id = 6287;
     $body_class .= ' .qz'.$quick_id.' ';
 
 } elseif(isset($_GET['e__id']) && intval($_GET['e__id'])) {
@@ -322,18 +341,11 @@ if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
     $quick_id = 33287;
     $body_class .= ' .qz'.$quick_id.' .qz6287_'.$_GET['e__id'].' ';
 
-} elseif(substr($first_segment, 0, 1)=='-' && $session_superpowers_13422) {
+} elseif(isset($_GET['i__id']) && intval($_GET['i__id'])) {
 
-    //Source Mode:
-    $quick_href = '/@' . substr($first_segment, 1);
-    $quick_id = 33287;
-    $body_class .= ' .qz'.$quick_id.' .qz6287_'.substr($first_segment, 1).' ';
-
-} elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
-
-    //App Store:
-    $quick_href = '/-' . substr($first_segment, 1);
-    $quick_id = 6287;
+    //Ideation Mode:
+    $quick_href = '/~'.$_GET['i__id'];
+    $quick_id = 33286;
     $body_class .= ' .qz'.$quick_id.' ';
 
 }
@@ -401,6 +413,34 @@ if(!$basic_header_footer){
 
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
 
+
+                    if($idea_view > 0){
+                        $e___40904 = $this->config->item('e___40904'); //Idea Views
+                        echo '<td class="block-menu">';
+                        echo '<div class="dropdown inline-block">';
+                        echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
+                        echo '<span class="source_cover source_cover_mini menu-icon">' . $e___40904[$idea_view]['m__cover'] .'</span>';
+                        echo '</button>';
+                        echo '<div class="dropdown-menu">';
+                        foreach($e___40904 as $x__type => $m) {
+
+                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__following']);
+                            if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                                continue;
+                            }
+
+                            $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__following']);
+                            if(count($hosted_domains) && !in_array($website_id, $hosted_domains)){
+                                continue;
+                            }
+
+                            echo '<a href="'.$m['m__message'].$_GET['i__id'].'" class="dropdown-item main__title"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+
+                        }
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</td>';
+                    }
 
                     if($quick_id > 0){
                         echo '<td class="block-x icon_search"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
