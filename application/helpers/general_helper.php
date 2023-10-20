@@ -1102,6 +1102,9 @@ function list_settings($i__id, $fetch_contact = false){
         }
     }
 
+    $filters_ui .= '</div>';
+
+
     return array(
         'i' => $is[0],
         'list_config' => $list_config,
