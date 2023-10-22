@@ -1721,8 +1721,11 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
     $y = curl_exec($x);
     curl_close($x);
 
-    $sms_status = one_two_explode(' "status": "', '"', $y);
-    $sms_success = 1; //TODO update...
+    if(substr_count($y, '"code": 21211')){
+        //Invalid input, must be returned:
+        return false;
+    }
+    $sms_success = !substr_count($y, '"status": 400');
 
     //Log transaction:
     if($log_tr){
