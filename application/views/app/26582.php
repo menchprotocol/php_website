@@ -23,7 +23,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         if(!$start_sending || $start_sending>time()){
             //Still not time, go next:
             $this->X_model->update($drafting_message['x__id'], array(
-                'x__access' => 31840, //Disagree
+                'x__type' => 31840, //Disagree
             ));
             continue;
         }
@@ -88,7 +88,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         if(!$end_sending || $end_sending<time()){
             //Ready to be done:
             $this->X_model->update($drafting_message['x__id'], array(
-                'x__access' => 32264, //Agree
+                'x__type' => 32264, //Agree
             ));
         }
 
