@@ -1498,7 +1498,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                             //Ticket Details
                             $action_buttons .= '<a href="/-26560?x__id='.$i['x__id'].'&x__creator='.$i['x__creator'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_active(28727, true)){
+                        } elseif($e__id_dropdown==28637 && strlen($i['x__metadata']) && isset($i['x__type']) && superpower_active(28727, true)){
 
                             //Paypal Details
                             $x__metadata = unserialize($i['x__metadata']);
