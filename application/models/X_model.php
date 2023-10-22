@@ -1237,7 +1237,7 @@ class X_model extends CI_Model
 
 
         $detect_data_type = detect_data_type($add_fields['x__message']);
-        if ($add_fields['x__creator'] && !in_array($add_fields['x__type'], $this->config->item('n___32248'))) {
+        if ($add_fields['x__creator'] && in_array($add_fields['x__type'], $this->config->item('n___40986'))) {
 
             //Discovery Triggers?
             $clone_urls = '';

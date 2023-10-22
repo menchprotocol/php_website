@@ -70,11 +70,20 @@ if(!$is_u_request || isset($_GET['cron'])){
                 //Append children as options:
                 $addon_links = '';
                 foreach($children as $down_or){
+
+                    //Has this user discovered this idea or no?
+                    $already_discovered = count($this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__creator' => $x['e__id'],
+                        'x__left' => $drafting_message['i__id'],
+                    )));
+
                     $addon_links .= $down_or['i__title'].":\n";
                     $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).'/'.$down_or['i__id']."\n\n"; //TODO Add user specific info to this link
                 }
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.$addon_links, array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.trim($addon_links), array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $drafting_message['i__id'],
                 ), 0, $drafting_message['x__website'], true);
