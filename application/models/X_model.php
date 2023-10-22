@@ -750,8 +750,6 @@ class X_model extends CI_Model
             $member_e = superpower_unlocked();
         }
 
-        $e___6177 = $this->config->item('e___6177');
-
         //Cleanup:
         $message_input = trim($message_input);
         $message_input = str_replace('’','\'',$message_input);
@@ -773,94 +771,6 @@ class X_model extends CI_Model
                 'message' => 'Invalid Message type ID',
             );
         }
-
-
-
-
-
-        /*
-         *
-         * Let's do a generic message reference validation
-         * that does not consider $message_type_e__id if passed
-         *
-         * */
-        $string_references = extract_e_references($message_input);
-
-        if($strict_validation && $message_type_e__id > 0){
-
-            if(in_array($message_type_e__id, $this->config->item('n___14311'))){
-                //POWER EDITOR UNLIMITED SOURCES
-                $min_e = 0;
-                $max_e = 99;
-            } elseif(in_array($message_type_e__id, $this->config->item('n___13550'))){
-                //IDEA NOTES 1X SOURCE REFERENCE REQUIRED
-                $min_e = 1;
-                $max_e = 1;
-            } else {
-                $min_e = 0;
-                $max_e = 0;
-            }
-
-            /*
-             *
-             * $message_type_e__id Validation
-             * only in strict mode!
-             *
-             * */
-
-            //URLs are the same as a source:
-            $total_references = count($string_references['ref_e']) + count($string_references['ref_urls']);
-
-            if($total_references<$min_e || $total_references>$max_e){
-                return array(
-                    'status' => 0,
-                    'message' => 'You referenced '.$total_references.' source'.view__s($total_references).' but you must have '.$min_e.( $max_e!=$min_e ? '-'.$max_e : '' ).' source references.',
-                );
-            }
-        }
-
-
-
-
-
-
-
-
-
-        /*
-         *
-         * Transform URLs into Source
-         *
-         * */
-        if ($strict_validation && count($string_references['ref_urls']) > 0) {
-
-            foreach($string_references['ref_urls'] as $url_key => $input_url) {
-
-                //No source, but we have a URL that we should turn into an source if not previously:
-                $url_e = $this->E_model->parse_url($input_url, ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 ));
-
-                //Did we have an error?
-                if (!$url_e['status'] || !isset($url_e['e_url']['e__id']) || intval($url_e['e_url']['e__id']) < 1) {
-                    return $url_e;
-                }
-
-                //Transform URL into a source:
-                if(intval($url_e['e_url']['e__id']) > 0){
-
-                    array_push($string_references['ref_e'], intval($url_e['e_url']['e__id']));
-
-                    //Replace the URL with this new @source in message.
-                    //This is the only valid modification we can do to $message_input before storing it in the DB:
-                    $message_input = str_replace($input_url, '@' . $url_e['e_url']['e__id'], $message_input.' ');
-
-                    //Remove URL:
-                    unset($string_references['ref_urls'][$url_key]);
-
-                }
-            }
-        }
-
-
 
 
 
@@ -1236,7 +1146,6 @@ class X_model extends CI_Model
         }
 
 
-        $detect_data_type = detect_data_type($add_fields['x__message']);
         if ($add_fields['x__creator'] && in_array($add_fields['x__type'], $this->config->item('n___40986'))) {
 
             //Discovery Triggers?
