@@ -2445,6 +2445,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
     //Deleting Anything?
+    var being_removed = false;
     var migrate_s__id = 0;
     if(element_id==31004 && !(new_e__id in js_e___31871)){
 
@@ -2454,6 +2455,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
             return false;
         }
         migrate_s__id = confirm_removal;
+        being_removed = true;
 
     } else if(element_id==6177 && !(new_e__id in js_e___7358)){
 
@@ -2463,6 +2465,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
             return false;
         }
         migrate_s__id = confirm_removal;
+        being_removed = true;
 
     }
 
@@ -2470,11 +2473,14 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
     //Show Loading...
-    var data_object = eval('js_e___'+element_id);
-    if(!data_object[new_e__id]){
-        alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
-        return false;
+    if(!being_removed){
+        var data_object = eval('js_e___'+element_id);
+        if(!data_object[new_e__id]){
+            alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
+            return false;
+        }
     }
+
     $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
 
     $.post("/x/update_dropdown", {
