@@ -71,13 +71,13 @@ if(!$is_u_request || isset($_GET['cron'])){
                 $addon_links = '';
                 foreach($children as $down_or){
                     $addon_links .= $down_or['i__title'].":\n";
-                    $addon_links .= 'https://'.get_domain('m__message', 0, $drafting_message['x__website']).'/'.$down_or['i__id']."\n\n"; //TODO Add user specific info to this link
+                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).'/'.$down_or['i__id']."\n\n"; //TODO Add user specific info to this link
                 }
 
                 $send_dm = $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.$addon_links, array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $drafting_message['i__id'],
-                ), 0, 0, true);
+                ), 0, $drafting_message['x__website'], true);
                 $total_sent += ( $send_dm['status'] ? 1 : 0 );
 
             }
