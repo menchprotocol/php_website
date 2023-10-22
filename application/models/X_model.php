@@ -665,11 +665,11 @@ class X_model extends CI_Model
             'email_count' => count($stats['email_addresses']),
             'phone_count' => $stats['phone_count'],
             'message' => 'Message sent',
-        );;
+        );
 
     }
 
-    function message_view($message_input, $is_discovery_mode, $member_e = array(), $message_i__id = 0, $simple_version = false)
+    function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $simple_version = false)
     {
 
         /*
@@ -1211,7 +1211,6 @@ class X_model extends CI_Model
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0) as $next_i){
                 //IS IT EMPTY?
-                //TODO Do not auto complete if the message has a @source reference in message...
                 if($next_i['i__type']==6677 && !count($this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -1282,12 +1281,17 @@ class X_model extends CI_Model
                         ), $add_fields['x__creator'], 29431 /* Play Auto Removed */);
                     }
 
+                } elseif($clone_i['x__type']==32426){
+
+                    //TODO Set the focus source to the source that was created here, if any:
+
                 }
 
             }
+
             if(strlen($clone_urls)){
                 //Send DM with all the new clone idea URLs:
-                $clone_urls = $clone_urls.'You have been added as a watcher so you will be notified when anyone starts using your link.';
+                $clone_urls = $clone_urls.'You have been added as a subscriber so you will be notified when anyone start using your link.';
                 $this->X_model->send_dm($add_fields['x__creator'], $i['i__title'], $clone_urls);
                 //Also DM all watchers of the idea:
                 foreach($this->X_model->fetch(array(
@@ -1298,7 +1302,6 @@ class X_model extends CI_Model
                     $this->X_model->send_dm($watcher['x__up'], $i['i__title'], $clone_urls);
                 }
             }
-
 
 
 
@@ -1412,7 +1415,6 @@ class X_model extends CI_Model
             }
 
 
-
             //REMOVE PROFILE?
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1439,56 +1441,57 @@ class X_model extends CI_Model
                     }
                 }
             }
-        }
 
 
+            //Notify watchers IF any:
+            $watchers = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 10573, //WATCHERS
+                'x__right' => $i['i__id'],
+            ), array(), 0);
+            if(count($watchers)){
 
+                $es_discoverer = $this->E_model->fetch(array(
+                    'e__id' => $add_fields['x__creator'],
+                ));
+                if(count($es_discoverer)){
 
-        //Notify watchers IF any:
-        $watchers = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 10573, //WATCHERS
-            'x__right' => $i['i__id'],
-        ), array(), 0);
-        if(count($watchers)){
-
-            $es_discoverer = $this->E_model->fetch(array(
-                'e__id' => $add_fields['x__creator'],
-            ));
-            if(count($es_discoverer)){
-
-                //Fetch Discoverer contact:
-                $discoverer_contact = '';
-                foreach($this->config->item('e___34541') as $x__type => $m) {
-                    foreach($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__down' => $add_fields['x__creator'],
-                        'x__up' => $x__type,
-                        'LENGTH(x__message)>0' => null,
-                    )) as $x_progress){
-                        $discoverer_contact .= $m['m__title'].':'."\n".$x_progress['x__message']."\n\n";
+                    //Fetch Discoverer contact:
+                    $discoverer_contact = '';
+                    foreach($this->config->item('e___34541') as $x__type => $m) {
+                        foreach($this->X_model->fetch(array(
+                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__down' => $add_fields['x__creator'],
+                            'x__up' => $x__type,
+                            'LENGTH(x__message)>0' => null,
+                        )) as $x_progress){
+                            $discoverer_contact .= $m['m__title'].':'."\n".$x_progress['x__message']."\n\n";
+                        }
                     }
-                }
 
-                //Notify Idea Watchers
-                $sent_watchers = array();
-                foreach($watchers as $watcher){
-                    if(!in_array(intval($watcher['x__up']), $sent_watchers)){
-                        array_push($sent_watchers, intval($watcher['x__up']));
+                    //Notify Idea Watchers
+                    $sent_watchers = array();
+                    foreach($watchers as $watcher){
+                        if(!in_array(intval($watcher['x__up']), $sent_watchers)){
+                            array_push($sent_watchers, intval($watcher['x__up']));
 
-                        //'.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'
-                        $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.$i['i__title'],
-                            //Message Body:
-                            $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
-                            ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
-                            $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
-                            $discoverer_contact
-                        );
+                            //'.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'
+                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.$i['i__title'],
+                                //Message Body:
+                                $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
+                                ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
+                                $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
+                                $discoverer_contact
+                            );
+                        }
                     }
                 }
             }
+
+
         }
+
 
         
 

@@ -8,31 +8,90 @@ if(!$is_u_request || isset($_GET['cron'])){
         'x__up' => 26582,
     ), array('x__right'), 0) as $drafting_message){
 
-        //Determine if its time to send this message:
-        $time_starts = $this->X_model->fetch(array(
+        //Determine if it's time to send this message:
+        $start_sending = 0;
+        foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right' => $drafting_message['i__id'],
             'x__up' => 26556, //Time Starts
-        ), array(), 1);
-        $time_ends = $this->X_model->fetch(array(
+        )) as $time){
+            $start_sending = strtotime($time['x__message']);
+            break;
+        }
+
+        if(!$start_sending || $start_sending>time()){
+            //Still not time, go next:
+            $this->X_model->update($drafting_message['x__id'], array(
+                'x__access' => 31840, //Disagree
+            ));
+            continue;
+        }
+
+        //Does it have an end time?
+        $end_sending = 0;
+        foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__right' => $drafting_message['i__id'],
             'x__up' => 26557, //Time Ends
-        ), array(), 1);
+        )) as $time){
+            $end_sending = strtotime($time['x__message']);
+            break;
+        }
 
 
-        $messages = '';
+        $plain_message = '';
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 4231, //IDEA NOTES Messages
             'x__right' => $drafting_message['i__id'],
         ), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
-            $messages .= '';
+            $plain_message .= $x['x__message']."\n\n";
+            //$plain_message .= $this->X_model->message_view($x['x__message']);
+        }
+        $children = $this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__left' => $drafting_message['i__id'],
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+
+
+        //Now let's see who will receive this:
+        $list_settings = list_settings($drafting_message['i__id']);
+        foreach($list_settings['query_string'] as $x) {
+            //Send to all of them IF NOT SENT
+            if(!count($this->X_model->fetch(array(
+                'x__left' => $drafting_message['i__id'],
+                'x__creator' => $x['e__id'],
+                'x__type' => 40956, //Idea Email
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))){
+
+                //Append children as options:
+                $addon_links = '';
+                foreach($children as $down_or){
+                    $addon_links .= $down_or['i__title'].":\n";
+                    $addon_links .= 'https://'.get_domain('m__message', 0, $drafting_message['x__website']).'/'.$down_or['i__id']."\n\n"; //TODO Add user specific info to this link
+                }
+
+                $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.$addon_links, array(
+                    'x__right' => $list_settings['list_config'][32426],
+                    'x__left' => $drafting_message['i__id'],
+                ), 0, 0, true);
+
+            }
         }
 
-        $this->X_model->send_dm($drafting_message['x__up'], $i['i__title'], $clone_urls);
+        //Mark this as complete?
+        if(!$end_sending || $end_sending<time()){
+            //Ready to be done:
+            $this->X_model->update($drafting_message['x__id'], array(
+                'x__access' => 32264, //Agree
+            ));
+        }
+
     }
 
 
@@ -92,163 +151,6 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 } else {
 
-    //Show status of current messages:
-
-    foreach(array('i__id','e__id','exclude_e','include_e','exclude_i','include_i') as $input){
-        if(!isset($_GET[$input])){
-            $_GET[$input] = '';
-        }
-    }
-
-    //Show Titles:
-    if(strlen($_GET['i__id'])){
-        foreach($this->I_model->fetch(array(
-            'i__id IN (' . $_GET['i__id'] . ')' => null,
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        )) as $i){
-            echo '<h2><a href="/~'.$i['i__id'].'">'.$i['i__title'].'</a></h2>';
-        }
-    }
-    if(strlen($_GET['e__id'])){
-        foreach($this->E_model->fetch(array(
-            'e__id IN (' . $_GET['e__id'] . ')' => null,
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        )) as $e){
-            echo '<h2><a href="/@'.$e['e__id'].'"><span class="icon-block-img">'.view_cover($e['e__cover'], true).'</span> '.$e['e__title'].'</a></h2>';
-        }
-    }
-
-    $contact_details = message_list($_GET['i__id'], $_GET['e__id'], $_GET['exclude_e'], $_GET['include_e'], $_GET['exclude_i'], $_GET['include_i']);
-    $e___6287 = $this->config->item('e___6287'); //APP
-    $e___6186 = $this->config->item('e___6186'); //Transaction Status
-
-    $twilio_setup = website_setting(30859) && website_setting(30860) && website_setting(27673);
-
-
-    echo '<div style="padding: 10px;"><a href="javascript:void(0);" onclick="$(\'.filter_box\').toggleClass(\'hidden\')"><i class="fad fa-filter"></i> Toggle Filters</a></div>';
-
-    echo '<form action="" method="GET" class="filter_box hidden" style="padding: 10px">';
-    echo '<table class="table table-sm maxout filter_table"><tr>';
-
-    //ANY IDEA
-    echo '<td><div>';
-    echo '<span class="mini-header">Discovered Idea(s):</span>';
-    echo '<input type="text" name="i__id" placeholder="id1,id2" value="' . $_GET['i__id'] . '" class="form-control border">';
-    echo '</div></td>';
-
-    echo '<td><span class="mini-header">Belongs to Source(s):</span><input type="text" name="e__id" placeholder="id1,id2" value="' . $_GET['e__id'] . '" class="form-control border"></td>';
-
-    echo '</tr><tr>';
-
-    echo '<td><div>';
-    echo '<span class="mini-header">Includes Source(s):</span>';
-    echo '<input type="text" name="include_e" placeholder="id1,id2" value="' . $_GET['include_e'] . '" class="form-control border">';
-    echo '</div></td>';
-
-    echo '<td><span class="mini-header">Excludes Source(s):</span><input type="text" name="exclude_e" placeholder="id1,id2" value="' . $_GET['exclude_e'] . '" class="form-control border"></td>';
-
-    echo '</tr><tr>';
-
-    echo '<td><div>';
-    echo '<span class="mini-header">Discovered Idea(s):</span>';
-    echo '<input type="text" name="include_i" placeholder="id1,id2" value="' . $_GET['include_i'] . '" class="form-control border">';
-    echo '</div></td>';
-
-    echo '<td><span class="mini-header">Undiscovered Idea(s):</span><input type="text" name="exclude_i" placeholder="id1,id2" value="' . $_GET['exclude_i'] . '" class="form-control border"></td>';
-
-    echo '</tr><tr>';
-
-    echo '<td class="standard-bg"><input type="submit" class="btn btn-default" value="Apply" /></td>';
-    echo '<td class="standard-bg">&nbsp;</td>';
-
-    echo '</tr></table>';
-
-    echo '</form>';
-
-
-    echo '<div style="padding: 10px"><a href="javascript:void(0);" onclick="$(\'.subscriber_data\').toggleClass(\'hidden\');"><i class="fad fa-search-plus"></i> '.$contact_details['unique_users_count'].' Unique Recipients = '.$contact_details['email_count'].' Emails + '.$contact_details['phone_count'].' SMS</a></div>';
-
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$contact_details['full_list'].'</textarea>';
-    echo '<textarea class="mono-space subscriber_data hidden" style="background-color:#FFFFFF; color:#000 !important; padding:3px; font-size:0.8em; height:218px; width: 100%; border-radius: 21px;">'.$contact_details['email_list'].'</textarea>';
-
-
-    echo '<div style="padding: 0 10px 13px;">';
-    echo '<div style="padding: 10px 0;"><input type="text" class="form-control white-border" id="message_subject" placeholder="Subject" onkeyup="countChar()" value="'.( isset($_GET['message_subject']) ? $_GET['message_subject'] : '' ).'" /></div>';
-
-
-
-    echo '<div style="border:1px solid #000000; padding:8px; border-radius: 21px;">';
-    echo '<p>'.view_shuffle_message(29749).' '.$member_e['e__title'].' '.view_shuffle_message(29750).'</p>';
-    echo '<textarea class="form-control" id="message_text" placeholder="Body" style="height:147px" onkeyup="countChar()">'.( isset($_GET['message_text']) ? $_GET['message_text'] : '' ).'</textarea>';
-    echo '<p>'.view_shuffle_message(12691).'</p>';
-    echo '<p>'.get_domain('m__title', $member_e['e__id']).'</p>';
-    echo '</div>';
-
-    echo '<div id="msgNum"></div>';
-
-
-    echo '<input type="datetime-local" id="message_time" value="'.date('Y-m-d\TH:i', (time()+3600)).'" style="border:1px solid #000000; padding:8px; border-radius: 21px; margin-top:21px;">';
-
-    echo '</div>';
-
-
-    echo '<div id="schedule_message_btn" style="padding: 10px;"><a class="btn btn-default" href="javascript:void(0);"  onclick="schedule_message();">Schedule for '.$contact_details['unique_users_count'].' Members <i class="fas fa-arrow-right"></i></a></div>';
-
-    echo '<div id="message_result"></div>';
-
-    echo '<div></div>';
-
-    //Past message Sent:
-    echo '<h2>Scheduled Messages</h2>';
-
-    echo '<table class="table table-condensed table-striped">';
-    $displayed = false;
-    foreach($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //Active
-        'x__type' => 26582, //Instant Messages
-        'x__website' => website_setting(0),
-    ), array('x__creator')) as $fetched_e){
-
-        $displayed = true;
-        //Count Emails & Messages from Ledger:
-        $email_success = $this->X_model->fetch(array(
-            'x__type' => 29399,
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__reference' => $fetched_e['x__id'],
-        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-        $sms_success = $this->X_model->fetch(array(
-            'x__type' => 27676,
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__reference' => $fetched_e['x__id'],
-        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-        $sms_fail = $this->X_model->fetch(array(
-            'x__type' => 27678,
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__reference' => $fetched_e['x__id'],
-        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-
-        $x__metadata = unserialize($fetched_e['x__metadata']);
-        echo '<tr class="semail'.$fetched_e['x__id'].'">';
-        echo '<td><a href="/-4341?x__id='.$fetched_e['x__id'].'">'.$fetched_e['x__id'].'</a> <a href="javascript:x_schedule_delete('.$fetched_e['x__id'].')">x</a></td>';
-        echo '<td>'.$e___6186[$fetched_e['x__access']]['m__cover'].'</td>';
-        echo '<td>'. substr($fetched_e['x__time'], 0, 19).'<br />Domain: <a href="/@'.$fetched_e['x__website'].'">@'.$fetched_e['x__website'].'</a></td>';
-        echo '<td><a href="/@'.$fetched_e['x__creator'].'">'. $fetched_e['e__title'].'</a></td>';
-        echo '<td>'.@intval($x__metadata['stats']['target']).'<br />Targets</td>';
-        echo '<td><a href="/-12722?x__id='.$fetched_e['x__id'].'">'.@intval($x__metadata['stats']['unique']).'<br />Uniques</a></td>';
-        echo '<td>'.$email_success[0]['totals'].'/'.@intval($x__metadata['stats']['email_count']).'<br />Emails</td>';
-        echo '<td>'.$sms_success[0]['totals'].'/'.@intval($x__metadata['stats']['phone_count']).'<br />SMS'.( $sms_fail[0]['totals']>0 ? '<br />'.$sms_fail[0]['totals'].' FAILED' : '' ).'</td>';
-        echo '</tr>';
-
-        echo '<tr class="semail'.$fetched_e['x__id'].'"></tr>';
-
-
-        echo '<tr class="semail'.$fetched_e['x__id'].'"><td colspan="8">'.nl2br($fetched_e['x__message']).( isset($x__metadata['message_text']) ? '<hr />'.nl2br($x__metadata['message_text']) : '' ).'</td></tr>';
-
-    }
-    if(!$displayed){
-        echo '<p>Nothing yet...</p>';
-    }
-    echo '</table>';
+    echo 'Nothing to see here...';
 
 }

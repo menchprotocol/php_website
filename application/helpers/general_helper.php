@@ -907,6 +907,15 @@ function list_settings($i__id, $fetch_contact = false){
         $list_config[34513] = 0;
     }
 
+    if(count($list_config[32426])){
+        foreach($list_config[32426] as $first_frame){
+            $list_config[32426] = $first_frame;
+            break;
+        }
+    } else {
+        $list_config[32426] = 0;
+    }
+
 
 
     //Generate filter:
@@ -1723,16 +1732,39 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
 
     //Log transaction:
     if($log_tr){
-        $CI->X_model->create(array_merge($x_data, array(
-            'x__type' => ( $sms_success ? 27676 : 27678 ), //SMS Success/Fail
-            'x__creator' => $e__id,
-            'x__message' => $single_message,
-            'x__down' => $template_id,
-            'x__metadata' => array(
-                'post' => $post,
-                'response' => $y,
-            ),
-        )));
+
+        if(isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])){
+
+            //It's an email for a specific idea, discover the idea:
+            $is = $CI->I_model->fetch(array(
+                'i__id' => $x_data['x__left'],
+            ));
+            $CI->X_model->mark_complete($x_data['x__right'], $is[0], array(
+                'x__type' => ( $sms_success ? 40961 : 40963 ), //Idea SMS Success/Fail
+                'x__creator' => $e__id,
+                'x__down' => $template_id,
+                'x__message' => $single_message,
+                'x__metadata' => array(
+                    'post' => $post,
+                    'response' => $y,
+                ),
+            ));
+
+        } else {
+
+            $CI->X_model->create(array_merge($x_data, array(
+                'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
+                'x__creator' => $e__id,
+                'x__message' => $single_message,
+                'x__down' => $template_id,
+                'x__metadata' => array(
+                    'post' => $post,
+                    'response' => $y,
+                ),
+            )));
+
+        }
+
     }
 
     return true;
@@ -1826,18 +1858,43 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     //Log transaction:
     if($log_tr){
-        $CI->X_model->create(array_merge($x_data, array(
-            'x__type' => 29399,
-            'x__down' => $template_id,
-            'x__creator' => $e__id,
-            'x__message' => $subject."\n\n".$email_message,
-            'x__metadata' => array(
-                'to' => $to_emails,
-                'subject' => $subject,
-                'message' => $email_message,
-                'response' => $response,
-            ),
-        )));
+
+        if(isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])){
+
+            //It's an email for a specific idea, discover the idea:
+            $is = $CI->I_model->fetch(array(
+                'i__id' => $x_data['x__left'],
+            ));
+            $CI->X_model->mark_complete($x_data['x__right'], $is[0], array(
+                'x__type' => 40956, //Idea Email
+                'x__creator' => $e__id,
+                'x__down' => $template_id,
+                'x__message' => $subject."\n\n".$email_message,
+                'x__metadata' => array(
+                    'to' => $to_emails,
+                    'subject' => $subject,
+                    'message' => $email_message,
+                    'response' => $response,
+                ),
+            ));
+
+        } else {
+
+            $CI->X_model->create(array_merge($x_data, array(
+                'x__type' => 29399,
+                'x__down' => $template_id,
+                'x__creator' => $e__id,
+                'x__message' => $subject."\n\n".$email_message,
+                'x__metadata' => array(
+                    'to' => $to_emails,
+                    'subject' => $subject,
+                    'message' => $email_message,
+                    'response' => $response,
+                ),
+            )));
+        }
+
+
     }
 
 
