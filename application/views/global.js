@@ -2472,7 +2472,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     //Show Loading...
     var data_object = eval('js_e___'+element_id);
     if(!data_object[new_e__id]){
-        alert('Invalid element ID');
+        alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
         return false;
     }
     $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
