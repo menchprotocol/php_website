@@ -22,9 +22,6 @@ if(!$is_u_request || isset($_GET['cron'])){
 
         if(!$start_sending || $start_sending>time()){
             //Still not time, go next:
-            $this->X_model->update($drafting_message['x__id'], array(
-                'x__type' => 31840, //Disagree
-            ));
             continue;
         }
 
@@ -59,6 +56,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 
         //Now let's see who will receive this:
+        $total_sent = 0;
         $list_settings = list_settings($drafting_message['i__id']);
         foreach($list_settings['query_string'] as $x) {
             //Send to all of them IF NOT SENT
@@ -76,10 +74,11 @@ if(!$is_u_request || isset($_GET['cron'])){
                     $addon_links .= 'https://'.get_domain('m__message', 0, $drafting_message['x__website']).'/'.$down_or['i__id']."\n\n"; //TODO Add user specific info to this link
                 }
 
-                $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.$addon_links, array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.$addon_links, array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $drafting_message['i__id'],
                 ), 0, 0, true);
+                $total_sent += ( $send_dm['status'] ? 1 : 0 );
 
             }
         }
@@ -88,64 +87,9 @@ if(!$is_u_request || isset($_GET['cron'])){
         if(!$end_sending || $end_sending<time()){
             //Ready to be done:
             $this->X_model->update($drafting_message['x__id'], array(
-                'x__type' => 32264, //Agree
+                'x__type' => ( $total_sent > 0 ? 32264 /* Agree */ : 31840 /* Disagree */ ),
             ));
         }
-
-    }
-
-
-
-
-    //Look for messages to process, if any:
-    foreach($this->X_model->fetch(array(
-        'x__access' => 6175, //Pending
-        'x__type' => 26582, //Send Instant Message
-        'x__time <=' => date('Y-m-d H:i:s'), //Time to send it
-    )) as $send_message){
-
-        //Mark as sending so other cron job does not pick this up:
-        $this->X_model->update($send_message['x__id'], array(
-            'x__access' => 6176, //Published
-        ));
-
-        $x__metadata = unserialize($send_message['x__metadata']);
-
-        //Determine Recipients:
-        $contact_details = message_list($x__metadata['i__id'], $x__metadata['e__id'], $x__metadata['exclude_e'], $x__metadata['include_e'], $x__metadata['exclude_i'], $x__metadata['include_i']);
-
-        //Loop through all contacts and send messages:
-        $stats = array(
-            'target' => count($contact_details['unique_users_id']),
-            'unique' => 0,
-            'phone_count' => 0,
-            'error_count' => 0,
-            'email_count' => 0,
-        );
-
-        foreach($contact_details['unique_users_id'] as $send_e__id){
-
-            $results = $this->X_model->send_dm($send_e__id, $x__metadata['message_subject'], $x__metadata['message_text'], array('x__reference' => $send_message['x__id']), 0, $send_message['x__website']);
-
-            if($results['status']){
-                $stats['unique']++;
-                $stats['email_count'] += $results['email_count'];
-                $stats['phone_count'] += $results['phone_count'];
-            } else {
-                $stats['error_count']++;
-            }
-        }
-
-        //Save final results:
-        $this->X_model->update($send_message['x__id'], array(
-            'x__metadata' => array(
-                'stats' => $stats,
-                'all_recipients' => $contact_details['unique_users_id'],
-            ),
-        ));
-
-        //Show result:
-        echo $send_message['x__id'].' sent '.$stats['unique'].' messages: '.$stats['email_count'].' Emails & '.$stats['phone_count'].' SMS';
 
     }
 
