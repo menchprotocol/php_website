@@ -1483,7 +1483,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                             //Clone:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==28636 && $e_of_i && $x__id && !$discovery_mode){
+                        } elseif($e__id_dropdown==28636 && $e_of_i && $x__id){
 
                             //Transaction Details
                             $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
