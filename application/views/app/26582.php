@@ -20,7 +20,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             break;
         }
 
-        if(!$start_sending || $start_sending>time()){
+        if($start_sending && $start_sending>time()){
             //Still not time, go next:
             continue;
         }
