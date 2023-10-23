@@ -506,7 +506,7 @@ class I_model extends CI_Model
         $this->X_model->create(array(
             'x__type' => 4983, //IDEA SOURCES
             'x__creator' => $x__creator,
-            'x__up' => $focus_e[0]['e__id'],
+            'x__up' => $x__creator,
             'x__right' => $i_new['i__id'],
         ));
         //Also append all pinned followers:
