@@ -1260,6 +1260,9 @@ function convertURLs($string)
     return preg_replace($url, '<a href="$0" target="_blank" title="$0">$0</a>', $string);
 }
 
+function view_text_links($string) {
+    return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1">$1</a>', $string);
+}
 
 function view_i__cache($i, $simple_version = false){
 

@@ -213,7 +213,7 @@ echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important;
 //Messages:
 $view_i__cache = view_i__cache($i);
 if($view_i__cache){
-    echo $view_i__cache;
+    echo view_text_links($view_i__cache);
 } elseif(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
     //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';
