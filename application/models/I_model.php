@@ -501,9 +501,33 @@ class I_model extends CI_Model
         }
 
 
+        //Additional sources to be added? Start with creator...
+        $sources_appended = array($x__creator);
+        $this->X_model->create(array(
+            'x__type' => 4983, //IDEA SOURCES
+            'x__creator' => $x__creator,
+            'x__up' => $focus_e[0]['e__id'],
+            'x__right' => $i_new['i__id'],
+        ));
+        //Also append all pinned followers:
+        foreach($this->X_model->fetch(array(
+            'x__down' => $x__creator,
+            'x__type' => 41011, //PINNED FOLLOWER
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0) as $x_pinned) {
+            if(!in_array($x_pinned['x__up'], $sources_appended)){
+                $this->X_model->create(array(
+                    'x__type' => 4983, //IDEA SOURCES
+                    'x__creator' => $x__creator,
+                    'x__up' => $x_pinned['x__up'],
+                    'x__right' => $i_new['i__id'],
+                ));
+                array_push($sources_appended, $x_pinned['x__up']);
+            }
+        }
+
         //Create Idea Transaction:
         $new_i_html = null;
-
 
         if($focus_is_idea){
 
@@ -529,22 +553,14 @@ class I_model extends CI_Model
 
         } else {
 
-            //Adding an Idea from a Source...
-            $this->X_model->create(array(
-                'x__type' => 4983, //IDEA SOURCES
-                'x__creator' => $x__creator,
-                'x__up' => $focus_e[0]['e__id'],
-                'x__right' => $i_new['i__id'],
-            ));
-
-            if($x__creator!=$focus_e[0]['e__id']){
-                //Also Add author:
+            if(!in_array($focus_e[0]['e__id'], $sources_appended)){
                 $this->X_model->create(array(
                     'x__type' => 4983, //IDEA SOURCES
                     'x__creator' => $x__creator,
-                    'x__up' => $x__creator,
+                    'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $i_new['i__id'],
                 ));
+                array_push($sources_appended, $focus_e[0]['e__id']);
             }
 
             //Fetch Complete References:
