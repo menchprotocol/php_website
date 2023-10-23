@@ -1866,7 +1866,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
                 'x__type' => 40956, //Idea Email
                 'x__creator' => $e__id,
                 'x__down' => $template_id,
-                'x__message' => $subject."\n\n".$email_message,
+                'x__message' => $subject."\n\n".strip_tags($email_message),
                 'x__metadata' => array(
                     'to' => $to_emails,
                     'subject' => $subject,
