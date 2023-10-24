@@ -511,7 +511,7 @@ class X extends CI_Controller
         if(
             strlen($discovery_hash)
             && $member__id>0
-            && ($discovery_hash == view_hash16($member__id))
+            && ($discovery_hash == view_hash($member__id))
         ){
 
             $this->X_model->mark_complete($top_i__id, $is[0], array(

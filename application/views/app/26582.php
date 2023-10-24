@@ -86,7 +86,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
                     //Has this user discovered this idea or no?
                     $addon_links .= $down_or['i__title'].":\n";
-                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).( count($pinned_idea) && intval($pinned_idea[0]['x__right'])>0 ? '/'.$pinned_idea[0]['x__right'] : '' ).'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash16($x['e__id']) : '' )."\n\n";
+                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).( count($pinned_idea) && intval($pinned_idea[0]['x__right'])>0 ? '/'.$pinned_idea[0]['x__right'] : '' ).'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash($x['e__id']) : '' )."\n\n";
 
                 }
 
