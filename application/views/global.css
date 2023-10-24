@@ -4236,7 +4236,7 @@ main {
 .form-check-input[type=checkbox] {
     border-radius: 0;
     border: 2px solid #000000 !important;
-    margin: 1px;
+    margin: 1px 0;
 }
 .form-check-input:checked {
     background-color: #000000;
