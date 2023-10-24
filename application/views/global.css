@@ -4233,7 +4233,11 @@ main {
 .isSelected {
     border:1px solid #FC1B44 !important;
 }
-
+.form-check-input[type=checkbox] {
+    border-radius: 0;
+    border: 2px solid #000000 !important;
+    margin: 1px;
+}
 
 .active_bars_1 td { width:100.0% !important; }
 .active_bars_2 td { width:50.00% !important; }
