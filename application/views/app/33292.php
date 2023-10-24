@@ -2,7 +2,7 @@
 
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     
-    echo '<h3 class="center centerh grey">'.$m1['m__title'].'</h3>';
+    echo '<h3 class="center centerh grey"><span class="icon-block">'.$m1['m__cover'].'</span>'.$m1['m__title'].'</h3>';
     echo '<div class="row justify-content list-covers">';
     foreach($this->config->item('e___'.$e__id1) as $e__id => $m) {
         echo '<div class="card_cover no-padding col-6">';
