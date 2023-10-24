@@ -522,6 +522,16 @@ class X extends CI_Controller
             //Inform user of changes:
             $flash_message = '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered this idea!</div>';
 
+            //If not logged in, log them in:
+            if(!$member_e){
+                foreach($this->E_model->fetch(array(
+                    'e__id' => $member__id,
+                )) as $logged_e){
+                    $this->E_model->activate_session($logged_e, true);
+                    js_reload(3000);
+                }
+            }
+
         }
 
 

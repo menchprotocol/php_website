@@ -1419,6 +1419,10 @@ function js_php_redirect($url, $timer = 0){
     echo '<script> $(document).ready(function () { js_redirect(\''.$url.'\', '.$timer.'); }); </script>';
 }
 
+function js_reload($timer = 1){
+    echo '<script> $(document).ready(function () { setTimeout(function () { location.reload(true); }, '.$timer.'); }); </script>';
+}
+
 function i__validate_title($string){
 
     $title_clean = trim($string);

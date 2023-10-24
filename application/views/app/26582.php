@@ -59,10 +59,11 @@ if(!$is_u_request || isset($_GET['cron'])){
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 32426, //PINNED IDEA
-            'x__left' => $drafting_message['i__id'],
+            '(x__right = '.$drafting_message['i__id'].' OR x__left = '.$drafting_message['i__id'].')' => null,
+            'x__left >' => 0,
             'x__right >' => 0,
         )) as $top_idea){
-            $top_link = '/'.$top_idea['x__right'];
+            $top_link = '/'.( $top_idea['x__right']==$drafting_message['i__id'] ? $top_idea['x__left'] : $top_idea['x__right'] );
             break;
         }
 
