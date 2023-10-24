@@ -1254,6 +1254,10 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
 }
 
+function view_hash16($string){
+    return substr(md5($string.view_memory(6404,30863)), 0, 16);
+}
+
 function convertURLs($string)
 {
     $url = '/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/';

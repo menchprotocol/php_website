@@ -71,16 +71,23 @@ if(!$is_u_request || isset($_GET['cron'])){
                 $addon_links = '';
                 foreach($children as $down_or){
 
-                    //Has this user discovered this idea or no?
-                    $already_discovered = count($this->X_model->fetch(array(
+                    $pinned_idea = $this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__type' => 32426, //PINNED IDEA
+                        'x__left' => $drafting_message['i__id'],
+                    ));
+
+                    $discoveries = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x['e__id'],
                         'x__left' => $drafting_message['i__id'],
-                    )));
+                    ));
 
+                    //Has this user discovered this idea or no?
                     $addon_links .= $down_or['i__title'].":\n";
-                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).'/'.$down_or['i__id']."\n\n"; //TODO Add user specific info to this link
+                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).( count($pinned_idea) && intval($pinned_idea[0]['x__right'])>0 ? '/'.$pinned_idea[0]['x__right'] : '' ).'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash16($x['e__id']) : '' )."\n\n";
+
                 }
 
                 $send_dm = $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.trim($addon_links), array(

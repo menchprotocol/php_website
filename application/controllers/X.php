@@ -484,7 +484,7 @@ class X extends CI_Controller
 
 
 
-    function x_layout($top_i__id, $i__id, $append__id=0, $member__id=0)
+    function x_layout($top_i__id, $i__id, $member__id=0, $discovery_hash=null)
     {
 
         /*
@@ -498,59 +498,30 @@ class X extends CI_Controller
         $member_e = superpower_unlocked();
         $x__creator = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
 
-        //Log link if not there:
-        if(
-            $append__id>0
-            && $member__id>0
-            && count($this->X_model->fetch(array(
-                'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
-                'x__down' => $member__id,
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))
-            && !count($this->X_model->fetch(array(
-                'x__up' => $append__id,
-                'x__down' => $member__id,
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))
-        ){
-
-            $es_tag = $this->E_model->fetch(array(
-                'e__id' => $append__id,
-            ));
-            if(count($es_tag)){
-
-                //Add source link:
-                $this->X_model->create(array(
-                    'x__type' => 4230,
-                    'x__creator' => $x__creator,
-                    'x__up' => $append__id,
-                    'x__down' => $x__creator,
-                ));
-
-                //Log Reference:
-                $this->X_model->create(array(
-                    'x__type' => 29393, //Log Referral
-                    'x__creator' => $x__creator,
-                    'x__up' => $append__id,
-                    'x__down' => $x__creator,
-                    'x__left' => $i__id,
-                    'x__right' => $top_i__id,
-                ));
-
-                //Inform user of changes:
-                $flash_message = '<div class="msg alert alert-warning" role="alert">You\'ve been added to '.view_cover($es_tag[0]['e__cover'], true).' '.$es_tag[0]['e__title'].'</div>';
-
-            }
-        }
-
         //Fetch data:
         $is = $this->I_model->fetch(array(
             'i__id' => $i__id,
         ));
         if ( !count($is) ) {
-            //return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
+            return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
+        }
+
+
+        //Log Link Click discovery if authenticated:
+        if(
+            strlen($discovery_hash)
+            && $member__id>0
+            && ($discovery_hash == view_hash16($member__id))
+        ){
+
+            $this->X_model->mark_complete($top_i__id, $is[0], array(
+                'x__type' => 29393, //Link Click
+                'x__creator' => $member__id,
+            ));
+
+            //Inform user of changes:
+            $flash_message = '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered this idea!</div>';
+
         }
 
 
