@@ -864,7 +864,7 @@ function js_redirect(url, timer = 0){
 
 function load_card_clickers(){
 
-    $(".card_e_click, .card_i_click").unbind();
+    $(".card_e_click, .card_click_i").unbind();
 
     $( ".card_e_click" ).click(function(e) {
         if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click').length < 1){
@@ -872,7 +872,7 @@ function load_card_clickers(){
         }
     });
 
-    $('.card_i_click').click(function(e) {
+    $('.card_click_i').click(function(e) {
         if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click').length < 1){
             js_redirect('/~'+$(this).attr('i__id'));
         }
@@ -2465,6 +2465,23 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         migrate_s__id = confirm_removal;
 
     }
+
+
+    $('.card_i_cover .form-check-input').change(function(){
+        if ($(this).is(':checked')) {
+            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
+        } else {
+            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
+        }
+    });
+    $('.card_e_cover .form-check-input').change(function(){
+        if ($(this).is(':checked')) {
+            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
+        } else {
+            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
+        }
+    });
+
 
 
 

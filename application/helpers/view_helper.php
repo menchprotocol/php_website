@@ -908,10 +908,10 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             $card_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_i_covers button_of_'.$i__id.'_'.$x__type.'" id="card_i_group_'.$x__type.'_'.$i__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_i_covers button_of_'.$i__id.'_'.$x__type.'" id="card_group_i_'.$x__type.'_'.$i__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
 
             //Menu To be loaded dynamically via AJAX:
-            $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_i_'.$i__id.'_'.$x__type.'" aria-labelledby="card_i_group_'.$x__type.'_'.$i__id.'"></div>';
+            $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_i_'.$i__id.'_'.$x__type.'" aria-labelledby="card_group_i_'.$x__type.'_'.$i__id.'"></div>';
 
             $ui .= '</div>';
 
@@ -1358,8 +1358,8 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
-     ' : ' edge-cover card_i_click col-md-4 col-6 ' ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
+     ' : ' edge-cover card_click_i col-md-4 col-6 ' ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
     //Determine Link Type
@@ -1401,7 +1401,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 //Selector
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<input class="form-check-input ignore-click" type="checkbox" value="" id="selector_i_'.$i['i__id'].'">';
+                $top_bar_ui .= '<input class="form-check-input ignore-click" type="checkbox" value="" i__id="'.$i['i__id'].'" id="selector_i_'.$i['i__id'].'">';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==4737 && $e_of_i && !$discovery_mode){
@@ -1907,7 +1907,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Selector
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<input class="form-check-input ignore-click" type="checkbox" value="" id="selector_e_'.$e['e__id'].'">';
+                $top_bar_ui .= '<input class="form-check-input ignore-click" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'">';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31912 && $e_of_e){

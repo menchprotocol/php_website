@@ -1064,7 +1064,7 @@ textarea.note-textarea{
     width: 100%;
     margin-bottom: 0;
 }
-.card_e_click, .card_i_click, .x_remove, .ignore-click, a:hover, a:hover * {
+.card_e_click, .card_click_i, .x_remove, .ignore-click, a:hover, a:hover * {
     cursor: pointer !important;
 }
 
@@ -1320,7 +1320,7 @@ a.headline {
     display:none !important;
 }
 
-.card_cover:hover .show-on-hover{
+.card_cover:hover .show-on-hover, .card_cover.card_checked .show-on-hover{
     display:block !important;
 }
 .list-group-item:hover .show-on-hover,
