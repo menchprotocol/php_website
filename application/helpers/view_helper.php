@@ -1401,7 +1401,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 //Selector
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<div class="form-check"><input class="form-check-input" type="checkbox" value="" id="selector_i_'.$i['i__id'].'"></div>';
+                $top_bar_ui .= '<div class="ignore-click"><input class="form-check-input ignore-click" type="checkbox" value="" id="selector_i_'.$i['i__id'].'"></div>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==4737 && $e_of_i && !$discovery_mode){
