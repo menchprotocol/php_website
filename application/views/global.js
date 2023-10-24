@@ -867,13 +867,13 @@ function load_card_clickers(){
     $(".card_e_click, .card_i_click").unbind();
 
     $( ".card_e_click" ).click(function(e) {
-        if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273').length < 1){
+        if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click').length < 1){
             js_redirect('/@'+$(this).attr('e__id'));
         }
     });
 
     $('.card_i_click').click(function(e) {
-        if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273').length < 1){
+        if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click').length < 1){
             js_redirect('/~'+$(this).attr('i__id'));
         }
     });
