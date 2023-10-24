@@ -1400,7 +1400,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
                 //Selector
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).' ignore-click">';
                 $top_bar_ui .= '<input class="form-check-input ignore-click" type="checkbox" value="" id="selector_i_'.$i['i__id'].'">';
                 $top_bar_ui .= '</div></td>';
 
