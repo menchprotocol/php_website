@@ -71,11 +71,16 @@ if(!$is_u_request || isset($_GET['cron'])){
                 $addon_links = '';
                 foreach($children as $down_or){
 
-                    $pinned_idea = $this->X_model->fetch(array(
+                    $top_link = '';
+                    foreach($this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type' => 32426, //PINNED IDEA
                         'x__left' => $down_or['i__id'],
-                    ));
+                    )) as $top_idea){
+                        if(intval($top_idea['x__right'])){
+                            $top_link = '/'.$top_idea['x__right'];
+                        }
+                    }
 
                     $discoveries = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -86,7 +91,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
                     //Has this user discovered this idea or no?
                     $addon_links .= $down_or['i__title'].":\n";
-                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).( count($pinned_idea) && intval($pinned_idea[0]['x__right'])>0 ? '/'.$pinned_idea[0]['x__right'] : '' ).'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash($x['e__id']) : '' )."\n\n";
+                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).$top_link.'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash($x['e__id']) : '' )."\n\n";
 
                 }
 
