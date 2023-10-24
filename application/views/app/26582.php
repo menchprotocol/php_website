@@ -74,14 +74,14 @@ if(!$is_u_request || isset($_GET['cron'])){
                     $pinned_idea = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type' => 32426, //PINNED IDEA
-                        'x__left' => $drafting_message['i__id'],
+                        'x__left' => $down_or['i__id'],
                     ));
 
                     $discoveries = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x['e__id'],
-                        'x__left' => $drafting_message['i__id'],
+                        'x__left' => $down_or['i__id'],
                     ));
 
                     //Has this user discovered this idea or no?
