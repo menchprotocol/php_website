@@ -528,7 +528,6 @@ class X extends CI_Controller
                     'e__id' => $member__id,
                 )) as $logged_e){
                     $this->E_model->activate_session($logged_e, true);
-                    js_reload(3000);
                 }
             }
 
