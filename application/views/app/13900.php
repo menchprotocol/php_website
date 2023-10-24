@@ -8,7 +8,6 @@ if(!isset($_GET['i__id'])){
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id']);
 echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
-echo $list_settings['filters_ui'];
 
 
 //Display idea info:

@@ -25,7 +25,6 @@ $count_totals = array(
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id']);
 echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
-echo $list_settings['filters_ui'];
 
 foreach($list_settings['query_string'] as $x){
 

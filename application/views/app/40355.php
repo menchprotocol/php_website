@@ -8,7 +8,6 @@ if(!isset($_GET['i__id'])){
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id'], true);
 echo '<h1 class="no-print">' . view_i_title($list_settings['i']) . '</h1>';
-echo $list_settings['filters_ui'];
 
 
 if(!$list_settings['list_config'][34513]){

@@ -850,9 +850,6 @@ function round_minutes($seconds){
 
 function list_settings($i__id, $fetch_contact = false){
 
-    //Compile key settings for this sheet:
-    $filters_ui = '<div class="settings_frame"><a href="javascript:void(0);" onclick="$(\'.settings_frame\').toggleClass(\'hidden\')"><i class="fal fa-cog"></i></a></div>'.'<div class="settings_frame hidden">';
-
     $CI =& get_instance();
     $e___6287 = $CI->config->item('e___6287'); //APP
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
@@ -882,8 +879,6 @@ function list_settings($i__id, $fetch_contact = false){
         'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up'), 0) as $setting_link){
         array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
-        //Print on screen:
-        $filters_ui .= '<div><span class="icon-block" title="'.$e___40946[$setting_link['x__type']]['m__title'].': '.$e___40946[$setting_link['x__type']]['m__message'].'">'.$e___40946[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['e__id'] . '"><span class="icon-block-xss">'.view_cover($setting_link['e__cover'], true). '</span><u>' . $setting_link['e__title'] . '</u></a></div>';
     }
     //Now search for these settings across ideas:
     foreach($CI->X_model->fetch(array(
@@ -893,8 +888,6 @@ function list_settings($i__id, $fetch_contact = false){
         'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
     ), array('x__right'), 0) as $setting_link){
         array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
-        //Print on screen:
-        $filters_ui .= '<div><span class="icon-block" title="'.$e___40946[$setting_link['x__type']]['m__title'].': '.$e___40946[$setting_link['x__type']]['m__message'].'">'.$e___40946[$setting_link['x__type']]['m__cover'].'</span><a href="/@' . $setting_link['i__id'] . '"><u>' . $setting_link['i__title'] . '</u></a></div>';
     }
 
     //Can only have one focus view, pick first one if any:
@@ -933,7 +926,6 @@ function list_settings($i__id, $fetch_contact = false){
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
     } else {
-        $filters_ui .= '<div><span class="icon-block">'.$e___11035[6255]['m__cover'].'</span><a href="/~' . $i__id . '"><u>'.$e___11035[6255]['m__title'].': ' . $is[0]['i__title'] . '</u></a></div>';
         $query_string = $CI->X_model->fetch(array(
             'x__left' => $i__id,
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1022,18 +1014,12 @@ function list_settings($i__id, $fetch_contact = false){
             $all_ids = $CI->I_model->recursive_down_ids($loaded_i, 'ALL');
             $or_ids = $CI->I_model->recursive_down_ids($loaded_i, 'OR');
 
-            $filters_ui .= '<h2><a href="/~'.$loaded_i['i__id'].'">'.$loaded_i['i__title'].'</a> (<a href="javascript:void(0);" onclick="$(\'.idea_list\').toggleClass(\'hidden\');">'.count($all_ids).' IDEAS</a>)</h2>';
-            $recursive_i_ids = array_merge($recursive_i_ids, $all_ids);
-
-            $filters_ui .= '<div class="hidden idea_list">';
-            $filters_ui .= '<div>'.count($all_ids).' Total Ideas:</div>';
             $count = 0;
             foreach($all_ids as $recursive_down_id){
                 foreach($CI->I_model->fetch(array(
                     'i__id' => $recursive_down_id,
                 ), 0, 0, array('i__id' => 'ASC')) as $focus_i){
                     $count++;
-                    $filters_ui .= '<p>'.$count.') <a href="/~'.$focus_i['i__id'].'">'.$CI-_i['i__title'].'</a></p>';
 
                     if(!$list_config[34513]){
                         foreach($CI->X_model->fetch(array(
@@ -1052,23 +1038,18 @@ function list_settings($i__id, $fetch_contact = false){
                 }
             }
 
-            $filters_ui .= '<div>'.count($or_ids).' OR Ideas (Responses vary per user)</div>';
             $count = 0;
             foreach($or_ids as $recursive_down_id){
                 foreach($CI->I_model->fetch(array(
                     'i__id' => $recursive_down_id,
                 ), 0, 0, array('i__id' => 'ASC')) as $focus_i){
                     $count++;
-                    $filters_ui .= '<p>'.$count.') <a href="/~'.$focus_i['i__id'].'">'.$focus_i['i__title'].'</a></p>';
                     if(!$list_config[34513] && !in_array($focus_i['i__id'], $is_with_action_es)){ // && isset($_GET['all_ideas'])
                         array_push($column_ideas, $focus_i);
                     }
                 }
             }
-            $filters_ui .= '</div>';
-
         }
-
     }
     
     
@@ -1111,7 +1092,6 @@ function list_settings($i__id, $fetch_contact = false){
         }
     }
 
-    $filters_ui .= '</div>';
 
 
     return array(
@@ -1120,7 +1100,6 @@ function list_settings($i__id, $fetch_contact = false){
         'column_sources' => $column_sources,
         'column_ideas' => $column_ideas,
         'query_string' => $query_string,
-        'filters_ui' => $filters_ui,
         'contact_details' => $contact_details, //Optional addon
     );
 
@@ -1866,7 +1845,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
                 'x__type' => 40956, //Idea Email
                 'x__creator' => $e__id,
                 'x__down' => $template_id,
-                'x__message' => $subject."\n\n".strip_tags($email_message),
+                'x__message' => $subject."\n\n".strip_tags(str_replace('<div',"\n".'<div',$email_message)),
                 'x__metadata' => array(
                     'to' => $to_emails,
                     'subject' => $subject,
