@@ -55,6 +55,18 @@ if(!$is_u_request || isset($_GET['cron'])){
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
 
+        $top_link = '';
+        foreach($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type' => 32426, //PINNED IDEA
+            'x__left' => $drafting_message['i__id'],
+            'x__right >' => 0,
+        )) as $top_idea){
+            $top_link = '/'.$top_idea['x__right'];
+            break;
+        }
+
+
         //Now let's see who will receive this:
         $total_sent = 0;
         $list_settings = list_settings($drafting_message['i__id']);
@@ -71,24 +83,12 @@ if(!$is_u_request || isset($_GET['cron'])){
                 $addon_links = '';
                 foreach($children as $down_or){
 
-                    $top_link = '';
-                    foreach($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type' => 32426, //PINNED IDEA
-                        'x__left' => $down_or['i__id'],
-                        'x__right >' => 0,
-                    )) as $top_idea){
-                        $top_link = '/'.$top_idea['x__right'];
-                        break;
-                    }
-
                     $discoveries = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x['e__id'],
                         'x__left' => $down_or['i__id'],
                     ));
-
                     //Has this user discovered this idea or no?
                     $addon_links .= $down_or['i__title'].":\n";
                     $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).$top_link.'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash($x['e__id']) : '' )."\n\n";
