@@ -1396,7 +1396,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==41037 && $e_of_i){
+            } elseif($x__type_top_bar==41037 && $e_of_i && !$focus_card){
 
                 //Selector
                 $active_bars++;
@@ -1902,7 +1902,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= view_dropdown(6177, $e['e__access'], null, $e_of_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==41037 && $e_of_e){
+            } elseif($x__type_top_bar==41037 && $e_of_e && !$focus_card){
 
                 //Selector
                 $active_bars++;
