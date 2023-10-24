@@ -4238,6 +4238,9 @@ main {
     border: 2px solid #000000 !important;
     margin: 1px;
 }
+.form-check-input:checked {
+    background-color: #000000;
+}
 
 .active_bars_1 td { width:100.0% !important; }
 .active_bars_2 td { width:50.00% !important; }
