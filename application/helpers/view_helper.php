@@ -1894,6 +1894,10 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= view_dropdown(6177, $e['e__access'], null, $e_of_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
+            } elseif($x__type_top_bar==41037 && $e_of_e){
+
+                //Selector
+
             } elseif($x__type_top_bar==31912 && $e_of_e){
 
                 //Edit Source
