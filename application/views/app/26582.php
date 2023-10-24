@@ -76,10 +76,10 @@ if(!$is_u_request || isset($_GET['cron'])){
                         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type' => 32426, //PINNED IDEA
                         'x__left' => $down_or['i__id'],
+                        'x__right >' => 0,
                     )) as $top_idea){
-                        if(intval($top_idea['x__right'])){
-                            $top_link = '/'.$top_idea['x__right'];
-                        }
+                        $top_link = '/'.$top_idea['x__right'];
+                        break;
                     }
 
                     $discoveries = $this->X_model->fetch(array(
