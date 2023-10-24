@@ -1105,10 +1105,23 @@ class X_model extends CI_Model
         ));
 
         $x__creator = ( isset($add_fields['x__creator']) ? $add_fields['x__creator'] : 0);
-        $domain_url = get_domain('m__message', $x__creator);
 
+        //Make sure not duplicate:
+        foreach($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__type NOT IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Discoveries
+            'x__left' => $add_fields['x__left'],
+            'x__right' => $add_fields['x__right'],
+            'x__creator' => $add_fields['x__creator'],
+            'x__message' => $add_fields['x__message'],
+        )) as $already_discovered){
+            //Already discovered! Return this:
+            return $already_discovered;
+        }
 
         //Add new transaction:
+        $domain_url = get_domain('m__message', $x__creator);
         $new_x = $this->X_model->create($add_fields);
 
 
@@ -1397,11 +1410,7 @@ class X_model extends CI_Model
                     }
                 }
             }
-
-
         }
-
-
         
 
 

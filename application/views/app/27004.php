@@ -39,7 +39,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
     $i_query = $this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-        'i__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Idea
+        'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
         'x__up' => $_GET['e__id'],
     ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC'));
 
