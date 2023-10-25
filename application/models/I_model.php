@@ -640,7 +640,7 @@ class I_model extends CI_Model
 
     }
 
-    function recursive_clone($i__id, $do_recursive, $x__creator, $previous_i = null, $clone_title = null, $exclude_es = array()) {
+    function recursive_clone($i__id, $do_recursive, $x__creator, $previous_i = null, $clone_title = null) {
 
 
         //Create Clone -or- Link & move-on?
@@ -690,9 +690,6 @@ class I_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
             'x__right' => $i__id,
         );
-        if(count($exclude_es)){
-            $filters['x__up NOT IN (' . join(',', $exclude_es) . ')'] = null;
-        }
 
         foreach($this->X_model->fetch($filters, array(), 0) as $x){
             $this->X_model->create(array(

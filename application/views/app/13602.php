@@ -33,6 +33,10 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
+    } else {
+
+        continue;
+
     }
 
 
