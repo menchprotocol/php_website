@@ -769,7 +769,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $order_columns['x__id'] = 'DESC';
 
         //DISCOVERIES
-        $join_objects = array('x__left');
+        $join_objects = array('x__right');
         $query_filters = array(
             'x__creator' => $e__id,
             'x__type' => $x__type,
