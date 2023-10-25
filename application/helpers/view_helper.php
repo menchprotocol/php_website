@@ -762,7 +762,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
         );
 
-    } elseif(in_array($x__type, $CI->config->item('n___6255'))){
+    } elseif($x__type==4235){
 
         //Determine Sort:
         $order_columns = array();
@@ -774,7 +774,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__creator' => $e__id,
             'x__type' => $x__type,
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
+            //'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
         );
 
     } else {
