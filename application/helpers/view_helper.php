@@ -522,11 +522,11 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= $add_button;
         }
 
-    } elseif($x__type==6255){
+    } elseif($x__type==6255 || in_array($x__type, $CI->config->item('n___6255'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
-            $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
+            $ui .= view_card_i(6255, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
