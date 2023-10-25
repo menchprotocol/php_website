@@ -658,10 +658,10 @@ if($top_i__id) {
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $i['i__id'],
-                    'x__up' => 32442, //Select Day
+                    'x__up' => 32442, //Select Time
                 )))){
 
-                    $input_type = 'date';
+                    $input_type = 'datetime-local';
 
                 } elseif(count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -683,8 +683,8 @@ if($top_i__id) {
 
                 } else {
 
-                    //Time selector:
-                    $input_type = 'datetime-local';
+                    //Date selector:
+                    $input_type = 'date';
 
                 }
 
