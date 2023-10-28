@@ -1113,7 +1113,7 @@ class X_model extends CI_Model
             'x__type NOT IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Discoveries
             'x__left' => ( isset($add_fields['x__left']) ? $add_fields['x__left'] : 0 ),
             'x__right' => ( isset($add_fields['x__right']) ? $add_fields['x__right'] : 0 ),
-            'x__creator' => $add_fields['x__creator'],
+            'x__creator' => ( isset($add_fields['x__creator']) ? $add_fields['x__creator'] : 0 ),
             'x__message' => ( isset($add_fields['x__message']) ? $add_fields['x__message'] : 0 ),
         )) as $already_discovered){
             //Already discovered! Return this:
