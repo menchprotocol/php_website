@@ -74,9 +74,7 @@ foreach($this->I_model->fetch(array(
 
             //Tickets:
             echo '<p>Need Tickets?</p>';
-
-            echo '<div><a class="btn btn-lrg btn-6255 go-next" href="https://ra.co/events/1713038">Buy Tickets Here</a></div>';
-
+            echo '<div><a class="btn btn-lrg btn-6255 go-next" href="/21960">Buy Tickets Here</a></div>';
 
         }
 
