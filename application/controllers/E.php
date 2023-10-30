@@ -476,7 +476,7 @@ class E extends CI_Controller
 
                 //Add Reference if needed:
                 if(!count($this->X_model->fetch(array(
-                    'x__type' => 4983, //IDEA SOURCES
+                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
                     'x__up' => $focus_e['e__id'],
                     'x__right' => $fetch_o[0]['i__id'],
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

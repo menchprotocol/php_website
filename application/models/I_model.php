@@ -506,7 +506,7 @@ class I_model extends CI_Model
 
         //Add if not added as the follower:
         if(!count($this->X_model->fetch(array(
-            'x__type' => 4983, //IDEA SOURCES
+            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
             'x__up' => $x__creator,
             'x__right' => $i_new['i__id'],
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
