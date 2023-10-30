@@ -503,12 +503,23 @@ class I_model extends CI_Model
 
         //Additional sources to be added? Start with creator...
         $sources_appended = array($x__creator);
-        $this->X_model->create(array(
+
+        //Add if not added as the follower:
+        if(!count($this->X_model->fetch(array(
             'x__type' => 4983, //IDEA SOURCES
-            'x__creator' => $x__creator,
             'x__up' => $x__creator,
             'x__right' => $i_new['i__id'],
-        ));
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        )))){
+            $this->X_model->create(array(
+                'x__type' => 4983, //IDEA SOURCES
+                'x__creator' => $x__creator,
+                'x__up' => $x__creator,
+                'x__right' => $i_new['i__id'],
+            ));
+        }
+
+
         //Also append all pinned followers:
         foreach($this->X_model->fetch(array(
             'x__down' => $x__creator,
