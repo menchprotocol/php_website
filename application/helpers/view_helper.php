@@ -744,6 +744,8 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
+        //Discoveries
+
         //Determine Sort:
         $order_columns = array();
         /*
@@ -781,7 +783,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
     } else {
 
-        $e___11035 = $CI->config->item('e___11035'); //COINS
+        $e___11035 = $CI->config->item('e___11035');
         $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
