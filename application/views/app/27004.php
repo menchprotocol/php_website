@@ -93,7 +93,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 }
             }
 
-            //Count only if a payment idea:
+            //Count only if a TICKET idea:
             if(!in_array($x['x__type'], $this->config->item('n___30469'))){
                 $x__metadata['mc_gross'] = 0;
                 $x__metadata['mc_fee'] = 0;

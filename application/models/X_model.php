@@ -1110,7 +1110,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__type NOT IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Payment Discoveries
+            'x__type NOT IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //TICKETS
             'x__left' => ( isset($add_fields['x__left']) ? $add_fields['x__left'] : 0 ),
             'x__right' => ( isset($add_fields['x__right']) ? $add_fields['x__right'] : 0 ),
             'x__creator' => $x__creator,
