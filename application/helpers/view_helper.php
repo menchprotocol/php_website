@@ -522,7 +522,7 @@ function view_body_e($x__type, $counter, $e__id){
             $ui .= $add_button;
         }
 
-    } elseif($x__type==6255 || in_array($x__type, $CI->config->item('n___6255'))){
+    } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
@@ -762,21 +762,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
         );
 
-    } elseif(in_array($x__type, $CI->config->item('n___6255'))){
-
-        //Determine Sort:
-        $order_columns = array();
-        $order_columns['x__id'] = 'DESC';
-
-        //DISCOVERIES
-        $join_objects = array('x__left');
-        $query_filters = array(
-            'x__creator' => $e__id,
-            'x__type' => $x__type,
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
-        );
-
     } else {
 
         return null;
@@ -879,14 +864,15 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'x__left' => $i__id,
         );
 
-    } elseif($x__type==6255){
+    } elseif(in_array($x__type, $CI->config->item('n___12144'))){
+
 
         //DISCOVERIES
         $order_columns = array('x__id' => 'DESC');
         $join_objects = array('x__creator');
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
             'x__left' => $i__id,
         );
         if(isset($_GET['load__e'])){
