@@ -742,7 +742,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__up' => $e__id,
         );
 
-    } elseif($x__type==6255){
+    } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
         //Determine Sort:
         $order_columns = array();
@@ -757,7 +757,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $join_objects = array('x__left');
         $query_filters = array(
             'x__creator' => $e__id,
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERY GROUP
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
         );
