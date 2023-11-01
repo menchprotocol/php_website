@@ -2580,6 +2580,7 @@ h4.main__title{
 
 .nav-tabs .nav-link.active{
     background-color: transparent;
+    border-color: #999999;
 }
 
 .centerh {
@@ -4176,7 +4177,7 @@ main {
 }
 .nav-tabs .nav-link {
     border:0 !important;
-    border-bottom:1px solid #999999 !important;
+    border-bottom:1px solid transparent !important;
 }
 
 
