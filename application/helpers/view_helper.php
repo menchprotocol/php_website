@@ -2046,18 +2046,6 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
 
-    //Bottom Bar
-    if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
-        $ui .= '<div class="card_covers">';
-        foreach($CI->config->item('e___31916') as $menu_id => $m) {
-            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-            $ui .= view_e_covers($menu_id,  $e['e__id']);
-            $ui .= '</span>';
-        }
-        $ui .= '</div>';
-    }
-
 
     //Coin Cover
     $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
@@ -2099,8 +2087,21 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
 
-    $ui .= '</div></div>';
+    $ui .= '</div>';
 
+    //Bottom Bar
+    if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
+        $ui .= '<div class="card_covers">';
+        foreach($CI->config->item('e___31916') as $menu_id => $m) {
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+            $ui .= view_e_covers($menu_id,  $e['e__id']);
+            $ui .= '</span>';
+        }
+        $ui .= '</div>';
+    }
+
+    $ui .= '</div>';
 
 
     $ui .= '</div>';
