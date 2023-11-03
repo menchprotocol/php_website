@@ -2116,8 +2116,8 @@ input.form-control {
 }
 .card_cover{
     position: relative;
-    margin:0 0 0px 0 !important;
-    padding: 0px 0 !important;
+    margin:0 0 0 0 !important;
+    padding: 0 0 55px 0 !important;
     border-radius: 0 !important;
 }
 .card_cover.coin-12274,
