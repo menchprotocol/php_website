@@ -2000,7 +2000,7 @@ i, .btn .show-max {
 
 .coin-12274 .cover-content{
     top: unset !important;
-    bottom: -30px !important;
+    margin-top: 1px;
 }
 .coin-12274 .card_covers{
     top: 34px !important;
@@ -2192,13 +2192,6 @@ input.form-control {
     overflow: hidden;
     margin-bottom: 0px;
     margin-top: 0px;
-}
-
-.coinType12274.cover-link.ready-only, .coinType12274.cover-link {
-    margin-top:44px;
-}
-.focus-cover .coinType12274.cover-link, .focus-cover .coinType12274.cover-link.ready-only {
-    margin-top:77px;
 }
 
 #container_search .cover-link {
