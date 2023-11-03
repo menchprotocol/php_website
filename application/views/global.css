@@ -1974,6 +1974,18 @@ i, .btn .show-max {
     position: absolute;
     z-index: 999;
 }
+
+.card_covers{
+    width: 100%;
+    height: 37px;
+    text-align: center;
+    margin:0;
+}
+.card_covers .btn {
+    padding: 7px;
+}
+
+
 .cover-content{
     padding: 0;
     width: calc(100% - 4px) !important;
@@ -1985,6 +1997,15 @@ i, .btn .show-max {
     max-height: 69%;
     top:36px;
 }
+
+.coin-12274 .cover-content{
+    top: unset !important;
+    bottom: -30px !important;
+}
+.coin-12274 .card_covers{
+    top: 34px !important;
+}
+
 
 .is-cache .cover-content{
     max-height: 80%;
@@ -2078,12 +2099,7 @@ input.form-control {
     right: 5px;
 }
 
-.card_covers{
-    width: 100%;
-    height: 37px;
-    text-align: center;
-    margin:0;
-}
+
 
 .cover-text {
     line-height: 120%;
@@ -4030,9 +4046,6 @@ div.img {
     margin:0 !important;
 }
 
-.card_covers .btn {
-    padding: 7px;
-}
 
 .demo_cover .cover-content {
     top:-34px !important;

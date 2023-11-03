@@ -2053,6 +2053,28 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
 
+
+
+
+
+
+
+
+    //Bottom Bar
+    if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
+        $ui .= '<div class="card_covers">';
+        foreach($CI->config->item('e___31916') as $menu_id => $m) {
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+            $ui .= view_e_covers($menu_id,  $e['e__id']);
+            $ui .= '</span>';
+        }
+        $ui .= '</div>';
+    }
+
+
+
+
     //Title Cover
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
@@ -2077,24 +2099,6 @@ function view_card_e($x__type, $e, $extra_class = null)
         }
     }
     $ui .= '</div></div>';
-
-
-
-
-
-
-
-    //Bottom Bar
-    if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
-        $ui .= '<div class="card_covers">';
-        foreach($CI->config->item('e___31916') as $menu_id => $m) {
-            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-            $ui .= view_e_covers($menu_id,  $e['e__id']);
-            $ui .= '</span>';
-        }
-        $ui .= '</div>';
-    }
 
 
 
