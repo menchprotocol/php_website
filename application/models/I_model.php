@@ -698,7 +698,7 @@ class I_model extends CI_Model
         //Always Link Sources:
         $filters = array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Duplicate Idea Source Links
+            'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
             'x__right' => $i__id,
         );
 

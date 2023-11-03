@@ -257,7 +257,7 @@ class E extends CI_Controller
         //Followers:
         foreach($this->X_model->fetch(array(
             'x__up' => $_POST['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
@@ -277,7 +277,7 @@ class E extends CI_Controller
         //Followings:
         foreach($this->X_model->fetch(array(
             'x__down' => $_POST['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
@@ -296,7 +296,7 @@ class E extends CI_Controller
         //Ideas:
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
             'x__up' => $_POST['e__id'],
         ), array(), 0) as $x){
             $this->X_model->create(array(
