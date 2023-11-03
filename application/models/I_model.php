@@ -698,7 +698,7 @@ class I_model extends CI_Model
         //Always Link Sources:
         $filters = array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Duplicate Idea Source Links
             'x__right' => $i__id,
         );
 
@@ -722,7 +722,7 @@ class I_model extends CI_Model
         //Always Link Followings:
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
             'x__right' => $i__id,
         ), array(), 0) as $x){
             $this->X_model->create(array(
@@ -742,7 +742,7 @@ class I_model extends CI_Model
         //Fetch followers:
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
             'x__left' => $i__id,
         ), array(), 0) as $x){
             if($do_recursive){
