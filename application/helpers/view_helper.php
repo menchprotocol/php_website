@@ -2075,14 +2075,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Title Cover
     $ui .= '<div class="cover-content">';
-    $ui .= '<div class="inner-content">';
-    if($show_text_editor && !$is_cache && !$is_app){
-        //Editable:
-        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
-    } else {
-        //Static:
-        $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
-    }
+
     $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
@@ -2096,6 +2089,16 @@ function view_card_e($x__type, $e, $extra_class = null)
 
         }
     }
+
+    $ui .= '<div class="inner-content">';
+    if($show_text_editor && !$is_cache && !$is_app){
+        //Editable:
+        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
+    } else {
+        //Static:
+        $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
+    }
+
     $ui .= '</div></div>';
 
 
