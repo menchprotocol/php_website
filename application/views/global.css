@@ -1331,6 +1331,9 @@ a.headline {
 .card_cover.focus-cover {
     padding-bottom: 5px !important;
 }
+.card_cover.coin-12274.focus-cover {
+    padding-bottom: 77px !important;
+}
 
 .score-range{
     width: 89px;
