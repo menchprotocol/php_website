@@ -2045,20 +2045,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-wrapper">';
 
 
-    //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
-    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
-    $ui .= ( !$focus_card ? '</a>' : '</div>' );
-    $ui .= '</div>';
-
-
-
-
-
-
-
-
-
 
     //Bottom Bar
     if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
@@ -2071,6 +2057,18 @@ function view_card_e($x__type, $e, $extra_class = null)
         }
         $ui .= '</div>';
     }
+
+
+    //Coin Cover
+    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
+    $ui .= ( !$focus_card ? '</a>' : '</div>' );
+
+    $ui .= '</div>';
+
+
+
+
 
 
 
