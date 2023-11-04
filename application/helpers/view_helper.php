@@ -2041,18 +2041,6 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     }
 
-
-    $ui .= '<div class="cover-wrapper">';
-
-
-
-
-    //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
-    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
-    $ui .= ( !$focus_card ? '</a>' : '</div>' );
-
-
     $ui .= '<div class="bottom-wrapper">';
     $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
@@ -2069,6 +2057,12 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
     $ui .= '</div>';
 
+    $ui .= '<div class="cover-wrapper">';
+
+    //Coin Cover
+    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
+    $ui .= ( !$focus_card ? '</a>' : '</div>' );
 
     $ui .= '</div>';
 
