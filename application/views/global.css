@@ -1332,7 +1332,7 @@ a.headline {
     padding-bottom: 5px !important;
 }
 .card_cover.coin-12274.focus-cover {
-    padding-bottom: 77px !important;
+    padding-bottom: 89px !important;
 }
 
 .score-range{
@@ -2170,7 +2170,7 @@ input.form-control {
 .bottom-wrapper{
     display: block;
     position: absolute;
-    z-index: 9999;
+    z-index: 995;
     width: 100%;
 }
 .coinface-12274 .cover-content .inner-content {
