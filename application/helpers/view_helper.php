@@ -2052,18 +2052,8 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
 
-    $ui .= '</div>';
 
-
-
-
-
-
-
-
-    //Title Cover
-    $ui .= '<div class="cover-content">';
-
+    $ui .= '<div class="bottom-wrapper">';
     $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
@@ -2077,7 +2067,20 @@ function view_card_e($x__type, $e, $extra_class = null)
 
         }
     }
+    $ui .= '</div>';
 
+
+    $ui .= '</div>';
+
+
+
+
+
+
+
+
+    //Title Cover
+    $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
