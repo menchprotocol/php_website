@@ -2115,12 +2115,15 @@ input.form-control {
 .card_cover{
     position: relative;
     margin:0 0 0 0 !important;
-    padding: 0 0 89px 0 !important;
+    padding: 0 0 34px 0 !important;
     border-radius: 0 !important;
 }
 .card_cover.coin-12274,
 .card_cover.coin-6287{
     border-radius: 21px !important;
+}
+.card_cover.coin-12274{
+    padding: 0 0 89px 0 !important;
 }
 
 .mini-cover.coin-12274{
