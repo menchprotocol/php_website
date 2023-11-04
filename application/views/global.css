@@ -1988,15 +1988,14 @@ i, .btn .show-max {
     padding: 0;
     width: calc(100% - 4px) !important;
     position: absolute;
-    overflow-x: hidden;
-    overflow-y: auto;
     display: block;
     margin: 0 2px;
     max-height: 69%;
     top:36px;
 }
 
-.edge-cover.coin-12274 .cover-content{
+.edge-cover.coin-12274 .cover-content,
+.focus-cover.coin-12274 .cover-content{
     top: unset !important;
     margin-top: 1px;
 }
