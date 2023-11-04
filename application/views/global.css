@@ -1988,8 +1988,6 @@ i, .btn .show-max {
     padding: 0;
     width: calc(100% - 4px) !important;
     position: absolute;
-    overflow-x: visible;
-    overflow-y: auto;
     display: block;
     margin: 0 2px;
     max-height: 69%;
@@ -2167,6 +2165,8 @@ input.form-control {
     font-size: 1em;
     display: block;
     vertical-align: middle;
+    overflow-x: visible;
+    overflow-y: auto;
 }
 .bottom-wrapper{
     display: block;
