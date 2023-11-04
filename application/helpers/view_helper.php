@@ -2042,19 +2042,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     $ui .= '<div class="bottom-wrapper">';
-    $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
-    if ($x__id > 0 && $grant_access) {
-        if(!$has_any_lock || $grant_access){
-
-            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.preview_x__message($e['x__message'] , $e['x__type']).'</span>';
-
-        } elseif(($is__featured || $has_x_progress) && strlen($e['x__message'])){
-
-            //DISCOVERY PROGRESS
-            $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false, $member_e).'</span>';
-
-        }
-    }
 
     //Bottom Bar
     if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
@@ -2069,6 +2056,20 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     $ui .= '</div>';
+
+    $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
+    if ($x__id > 0 && $grant_access) {
+        if(!$has_any_lock || $grant_access){
+
+            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.preview_x__message($e['x__message'] , $e['x__type']).'</span>';
+
+        } elseif(($is__featured || $has_x_progress) && strlen($e['x__message'])){
+
+            //DISCOVERY PROGRESS
+            $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false, $member_e).'</span>';
+
+        }
+    }
 
     $ui .= '<div class="cover-wrapper">';
 
