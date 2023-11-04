@@ -2055,8 +2055,6 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '</div>';
     }
 
-    $ui .= '</div>';
-
     $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
@@ -2070,6 +2068,10 @@ function view_card_e($x__type, $e, $extra_class = null)
 
         }
     }
+
+    $ui .= '</div>';
+
+
 
     $ui .= '<div class="cover-wrapper">';
 
