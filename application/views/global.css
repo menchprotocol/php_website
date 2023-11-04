@@ -2168,7 +2168,10 @@ input.form-control {
     vertical-align: middle;
 }
 .bottom-wrapper{
-    margin: 0;
+    display: block;
+    position: absolute;
+    z-index: 9999;
+    width: 100%;
 }
 .coinface-12274 .cover-content .inner-content {
     padding: 3px 3px 0;
