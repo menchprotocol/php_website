@@ -377,6 +377,7 @@ img.no-frame {
 .adjust-left{
     margin-left: -1px;
     font-size: 0.89em;
+    text-shadow: 1px 1px 1px #FFFFFF;
 }
 
 
