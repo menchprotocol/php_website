@@ -2043,18 +2043,6 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $ui .= '<div class="bottom-wrapper">';
 
-    //Bottom Bar
-    if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
-        $ui .= '<div class="card_covers">';
-        foreach($CI->config->item('e___31916') as $menu_id => $m) {
-            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
-            $ui .= view_e_covers($menu_id,  $e['e__id']);
-            $ui .= '</span>';
-        }
-        $ui .= '</div>';
-    }
-
     $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
@@ -2092,6 +2080,19 @@ function view_card_e($x__type, $e, $extra_class = null)
     //Title Cover
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
+
+    //Bottom Bar
+    if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
+        $ui .= '<div class="card_covers">';
+        foreach($CI->config->item('e___31916') as $menu_id => $m) {
+            $superpower_actives = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).' '.( count($superpower_actives) ? superpower_active(end($superpower_actives)) : '' ).'">';
+            $ui .= view_e_covers($menu_id,  $e['e__id']);
+            $ui .= '</span>';
+        }
+        $ui .= '</div>';
+    }
+
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
         $ui .= view_input(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
