@@ -2089,6 +2089,8 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
 
+    $ui .= '</div>';
+
     //Bottom Bar
     if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
         $ui .= '<div class="card_covers">';
@@ -2101,7 +2103,6 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '</div>';
     }
 
-    $ui .= '</div>';
     $ui .= '</div>';
 
 
