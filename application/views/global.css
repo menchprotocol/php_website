@@ -1986,19 +1986,22 @@ i, .btn .show-max {
 
 
 .cover-content{
-    /*
-        position: absolute;
-    width: calc(100% - 4px) !important;
-        margin: 0 2px;
-    top:36px;
-    */
     padding: 0;
-    width: 100% !important;
+    width: calc(100% - 4px) !important;
+    position: absolute;
     overflow-x: visible;
     overflow-y: auto;
     display: block;
-    margin: 0;
+    margin: 0 2px;
     max-height: 69%;
+    top:36px;
+}
+
+.coin-12274 .cover-content{
+    position: relative;
+    width: 100% !important;
+    margin: 0;
+    top:unset;
 }
 
 .edge-cover.coin-12274 .cover-content,
