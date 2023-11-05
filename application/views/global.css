@@ -1978,7 +1978,7 @@ i, .btn .show-max {
     width: 100%;
     height: 37px;
     text-align: center;
-    margin:0;
+    margin:0 0 24px 0;
 }
 .card_covers .btn {
     padding: 7px;
@@ -2132,7 +2132,7 @@ input.form-control {
     border-radius: 21px !important;
 }
 .edge-cover.coin-12274{
-    padding: 0 0 89px 0 !important;
+    padding: 0 0 0 0 !important;
 }
 
 .mini-cover.coin-12274{
@@ -2142,7 +2142,7 @@ input.form-control {
     border-radius: 21px !important;
 }
 .card_cover.coinface-12274{
-    margin:0 !important;
+    margin:0 0 13px 0 !important;
 }
 .card_cover .large_cover i{
     font-size:5.5em !important;
@@ -2181,6 +2181,7 @@ input.form-control {
     position: absolute;
     z-index: 995;
     width: 100%;
+    margin-top: -24px;
 }
 .coinface-12274 .cover-content .inner-content {
     padding: 3px 3px 0;
