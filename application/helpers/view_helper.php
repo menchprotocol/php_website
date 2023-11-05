@@ -2047,12 +2047,12 @@ function view_card_e($x__type, $e, $extra_class = null)
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
 
-            $ui .= '<span class="x__message mini-font hideIfEmpty x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.preview_x__message($e['x__message'] , $e['x__type']).'</span>';
+            $ui .= '<span class="x__message mini-font hideIfEmpty light-bg x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.preview_x__message($e['x__message'] , $e['x__type']).'</span>';
 
         } elseif(($is__featured || $has_x_progress) && strlen($e['x__message'])){
 
             //DISCOVERY PROGRESS
-            $ui .= '<span class="mini-font">'.$CI->X_model->message_view($e['x__message'], false, $member_e).'</span>';
+            $ui .= '<span class="mini-font light-bg">'.$CI->X_model->message_view($e['x__message'], false, $member_e).'</span>';
 
         }
     }
@@ -2081,6 +2081,14 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
 
+    if($show_text_editor && !$is_cache && !$is_app){
+        //Editable:
+        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
+    } else {
+        //Static:
+        $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
+    }
+
     //Bottom Bar
     if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
         $ui .= '<div class="card_covers">';
@@ -2091,14 +2099,6 @@ function view_card_e($x__type, $e, $extra_class = null)
             $ui .= '</span>';
         }
         $ui .= '</div>';
-    }
-
-    if($show_text_editor && !$is_cache && !$is_app){
-        //Editable:
-        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
-    } else {
-        //Static:
-        $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
     }
 
     $ui .= '</div>';
