@@ -1980,9 +1980,6 @@ i, .btn .show-max {
     text-align: center;
     margin:0;
 }
-.coin-12274 .card_covers{
-    margin:0 0 24px 0;
-}
 .card_covers .btn {
     padding: 7px;
 }
@@ -2184,10 +2181,6 @@ input.form-control {
     position: absolute;
     z-index: 995;
     width: 100%;
-    margin-top: -24px;
-}
-.coin-12274 .bottom-wrapper{
-    margin-top: -24px;
 }
 .coinface-12274 .cover-content .inner-content {
     padding: 3px 3px 0;
