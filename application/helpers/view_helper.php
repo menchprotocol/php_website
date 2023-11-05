@@ -2090,6 +2090,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     $ui .= '</div>';
+    $ui .= '</div>';
 
     //Bottom Bar
     if(!$is_cache && !$is_app && !$focus_card && $superpower_10939){
@@ -2102,8 +2103,6 @@ function view_card_e($x__type, $e, $extra_class = null)
         }
         $ui .= '</div>';
     }
-
-    $ui .= '</div>';
 
 
     $ui .= '</div>';
