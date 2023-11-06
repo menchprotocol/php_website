@@ -82,7 +82,7 @@ foreach($list_settings['query_string'] as $x){
 
     $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
 
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xxs">'.view_cover($x['e__cover'], true).'</span><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$name.$plus_info.'</td>';
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xxs">'.view_cover($x['e__cover'], true).'</span><a href="/@'.$x['e__id'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$name.$plus_info.( strlen($x['x__message']) ? ' <span>'.$x['x__message'].'</span>' : '' ).'</td>';
 
 
 
@@ -140,15 +140,6 @@ foreach($list_settings['query_string'] as $x){
 
 
     $body_content .= $idea_content;
-
-
-
-    $e_emails = $this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__down' => $x['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__up' => 3288, //Email
-    ));
 
     $body_content .= '</tr>';
     $count++;
