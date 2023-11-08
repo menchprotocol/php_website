@@ -107,8 +107,8 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 continue;
             }
 
-            if(!isset($x__metadata['mc_gross'])){
-                $x__metadata['mc_gross'] = 0;
+            if(!isset($x__metadata['mc_fee'])){
+                $x__metadata['mc_fee'] = 0;
             }
 
             $this_commission = $x__metadata['mc_gross']*$commission_rate;
