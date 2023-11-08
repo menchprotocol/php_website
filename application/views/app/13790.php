@@ -45,7 +45,7 @@ foreach($list_settings['query_string'] as $x){
 
         if(count($discoveries)){
 
-            $x__metadata = unserialize($discoveries[0]['x__metadata']);
+            $x__metadata = @unserialize($discoveries[0]['x__metadata']);
             if(isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2){
                 $this_quantity = $x__metadata['quantity'];
             }
