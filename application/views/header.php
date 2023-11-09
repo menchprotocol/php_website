@@ -250,7 +250,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
                 echo '  .msg>span { border-radius: 0; } ';
                 echo ' .halfbg { background: rgba(0, 0, 0, 0.69) !important; border-radius: 0; } ';
-                echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 21px; } ';
+                echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 0; } ';
                 echo ' .top-header-position.fixed-top { background: none !important; } ';
 
                 echo ' .msg>span { display: block; padding: 0; } ';
