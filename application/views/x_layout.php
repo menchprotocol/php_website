@@ -274,7 +274,7 @@ if($top_i__id) {
             //Open for list to be printed:
             $select_answer = '<div class="row list-answers" i__type="' . $i['i__type'] . '">';
 
-            //List followers to choose from:
+            //List next ideas to choose from:
             foreach ($is_next as $key => $next_i) {
 
                 //Has this been previously selected?

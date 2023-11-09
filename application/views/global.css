@@ -2061,6 +2061,7 @@ input.form-control {
     padding-top: 1px;
     padding-bottom: 1px;
     border-radius: 10px;
+    position: absolute;
 }
 
 .coin-cover{

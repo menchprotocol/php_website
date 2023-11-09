@@ -1324,6 +1324,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $discovery_mode = !$superpower_10939 || $top_i__id>0 || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
+    $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
     $link_creator = isset($i['x__creator']) && $i['x__creator']==$member_e['e__id'];
 
@@ -1358,7 +1359,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $e___4737 = $CI->config->item('e___4737'); // Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-
+    $click_locked = ( $focus_card ? true : ($step_by_step && !$has_discovered) ? 'Hit Next to navigate to your next discovery' : false );
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
@@ -1560,8 +1561,8 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Coin Cover
     $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
-    $ui .= ( $focus_card ? '</div>' : '</a>' );
+    $ui .= ( $click_locked ? '<div' . ( strlen($click_locked) ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' ) : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
+    $ui .= ( $click_locked ? '</div>' : '</a>' );
     $ui .= '</div>';
 
 
