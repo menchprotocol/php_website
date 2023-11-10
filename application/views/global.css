@@ -344,8 +344,8 @@ img.no-frame {
     text-align: center;
 }
 .limit_height{
-    max-height: 29px;
-    overflow-y: auto;
+    /* max-height: 29px;
+    overflow-y: auto;*/
 }
 .algolia_pad_search{
     text-align: center;
