@@ -1356,10 +1356,10 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             'x__creator' => $member_e['e__id'],
             'x__left' => $i['i__id'],
         ))));
-    $e___4737 = $CI->config->item('e___4737'); // Idea Status
+    $e___4737 = $CI->config->item('e___4737'); //Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $click_locked = intval($step_by_step).'/'.intval($has_discovered);
+    $click_locked = ( $step_by_step && !$has_discovered ? 'Go Next to Discover this Idea' : false );
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
