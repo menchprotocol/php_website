@@ -1360,6 +1360,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
     $click_locked = ( $step_by_step && !$has_discovered ? 'Go Next to Discover this Idea' : false );
+    $locked_info = ( strlen($click_locked) ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' );
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
@@ -1558,10 +1559,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= $top_bar_ui;
     $ui .= '</tr></table>';
 
-
     //Coin Cover
     $ui .= '<div class="cover-wrapper cover_wrapper12273">';
-    $ui .= ( $click_locked ? '<div' . ( strlen($click_locked) ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' ) : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
+    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="'.( $has_discovered ? 'coinType6255' : 'coinType12273' ).' black-background-obs cover-link">';
     $ui .= ( $click_locked ? '</div>' : '</a>' );
     $ui .= '</div>';
 
@@ -1580,11 +1580,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip = '';
 
 
-    $message_tooltip .= ( $click_locked ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( $click_locked ? '</div>' : '</a>' );
+    $message_tooltip .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( $click_locked ? '</div>' : '</a>' );
 
 
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
-        $message_tooltip .= ( $click_locked ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $click_locked ? '</div>' : '</a>' );
+        $message_tooltip .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $click_locked ? '</div>' : '</a>' );
     }
 
 
