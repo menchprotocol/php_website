@@ -1572,7 +1572,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     if($e_of_i && !$discovery_mode){
         //Editable title:
         $ui .= view_input(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
-    } elseif(!$focus_card){
+    } elseif(!$click_locked){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
         $ui .= $i_title;
@@ -1580,11 +1580,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip = '';
 
 
-    $message_tooltip .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( $focus_card ? '</div>' : '</a>' );
+    $message_tooltip .= ( $click_locked ? '<div' : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( $click_locked ? '</div>' : '</a>' );
 
 
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
-        $message_tooltip .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $focus_card ? '</div>' : '</a>' );
+        $message_tooltip .= ( $click_locked ? '<div' : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $click_locked ? '</div>' : '</a>' );
     }
 
 
