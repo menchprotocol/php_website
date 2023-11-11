@@ -13,7 +13,7 @@ foreach($this->I_model->fetch(array(
     $messages = $this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 4231, //IDEA NOTES Messages
-        'x__right' => $_POST['i__id'],
+        'x__right' => $loaded_i['i__id'],
     ), array(), 0, 0, array('x__weight' => 'ASC'));
 
     $message_included = $message_included + ( count($messages) ? 1 : 0 );
