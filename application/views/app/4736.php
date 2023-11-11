@@ -25,4 +25,5 @@ foreach($this->I_model->fetch(array(
 
 }
 
-echo '['.$count.' COUNT]';
+echo '['.$count.' COUNT]<br />';
+echo '['.$message_included.' Messaged]';
