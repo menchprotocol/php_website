@@ -697,7 +697,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //DOWN
         $order_columns = array();
-        $order_columns['x__type'] = 'ASC';
+        $order_columns['x__type'] = 'DESC';
         $order_columns['x__weight'] = 'ASC';
         $order_columns['e__title'] = 'ASC';
 
@@ -713,7 +713,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //UP
         $order_columns = array();
-        $order_columns['x__type'] = 'ASC';
+        $order_columns['x__type'] = 'DESC';
         $order_columns['x__id'] = 'DESC';
         $join_objects = array('x__up');
         $query_filters = array(
