@@ -293,15 +293,11 @@ class I extends CI_Controller {
 
         }
 
-        $message = '';
-        foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $_POST['i__id'],
-        ), array(), 0, 0, array('x__weight' => 'ASC')) as $x) {
-            $message .= $x['x__message']."\n";
-        }
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+        ));
 
+        $message = (count($is) ? $is[0]['i__message'] : '');
 
         return view_json(array(
             'status' => 1,
