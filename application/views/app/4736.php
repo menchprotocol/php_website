@@ -24,9 +24,12 @@ foreach($this->I_model->fetch(array(
         $message_simple .= $x['x__message']."\n";
     }
 
-    $updated += $this->I_model->update($loaded_i['i__id'], array(
-        'i__message' => trim($message_simple),
-    ));
+    if(trim($message_simple) != $loaded_i['i__message']){
+        $updated += $this->I_model->update($loaded_i['i__id'], array(
+            'i__message' => trim($message_simple),
+        ));
+    }
+
 
 }
 
