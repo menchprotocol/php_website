@@ -3647,7 +3647,7 @@ h4.main__title{
     margin-right: 0;
 }
 .justify-content {
-    justify-content: center !important;
+    justify-content: left !important;
 }
 
 .content-image,
