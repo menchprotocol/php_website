@@ -1131,6 +1131,8 @@ a.headline {
     overflow: hidden;
     width: 100%;
     padding: 2px;
+    max-height: 169px;
+    overflow-y: auto;
 }
 
 
