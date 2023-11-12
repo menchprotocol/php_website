@@ -1280,7 +1280,7 @@ function view_i__cache($i, $simple_version = false){
     $messages = '';
     if(strlen($i['i__message'])){
 
-       return $i['i__message'];
+       return nl2br($i['i__message']);
 
     } elseif(strlen($i['i__cache'])){
 
