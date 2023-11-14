@@ -884,6 +884,15 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $('.toggle_checkbox').change(function() {
+        if(this.checked) {
+            $(this).closest('div[class^="card_cover"]').addClass('card_checked');
+        } else {
+            $(this).closest('div[class^="card_cover"]').removeClass('card_checked');
+        }
+    });
+
+
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');
