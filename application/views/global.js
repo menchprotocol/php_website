@@ -886,9 +886,9 @@ $(document).ready(function () {
 
     $('.toggle_checkbox').change(function() {
         if(this.checked) {
-            $(this).closest('div[class^="div-card_cover"]').addClass('card_checked');
+            this.closest('div[class^="div-card_cover"]').addClass('card_checked');
         } else {
-            $(this).closest('div[class^="div-card_cover"]').removeClass('card_checked');
+            this.closest('div[class^="div-card_cover"]').removeClass('card_checked');
         }
     });
 
