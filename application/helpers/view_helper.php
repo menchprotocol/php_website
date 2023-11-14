@@ -461,7 +461,6 @@ function view_body_e($x__type, $counter, $e__id){
     $CI =& get_instance();
     $limit = view_memory(6404,11064);
     $member_e = superpower_unlocked();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $list_results = view_e_covers($x__type, $e__id, 1);
     $focus_e = ($e__id==$member_e['e__id'] ? $member_e : false);
     $es = $CI->E_model->fetch(array(
@@ -472,24 +471,8 @@ function view_body_e($x__type, $counter, $e__id){
     }
     $ui = '';
 
-    //Check Permissions to make sure:
-    $e_of_e = ( in_array($es[0]['e__access'], $CI->config->item('n___32145')) ? false : e_of_e($e__id) );
-
 
     if($x__type==12273){
-
-
-        if($e_of_e){
-            $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_'.$x__type.' list-adder">
-                <div class="input-group border">
-                    <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
-                           maxlength="' . view_memory(6404,4736) . '"
-                           placeholder="'.$e___11035[14016]['m__title'].'">
-                </div></div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
-        }
-
-
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
@@ -499,28 +482,11 @@ function view_body_e($x__type, $counter, $e__id){
 
     } elseif($x__type==12274 || $x__type==11030){
 
-        $idea_adder = ( $x__type==12274 ? 31775 : 31774 );
-
-        $add_button = '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[$idea_adder]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
-
-
-        if($x__type==12274 && $e_of_e){
-            $ui .= $add_button;
-        }
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e) {
             $ui .= view_card_e($x__type, $e, null);
         }
         $ui .= '</div>';
-        if(in_array($x__type, $CI->config->item('n___14686')) && $e_of_e){
-            $ui .= $add_button;
-        }
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
@@ -550,7 +516,6 @@ function view_google_tag($google_analytics_code){
 function view_body_i($x__type, $counter, $i__id){
 
     $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $list_results = view_i_covers($x__type, $i__id, 1);
     $ui = '';
     $is = $CI->I_model->fetch(array(
@@ -560,8 +525,6 @@ function view_body_i($x__type, $counter, $i__id){
         return false;
     }
 
-    $e_of_i = ( in_array($is[0]['i__access'], $CI->config->item('n___32145')) ? false : e_of_i($i__id) );
-
     if($x__type==11019){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
@@ -570,30 +533,9 @@ function view_body_i($x__type, $counter, $i__id){
         }
         $ui .= '</div>';
 
-        if($e_of_i){
-            $ui .= '<div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick add-input algolia_search dotransparent"
-                               maxlength="' . view_memory(6404,4736) . '"
-                               placeholder="'.$e___11035[31773]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>';
-        }
-
     } elseif($x__type==12273){
 
         //IDEAS
-
-        if($e_of_i){
-            $ui .= '<div class="new-list-12273"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
-                <div class="input-group border">
-                    <input type="text"
-                           class="form-control form-control-thick add-input algolia_search dotransparent"
-                           maxlength="' . view_memory(6404,4736) . '"
-                           placeholder="'.$e___11035[31772]['m__title'].'">
-                </div></div></div><div class="algolia_pad_search dropdown_12273 row justify-content"></div></div>';
-        }
-
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
         foreach($list_results as $next_i) {
             $ui .= view_card_i(12273, 0, $is[0], $next_i);
@@ -602,17 +544,6 @@ function view_body_i($x__type, $counter, $i__id){
 
     } elseif($x__type==6255) {
 
-        //DISCOVERIES
-        if(superpower_active(12701, true)){
-            $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[37959]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
-        }
-
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $item){
             $ui .= view_card_e(6255, $item);
@@ -620,17 +551,6 @@ function view_body_i($x__type, $counter, $i__id){
         $ui .= '</div>';
 
     } elseif($x__type==12274){
-
-        //SOURCES
-        if($e_of_i){
-            $ui .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[14055]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
-        }
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e_ref){
@@ -691,7 +611,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $e_of_e = e_of_e($e__id);
+    $write_access_e = write_access_e($e__id);
 
     if($x__type==12274){
 
@@ -706,7 +626,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  ))) . ')' => null,
+            'e__access IN (' . join(',', $CI->config->item(( $write_access_e ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  ))) . ')' => null,
         );
 
     } elseif($x__type==11030){
@@ -720,7 +640,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__down' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  ))) . ')' => null,
+            'e__access IN (' . join(',', $CI->config->item(( $write_access_e ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  ))) . ')' => null,
         );
 
     } elseif($x__type==12273){
@@ -740,7 +660,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
-            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
+            'i__access IN (' . join(',', $CI->config->item(( $write_access_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
             'x__up' => $e__id,
         );
 
@@ -763,7 +683,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__creator' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERY GROUP
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $CI->config->item(( $e_of_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
+            'i__access IN (' . join(',', $CI->config->item(( $write_access_e ? 'n___31871' /* ACTIVE */ : 'n___31870' /* PUBLIC */  ))) . ')' => null,
         );
 
     } else {
@@ -1322,7 +1242,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
 
     $member_e = superpower_unlocked();
-    $e_of_i = ( $cache_app || $access_locked ? false : e_of_i($i['i__id']) );
+    $write_access_i = ( $cache_app || $access_locked ? false : write_access_i($i['i__id']) );
     $user_input = $focus_e;
     $superpower_10939 = superpower_active(10939, true);
 
@@ -1341,7 +1261,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__id > 0 && $focus_e && $discovery_mode;
 
     $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
-    $has_sortable = !$focus_card && $e_of_i && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$focus_card && $write_access_i && in_array($x__type, $CI->config->item('n___4603'));
     $i_title = view_i_title($i);
 
     if($discovery_mode || $cache_app) {
@@ -1383,7 +1303,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $write_access_i && !$discovery_mode, false, $i['i__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1402,12 +1322,12 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             //Determine hover state:
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $link_type_ui && ($e_of_i || $link_creator)){
+            if($x__type_top_bar==31770 && $link_type_ui && ($write_access_i || $link_creator)){
 
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==41037 && $e_of_i && !$focus_card && !$discovery_mode){
+            } elseif($x__type_top_bar==41037 && $write_access_i && !$focus_card && !$discovery_mode){
 
                 //Selector
                 $active_bars++;
@@ -1415,21 +1335,21 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 $top_bar_ui .= '<input class="form-check-input ignore-click" type="checkbox" value="" i__id="'.$i['i__id'].'" id="selector_i_'.$i['i__id'].'">';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==4737 && $e_of_i && !$discovery_mode){
+            } elseif($x__type_top_bar==4737 && $write_access_i && !$discovery_mode){
 
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_access_i && !$discovery_mode, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31004 && ($e_of_i || $access_locked) && !$discovery_mode){
+            } elseif($x__type_top_bar==31004 && ($write_access_i || $access_locked) && !$discovery_mode){
 
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__access'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $e_of_i && !$discovery_mode, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i && !$discovery_mode, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31911 && $e_of_i && !$discovery_mode){
+            } elseif($x__type_top_bar==31911 && $write_access_i && !$discovery_mode){
 
                 $active_bars++;
 
@@ -1479,12 +1399,12 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                             //Discover Idea
                             $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==33286 && $discovery_mode && $e_of_i){
+                        } elseif($e__id_dropdown==33286 && $discovery_mode && $write_access_i){
 
                             //Ideation Mode
                             $action_buttons .= '<a href="/~'.$i['i__id'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==13571 && $x__id > 0 && $e_of_i){
+                        } elseif($e__id_dropdown==13571 && $x__id > 0 && $write_access_i){
 
                             //Edit Message
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_message_load(' . $x__id . ')" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1494,7 +1414,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="sort_alphabetical()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $e_of_i){
+                        } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $write_access_i){
 
                             //Unlink
                             $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item main__title x_remove" i__id="'.$i['i__id'].'" x__id="'.$x__id.'">'.$anchor.'</a>';
@@ -1509,17 +1429,17 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                             //Clone:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==28636 && $e_of_i && $x__id){
+                        } elseif($e__id_dropdown==28636 && $write_access_i && $x__id){
 
                             //Transaction Details
                             $action_buttons .= '<a href="/-4341?x__id='.$x__id.'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==6182 && $e_of_i && !$discovery_mode){
+                        } elseif($e__id_dropdown==6182 && $write_access_i && !$discovery_mode){
 
                             //Delete Permanently
                             $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__access'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014')) && ($link_creator || $e_of_i)){
+                        } elseif($e__id_dropdown==26560 && isset($i['x__type']) && in_array($i['x__type'], $CI->config->item('n___32014')) && ($link_creator || $write_access_i)){
 
                             //Ticket Details
                             $action_buttons .= '<a href="/-26560?x__id='.$i['x__id'].'&x__creator='.$i['x__creator'].'" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1577,9 +1497,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="inner-content">';
 
 
-    if($e_of_i && !$discovery_mode){
+    if($write_access_i && !$discovery_mode){
         //Editable title:
-        $ui .= view_input(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
+        $ui .= view_input(4736, $i['i__title'], $i['i__id'], $write_access_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
     } elseif(!$click_locked){
         $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
     } else {
@@ -1592,7 +1512,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $message_tooltip .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( $click_locked ? '</div>' : '</a>' );
 
 
-    if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($e_of_i || $link_creator)){
+    if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($write_access_i || $link_creator)){
         $message_tooltip .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $click_locked ? '</div>' : '</a>' );
     }
 
@@ -1833,7 +1753,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $access_locked = in_array($e['e__access'], $CI->config->item('n___32145')); //Locked Dropdown
     $access_public = in_array($e['e__access'], $CI->config->item('n___33240'));
 
-    $e_of_e = ( $access_locked ? false :  e_of_e($e['e__id']) );
+    $write_access_e = ( $access_locked ? false :  write_access_e($e['e__id']) );
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $superpower_10939 = superpower_active(10939, true);
@@ -1855,7 +1775,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $href = ( $is_app ? '/-'.$e['e__id'] : '/@'.$e['e__id'] );
     $focus_id = ( substr($CI->uri->segment(1), 0, 1)=='@' ? intval(substr($CI->uri->segment(1), 1)) : 0 );
-    $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $e_of_e));
+    $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $write_access_e));
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
     $source_is_e = $focus_id>0 && $e['e__id']==$focus_id;
@@ -1864,10 +1784,10 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Is Lock/Private?
     $has_hard_lock = in_array($e['e__access'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
-    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!in_array($e['e__access'], $CI->config->item('n___7357')) && !$e_of_e));
+    $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!in_array($e['e__access'], $CI->config->item('n___7357')) && !$write_access_e));
     $has_any_lock = $is_cache || (!$superpower_12701 && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
-    $show_text_editor = $e_of_e && !$has_any_lock && !$is_cache;
+    $show_text_editor = $write_access_e && !$has_any_lock && !$is_cache;
 
     //Source UI
     $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
@@ -1882,7 +1802,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($e['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $e['x__type'], null, $e_of_e, false, $e['e__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $e['x__type'], null, $write_access_e, false, $e['e__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1907,15 +1827,15 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==6177 && ($e_of_e || $access_locked || $always_see || in_array($e['e__access'], $CI->config->item('n___32172')))){
+            } elseif($x__type_top_bar==6177 && ($write_access_e || $access_locked || $always_see || in_array($e['e__access'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__access'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(6177, $e['e__access'], null, $e_of_e, false, $e['e__id']);
+                $top_bar_ui .= view_dropdown(6177, $e['e__access'], null, $write_access_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==41037 && $e_of_e && !$focus_card && !$discovery_mode){
+            } elseif($x__type_top_bar==41037 && $write_access_e && !$focus_card && !$discovery_mode){
 
                 //Selector
                 $active_bars++;
@@ -1923,7 +1843,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= '<input class="form-check-input ignore-click" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'">';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31912 && $e_of_e){
+            } elseif($x__type_top_bar==31912 && $write_access_e){
 
                 //Edit Source
                 $active_bars++;
@@ -2053,7 +1973,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $ui .= '<div class="bottom-wrapper">';
 
-    $grant_access = $is__featured || $e_of_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
+    $grant_access = $is__featured || $write_access_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && $grant_access) {
         if(!$has_any_lock || $grant_access){
 
@@ -2074,7 +1994,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$e_of_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$write_access_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
 
@@ -2093,7 +2013,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
-        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $e_of_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
+        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $write_access_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
     } else {
         //Static:
         $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
@@ -2122,15 +2042,15 @@ function view_card_e($x__type, $e, $extra_class = null)
 }
 
 
-function view_input($cache_e__id, $current_value, $s__id, $e_of_i, $tabindex = 0, $extra_large = false){
+function view_input($cache_e__id, $current_value, $s__id, $write_access_i, $tabindex = 0, $extra_large = false){
 
     $CI =& get_instance();
     $e___12112 = $CI->config->item('e___12112');
     $current_value = htmlentities($current_value);
-    $name = 'input'.substr(md5($cache_e__id.$current_value.$s__id.$e_of_i.$tabindex), 0, 8);
+    $name = 'input'.substr(md5($cache_e__id.$current_value.$s__id.$write_access_i.$tabindex), 0, 8);
 
     //Define element attributes:
-    $attributes = ( $e_of_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control 
+    $attributes = ( $write_access_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control 
      inline-block editing-mode x_set_class_text text__'.$cache_e__id.'_'.$s__id.( $extra_large?' texttype__lg ' : ' texttype__sm ').' text_e_'.$cache_e__id.'" cache_e__id="'.$cache_e__id.'" s__id="'.$s__id.'" ';
 
     //Also Append Counter to the end?
@@ -2144,14 +2064,14 @@ function view_input($cache_e__id, $current_value, $s__id, $e_of_i, $tabindex = 0
 
     }
 
-    return '<span class="span__'.$cache_e__id.' '.( !$e_of_i ? ' edit-locked ' : '' ).'">'.$focus_element.'</span>';
+    return '<span class="span__'.$cache_e__id.' '.( !$write_access_i ? ' edit-locked ' : '' ).'">'.$focus_element.'</span>';
 
 }
 
 
 
 
-function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $e_of_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_access_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -2161,17 +2081,17 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $e_of_i
     }
 
     //Make sure it's not locked:
-    $e_of_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $e_of_i : false );
+    $write_access_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $write_access_i : false );
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $e_of_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" '.( !$show_full_name ? ' title="'.$e___this[$selected_e__id]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).' >';
+    $ui .= '<button type="button" '.( $write_access_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" '.( !$show_full_name ? ' title="'.$e___this[$selected_e__id]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).' >';
 
     $ui .= '<span>' .$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
 
     $ui .= '</button>';
 
-    if($e_of_i){
+    if($write_access_i){
         $ui .= '<div class="dropdown-menu btn-'.$btn_class.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
 
         foreach($e___this as $e__id => $m) {

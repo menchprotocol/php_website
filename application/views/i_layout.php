@@ -4,6 +4,8 @@
 $limit = view_memory(6404,11064);
 $new_order = ( $this->session->userdata('session_page_count') + 1 );
 $this->session->set_userdata('session_page_count', $new_order);
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$write_access_i = write_access_i($i['i__id']);
 $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
@@ -25,23 +27,17 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 }
 
 
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$e_of_i = e_of_i($i['i__id']);
-
 
 
 //Load Top:
 $counter_top = view_i_covers(11019, $i['i__id'], 0, false);
-if($e_of_i){
-    echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
-}
-echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
+echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_i ? '<div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div><div class="tab_content"></div></div>';
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>' : '' ).'</div>';
 echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true); initiate_algolia();
  i_load_search(11019); }, 377); }); </script>';
 
@@ -59,9 +55,9 @@ echo '<ul class="nav nav-tabs nav12273">';
 foreach($this->config->item('e___41092') as $x__type => $m) {
     $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
     if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $this->config->item('n___12144'))){ continue; }
-    $input_content = '';
 
-    if($e_of_i){
+    $input_content = '';
+    if($write_access_i){
 
         if($x__type==12273){
 

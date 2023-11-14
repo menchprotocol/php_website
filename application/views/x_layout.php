@@ -1,6 +1,6 @@
 <?php
 
-if(!in_array($i['i__access'], $this->config->item('n___31870')) && !e_of_i($i['i__id'])){
+if(!in_array($i['i__access'], $this->config->item('n___31870')) && !write_access_i($i['i__id'])){
 
     echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This idea is not public at this time.</div>';
 

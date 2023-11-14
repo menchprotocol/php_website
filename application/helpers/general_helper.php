@@ -1943,7 +1943,7 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function e_of_e($e__id, $member_e = array()){
+function write_access_e($e__id, $member_e = array()){
 
     if(!$member_e){
         //Fetch from session:
@@ -1982,7 +1982,7 @@ function e_of_e($e__id, $member_e = array()){
 
 }
 
-function e_of_i($i__id, $member_e = array()){
+function write_access_i($i__id, $member_e = array()){
 
     if(!$member_e){
         //Fetch from session:

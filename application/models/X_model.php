@@ -828,7 +828,7 @@ class X_model extends CI_Model
                     'e__weight' => 'DESC',
                 )) as $e_up) {
 
-                    //if(!strlen($e_up['x__message']) || (in_array($e_up['e__access'], $this->config->item('n___30956')) && !e_of_e($e_up['e__id']))){ continue; }
+                    //if(!strlen($e_up['x__message']) || (in_array($e_up['e__access'], $this->config->item('n___30956')) && !write_access_e($e_up['e__id']))){ continue; }
 
                     $detect_data_type = detect_data_type($e_up['x__message']);
 

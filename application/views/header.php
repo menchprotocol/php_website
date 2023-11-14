@@ -280,14 +280,14 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 $idea_view = 0;
 $quick_id = 0;
 $discovery_i__id = ( intval($first_segment)==$first_segment ? ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment ) : 0 );
-if($discovery_i__id>0 && e_of_i($discovery_i__id)) {
+if($discovery_i__id>0 && write_access_i($discovery_i__id)) {
 
     //Ideation Mode:
     $_GET['i__id'] = $discovery_i__id;
     $idea_view = 30795;
     $quick_href = '/~'.$discovery_i__id;
 
-} elseif(!strlen($first_segment) && e_of_e($website_id)) {
+} elseif(!strlen($first_segment) && write_access_e($website_id)) {
 
     //Edit Website Home Page:
     $quick_href = '/@' . $website_id;
