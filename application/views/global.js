@@ -73,31 +73,6 @@ function video_play(){
 //Full Story
 if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user other than Shervin
 
-    /*
-
-    <!-- Microsoft Clarify -->
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "59riunqvfm");
-
-    $(document).ready(function () {
-        clarity("set", "member__id", js_pl_id+"");
-        clarity("set", "member__title", js_pl_name+"");
-    });
-
-    <!-- Hotjar Tracking Code for My site -->
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:2721962,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    */
-
     console.log('Activated Recording for Org '+js_e___30849[website_id]['m__message'])
     window['_fs_debug'] = false;
     window['_fs_host'] = 'fullstory.com';
@@ -884,22 +859,21 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-    $('.toggle_checkbox').change(function() {
 
-        var toggle_i__id = parseInt($(this).attr('i__id'));
-        var toggle_e__id = parseInt($(this).attr('e__id'));
-
-        if(this.checked) {
-            console.log('toggled ON!');
-            $('.card___12273_'+toggle_i__id).addClass('card_checked');
-            $('.card___12274_'+toggle_e__id).addClass('card_checked');
+    $('.card_i_cover .toggle_checkbox').change(function(){
+        if ($(this).is(':checked')) {
+            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
         } else {
-            console.log('toggled OFF!');
-            $('.card___12273_'+toggle_i__id).removeClass('card_checked');
-            $('.card___12274_'+toggle_e__id).removeClass('card_checked');
+            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
         }
     });
-
+    $('.card_e_cover .toggle_checkbox').change(function(){
+        if ($(this).is(':checked')) {
+            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
+        } else {
+            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
+        }
+    });
 
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
@@ -2502,24 +2476,6 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
         migrate_s__id = confirm_removal;
 
     }
-
-
-    $('.card_i_cover .form-check-input').change(function(){
-        if ($(this).is(':checked')) {
-            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
-        } else {
-            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
-        }
-    });
-    $('.card_e_cover .form-check-input').change(function(){
-        if ($(this).is(':checked')) {
-            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
-        } else {
-            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
-        }
-    });
-
-
 
 
 

@@ -4255,12 +4255,12 @@ main {
 .isSelected {
     border:1px solid #FC1B44 !important;
 }
-.form-check-input[type=checkbox] {
+.toggle_checkbox[type=checkbox] {
     border-radius: 0;
     border: 2px solid #000000 !important;
     margin: 1px 0;
 }
-.form-check-input:checked {
+.toggle_checkbox:checked {
     background-color: #000000;
 }
 

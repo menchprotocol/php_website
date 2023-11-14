@@ -591,7 +591,7 @@ function view_sign($i, $previous_response = null){
 
     //Signature agreement:
     $message_ui .= '<br /><br /><div class="form-check">
-  <input class="form-check-input" type="checkbox" value="1" id="DigitalSignAgreement" name="DigitalSignAgreement">
+  <input class="toggle_checkbox" type="checkbox" value="1" id="DigitalSignAgreement" name="DigitalSignAgreement">
   <label class="form-check-label" for="DigitalSignAgreement">
     I agree to be legally bound by this document & our <a href="/-14373" target="_blank"><u>Terms of Service</u></a>.
   </label>
@@ -1332,7 +1332,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 //Selector
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<input class="form-check-input ignore-click toggle_checkbox" type="checkbox" value="" i__id="'.$i['i__id'].'" id="selector_i_'.$i['i__id'].'">';
+                $top_bar_ui .= '<input class="toggle_checkbox ignore-click" type="checkbox" value="" i__id="'.$i['i__id'].'" id="selector_i_'.$i['i__id'].'">';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==4737 && $write_access_i && !$discovery_mode){
@@ -1840,7 +1840,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Selector
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<input class="form-check-input ignore-click toggle_checkbox" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'">';
+                $top_bar_ui .= '<input class="toggle_checkbox ignore-click" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'">';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31912 && $write_access_e){
