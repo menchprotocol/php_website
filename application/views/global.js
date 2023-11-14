@@ -457,8 +457,8 @@ function toggle_pills(x__type){
         //js_redirect('#'+x__type);
 
         //Do we need to load data via ajax?
-        if( !$('.headline_body_' + x__type).html().length ){
-            $('.headline_body_' + x__type).html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
+        if( !$('.headline_body_' + x__type + ' .tab_content').html().length ){
+            $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
             load_tab(x__type, false);
         }
     }
@@ -1285,67 +1285,67 @@ function edit_source(e__id){
 
 function i_load_search(x__type) {
 
-    if(!parseInt(js_e___6404[12678]['m__message'])){
-        return false;
-    }
+    console.log(x__type + " i_load_search()");
 
     $('.new-list-'+x__type+' .add-input').keypress(function (e) {
-
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
             e.preventDefault();
             return i__add(x__type, 0);
         }
+    });
 
-    }).keyup(function () {
+    if(parseInt(js_e___6404[12678]['m__message'])){
 
-        //Clear if no input:
-        if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
-        }
+        $('.new-list-'+x__type+' .add-input').keyup(function () {
 
-    }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
-        source: function (q, cb) {
+            //Clear if no input:
+            if(!$(this).val().length){
+                $('.new-list-'+x__type+' .algolia_pad_search').html('');
+            }
 
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+        }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
+            source: function (q, cb) {
 
-            algolia_index.search(q, {
+                $('.new-list-'+x__type+' .algolia_pad_search').html('');
 
-                filters: 's__type=12273' + search_and_filter,
-                hitsPerPage: js_e___6404[31112]['m__message'],
+                algolia_index.search(q, {
 
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
+                    filters: 's__type=12273' + search_and_filter,
+                    hitsPerPage: js_e___6404[31112]['m__message'],
 
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26012, suggestion, x__type));
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+
             },
-            header: function (data) {
-                if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover contrast_bg mini-cover coin-12273 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
-                }
-            },
-            empty: function (data) {
-                return '';
-            },
-        }
-    }]);
+            templates: {
+                suggestion: function (suggestion) {
+                    $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26012, suggestion, x__type));
+                },
+                header: function (data) {
+                    if(data.query && data.query.length){
+                        $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover contrast_bg mini-cover coin-12273 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
+                    }
+                },
+                empty: function (data) {
+                    return '';
+                },
+            }
+        }]);
 
+    } else {
+
+        console.log("Search engine is disabled!");
+
+    }
 }
 
 function e_load_search(x__type) {
-
-    //Search Enabled?
-    if(!parseInt(js_e___6404[12678]['m__message'])){
-        return false;
-    }
 
     //Load Search:
     var icons_listed = [];
@@ -1360,49 +1360,60 @@ function e_load_search(x__type) {
             return true;
         }
 
-    }).keyup(function () {
+    });
 
-        //Clear if no input:
-        if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
-        }
-        icons_listed = [];
+    if(parseInt(js_e___6404[12678]['m__message'])){
 
-    }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
+        $('.new-list-'+x__type + ' .add-input').keyup(function () {
 
-        source: function (q, cb) {
-
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
-
-            algolia_index.search(q, {
-                filters: 's__type=12274' + search_and_filter,
-                hitsPerPage: js_e___6404[31112]['m__message'],
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                var item_key = suggestion.s__type+'_'+suggestion.s__id;
-                if(!icons_listed.includes(item_key)) {
-                    icons_listed.push(item_key);
-                    $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26013, suggestion, x__type));
-                }
-            },
-            header: function (data) {
-                if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover contrast_bg mini-cover coin-12274 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background-obs cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
-                }
-            },
-            empty: function (data) {
-                return '';
+            //Clear if no input:
+            if(!$(this).val().length){
+                $('.new-list-'+x__type+' .algolia_pad_search').html('');
             }
-        }
-    }]);
+            icons_listed = [];
+
+        }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
+
+            source: function (q, cb) {
+
+                $('.new-list-'+x__type+' .algolia_pad_search').html('');
+
+                algolia_index.search(q, {
+                    filters: 's__type=12274' + search_and_filter,
+                    hitsPerPage: js_e___6404[31112]['m__message'],
+                }, function (error, content) {
+                    if (error) {
+                        cb([]);
+                        return;
+                    }
+                    cb(content.hits, content);
+                });
+            },
+            templates: {
+                suggestion: function (suggestion) {
+                    var item_key = suggestion.s__type+'_'+suggestion.s__id;
+                    if(!icons_listed.includes(item_key)) {
+                        icons_listed.push(item_key);
+                        $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26013, suggestion, x__type));
+                    }
+                },
+                header: function (data) {
+                    if(data.query && data.query.length){
+                        $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover contrast_bg mini-cover coin-12274 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background-obs cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
+                    }
+                },
+                empty: function (data) {
+                    return '';
+                }
+            }
+        }]);
+
+    } else {
+
+        console.log("Search engine is disabled!");
+
+    }
+
 }
 
 
@@ -1453,7 +1464,7 @@ function load_tab(x__type, auto_load){
             counter:$('.headline_body_' + x__type).attr('read-counter'),
             i__id:fetch_int_val('#focus_id')
         }, function (data) {
-            $('.headline_body_' + x__type).html(data);
+            $('.headline_body_' + x__type + ' .tab_content').html(data);
             if(auto_load){ // && js_n___14686.includes(x__type)
                 window.scrollTo({
                     top: ($('.main_item').offset().top - 59),
@@ -1471,7 +1482,7 @@ function load_tab(x__type, auto_load){
             counter:$('.headline_body_'+x__type).attr('read-counter'),
             e__id:fetch_int_val('#focus_id')
         }, function (data) {
-            $('.headline_body_'+x__type).html(data);
+            $('.headline_body_'+x__type + ' .tab_content').html(data);
             if(auto_load){ // && js_n___14686.includes(x__type)
                 window.scrollTo({
                     top: ($('.main_item').offset().top - 59),

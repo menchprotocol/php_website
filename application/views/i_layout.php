@@ -33,16 +33,17 @@ $e_of_i = e_of_i($i['i__id']);
 //Load Top:
 $counter_top = view_i_covers(11019, $i['i__id'], 0, false);
 if($e_of_i){
-    echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
+    echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
+}
+echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div></div>';
-}
-echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true); }, 377); }); </script>';
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div><div class="tab_content"></div></div>';
+echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true); initiate_algolia();
+ i_load_search(11019); }, 377); }); </script>';
 
 
 
@@ -58,14 +59,14 @@ echo '<ul class="nav nav-tabs nav12273">';
 foreach($this->config->item('e___41092') as $x__type => $m) {
     $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
     if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $this->config->item('n___12144'))){ continue; }
+    $input_content = '';
 
     if($e_of_i){
 
-        $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">';
         if($x__type==12273){
 
             //IDEAS
-            $body_content .= '<div class="new-list-12273"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
+            $input_content .= '<div class="new-list-12273"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
@@ -76,7 +77,7 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
         } elseif($x__type==6255) {
 
             //DISCOVERIES
-            $body_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
+            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -86,7 +87,7 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
 
         } elseif($x__type==12274){
 
-            $body_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">
+            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -95,10 +96,12 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
-        $body_content .= '</div>';
+
+        $body_content .= '<script type="text/javascript"> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
+
     }
 
-    $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'"></div>';
+    $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
 
     echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span></a></li>';
 }
