@@ -365,7 +365,7 @@ class I_model extends CI_Model
             ));
             return array(
                 'status' => 0,
-                'message' => 'Invalid Data',
+                'message' => 'Invalid Data for @'.$focus_card.' & @'.$x__type,
             );
         }
 
