@@ -1278,7 +1278,7 @@ function view_i__cache($i, $simple_version = false){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     $messages = '';
-    if(strlen($i['i__message'])){
+    if(strlen($i['i__message']) && 0){
 
        return nl2br($i['i__message']).'<br />';
 
@@ -1576,7 +1576,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
 
-    /*
+
     if($e_of_i && !$discovery_mode){
         //Editable title:
         $ui .= view_input(4736, $i['i__title'], $i['i__id'], $e_of_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
@@ -1585,7 +1585,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     } else {
         $ui .= $i_title;
     }
-    */
+
     $message_tooltip = '';
 
 
