@@ -1286,10 +1286,8 @@ function edit_source(e__id){
 function i_load_search(x__type) {
 
     if(!parseInt(js_e___6404[12678]['m__message'])){
-        alert('Search is currently disabled');
         return false;
     }
-
 
     $('.new-list-'+x__type+' .add-input').keypress(function (e) {
 
