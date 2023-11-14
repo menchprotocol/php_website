@@ -25,12 +25,22 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 }
 
 
-
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e_of_i = e_of_i($i['i__id']);
 
 
 
 //Load Top:
 $counter_top = view_i_covers(11019, $i['i__id'], 0, false);
+if($e_of_i){
+    echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick add-input algolia_search dotransparent"
+                               maxlength="' . view_memory(6404,4736) . '"
+                               placeholder="'.$e___11035[31773]['m__title'].'">
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div></div>';
+}
 echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"></div>';
 echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true); }, 377); }); </script>';
 
@@ -42,14 +52,54 @@ echo view_card_i(4250, 0, null, $i);
 echo '</div>';
 
 
-
 $coins_count = array();
 $body_content = '';
 echo '<ul class="nav nav-tabs nav12273">';
 foreach($this->config->item('e___41092') as $x__type => $m) {
     $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
     if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $this->config->item('n___12144'))){ continue; }
+
+    if($e_of_i){
+
+        $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">';
+        if($x__type==12273){
+
+            //IDEAS
+            $body_content .= '<div class="new-list-12273"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
+                <div class="input-group border">
+                    <input type="text"
+                           class="form-control form-control-thick add-input algolia_search dotransparent"
+                           maxlength="' . view_memory(6404,4736) . '"
+                           placeholder="'.$e___11035[31772]['m__title'].'">
+                </div></div></div><div class="algolia_pad_search dropdown_12273 row justify-content"></div></div>';
+
+        } elseif($x__type==6255) {
+
+            //DISCOVERIES
+            $body_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[37959]['m__title'].'">
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
+
+        } elseif($x__type==12274){
+
+            $body_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="'.$e___11035[14055]['m__title'].'">
+                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
+
+        }
+        $body_content .= '</div>';
+    }
+
     $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'"></div>';
+
     echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span></a></li>';
 }
 echo '</ul>';

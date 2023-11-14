@@ -571,7 +571,7 @@ function view_body_i($x__type, $counter, $i__id){
         $ui .= '</div>';
 
         if($e_of_i){
-            $ui .= '<div class="new-list-11019"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
+            $ui .= '<div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
