@@ -1287,11 +1287,18 @@ function i_load_search(x__type) {
 
     console.log(x__type + " i_load_search()");
 
-    $('.new-list-'+x__type+' .add-input').keypress(function (e) {
+    $('.new-list-'+x__type+' .i-adder').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
             e.preventDefault();
             return i__add(x__type, 0);
+        }
+    });
+    $('.new-list-'+x__type+' .e-adder').keypress(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code==13) || (e.ctrlKey && code==13)) {
+            e.preventDefault();
+            return e__add(x__type, 0);
         }
     });
 
@@ -1349,17 +1356,21 @@ function e_load_search(x__type) {
 
     //Load Search:
     var icons_listed = [];
-    $('.new-list-'+x__type + ' .add-input').keypress(function (e) {
-
+    $('.new-list-'+x__type + ' .e-adder').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            if(superpower_js_13422){
-                e__add(x__type, 0);
-            }
+            e__add(x__type, 0);
             return true;
         }
-
+    });
+    $('.new-list-'+x__type + ' .i-adder').keypress(function (e) {
+        icons_listed = [];
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code==13) || (e.ctrlKey && code==13)) {
+            i__add(x__type, 0);
+            return true;
+        }
     });
 
     if(parseInt(js_e___6404[12678]['m__message'])){
