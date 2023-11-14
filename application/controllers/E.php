@@ -404,7 +404,7 @@ class E extends CI_Controller
             if (count($es) < 1) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Invalid active source',
+                    'message' => 'Source @'.$_POST['e_existing_id'].' is not active',
                 ));
             }
 
