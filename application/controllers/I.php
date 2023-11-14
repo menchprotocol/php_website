@@ -191,6 +191,9 @@ class I extends CI_Controller {
             ));
         }
 
+        if(!$_POST['link_i__id'] && !substr_count($_POST['i__title'], ' ') && substr($_POST['i__title'], 0, 1)=='#' && intval(substr($_POST['i__title'],1)) > 0){
+            $_POST['link_i__id'] = intval(substr($_POST['i__title'],1));
+        }
 
         $x_i = array();
 

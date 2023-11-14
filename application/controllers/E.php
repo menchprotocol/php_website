@@ -387,9 +387,10 @@ class E extends CI_Controller
         //Set some variables:
         $_POST['x__type'] = intval($_POST['x__type']);
         $is_upwards = in_array($_POST['x__type'], $this->config->item('n___14686'));
-        $_POST['e_existing_id'] = intval($_POST['e_existing_id']);
         $url_e = false;
-        $adding_to_existing = (intval($_POST['e_existing_id']) > 0);
+
+        $_POST['e_existing_id'] = ( !intval($_POST['e_existing_id']) && !substr_count($_POST['e_new_string'], ' ') && substr($_POST['e_new_string'], 0, 1)=='@' && intval(substr($_POST['e_new_string'],1)) > 0 ? intval(substr($_POST['e_new_string'],1)) : intval($_POST['e_existing_id']) );
+        $adding_to_existing = ( intval($_POST['e_existing_id']) > 0 );
 
         //Are we adding an existing source?
         if ($adding_to_existing) {
