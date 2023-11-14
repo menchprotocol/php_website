@@ -78,7 +78,7 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[41367]['m__title'].'">
+                               placeholder="'.$e___11035[37959]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         } elseif($x__type==12274){
