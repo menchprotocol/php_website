@@ -885,10 +885,18 @@ var algolia_index = false;
 $(document).ready(function () {
 
     $('.toggle_checkbox').change(function() {
+
+        var toggle_i__id = parseInt($(this).attr('i__id'));
+        var toggle_e__id = parseInt($(this).attr('e__id'));
+
         if(this.checked) {
-            this.closest('div[class^="div-card_cover"]').addClass('card_checked');
+            console.log('toggled ON!');
+            $('.card___12273_'+toggle_i__id).addClass('card_checked');
+            $('.card___12274_'+toggle_e__id).addClass('card_checked');
         } else {
-            this.closest('div[class^="div-card_cover"]').removeClass('card_checked');
+            console.log('toggled OFF!');
+            $('.card___12273_'+toggle_i__id).removeClass('card_checked');
+            $('.card___12274_'+toggle_e__id).removeClass('card_checked');
         }
     });
 
