@@ -860,9 +860,12 @@ var algolia_index = false;
 $(document).ready(function () {
 
 
+    console.log('WOWWWWW');
+    $('.form-check-input').click(function(){
+        console.log('yessssss');
+    });
     $('.card_i_cover .form-check-input').click(function(){
         console.log('hi');
-
         if ($(this).is(':checked')) {
             $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
         } else {
