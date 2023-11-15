@@ -947,7 +947,7 @@ class X_model extends CI_Model
 
         //Fetch followings:
         foreach($this->X_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
@@ -1004,7 +1004,7 @@ class X_model extends CI_Model
             'x__left' => $i['i__id'],
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i) {
 
             //Validate Find After:
@@ -1165,7 +1165,7 @@ class X_model extends CI_Model
             $clone_urls = '';
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___32275')) . ')' => null, //DISCOVERY TRIGGERS
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $clone_i){
@@ -1442,7 +1442,7 @@ class X_model extends CI_Model
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__left'), 0) as $completed){
             if(!in_array(intval($completed['i__id']), $list_discovered)){
                 array_push($list_discovered, intval($completed['i__id']));
@@ -1464,7 +1464,7 @@ class X_model extends CI_Model
             'x__creator' => $e__id, //Belongs to this Member
             'x__left IN (' . join(',', $recursive_down_ids ) . ')' => null,
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right')) as $expansion_in) {
 
             //Fetch recursive:

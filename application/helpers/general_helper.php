@@ -885,7 +885,7 @@ function list_settings($i__id, $fetch_contact = false){
         'x__left' => $i__id,
         'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
+        'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
     ), array('x__right'), 0) as $setting_link){
         array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
     }
@@ -1000,7 +1000,7 @@ function list_settings($i__id, $fetch_contact = false){
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__up' => $list_config[34513],
             'x__right !=' => $i__id,
-            'i__access IN (' . join(',', $CI->config->item('n___31870')) . ')' => null, //PUBLIC
+            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
             array_push($column_ideas, $link_i);
         }
@@ -2246,10 +2246,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__title'] = $s['i__title'];
                 $export_row['s__weight'] = intval($s['i__weight']);
 
-                if(in_array($s['i__access'], $CI->config->item('n___31874'))){
-                    array_push($export_row['_tags'], 'publicly_searchable');
-                }
-
                 //Top/Bottom Idea Keywords
                 foreach ($CI->X_model->fetch(array(
                     'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2273,18 +2269,21 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__right' => $s['i__id'],
-                    'LENGTH(x__message)>0' => null,
-                ), array(), 0) as $x){
-                    $export_row['s__keywords'] .= $x['x__message'] . ' ';
-                }
-
-                //Idea Authors access tag
-                foreach($CI->X_model->fetch(array(
-                    'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //SOURCE AUTHORS
-                    'x__right' => $s['i__id'],
                 ), array('x__up'), 0) as $x){
-                    array_push($export_row['_tags'], 'z_' . $x['e__id']);
+
+                    //Add keywords
+                    $export_row['s__keywords'] .= $x['e__title'].' '.( strlen($x['x__message']) ? $x['x__message'] . ' '  : '' );
+
+                    //Featured?
+                    if(in_array($x['x__up'], $CI->config->item('n___7357'))){
+                        array_push($export_row['_tags'], 'publicly_searchable');
+                    }
+
+                    //Authored?
+                    if(in_array($x['x__type'], $CI->config->item('n___31919'))){
+                        array_push($export_row['_tags'], 'z_' . $x['e__id']);
+                    }
+
                 }
 
             } elseif ($loop_obj==12274) {

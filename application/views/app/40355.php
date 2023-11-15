@@ -19,7 +19,7 @@ foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__up' => $list_settings['list_config'][34513],
-    'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
 
     $sub_list_settings = list_settings($link_i['i__id'], true);

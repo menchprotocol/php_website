@@ -1,8 +1,8 @@
 <?php
 
-if(!in_array($i['i__access'], $this->config->item('n___31870')) && !write_access_i($i['i__id'])){
+if(!in_array($i['i__access'], $this->config->item('n___31871')) && !write_access_i($i['i__id'])){
 
-    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This idea is not public at this time.</div>';
+    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This idea is not active at this time.</div>';
 
 } else {
 
@@ -15,7 +15,7 @@ $is_single_click = in_array($i['i__type'], $this->config->item('n___40680'));
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
     'x__left' => $i['i__id'],
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
@@ -98,7 +98,7 @@ if($x__creator && $top_i__id!=$i['i__id']){
             //Does this have a follower list?
             $query_subset = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $followings_i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
@@ -247,7 +247,7 @@ if($top_i__id) {
             //First fetch answers based on correct order:
             foreach ($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {

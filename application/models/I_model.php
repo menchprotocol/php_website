@@ -626,7 +626,7 @@ class I_model extends CI_Model
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         foreach($this->X_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //Must See Idea Links
             'x__left' => $i['i__id'],
@@ -791,7 +791,7 @@ class I_model extends CI_Model
         $current_level++;
 
         foreach($this->X_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
@@ -803,7 +803,7 @@ class I_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__creator' => $first_discovery,
                     'x__left' => $prev_i['i__id'],
-                    'i__access IN (' . join(',', $this->config->item('n___31870')) . ')' => null, //PUBLIC
+                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 ), array('x__right')) as $x){
                     return $x['x__right'];
                 }
