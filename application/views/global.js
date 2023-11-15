@@ -861,6 +861,8 @@ $(document).ready(function () {
 
 
     $('.card_i_cover .form-check-input').change(function(){
+        console.log('hi');
+
         if ($(this).is(':checked')) {
             $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
         } else {
@@ -868,6 +870,8 @@ $(document).ready(function () {
         }
     });
     $('.card_e_cover .form-check-input').change(function(){
+        console.log('hi2');
+
         if ($(this).is(':checked')) {
             $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
         } else {
