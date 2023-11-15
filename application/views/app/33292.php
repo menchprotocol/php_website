@@ -26,14 +26,14 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                 $sub_counter = $this->I_model->fetch(array(
                     'i__type' => $cat_id,
                     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                ), array(), 0, 0, array(), 'COUNT(i__id) as totals');
+                ), 0, 0, array(), 'COUNT(i__id) as totals');
 
 
             } elseif($e__id==12274){
 
                 $sub_counter = $this->E_model->fetch(array(
                     'e__access' => $e__id2,
-                ), array(), 0, 0, array(), 'COUNT(e__id) as totals');
+                ), 0, 0, array(), 'COUNT(e__id) as totals');
 
             } else {
 
