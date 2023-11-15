@@ -37,15 +37,15 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
             } else {
 
-                $list_e_count = $this->X_model->fetch(array(
+                $sub_counter = $this->X_model->fetch(array(
                     'x__type' => $e__id2,
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
             }
 
-            if($list_e_count[0]['totals'] > 0){
-                $inner_stats .= '<tr><td style="text-align: right;" width="34%">'.number_format($list_e_count[0]['totals'], 0).'</td><td style="text-align: left;"><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].'</td></tr>';
+            if($sub_counter[0]['totals'] > 0){
+                $inner_stats .= '<tr><td style="text-align: right;" width="34%">'.number_format($sub_counter[0]['totals'], 0).'</td><td style="text-align: left;"><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].'</td></tr>';
             }
         }
         $inner_stats .= '</table>';
