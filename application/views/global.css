@@ -1322,7 +1322,9 @@ a.headline {
 .inline-on-hover {
     display:none !important;
 }
-
+.card_subcat {
+    padding-top: 21px;
+}
 .card_cover:hover .show-on-hover, .card_cover.card_checked .show-on-hover{
     display:block !important;
 }

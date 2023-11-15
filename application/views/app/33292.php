@@ -24,7 +24,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             if($e__id==12273){
 
                 $sub_counter = $this->I_model->fetch(array(
-                    'i__type' => $cat_id,
+                    'i__type' => $e__id2,
                     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 ), 0, 0, array(), 'COUNT(i__id) as totals');
 
@@ -47,6 +47,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             if($sub_counter[0]['totals'] > 0){
                 $inner_stats .= '<tr><td style="text-align: right;" width="34%">'.number_format($sub_counter[0]['totals'], 0).'</td><td style="text-align: left;"><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].'</td></tr>';
             }
+
         }
         $inner_stats .= '</table>';
 
