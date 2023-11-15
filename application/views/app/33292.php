@@ -18,7 +18,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         //Sub Categories
         $cat_id = ( $e__id==12273 ? 4737 /* Idea Type */ : ( $e__id==12274 ? 7358 /* Source Active Access */ : $e__id /* Link It-self */ ) );
-        $inner_stats .= '<table class="card_subcat card_subcat_'.$e__id.' hidden" style="width:100%;">';
+        $inner_stats .= '<table class="card_subcat card_subcat_'.$e__id.' hidden" style="width:100%; margin-top:21px;">';
         foreach($this->config->item('e___'.$cat_id) as $e__id2 => $m2) {
 
             if($e__id==12273){
