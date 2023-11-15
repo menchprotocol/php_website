@@ -8,16 +8,16 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         $this_count = count_interactions($e__id);
         $total_count += $this_count;
+        $cat_id = ( $e__id==12273 ? 4737 /* Idea Type */ : ( $e__id==12274 ? 7358 /* Source Active Access */ : $e__id /* Link It-self */ ) );
 
 
         $inner_stats .= '<div class="card_cover no-padding col-6">';
         $inner_stats .= '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id.'">';
         $inner_stats .= '<div class="large_cover">'.$m['m__cover'].'</div>';
         $inner_stats .= '<div class="main__title large_title"><b class="card_count_'.$e__id.'">'.number_format($this_count, 0).'</b></div>';
-        $inner_stats .= '<div class="main__title large_title"><a href="'.( in_array($e__id, $this->config->item('n___6287')) ? '/-' : '/@' ).$e__id.'" title="'.( strlen($m['m__message']) ? $m['m__title'] : '' ).'">'.( strlen($m['m__message']) ? $m['m__message'] : $m['m__title'] ).'</a> <a href="javascript:void(0);" onclick="$(\'.card_subcat_'.$e__id.'\').toggleClass(\'hidden\');"><i class="fas fa-sort"></i></a></div>';
+        $inner_stats .= '<div class="main__title large_title"><a href="'.( in_array($cat_id, $this->config->item('n___6287')) ? '/-' : '/@' ).$cat_id.'" title="'.( strlen($m['m__message']) ? $m['m__title'] : '' ).'">'.( strlen($m['m__message']) ? $m['m__message'] : $m['m__title'] ).'</a> <a href="javascript:void(0);" onclick="$(\'.card_subcat_'.$e__id.'\').toggleClass(\'hidden\');"><i class="fas fa-sort"></i></a></div>';
 
         //Sub Categories
-        $cat_id = ( $e__id==12273 ? 4737 /* Idea Type */ : ( $e__id==12274 ? 7358 /* Source Active Access */ : $e__id /* Link It-self */ ) );
         $inner_stats .= '<table class="card_subcat card_subcat_'.$e__id.' hidden" style="width:100%; margin-top:13px;">';
         foreach($this->config->item('e___'.$cat_id) as $e__id2 => $m2) {
 
