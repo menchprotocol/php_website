@@ -860,7 +860,7 @@ var algolia_index = false;
 $(document).ready(function () {
 
 
-    $('.card_i_cover .form-check-input').change(function(){
+    $('.card_i_cover .form-check-input').click(function(){
         console.log('hi');
 
         if ($(this).is(':checked')) {
@@ -869,7 +869,7 @@ $(document).ready(function () {
             $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
         }
     });
-    $('.card_e_cover .form-check-input').change(function(){
+    $('.card_e_cover .form-check-input').click(function(){
         console.log('hi2');
 
         if ($(this).is(':checked')) {
