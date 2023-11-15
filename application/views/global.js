@@ -859,25 +859,6 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-
-    $('.toggle_i_checkbox').change(function() {
-        console.log('Loggged');
-        if(this.checked) {
-            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
-        } else {
-            $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
-        }
-    });
-
-    $('.toggle_e_checkbox').change(function() {
-        console.log('Loggged2');
-        if(this.checked) {
-            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
-        } else {
-            $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
-        }
-    });
-
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');
