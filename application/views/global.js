@@ -860,14 +860,14 @@ var algolia_index = false;
 $(document).ready(function () {
 
 
-    $('.form-check-input').change(function(){
+    $('.card_i_cover .form-check-input').change(function(){
         if ($(this).is(':checked')) {
             $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
         } else {
             $( ".card___12273_"+$(this).attr('i__id') ).addClass( "card_checked" );
         }
     });
-    $('.form-check-input').change(function(){
+    $('.card_e_cover .form-check-input').change(function(){
         if ($(this).is(':checked')) {
             $( ".card___12274_"+$(this).attr('e__id') ).addClass( "card_checked" );
         } else {
