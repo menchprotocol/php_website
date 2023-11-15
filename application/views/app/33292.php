@@ -20,7 +20,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     }
 
     if($inner_stats){
-        echo '<h3 class="center centerh grey"><span class="icon-block">'.$m1['m__cover'].'</span>'.number_format($total_count, 0).' '.$m1['m__title'].'</h3>';
+        echo '<h3 class="center centerh grey"><span class="icon-block">'.$m1['m__cover'].'</span>'.number_format($total_count, 0).' '.$m1['m__title'].':</h3>';
         echo '<div class="row justify-content list-covers">';
         echo $inner_stats;
         echo '</div>';
