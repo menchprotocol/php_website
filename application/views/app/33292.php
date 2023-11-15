@@ -19,7 +19,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         //Sub Categories
         $inner_stats .= '<table class="card_subcat card_subcat_'.$e__id.' hidden">';
         foreach($this->config->item('e___'.( $e__id==12273 ? 4737 /* Idea Type */ : ( $e__id==12274 ? 7358 /* Source Active Access */ : $e__id /* Link It-self */ ) )) as $e__id2 => $m2) {
-            $inner_stats .= '<tr><td style="text-align: right;" width="34%">'.number_format(count_interactions($e__id2), 0).'</td><td><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].'</td></tr>';
+            $inner_stats .= '<tr><td style="text-align: right;" width="34%">'.number_format(count_interactions($e__id2), 0).'</td><td style="text-align: left;"><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].'</td></tr>';
         }
         $inner_stats .= '</table>';
 
