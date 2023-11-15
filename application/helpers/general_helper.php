@@ -2271,17 +2271,20 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__right' => $s['i__id'],
                 ), array('x__up'), 0) as $x){
 
-                    //Add keywords
-                    $export_row['s__keywords'] .= $x['e__title'].' '.( strlen($x['x__message']) ? $x['x__message'] . ' '  : '' );
-
                     //Featured?
-                    if(in_array($x['x__up'], $CI->config->item('n___7357'))){
+                    if(in_array($x['e__id'], $CI->config->item('n___41804'))){
                         array_push($export_row['_tags'], 'publicly_searchable');
                     }
 
                     //Authored?
-                    if(in_array($x['x__type'], $CI->config->item('n___31919'))){
+                    $is_author = in_array($x['x__type'], $CI->config->item('n___31919'));
+                    if($is_author){
                         array_push($export_row['_tags'], 'z_' . $x['e__id']);
+                    }
+
+                    //Keywords?
+                    if($is_author || strlen($x['x__message'])){
+                        $export_row['s__keywords'] .= $x['e__title'].' '.( strlen($x['x__message']) ? $x['x__message'] . ' '  : '' );
                     }
 
                 }
