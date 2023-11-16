@@ -282,7 +282,7 @@ if(superpower_unlocked()) {
     <div class="center-info">
 
         <div class="text-center platform-large"><?= get_domain('m__cover') ?></div>
-        <div class="text-center main__title"><?= get_domain('m__title') ?></div>
+        <div class="text-center main__title" style="padding-top: 21px;"><?= get_domain('m__title') ?></div>
 
         <div class="login-content" style="margin-top:40px;">
 
