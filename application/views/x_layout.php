@@ -780,7 +780,7 @@ if(!$top_i__id){
         $pathways .= '</div>';
 
         if($pathways_count > 0){
-            echo view_headline(40798, $pathways_count, $e___11035[40798], $pathways, false);
+            echo view_headline(40798, $pathways_count, $e___11035[40798], $pathways, true);
         } else {
             $_GET['open'] = true;
         }
