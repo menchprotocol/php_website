@@ -2146,29 +2146,25 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         //Fetch item(s) for updates including their followings:
         if ($loop_obj==12273) {
 
-            $filters['x__type'] = 4250;
+            $filters['i__access IN (' . join(',', $CI->config->item('n___31871')) . ')'] = null;
+            $filters['i__type IN (' . join(',', $CI->config->item('n___4737')) . ')'] = null;
 
             if($s__id){
-                $filters['x__right'] = $s__id;
-            } else {
-                $filters['i__access IN (' . join(',', $CI->config->item('n___31871')) . ')'] = null; //ACTIVE
-                $filters['x__access IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
+                $filters['i__id'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__right'), 0);
+            $db_rows[$loop_obj] = $CI->I_model->fetch($filters, 0);
 
         } elseif ($loop_obj==12274) {
 
-            $filters['x__type'] = 4251;
+            //SOURCES
+            $filters['e__access IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
 
             if($s__id){
-                $filters['x__down'] = $s__id;
-            } else {
-                $filters['e__access IN (' . join(',', $CI->config->item('n___7358')) . ')'] = null; //ACTIVE
-                $filters['x__access IN (' . join(',', $CI->config->item('n___7360')) . ')'] = null; //ACTIVE
+                $filters['e__id'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->X_model->fetch($filters, array('x__down'), 0);
+            $db_rows[$loop_obj] = $CI->E_model->fetch($filters, 0);
 
         } elseif (!$s__id && $loop_obj==6287) {
 
@@ -2297,14 +2293,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
                 $export_row['s__weight'] = intval($s['e__weight']);
-
-                //Add source as their own author:
-                array_push($export_row['_tags'], 'z_' . $s['x__creator']);
-
-                if($s['x__creator']!=$s['e__id']){
-                    //Also give access to source themselves, in case they can login:
-                    array_push($export_row['_tags'], 'z_' . $s['e__id']);
-                }
 
                 //Is this an image?
                 if(strlen($s['e__cover'])){
