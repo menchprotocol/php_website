@@ -398,14 +398,12 @@ if(superpower_unlocked()) {
 
         </div>
 
-        <?php
-        if(website_setting(0) != 2738){
-            echo '<div class="center-frame" style="padding-top: 13px;">POWERED BY<span class="icon-block">'.$e___14870[2738]['m__cover'].'</span><span class="main__title">'.$e___14870[2738]['m__title'].'</span></div>';
-        }
-        ?>
+
 
     </div>
 
     <?php
-
+    if(website_setting(0) != 2738){
+        echo '<div class="center" style="padding-top: 13px;">POWERED BY<span class="icon-block">'.$e___14870[2738]['m__cover'].'</span><span class="custom_ui_14506_30982">'.$e___14870[2738]['m__title'].'</span></div>';
+    }
 }
