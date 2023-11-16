@@ -4256,7 +4256,7 @@ main {
 }
 
 .card_frame:hover{
-    border-radius: 0 !important;
+    background-color: #FEFEFE;
 }
 
 .isSelected {

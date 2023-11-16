@@ -6,30 +6,10 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     $inner_stats = '';
     foreach($this->config->item('e___'.$e__id1) as $e__id => $m) {
 
-        $cat_id = ( $e__id==12273 ? 4737 /* Idea Type */ : ( $e__id==12274 ? 7358 /* Source Active Access */ : $e__id /* Link It-self */ ) );
 
-        if($e__id==12273){
-
-            $sub_counter = $this->I_model->fetch(array(
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ), 0, 0, array(), 'COUNT(i__id) as totals');
-            $this_count = $sub_counter[0]['totals'];
-
-        } elseif($e__id==12274){
-
-            $sub_counter = $this->E_model->fetch(array(
-                'e__access IN (' . join(',', $this->config->item('n___'.$cat_id)) . ')' => null, //ACTIVE
-            ), 0, 0, array(), 'COUNT(e__id) as totals');
-            $this_count = $sub_counter[0]['totals'];
-
-        } else {
-
-            $this_count = count_interactions($e__id);
-
-        }
-
+        $this_count = count_interactions($e__id);
         $total_count += $this_count;
-
+        $cat_id = ( $e__id==12273 ? 4737 /* Idea Type */ : ( $e__id==12274 ? 7358 /* Source Active Access */ : $e__id /* Link It-self */ ) );
 
         $inner_stats .= '<div class="card_cover no-padding col-6">';
         $inner_stats .= '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id.'" e__id="'.$e__id.'">';

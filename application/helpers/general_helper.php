@@ -1111,7 +1111,23 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
     $CI =& get_instance();
 
     //We need to count this:
-    if($x__type==6255){
+    if($x__type==12274){
+
+        //SOURCES
+        $sub_counter = $CI->E_model->fetch(array(
+            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), 0, 0, array(), 'COUNT(e__id) as totals');
+        return intval($sub_counter[0]['totals']);
+
+    } elseif($x__type==12273){
+
+        //IDEAS
+        $sub_counter = $CI->I_model->fetch(array(
+            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+        ), 0, 0, array(), 'COUNT(i__id) as totals');
+        return intval($sub_counter[0]['totals']);
+
+    } elseif($x__type==6255){
 
         //DISCOVERIES
         $joined_by = array();
