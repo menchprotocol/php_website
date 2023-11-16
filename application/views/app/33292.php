@@ -16,7 +16,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         $inner_stats .= '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id.'" e__id="'.$e__id.'">';
         $inner_stats .= '<div class="large_cover">'.$m['m__cover'].'</div>';
         $inner_stats .= '<div class="main__title large_title"><b class="card_count_'.$e__id.'">'.number_format($this_count, 0).'</b></div>';
-        $inner_stats .= '<div class="main__title large_title">'.( strlen($m['m__message']) ? $m['m__message'] : $m['m__title'] ).'</div>';
+        $inner_stats .= '<div class="main__title large_title">'.( strlen($m['m__message']) ? $m['m__message'] : $m['m__title'] ).' <i class="far fa-info-circle" title="'.( strlen($m['m__message']) ? $m['m__message'].'. ' : '' ).'Click to See Breakdown."></i></div>';
 
         //Sub Categories
         $total_sub_count = 0;

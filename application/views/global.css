@@ -4252,6 +4252,11 @@ main {
     margin: 0;
     padding: 21px 0;
     background-color: #FFFFFF;
+    cursor: pointer;
+}
+
+.card_frame:hover{
+    background-color: #EFEFEF;
 }
 
 .isSelected {
