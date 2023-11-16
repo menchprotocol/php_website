@@ -767,27 +767,28 @@ if(!$top_i__id){
     } else {
 
         //Show Link to Top, if any:
-        $starting_point = false;
+        $pathways = false;
+        $pathways_count = 0;
         foreach($this->I_model->recursive_up_ids($i['i__id']) as $top_id){
+
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $top_id,
                 'x__up' => 4235,
             ), array('x__right')) as $top_start){
-                $starting_point = '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="/'.$top_start['i__id'].'" title="'.$top_start['i__title'].'">'.$e___11035[40798]['m__title'].' '.$e___11035[40798]['m__cover'].'</a></div>'.'<div class="doclear">&nbsp;</div>';
-                break;
-            }
-            if($starting_point){
-                break;
+                $pathways_count++;
+                $pathways .= view_card_i(6255, 0, null, $top_start);
+                //$starting_point = '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="/'.$top_start['i__id'].'" title="'.$top_start['i__title'].'">'.$e___11035[40798]['m__title'].' '.$e___11035[40798]['m__cover'].'</a></div>'.'<div class="doclear">&nbsp;</div>';
+                //break;
             }
         }
-        echo $starting_point;
 
-        if(!$starting_point){
+        if($pathways_count > 0){
+            echo view_headline(40798, $pathways_count, $e___11035[40798], '<div class="row list-pathways">'.$pathways.'</div>', false);
+        } else {
             $_GET['open'] = true;
         }
-
     }
 
 } else {
