@@ -52,7 +52,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
                 $total_sub_count += $sub_counter[0]['totals'];
 
-                $inner_stats .= '<tr data-toggle="tooltip" data-placement="top" title="'.$m2['m__message'].' ('.number_format(($sub_counter[0]['totals']/$this_count*100),3).'% Of Total)"><td style="text-align: right;" width="25%">'.number_format($sub_counter[0]['totals'], 0).'</td><td style="text-align: left;"><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].'</td></tr>';
+                $inner_stats .= '<tr data-toggle="tooltip" data-placement="top" title="'.$m2['m__message'].' ('.number_format(($sub_counter[0]['totals']/$this_count*100),3).'% Of Total)"><td style="text-align: right;" width="25%">'.number_format($sub_counter[0]['totals'], 0).'</td><td style="text-align: left;"><span class="icon-block-xs">'.$m2['m__cover'].'</span>'.$m2['m__title'].'</td></tr>';
 
             }
 
