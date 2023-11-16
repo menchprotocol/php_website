@@ -1973,7 +1973,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="bottom-wrapper">';
 
     $grant_access = $write_access_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
-    if ($x__id > 0 && $grant_access) {
+    if ($x__id > 0 && $grant_access && !$is_app) {
         if(!$has_any_lock || $grant_access){
 
             $ui .= '<span class="x__message mini-font hideIfEmpty light-bg x__message_' . $x__id . '" onclick="x_message_load(' . $x__id . ')">'.preview_x__message($e['x__message'] , $e['x__type']).'</span>';
@@ -2015,7 +2015,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= view_input(6197, $e['e__title'], $e['e__id'], $write_access_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
     } else {
         //Static:
-        $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).'</div>';
+        $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
     }
 
     $ui .= '</div>';
