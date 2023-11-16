@@ -12,8 +12,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         $cat_id = ( $e__id==12273 ? 4737 /* Idea Type */ : ( $e__id==12274 ? 7358 /* Source Active Access */ : $e__id /* Link It-self */ ) );
 
         $inner_stats .= '<div class="card_cover no-padding col-6">';
-        $inner_stats .= '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id.'" e__id="'.$e__id.'" data-toggle="tooltip" data-placement="top" title="'.( strlen($m['m__message']) ? $m['m__message'].'. ' : '' ).'Click to See Breakdown.">';
-        $inner_stats .= '<div data-toggle="tooltip" data-placement="top" title="'.( strlen($m['m__message']) ? $m['m__message'].'. ' : '' ).'Click to See Breakdown.">';
+        $inner_stats .= '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id.'" e__id="'.$e__id.'">';
+        $inner_stats .= '<div data-toggle="tooltip" data-placement="top" title="'.( strlen($m['m__message']) ? $m['m__message'].'. ' : '' ).'Click to See '.count($this->config->item('e___'.$cat_id)).' Types.">';
         $inner_stats .= '<div class="large_cover">'.$m['m__cover'].'</div>';
         $inner_stats .= '<div class="main__title large_title"><b class="card_count_'.$e__id.'">'.number_format($this_count, 0).'</b></div>';
         $inner_stats .= '<div class="main__title large_title">'.$m['m__title'].' <i class="far fa-info-circle" ></i></div>';
