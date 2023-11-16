@@ -1124,7 +1124,7 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
         //IDEAS
         $sub_counter = $CI->I_model->fetch(array(
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $this->config->item('n___4737')) . ')' => null, //SELECT IDEA
+            'i__type IN (' . join(',', $CI->config->item('n___4737')) . ')' => null, //SELECT IDEA
         ), 0, 0, array(), 'COUNT(i__id) as totals');
         return intval($sub_counter[0]['totals']);
 
