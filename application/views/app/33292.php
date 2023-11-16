@@ -13,7 +13,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         $inner_stats .= '<div class="card_cover no-padding col-6">';
         $inner_stats .= '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id.'" e__id="'.$e__id.'">';
-        $inner_stats .= '<div data-toggle="tooltip" data-placement="top" title="'.( strlen($m['m__message']) ? $m['m__message'].'. ' : '' ).'Click to See '.count($this->config->item('e___'.$cat_id)).' Types.">';
+        $inner_stats .= '<div data-toggle="tooltip" data-placement="top" title="'.( strlen($m['m__message']) ? $m['m__message'].'. ' : '' ).'Click to See Details.">';
         $inner_stats .= '<div class="large_cover">'.$m['m__cover'].'</div>';
         $inner_stats .= '<div class="main__title large_title"><b class="card_count_'.$e__id.'">'.number_format($this_count, 0).'</b></div>';
         $inner_stats .= '<div class="main__title large_title">'.$m['m__title'].' <i class="far fa-info-circle" ></i></div>';
@@ -52,7 +52,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
                 $total_sub_count += $sub_counter[0]['totals'];
 
-                $inner_stats .= '<tr><td style="text-align: right;" width="34%">'.number_format($sub_counter[0]['totals'], 0).'</td><td style="text-align: left;" '.( strlen($m2['m__message']) ? ' data-toggle="tooltip" data-placement="top" title="'.$m2['m__message'].'"' : '' ).'><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].( strlen($m2['m__message']) ? ' <i class="far fa-info-circle" ></i>' : '' ).'</td></tr>';
+                $inner_stats .= '<tr><td style="text-align: right;" width="34%">'.number_format($sub_counter[0]['totals'], 0).'</td><td style="text-align: left;" data-toggle="tooltip" data-placement="top" title="'.number_format(($sub_counter[0]['totals']/$this_count*100),1).'% '.$m2['m__message'].'"><span class="icon-block">'.$m2['m__cover'].'</span>'.$m2['m__title'].( strlen($m2['m__message']) ? ' <i class="far fa-info-circle" ></i>' : '' ).'</td></tr>';
 
             }
 
