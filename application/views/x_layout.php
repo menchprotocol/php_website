@@ -237,7 +237,7 @@ if($top_i__id) {
                 'x__left' => $i['i__id'],
             )))) {
                 array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i, array(
-                    'x__type' => 40958, //No Choice Selection
+                    'x__type' => 31022, //Skipped
                     'x__creator' => $x__creator,
                 )));
             }
