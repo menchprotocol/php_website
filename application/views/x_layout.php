@@ -783,7 +783,7 @@ if(!$top_i__id){
                 break;
             }
             if($pathways){
-                //continue;
+                break;
             }
         }
 
