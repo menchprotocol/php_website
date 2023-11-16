@@ -3364,6 +3364,12 @@ h4.main__title{
 .secondaryopacity0{
     --fa-secondary-opacity: 0;
 }
+.secondaryopacity5{
+    --fa-secondary-opacity: 0.05;
+}
+.secondaryopacity10{
+    --fa-secondary-opacity: 0.10;
+}
 .secondaryopacity20{
     --fa-secondary-opacity: 0.20;
 }
