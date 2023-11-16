@@ -2,6 +2,7 @@
 
 $sign_i__id = ( isset($_GET['i__id']) && $_GET['i__id'] > 0 ? $_GET['i__id'] : 0 );
 $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ($sign_i__id > 0 ? '/' . $sign_i__id : home_url()) );
+$e___14870 = $this->config->item('e___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
 if(superpower_unlocked()) {
@@ -281,6 +282,7 @@ if(superpower_unlocked()) {
     <div class="center-info">
 
         <div class="text-center platform-large"><?= get_domain('m__cover') ?></div>
+        <div class="text-center"><?= get_domain('m__title') ?></div>
 
         <div class="login-content" style="margin-top:40px;">
 
@@ -358,10 +360,6 @@ if(superpower_unlocked()) {
                 <input type="hidden" id="account_id" value="0" />
                 <div id="account_preview"></div>
 
-
-
-
-
                 <!-- New Account (If not found) -->
                 <div class="margin-top-down new_account hidden">
 
@@ -397,6 +395,12 @@ if(superpower_unlocked()) {
                 <div class="doclear">&nbsp;</div>
 
             </div>
+
+            <?php
+            if(website_setting(0) != 2738){
+                echo '<div>Powered by <span class="icon-block">'.$e___14870[2738]['m__cover'].'</span>'.$e___14870[2738]['m__title'].'</div>';
+            }
+            ?>
 
         </div>
     </div>
