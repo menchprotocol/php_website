@@ -1118,7 +1118,6 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
         $query_filters = array(
             'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-
         );
 
     } elseif($x__type==12273){
