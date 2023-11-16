@@ -784,7 +784,7 @@ if(!$top_i__id){
                 //$starting_point = '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="/'.$top_start['i__id'].'" title="'.$top_start['i__title'].'">'.$e___11035[40798]['m__title'].' '.$e___11035[40798]['m__cover'].'</a></div>'.'<div class="doclear">&nbsp;</div>';
                 //break;
             }
-            if($found_branch[$top_id]){
+            if(isset($found_branch[$top_id]) && $found_branch[$top_id]){
                 continue;
             }
         }
