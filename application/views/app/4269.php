@@ -404,6 +404,6 @@ if(superpower_unlocked()) {
 
     <?php
     if(website_setting(0) != 2738){
-        echo '<div class="center" style="padding-top: 34px;">POWERED BY<span class="icon-block">'.$e___14870[2738]['m__cover'].'</span><span class="custom_ui_14506_30982 main__title itemsetting">'.$e___14870[2738]['m__title'].'</span></div>';
+        echo '<div class="center" style="padding-top: 34px;">POWERED BY<span class="icon-block">'.$e___14870[2738]['m__cover'].'</span><a href="https://mench.com" class="custom_ui_14506_30982 main__title itemsetting">'.$e___14870[2738]['m__title'].'</a></div>';
     }
 }
