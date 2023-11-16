@@ -1111,25 +1111,7 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
     $CI =& get_instance();
 
     //We need to count this:
-    if($x__type==12274){
-
-        //SOURCES
-        $joined_by = array();
-        $query_filters = array(
-            'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        );
-
-    } elseif($x__type==12273){
-
-        //IDEAS
-        $joined_by = array();
-        $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
-        );
-
-    } elseif($x__type==6255){
+    if($x__type==6255){
 
         //DISCOVERIES
         $joined_by = array();
