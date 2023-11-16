@@ -769,6 +769,7 @@ if(!$top_i__id){
         //Show Link to Top, if any:
         $pathways = false;
         $pathways_count = 0;
+        $found_branch = array();
         foreach($this->I_model->recursive_up_ids($i['i__id']) as $top_id){
 
             foreach($this->X_model->fetch(array(
@@ -778,12 +779,13 @@ if(!$top_i__id){
                 'x__up' => 4235,
             ), array('x__right')) as $top_start){
                 $pathways_count++;
+                $found_branch[$top_id] = true;
                 $pathways .= view_card_i(6255, 0, null, $top_start);
                 //$starting_point = '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="/'.$top_start['i__id'].'" title="'.$top_start['i__title'].'">'.$e___11035[40798]['m__title'].' '.$e___11035[40798]['m__cover'].'</a></div>'.'<div class="doclear">&nbsp;</div>';
-                break;
+                //break;
             }
-            if($pathways){
-                break;
+            if($found_branch[$top_id]){
+                continue;
             }
         }
 
