@@ -1331,7 +1331,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
                 //Creation Time:
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="show-on-hover grey" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).'">' . view_time_difference(strtotime($i['x__time'])) . '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover grey" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).'">' . view_time_difference(strtotime($i['x__time']), true) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_access_i && !$focus_card && !$discovery_mode){
 
@@ -1844,7 +1844,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 //Creation Time:
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="show-on-hover grey" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).'">' . view_time_difference(strtotime($e['x__time'])) . '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover grey" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).'">' . view_time_difference(strtotime($e['x__time']), true) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_access_e && !$focus_card && !$discovery_mode){
 
