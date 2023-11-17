@@ -858,9 +858,6 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-
-
-
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');

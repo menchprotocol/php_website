@@ -2957,9 +2957,11 @@ h4.main__title{
 
 /* LIGHT WHITE */
 
-.custom_ui_13884_13885 .light-bg,
-.custom_ui_13884_13885 .fixed-top{
+.custom_ui_13884_13885 .light-bg {
     background: rgba(239,239,239,0.89) !important;
+}
+.custom_ui_13884_13885 .fixed-top{
+    background: rgba(239,239,239,1.00) !important;
 }
 
 .custom_ui_13884_13885 .coin-12274 .cover-content,

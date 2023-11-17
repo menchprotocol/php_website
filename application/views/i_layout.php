@@ -70,17 +70,6 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
                            placeholder="'.$e___11035[31772]['m__title'].'">
                 </div></div></div><div class="algolia_pad_search dropdown_12273 row justify-content"></div></div>';
 
-        } elseif($x__type==6255) {
-
-            //DISCOVERIES
-            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick e-adder algolia_search dotransparent add-input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[37959]['m__title'].'">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
-
         } elseif($x__type==12274){
 
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">

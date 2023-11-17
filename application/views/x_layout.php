@@ -1050,7 +1050,6 @@ echo '</div>';
 
         } else if (is_logged_in && focus_i__type==26560 ) {
 
-            //Must upload file first:
             return x_free_ticket(go_next_url);
 
         } else if(go_next_url && go_next_url.length > 0) {

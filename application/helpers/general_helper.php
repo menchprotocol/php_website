@@ -1837,27 +1837,52 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     //Log transaction:
     if($log_tr){
 
-        if(isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])){
+        $idea_email_logged = false;
+        if(isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])) {
 
             //It's an email for a specific idea, discover the idea:
-            $is = $CI->I_model->fetch(array(
+            foreach ($CI->I_model->fetch(array(
                 'i__id' => $x_data['x__left'],
-            ));
-            $CI->X_model->mark_complete($x_data['x__right'], $is[0], array(
-                'x__type' => 40956, //Idea Email
-                'x__creator' => $e__id,
-                'x__down' => $template_id,
-                'x__message' => $subject."\n\n".strip_tags(str_replace('<div',"\n".'<div',$email_message)),
-                'x__metadata' => array(
-                    'to' => $to_emails,
-                    'subject' => $subject,
-                    'message' => $email_message,
-                    'response' => $response,
-                ),
-            ));
+            )) as $email_idea) {
 
-        } else {
+                //Log Idea Email:
+                $CI->X_model->create(array_merge($x_data, array(
+                    'x__type' => 40956, //Idea Email
+                    'x__creator' => $e__id,
+                    'x__down' => $template_id,
+                    'x__message' => $subject . "\n\n" . strip_tags(str_replace('<div', "\n" . '<div', $email_message)),
+                    'x__metadata' => array(
+                        'to' => $to_emails,
+                        'subject' => $subject,
+                        'message' => $email_message,
+                        'response' => $response,
+                    ),
+                )));
 
+                //Can we also mark the discovery as complete?
+                if (in_array($email_idea['i__type'], $CI->config->item('n___34826'))) {
+
+                    if ($email_idea['i__type'] == 6677) {
+                        $x__type = 4559;
+                    } elseif ($email_idea['i__type'] == 30874) {
+                        $x__type = 31810;
+                    } else {
+                        $x__type = 0;
+                    }
+
+                    if($x__type > 0){
+                        $idea_email_logged = true;
+                        $CI->X_model->mark_complete($x_data['x__right'], $email_idea, array(
+                            'x__type' => $x__type,
+                            'x__creator' => $e__id,
+                        ));
+                    }
+                }
+            }
+        }
+
+        if(!$idea_email_logged) {
+            //Let's log a system email as the last resort way to record this transaction:
             $CI->X_model->create(array_merge($x_data, array(
                 'x__type' => 29399,
                 'x__down' => $template_id,
@@ -1871,7 +1896,6 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
                 ),
             )));
         }
-
 
     }
 

@@ -42,7 +42,7 @@ if(isset($_POST['payment_status'])){
             //Refund Completed:
             $is_good = true;
 
-            //Find original payment:
+            //Find issued tickets:
             $original_payment = $this->X_model->fetch(array(
                 'x__type' => 26595,
                 'x__creator' => $x__creator,

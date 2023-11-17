@@ -920,12 +920,14 @@ class X extends CI_Controller
             ));
         }
 
-        //Valid x Type?
-        if($is[0]['i__type']==6677){
-            $x__type = 4559;
-        } elseif($is[0]['i__type']==30874){
-            $x__type = 31810;
-        } elseif(!in_array($is[0]['i__type'], $this->config->item('n___34826'))){
+        //Instant Plug Idea?
+        if(in_array($is[0]['i__type'], $this->config->item('n___34826'))){
+            if($is[0]['i__type']==6677){
+                $x__type = 4559;
+            } elseif($is[0]['i__type']==30874){
+                $x__type = 31810;
+            }
+        } else {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Not a read-only idea type',
@@ -1042,7 +1044,7 @@ class X extends CI_Controller
             'x__left' => $is[0]['i__id'],
         )))){
             $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-                'x__type' => 31809, //FREE Ticket
+                'x__type' => 26595, //Ticket Issued
                 'x__weight' => $_POST['paypal_quantity'],
                 'x__creator' => $member_e['e__id'],
             ));

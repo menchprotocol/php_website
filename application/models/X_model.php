@@ -1133,6 +1133,7 @@ class X_model extends CI_Model
                 'x__creator' => $add_fields['x__creator'],
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0) as $next_i){
+
                 //IS IT EMPTY?
                 if($next_i['i__type']==6677 && !count($this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1144,11 +1145,25 @@ class X_model extends CI_Model
                         'x__type' => 4231, //IDEA NOTES Messages
                         'x__right' => $next_i['i__id'],
                     )))){
+
                     //Mark as complete:
-                    $this->X_model->mark_complete($top_i__id, $next_i, array(
-                        'x__type' => 4559, //Read Statement
-                        'x__creator' => $add_fields['x__creator'],
-                    ));
+                    if (in_array($next_i['i__type'], $this->config->item('n___34826'))) {
+
+                        if ($next_i['i__type'] == 6677) {
+                            $x__type = 4559;
+                        } elseif ($next_i['i__type'] == 30874) {
+                            $x__type = 31810;
+                        } else {
+                            $x__type = 0;
+                        }
+
+                        if($x__type > 0){
+                            $this->X_model->mark_complete($top_i__id, $next_i, array(
+                                'x__type' => $x__type,
+                                'x__creator' => $add_fields['x__creator'],
+                            ));
+                        }
+                    }
                 }
             }
         }
@@ -1667,7 +1682,7 @@ class X_model extends CI_Model
 
         //Define completion transactions for each answer:
         if(in_array($is[0]['i__type'], $this->config->item('n___7712'))){
-            $x__type = ( count($answer_i__ids) ? 6157 : 31022 ); //Choose & Next / Skip
+            $x__type = ( count($answer_i__ids) ? ( $is[0]['i__type']==6684 ? 6157 : 41940 ) : 31022 ); //Choose & Next / Skip
             $i_x__type = 12336; //Discovery Choose Link
         }
 
