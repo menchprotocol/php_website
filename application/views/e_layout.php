@@ -116,6 +116,15 @@ if(!$focus_tab){
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
 
+    $(function() {
+        $('.toggle_e_checkbox').change(function() {
+            console.log('hi'+$(this).prop('checked'));
+        });
+        $('#toggle-event').change(function() {
+            console.log('hi'+$(this).prop('checked'));
+        });
+    })
+
     $(document).ready(function () {
         set_autosize($('.texttype__lg.text__6197_'+fetch_int_val('#focus_id')));
     });
