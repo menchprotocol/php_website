@@ -117,12 +117,15 @@ if(!$focus_tab){
 <script type="text/javascript">
 
     $(function() {
-        $(function() {
-            $('#toggle-event').change(function() {
-                $('#console-event').html('Toggle: ' + $(this).prop('checked'))
-            })
-        })
-    })
+        $('.toggle_i_checkbox').change(function() {
+            console.log('hi');
+            //$(this).prop('checked')
+        });
+        $('.toggle_e_checkbox').change(function() {
+            console.log('bye');
+            //$(this).prop('checked')
+        });
+    });
 
     $(document).ready(function () {
         set_autosize($('.texttype__lg.text__6197_'+fetch_int_val('#focus_id')));
@@ -137,6 +140,3 @@ if(!$focus_tab){
         };
 
 </script>
-
-<input id="toggle-event" type="checkbox" data-toggle="toggle">
-<div id="console-event"></div>
