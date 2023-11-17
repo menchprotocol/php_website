@@ -129,3 +129,4 @@ if(!$focus_tab){
         };
 
 </script>
+<input id="toggle-event" type="checkbox" data-toggle="toggle">
