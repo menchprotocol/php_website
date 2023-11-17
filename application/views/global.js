@@ -860,13 +860,11 @@ var algolia_index = false;
 $(document).ready(function () {
 
 
-    $(function() {
-        $('.toggle_e_checkbox').change(function() {
-            console.log('hi'+$(this).prop('checked'));
-        });
-        $('#toggle-event').change(function() {
-            console.log('hi'+$(this).prop('checked'));
-        });
+    $('.toggle_e_checkbox').change(function() {
+        console.log('hi'+$(this).prop('checked'));
+    });
+    $('#toggle-event').change(function() {
+        console.log('hi'+$(this).prop('checked'));
     });
 
     //Watchout for file uplods:
