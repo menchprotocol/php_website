@@ -366,11 +366,11 @@ function view_time_difference($t, $micro = false)
     $time = abs($time);
     if($micro){
         $time_units = array(
-            31536000 => 'y',
+            31536000 => 'yr',
             2592000 => 'mo',
-            604800 => 'w',
-            86400 => 'd',
-            3600 => 'h',
+            604800 => 'wk',
+            86400 => 'day',
+            3600 => 'hr',
             60 => 'min',
             1 => 'sec'
         );
