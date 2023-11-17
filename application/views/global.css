@@ -2531,7 +2531,7 @@ textarea {
 }
 .wide_author{ text-align: left; padding-left: 13px; }
 .wide_author .grey{ font-size: 0.89em; font-weight: bold; }
-.created_time{ font-size: 0.55em; width: 100%; text-align: center; }
+.created_time{ font-size: 0.69em; width: 100%; text-align: center; }
 
 
 .inner-content .texttype__lg {
@@ -3056,7 +3056,7 @@ h4.main__title{
     border:1px solid #FFFFFF !important;
 }
 .btn-tiny{
-    font-size: 0.55em !important;
+    font-size: 0.69em !important;
 }
 .custom_ui_13884_13885 .btn-12274,
 .custom_ui_13884_13885 .btn.btn-12274,
