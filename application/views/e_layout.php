@@ -117,12 +117,11 @@ if(!$focus_tab){
 <script type="text/javascript">
 
     $(function() {
-        $('.toggle_e_checkbox').change(function() {
-            console.log('hi'+$(this).prop('checked'));
-        });
-        $('#toggle-event').change(function() {
-            console.log('hi'+$(this).prop('checked'));
-        });
+        $(function() {
+            $('#toggle-event').change(function() {
+                $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+            })
+        })
     })
 
     $(document).ready(function () {
@@ -138,4 +137,6 @@ if(!$focus_tab){
         };
 
 </script>
+
 <input id="toggle-event" type="checkbox" data-toggle="toggle">
+<div id="console-event"></div>
