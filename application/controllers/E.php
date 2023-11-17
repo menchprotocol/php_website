@@ -94,7 +94,7 @@ class E extends CI_Controller
 
                 foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__access']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], null, $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
                 }
@@ -450,46 +450,26 @@ class E extends CI_Controller
 
         if($adding_to_idea) {
 
-            if($_POST['x__type']==6255){
+            $e_already_linked = count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__up' => $focus_e['e__id'],
+                'x__right' => $fetch_o[0]['i__id'],
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            )));
 
-                $e_already_linked = count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__creator' => $focus_e['e__id'],
-                    'x__left' => $fetch_o[0]['i__id'],
-                )));
-
-                //Add Reference:
-                $ur2 = $this->X_model->mark_complete($fetch_o[0]['i__id'], $fetch_o[0], array(
-                    'x__type' => 38000, //Suggested
-                    'x__creator' => $focus_e['e__id'],
-                    'x__up' => $member_e['e__id'], //TODO replace with x__creator for all discovery transactions
+            //Add Reference if needed:
+            if(!count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
+                'x__up' => $focus_e['e__id'],
+                'x__right' => $fetch_o[0]['i__id'],
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))) {
+                $ur2 = $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__type' => 4983, //IDEA SOURCES
+                    'x__up' => $focus_e['e__id'],
+                    'x__right' => $fetch_o[0]['i__id'],
                 ));
-
-            } else {
-
-                $e_already_linked = count($this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__up' => $focus_e['e__id'],
-                    'x__right' => $fetch_o[0]['i__id'],
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                )));
-
-                //Add Reference if needed:
-                if(!count($this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
-                    'x__up' => $focus_e['e__id'],
-                    'x__right' => $fetch_o[0]['i__id'],
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))) {
-                    $ur2 = $this->X_model->create(array(
-                        'x__creator' => $member_e['e__id'],
-                        'x__type' => 4983, //IDEA SOURCES
-                        'x__up' => $focus_e['e__id'],
-                        'x__right' => $fetch_o[0]['i__id'],
-                    ));
-                }
-
             }
 
         } else {

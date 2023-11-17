@@ -258,7 +258,7 @@ class I extends CI_Controller {
 
                 foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], $e___31004[$next_i['i__access']]['m__cover'], $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $e___4593[$next_i['x__type']]['m__cover'], null, $e___4737[$next_i['i__type']]['m__cover'], view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
                         $listed_items++;
                     }
                 }
