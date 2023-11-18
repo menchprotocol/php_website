@@ -1856,7 +1856,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             foreach ($CI->I_model->fetch(array(
                 'i__id' => $x_data['x__left'],
             )) as $email_idea) {
-                $CI->X_model->auto_complete($x_data['x__right'], $email_idea, array_merge($x_data, array(
+                $CI->X_model->read_only_complete($x_data['x__right'], $email_idea, array_merge($x_data, array(
                     'x__creator' => $e__id,
                 )));
             }

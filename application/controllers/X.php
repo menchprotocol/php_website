@@ -326,7 +326,7 @@ class X extends CI_Controller
             ));
 
             //Mark as complete:
-            $this->X_model->auto_complete($i__id, $is[0]);
+            $this->X_model->read_only_complete($i__id, $is[0]);
 
             //Now return next idea:
             $next_i__id = $this->X_model->find_next($member_e['e__id'], $i__id, $is[0]);
@@ -873,7 +873,7 @@ class X extends CI_Controller
         }
     }
 
-    function x_auto_complete(){
+    function read_only_complete(){
 
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
@@ -906,7 +906,7 @@ class X extends CI_Controller
 
 
         //Mark as complete?
-        if($this->X_model->auto_complete($_POST['top_i__id'], $is[0])){
+        if($this->X_model->read_only_complete($_POST['top_i__id'], $is[0])){
             //All good:
             return view_json(array(
                 'status' => 1,

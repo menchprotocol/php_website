@@ -1071,7 +1071,7 @@ class X_model extends CI_Model
 
 
 
-    function auto_complete($top_i__id, $i, $x_data){
+    function read_only_complete($top_i__id, $i, $x_data){
 
         //Try to auto compolete:
         $x__type = 0;
@@ -1081,6 +1081,8 @@ class X_model extends CI_Model
                 $x__type = 4559;
             } elseif ($i['i__type'] == 30874) {
                 $x__type = 31810;
+            } elseif ($i['i__type'] == 31807) {
+                $x__type = 31808;
             }
         }
 
@@ -1157,7 +1159,7 @@ class X_model extends CI_Model
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0) as $next_i){
                 //Mark as complete:
-                $this->X_model->auto_complete($top_i__id, $next_i, $add_fields);
+                $this->X_model->read_only_complete($top_i__id, $next_i, $add_fields);
             }
         }
 

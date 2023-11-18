@@ -13,6 +13,21 @@ $this->X_model->create(array(
     'x__weight' => $new_order,
 ));
 
+if($e['e__id']==7754){
+    $count = 0;
+    foreach($this->X_model->fetch(array(
+        'x__type' => 6157,
+        'i__type' => 7231,
+    ), array('x__left')) as $ii){
+        $count++;
+        /*
+         * $this->X_model->update($x['x__id'], array(
+                'x__type' => $new_content,
+            ));
+         * */
+    }
+    echo 'WOW:'.$count;
+}
 
 
 //Load Top:

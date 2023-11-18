@@ -738,16 +738,9 @@ if($top_i__id) {
         echo '</form>';
         echo '</div>';
 
-    } elseif ($i['i__type']==30874) {
-
-        //Event
-
     }
 
 }
-
-
-
 
 
 
@@ -886,11 +879,7 @@ if($top_i__id && !$top_completed) {
 </div></div>';
 }
 
-
-
 echo '</div>';
-
-
 
 ?>
 
@@ -1057,7 +1046,7 @@ echo '</div>';
             if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#top_i__id').val()) > 0) {
 
                 //READ:
-                return x_auto_complete(go_next_url);
+                return read_only_complete(go_next_url);
 
             } else {
 
@@ -1144,8 +1133,8 @@ echo '</div>';
 
 
 
-    function x_auto_complete(go_next_url){
-        $.post("/x/x_auto_complete", {
+    function read_only_complete(go_next_url){
+        $.post("/x/read_only_complete", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
         }, function (data) {
