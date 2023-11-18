@@ -76,7 +76,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             if(!count($this->X_model->fetch(array(
                 'x__left' => $drafting_message['i__id'],
                 'x__creator' => $x['e__id'],
-                'x__type' => 40956, //Idea Email
+                'x__type' => 29399, //Idea Email
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
 

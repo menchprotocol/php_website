@@ -1071,6 +1071,29 @@ class X_model extends CI_Model
 
 
 
+    function auto_complete($top_i__id, $i, $x_data){
+
+        //Try to auto compolete:
+        $x__type = 0;
+
+        if (in_array($i['i__type'], $this->config->item('n___34826'))) {
+            if ($i['i__type'] == 6677) {
+                $x__type = 4559;
+            } elseif ($i['i__type'] == 30874) {
+                $x__type = 31810;
+            }
+        }
+
+        if($x__type > 0){
+            return $this->X_model->mark_complete($top_i__id, $i, array_merge($x_data, array(
+                'x__type' => $x__type,
+            )));
+        } else {
+            return false;
+        }
+
+    }
+
 
     function mark_complete($top_i__id, $i, $add_fields) {
 
@@ -1133,38 +1156,8 @@ class X_model extends CI_Model
                 'x__creator' => $add_fields['x__creator'],
                 'x__left' => $i['i__id'],
             ), array('x__right'), 0) as $next_i){
-
-                //IS IT EMPTY?
-                if($next_i['i__type']==6677 && !count($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__creator' => $add_fields['x__creator'],
-                        'x__left' => $next_i['i__id'],
-                    ))) && !count($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 4231, //IDEA NOTES Messages
-                        'x__right' => $next_i['i__id'],
-                    )))){
-
-                    //Mark as complete:
-                    if (in_array($next_i['i__type'], $this->config->item('n___34826'))) {
-
-                        if ($next_i['i__type'] == 6677) {
-                            $x__type = 4559;
-                        } elseif ($next_i['i__type'] == 30874) {
-                            $x__type = 31810;
-                        } else {
-                            $x__type = 0;
-                        }
-
-                        if($x__type > 0){
-                            $this->X_model->mark_complete($top_i__id, $next_i, array(
-                                'x__type' => $x__type,
-                                'x__creator' => $add_fields['x__creator'],
-                            ));
-                        }
-                    }
-                }
+                //Mark as complete:
+                $this->X_model->auto_complete($top_i__id, $next_i, $add_fields);
             }
         }
 

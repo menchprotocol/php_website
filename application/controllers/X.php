@@ -920,38 +920,21 @@ class X extends CI_Controller
             ));
         }
 
-        //Instant Plug Idea?
-        if(in_array($is[0]['i__type'], $this->config->item('n___34826'))){
-            if($is[0]['i__type']==6677){
-                $x__type = 4559;
-            } elseif($is[0]['i__type']==30874){
-                $x__type = 31810;
-            }
+
+        //Mark as complete?
+        if($this->X_model->auto_complete($_POST['top_i__id'], $is[0])){
+            //All good:
+            return view_json(array(
+                'status' => 1,
+                'message' => 'Saved & Next...',
+            ));
         } else {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Not a read-only idea type',
+                'message' => 'Cannot complete this idea',
             ));
         }
 
-        if(!count($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__creator' => $member_e['e__id'],
-            'x__left' => $is[0]['i__id'],
-        )))){
-            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-                'x__type' => $x__type, //Read Statement
-                'x__creator' => $member_e['e__id'],
-            ));
-        }
-
-
-        //All good:
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Saved & Next...',
-        ));
 
     }
 
