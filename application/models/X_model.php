@@ -1151,7 +1151,7 @@ class X_model extends CI_Model
 
 
         //Auto Complete OR Answers:
-        if(0 && in_array($i['i__type'], $this->config->item('n___7712'))){
+        if(in_array($i['i__type'], $this->config->item('n___7712'))){
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
@@ -1164,12 +1164,12 @@ class X_model extends CI_Model
         }
 
         //Ticket Email?
-        if(0 && isset($new_x['x__id']) && isset($new_x['x__creator']) && in_array($new_x['x__type'], $this->config->item('n___32014'))){
+        if(isset($new_x['x__id']) && isset($new_x['x__creator']) && in_array($new_x['x__type'], $this->config->item('n___32014'))){
             send_qr($new_x['x__id'],$new_x['x__creator']);
         }
 
 
-        if (0 && $add_fields['x__creator'] && in_array($add_fields['x__type'], $this->config->item('n___40986'))) {
+        if ($add_fields['x__creator'] && in_array($add_fields['x__type'], $this->config->item('n___40986'))) {
 
             //Discovery Triggers?
             $clone_urls = '';
