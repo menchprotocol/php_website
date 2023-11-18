@@ -616,9 +616,16 @@ label:focus,
     margin: 0;
     min-width: 77px;
     text-align: center;
+    margin-bottom: -17px;
+    border: 1px solid #EFEFEF;
+}
+
+.nav-controller .active{
+    border: 1px solid #000;
+    border-bottom: 1px solid #EFEFEF;
 }
 .nav-title{
-    padding: 5px 0 0 !important;
+    padding: 5px 0 !important;
     display: block;
     text-align: center;
 }
@@ -2952,7 +2959,9 @@ h4.main__title{
 
 
 
-
+.nav-body .headlinebody {
+    border: 1px solid #999999;
+}
 
 
 /* LIGHT WHITE */
@@ -3915,7 +3924,7 @@ h4.main__title{
     padding: 0;
 }
 .large-frame>div{
-    padding-bottom: 5px;
+    padding-bottom: 0;
 }
 .dropdown-toggle::after {
     display:none !important;

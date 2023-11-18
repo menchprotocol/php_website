@@ -841,7 +841,7 @@ if(!$top_i__id){
 
         }
 
-        $buttons_ui .= ( $control_btn ? '<div>'.$control_btn.'</div>' : '' );
+        $buttons_ui .= ( $control_btn ? '<div class="navigate_'.$x__type.'">'.$control_btn.'</div>' : '' );
 
         if($control_btn){
             $buttons_found++;
@@ -853,7 +853,6 @@ if(!$top_i__id){
         echo '<div class="nav-controller">';
         echo $buttons_ui;
         echo '</div>';
-        echo '<div class="doclear">&nbsp;</div>';
     }
 
 }
@@ -865,12 +864,15 @@ if(!$top_i__id){
 
 
 //NEXT IDEAS:
+echo '<div class="nav-body">';
 if(!($is_or_7712 && $top_i__id)){
     echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
 }
+echo '</div>';
 
 
-if($top_i__id && !$top_completed) {
+
+    if($top_i__id && !$top_completed) {
     echo '<div style="padding: 0 5px;"><div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div></div>';
