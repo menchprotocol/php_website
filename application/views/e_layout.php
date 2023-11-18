@@ -13,20 +13,6 @@ $this->X_model->create(array(
     'x__weight' => $new_order,
 ));
 
-if($e['e__id']==7754){
-    $count = 0;
-    foreach($this->X_model->fetch(array(
-        'x__type' => 4235,
-    ), array('x__left'), 0) as $ii){
-        if($this->X_model->read_only_complete($ii['x__left'], $ii, array(
-            'x__creator' => $ii['x__creator'],
-        ))){
-            $count++;
-        }
-    }
-    echo 'WOW:'.$count;
-}
-
 
 //Load Top:
 $counter_top = view_e_covers(11030, $e['e__id'], 0, false);
