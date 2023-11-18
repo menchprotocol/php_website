@@ -743,7 +743,7 @@ if($top_i__id) {
 }
 
 
-
+$pathways_count = 0;
 if(!$top_i__id){
 
     if(count($this->X_model->fetch(array(
@@ -761,7 +761,6 @@ if(!$top_i__id){
 
         //Show Link to Top, if any:
         $pathways = '<div class="row list-pathways">';
-        $pathways_count = 0;
         foreach($this->I_model->recursive_starting_points($i['i__id']) as $top_id){
             foreach($this->I_model->fetch(array(
                 'i__id' => $top_id,
@@ -772,9 +771,7 @@ if(!$top_i__id){
         }
         $pathways .= '</div>';
 
-        if($pathways_count > 0){
-            echo view_headline(40798, $pathways_count, $e___11035[40798], $pathways, true);
-        } else {
+        if(!$pathways_count){
             $_GET['open'] = true;
         }
 
@@ -877,6 +874,8 @@ if($top_i__id && !$top_completed) {
     echo '<div style="padding: 0 5px;"><div class="progress" style="height: 8px; margin: 0 0 21px; background-color: #CCCCCC;">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div></div>';
+} elseif(!$top_i__id && $pathways_count > 0){
+    echo view_headline(40798, $pathways_count, $e___11035[40798], $pathways, true);
 }
 
 echo '</div>';
