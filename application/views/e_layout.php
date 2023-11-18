@@ -18,7 +18,7 @@ if($e['e__id']==7754){
     foreach($this->X_model->fetch(array(
         'x__type' => 6157,
         'i__type' => 7231,
-    ), array('x__left')) as $ii){
+    ), array('x__left'), 0) as $ii){
         $count++;
         /*
          * $this->X_model->update($x['x__id'], array(
