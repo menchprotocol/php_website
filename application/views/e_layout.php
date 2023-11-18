@@ -16,13 +16,13 @@ $this->X_model->create(array(
 if($e['e__id']==7754){
     $count = 0;
     foreach($this->X_model->fetch(array(
-        'x__type' => 6157,
-        'i__type' => 7231,
+        'x__type' => 4235,
     ), array('x__left'), 0) as $ii){
-        $count++;
-        $this->X_model->update($ii['x__id'], array(
-            'x__type' => 41940,
-        ));
+        if($this->X_model->read_only_complete($ii['x__left'], $ii, array(
+            'x__creator' => $ii['x__creator'],
+        ))){
+            $count++;
+        }
     }
     echo 'WOW:'.$count;
 }
