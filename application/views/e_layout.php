@@ -20,11 +20,9 @@ if($e['e__id']==7754){
         'i__type' => 7231,
     ), array('x__left'), 0) as $ii){
         $count++;
-        /*
-         * $this->X_model->update($x['x__id'], array(
-                'x__type' => $new_content,
-            ));
-         * */
+        $this->X_model->update($ii['x__id'], array(
+            'x__type' => 41940,
+        ));
     }
     echo 'WOW:'.$count;
 }
