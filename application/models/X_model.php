@@ -1169,7 +1169,7 @@ class X_model extends CI_Model
         }
 
 
-        if ($add_fields['x__creator'] && in_array($add_fields['x__type'], $this->config->item('n___40986'))) {
+        if (0 && $add_fields['x__creator'] && in_array($add_fields['x__type'], $this->config->item('n___40986'))) {
 
             //Discovery Triggers?
             $clone_urls = '';
