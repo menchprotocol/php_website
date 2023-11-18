@@ -626,7 +626,7 @@ label:focus,
 }
 
 .nav-controller .active{
-    border: 1px solid #000;
+    border: 1px solid #CCCCCC;
     border-bottom: 1px solid #EFEFEF;
     margin-bottom: -17px;
 }
