@@ -327,6 +327,7 @@ function toggle_headline(x__type){
         $('.headline_body_' + x__type).addClass('hidden');
 
         if (x__type==12211){
+            $('.navigate_item').removeClass('hidden');
             $('.navigate_12273').removeClass('active');
         }
 
@@ -344,7 +345,8 @@ function toggle_headline(x__type){
         $('.headline_body_' + x__type).removeClass('hidden');
 
         if (x__type==12211){
-            $('.navigate_12273').addClass('active');
+            $('.navigate_item').addClass('hidden');
+            $('.navigate_12273').removeClass('hidden').addClass('active');
         }
 
         //Scroll To:

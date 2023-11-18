@@ -841,7 +841,7 @@ if(!$top_i__id){
 
         }
 
-        $buttons_ui .= ( $control_btn ? '<div class="navigate_'.$x__type.'">'.$control_btn.'</div>' : '' );
+        $buttons_ui .= ( $control_btn ? '<div class="navigate_item navigate_'.$x__type.'">'.$control_btn.'</div>' : '' );
 
         if($control_btn){
             $buttons_found++;

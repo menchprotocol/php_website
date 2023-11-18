@@ -614,6 +614,7 @@ label:focus,
 .nav-controller {
     display: inline-block;
     padding: 21px 0;
+    margin-bottom: -2px;
 }
 
 .nav-controller div{
