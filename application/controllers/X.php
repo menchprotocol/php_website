@@ -319,33 +319,17 @@ class X extends CI_Controller
                 return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not startable.</div>');
             }
 
-            //Make sure not previously added to this Member's discoveries:
-            $xs = $this->X_model->fetch(array(
+            //Add Starting Point:
+            $this->X_model->mark_complete($i__id, $is[0], array(
+                'x__type' => 4235, //Get started
                 'x__creator' => $member_e['e__id'],
-                'x__left' => $i__id,
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
-            if(count($xs)){
 
-                //Already has a starting point:
-                $top_i__id =  $xs[0]['x__left'];
-
-            } else {
-
-                //This is the new top ID
-                $top_i__id =  $is[0]['i__id'];
-
-                //New Starting Point:
-                $this->X_model->mark_complete($top_i__id, $is[0], array(
-                    'x__type' => 4235, //Get started
-                    'x__creator' => $member_e['e__id'],
-                ));
-
-            }
+            //Mark as complete:
+            $this->X_model->auto_complete($i__id, $is[0]);
 
             //Now return next idea:
-            $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0]);
+            $next_i__id = $this->X_model->find_next($member_e['e__id'], $i__id, $is[0]);
 
 
             if(!$next_i__id){
@@ -889,7 +873,7 @@ class X extends CI_Controller
         }
     }
 
-    function x_read(){
+    function x_auto_complete(){
 
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(

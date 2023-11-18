@@ -1054,10 +1054,10 @@ echo '</div>';
 
         } else if(go_next_url && go_next_url.length > 0) {
 
-            if (is_logged_in && focus_i__type==6677 && parseInt($('#top_i__id').val()) > 0) {
+            if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#top_i__id').val()) > 0) {
 
                 //READ:
-                return x_read(go_next_url);
+                return x_auto_complete(go_next_url);
 
             } else {
 
@@ -1066,7 +1066,6 @@ echo '</div>';
                 js_redirect(go_next_url);
 
             }
-
         }
     }
 
@@ -1145,8 +1144,8 @@ echo '</div>';
 
 
 
-    function x_read(go_next_url){
-        $.post("/x/x_read", {
+    function x_auto_complete(go_next_url){
+        $.post("/x/x_auto_complete", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
         }, function (data) {

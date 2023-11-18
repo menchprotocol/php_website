@@ -21,11 +21,11 @@ $counter_top = view_e_covers(11030, $e['e__id'], 0, false);
 echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_e ? '<div class="new-list-11030"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11030 list-adder">
                     <div class="input-group border">
                         <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input e-adder"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[31774]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11030"></div></div>' : '' ).'</div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); i_load_search(11019); }); </script>';
+echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
 
 
 //Focus Source:
@@ -51,7 +51,7 @@ foreach($this->config->item('e___41091') as $x__type => $m) {
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_'.$x__type.' list-adder">
                 <div class="input-group border">
                     <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input i-adder"
+                           class="form-control form-control-thick algolia_search dotransparent add-input"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[14016]['m__title'].'">
                 </div></div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
@@ -61,14 +61,14 @@ foreach($this->config->item('e___41091') as $x__type => $m) {
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input e-adder"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[31775]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
 
-        $body_content .= '<script type="text/javascript"> $(document).ready(function () { e_load_search('.$x__type.'); }); </script>';
+        $body_content .= '<script type="text/javascript"> $(document).ready(function () { load_search(12274, '.$x__type.'); }); </script>';
 
     }
 

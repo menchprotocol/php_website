@@ -34,12 +34,12 @@ $counter_top = view_i_covers(11019, $i['i__id'], 0, false);
 echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_i ? '<div class="new-list-11019 hidden"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
-                               class="form-control form-control-thick add-input i-adder algolia_search dotransparent"
+                               class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>' : '' ).'</div>';
 echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true); initiate_algolia();
- i_load_search(11019); }, 377); }); </script>';
+ load_search(12273,11019); }, 377); }); </script>';
 
 
 
@@ -62,10 +62,10 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
         if($x__type==12273){
 
             //IDEAS
-            $input_content .= '<div class="new-list-12273"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
+            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
                 <div class="input-group border">
                     <input type="text"
-                           class="form-control form-control-thick add-input i-adder algolia_search dotransparent"
+                           class="form-control form-control-thick add-input algolia_search dotransparent"
                            maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[31772]['m__title'].'">
                 </div></div></div><div class="algolia_pad_search dropdown_12273 row justify-content"></div></div>';
@@ -75,14 +75,14 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input e-adder"
+                               class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[14055]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
 
-        $body_content .= '<script type="text/javascript"> $(document).ready(function () { i_load_search('.$x__type.'); }); </script>';
+        $body_content .= '<script type="text/javascript"> $(document).ready(function () { load_search(12273, '.$x__type.'); }); </script>';
 
     }
 
