@@ -597,6 +597,11 @@ label:focus,
     box-shadow: none !important;
 }
 
+.progress{
+    height: 8px;
+    margin:21px 0;
+    background-color: #CCCCCC;
+}
 .mid-range {
     padding: 0 1px;
 }
