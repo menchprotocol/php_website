@@ -621,13 +621,13 @@ label:focus,
     margin: 0;
     min-width: 77px;
     text-align: center;
-    margin-bottom: -17px;
     border: 1px solid #EFEFEF;
 }
 
 .nav-controller .active{
     border: 1px solid #000;
     border-bottom: 1px solid #EFEFEF;
+    margin-bottom: -17px;
 }
 .nav-title{
     padding: 5px 0 !important;
