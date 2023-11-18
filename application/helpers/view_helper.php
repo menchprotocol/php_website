@@ -1294,7 +1294,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
 
     //Determine Link Type
-    $link_type_id = 0;
+    $link_type_id = 4593; //Transaction Type
     $link_type_ui = '';
     if($x__id){
         foreach($CI->config->item('e___31770') as $x__type1 => $m1){
@@ -1378,10 +1378,10 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                     $focus_dropdown = 11047; //Idea Dropdown
                 } elseif($link_type_id==4486){ //Idea/Idea Links
                     $focus_dropdown = 14955; //Idea/Idea Dropdown
-                } elseif($link_type_id==6255){ //Discoveries
-                    $focus_dropdown = 32069; //Idea/Discoveries Dropdown
                 } elseif($link_type_id==13550){ //Idea/Source Links
                     $focus_dropdown = 28787; //Idea/Source Dropdown
+                } else { //Discoveries
+                    $focus_dropdown = 32069; //Idea/Discoveries Dropdown
                 }
 
                 if(is_array($CI->config->item('e___'.$focus_dropdown))){
