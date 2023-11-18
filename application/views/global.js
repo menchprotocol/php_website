@@ -326,7 +326,7 @@ function toggle_headline(x__type){
         $('.headline_title_' + x__type+ ' .icon_26007').addClass('hidden');
         $('.headline_body_' + x__type).addClass('hidden');
 
-        if (focus_card==12211){
+        if (x__type==12211){
             $('.navigate_12273').removeClass('active');
         }
 
@@ -343,7 +343,7 @@ function toggle_headline(x__type){
         $('.headline_title_' + x__type+ ' .icon_26008').addClass('hidden');
         $('.headline_body_' + x__type).removeClass('hidden');
 
-        if (focus_card==12211){
+        if (x__type==12211){
             $('.navigate_12273').addClass('active');
         }
 
