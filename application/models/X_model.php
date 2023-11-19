@@ -1071,9 +1071,9 @@ class X_model extends CI_Model
 
 
 
-    function read_only_complete($top_i__id, $i, $x_data){
+    function read_only_complete($top_i__id, $i, $x_data = array()){
 
-        //Try to auto compolete:
+        //Try to auto complete:
         $x__type = 0;
 
         if (in_array($i['i__type'], $this->config->item('n___34826'))) {
