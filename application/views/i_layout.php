@@ -31,15 +31,16 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 
 //Load Top:
 $counter_top = view_i_covers(11019, $i['i__id'], 0, false);
-echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_i || 1 ? '<div class="new-list-11019"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
+echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_i ? '<div class="new-list-11019"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>' : '' ).'</div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { §(11019, true); initiate_algolia();
- load_search(12273,11019); }, 377); }); </script>';
+echo '<script type="text/javascript"> $(document).ready(function () { initiate_algolia(); load_search(12273,11019); }); </script>';
+echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true);  }, 377); }); </script>';
+
 
 
 
