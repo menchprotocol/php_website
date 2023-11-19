@@ -867,8 +867,8 @@ var algolia_index = false;
 $(document).ready(function () {
 
     $("#modal31911").on("hide.bs.modal", function (e) {
-        e.preventDefault();
         console.log('aaa');
+        e.preventDefault();
         return false;
     });
 
