@@ -628,7 +628,7 @@ label:focus,
     background-color: #FFFFFF;
 }
 .nav-controller .active .nav-title{
-    margin-bottom: 1px solid #999;
+    border-bottom: 1px solid #999;
 }
 .nav-title{
     padding: 5px 0 !important;
