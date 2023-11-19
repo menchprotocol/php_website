@@ -866,8 +866,10 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-    $("#modal31911").on("hide.bs.modal", function () {
-        alert('Closing Now...');
+    $("#modal31911").on("hide.bs.modal", function (e) {
+        e.preventDefault();
+        console.log('aaa');
+        return false;
     });
 
     //Watchout for file uplods:

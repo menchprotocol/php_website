@@ -21,13 +21,6 @@ $id_prefix = array(
     12274 => 200,
 );
 
-//Size of nodes:
-$node_size = array(
-    12273 => 3,
-    12274 => 2,
-    'msg' => 1,
-);
-
 //Add Ideas:
 $is = $this->I_model->fetch(array(
     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -38,7 +31,7 @@ foreach($is as $in){
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix[12273].$in['i__id'],
         'label' => $in['i__title'],
-        'size' => $node_size[12273],
+        'size' => 1,
         'node_type' => 1, //Idea
         'node_status' => $in['i__type'],
     ));
@@ -74,7 +67,7 @@ foreach($es as $en){
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix[12274].$en['e__id'],
         'label' => $en['e__title'],
-        'size' => $node_size[12274] ,
+        'size' => 1,
         'node_type' => 2, //Member
         'node_status' => $en['e__access'],
     ));
