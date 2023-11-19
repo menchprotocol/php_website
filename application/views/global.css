@@ -625,9 +625,6 @@ label:focus,
     border: 1px solid #EFEFEF;
 }
 
-.nav-controller {
-    border-bottom: 1px solid #999999;
-}
 .nav-controller .active{
     border: 1px solid #999999;
     border-bottom: 1px solid #EFEFEF;
