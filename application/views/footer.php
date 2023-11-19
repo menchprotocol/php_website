@@ -13,7 +13,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     //Apply to All Sources
     if(superpower_active(12703, true)){
         ?>
-        <div class="modal fade indifferent" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
+        <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
 
@@ -155,7 +155,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     //Apply to All Ideas
     if(superpower_active(12700, true)){
         ?>
-        <div class="modal fade indifferent" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
+        <div class="modal fade" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
                     <div class="modal-header">
@@ -239,7 +239,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     ?>
 
     <!-- ACCOUNT SETTINGS Modal -->
-    <div class="modal fade indifferent" id="modal6225" tabindex="-1" role="dialog" aria-labelledby="modal6225Label" aria-hidden="true">
+    <div class="modal fade" id="modal6225" tabindex="-1" role="dialog" aria-labelledby="modal6225Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
                 <div class="modal-header">
@@ -256,7 +256,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
     <!-- Edit Idea Modal -->
-    <div class="modal fade indifferent" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
+    <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
                 <div class="modal-header">
@@ -264,11 +264,35 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h5 class="main__title"><?= $e___11035[27963]['m__title'] ?></h5>
 
                     <input type="hidden" id="modal_i__id" value="0" />
-                    <textarea class="form-control note-textarea indifferent algolia_search new-note power_editor editing-mode input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                    <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger indifferent" style="margin:8px 0;"></div>
+
+                    <h5 class="main__title"><?= $e___11035[4737]['m__title'] ?></h5>
+                    <select name="idea_type" class="form-control border">
+                    <?php
+                    foreach($this->config->item('e___4737') as $x__type3 => $m3){
+                        echo '<option value="'.$x__type3.'">'.$m3['m__title'].'</option>';
+                    }
+                    ?>
+                    </select>
+
+
+                    <h5 class="main__title"><?= $e___11035[4736]['m__title'] ?></h5>
+                    <textarea class="form-control note-textarea algolia_search new-note power_editor editing-mode input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+
+                    <h5 class="main__title"><?= $e___11035[32337]['m__title'] ?></h5>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">#</span>
+                        <input type="text" class="form-control">
+                    </div>
+
+                    <h5 class="main__title"><?= $e___11035[6202]['m__title'] ?></h5>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">#</span>
+                        <input type="text" class="form-control">
+                    </div>
+
+                    <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger" style="margin:8px 0;"></div>
 
                     <table>
                         <tr>
@@ -277,7 +301,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 //CONTROLLER
                                 echo '<div class="no-padding add_notes_4231">';
-                                echo '<div class="add_notes_form note_pad indifferent">';
+                                echo '<div class="add_notes_form note_pad">';
                                 echo '<form class="box box4231" method="post" enctype="multipart/form-data">';
 
                                 //UPLOAD
@@ -298,6 +322,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </td>
                         </tr>
                     </table>
+
+
                 </div>
             </div>
         </div>

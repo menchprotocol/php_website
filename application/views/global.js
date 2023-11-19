@@ -800,7 +800,7 @@ function toggle_search(){
 }
 
 
-
+var idea_changed = false;
 function edit_idea(i__id){
 
     $('#modal31911').modal('show');
