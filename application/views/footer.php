@@ -267,22 +267,19 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <input type="hidden" id="modal_i__id" value="0" />
 
-                    <h5 class="main__title"><?= $e___11035[4737]['m__title'] ?></h5>
-                    <select name="idea_type" class="form-control border">
-                    <?php
-                    foreach($this->config->item('e___4737') as $x__type3 => $m3){
-                        echo '<option value="'.$x__type3.'">'.$m3['m__title'].'</option>';
-                    }
-                    ?>
-                    </select>
-
-
-                    <h5 class="main__title"><?= $e___11035[4736]['m__title'] ?></h5>
-                    <textarea class="form-control note-textarea algolia_search new-note power_editor editing-mode input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-
 
                     <table style="width: 100%;">
                         <tr>
+                            <td style="width:50%;">
+                                <h5 class="main__title"><?= $e___11035[4737]['m__title'] ?></h5>
+                                <select name="idea_type" class="form-control border">
+                                    <?php
+                                    foreach($this->config->item('e___4737') as $x__type3 => $m3){
+                                        echo '<option value="'.$x__type3.'">'.$m3['m__title'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </td>
                             <td style="width:50%;">
                                 <h5 class="main__title"><?= $e___11035[32337]['m__title'] ?></h5>
                                 <div class="input-group mb-3">
@@ -290,15 +287,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <input type="text" class="form-control">
                                 </div>
                             </td>
-                            <td style="width:50%;">
-                                <h5 class="main__title"><?= $e___11035[6202]['m__title'] ?></h5>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="basic-addon1">#</span>
-                                    <input type="text" class="form-control" value="12334" readonly>
-                                </div>
-                            </td>
                         </tr>
                     </table>
+
+                    <h5 class="main__title"><?= $e___11035[4736]['m__title'] ?></h5>
+                    <textarea class="form-control note-textarea algolia_search new-note power_editor editing-mode input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
 
 
 
