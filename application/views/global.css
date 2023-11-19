@@ -2963,8 +2963,7 @@ h4.main__title{
 
 
 .nav-body .headlinebody {
-    background-color: #FFFFFF;
-    padding-bottom: 13px;
+    border-top: 8px solid #FFF;
 }
 
 
