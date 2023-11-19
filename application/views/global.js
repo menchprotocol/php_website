@@ -867,9 +867,13 @@ var algolia_index = false;
 $(document).ready(function () {
 
     $("#modal31911").on("hide.bs.modal", function (e) {
-        console.log('aaa');
-        e.preventDefault();
-        return false;
+        var r = confirm("Your changes are unsaved! Close this window?");
+        if (r==true) {
+            console.log('continue...');
+        } else {
+            e.preventDefault();
+            return false;
+        }
     });
 
     //Watchout for file uplods:
