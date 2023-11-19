@@ -1293,7 +1293,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
      ' : ' edge-cover card_click_i col-md-4 col-6 ' ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
-    //Determine Link Type
+    //Determine Link Group
     $link_type_id = 4593; //Transaction Type
     $link_type_ui = '';
     if($x__id){
@@ -1310,6 +1310,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 break;
             }
         }
+        if(!$link_type_ui){
+            $link_type_ui .= '<td><div class="show-on-hover">';
+            $link_type_ui .= view_dropdown(4593, $i['x__type'], null, false, false, $i['i__id'], $x__id);
+            $link_type_ui .= '</div></td>';
+        }
     }
 
 
@@ -1324,6 +1329,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             if($x__type_top_bar==31770 && $link_type_ui && ($write_access_i || $link_creator)){
 
+                //Links
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
@@ -1343,6 +1349,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             } elseif($x__type_top_bar==4737 && $write_access_i && !$discovery_mode){
 
+                //Idea Type
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_access_i && !$discovery_mode, false, $i['i__id']);
@@ -1350,6 +1357,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             } elseif($x__type_top_bar==31004 && $access_locked){
 
+                //Idea Access (Shown when deleted only)
                 $active_bars++;
                 $top_bar_ui .= '<td><div>';
                 $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i && !$discovery_mode, false, $i['i__id']);
@@ -1357,14 +1365,15 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             } elseif($x__type_top_bar==31911 && $write_access_i && !$discovery_mode){
 
+                //Idea Edit
                 $active_bars++;
-
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="edit_idea('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13909 && $has_sortable){
 
+                //Sort Idea
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_handle">'.$m_top_bar['m__cover'].'</span>';
@@ -1372,15 +1381,16 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
             } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
 
+                //Drop Down
                 $action_buttons = null;
-
                 if(!$x__id){
                     $focus_dropdown = 11047; //Idea Dropdown
                 } elseif($link_type_id==4486){ //Idea/Idea Links
                     $focus_dropdown = 14955; //Idea/Idea Dropdown
                 } elseif($link_type_id==13550){ //Idea/Source Links
                     $focus_dropdown = 28787; //Idea/Source Dropdown
-                } else { //Discoveries
+                } else {
+                    //Discoveries
                     $focus_dropdown = 32069; //Idea/Discoveries Dropdown
                 }
 
