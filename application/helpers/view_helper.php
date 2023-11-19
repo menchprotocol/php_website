@@ -1276,12 +1276,20 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $href = '/~'.$i['i__id'] . ( isset($_GET['load__e']) ? '?load__e='.intval($_GET['load__e']) : '' );
     }
 
-    $has_discovered = ( !$cache_app && isset($member_e['e__id']) && count($CI->X_model->fetch(array(
+    $has_discovered = false;
+    if(!$cache_app && isset($member_e['e__id'])){
+        $discoveries = $CI->X_model->fetch(array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $member_e['e__id'],
             'x__left' => $i['i__id'],
-        ))));
+        ));
+        $has_discovered = count($discoveries);
+    }
+    if($has_discovered && $discovery_mode){
+        $i = array_merge($i, $discoveries[0]);
+    }
+
     $e___4737 = $CI->config->item('e___4737'); //Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
@@ -1327,7 +1335,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
             //Determine hover state:
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $link_type_ui){
+            if($x__type_top_bar==31770 && $link_type_ui && ($write_access_i || $link_creator)){
 
                 //Links
                 $active_bars++;
