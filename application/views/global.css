@@ -496,8 +496,7 @@ img.no-frame {
 .center-info{
     width: 100%;
     max-width:380px !important;
-    padding: 15px;
-    padding-top: 55px;
+    padding: 34px 15px 15px;
     margin: 0 auto;
 }
 .center{
@@ -1946,7 +1945,7 @@ i, .btn .show-max {
     margin:0 1px;
 }
 .form-check{
-    padding: 8px 0 8px 60px;
+    padding:8px;
 }
 .chat-title{
     position: fixed;
