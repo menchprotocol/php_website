@@ -1951,16 +1951,9 @@ function write_access_e($e__id, $member_e = array()){
         //Member has Advance source editing superpower
         || superpower_active(13422, true)
 
-        //Member created the source
-        || count($CI->X_model->fetch(array(
-            'x__creator' => $member_e['e__id'],
-            'x__down' => $e__id,
-            'x__type' => 4251, //New Source Created
-        )))
-
         //If Source Follows this Member
         || count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__up' => $member_e['e__id'],
             'x__down' => $e__id,
@@ -1985,20 +1978,12 @@ function write_access_i($i__id, $member_e = array()){
     return (
         superpower_active(12700, true) || //WALKIE TALKIE
         (
-            superpower_active(10939, true) && //PEN
-            (
-                count($CI->X_model->fetch(array( //Member created the idea
-                    'x__type' => 4250, //IDEA CREATOR
-                    'x__right' => $i__id,
-                    'x__creator' => $member_e['e__id'],
-                ))) ||
-                count($CI->X_model->fetch(array( //IDEA SOURCE
-                    'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-                    'x__right' => $i__id,
-                    'x__up' => $member_e['e__id'],
-                )))
-            )
+            count($CI->X_model->fetch(array( //IDEA SOURCE
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+                'x__right' => $i__id,
+                'x__up' => $member_e['e__id'],
+            )))
         )
     );
 
