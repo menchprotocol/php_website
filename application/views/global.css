@@ -2356,12 +2356,7 @@ input.form-control {
 .hideIfEmpty:empty {
     display: none !important;
 }
-.list-adder{
-    padding: 8px 0 0 !important;
-    margin:0 1px 5px !important;
-    border: 1px solid #FFFFFF !important;
-    background-color: #EFEFEF !important;
-}
+
 
 .icon-adder{
     margin-top: 3px;
@@ -4288,6 +4283,12 @@ main {
 }
 .form-check-input:checked {
     background-color: #000000;
+}
+.list-adder{
+    padding: 8px 0 0 !important;
+    margin:0 1px 5px !important;
+    border: 1px solid #FFFFFF !important;
+    background-color: #EFEFEF !important;
 }
 
 .active_bars_1 td { width:100.0% !important; }
