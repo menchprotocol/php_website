@@ -2359,7 +2359,8 @@ input.form-control {
 .list-adder{
     padding: 8px 0 0 !important;
     margin:0 1px 5px !important;
-    background-color: #FFF !important;
+    border: 1px solid #FFFFFF !important;
+    background-color: #EFEFEF !important;
 }
 
 .icon-adder{
