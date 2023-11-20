@@ -4,7 +4,7 @@
 function view_show_more($see_more_type, $class, $href_link = null){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    return '<div class="card_cover card_reverse col-xl-2 col-lg-3 col-md-4 col-6 no-padding '.$class.'">
+    return '<div class="card_cover card_reverse col-xl-2 col-lg-3 col-md-3 col-sm-4 col-6 no-padding '.$class.'">
                                 <div class="cover-wrapper"><a '.( $href_link ? 'href="'.$href_link.'"' : 'href="javascript:void(0);" onclick="$(\'.'.$class.'\').toggleClass(\'hidden\')"' ).' class="black-background-obs cover-link"><div class="cover-btn">'.$e___11035[$see_more_type]['m__cover'].'</div></a></div>
                             </div>';
 }
@@ -1298,7 +1298,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-6 col-sm-8 col-10
-     ' : ' edge-cover card_click_i col-md-4 col-6 ' ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+     ' : ' edge-cover card_click_i col-md-3 col-sm-4 col-6 ' ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
     //Determine Link Group
@@ -1813,7 +1813,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $show_text_editor = $write_access_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-6 col-sm-8 col-10 ' : ' edge-cover card_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-6 col-sm-8 col-10 ' : ' edge-cover card_e_click col-md-3 col-sm-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     //Source Link Groups
     $link_type_id = 0;
