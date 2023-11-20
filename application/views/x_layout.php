@@ -169,19 +169,6 @@ if($top_completed || $is_or_7712){
 
 
 
-//Audio Playback
-$require_playback = count($this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-    'x__right' => $i['i__id'],
-    'x__up' => 33253, //Auto Play Audio
-)));
-echo '<input type="hidden" id="requires_audio_play" value="'.( $require_playback ? 1 : 0 ).'">';
-if($require_playback){
-    //Try to auto play audio as it may work in certain cases with certain browsers
-    echo '<script type="text/javascript"> $(document).ready(function () { $(\'audio\')[0].play(); }); </script>';
-}
-
 
 echo '<div class="light-bg large-frame">';
 
@@ -721,6 +708,9 @@ if($top_i__id) {
 }
 
 
+//Show
+
+
 $pathways_count = 0;
 if(!$top_i__id){
 
@@ -984,12 +974,6 @@ if($top_i__id){
 
         var go_next_url = $('#go_next_url').val();
         var is_logged_in = (js_pl_id > 0);
-        var require_playback = <?= ( $require_playback ? 1 : 0 ) ?>;
-
-        if(require_playback && !audio_played){
-            alert('Please listen to the audio message before going next.');
-            return false;
-        }
 
         //Attempts to go next if no submissions:
         if (is_logged_in && js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
