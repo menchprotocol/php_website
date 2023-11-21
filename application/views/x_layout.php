@@ -663,8 +663,7 @@ if($top_i__id) {
         }
 
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_write\')); $(\'#x_write\').focus(); }); </script>';
-
-        echo view_headline(13980, null, $e___11035[13980], $message_ui, true);
+        echo '<div>'.$message_ui.'</div>';
 
     } elseif ($i['i__type']==7637) {
 

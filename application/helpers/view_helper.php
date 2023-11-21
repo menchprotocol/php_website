@@ -1700,7 +1700,6 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 
     $CI =& get_instance();
     $e___26006 = $CI->config->item('e___26006'); //Toggle Headline
-    //( $is_open ? ' <script> $(document).ready(function () { $(\'.navigate_12273\').addClass(\'active\'); }); </script> ' : '' ).
     return '<a class="headline headline_'.$x__type.'" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block grey">'.$m['m__cover'].'</span>' .$m['m__title'].':'.( !is_null($counter) ? ' [<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span>]' : '' ).'<span class="icon-block pull-right headline_titles headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody pillbody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
 
 }
