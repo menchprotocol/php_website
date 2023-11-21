@@ -1565,10 +1565,10 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
     $CI =& get_instance();
     $relevant_sources = '';
     foreach($CI->X_model->fetch(array(
-        '( x__type IN (' . join(',', $CI->config->item('n___33602')) . ') OR ( x__type IN (' . join(',', $CI->config->item('n___41975')) . ') AND e__access IN (' . join(',', $CI->config->item('n___41981')) . ')))' => null, //FEATURED ACCESS -OR- DISCOVERY FEATURED LINKS
+        '( x__type IN (' . join(',', $CI->config->item('n___41975')) . ') OR ( x__type IN (' . join(',', $CI->config->item('n___33602')) . ') AND e__access IN (' . join(',', $CI->config->item('n___41981')) . ')))' => null, //FEATURED ACCESS -OR- DISCOVERY FEATURED LINKS
         'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__right' => $i['i__id'],
-        //'x__up !=' => website_setting(0),
+        'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
         $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html);
     }
