@@ -13,7 +13,7 @@ foreach($this->I_model->fetch(array(
     //Messages?
     $messages = $this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 4231, //IDEA NOTES Messages
+        'x__type' => 4231, //TODO Remove at the end
         'x__right' => $loaded_i['i__id'],
     ), array(), 0, 0, array('x__weight' => 'ASC'));
 

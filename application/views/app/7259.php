@@ -18,7 +18,7 @@ if($search_for_set){
 
     $matching_results = $this->I_model->fetch(array(
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'LOWER(i__title) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
+        'LOWER(i__message) LIKE \'%'.strtolower($_GET['search_for']).'%\'' => null,
     ));
 
     //List the matching search:
@@ -51,31 +51,34 @@ if($search_for_set){
         foreach($matching_results as $count=>$in){
 
             if($replace_with_set){
+
                 //Do replacement:
                 $append_text = @$_GET['append_text'];
-                $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['i__title']).$append_text;
-                $i__validate_title = i__validate_title($new_outcome);
+                $new_outcome = str_replace($_GET['search_for'],$_GET['replace_with'],$in['i__message']).$append_text;
+                $validate_i__message = validate_i__message($new_outcome);
 
-                if($i__validate_title['status']){
+                if($validate_i__message['status']){
                     $qualifying_replacements++;
+                }
+
+                if($replace_with_confirmed && $validate_i__message['status']){
+                    //Update idea:
+                    $this->I_model->update($in['i__id'], array(
+                        'i__message' => $new_outcome,
+                    ), true, $member_e['e__id']);
                 }
             }
 
-            if($replace_with_confirmed && $i__validate_title['status']){
-                //Update idea:
-                $this->I_model->update($in['i__id'], array(
-                    'i__title' => $i__validate_title['i_clean_title'],
-                ), true, $member_e['e__id']);
-            }
+
 
             echo '<tr class="panel-title down-border result_row" id="row_'.$in['i__id'].'" idea_id="'.$in['i__id'].'">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/~'.$in['i__id'].'">'.$in['i__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/~'.$in['i__id'].'">'.$in['i__message'].'</a></td>';
 
             if($replace_with_set){
 
                 echo '<td style="text-align: left;">'.$new_outcome.'</td>';
-                echo '<td style="text-align: left;">'.( !$i__validate_title['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i__validate_title['message'] : ( $replace_with_confirmed && $i__validate_title['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
+                echo '<td style="text-align: left;">'.( !$validate_i__message['status'] ? '<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$validate_i__message['message'] : ( $replace_with_confirmed && $validate_i__message['status'] ? '<i class="fas fa-check-circle"></i> Outcome Updated' : '') ).'</td>';
             } else {
                 //Show followings now:
                 echo '<td style="text-align: left;">';
@@ -89,7 +92,7 @@ if($search_for_set){
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                     'x__right' => $in['i__id'],
                 ), array('x__left')) as $i_previous) {
-                    echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/~' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__title'] . '" data-placement="bottom">' . $e___4737[$i_previous['i__type']]['m__cover'] . '</a> &nbsp;</span>';
+                    echo '<span class="next_i_icon_' . $i_previous['i__id'] . '"><a href="/~' . $i_previous['i__id'] . '" data-toggle="tooltip" title="' . $i_previous['i__message'] . '" data-placement="bottom">' . $e___4737[$i_previous['i__type']]['m__cover'] . '</a> &nbsp;</span>';
                 }
 
                 echo '</td>';

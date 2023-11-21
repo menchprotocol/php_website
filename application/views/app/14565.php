@@ -50,42 +50,14 @@ if(!count($primary_i)){
 }
 
 
-echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . $primary_i['i__title'] . '</h1>';
-echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',$primary_i['i__title']).'\'); }); </script> ';
+echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_i_title($primary_i, true) . '</h1>';
+echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
 
 
-
-$messages = '';
-
-
-
-
-
-//MESSAGES
-$top_messages = '';
-foreach($this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4231, //IDEA NOTES Messages
-    'x__right' => $primary_i['i__id'],
-), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
-
-    if(!strlen($x['x__message'])){
-        continue;
-    }
-
-    $msg = $this->X_model->message_view( $x['x__message'], true);
-
-    if(0 && substr_count($msg, '//www.youtube.com/embed/')==1){
-        //YouTube video link
-        $top_messages .= '<div class="video-frame vid-padding" style="text-align: center;"><a href="javascript:void(0)" onclick="video_play()"><i class="fad fa-play-circle" style="font-size:8em !important;"></i></a></div>';
-        $top_messages .= '<div class="video-frame hidden">'.$msg.'</div>';
-    } else {
-        $top_messages .= $msg;
-    }
-
-}
+$top_messages = view_i__message($primary_i['i__message'], false, true);
 
 //Did we find any?
+$messages = '';
 if(strlen($top_messages)){
     $messages .= '<div class="center-frame hide-subline maxwidth hideIfEmpty">';
     $messages .= $top_messages;

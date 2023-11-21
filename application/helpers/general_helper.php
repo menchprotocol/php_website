@@ -1001,7 +1001,7 @@ function list_settings($i__id, $fetch_contact = false){
             'x__up' => $list_config[34513],
             'x__right !=' => $i__id,
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+        ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
             array_push($column_ideas, $link_i);
         }
 
@@ -1124,7 +1124,6 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
         //IDEAS
         $sub_counter = $CI->I_model->fetch(array(
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-            'i__type IN (' . join(',', $CI->config->item('n___4737')) . ')' => null, //SELECT IDEA
         ), 0, 0, array(), 'COUNT(i__id) as totals');
         return intval($sub_counter[0]['totals']);
 
@@ -1421,7 +1420,99 @@ function js_reload($timer = 1){
     echo '<script> $(document).ready(function () { setTimeout(function () { location.reload(true); }, '.$timer.'); }); </script>';
 }
 
-function i__validate_title($string){
+function strip_first_line($text) {
+    return substr($text, strpos($text, "\n") + 1);
+}
+
+
+
+function generate_handle($title){
+    //Generates a Suitable Handle from the title:
+    return substr(preg_replace(view_memory(32103,41985), '', $title), 0, view_memory(6404,41985));
+}
+
+function validate_handler($string, $i__id = null, $e__id = null){
+
+    //Validate:
+    if($i__id && $e__id){
+
+        return array(
+            'status' => 0,
+            'db_duplicate' => 0,
+            'message' => 'Must set either Idea or Source ID! Pick one...',
+        );
+
+    } elseif(!strlen($string)){
+
+        return array(
+            'status' => 0,
+            'db_duplicate' => 0,
+            'message' => 'Hashtag Missing',
+        );
+
+    } elseif (!preg_match(view_memory(26611,41985), $string)) {
+
+        return array(
+            'status' => 0,
+            'db_duplicate' => 0,
+            'message' => view_memory(30998,41985),
+        );
+
+    } elseif (is_numeric($string) && $string!=$i__id) {
+
+        return array(
+            'status' => 0,
+            'db_duplicate' => 0,
+            'message' => 'If numbers only must be set to '.$i__id.$e__id.' as the original ID (Or mix letters & numbers)',
+        );
+
+    } elseif (strlen($string) > view_memory(6404,41985)) {
+
+        return array(
+            'status' => 0,
+            'db_duplicate' => 0,
+            'message' => 'Must be '.view_memory(6404,41985).' characters or less',
+        );
+
+    }
+
+    //Syntax good! Now let's check the DB for duplicates...
+    $CI =& get_instance();
+    if($i__id > 0){
+        foreach($CI->I_model->fetch(array(
+            'i__id !=' => $i__id,
+            'i__hashtag' => $string,
+        ), 0) as $matched){
+            return array(
+                'status' => 0,
+                'db_duplicate' => 1,
+                'message' => 'Hashtag #'.$string.' already in use by Idea #'.$matched['i__id'],
+            );
+        }
+    } elseif($e__id>0){
+        foreach($CI->E_model->fetch(array(
+            'e__id !=' => $e__id,
+            'e__handler' => $string,
+        ), 0) as $matched){
+            return array(
+                'status' => 0,
+                'db_duplicate' => 1,
+                'message' => 'Handler @'.$string.' already in use by Source @'.$matched['e__id'],
+            );
+        }
+    }
+
+
+    //All good, return success:
+    return array(
+        'status' => 1,
+        'db_duplicate' => 0,
+        'message' => 'Success',
+    );
+
+}
+
+function validate_i__message($string){
 
     $title_clean = trim($string);
     while(substr_count($title_clean , '  ') > 0){
@@ -1440,7 +1531,7 @@ function i__validate_title($string){
 
         return array(
             'status' => 0,
-            'message' => 'Title must be '.view_memory(6404,4736).' characters or less',
+            'message' => 'Must be '.view_memory(6404,4736).' characters or less',
         );
 
     }
@@ -1448,7 +1539,6 @@ function i__validate_title($string){
     //All good, return success:
     return array(
         'status' => 1,
-        'i_clean_title' => $title_clean,
     );
 
 }
@@ -1546,7 +1636,7 @@ function send_qr($x__id, $x__creator){
         'x__id' => $x__id,
         'x__right > 0' => null,
     ), array('x__right')) as $top_idea){
-        $additional_info = ' for '.$top_idea['i__title'];
+        $additional_info = ' for '.view_i_title($top_idea, true);
         break;
     }
 
@@ -2007,10 +2097,6 @@ function sources_currently_sorted($e__id){
     ), array(), 1) );
 }
 
-function first_line($string){
-    return $string;
-}
-
 function public_app($e){
     $CI =& get_instance();
     return in_array($e['e__access'], $CI->config->item('n___7357')) && !in_array($e['e__id'], $CI->config->item('n___32141'));
@@ -2121,8 +2207,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
         if ($loop_obj==12273) {
 
             $filters['i__access IN (' . join(',', $CI->config->item('n___31871')) . ')'] = null;
-            $filters['i__type IN (' . join(',', $CI->config->item('n___4737')) . ')'] = null;
-
             if($s__id){
                 $filters['i__id'] = $s__id;
             }
@@ -2211,7 +2295,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__url'] = '/' . $s['i__id'];
                 $export_row['s__access'] = intval($s['i__access']);
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['i__title'];
+                $export_row['s__title'] = $s['i__message'];
                 $export_row['s__weight'] = intval($s['i__weight']);
 
                 //Top/Bottom Idea Keywords
@@ -2221,7 +2305,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $s['i__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['i__title'] . ' ';
+                    $export_row['s__keywords'] .= $i['i__message'] . ' ';
                 }
                 foreach ($CI->X_model->fetch(array(
                     'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2229,7 +2313,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__right' => $s['i__id'],
                 ), array('x__left'), 0, 0, array('x__weight' => 'ASC')) as $i) {
-                    $export_row['s__keywords'] .= $i['i__title'] . ' ';
+                    $export_row['s__keywords'] .= $i['i__message'] . ' ';
                 }
 
                 //Idea Sources Keywords

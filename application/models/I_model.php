@@ -19,7 +19,7 @@ class I_model extends CI_Model
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('i__title', 'i__type'), $x__creator)) {
+        if (detect_missing_columns($add_fields, array('i__message', 'i__type'), $x__creator)) {
             return false;
         }
 
@@ -39,7 +39,7 @@ class I_model extends CI_Model
                 $this->X_model->create(array(
                     'x__creator' => $x__creator,
                     'x__right' => $add_fields['i__id'],
-                    'x__message' => $add_fields['i__title'],
+                    'x__message' => $add_fields['i__message'],
                     'x__type' => 4250, //New Idea Created
                 ));
 
@@ -140,7 +140,12 @@ class I_model extends CI_Model
 
                     $x__message = update_description($before_data[0][$key], $value);
 
-                } elseif($key=='i__title') {
+                } elseif($key=='i__hashtag') {
+
+                    $x__type = 41982; //Idea updated Handle
+                    $x__message = update_description($before_data[0][$key], $value);
+
+                } elseif($key=='i__message') {
 
                     $x__type = 10644; //Idea updated Outcome
                     $x__message = update_description($before_data[0][$key], $value);
@@ -289,7 +294,7 @@ class I_model extends CI_Model
     {
 
         $i_new = $this->I_model->create(array(
-            'i__title' => $i['i__title'],
+            'i__message' => $i['i__message'],
             'i__type' => $i['i__type'],
         ), $x__creator);
 
@@ -333,7 +338,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($focus_card, $x__type, $i__title, $x__creator, $focus_id, $link_i__id = 0)
+    function create_or_link($focus_card, $x__type, $i__message, $x__creator, $focus_id, $link_i__id = 0)
     {
 
         /*
@@ -342,7 +347,7 @@ class I_model extends CI_Model
          * appropriate transactions and return the idea view.
          *
          * Either creates an IDEA transaction between $focus_id & $link_i__id
-         * (IF $link_i__id>0) OR will create a new idea with outcome $i__title
+         * (IF $link_i__id>0) OR will create a new idea with outcome $i__message
          * and transaction it to $focus_id (In this case $link_i__id will be 0)
          *
          * p.s. Inputs have previously been validated via ideas/i__add() function
@@ -357,7 +362,7 @@ class I_model extends CI_Model
                 'x__metadata' => array(
                     '$focus_card' => $focus_card,
                     '$x__type' => $x__type,
-                    '$i__title' => $i__title,
+                    '$i__message' => $i__message,
                     '$x__creator' => $x__creator,
                     '$focus_id' => $focus_id,
                     '$link_i__id' => $link_i__id,
@@ -486,15 +491,15 @@ class I_model extends CI_Model
             //We are NOT adding an existing Idea, but instead, we're creating a new Idea
 
             //Validate Idea Outcome:
-            $i__validate_title = i__validate_title($i__title);
-            if(!$i__validate_title['status']){
+            $validate_i__message = validate_i__message($i__message);
+            if(!$validate_i__message['status']){
                 //We had an error, return it:
-                return $i__validate_title;
+                return $validate_i__message;
             }
 
             //Create new Idea:
             $i_new = $this->I_model->create(array(
-                'i__title' => $i__validate_title['i_clean_title'],
+                'i__message' => $i__message,
                 'i__type' => 6677, //New Default Ideas
             ), $x__creator);
 
@@ -669,7 +674,7 @@ class I_model extends CI_Model
 
 
         $i_new = $this->I_model->create(array(
-            'i__title' => ( $clone_title ? $clone_title : $this_i[0]['i__title']." Copy" ),
+            'i__message' => ( $clone_title ? $clone_title : "Copy Of ".$this_i[0]['i__message'] ),
             'i__type' => $this_i[0]['i__type'],
         ), $x__creator);
 

@@ -20,7 +20,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
     'x__up' => $list_settings['list_config'][34513],
     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC')) as $link_i){
+), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $link_i){
 
     $sub_list_settings = list_settings($link_i['i__id'], true);
     if(!count($sub_list_settings['query_string'])){
@@ -28,7 +28,7 @@ foreach($this->X_model->fetch(array(
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__id'].'">'.$link_i['i__title'].'</a></h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__id'].'">'.view_i_title($link_i).'</a></h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     foreach($sub_list_settings['query_string'] as $x){
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';

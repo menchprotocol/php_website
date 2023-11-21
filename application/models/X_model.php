@@ -151,7 +151,7 @@ class X_model extends CI_Model
 
                     //IDEA
                     foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                        $plain_message .= $m['m__title'] . ': '.$this_i['i__title'].':'."\n".$this->config->item('base_url').'/~' . $this_i['i__id']."\n\n";
+                        $plain_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__id']."\n\n";
                     }
 
                 } elseif (in_array(6160 , $m['m__following'])) {
@@ -334,7 +334,7 @@ class X_model extends CI_Model
                             'i__id' => $value,
                         ));
 
-                        $x__message .= view_db_field($key) . ' updated from [' . $before_i[0]['i__title'] . '] to [' . $after_i[0]['i__title'] . ']' . "\n";
+                        $x__message .= view_db_field($key) . ' updated from [' . $before_i[0]['i__message'] . '] to [' . $after_i[0]['i__message'] . ']' . "\n";
 
                     } elseif(in_array($key, array('x__message', 'x__weight'))){
 
@@ -669,7 +669,7 @@ class X_model extends CI_Model
 
     }
 
-    function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $simple_version = false)
+    function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $plain_no_html = false)
     {
 
         /*
@@ -700,7 +700,7 @@ class X_model extends CI_Model
 
 
         //Validate message:
-        $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, 0, $message_i__id, false, $simple_version);
+        $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, $message_i__id, false, $plain_no_html);
 
 
 
@@ -734,7 +734,7 @@ class X_model extends CI_Model
     }
 
 
-    function message_compile($message_input, $is_discovery_mode, $member_e = array(), $message_type_e__id = 0, $message_i__id = 0, $strict_validation = true, $simple_version = false)
+    function message_compile($message_input, $is_discovery_mode, $member_e = array(), $message_i__id = 0, $strict_validation = true, $plain_no_html = false)
     {
 
         /*
@@ -764,11 +764,6 @@ class X_model extends CI_Model
             return array(
                 'status' => 0,
                 'message' => 'Message must be UTF8',
-            );
-        } elseif ($message_type_e__id > 0 && $message_type_e__id!=4231 && !in_array($message_type_e__id, $this->config->item('n___13550'))) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Message type ID',
             );
         }
 
@@ -877,7 +872,7 @@ class X_model extends CI_Model
             if(!$e_media_count && !count($e_links)){
 
                 //Links not supported
-                if($simple_version){
+                if($plain_no_html){
                     $e_dropdown .= $edit_btn.$es[0]['e__title'];
                 } else {
                     $e_dropdown .= '<a href="/@'.$es[0]['e__id'].'" class="ignore-click"><span class="icon-block-xxs">' . view_cover($es[0]['e__cover'], true).'</span><u>'.$es[0]['e__title'].'</u></a>';
@@ -1183,7 +1178,7 @@ class X_model extends CI_Model
                 if($clone_i['x__type']==32247){
 
                     //Discovery Clone
-                    $new_title = $es_creator[0]['e__title'].' '.$clone_i['i__title'];
+                    $new_title = $es_creator[0]['e__title'].' '.$clone_i['i__message'];
                     $result = $this->I_model->recursive_clone($clone_i['i__id'], 0, $add_fields['x__creator'], null, $new_title);
                     if($result['status']){
 
@@ -1224,14 +1219,15 @@ class X_model extends CI_Model
             if(strlen($clone_urls)){
                 //Send DM with all the new clone idea URLs:
                 $clone_urls = $clone_urls.'You have been added as a subscriber so you will be notified when anyone start using your link.';
-                $this->X_model->send_dm($add_fields['x__creator'], $i['i__title'], $clone_urls);
+                $i_title = view_i_title($i, true);
+                $this->X_model->send_dm($add_fields['x__creator'], $i_title , $clone_urls);
                 //Also DM all watchers of the idea:
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 10573, //WATCHERS
                     'x__right' => $i['i__id'],
                 ), array(), 0) as $watcher){
-                    $this->X_model->send_dm($watcher['x__up'], $i['i__title'], $clone_urls);
+                    $this->X_model->send_dm($watcher['x__up'], $i_title, $clone_urls);
                 }
             }
 
@@ -1408,10 +1404,9 @@ class X_model extends CI_Model
                         if(!in_array(intval($watcher['x__up']), $sent_watchers)){
                             array_push($sent_watchers, intval($watcher['x__up']));
 
-                            //'.( $u_clean_phone ? $u_clean_phone.' ' : '' ).'
-                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.$i['i__title'],
+                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.view_i_title($i, true),
                                 //Message Body:
-                                $i['i__title'].':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
+                                view_i_title($i, true).':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
                                 ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
                                 $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
                                 $discoverer_contact

@@ -41,7 +41,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
         'x__up' => $_GET['e__id'],
-    ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__title' => 'ASC'));
+    ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
 
     //List all payment Ideas and their total earnings
@@ -84,13 +84,8 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                 $x__metadata['mc_fee'] = $x__metadata2['mc_fee'] * -1;
             } elseif(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
                 $this_quantity = $x__metadata['quantity'];
-            } else {
-                for($t=20;$t>=2;$t--){
-                    if(substr_count(strtolower($i['i__title']),$t.'x')==1){
-                        $this_quantity = $t;
-                        break;
-                    }
-                }
+            } elseif($x2['x__weight']>=2){
+                $this_quantity = $x2['x__weight'];
             }
 
             //Count only if a TICKET idea:
@@ -195,7 +190,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$i['i__title'].'</u></a>' : $i['i__title'] ).' <a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_i_title($i).'</u></a>' : view_i_title($i) ).' <a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
@@ -372,7 +367,7 @@ if(count($i_query)){
                         $is = $this->I_model->fetch(array(
                             'i__id' => $origin,
                         ));
-                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',$is[0]['i__title']) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
+                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_i_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
                     }
                 }
                 ?>
@@ -396,7 +391,7 @@ if(count($i_query)){
     }
     tr.main__title{
         background-color: #CCCCCC !important;
-        border-top:1px solid #FFFFFF !important;
+        border-top:1px solid #999999 !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;

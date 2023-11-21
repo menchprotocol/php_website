@@ -35,7 +35,6 @@ echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
-                               maxlength="' . view_memory(6404,4736) . '"
                                placeholder="'.$e___11035[31773]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>' : '' ).'</div>';
 echo '<script type="text/javascript"> $(document).ready(function () { initiate_algolia(); load_search(12273,11019); }); </script>';
@@ -67,7 +66,6 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
-                           maxlength="' . view_memory(6404,4736) . '"
                            placeholder="'.$e___11035[31772]['m__title'].'">
                 </div></div></div><div class="algolia_pad_search dropdown_12273 row justify-content"></div></div>';
 

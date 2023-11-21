@@ -269,15 +269,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <h5 class="main__title"><?= $e___11035[32337]['m__title'] ?></h5>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">#</span>
+                        <span class="input-group-text input__32337" id="basic-addon1">#</span>
                         <input type="text" class="form-control">
                     </div>
 
                     <h5 class="main__title"><?= $e___11035[4736]['m__title'] ?></h5>
-                    <textarea class="form-control note-textarea algolia_search new-note power_editor editing-mode input_note_4231" x__type="4231" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    <textarea class="form-control note-textarea algolia_search new-note editing-mode input__4736" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
 
-
-                    <div class="note_error_4231 hideIfEmpty zq6255 msg alert alert-danger" style="margin:8px 0;"></div>
+                    <div class="note_error_4736 hideIfEmpty zq6255 msg alert alert-danger" style="margin:8px 0;"></div>
 
                     <table>
                         <tr>
@@ -285,17 +284,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <?php
 
                                 //CONTROLLER
-                                echo '<div class="no-padding add_notes_4231">';
+                                echo '<div class="no-padding add_notes_4736">';
                                 echo '<div class="add_notes_form note_pad">';
-                                echo '<form class="box box4231" method="post" enctype="multipart/form-data">';
+                                echo '<form class="box box4736" method="post" enctype="multipart/form-data">';
 
                                 //UPLOAD
-                                echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4231" />';
+                                echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
                                 echo '<label class="hidden"></label>';
-                                echo '<label class="btn inline-block btn-compact file_label_4231" for="fileIdeaType4231" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+                                echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
 
                                 //GIF
-                                //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="image_api_search(4231)" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
+                                //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="image_api_search()" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
 
                                 echo '</form>';
                                 echo '</div>';
@@ -303,7 +302,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 ?>
                             </td>
                             <td style="width: 50px;">
-                                <?= '<div class="save_button inline-block"><a href="javascript:save_editor()" class="btn btn-default save_notes_4231" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
+                                <?= '<div class="save_button inline-block"><a href="javascript:i_edit_save()" class="btn btn-default" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
                             </td>
                         </tr>
                     </table>
@@ -448,7 +447,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="modal_x__type" value="0" />
                     <input type="text" class="form-control text-edit border main__title images_query" placeholder="Search GIFs..." onkeyup="images_search($('.images_query').val())" data-lpignore="true" />
                     <div class="row new_images margin-top-down hideIfEmpty"></div>
                 </div>

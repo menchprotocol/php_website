@@ -31,7 +31,7 @@ foreach($is_next as $in_key => $in_value){
 
 
 
-$i['i__title'] = str_replace('"','',$i['i__title']);
+$i['i__message'] = str_replace('"','',$i['i__message']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( $x__creator>0 ? $top_i__id : 0 );
 $x_completes = ( $top_i__id ? $this->X_model->fetch(array(
@@ -90,14 +90,8 @@ if($x__creator && $top_i__id!=$i['i__id']){
                 }
             }
 
-            $messages = count($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 4231, //IDEA NOTES Messages
-                'x__right' => $followings_i['i__id'],
-            )));
-
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$followings_i['i__id'].'"><u>'.$followings_i['i__title'].'</u></a>';
+            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$followings_i['i__id'].'"><u>'.view_i_title($followings_i).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -108,7 +102,7 @@ if($x__creator && $top_i__id!=$i['i__id']){
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$followings_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
-                    $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.$i_subset['i__title'].'</a>';
+                    $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
                 }
                 $breadcrum_content .= '</div>';
                 $breadcrum_content .= '</div>';
@@ -153,7 +147,7 @@ if($top_i__id){
                 'i__id' => $to_discover_id,
             ));
             $counter++;
-            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__id'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).$is[0]['i__title'].'</p>';
+            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__id'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
         }
     }
 
@@ -173,13 +167,11 @@ if($top_completed || $is_or_7712){
 echo '<div class="light-bg large-frame">';
 
 //Title:
-echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.$i['i__title'].'</h1>';
+echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.view_i_title($i, true).'</h1>';
+echo view_i__message($i, false, true);
 
-//Messages:
-$view_i__cache = view_i__cache($i);
-if($view_i__cache){
-    echo $view_i__cache;
-} elseif(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
+
+if(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
     //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
@@ -455,7 +447,7 @@ if($top_i__id) {
 
                 $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
-                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.$i['i__title'].'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.view_i_title($i, true).'">';
                 $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-0-'.$x__creator.'">';
 
                 $ticket_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';

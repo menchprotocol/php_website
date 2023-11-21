@@ -118,45 +118,12 @@ class X extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif(!isset($_POST['s__id']) || !isset($_POST['cache_e__id']) || !isset($_POST['field_value'])){
+        } elseif(!isset($_POST['s__id']) || !isset($_POST['cache_e__id']) || !isset($_POST['input__4736'])){
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing core variables',
                 'original_val' => '',
-            ));
-
-        } elseif($_POST['cache_e__id']==4736 /* IDEA TITLE */){
-
-            $is = $this->I_model->fetch(array(
-                'i__id' => $_POST['s__id'],
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ));
-            if(!count($is)){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Invalid Idea ID.',
-                    'original_val' => '',
-                ));
-            }
-
-            //Validate Idea Outcome:
-            $i__validate_title = i__validate_title($_POST['field_value']);
-            if(!$i__validate_title['status']){
-                //We had an error, return it:
-                return view_json(array_merge($i__validate_title, array(
-                    'original_val' => $is[0]['i__title'],
-                )));
-            }
-
-
-            //All good, go ahead and update:
-            $this->I_model->update($_POST['s__id'], array(
-                'i__title' => trim($_POST['field_value']),
-            ), true, $member_e['e__id']);
-
-            return view_json(array(
-                'status' => 1,
             ));
 
         } elseif($_POST['cache_e__id']==6197 /* SOURCE FULL NAME */){
@@ -174,7 +141,7 @@ class X extends CI_Controller
             }
 
 
-            $e__title_validate = e__title_validate($_POST['field_value']);
+            $e__title_validate = e__title_validate($_POST['input__4736']);
             if(!$e__title_validate['status']){
                 return view_json(array_merge($e__title_validate, array(
                     'original_val' => $es[0]['e__title'],
@@ -588,7 +555,7 @@ class X extends CI_Controller
         $e___14874 = $this->config->item('e___14874'); //Mench Cards
 
         $this->load->view('header', array(
-            'title' => $is[0]['i__title'].( $top_i__id > 0 ? ' > '.$top_is[0]['i__title'] : '' ),
+            'title' => view_i_title($is[0]. true).( $top_i__id > 0 ? ' > '.view_i_title($top_is[0]. true) : '' ),
             'i' => $is[0],
             'flash_message' => $flash_message,
         ));
@@ -637,7 +604,7 @@ class X extends CI_Controller
                 'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
                 'x__left' => $_POST['focus_id'],
-            ), array('x__right'), 0, 0, array('i__title' => 'ASC')) as $x) {
+            ), array('x__right'), 0, 0, array('i__message' => 'ASC')) as $x) {
                 $order++;
                 $this->X_model->update($x['x__id'], array(
                     'x__weight' => $order,
@@ -754,7 +721,7 @@ class X extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, $is[0]['i__title'].' BY '.$member_e['e__title']);
+        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, view_i_title($is[0]).' BY '.$member_e['e__title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -1634,7 +1601,7 @@ class X extends CI_Controller
 
 
 
-    function sort_i_handle_load()
+    function sort_i_load()
     {
 
         /*

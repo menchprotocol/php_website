@@ -30,7 +30,7 @@ foreach($is as $in){
     //Add Idea node:
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix[12273].$in['i__id'],
-        'label' => $in['i__title'],
+        'label' => $in['i__message'],
         'size' => 1,
         'node_type' => 1, //Idea
         'node_status' => $in['i__type'],

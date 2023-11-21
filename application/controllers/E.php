@@ -110,7 +110,7 @@ class E extends CI_Controller
         }
     }
 
-    function sort_e_handle_save()
+    function sort_e_save()
     {
 
         //Authenticate Member:

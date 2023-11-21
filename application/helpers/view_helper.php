@@ -187,11 +187,9 @@ function view_url_embed($url, $full_message = null, $return_array = false)
     }
 }
 
-function view_i_title($i){
-
-    $CI =& get_instance();
-    $hide_title = false;
-    return '<span class="text__4736_'.$i['i__id'].' main__title '.( $hide_title ? ' hidden ' : '').'">'.htmlentities(trim($i['i__title'])).'</span>';
+function view_i_title($i, $string_only = false){
+    $i_title = htmlentities(trim(preg_split('#\r?\n#', $i['i__message'], 2)[0]));
+    return ( $string_only ? $i_title : '<span class="main__title">'.$i_title.'</span>' );
 }
 
 
@@ -653,7 +651,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['x__weight'] = 'ASC';
-        //$order_columns['i__title'] = 'ASC';
         $order_columns['x__id'] = 'DESC';
 
         $join_objects = array('x__right');
@@ -1193,41 +1190,14 @@ function view_text_links($string) {
     return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1">$1</a>', $string);
 }
 
-function view_i__cache($i, $simple_version = false){
 
+function view_i__message($i, $plain_no_html = false, $exclude_title = false){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    $messages = '';
-    if(strlen($i['i__message']) && 0){
-
-       return nl2br($i['i__message']).'<br />';
-
-    } elseif(strlen($i['i__cache'])){
-
-        $messages .= $i['i__cache'];
-
-    } else {
-
-        foreach($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 4231,
-            'x__right' => $i['i__id'],
-        ), array('x__creator'), 0, 0, array('x__weight' => 'ASC')) as $mes){
-            $messages .= $CI->X_model->message_view($mes['x__message'], true, $member_e, $i['i__id'], true);
-        }
-
-        $messages .= view_list_sources($i);
-
-        if(strlen($messages)){
-            //Save cache:
-            $CI->I_model->update($i['i__id'], array(
-                'i__cache' => $messages,
-            ));
-        }
-
-    }
-    return ( $simple_version ? str_replace('<a','<span',str_replace('</a','</span',$messages)) : $messages );
+    return $CI->X_model->message_view(( $exclude_title ? strip_first_line($i['i__message']) : $i['i__message'] ), true, $member_e, $i['i__id'], $plain_no_html)
+        .'<br />'.view_list_sources($i, 0, $plain_no_html);
 }
+
 
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
 
@@ -1384,7 +1354,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 //Sort Idea
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_handle">'.$m_top_bar['m__cover'].'</span>';
+                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
@@ -1521,30 +1491,17 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="inner-content">';
 
 
-    if($write_access_i && !$discovery_mode){
-        //Editable title:
-        $ui .= view_input(4736, $i['i__title'], $i['i__id'], $write_access_i, (isset($i['x__weight']) ? (($i['x__weight']*100)+1) : 0), true);
-    } elseif(!$click_locked){
-        $ui .= '<a href="'.$href.'">'.$i_title.'</a>';
-    } else {
-        $ui .= $i_title;
-    }
-
-    $message_tooltip = '';
-
-
-    $message_tooltip .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font messages_4231_' . $i['i__id'] . '">'.view_i__cache($i, $cache_app).( $click_locked ? '</div>' : '</a>' );
-
-
-    if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($write_access_i || $link_creator)){
-        $message_tooltip .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $click_locked ? '</div>' : '</a>' );
-    }
-
-
     $ui .= '<div class="cover-text">';
-    if($message_tooltip){
-        $ui .= $message_tooltip; //grey
+
+    //Idea Message
+    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_html_' . $i['i__id'] . '">'.view_i__message($i, $cache_app).( $click_locked ? '</div>' : '</a>' );
+    $ui .= '<div class="i__message_text_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
+
+    //Link Message, if Any:
+    if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($write_access_i || $link_creator)){
+        $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $click_locked ? '</div>' : '</a>' );
     }
+
     $ui .= '</div>';
     $ui .= '</div></div>';
 
@@ -1603,7 +1560,7 @@ function view_random_title(){
     return random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 }
 
-function view_list_sources($i, $x__creator = 0){
+function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
 
     $CI =& get_instance();
     $relevant_sources = '';
@@ -1613,20 +1570,20 @@ function view_list_sources($i, $x__creator = 0){
         'x__right' => $i['i__id'],
         //'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
-        $relevant_sources .= view_list_source_items($i, $x__creator, $x);
+        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html);
     }
 
     //Idea Setting Source Types:
     foreach($CI->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
         //Show full legal name for agreement:
-        $relevant_sources .= view_list_source_items($i, $x__creator, $e_item);
+        $relevant_sources .= view_list_source_items($i, $x__creator, $e_item, $plain_no_html);
     }
 
-    return ( strlen($relevant_sources) ? '<div class="source-featured">'.$relevant_sources.'</div>' : false );
+    return ( strlen($relevant_sources) ? ( $plain_no_html ? $relevant_sources : '<div class="source-featured">'.$relevant_sources.'</div>' ) : false );
 
 }
 
-function view_list_source_items($i, $x__creator, $x){
+function view_list_source_items($i, $x__creator, $x, $plain_no_html = false){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
@@ -1645,24 +1602,37 @@ function view_list_source_items($i, $x__creator, $x){
     $messages = '';
     foreach($member_follows as $member_follow){
         if(strlen($member_follow['x__message'])){
-            $messages .= '<h2 style="padding:0 0 8px;">' . $member_follow['x__message'] . '</h2>';
+            $messages .= ( $plain_no_html ? $member_follow['x__message']."\n\n" : '<h2 style="padding:0 0 8px;">' . $member_follow['x__message'] . '</h2>' );
         }
     }
 
     if(strlen($messages)){
-        $x['x__message'] = ( strlen($x['x__message']) ? $messages.nl2br($x['x__message']) : $messages );
+        $x['x__message'] = ( strlen($x['x__message']) ? $messages.( $plain_no_html ? $x['x__message'] : nl2br($x['x__message']) ) : $messages );
     }
 
-    return '<div class="source-info">'
-        . '<span class="icon-block">'.view_cover($x['e__cover'], true) . '</span>'
-        . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
-        . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__right' => $i['i__id'],
-            'x__up' => 37639, //Event Address Approximate
-        ))) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['x__message'].'</a>' : '<div class="sub_note main__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
-        . '</div>';
+    if($plain_no_html){
+        return
+            $x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) ."\n"
+            . $x['x__message']
+            . ( strlen($x['x__message']) && in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $i['i__id'],
+                'x__up' => 37639, //Event Address Approximate
+            ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
+    } else {
+        return '<div class="source-info">'
+            . '<span class="icon-block">'.view_cover($x['e__cover'], true) . '</span>'
+            . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+            . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
+                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $i['i__id'],
+                'x__up' => 37639, //Event Address Approximate
+            ))) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['x__message'].'</a>' : '<div class="sub_note main__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
+            . '</div>';
+    }
+
 
     /*
      *
@@ -1884,7 +1854,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Sort Source
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_handle">'.$m_top_bar['m__cover'].'</span>';
+                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){

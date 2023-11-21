@@ -14,7 +14,7 @@ $all_ids = $this->I_model->recursive_down_ids($list_settings['i'], 'ALL');
 
 
 //Main Idea:
-echo '<h2><a href="/~'.$list_settings['i']['i__id'].'">'.$list_settings['i']['i__title'].'</a> '.count($all_ids).' IDEAS</h2>';
+echo '<h2><a href="/~'.$list_settings['i']['i__id'].'">'.view_i_title($list_settings['i'], true).'</a> '.count($all_ids).' IDEAS</h2>';
 
 echo '<div class="row justify-content">';
 foreach($all_ids as $recursive_down_id){

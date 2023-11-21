@@ -365,7 +365,7 @@ function toggle_headline(x__type){
 }
 
 
-function sort_e_handle_load(x__type) {
+function sort_e_load(x__type) {
 
     var sort_item_count = parseInt($('.headline_body_' + x__type).attr('read-counter'));
     console.log('Started Source Sorting for @'+x__type+' Counting: '+sort_item_count)
@@ -389,14 +389,14 @@ function sort_e_handle_load(x__type) {
 
         //Show sort icon:
         console.log('Completed Loading Sorting for @'+x__type)
-        $('.sort_e_handle').removeClass('hidden');
+        $('.sort_e_grab').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
-            handle: ".sort_e_handle", // Restricts sort start click/touch to the specified element
+            handle: ".sort_e_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                sort_e_handle_save(x__type);
+                sort_e_save(x__type);
             }
         });
     }, 377);
@@ -599,7 +599,7 @@ function init_remove(){
             return false;
         }
         init_in_process = (x__id + i__id);
-        var r = confirm("Remove "+$('.text__4736_'+i__id+':first').text()+"?");
+        var r = confirm("Remove idea #"+i__id+"?");
         if (r==true) {
             //Save changes:
             $.post("/x/x_remove", {
@@ -803,23 +803,13 @@ function toggle_search(){
 var idea_changed = false;
 function edit_idea(i__id){
 
-    $('#modal31911').modal('show');
-    $('.input_note_4231').val('');
-    $('.note_error_4231').html('');
     $('#modal_i__id').val(i__id);
-
-    $.post("/i/edit_idea", {
-        i__id:i__id,
-    }, function (data) {
-        if(data.status){
-            $('.input_note_4231').val(data.message.trim()).focus();
-            setTimeout(function () {
-                set_autosize($('.input_note_4231'));
-            }, 237);
-        } else {
-            $('.note_error_4231').html(data.message);
-        }
-    });
+    $('.note_error_4736').html('');
+    $('.input__4736').val($('.i__message_text_'+i__id).text()).focus();
+    $('#modal31911').modal('show');
+    setTimeout(function () {
+        set_autosize($('.input__4736'));
+    }, 237);
 
 }
 
@@ -1527,11 +1517,11 @@ function load_tab(x__type, auto_load){
 
         if((x__type==12273 || x__type==11019) || (focus_card==12274 && x__type==6255)){
             setTimeout(function () {
-                sort_i_handle_load(x__type);
+                sort_i_load(x__type);
             }, 2584);
         } else if((x__type==12274 || x__type==11030) || (focus_card==12273 && x__type==6255)) {
             setTimeout(function () {
-                sort_e_handle_load(x__type);
+                sort_e_load(x__type);
             }, 2584);
         }
 
@@ -1562,13 +1552,13 @@ function i__add(x__type, link_i__id) {
     //Remove results:
     $('.mini-cover.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     i_is_adding = true;
-    var sort_i_handler = ".card_cover";
+    var sort_i_grabr = ".card_cover";
     var input_field = $('.new-list-'+x__type+' .add-input');
-    var i__title = input_field.val();
+    var input__4736 = input_field.val();
 
 
     //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
-    if (!link_i__id && i__title.length < 1) {
+    if (!link_i__id && input__4736.length < 1) {
         alert('Missing Idea Title');
         input_field.focus();
         return false;
@@ -1576,14 +1566,14 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(x__type, sort_i_handler, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
+    add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
     
     //Update backend:
     $.post("/i/i__add", {
         x__type: x__type,
         focus_card: fetch_int_val('#focus_card'),
         focus_id: fetch_int_val('#focus_id'),
-        i__title: i__title,
+        input__4736: input__4736,
         link_i__id: link_i__id
     }, function (data) {
 
@@ -1596,10 +1586,10 @@ function i__add(x__type, link_i__id) {
 
             x_type_counter(x__type, 1);
 
-            sort_i_handle_load(x__type);
+            sort_i_load(x__type);
 
             //Add new
-            add_to_list(x__type, sort_i_handler, data.new_i_html);
+            add_to_list(x__type, sort_i_grabr, data.new_i_html);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -1698,7 +1688,7 @@ function e__add(x__type, e_existing_id) {
                 //Allow inline editing if enabled:
                 x_set_start_text();
 
-                sort_e_handle_load(x__type);
+                sort_e_load(x__type);
                 load_covers();
 
                 //Hide Coin:
@@ -1881,16 +1871,16 @@ function validURL(str) {
 }
 
 
-function add_to_list(x__type, sort_i_handler, html_content) {
+function add_to_list(x__type, sort_i_grabr, html_content) {
 
     //See if we previously have a list in place?
-    if ($("#list-in-" + x__type + " " + sort_i_handler).length > 0) {
+    if ($("#list-in-" + x__type + " " + sort_i_grabr).length > 0) {
         if(!js_n___14686.includes(x__type)){
             //Downwards add to start"
-            $("#list-in-" + x__type + " " + sort_i_handler + ":first").before(html_content);
+            $("#list-in-" + x__type + " " + sort_i_grabr + ":first").before(html_content);
         } else {
             //Upwards adds to end:
-            $("#list-in-" + x__type + " " + sort_i_handler + ":last").after(html_content);
+            $("#list-in-" + x__type + " " + sort_i_grabr + ":last").after(html_content);
         }
     } else {
         //Raw list, add before input filed:
@@ -1935,7 +1925,7 @@ jQuery.fn.extend({
 
 
 
-function image_api_search(x__type){
+function image_api_search(){
     x_create({
         x__creator: js_pl_id,
         x__type: 14576, //MODAL VIEWED
@@ -1943,7 +1933,6 @@ function image_api_search(x__type){
         x__right: fetch_int_val('#focus_id'),
     });
     $('#modal14073').modal('show');
-    $('#modal_x__type').val(x__type);
     $('.new_images').html('');
     $('.images_query').val('');
     setTimeout(function () {
@@ -1966,12 +1955,9 @@ function images_search(q){
 }
 
 function images_add(image_url, image_title){
-
-    var x__type = $('#modal_x__type').val();
-    var current_value = $('.input_note_' + x__type).val();
+    var current_value = $('.input__4736').val();
     $('#modal14073').modal('hide');
-    $('.input_note_' + x__type).val(( current_value.length ? current_value+"\n\n" : '' ) + image_url + '?e__title='+encodeURI(image_title));
-
+    $('.input__4736').val(( current_value.length ? current_value+"\n\n" : '' ) + image_url + '?e__title='+encodeURI(image_title));
 }
 
 
@@ -1993,16 +1979,16 @@ function update_text_name(cache_e__id, e__id, e__title){
     set_autosize($(handler));
 }
 
-function x_set_text(this_handler){
+function x_set_text(this_grabr){
 
     var modify_data = {
-        s__id: parseInt($(this_handler).attr('s__id')),
-        cache_e__id: parseInt($(this_handler).attr('cache_e__id')),
-        field_value: $(this_handler).val().trim()
+        s__id: parseInt($(this_grabr).attr('s__id')),
+        cache_e__id: parseInt($(this_grabr).attr('cache_e__id')),
+        input__4736: $(this_grabr).val().trim()
     };
 
     //See if anything changes:
-    if( $(this_handler).attr('old-value')==modify_data['field_value'] ){
+    if( $(this_grabr).attr('old-value')==modify_data['input__4736'] ){
         //Nothing changed:
         return false;
     }
@@ -2024,7 +2010,7 @@ function x_set_text(this_handler){
         } else {
 
             //If Updating Text, Updating Corresponding Fields:
-            update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['field_value']);
+            update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['input__4736']);
 
         }
 
@@ -2119,7 +2105,7 @@ function set_autosize(theobject){
 
 var sorting_loaded = []; // more efficient than new Array()
 
-function sort_i_handle_load(x__type){
+function sort_i_load(x__type){
 
     if(!js_n___4603.includes(x__type)){
         console.log(x__type+' is not sortable');
@@ -2144,7 +2130,7 @@ function sort_i_handle_load(x__type){
             return false;
         }
 
-        $('.sort_i_handle').removeClass('hidden');
+        $('.sort_i_grab').removeClass('hidden');
         console.log(x__type+' sorting load success');
         sorting_loaded.push(x__type);
 
@@ -2152,7 +2138,7 @@ function sort_i_handle_load(x__type){
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+x__type+" .sort_i_handle", // Restricts sort start click/touch to the specified element
+            handle: "#list-in-"+x__type+" .sort_i_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
 
                 var sort_rank = 0;
@@ -2167,7 +2153,7 @@ function sort_i_handle_load(x__type){
 
                 //Update order:
                 if(sort_rank > 0){
-                    $.post("/x/sort_i_handle_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                    $.post("/x/sort_i_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
                         //Update UI to confirm with member:
                         if (!data.status) {
                             //There was some sort of an error returned!
@@ -2534,41 +2520,37 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
 
 var message_saving = false; //Prevent double saving
-function save_editor(){
+function i_edit_save(){
 
     if(message_saving){
         return false;
     }
 
     message_saving = true;
-    var x__type = 4231;
     var i__id = $('#modal_i__id').val();
-    var input_textarea = '.input_note_'+x__type;
-
-    $.post("/i/save_editor", {
+    var message_text = $('.input__4736').val().trim();
+    $.post("/i/i_edit_save", {
         i__id:i__id,
-        field_value: $('.input_note_4231').val().trim()
+        input__4736: message_text, //Idea Message
+        input__32337: $('.input__32337').val().trim() //Idea Hashtag
     }, function (data) {
 
         if (!data.status) {
 
             //Show Errors:
-            $(".note_error_"+x__type).html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Idea Not Saved:<br />'+data.message);
+            $(".note_error_4736").html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Idea Not Saved:<br />'+data.message);
 
         } else {
-
-            edit_idea(i__id);
 
             $('#modal31911').modal('hide');
 
             //Reset errors:
-            $(".note_error_"+x__type).html('');
+            $(".note_error_4736").html('');
 
             //Update Idea Message:
-            $('.messages_4231_'+i__id).html(data.message);
-
-            //Flash idea:
-            $(".card___12273_"+i__id).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233);
+            $('.i__message_text_'+i__id).text(message_text);
+            $('.i__message_html_'+i__id).html(data.message_html);
+            $(".card___12273_"+i__id).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash idea
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
@@ -2625,7 +2607,7 @@ function e_x_form_unlock(result){
 }
 
 
-function sort_e_handle_save(x__type) {
+function sort_e_save(x__type) {
 
     var new_x__weight = [];
     var sort_rank = 0;
@@ -2644,7 +2626,7 @@ function sort_e_handle_save(x__type) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/sort_e_handle_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
+        $.post("/e/sort_e_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!

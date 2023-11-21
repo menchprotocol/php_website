@@ -641,15 +641,20 @@ class E_model extends CI_Model
 
                     $x__message = update_description($before_data[0][$key], $value);
 
+                } elseif($key=='e__handle') {
+
+                    $x__type = 41983; //Source Handle Update
+                    $x__message = update_description($before_data[0][$key], $value);
+
                 } elseif($key=='e__title') {
 
-                    $x__type = 10646; //Member Updated Name
+                    $x__type = 10646; //Source Title Update
                     $x__message = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='e__access') {
 
                     if(in_array($value, $this->config->item('n___7358') /* ACTIVE */)){
-                        $x__type = 10654; //Source Updated Status
+                        $x__type = 10654; //Source Status Updated
                     } else {
                         $x__type = 6178; //Source Deleted
                     }

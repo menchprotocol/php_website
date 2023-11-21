@@ -9,7 +9,7 @@ if(!count($is)){
     die('Invalid Idea ID');
 }
 
-echo '<h2>' . $is[0]['i__title'] . '</h2>';
+echo '<h2>' . view_i_title($is[0]) . '</h2>';
 
 $preg_query = $this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

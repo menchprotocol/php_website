@@ -38,15 +38,6 @@ if(!$is_u_request || isset($_GET['cron'])){
         }
 
 
-        $plain_message = '';
-        foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $drafting_message['i__id'],
-        ), array(), 0, 0, array('x__weight' => 'ASC')) as $count => $x) {
-            $plain_message .= $x['x__message']."\n\n";
-            //$plain_message .= $this->X_model->message_view($x['x__message']);
-        }
         $children = $this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -71,6 +62,8 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Now let's see who will receive this:
         $total_sent = 0;
         $list_settings = list_settings($drafting_message['i__id']);
+        $idea_plain_message = view_i__message($drafting_message, true, true);
+
         foreach($list_settings['query_string'] as $x) {
             //Send to all of them IF NOT SENT
             if(!count($this->X_model->fetch(array(
@@ -81,7 +74,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             )))){
 
                 //Append children as options:
-                $addon_links = '';
+                $plain_message = '';
                 foreach($children as $down_or){
 
                     $discoveries = $this->X_model->fetch(array(
@@ -91,12 +84,12 @@ if(!$is_u_request || isset($_GET['cron'])){
                         'x__left' => $down_or['i__id'],
                     ));
                     //Has this user discovered this idea or no?
-                    $addon_links .= $down_or['i__title'].":\n";
-                    $addon_links .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).$top_link.'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash($x['e__id']) : '' )."\n\n";
+                    $plain_message .= view_i_title($down_or, true).":\n";
+                    $plain_message .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).$top_link.'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash($x['e__id']) : '' )."\n\n";
 
                 }
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], $drafting_message['i__title'], $plain_message.trim($addon_links), array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], view_i_title($drafting_message, true), $idea_plain_message."\n\n".trim($plain_message), array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $drafting_message['i__id'],
                 ), 0, $drafting_message['x__website'], true);

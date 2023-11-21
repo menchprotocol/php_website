@@ -15,13 +15,7 @@ if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
     if(isset($_GET['x__type']) && $_GET['x__type']==4250){ //IDEA created
         //Filter idea status based on
         $joined_by = array('x__right');
-
-        if (substr_count($_GET['i__type'], ',') > 0) {
-            //This is multiple:
-            $query_filters['( i__type IN (' . $_GET['i__type'] . '))'] = null;
-        } else {
-            $query_filters['i__type'] = intval($_GET['i__type']);
-        }
+        $query_filters['( i__type IN (' . $_GET['i__type'] . '))'] = null;
     } else {
         unset($_GET['i__type']);
     }
