@@ -2061,8 +2061,9 @@ input.form-control {
 }
 
 .mini-cover .cover-content {
-    top: 5px;
+    top: 10px;
     position: absolute;
+    border-radius: 10px !important;
 }
 .focus-cover .cover-content {
     max-height: 85%;
