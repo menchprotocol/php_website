@@ -2004,6 +2004,10 @@ i, .btn .show-max {
     top:36px;
 }
 
+.mini-cover .cover-content{
+    max-height: 80%;
+}
+
 .coin-12274 .cover-content{
     position: relative;
     width: 100% !important;
