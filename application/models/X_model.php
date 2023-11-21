@@ -745,6 +745,8 @@ class X_model extends CI_Model
          *
          * */
 
+        return view_links_html($message_input);
+
         //Try to fetch session if recipient not provided:
         if(!isset($member_e['e__id'])){
             $member_e = superpower_unlocked();
@@ -852,6 +854,7 @@ class X_model extends CI_Model
             if(strlen($es[0]['e__cover'])){
                 $edit_btn = '<span class="icon-block-xxs mini_6197_'.$es[0]['e__id'].'">'.view_cover($es[0]['e__cover'], true).'</span> ';
             }
+
 
             $on_its_own_line = false;
             $new_lines = 0;
