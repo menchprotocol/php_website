@@ -168,10 +168,10 @@ echo '<div class="light-bg large-frame">';
 
 //Title:
 echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.view_i_title($i, true).'</h1>';
-echo view_i__message($i, false, true);
-
-
-if(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
+$messages_without_title = view_i__message($i, false, true);
+if($messages_without_title){
+    echo $messages_without_title;
+} elseif(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
     //Auto complete:
     echo '<script> $(document).ready(function () { go_next() }); </script>';
 }
