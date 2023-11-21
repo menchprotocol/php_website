@@ -188,8 +188,9 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 }
 
 function view_i_title($i, $string_only = false){
-    $i_title = htmlentities(trim(preg_split('#\r?\n#', $i['i__message'], 2)[0]));
-    return ( $string_only ? $i_title : '<span class="main__title">'.$i_title.'</span>' );
+    $lines = explode("\n", $i['i__message']);
+    echo htmlentities($lines['0']);
+    return ( $string_only ? $lines['0'] : '<span class="main__title">'.$lines['0'].'</span>' );
 }
 
 

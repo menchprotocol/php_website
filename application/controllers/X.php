@@ -555,7 +555,7 @@ class X extends CI_Controller
         $e___14874 = $this->config->item('e___14874'); //Mench Cards
 
         $this->load->view('header', array(
-            'title' => view_i_title($is[0]. true).( $top_i__id > 0 ? ' > '.view_i_title($top_is[0]. true) : '' ),
+            'title' => view_i_title($is[0], true).( $top_i__id > 0 ? ' > '.view_i_title($top_is[0],  true) : '' ),
             'i' => $is[0],
             'flash_message' => $flash_message,
         ));
