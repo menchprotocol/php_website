@@ -189,7 +189,6 @@ function view_url_embed($url, $full_message = null, $return_array = false)
 
 function view_i_title($i, $string_only = false){
     $lines = explode("\n", $i['i__message']);
-    echo htmlentities($lines['0']);
     return ( $string_only ? $lines['0'] : '<span class="main__title">'.$lines['0'].'</span>' );
 }
 
