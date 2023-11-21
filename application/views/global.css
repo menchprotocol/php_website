@@ -2061,12 +2061,12 @@ input.form-control {
 }
 
 .mini-cover .cover-content {
-    top: 10px;
+    top: 8px;
     position: absolute;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
 }
 .focus-cover .cover-content {
-    max-height: 85%;
+    max-height: 82%;
 }
 
 #container_search .mini-cover .cover-content {
@@ -2138,7 +2138,7 @@ input.form-control {
 .card_cover{
     position: relative;
     margin:0 0 0 0 !important;
-    padding: 0 0 5px 0 !important;
+    padding: 0 0 0 0 !important;
     border-radius: 0 !important;
 }
 .card_cover.coin-12274,
