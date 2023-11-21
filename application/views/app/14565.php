@@ -54,7 +54,7 @@ echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377p
 echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
 
 
-$top_messages = view_i__message($primary_i['i__message'], false, true);
+$top_messages = view_i__message($primary_i, false, true);
 
 //Did we find any?
 $messages = '';
