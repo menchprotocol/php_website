@@ -1565,7 +1565,7 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
     $CI =& get_instance();
     $relevant_sources = '';
     foreach($CI->X_model->fetch(array(
-        '( x__type IN (' . join(',', $CI->config->item('n___33602')) . ') OR ( x__type IN (' . join(',', $CI->config->item('n___41975')) . ' AND e__access IN (' . join(',', $CI->config->item('n___41981')) . ')))' => null, //FEATURED ACCESS -OR- DISCOVERY FEATURED LINKS
+        '( x__type IN (' . join(',', $CI->config->item('n___33602')) . ') OR ( x__type IN (' . join(',', $CI->config->item('n___41975')) . ') AND e__access IN (' . join(',', $CI->config->item('n___41981')) . '))' => null, //FEATURED ACCESS -OR- DISCOVERY FEATURED LINKS
         'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__right' => $i['i__id'],
         //'x__up !=' => website_setting(0),
