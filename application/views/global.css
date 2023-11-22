@@ -4287,6 +4287,10 @@ main {
     background-color: #EFEFEF !important;
 }
 
+.sub__handle {
+    font-size: 0.6em;
+}
+
 .active_bars_1 td { width:100.0% !important; }
 .active_bars_2 td { width:50.00% !important; }
 .active_bars_3 td { width:33.34% !important; }
