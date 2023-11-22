@@ -1574,6 +1574,7 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
     $CI =& get_instance();
     $relevant_sources = '';
     $e___33602 = $CI->config->item('e___33602');
+    $e___41975 = $CI->config->item('e___41975');
 
     //Define Order:
     $order_columns = array();
@@ -1589,7 +1590,7 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
         'x__right' => $i['i__id'],
         'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, $order_columns) as $x){
-        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, ( in_array($x['x__type'] , $CI->config->item('n___41975')) ? $e___33602[$x['x__type']] : array() ));
+        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, ( in_array($x['x__type'] , $CI->config->item('n___41975')) ? $e___41975[$x['x__type']] : array() ));
     }
 
     //Idea Setting Source Types:
@@ -1641,7 +1642,7 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
             ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
     } else {
         return '<div class="source-info" data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? $append_m['m__message'] : '' ) : '' ).'">'
-            . ( count($append_m) ? '<span class="icon-block">'.$append_m['m__cover'].'</span>' : '<span class="icon-block">'. view_cover($x['e__cover'], true) . '</span>' )
+            . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
             . '<span class="main__title">'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
