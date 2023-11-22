@@ -440,8 +440,20 @@ function view_cache($following, $e__id, $micro_status = true, $data_placement = 
 
 
 
-
 function view_card($href, $is_current, $x__type, $o__access, $o__type, $o__title, $x__message = null){
+    $CI =& get_instance();
+    $e___4593 = $CI->config->item('e___4593');
+    $e___6177 = $CI->config->item('e___6177');
+    return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item main__title '.( $is_current ? ' active ' : '' ).'">'.
+        ( in_array($x__type, $CI->config->item('n___32172')) ? '<span class="icon-block-xxs">'.$e___4593[$x__type]['m__cover'].'</span>' : '' ).
+        ( in_array($o__access, $CI->config->item('n___32172')) ? '<span class="icon-block-xxs">'.$e___6177[$o__access]['m__cover'].'</span>' : '' ).
+        ( strlen($o__type) ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
+        $o__title.
+        ( strlen($x__message) && superpower_active(12701, true) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).
+        '</a>';
+}
+
+function view_more($href, $is_current, $x__type, $o__access, $o__type, $o__title, $x__message = null){
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item main__title '.( $is_current ? ' active ' : '' ).'">'.
         ( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).
         ( $o__access ? '<span class="icon-block-xxs">'.$o__access.'</span>' : '' ).

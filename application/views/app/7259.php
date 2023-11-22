@@ -172,6 +172,4 @@ echo '</form>';
 
         }
     }
-
-    //update_dropdown(, 6182, 15735, 0, 0)
 </script>

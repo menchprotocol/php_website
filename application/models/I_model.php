@@ -150,10 +150,18 @@ class I_model extends CI_Model
                     $x__type = 10644; //Idea updated Outcome
                     $x__message = update_description($before_data[0][$key], $value);
 
+                } elseif($key=='i__access'){
+
+                    $x__type = 41997; //Idea Access Updated
+                    $e___31004 = $this->config->item('e___31004'); //Idea Access
+                    $x__message = view_db_field($key) . ' updated from [' . $e___31004[$before_data[0][$key]]['m__title'] . '] to [' . $e___31004[$value]['m__title'] . ']';
+                    $x__up = $value;
+                    $x__down = $before_data[0][$key];
+
                 } elseif($key=='i__type'){
 
                     $x__type = 10648; //Idea updated Status
-                    $e___4737 = $this->config->item('e___4737'); //Idea Status
+                    $e___4737 = $this->config->item('e___4737'); //Idea Types
                     $x__message = view_db_field($key) . ' updated from [' . $e___4737[$before_data[0][$key]]['m__title'] . '] to [' . $e___4737[$value]['m__title'] . ']';
                     $x__up = $value;
                     $x__down = $before_data[0][$key];
