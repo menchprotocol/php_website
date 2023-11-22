@@ -1561,11 +1561,11 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
 
     $CI =& get_instance();
     $relevant_sources = '';
-    $e___41975 = $CI->config->item('e___41975');
+    $e___33602 = $CI->config->item('e___33602');
 
     //Define Order:
     $order_columns = array();
-    foreach($e___41975 as $x__sort_id => $sort) {
+    foreach($e___33602 as $x__sort_id => $sort) {
         $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
     }
     $order_columns['e__title'] = 'DESC';
@@ -1577,7 +1577,7 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
         'x__right' => $i['i__id'],
         'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, $order_columns) as $x){
-        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, $e___41975[$x['x__type']]);
+        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, $e___33602[$x['x__type']]);
     }
 
     //Idea Setting Source Types:
