@@ -1561,13 +1561,23 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
 
     $CI =& get_instance();
     $relevant_sources = '';
+    $e___41975 = $CI->config->item('e___41975');
+
+    //Define Order:
+    $order_columns = array();
+    foreach($e___41975 as $x__sort_id => $sort) {
+        $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+    }
+    $order_columns['e__title'] = 'DESC';
+
+    //Query Relevant Sources:
     foreach($CI->X_model->fetch(array(
         '( x__type IN (' . join(',', $CI->config->item('n___41975')) . ') OR ( x__type IN (' . join(',', $CI->config->item('n___33602')) . ') AND e__access IN (' . join(',', $CI->config->item('n___41981')) . ')))' => null, //FEATURED ACCESS -OR- DISCOVERY FEATURED LINKS
         'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__right' => $i['i__id'],
         'x__up !=' => website_setting(0),
-    ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x){
-        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html);
+    ), array('x__up'), 0, 0, $order_columns) as $x){
+        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, $e___41975[$x['x__type']]);
     }
 
     //Idea Setting Source Types:
@@ -1580,7 +1590,7 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
 
 }
 
-function view_list_source_items($i, $x__creator, $x, $plain_no_html = false){
+function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $override_m = array()){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
@@ -1618,8 +1628,8 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false){
                 'x__up' => 37639, //Event Address Approximate
             ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
     } else {
-        return '<div class="source-info">'
-            . '<span class="icon-block">'.view_cover($x['e__cover'], true) . '</span>'
+        return '<div class="source-info" title="'.( count($override_m) ? $override_m['m__title'].( strlen($override_m['m__message']) ? $override_m['m__message'] : '' ) : '' ).'">'
+            . '<span class="icon-block">'.view_cover(( count($override_m) ? $override_m['m__cover'] : $x['e__cover'] ), true) . '</span>'
             . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
