@@ -269,8 +269,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <h5 class="main__title"><?= $e___11035[32337]['m__title'] ?></h5>
                     <div class="input-group mb-3">
-                        <span class="input-group-text input__32337" id="basic-addon1">#</span>
-                        <input type="text" class="form-control">
+                        <span class="input-group-text" id="basic-addon1">#</span>
+                        <input type="text" class="form-control input__32337" maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
                     <h5 class="main__title"><?= $e___11035[4736]['m__title'] ?></h5>
