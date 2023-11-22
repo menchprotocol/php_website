@@ -4146,9 +4146,6 @@ main {
 }
 
 .source-info{
-    padding: 10px 0;
-}
-.cover-content .source-info{
     padding: 2px 0;
 }
 .cover-content .source-info .icon-block{
