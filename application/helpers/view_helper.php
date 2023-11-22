@@ -1488,7 +1488,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="cover-text">';
 
     //Idea Message
-    $ui .= '<div class="sub__handle grey main__title">#'.$i['i__hashtag'].'</div>';
+    $ui .= '<div class="sub__handle grey">#'.$i['i__hashtag'].'</div>';
     $ui .= '<div class="main__title">'.view_i_title($i, true).'</div>';
     $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_html_' . $i['i__id'] . '">'.view_i__message($i, $cache_app, true).( $click_locked ? '</div>' : '</a>' );
 
