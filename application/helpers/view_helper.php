@@ -1629,7 +1629,7 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ov
             ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
     } else {
         return '<div class="source-info" title="'.( count($override_m) ? $override_m['m__title'].( strlen($override_m['m__message']) ? $override_m['m__message'] : '' ) : '' ).'">'
-            . '<span class="icon-block">'.( count($override_m) ? $override_m['m__cover'] : view_cover($x['e__cover'], true) ) . '</span>'
+            . '<span class="icon-block">'.( count($override_m) ? $override_m['m__cover'] : '' ). view_cover($x['e__cover'], true) . '</span>'
             . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
