@@ -1577,7 +1577,7 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
         'x__right' => $i['i__id'],
         'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, $order_columns) as $x){
-        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, $e___33602[$x['x__type']]);
+        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, ( in_array($x['x__type'] , $CI->config->item('n___41975')) ? $e___33602[$x['x__type']] : array() ));
     }
 
     //Idea Setting Source Types:
