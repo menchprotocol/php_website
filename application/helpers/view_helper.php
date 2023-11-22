@@ -1643,7 +1643,7 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
     } else {
         return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
-            . '<span class="main__title">'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+            . '<span class="">'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . ( strlen($x['x__message']) ? '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
                     'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
