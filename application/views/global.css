@@ -2238,7 +2238,7 @@ input.form-control {
 }
 .source-info span .main__title {
     padding:3px 0 0;
-    display: inline-block !important;
+    display: inline !important;
     min-height: unset !important;
 }
 
