@@ -1590,7 +1590,7 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
 
 }
 
-function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $override_m = array()){
+function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $append_m = array()){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
@@ -1628,8 +1628,9 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ov
                 'x__up' => 37639, //Event Address Approximate
             ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
     } else {
-        return '<div class="source-info" title="'.( count($override_m) ? $override_m['m__title'].( strlen($override_m['m__message']) ? $override_m['m__message'] : '' ) : '' ).'">'
-            . '<span class="icon-block">'.( count($override_m) ? $override_m['m__cover'] : '' ). view_cover($x['e__cover'], true) . '</span>'
+        return '<div class="source-info" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? $append_m['m__message'] : '' ) : '' ).'">'
+            . ( count($append_m) ? '<span class="icon-block">'.$append_m['m__cover'].'</span>' : '' )
+            . '<span class="icon-block">'. view_cover($x['e__cover'], true) . '</span>'
             . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
