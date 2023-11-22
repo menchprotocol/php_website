@@ -672,6 +672,9 @@ class X_model extends CI_Model
     function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $plain_no_html = false)
     {
 
+        return view_links_html($message_input);
+
+
         /*
          *
          * The primary function that constructs messages based on the following inputs:
@@ -744,8 +747,6 @@ class X_model extends CI_Model
          * See message_view() for more information on input variables.
          *
          * */
-
-        return view_links_html($message_input);
 
         //Try to fetch session if recipient not provided:
         if(!isset($member_e['e__id'])){
