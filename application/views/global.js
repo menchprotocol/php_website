@@ -805,6 +805,7 @@ function edit_idea(i__id){
 
     $('#modal_i__id').val(i__id);
     $('.note_error_4736').html('');
+    $('.input__32337').val($('.i__message_text_'+i__id).attr('i__hashtag'));
     $('.input__4736').val($('.i__message_text_'+i__id).text()).focus();
     $('#modal31911').modal('show');
     setTimeout(function () {
@@ -2528,11 +2529,12 @@ function i_edit_save(){
 
     message_saving = true;
     var i__id = $('#modal_i__id').val();
-    var message_text = $('.input__4736').val().trim();
+    var i__message = $('.input__4736').val().trim();
+    var i__hashtag = $('.input__32337').val().trim();
     $.post("/i/i_edit_save", {
         i__id:i__id,
-        input__4736: message_text, //Idea Message
-        input__32337: $('.input__32337').val().trim() //Idea Hashtag
+        input__4736: i__message, //Idea Message
+        input__32337: i__hashtag //Idea Hashtag
     }, function (data) {
 
         if (!data.status) {
@@ -2548,7 +2550,8 @@ function i_edit_save(){
             $(".note_error_4736").html('');
 
             //Update Idea Message:
-            $('.i__message_text_'+i__id).text(message_text);
+            $('.i__message_text_'+i__id).text(i__message);
+            $('.i__message_text_'+i__id).attr('i__hashtag', i__hashtag);
             $('.i__message_html_'+i__id).html(data.message_html);
             $(".card___12273_"+i__id).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash idea
 

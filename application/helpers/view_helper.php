@@ -1491,7 +1491,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="main__title">'.view_i_title($i, true).'</div>';
     $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_html_' . $i['i__id'] . '">'.view_i__message($i, $cache_app, true).( $click_locked ? '</div>' : '</a>' );
 
-    $ui .= '<div class="i__message_text_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
+    $ui .= '<div class="i__message_text_' . $i['i__id'] . ' hidden" i__hashtag="'.$i['i__hashtag'].'">'.$i['i__message'].'</div>';
 
     //Link Message, if Any:
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($write_access_i || $link_creator)){
@@ -1704,9 +1704,12 @@ function convertURLs($string)
 }
 
 function view_links_html($str) {
+
     $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $str);
     $str = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $str);
-    $str = preg_replace("/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/", '<a href="/-31807?url=$0" target="_blank"><u>$0</u></a>', $str);
+    $str = preg_replace('/(https?:\/\/.*\.(?:png|gif|webp|jpeg|jpg))/i', '<img src="$1" />', $str);
+    $str = preg_replace('/@(^|[^"])(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/', '<a href="/-31807?url=$0" target="_blank"><u>$0</u></a>', $str);
+    //$str = preg_replace('@(^|[^"])(https?://?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@i', '$1<a href="$2">$2</a>', $str); //URL Not Surrounded by quotes
     return nl2br($str);
 }
 
