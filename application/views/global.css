@@ -2236,6 +2236,11 @@ input.form-control {
     display: block;
     min-height: 21px;
 }
+.source-info span .main__title {
+    padding:3px 0 0;
+    display: inline-block !important;
+    min-height: unset !important;
+}
 
 #container_search .cover-content .inner-content .main__title {
     max-height: 110px;
