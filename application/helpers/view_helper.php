@@ -1641,7 +1641,7 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
                 'x__up' => 37639, //Event Address Approximate
             ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
     } else {
-        return '<div class="source-info" data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
+        return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
             . '<span class="main__title">'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
@@ -1650,7 +1650,7 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
                 'x__right' => $i['i__id'],
                 'x__up' => 37639, //Event Address Approximate
             ))) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['x__message'].'</a>' : '<div class="sub_note main__title">'.nl2br($x['x__message']).'</div>' ) . '</div>'
-            . '</div>';
+            . '</span></div>';
     }
 
 
