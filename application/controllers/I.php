@@ -345,15 +345,13 @@ class I extends CI_Controller {
             'i__hashtag' => trim($_POST['input__32337']),
         ));
 
-        //$textarea_content .= view_list_sources($is[0]);
-
         //Update Search Index:
         update_algolia(12273, $is[0]['i__id']);
 
 
         return view_json(array(
             'status' => 1,
-            'message_html' => $textarea_content,
+            'message_html' => view_links_html(trim($_POST['input__4736'])),
         ));
 
     }
