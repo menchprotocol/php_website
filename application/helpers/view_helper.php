@@ -1630,7 +1630,7 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
     } else {
         return '<div class="source-info" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? $append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block">'.$append_m['m__cover'].'</span>' : '' )
-            . '<span class="icon-block">'. view_cover($x['e__cover'], true) . '</span>'
+            . ( strlen($x['e__cover']) ? '<span class="icon-block">'. view_cover($x['e__cover'], true) . '</span>' : '' )
             . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
