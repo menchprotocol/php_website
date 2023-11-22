@@ -1640,9 +1640,9 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
                 'x__up' => 37639, //Event Address Approximate
             ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
     } else {
-        return '<div class="source-info" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? $append_m['m__message'] : '' ) : '' ).'">'
+        return '<div class="source-info" data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? $append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block">'.$append_m['m__cover'].'</span>' : '<span class="icon-block">'. view_cover($x['e__cover'], true) . '</span>' )
-            . '<span>'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+            . '<span class="main__title">'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
