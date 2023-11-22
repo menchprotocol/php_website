@@ -1704,9 +1704,9 @@ function convertURLs($string)
 }
 
 function view_links_html($str) {
-    $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1">$0</a>', $str);
-    $str = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1">$0</a>', $str);
-    $str = preg_replace("/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/", '<a href="/-31807?url=$0" target="_blank">$0</a>', $str);
+    $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $str);
+    $str = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $str);
+    $str = preg_replace("/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/", '<a href="/-31807?url=$0" target="_blank"><u>$0</u></a>', $str);
     return nl2br($str);
 }
 
