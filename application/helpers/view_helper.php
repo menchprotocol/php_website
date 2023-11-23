@@ -1659,7 +1659,7 @@ function view_message($str, $validate_only = false) {
 
 
     //See what we can find:
-    foreach(preg_split('/\s+/', $str) as $word) {
+    foreach(preg_split('/\s+/', $str) as $word_index => $word) {
 
         $reference_type = 0;
 
@@ -1692,15 +1692,13 @@ function view_message($str, $validate_only = false) {
 
             }
 
+            /*
+
         } elseif (substr($word, 0, 1)=='#' && ctype_alnum(substr($word, 1))) {
 
             $reference_type = 31834;
             array_push($references_found[$reference_type], $word);
             $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), $word), $formatted_string);
-
-            /*count($CI->I_model->fetch(array(
-                'i__hashtag' => substr($word, 1),
-            )))*/
 
         } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
 
@@ -1708,14 +1706,13 @@ function view_message($str, $validate_only = false) {
             array_push($references_found[$reference_type], $word);
             $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), $word), $formatted_string);
 
-            /*count($CI->E_model->fetch(array(
-                'e__handler' => substr($word, 1),
-            )))*/
-
+            */
         }
 
     }
 
+    $formatted_string = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $formatted_string);
+    $formatted_string = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $formatted_string);
     $final_message = '<div class="msg"><span>'.nl2br($formatted_string).'</span></div>';
 
 
