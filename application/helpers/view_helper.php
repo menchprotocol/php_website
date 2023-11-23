@@ -1647,12 +1647,12 @@ function view_message($str, $validate_only = false) {
 
 
     $reference_template = array(
-        4258 => '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video>',
-        4259 => '<audio controls src="%s">Your Browser Does Not Support Audio</audio>',
-        4260 => '<img src="%s" class="content-image" />',
-        4261 => '<a href="%s" target="_blank" class="ignore-click"><u>Download File</u></a>',
+        4258 => '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video><!-- %s -->',
+        4259 => '<audio controls src="%s">Your Browser Does Not Support Audio</audio><!-- %s -->',
+        4260 => '<img src="%s" class="content-image" /><!-- %s -->',
+        4261 => '<a href="%s" target="_blank" class="ignore-click"><u>Download File</u></a><!-- %s -->',
         4256 => '<a href="%s" target="_blank" class="ignore-click"><span class="url_truncate"><u>%s</u></span></a>',
-        4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div>',
+        4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
         31834 => '<a href="/%s"><u>%s</u></a>',
         31835 => '<a href="/@%s"><u>%s</u></a>',
     );
@@ -1671,7 +1671,7 @@ function view_message($str, $validate_only = false) {
                 if(strlen($video_id)){
                     $reference_type = 4257; //YouTube URL
                     array_push($references_found[$reference_type], $word);
-                    $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], $video_id /* input */), $formatted_string);
+                    $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], $video_id, $video_id), $formatted_string);
                 }
             }
 
@@ -1688,7 +1688,7 @@ function view_message($str, $validate_only = false) {
                 }
 
                 array_push($references_found[$reference_type], $word);
-                $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], $word /* input */), $formatted_string);
+                $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], $word, $word), $formatted_string);
 
             }
 
@@ -1696,7 +1696,7 @@ function view_message($str, $validate_only = false) {
 
             $reference_type = 31834;
             array_push($references_found[$reference_type], $word);
-            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1) /* input */), $formatted_string);
+            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), substr($word, 1)), $formatted_string);
 
             /*count($CI->I_model->fetch(array(
                 'i__hashtag' => substr($word, 1),
@@ -1706,7 +1706,7 @@ function view_message($str, $validate_only = false) {
 
             $reference_type = 31835;
             array_push($references_found[$reference_type], $word);
-            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1) /* input */), $formatted_string);
+            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), substr($word, 1)), $formatted_string);
 
             /*count($CI->E_model->fetch(array(
                 'e__handler' => substr($word, 1),
