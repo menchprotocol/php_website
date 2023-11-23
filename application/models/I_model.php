@@ -680,33 +680,10 @@ class I_model extends CI_Model
             );
         }
 
-
         $i_new = $this->I_model->create(array(
             'i__message' => ( $clone_title ? $clone_title : "Copy Of ".$this_i[0]['i__message'] ),
             'i__type' => $this_i[0]['i__type'],
         ), $x__creator);
-
-
-        //Clone Messages:
-        foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4231, //IDEA NOTES Messages
-            'x__right' => $i__id,
-        ), array(), 0, 0, array('x__weight' => 'ASC')) as $x) {
-            $this->X_model->create(array(
-                'x__creator' => $x__creator,
-                'x__type' => $x['x__type'],
-                'x__right' => $i_new['i__id'],
-                'x__left' => $x['x__left'],
-                'x__up' => $x['x__up'],
-                'x__down' => $x['x__down'],
-                'x__message' => $x['x__message'],
-                'x__weight' => $x['x__weight'],
-                'x__reference' => $x['x__reference'],
-                'x__metadata' => $x['x__metadata'],
-                'x__access' => $x['x__access'],
-            ));
-        }
 
         //Always Link Sources:
         $filters = array(

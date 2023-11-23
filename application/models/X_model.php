@@ -672,7 +672,7 @@ class X_model extends CI_Model
     function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $plain_no_html = false)
     {
 
-        return view_links_html($message_input);
+        return view_message($message_input);
 
 
         /*
@@ -789,28 +789,6 @@ class X_model extends CI_Model
 
         foreach($string_references['ref_e'] as $referenced_e){
 
-            //We have a reference within this message, let's fetch it to better understand it:
-            $es = $this->E_model->fetch(array(
-                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'e__id' => $referenced_e,
-            ));
-            if (count($es) < 1) {
-                //Remove Source:
-                continue;
-            }
-
-
-            //Set as source reference:
-            array_push($note_references, intval($referenced_e));
-
-
-            //See if this source has any followings transactions to be shown in this appendix
-            $e_media_count = 0;
-            $e_count = 0;
-            $e_appendix = null;
-            $e_links = array();
-            $first_segment = $this->uri->segment(1);
-            $is_current_e = ( $first_segment=='@'.$referenced_e );
 
             //Determine what type of Media this reference has:
             if(!$is_current_e || $string_references['ref_time_found']){
@@ -826,23 +804,6 @@ class X_model extends CI_Model
                     'e__weight' => 'DESC',
                 )) as $e_up) {
 
-                    //if(!strlen($e_up['x__message']) || (in_array($e_up['e__access'], $this->config->item('n___30956')) && !write_access_e($e_up['e__id']))){ continue; }
-
-                    $detect_data_type = detect_data_type($e_up['x__message']);
-
-                    $e_count++;
-
-                    if($detect_data_type['x__type']==4256 /* URL */) {
-
-                        array_push($e_links, $e_up);
-
-                    } elseif (in_array($detect_data_type['x__type'], $this->config->item('n___12524'))) {
-
-                        //SOURCE LINK VISUAL
-                        $e_media_count++;
-                        $e_appendix .= '<div class="e-appendix paddingup">' . preview_x__message($e_up['x__message'], $detect_data_type['x__type'], $message_input, $is_discovery_mode) . '</div>';
-
-                    }
                 }
             }
 

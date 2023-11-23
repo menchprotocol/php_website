@@ -195,95 +195,6 @@ function int_hash($string){
 }
 
 
-function detect_data_type($string)
-{
-
-    /*
-     * Detect what type of Source URL type should we create
-     * based on options listed in this idea: @4227
-     * */
-
-    $string = trim($string);
-    $CI =& get_instance();
-    $has_space = substr_count($string, ' ');
-
-
-    if (is_null($string) || !strlen($string)) {
-
-        return array(
-            'status' => 1,
-            'x__type' => 34162, //Null
-        );
-
-    } elseif($has_space){
-
-        //Is it a currency?
-        foreach($CI->config->item('e___26661') as $x__type_currency => $m_currency) {
-            if (substr($string, 0, 4)==$m_currency['m__message'].' ' && is_numeric(substr($string, 4))) {
-                return array(
-                    'status' => 1,
-                    'x__type' => 26661,
-                );
-            }
-        }
-
-    } elseif(!$has_space) {
-
-        if ((strlen(intval($string))==strlen($string) || (in_array(substr($string , 0, 1), array('+','-')) && strlen(intval(substr($string , 1)))==strlen(substr($string , 1)))) && (intval($string) != 0 || $string=='0')) {
-            return array(
-                'status' => 1,
-                'x__type' => 4319, //Number
-            );
-        }
-
-        if (substr($string, 0, 1)=='/' && substr($string, 0, 2)!='//') {
-            return array(
-                'status' => 1,
-                'x__type' => 14728, //Relative URL
-            );
-        }
-
-        if (filter_var($string, FILTER_VALIDATE_URL)) {
-            return $CI->E_model->parse_url($string); //See what type of URL (this could fail if duplicate, etc...)
-        }
-
-        if (substr($string, -1)=='%' && is_numeric(substr($string, 0, (strlen($string)-1)))) {
-            return array(
-                'status' => 1,
-                'x__type' => 7657, //Percent
-            );
-        }
-
-        if (preg_match('/^([a-f0-9]{64})$/', $string)) {
-            return array(
-                'status' => 1,
-                'x__type' => 32102, //MD5 Hash
-            );
-        }
-
-        if (filter_var(trim($string), FILTER_VALIDATE_EMAIL)) {
-            return array(
-                'status' => 1,
-                'x__type' => 32097, //Email
-            );
-        }
-
-    }
-
-    if (validateDate($string, 'Y-m-d H:i:s')) {
-        return array(
-            'status' => 1,
-            'x__type' => 4318, //Date/time
-        );
-    }
-
-    return array(
-        'status' => 1,
-        'x__type' => 4255, //Text (Default)
-    );
-
-}
-
 function validateDate($date, $format)
 {
     $d = DateTime::createFromFormat($format, $date);
@@ -295,9 +206,6 @@ function current_link(){
 }
 
 
-function is_https_url($url){
-    return substr($url, 0, 8)=='https://';
-}
 
 function is_valid_e_string($string){
     return substr($string, 0, 1)=='@' && is_numeric(one_two_explode('@',' ',$string));
@@ -306,43 +214,6 @@ function is_valid_e_string($string){
 function is_valid_i_string($string){
     return substr($string, 0, 1)=='#' && is_numeric(one_two_explode('#',' ',$string));
 }
-
-
-
-
-function e_count_6194($e__id, $specific_id = 0){
-
-    //NOTE HERE
-
-    //Checks where in the database/platform a source might be referenced
-    $e_count_6194 = array(); //Holds return values
-    $CI =& get_instance();
-    $e___6194 = $CI->config->item('e___6194');
-    $query_index = array(
-        4364 => 'SELECT count(x__id) as totals FROM table__x WHERE x__access IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__creator=',
-        4593 => 'SELECT count(x__id) as totals FROM table__x WHERE x__access IN (' . join(',', $CI->config->item('n___7359')) . ') AND x__type=',
-    );
-
-    foreach($query_index as $e_app_id => $query){
-
-        if($specific_id && $specific_id!=$e_app_id){
-            continue;
-        }
-
-        $query = $CI->db->query( $query . $e__id );
-        foreach($query->result() as $row)
-        {
-            if($row->totals > 0){
-                $e_count_6194[$e_app_id] = $row->totals;
-            }
-        }
-
-    }
-
-    return $e_count_6194;
-
-}
-
 
 function string_is_icon($icon_code){
     return !filter_var($icon_code, FILTER_VALIDATE_URL) && substr_count($icon_code,'fa');
@@ -1264,8 +1135,8 @@ function upload_to_cdn($file_url, $x__creator = 0, $x__metadata = null, $is_loca
      * */
 
     $CI =& get_instance();
-
-    $file_name = md5($file_url . 'fileSavingSa!t') . '.' . fetch_file_ext($file_url);
+    $fileInfo = pathinfo($file_url);
+    $file_name = md5($file_url . 'fileSavingSa!t') . '.' . $fileInfo['extension'];
 
     if (!$is_local) {
         //Save this remote file to local first:
@@ -1340,76 +1211,16 @@ function upload_to_cdn($file_url, $x__creator = 0, $x__metadata = null, $is_loca
         );
     }
 
-
     //Delete local file:
     @unlink(($is_local ? $file_url : $file_path . $file_name));
 
-    //Define new URL:
-    $cdn_new_url = trim($result['ObjectURL']);
-
-    if($x__creator < 1){
-        //Just return URL:
-        return array(
-            'status' => 1,
-            'cdn_url' => $cdn_new_url,
-        );
-    }
-
-    //Create and transaction new source to CDN and uploader:
-    $url_e = $CI->E_model->parse_url($cdn_new_url, $x__creator, 0, $page_title);
-
-    if(isset($url_e['e_url']['e__id']) && $url_e['e_url']['e__id'] > 0){
-
-        //All good:
-        return array(
-            'status' => 1,
-            'cdn_e' => $url_e['e_url'],
-            'cdn_url' => $cdn_new_url,
-        );
-
-    } else {
-
-        $CI->X_model->create(array(
-            'x__type' => 4246, //Platform Bug Reports
-            'x__creator' => $x__creator,
-            'x__message' => 'upload_to_cdn() Failed to create new source from CDN file',
-            'x__metadata' => array(
-                'file_url' => $file_url,
-                'x__metadata' => $x__metadata,
-                'is_local' => ( $is_local ? 1 : 0 ),
-            ),
-        ));
-
-        return array(
-            'status' => 0,
-            'message' => 'Failed to create new source from CDN file',
-        );
-    }
-}
-
-
-
-function file_extension($generic_url){
-
-    $file_extension = null;
-    $generic_url = str_replace('www.' , '', $generic_url);
-    $analyze = parse_url($generic_url);
-    $url_parts = explode('.', $analyze['host']);
-
-    if(isset($analyze['path']) && strlen($analyze['path']) > 0){
-        $path_parts = explode('.', $analyze['path']);
-        if(count($path_parts) >= 2){
-            $possible_extension = array_values(array_slice($path_parts, -1))[0];
-            if(strlen($possible_extension) >= 2 && strlen($possible_extension) <= 4){
-                //Yes, this seems like an extension:
-                $file_extension = strtolower($possible_extension);
-            }
-        }
-    }
-
-    return $file_extension;
+    return array(
+        'status' => 1,
+        'cdn_url' => trim($result['ObjectURL']),
+    );
 
 }
+
 
 
 function js_php_redirect($url, $timer = 0){
@@ -1543,12 +1354,9 @@ function validate_i__message($string){
 
 }
 
-function e__title_validate($string, $x__type = 0){
+function validate_e__title($string){
 
     //Validate:
-    $CI =& get_instance();
-    $e___4592 = $CI->config->item('e___4592');
-    $errors = false;
     $title_clean = trim($string);
     while(substr_count($title_clean , '  ') > 0){
         $title_clean = str_replace('  ',' ',$title_clean);
@@ -1556,58 +1364,33 @@ function e__title_validate($string, $x__type = 0){
 
     if(!strlen(trim($string))){
 
-        if($x__type){
-            $title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
-        }
-
-        $errors = array(
+        return array(
             'status' => 0,
-            'message' => 'Name missing',
+            'message' => 'Source title missing',
         );
 
     } elseif(strlen(trim($string)) < 1){
 
-        if($x__type){
-            $title_clean = $e___4592[$x__type]['m__title'].' '.substr(md5(time() . rand(1,99999)), 0, 8);
-        }
-
-        $errors = array(
+        return array(
             'status' => 0,
-            'message' => 'Enter name to continue.',
+            'message' => 'Enter Source title to continue.',
         );
 
     } elseif (strlen($string) > view_memory(6404,6197)) {
 
-        if($x__type){
-            $title_clean = substr($string, 0, view_memory(6404,6197));
-        }
-
-        $errors = array(
-            'status' => 0,
-            'message' => 'Name must be '.view_memory(6404,6197).' characters or less',
-        );
-
-    }
-
-    $title_clean = trim($title_clean);
-
-    //Just the clean name?
-    if($x__type){
-        return $title_clean;
-    }
-
-
-    if($errors){
-
-        return $errors;
-
-    } else {
-        //All good, return success:
         return array(
-            'status' => 1,
-            'e__title_clean' => $title_clean,
+            'status' => 0,
+            'message' => 'Source title must be '.view_memory(6404,6197).' characters or less',
         );
+
     }
+
+    //All good, return success:
+    return array(
+        'status' => 1,
+        'e__title_clean' => trim($title_clean),
+    );
+
 }
 
 function user_website($x__creator){

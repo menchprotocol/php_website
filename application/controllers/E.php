@@ -79,7 +79,7 @@ class E extends CI_Controller
 
                 foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $source_e) {
                     if(isset($source_e['e__id'])){
-                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $source_e['x__type'], $source_e['e__access'], view_cover($source_e['e__cover'], true), $source_e['e__title'], preview_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $source_e['x__type'], $source_e['e__access'], view_cover($source_e['e__cover'], true), $source_e['e__title'], $source_e['x__message']);
                         $listed_items++;
                     }
                 }
@@ -94,7 +94,7 @@ class E extends CI_Controller
 
                 foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                         $listed_items++;
                     }
                 }
@@ -413,32 +413,14 @@ class E extends CI_Controller
 
         } else {
 
-            //We are creating a new source OR adding a URL...
-
-            //Is this a URL?
-            if (filter_var($_POST['e_new_string'], FILTER_VALIDATE_URL)) {
-
-                //Digest URL to see what type it is and if we have any errors:
-                $url_e = $this->E_model->parse_url($_POST['e_new_string'], ( $adding_to_idea ? $member_e['e__id'] /* Will Create if Not Found */ : 0 ));
-                if (!$url_e['status']) {
-                    return view_json($url_e);
-                }
-
-                //Add this source:
-                $focus_e = $url_e['e_url'];
-
+            //We are creating a new source:
+            $added_e = $this->E_model->verify_create($_POST['e_new_string'], $member_e['e__id']);
+            if(!$added_e['status']){
+                //We had an error, return it:
+                return view_json($added_e);
             } else {
-
-                //Create:
-                $added_e = $this->E_model->verify_create($_POST['e_new_string'], $member_e['e__id']);
-                if(!$added_e['status']){
-                    //We had an error, return it:
-                    return view_json($added_e);
-                } else {
-                    //Assign new source:
-                    $focus_e = $added_e['new_e'];
-                }
-
+                //Assign new source:
+                $focus_e = $added_e['new_e'];
             }
 
         }

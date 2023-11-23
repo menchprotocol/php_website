@@ -327,22 +327,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
                 <div class="modal-body">
                     <textarea class="form-control text-edit border" id="x__message" name="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m__message'] ?>"></textarea>
-                    <div id="x__message_preview" class="hideIfEmpty" style="width: 377px;"></div>
                     <div class="save_results margin-top-down-half hideIfEmpty"></div>
                     <input type="hidden" class="modal_x__id" value="0" />
                 </div>
                 <div class="modal-footer">
                     <table style="width: 100%;">
                         <tr>
-                            <td width="100%">
-                                <div id="x__type_preview" class="hideIfEmpty"></div>
-                            </td>
                             <td>
                                 <button type="button" onclick="x_message_save()" class="btn btn-default">SAVE</button>
                             </td>
                         </tr>
                     </table>
-                    <div id="x__history_preview" class="hideIfEmpty" style="margin-top: 10px;"></div>
+                    <div id="x__history" class="hideIfEmpty" style="margin-top: 10px;"></div>
                 </div>
             </div>
         </div>

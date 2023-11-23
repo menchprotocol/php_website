@@ -1127,7 +1127,7 @@ $(document).ready(function () {
 
 
 
-function x_type_preview_load(){
+function x__history_load(){
 
     //Watchout for content change
     var textInput = document.getElementById('x__message');
@@ -1149,7 +1149,7 @@ function x_type_preview_load(){
         // Make a new timeout set to go off in 800ms
         timeout = setTimeout(function () {
             //update type:
-            x_type_preview();
+            x__history();
         }, 610);
     };
 
@@ -1210,7 +1210,7 @@ function x_message_load(x__id) {
             $('#modal13571 .modal_x__id').val(x__id);
             $('#modal13571 .save_results').html('');
             $('#x__message').val(data.x__message);
-            x_type_preview();
+            x__history();
             setTimeout(function () {
                 set_autosize($('#x__message'));
                 $('#x__message').focus();
@@ -1486,7 +1486,7 @@ function load_tab(x__type, auto_load){
         load_card_clickers();
         initiate_algolia();
         load_editor();
-        x_type_preview_load();
+        x__history_load();
         init_remove();
         x_set_start_text();
         set_autosize($('.x_set_class_text'));
@@ -1726,7 +1726,7 @@ function x_message_save(new_x__message = null) {
             $('#modal13571').modal('hide');
 
             //Yes, update the ideas:
-            $(".x__message_" + modify_data['x__id']).html(data.x__message);
+            $(".x__message_" + modify_data['x__id']).html(data.x__message_final);
 
             //Did the content get modified? (Likely for a domain URL):
             if(!(data.x__message_final==modify_data['x__message'])){
@@ -1788,35 +1788,16 @@ function e_remove(x__id, x__type) {
 }
 
 
-function x_type_preview() {
-
+function x__history() {
     //Shows the transaction type based on the transaction message
-    $('#x__type_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
-
-    //Fetch Idea Data to load modify widget:
-    $.post("/x/x_type_preview", {
-        x__message: $('#x__message').val(),
+    $.post("/x/x__history", {
         x__id: $('#modal13571 .modal_x__id').val(),
     }, function (data) {
-
         if(data.status){
-
-            $('#x__type_preview').html(data.x__type_preview);
-            $('#x__message_preview').html(data.x__message_preview);
-            $('#x__history_preview').html(data.x__history_preview);
-
-
+            $('#x__history').html(data.x__history);
             $('[data-toggle="tooltip"]').tooltip();
-
-        } else {
-
-            //Show Error:
-            $('#x__type_preview').html('<b class="zq6255">' + data.message+'</b>');
-
         }
-
     });
-
 }
 
 

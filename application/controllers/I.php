@@ -244,7 +244,7 @@ class I extends CI_Controller {
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
                 foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $source_e) {
                     if(isset($source_e['e__id'])){
-                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $source_e['x__type'], $source_e['e__access'], view_cover($source_e['e__cover'], true), $source_e['e__title'], preview_x__message($source_e['x__message'],$source_e['x__type']));
+                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $source_e['x__type'], $source_e['e__access'], view_cover($source_e['e__cover'], true), $source_e['e__title'], $source_e['x__message']);
                         $listed_items++;
                     }
                 }
@@ -260,7 +260,7 @@ class I extends CI_Controller {
 
                 foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), preview_x__message($next_i['x__message'],$next_i['x__type']));
+                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                         $listed_items++;
                     }
                 }
@@ -351,7 +351,7 @@ class I extends CI_Controller {
 
         return view_json(array(
             'status' => 1,
-            'message_html' => view_links_html(trim($_POST['input__4736'])),
+            'message_html' => view_message(trim($_POST['input__4736'])),
         ));
 
     }

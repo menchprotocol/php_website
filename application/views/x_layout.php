@@ -326,7 +326,6 @@ if($top_i__id) {
 
 
             $valid_paid_ticket = false; //Unless proven otherwise
-            $detect_data_type = 0;
 
             $paypal_email =  website_setting(30882);
 
@@ -365,8 +364,10 @@ if($top_i__id) {
 
 
             if(count($total_dues) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
-                $detect_data_type = detect_data_type($total_dues[0]['x__message']);
-                if ($detect_data_type['status'] && $detect_data_type['x__type']==26661){
+
+                $price_parts = explode(' ',$total_dues[0]['x__message']);
+
+                if (count($price_parts)==2 && is_numeric($price_parts[1]) && in_array($price_parts[0], array('CAD','USD','AUD','BRL','CNY','CZK','DKK','EUR','HKD','HUF','ILS','JPY','MYR','MXN','TWD','NZD','NOK','PHP','PLN','GBP','RUB','SGD','SEK','CHF','THB'))){
 
                     $valid_paid_ticket = true;
 

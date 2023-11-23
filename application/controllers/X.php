@@ -18,32 +18,17 @@ class X extends CI_Controller
         return view_json($this->X_model->create($_POST));
     }
 
-    function x_type_preview()
+    function x__history()
     {
 
-        if (!isset($_POST['x__message']) || !isset($_POST['x__id'])) {
+        if (!isset($_POST['x__id']) || $_POST['x__id']<1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing inputs',
             ));
         }
 
-        $e___4592 = $this->config->item('e___4592'); //DATA TYPES
-
-        //See what this is:
-        $detect_data_type = detect_data_type($_POST['x__message']);
-
-        if(!$_POST['x__id'] && !in_array($detect_data_type['x__type'], $this->config->item('n___4537'))){
-
-            //NOT SOURCE LINK URLS
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid URL',
-            ));
-
-        }
-
-        $x__history_preview = '';
+        $x__history = '';
 
         $session_name = 'session_'.date("YmdHms");
 
@@ -51,52 +36,45 @@ class X extends CI_Controller
 
             //Generate history preview, if any:
 
-            if($_POST['x__id']>0){
-                //See if this is duplicate to either transaction:
-                $xs = $this->X_model->fetch(array(
-                    'x__id' => $_POST['x__id'],
-                ));
-                $array_history = array();
-                foreach($this->X_model->fetch(array(
-                    'x__up' => $xs[0]['x__up'],
-                    'x__down' => $xs[0]['x__down'],
-                    'x__type' => 10657, //Past Deleted
-                ), array(), 0) as $x_history) {
-                    $x__metadata = unserialize($x_history['x__metadata']);
-                    if(strlen($x__metadata['fields_changed'][0]['before'])>1 && !in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
-                        array_push($array_history, $x__metadata['fields_changed'][0]['before']);
-                    }
-                    if(strlen($x__metadata['fields_changed'][0]['after'])>1 && !in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
-                        array_push($array_history, $x__metadata['fields_changed'][0]['after']);
-                    }
+            //See if this is duplicate to either transaction:
+            $xs = $this->X_model->fetch(array(
+                'x__id' => $_POST['x__id'],
+            ));
+            $array_history = array();
+            foreach($this->X_model->fetch(array(
+                'x__up' => $xs[0]['x__up'],
+                'x__down' => $xs[0]['x__down'],
+                'x__type' => 10657, //Past Deleted
+            ), array(), 0) as $x_history) {
+                $x__metadata = unserialize($x_history['x__metadata']);
+                if(strlen($x__metadata['fields_changed'][0]['before'])>1 && !in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
+                    array_push($array_history, $x__metadata['fields_changed'][0]['before']);
                 }
-
-                if(count($array_history)){
-                    $x__history_preview .= '<div style="margin: 13px 0;">History:</div>';
-                }
-
-                foreach($array_history as $image){
-                    $x__history_preview .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-lg">'.view_cover($image, true).'</a>';
+                if(strlen($x__metadata['fields_changed'][0]['after'])>1 && !in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
+                    array_push($array_history, $x__metadata['fields_changed'][0]['after']);
                 }
             }
 
-            $this->session->set_userdata($session_name, $x__history_preview);
-            $in_history = 0;
+            if(count($array_history)){
+                $x__history .= '<div style="margin: 13px 0;">History:</div>';
+            }
+
+            foreach($array_history as $image){
+                $x__history .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-lg">'.view_cover($image, true).'</a>';
+            }
+
+            $this->session->set_userdata($session_name, $x__history);
 
         } else {
 
-            $in_history = 1;
-            $x__history_preview = $this->session->userdata($session_name);
+            $x__history = $this->session->userdata($session_name);
 
         }
 
 
         return view_json(array(
             'status' => 1,
-            'x__type_preview' => '<b class="main__title">' . $e___4592[$detect_data_type['x__type']]['m__cover'] . ' ' . $e___4592[$detect_data_type['x__type']]['m__title'] . '</b>',
-            'x__message_preview' => ( in_array($detect_data_type['x__type'], $this->config->item('n___12524')) ? '<span class="paddingup">' . preview_x__message($_POST['x__message'], $detect_data_type['x__type'], null, true) . '</span>' : '' ),
-            'in_history' => $in_history,
-            'x__history_preview' => $x__history_preview,
+            'x__history' => $x__history,
         ));
 
     }
@@ -141,22 +119,22 @@ class X extends CI_Controller
             }
 
 
-            $e__title_validate = e__title_validate($_POST['input__4736']);
-            if(!$e__title_validate['status']){
-                return view_json(array_merge($e__title_validate, array(
+            $validate_e__title = validate_e__title($_POST['input__4736']);
+            if(!$validate_e__title['status']){
+                return view_json(array_merge($validate_e__title, array(
                     'original_val' => $es[0]['e__title'],
                 )));
             }
 
             //All good, go ahead and update:
             $this->E_model->update($es[0]['e__id'], array(
-                'e__title' => $e__title_validate['e__title_clean'],
+                'e__title' => $validate_e__title['e__title_clean'],
             ), true, $member_e['e__id']);
 
             //Reset member session data if this data belongs to the logged-in member:
             if ($es[0]['e__id']==$member_e['e__id']) {
                 //Re-activate Session with new data:
-                $es[0]['e__title'] = $e__title_validate['e__title_clean'];
+                $es[0]['e__title'] = $validate_e__title['e__title_clean'];
                 $this->E_model->activate_session($es[0], true);
             }
 
@@ -741,12 +719,10 @@ class X extends CI_Controller
         }
 
         //Save new answer:
-        $new_message = '@'.$cdn_status['cdn_e']['e__id'];
         $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
             'x__type' => 12117,
             'x__creator' => $member_e['e__id'],
-            'x__message' => $new_message,
-            'x__up' => $cdn_status['cdn_e']['e__id'],
+            'x__message' => $cdn_status['cdn_url'],
         ));
 
         //All good:
@@ -1403,10 +1379,8 @@ class X extends CI_Controller
 
 
         //Show success:
-        $detect_data_type = detect_data_type($x__message);
         return view_json(array(
             'status' => 1,
-            'x__message' => preview_x__message($x__message, $detect_data_type['x__type']),
             'x__message_final' => $x__message, //In case content was updated
         ));
 
