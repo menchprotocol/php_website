@@ -1724,7 +1724,7 @@ function view_links_html($str, $add_href = true) {
     $str = str_replace('"https://','"//',preg_replace('/(https?:\/\/.*\.(?:png|gif|webp|jpeg|jpg))/i', '<img src="$1" class="overflowhide" />', $str));
 
     //Display Embed URLs:
-    //$str = preg_replace('@(^|[^"])(https?://?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@i', '$1<a href="$2">$2</a>', $str); //URL Not Surrounded by quotes
+    $str = preg_replace('#(.*?)(?:href="https?://)?(?:www\.)?(?:youtu\.be/|youtube\.com(?:/embed/|/v/|/watch?.*?v=))([\w\-]{10,12}).*#x', '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe  src="//www.youtube.com/embed/$1?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div>', $str);
 
     if($add_href){
         $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $str);
