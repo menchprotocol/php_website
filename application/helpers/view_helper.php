@@ -1223,7 +1223,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $superpower_10939 = superpower_active(10939, true);
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
-    $discovery_mode = !$superpower_10939 || $top_i__id>0 || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
+    $discovery_mode = $top_i__id>0 || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
