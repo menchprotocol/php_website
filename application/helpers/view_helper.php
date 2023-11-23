@@ -1500,7 +1500,9 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $ui .= '<div class="cover-text">';
 
     //Idea Message
-    $ui .= '<div class="sub__handle grey">#'.$i['i__hashtag'].'</div>';
+    if(!$discovery_mode){
+        $ui .= '<div class="sub__handle grey">#'.$i['i__hashtag'].'</div>';
+    }
     $ui .= '<div class="main__title">'.view_i_title($i, true).'</div>';
     $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_html_' . $i['i__id'] . '">'.view_i__message($i, $cache_app, true).( $click_locked ? '</div>' : '</a>' );
 
@@ -1634,22 +1636,13 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
         return
             $x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) ."\n"
             . $x['x__message']
-            . ( strlen($x['x__message']) && in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i['i__id'],
-                'x__up' => 37639, //Event Address Approximate
-            ))) ? "\n".'https://www.google.com/maps/search/'.urlencode($x['x__message']) : '' );
+            . ( $x['x__type']==41949 ? "\n".'https://www.google.com/maps/search/'.urlencode($x['e__title']) : '' );
     } else {
         return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
             . '<span class="">'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
-            . ( strlen($x['x__message']) ? '<div class="payment_box">'. ( in_array($x['e__id'], $CI->config->item('n___33349')) && !count($CI->X_model->fetch(array(
-                    'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i['i__id'],
-                    'x__up' => 37639, //Event Address Approximate
-                ))) ? '<a href="https://www.google.com/maps/search/'.urlencode($x['x__message']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['x__message'].'</a>' : '<div class="sub_note main__title">'.nl2br($x['x__message']).'</div>' ) . '</div>' : '' )
+            . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.nl2br($x['x__message']).'</div></div>' : '' )
+            . ( $x['x__type']==41949 ? '<div class="payment_box"><a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['e__title'].'</a></div>' : '' )
             . '</span></div>';
     }
 
@@ -1727,14 +1720,21 @@ function convertURLs($string)
     return 1;
 }
 
-function view_links_html($str) {
+function view_links_html($str, $add_href = true) {
 
-    $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $str);
-    $str = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $str);
+    //Display Images, Audio, Video & PDF Files:
     $str = str_replace('"https://','"//',preg_replace('/(https?:\/\/.*\.(?:png|gif|webp|jpeg|jpg))/i', '<img src="$1" class="overflowhide" />', $str));
-    $str = preg_replace('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/', '<a href="/-31807?url=$0" target="_blank"><u>$0</u></a>', $str);
+
+    //Display Embed URLs:
     //$str = preg_replace('@(^|[^"])(https?://?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@i', '$1<a href="$2">$2</a>', $str); //URL Not Surrounded by quotes
-    return nl2br($str);
+
+    if($add_href){
+        $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $str);
+        $str = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $str);
+        $str = preg_replace('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/', '<a href="/-31807?url=$0" target="_blank"><u>$0</u></a>', $str);
+    }
+
+    return '<div class="msg">'.nl2br($str).'</div>';
 }
 
 
