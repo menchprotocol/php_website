@@ -1184,7 +1184,7 @@ class X extends CI_Controller
             }
 
             //Update Legal name with this name:
-            $return = source_link_message(30198, $member_e['e__id'], $_POST['x_write']);
+            $return = e_link_message(30198, $member_e['e__id'], $_POST['x_write']);
 
         } else {
 

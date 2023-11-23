@@ -402,7 +402,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                     <td>
                                         <!-- SAVE -->
-                                        <button type="button" onclick="source_edit_save()" class="btn btn-default">SAVE</button>
+                                        <button type="button" onclick="e_edit_save()" class="btn btn-default">SAVE</button>
                                     </td>
                                 </tr>
                             </table>

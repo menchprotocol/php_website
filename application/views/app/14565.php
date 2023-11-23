@@ -150,13 +150,13 @@ if($messages){
 
 
 //List Relevant Ideas in order:
-$secondary_ideas = '';
+$secondary_i = '';
 foreach($secondary_i_list as $ref_i){
-    $secondary_ideas .= view_card_i(14565, 0, null, $ref_i);
+    $secondary_i .= view_card_i(14565, 0, null, $ref_i);
 }
-if(strlen($secondary_ideas)){
+if(strlen($secondary_i)){
     echo '<div class="row justify-content">';
-    echo $secondary_ideas;
+    echo $secondary_i;
     echo '</div>';
     echo '<div class="doclear" style="padding-bottom: 55px;">&nbsp;</div>';
 }

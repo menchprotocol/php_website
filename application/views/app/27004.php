@@ -13,7 +13,7 @@ $gross_currencies = array();
 $i_query = array();
 $daily_sales = array();
 $origin_sales = array();
-$all_sources = array();
+$all_e = array();
 
 
 
@@ -123,15 +123,15 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
             }
 
             $item_parts = explode('-',$x__metadata['item_number']);
-            $this_sourced = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__creator'] );
-            array_push($all_sources, $this_sourced);
+            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__creator'] );
+            array_push($all_e, $this_e);
             $es = $this->E_model->fetch(array(
-                'e__id' => $this_sourced,
+                'e__id' => $this_e,
             ));
 
 
             $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden">';
-            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-xs source_cover_micro">'.view_cover($es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
+            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-xs e_cover_micro">'.view_cover($es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
@@ -152,11 +152,11 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
                     $daily_sales[$date] = $this_payout;
                 }
 
-                $origin_source = $x['x__right'];
-                if(isset($origin_sales[$origin_source])){
-                    $origin_sales[$origin_source] += number_format($this_payout, 0, '','');
+                $origin_e = $x['x__right'];
+                if(isset($origin_sales[$origin_e])){
+                    $origin_sales[$origin_e] += number_format($this_payout, 0, '','');
                 } else {
-                    $origin_sales[$origin_source] = number_format($this_payout, 0, '','');
+                    $origin_sales[$origin_e] = number_format($this_payout, 0, '','');
                 }
 
             }
@@ -205,7 +205,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
     }
 
-    $other_source_content = '';
+    $other_e_content = '';
 
 
 
@@ -223,8 +223,8 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__up' => $_GET['e__id'], //Member
     );
-    if(count($all_sources)){
-        $filters[ 'x__down NOT IN (' . join(',', $all_sources) . ')'] = null;
+    if(count($all_e)){
+        $filters[ 'x__down NOT IN (' . join(',', $all_e) . ')'] = null;
     }
     $other_es = $this->X_model->fetch($filters, array('x__down'), 0);
 
@@ -234,34 +234,34 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         $e___4593 = $this->config->item('e___4593');
 
         //Show Other Sources:
-        $other_source_content .= '<tr class="main__title">';
-        $other_source_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_sources\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$e___4593[29393]['m__title'].'</u></a></td>';
-        $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
-        $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
-        $other_source_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
-        $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-        $other_source_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
-        $other_source_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
-        $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-        $other_source_content .= '</tr>';
+        $other_e_content .= '<tr class="main__title">';
+        $other_e_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_e\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$e___4593[29393]['m__title'].'</u></a></td>';
+        $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
+        $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden"></td>';
+        $other_e_content .= '<td style="text-align: right;">'.count($other_es).'&nbsp;x'.'</td>';
+        $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+        $other_e_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
+        $other_e_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
+        $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+        $other_e_content .= '</tr>';
 
 
         //Doo We Have other?
         foreach($other_es as $other_e){
-            $other_source_content .= '<tr class="transaction_columns thr_sources hidden">';
-            $other_source_content .= '<td><span class="icon-block source_cover_micro">'.view_cover($other_e['e__cover'],true).'</span><a href="/@'.$other_e['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
-            $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $other_source_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
-            $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $other_source_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
-            $other_source_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
-            $other_source_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
-            $other_source_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $other_source_content .= '</tr>';
+            $other_e_content .= '<tr class="transaction_columns thr_e hidden">';
+            $other_e_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['e__cover'],true).'</span><a href="/@'.$other_e['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
+            $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $other_e_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
+            $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
+            $other_e_content .= '<td style="text-align: left;">&nbsp;$0.00</td>';
+            $other_e_content .= '<td style="text-align: right;">&nbsp;$0.00</td>';
+            $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
+            $other_e_content .= '</tr>';
             $gross_sales++;
         }
 
@@ -287,7 +287,7 @@ if(count($i_query)){
     echo '<th style="text-align: right;" id="th_currency" class="advance_columns hidden">&nbsp;</th>';
     echo '</tr>';
 
-    echo $other_source_content;
+    echo $other_e_content;
     echo $sale_type_content;
 
     echo '<tr class="main__title">';

@@ -383,10 +383,10 @@ class I_model extends CI_Model
         }
 
         $is_upwards = in_array($x__type, $this->config->item('n___14686'));
-        $focus_is_idea = $focus_card==12273;
-        $adding_an_idea = in_array($x__type, $this->config->item('n___11020'));
+        $focus_is_i = $focus_card==12273;
+        $adding_an_i = in_array($x__type, $this->config->item('n___11020'));
         //Validate Original idea
-        if($focus_is_idea){
+        if($focus_is_i){
 
             if ($focus_id > 0 && $link_i__id==$focus_id) {
                 //Make sure none of the followings are the same:
@@ -442,7 +442,7 @@ class I_model extends CI_Model
             }
 
             //Determine which is followings Idea, and which is follower
-            if($focus_is_idea){
+            if($focus_is_i){
 
                 //Must be adding PREVIOUS or NEXT
 
@@ -515,7 +515,7 @@ class I_model extends CI_Model
 
 
         //Additional sources to be added? Start with creator...
-        $sources_appended = array($x__creator);
+        $e_appended = array($x__creator);
 
         //Add if not added as the follower:
         if(!count($this->X_model->fetch(array(
@@ -539,21 +539,21 @@ class I_model extends CI_Model
             'x__type' => 41011, //PINNED FOLLOWER
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x_pinned) {
-            if(!in_array($x_pinned['x__up'], $sources_appended)){
+            if(!in_array($x_pinned['x__up'], $e_appended)){
                 $this->X_model->create(array(
                     'x__type' => 4983, //IDEA SOURCES
                     'x__creator' => $x__creator,
                     'x__up' => $x_pinned['x__up'],
                     'x__right' => $i_new['i__id'],
                 ));
-                array_push($sources_appended, $x_pinned['x__up']);
+                array_push($e_appended, $x_pinned['x__up']);
             }
         }
 
         //Create Idea Transaction:
         $new_i_html = null;
 
-        if($focus_is_idea){
+        if($focus_is_i){
 
             //Adding PREVIOUS or NEXT Idea from Idea
             $relation = $this->X_model->create(array(
@@ -577,14 +577,14 @@ class I_model extends CI_Model
 
         } else {
 
-            if(!in_array($focus_e[0]['e__id'], $sources_appended)){
+            if(!in_array($focus_e[0]['e__id'], $e_appended)){
                 $this->X_model->create(array(
                     'x__type' => 4983, //IDEA SOURCES
                     'x__creator' => $x__creator,
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $i_new['i__id'],
                 ));
-                array_push($sources_appended, $focus_e[0]['e__id']);
+                array_push($e_appended, $focus_e[0]['e__id']);
             }
 
             //Fetch Complete References:
@@ -940,7 +940,7 @@ class I_model extends CI_Model
 
                 if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
 
-                    $source_mapper = array(
+                    $e_mapper = array(
                         12591 => 4983,  //Sources
                         27080 => 13865, //Following Includes Any
                         27985 => 27984, //Following Includes All
@@ -953,7 +953,7 @@ class I_model extends CI_Model
                     $this->X_model->create(array(
                         'x__creator' => $x__creator,
                         'x__up' => $e__up_id,
-                        'x__type' => $source_mapper[$action_e__id],
+                        'x__type' => $e_mapper[$action_e__id],
                         'x__right' => $next_i['i__id'],
                         'x__message' => trim($action_command2),
                     ), true);

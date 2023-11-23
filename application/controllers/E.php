@@ -77,9 +77,9 @@ class E extends CI_Controller
                 $e___6177 = $this->config->item('e___6177'); //Source Status
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
-                foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $source_e) {
-                    if(isset($source_e['e__id'])){
-                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $source_e['x__type'], $source_e['e__access'], view_cover($source_e['e__cover'], true), $source_e['e__title'], $source_e['x__message']);
+                foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $e_e) {
+                    if(isset($e_e['e__id'])){
+                        $ui .= view_card('/@'.$e_e['e__id'], $e_e['e__id']==$current_e, $e_e['x__type'], $e_e['e__access'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
                         $listed_items++;
                     }
                 }
@@ -351,9 +351,9 @@ class E extends CI_Controller
             ));
         }
 
-        $adding_to_idea = ($_POST['focus_card']==12273);
+        $adding_to_i = ($_POST['focus_card']==12273);
 
-        if($adding_to_idea){
+        if($adding_to_i){
 
             //Validate Idea:
             $fetch_o = $this->I_model->fetch(array(
@@ -430,7 +430,7 @@ class E extends CI_Controller
         $ur2 = array();
         $e_already_linked = 0;
 
-        if($adding_to_idea) {
+        if($adding_to_i) {
 
             $e_already_linked = count($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
@@ -560,7 +560,7 @@ class E extends CI_Controller
     }
 
 
-    function edit_source()
+    function edit_e()
     {
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -649,7 +649,7 @@ class E extends CI_Controller
 
 
 
-    function source_edit_save()
+    function e_edit_save()
     {
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -1059,7 +1059,7 @@ class E extends CI_Controller
 
 
         //Cleanup:
-        $return = source_link_message(30198, $member_e['e__id'], trim($_POST['e_fullname']));
+        $return = e_link_message(30198, $member_e['e__id'], trim($_POST['e_fullname']));
 
 
         //Return results:

@@ -1,7 +1,7 @@
 <?php
 
-$found_idea = false;
-$signed_idea = false;
+$found_i = false;
+$signed_i = false;
 
 foreach($this->I_model->fetch(array(
     'i__id' => ( isset($_GET['i__id']) && $_GET['i__id'] > 0 ? $_GET['i__id'] : 0 ),
@@ -9,7 +9,7 @@ foreach($this->I_model->fetch(array(
     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 )) as $i_sign){
 
-    $found_idea = true;
+    $found_i = true;
 
     if(isset($_POST) && count($_POST)){
 
@@ -25,7 +25,7 @@ foreach($this->I_model->fetch(array(
         } else {
 
             //Input validated, process signature:
-            $signed_idea = true;
+            $signed_i = true;
             $phone = intval($_POST['x_phone']);
             $email = trim($_POST['x_email']);
 
@@ -76,7 +76,7 @@ foreach($this->I_model->fetch(array(
     }
 
 
-    if(!$signed_idea){
+    if(!$signed_i){
 
         //Allow users to sign:
         echo view_i__message($i_sign);
@@ -94,6 +94,6 @@ foreach($this->I_model->fetch(array(
 }
 
 
-if(!$found_idea){
+if(!$found_i){
     echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missign Agreement Idea ID</div>';
 }

@@ -71,7 +71,7 @@ if($search_for_set){
 
 
 
-            echo '<tr class="panel-title down-border result_row" id="row_'.$in['i__id'].'" idea_id="'.$in['i__id'].'">';
+            echo '<tr class="panel-title down-border result_row" id="row_'.$in['i__id'].'" i_id="'.$in['i__id'].'">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
             echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/~'.$in['i__id'].'">'.$in['i__message'].'</a></td>';
 
@@ -149,7 +149,7 @@ echo '</form>';
             var counter = 0;
             $( ".result_row" ).each(function() {
                 counter++;
-                icons_listed.push(parseInt($( this ).attr( "idea_id" )));
+                icons_listed.push(parseInt($( this ).attr( "i_id" )));
             });
             console.log(counter + " to be deleted...");
 

@@ -242,9 +242,9 @@ class I extends CI_Controller {
                 $e___6177 = $this->config->item('e___6177'); //Source Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
                 $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
-                foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $source_e) {
-                    if(isset($source_e['e__id'])){
-                        $ui .= view_card('/@'.$source_e['e__id'], $source_e['e__id']==$current_e, $source_e['x__type'], $source_e['e__access'], view_cover($source_e['e__cover'], true), $source_e['e__title'], $source_e['x__message']);
+                foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $e_e) {
+                    if(isset($e_e['e__id'])){
+                        $ui .= view_card('/@'.$e_e['e__id'], $e_e['e__id']==$current_e, $e_e['x__type'], $e_e['e__access'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
                         $listed_items++;
                     }
                 }

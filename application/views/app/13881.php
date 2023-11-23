@@ -3,12 +3,12 @@
 $guide = 'First Column Full Name, 2nd Column Email, 3rd Column Phone Number (If any)... Also no headline row, start with data! ';
 $default_val = '';
 
-if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
+if(isset($_POST['import_e']) && strlen($_POST['import_e'])>0){
 
     echo 'Begind Processing Import Data:<hr />';
 
     //Guide:
-    $default_val = $_POST['import_sources'];
+    $default_val = $_POST['import_e'];
     $duplicate_check = array();
     $duplicate_email = array();
     $stats = array(
@@ -18,7 +18,7 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
         'errors' => 0,
     );
 
-    foreach(explode(PHP_EOL, $_POST['import_sources']) as $count => $new_line){
+    foreach(explode(PHP_EOL, $_POST['import_e']) as $count => $new_line){
 
         //Go through each column of this new line:
         $tabs = preg_split('/[\t,]/', $new_line);
@@ -69,6 +69,6 @@ if(isset($_POST['import_sources']) && strlen($_POST['import_sources'])>0){
 
 echo $guide;
 echo '<form method="POST" action="">';
-echo '<textarea class="border  full-text" placeholder="Paste List Here" name="import_sources">'.$default_val.'</textarea>';
+echo '<textarea class="border  full-text" placeholder="Paste List Here" name="import_e">'.$default_val.'</textarea>';
 echo '<button type="submit" class="btn btn-lrg top-margin"><i class="fas fa-plus-circle zq12274"></i> IMPORT</button>';
 echo '</form>';

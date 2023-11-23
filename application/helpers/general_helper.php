@@ -726,8 +726,8 @@ function list_settings($i__id, $fetch_contact = false){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $e___40946 = $CI->config->item('e___40946'); //Source List Controllers
     $list_config = array(); //To compile the settings of this sheet:
-    $column_sources = array();
-    $column_ideas = array();
+    $column_e = array();
+    $column_i = array();
     $contact_details = array(
         'full_list' => '',
         'email_list' => '',
@@ -859,7 +859,7 @@ function list_settings($i__id, $fetch_contact = false){
     //Determine columns if any:
     if($list_config[34513]){
 
-        $column_sources = $CI->X_model->fetch(array(
+        $column_e = $CI->X_model->fetch(array(
             'x__up' => $list_config[34513],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -873,7 +873,7 @@ function list_settings($i__id, $fetch_contact = false){
             'x__right !=' => $i__id,
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
-            array_push($column_ideas, $link_i);
+            array_push($column_i, $link_i);
         }
 
     } elseif(0) {
@@ -900,7 +900,7 @@ function list_settings($i__id, $fetch_contact = false){
                             'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
                         ), array('x__up'), 0) as $focus_e){
                             if(!in_array($focus_e['e__id'], $es_added) && (!count($list_config[27984]) || !in_array($focus_e['e__id'], $list_config[27984]))){
-                                array_push($column_sources, $focus_e);
+                                array_push($column_e, $focus_e);
                                 array_push($es_added, $focus_e['e__id']);
                             }
                             array_push($is_with_action_es, $focus_i['i__id']);
@@ -915,8 +915,8 @@ function list_settings($i__id, $fetch_contact = false){
                     'i__id' => $recursive_down_id,
                 ), 0, 0, array('i__id' => 'ASC')) as $focus_i){
                     $count++;
-                    if(!$list_config[34513] && !in_array($focus_i['i__id'], $is_with_action_es)){ // && isset($_GET['all_ideas'])
-                        array_push($column_ideas, $focus_i);
+                    if(!$list_config[34513] && !in_array($focus_i['i__id'], $is_with_action_es)){ // && isset($_GET['all_i'])
+                        array_push($column_i, $focus_i);
                     }
                 }
             }
@@ -968,8 +968,8 @@ function list_settings($i__id, $fetch_contact = false){
     return array(
         'i' => $is[0],
         'list_config' => $list_config,
-        'column_sources' => $column_sources,
-        'column_ideas' => $column_ideas,
+        'column_e' => $column_e,
+        'column_i' => $column_i,
         'query_string' => $query_string,
         'contact_details' => $contact_details, //Optional addon
     );
@@ -1398,13 +1398,13 @@ function user_website($x__creator){
     foreach($CI->X_model->fetch(array(
         'x__down' => $x__creator,
         'x__type' => 4251, //New Source Created
-    ), array(), 1) as $source_created){
-        return $source_created['x__website'];
+    ), array(), 1) as $e_created){
+        return $e_created['x__website'];
     }
     foreach($CI->X_model->fetch(array(
         'x__creator' => $x__creator,
-    ), array(), 1) as $source_created){
-        return $source_created['x__website'];
+    ), array(), 1) as $e_created){
+        return $e_created['x__website'];
     }
     return 0;
 }
@@ -1418,8 +1418,8 @@ function send_qr($x__id, $x__creator){
     foreach($CI->X_model->fetch(array(
         'x__id' => $x__id,
         'x__right > 0' => null,
-    ), array('x__right')) as $top_idea){
-        $additional_info = ' for '.view_i_title($top_idea, true);
+    ), array('x__right')) as $top_i){
+        $additional_info = ' for '.view_i_title($top_i, true);
         break;
     }
 
@@ -1446,7 +1446,7 @@ function random_adjective(){
 
 
 
-function source_link_message($x__up, $e__id, $message_text){
+function e_link_message($x__up, $e__id, $message_text){
 
     $CI =& get_instance();
 
@@ -1728,8 +1728,8 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         if(isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])) {
             foreach ($CI->I_model->fetch(array(
                 'i__id' => $x_data['x__left'],
-            )) as $email_idea) {
-                $CI->X_model->read_only_complete($x_data['x__right'], $email_idea, array_merge($x_data, array(
+            )) as $email_i) {
+                $CI->X_model->read_only_complete($x_data['x__right'], $email_i, array_merge($x_data, array(
                     'x__creator' => $e__id,
                 )));
             }
@@ -1745,7 +1745,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = true){
 
     $CI =& get_instance();
-    $source_id = 0; //Assume no domain unless found below...
+    $e_id = 0; //Assume no domain unless found below...
 
     if(!$initiator_e__id){
         $member_e = superpower_unlocked();
@@ -1756,7 +1756,7 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
 
     if($x__website && $force_website){
 
-        $source_id = $x__website;
+        $e_id = $x__website;
 
     } else {
 
@@ -1764,28 +1764,28 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
         if(strlen($server_name)){
             foreach($CI->config->item('e___14870') as $x__type => $m) {
                 if ($server_name==$m['m__message']){
-                    $source_id = $x__type;
+                    $e_id = $x__type;
                     break;
                 }
             }
         }
 
-        $source_id = ( $source_id ? $source_id : ( $x__website > 0 ? $x__website : 2738 /* Mench */ ) );
+        $e_id = ( $e_id ? $e_id : ( $x__website > 0 ? $x__website : 2738 /* Mench */ ) );
 
     }
 
 
     if(!$setting_id){
-        return $source_id;
+        return $e_id;
     }
 
 
     $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
 
-    if(!isset($e___domain_sett[$source_id]) || !strlen($e___domain_sett[$source_id]['m__message'])){
+    if(!isset($e___domain_sett[$e_id]) || !strlen($e___domain_sett[$e_id]['m__message'])){
         $target_return = ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
     } else {
-        $target_return = $e___domain_sett[$source_id]['m__message'];
+        $target_return = $e___domain_sett[$e_id]['m__message'];
     }
 
     return $target_return;
@@ -1796,9 +1796,9 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
 
 function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_website = true){
     $CI =& get_instance();
-    $domain_source = website_setting(0, $initiator_e__id, $x__website, $force_website);
+    $domain_e = website_setting(0, $initiator_e__id, $x__website, $force_website);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
-    return $e___14870[$domain_source][$var_field];
+    return $e___14870[$domain_e][$var_field];
 }
 
 
@@ -1870,7 +1870,7 @@ function boost_power()
     ini_set('max_execution_time', 0);
 }
 
-function sources_currently_sorted($e__id){
+function e_currently_sorted($e__id){
     $CI =& get_instance();
     return count( $CI->X_model->fetch(array(
         'x__weight >' => 0, //Sorted
@@ -1966,11 +1966,11 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
     //Featured Tree for all Domains:
     /*
-    $features_sources = array();
+    $features_e = array();
     foreach($CI->config->item('e___30829') as $x__type => $m) {
         if(in_array($x__type , $CI->config->item('n___14870')) && strlen($m['m__message']) && is_array($CI->config->item('n___'.substr($m['m__message'], 1))) && count($CI->config->item('n___'.substr($m['m__message'], 1)))){
             foreach($CI->config->item('n___'.substr($m['m__message'], 1)) as $featured_e){
-                $features_sources[$featured_e] = $x__type;
+                $features_e[$featured_e] = $x__type;
             }
         }
     }

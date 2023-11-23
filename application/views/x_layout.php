@@ -2,7 +2,7 @@
 
 if(!in_array($i['i__access'], $this->config->item('n___31871')) && !write_access_i($i['i__id'])){
 
-    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This idea is not active at this time.</div>';
+    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This is not active.</div>';
 
 } else {
 
@@ -285,7 +285,7 @@ if($top_i__id) {
                 }
 
                 if($x__metadata['mc_gross']>=0){
-                    $ticket_ui .= '<div class="msg"><span>Here is your QR Ticket that has also been emailed to you:</span></div>';
+                    $ticket_ui .= '<div class="msg">Here is your QR Ticket that has also been emailed to you:</div>';
                     $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1').'</div>';
                 }
             }
@@ -533,10 +533,10 @@ if($top_i__id) {
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Following Add
                 'x__right' => $i['i__id'],
-            )) as $append_source){
+            )) as $append_e){
                 //Does the user have this source with any values?
                 foreach($this->X_model->fetch(array(
-                    'x__up' => $append_source['x__up'],
+                    'x__up' => $append_e['x__up'],
                     'x__down' => $x__creator,
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

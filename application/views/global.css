@@ -4018,20 +4018,20 @@ div.img {
     width: 24px;
     height: 24px;
 }
-.source_cover {
+.e_cover {
 
 }
-.source_cover_mini div.img {
+.e_cover_mini div.img {
     width: 24px;
     height: 24px;
 }
 
-.platform-logo.source_cover_mini div.img {
+.platform-logo.e_cover_mini div.img {
     width: 30px;
     height: 30px;
 }
 
-.source_cover_micro div.img {
+.e_cover_micro div.img {
     width: 24px;
     height: 24px;
     margin-bottom: -8px;
@@ -4049,12 +4049,12 @@ div.img {
     text-align: center !important;
 }
 
-.idea_cover {
+.i_cover {
     margin-bottom: 10px;
     width: 100%;
 }
 
-.idea_cover td{
+.i_cover td{
     vertical-align: top;
 }
 

@@ -31,10 +31,10 @@ foreach($list_settings['query_string'] as $x){
     $body_content .= '<tr class="body_tr">';
 
     //IDEAS
-    $idea_content = '';
+    $i_content = '';
     $this_quantity = 1;
     $name = '';
-    foreach($list_settings['column_ideas'] as $i2){
+    foreach($list_settings['column_i'] as $i2){
 
         $discoveries = $this->X_model->fetch(array(
             'x__left' => $i2['i__id'],
@@ -59,7 +59,7 @@ foreach($list_settings['query_string'] as $x){
             }
         }
 
-        $idea_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_i_title($i2, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_i_title($i2, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_i_title($i2, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
+        $i_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_i_title($i2, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_i_title($i2, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_i_title($i2, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
 
         if(count($discoveries)){
             if(!isset($count_totals['i'][$i2['i__id']])){
@@ -82,7 +82,7 @@ foreach($list_settings['query_string'] as $x){
 
 
     //SOURCES
-    foreach($list_settings['column_sources'] as $e){
+    foreach($list_settings['column_e'] as $e){
 
         $input_modal = count($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___37707')) . ')' => null, //SOURCE LINKS
@@ -134,7 +134,7 @@ foreach($list_settings['query_string'] as $x){
     }
 
 
-    $body_content .= $idea_content;
+    $body_content .= $i_content;
 
     $body_content .= '</tr>';
     $count++;
@@ -147,11 +147,11 @@ echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm 
 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
-foreach($list_settings['column_sources'] as $e){
+foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
     echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__id'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
 }
-foreach($list_settings['column_ideas'] as $i2){
+foreach($list_settings['column_i'] as $i2){
 
     $max_available = $this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

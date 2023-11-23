@@ -649,7 +649,7 @@ function update__cover(new_cover){
     $('#card__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
     //Save and close:
-    source_edit_save();
+    e_edit_save();
 }
 function image_cover(cover_preview, cover_apply, new_title){
     return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
@@ -800,8 +800,8 @@ function toggle_search(){
 }
 
 
-var idea_changed = false;
-function edit_idea(i__id){
+var i_changed = false;
+function edit_i(i__id){
 
     $('#modal_i__id').val(i__id);
     $('.note_error_4736').html('');
@@ -1224,7 +1224,7 @@ function x_message_load(x__id) {
     });
 }
 
-function edit_source(e__id){
+function edit_e(e__id){
 
     $('#modal31912').modal('show');
     $('#search_cover').val('').focus();
@@ -1232,7 +1232,7 @@ function edit_source(e__id){
     $('#card__title, #card__cover').val('LOADING...');
     $('#modal31912 .black-background-obs').removeClass('isSelected').removeClass('coinType12274').addClass('coinType12274');
 
-    $.post("/e/edit_source", {
+    $.post("/e/edit_e", {
         e__id: e__id
     }, function (data) {
 
@@ -1397,9 +1397,9 @@ function e_load_search(x__type) {
 }
 
 
-function source_edit_save(){
+function e_edit_save(){
 
-    $.post("/e/source_edit_save", {
+    $.post("/e/e_edit_save", {
         edit_e__id: $('#edit_e__id').val(),
         card__title: $('#card__title').val(),
         card__cover: $('#card__cover').val()
@@ -1567,7 +1567,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_ideas"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
+    add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>');
     
     //Update backend:
     $.post("/i/i__add", {

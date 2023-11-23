@@ -557,7 +557,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch($query_filters, $join_objects, 0, 0, $order_columns) as $e_down) {
 
             //Filter Sources, if needed:
-            $qualified_source = true;
+            $qualified_e = true;
             if(count($include_any_e) && !count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $include_any_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
@@ -565,7 +565,7 @@ class E_model extends CI_Model
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 //Must include all sources, skip:
-                $qualified_source = false;
+                $qualified_e = false;
             }
             if(count($exclude_all_e) && count($this->X_model->fetch(array(
                     'x__up IN (' . join(',', $exclude_all_e) . ')' => null,
@@ -574,12 +574,12 @@ class E_model extends CI_Model
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 //Must exclude all sources, skip:
-                $qualified_source = false;
+                $qualified_e = false;
             }
 
 
             //Is this a new matching source?
-            if($qualified_source && !isset($flat_items[$e_down['e__id']])){
+            if($qualified_e && !isset($flat_items[$e_down['e__id']])){
                 $e_down['s__level'] = $s__level;
                 $e_down['s__count'] = count($flat_items)+1;
                 $flat_items[$e_down['e__id']] = $e_down;
@@ -926,7 +926,7 @@ class E_model extends CI_Model
         return $x_adjusted;
     }
 
-    function add_source($e__id){
+    function add_e($e__id){
 
         $member_e = superpower_unlocked();
         if(!$member_e){
@@ -1231,8 +1231,8 @@ class E_model extends CI_Model
             'x__down' => $e__id,
             'x__metadata' => array(
                 'payload' => $_POST,
-                'sources_total' => count($followers),
-                'sources_updated' => $applied_success,
+                'e_total' => count($followers),
+                'e_updated' => $applied_success,
                 'command1' => $action_command1,
                 'command2' => $action_command2,
             ),

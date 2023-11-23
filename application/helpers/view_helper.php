@@ -1061,7 +1061,7 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
     $ui .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, $i['i__id'], true);
 
-    $ui .= view_list_sources($i, $x__creator);
+    $ui .= view_list_e($i, $x__creator);
     $ui .= '</a>';
 
     $ui .= '</div>';
@@ -1087,7 +1087,7 @@ function view_i__message($i, $plain_no_html = false, $exclude_title = false){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     return $CI->X_model->message_view(( $exclude_title ? strip_first_line($i['i__message']) : $i['i__message'] ), true, $member_e, $i['i__id'], $plain_no_html)
-        .view_list_sources($i, 0, $plain_no_html);
+        .view_list_e($i, 0, $plain_no_html);
 }
 
 
@@ -1238,7 +1238,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
                 //Idea Edit
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a href="javascript:void(0);" onclick="edit_idea('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a href="javascript:void(0);" onclick="edit_i('.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13909 && $has_sortable){
@@ -1457,10 +1457,10 @@ function view_random_title(){
     return random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 }
 
-function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
+function view_list_e($i, $x__creator = 0, $plain_no_html = false){
 
     $CI =& get_instance();
-    $relevant_sources = '';
+    $relevant_e = '';
     $e___33602 = $CI->config->item('e___33602');
     $e___41975 = $CI->config->item('e___41975');
 
@@ -1478,20 +1478,20 @@ function view_list_sources($i, $x__creator = 0, $plain_no_html = false){
         'x__right' => $i['i__id'],
         'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, $order_columns) as $x){
-        $relevant_sources .= view_list_source_items($i, $x__creator, $x, $plain_no_html, ( in_array($x['x__type'] , $CI->config->item('n___41975')) ? $e___41975[$x['x__type']] : array() ));
+        $relevant_e .= view_list_e_items($i, $x__creator, $x, $plain_no_html, ( in_array($x['x__type'] , $CI->config->item('n___41975')) ? $e___41975[$x['x__type']] : array() ));
     }
 
     //Idea Setting Source Types:
     foreach($CI->E_model->scissor_e(31826,$i['i__type']) as $e_item) {
         //Show full legal name for agreement:
-        $relevant_sources .= view_list_source_items($i, $x__creator, $e_item, $plain_no_html);
+        $relevant_e .= view_list_e_items($i, $x__creator, $e_item, $plain_no_html);
     }
 
-    return ( strlen($relevant_sources) ? ( $plain_no_html ? $relevant_sources : '<div class="source-featured">'.$relevant_sources.'</div>' ) : false );
+    return ( strlen($relevant_e) ? ( $plain_no_html ? $relevant_e : '<div class="source-featured">'.$relevant_e.'</div>' ) : false );
 
 }
 
-function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $append_m = array()){
+function view_list_e_items($i, $x__creator, $x, $plain_no_html = false, $append_m = array()){
 
     //Must have Public/Guest Access
     $CI =& get_instance();
@@ -1659,62 +1659,70 @@ function view_message($str, $validate_only = false) {
 
 
     //See what we can find:
-    foreach(preg_split('/\s+/', $str) as $word_index => $word) {
+    $final_message = '<div class="msg">';
+    foreach(preg_split("\n", $str) as $line_index => $line) {
+        $final_message .= '<div class="line">';
+        foreach(preg_split(' ', $line) as $word_index => $word) { //'/\s+/'
 
-        $reference_type = 0;
+            $reference_type = 0;
+            $final_message .= ( $word_index>0 ? ' ' : '' );
 
-        if (filter_var($word, FILTER_VALIDATE_URL)) {
+            if (filter_var($word, FILTER_VALIDATE_URL)) {
 
-            //Valid YouTube ID?
-            if (!substr_count($word, '&list=') && ((substr_count($word, 'youtube.com/watch')==1) || substr_count($word, 'youtu.be/')==1)) {
-                $video_id = extract_youtube_id($word);
-                if(strlen($video_id)){
-                    $reference_type = 4257; //YouTube URL
-                    array_push($references_found[$reference_type], $word);
-                    $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], $video_id, $video_id), $formatted_string);
-                }
-            }
-
-            if(!$reference_type){
-
-                //Determine URL type:
-                $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
-                $fileInfo = pathinfo($word);
-                foreach($extension_detect as $extension_type => $extension_ids) {
-                    if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
-                        $reference_type = $extension_type;
-                        break;
+                //Valid YouTube ID?
+                if (!substr_count($word, '&list=') && ((substr_count($word, 'youtube.com/watch')==1) || substr_count($word, 'youtu.be/')==1)) {
+                    $video_id = extract_youtube_id($word);
+                    if(strlen($video_id)){
+                        $reference_type = 4257; //YouTube URL
+                        array_push($references_found[$reference_type], $word);
+                        $final_message .=  sprintf($reference_template[$reference_type], $video_id, $video_id);
                     }
                 }
 
+                if(!$reference_type){
+
+                    //Determine URL type:
+                    $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
+                    $fileInfo = pathinfo($word);
+                    foreach($extension_detect as $extension_type => $extension_ids) {
+                        if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
+                            $reference_type = $extension_type;
+                            break;
+                        }
+                    }
+
+                    array_push($references_found[$reference_type], $word);
+                    $final_message .=  sprintf($reference_template[$reference_type], $word, $word);
+
+                }
+
+            } elseif (substr($word, 0, 1)=='#' && ctype_alnum(substr($word, 1))) {
+
+                $reference_type = 31834;
                 array_push($references_found[$reference_type], $word);
-                $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], $word, $word), $formatted_string);
+                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+
+            } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
+
+                $reference_type = 31835;
+                array_push($references_found[$reference_type], $word);
+                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+
+            } else {
+
+                //This word is not referencing anything!
+                $final_message .= $word;
+
 
             }
 
-            /*
-
-        } elseif (substr($word, 0, 1)=='#' && ctype_alnum(substr($word, 1))) {
-
-            $reference_type = 31834;
-            array_push($references_found[$reference_type], $word);
-            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), $word), $formatted_string);
-
-        } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
-
-            $reference_type = 31835;
-            array_push($references_found[$reference_type], $word);
-            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), $word), $formatted_string);
-
-            */
         }
-
+        $final_message .= '</div>';
     }
+    $final_message .= '</div>';
 
-    $formatted_string = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $formatted_string);
-    $formatted_string = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $formatted_string);
-    $final_message = '<div class="msg"><span>'.nl2br($formatted_string).'</span></div>';
-
+    //$formatted_string = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $formatted_string);
+    //$formatted_string = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $formatted_string);
 
     if($validate_only){
         return array(
@@ -1808,11 +1816,11 @@ function view_card_e($x__type, $e, $extra_class = null)
     $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $write_access_e));
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
-    $source_is_e = $focus_id>0 && $e['e__id']==$focus_id;
+    $e_is_e = $focus_id>0 && $e['e__id']==$focus_id;
 
 
     //Is Lock/Private?
-    $has_hard_lock = in_array($e['e__access'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$source_is_e);
+    $has_hard_lock = in_array($e['e__access'], $CI->config->item('n___30956')) && !$superpower_12701 && (!$member_e || !$e_is_e);
     $has_soft_lock = !$superpower_12701 && ($has_hard_lock || (!in_array($e['e__access'], $CI->config->item('n___7357')) && !$write_access_e));
     $has_any_lock = $is_cache || (!$superpower_12701 && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && $superpower_13422 && $x__id > 0;
@@ -1883,7 +1891,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Edit Source
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="edit_source('.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="edit_e('.$e['e__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13006 && $has_sortable){

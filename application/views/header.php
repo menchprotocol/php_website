@@ -277,14 +277,14 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 <?php
 
-$idea_view = 0;
+$i_view = 0;
 $quick_id = 0;
 $discovery_i__id = ( intval($first_segment)==$first_segment ? ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment ) : 0 );
 if($discovery_i__id>0 && write_access_i($discovery_i__id)) {
 
     //Ideation Mode:
     $_GET['i__id'] = $discovery_i__id;
-    $idea_view = 30795;
+    $i_view = 30795;
     $quick_href = '/~'.$discovery_i__id;
 
 } elseif(!strlen($first_segment) && write_access_e($website_id)) {
@@ -303,7 +303,7 @@ if($discovery_i__id>0 && write_access_i($discovery_i__id)) {
 
     //Discovery Mode:
     $_GET['i__id'] = substr($first_segment, 1);
-    $idea_view = 33286;
+    $i_view = 33286;
     $quick_href = '/' . $_GET['i__id'];
 
 } elseif(substr($first_segment, 0, 1)=='-' && $session_superpowers_13422) {
@@ -311,7 +311,7 @@ if($discovery_i__id>0 && write_access_i($discovery_i__id)) {
     //Source Mode:
     $app_id = substr($first_segment, 1);
     if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
-        $idea_view = $app_id;
+        $i_view = $app_id;
     } else {
         $quick_id = 33287;
     }
@@ -322,7 +322,7 @@ if($discovery_i__id>0 && write_access_i($discovery_i__id)) {
     //App Store:
     $app_id = substr($first_segment, 1);
     if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
-        $idea_view = $app_id;
+        $i_view = $app_id;
     } else {
         $quick_id = 6287;
     }
@@ -393,7 +393,7 @@ if(!$basic_header_footer){
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo source_cover source_cover_mini mini_6197_'.$website_id.'">'.view_cover($domain_logo).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
+                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block platform-logo e_cover e_cover_mini mini_6197_'.$website_id.'">'.view_cover($domain_logo).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title text-logo text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
 
 
                     //SEARCH
@@ -406,12 +406,12 @@ if(!$basic_header_footer){
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
 
 
-                    if($idea_view > 0){
+                    if($i_view > 0){
                         $e___40904 = $this->config->item('e___40904'); //Idea Views
                         echo '<td class="block-menu">';
                         echo '<div class="dropdown inline-block">';
                         echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                        echo '<span class="source_cover source_cover_mini menu-icon">' . $e___40904[$idea_view]['m__cover'] .'</span>';
+                        echo '<span class="e_cover e_cover_mini menu-icon">' . $e___40904[$i_view]['m__cover'] .'</span>';
                         echo '</button>';
                         echo '<div class="dropdown-menu">';
                         foreach($e___40904 as $x__type => $m) {
@@ -448,7 +448,7 @@ if(!$basic_header_footer){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="source_cover source_cover_mini menu-icon">' . ( $member_e && strlen($member_e['e__cover']) ? view_cover($member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="e_cover e_cover_mini menu-icon">' . ( $member_e && strlen($member_e['e__cover']) ? view_cover($member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {

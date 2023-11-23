@@ -53,8 +53,8 @@ if(!$is_u_request || isset($_GET['cron'])){
             '(x__right = '.$drafting_message['i__id'].' OR x__left = '.$drafting_message['i__id'].')' => null,
             'x__left >' => 0,
             'x__right >' => 0,
-        )) as $top_idea){
-            $top_link = '/'.( $top_idea['x__right']==$drafting_message['i__id'] ? $top_idea['x__left'] : $top_idea['x__right'] );
+        )) as $top_i){
+            $top_link = '/'.( $top_i['x__right']==$drafting_message['i__id'] ? $top_i['x__left'] : $top_i['x__right'] );
             break;
         }
 
@@ -62,7 +62,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Now let's see who will receive this:
         $total_sent = 0;
         $list_settings = list_settings($drafting_message['i__id']);
-        $idea_plain_message = view_i__message($drafting_message, true, true);
+        $i_plain_message = view_i__message($drafting_message, true, true);
 
         foreach($list_settings['query_string'] as $x) {
             //Send to all of them IF NOT SENT
@@ -89,7 +89,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
                 }
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], view_i_title($drafting_message, true), $idea_plain_message."\n\n".trim($plain_message), array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], view_i_title($drafting_message, true), $i_plain_message."\n\n".trim($plain_message), array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $drafting_message['i__id'],
                 ), 0, $drafting_message['x__website'], true);
