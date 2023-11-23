@@ -1662,60 +1662,62 @@ function view_message($str, $validate_only = false) {
     $final_message = '<div class="msg">';
     foreach(preg_split("\n", $str) as $line_index => $line) {
         $final_message .= '<div class="line">';
-        foreach(preg_split(' ', $line) as $word_index => $word) { //'/\s+/'
+        if(strlen($line)){
+            foreach(preg_split(' ', $line) as $word_index => $word) { //'/\s+/'
 
-            $reference_type = 0;
-            $final_message .= ( $word_index>0 ? ' ' : '' );
+                $reference_type = 0;
+                $final_message .= ( $word_index>0 ? ' ' : '' );
 
-            if (filter_var($word, FILTER_VALIDATE_URL)) {
+                if (filter_var($word, FILTER_VALIDATE_URL)) {
 
-                //Valid YouTube ID?
-                if (!substr_count($word, '&list=') && ((substr_count($word, 'youtube.com/watch')==1) || substr_count($word, 'youtu.be/')==1)) {
-                    $video_id = extract_youtube_id($word);
-                    if(strlen($video_id)){
-                        $reference_type = 4257; //YouTube URL
-                        array_push($references_found[$reference_type], $word);
-                        $final_message .=  sprintf($reference_template[$reference_type], $video_id, $video_id);
-                    }
-                }
-
-                if(!$reference_type){
-
-                    //Determine URL type:
-                    $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
-                    $fileInfo = pathinfo($word);
-                    foreach($extension_detect as $extension_type => $extension_ids) {
-                        if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
-                            $reference_type = $extension_type;
-                            break;
+                    //Valid YouTube ID?
+                    if (!substr_count($word, '&list=') && ((substr_count($word, 'youtube.com/watch')==1) || substr_count($word, 'youtu.be/')==1)) {
+                        $video_id = extract_youtube_id($word);
+                        if(strlen($video_id)){
+                            $reference_type = 4257; //YouTube URL
+                            array_push($references_found[$reference_type], $word);
+                            $final_message .=  sprintf($reference_template[$reference_type], $video_id, $video_id);
                         }
                     }
 
+                    if(!$reference_type){
+
+                        //Determine URL type:
+                        $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
+                        $fileInfo = pathinfo($word);
+                        foreach($extension_detect as $extension_type => $extension_ids) {
+                            if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
+                                $reference_type = $extension_type;
+                                break;
+                            }
+                        }
+
+                        array_push($references_found[$reference_type], $word);
+                        $final_message .=  sprintf($reference_template[$reference_type], $word, $word);
+
+                    }
+
+                } elseif (substr($word, 0, 1)=='#' && ctype_alnum(substr($word, 1))) {
+
+                    $reference_type = 31834;
                     array_push($references_found[$reference_type], $word);
-                    $final_message .=  sprintf($reference_template[$reference_type], $word, $word);
+                    $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+
+                } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
+
+                    $reference_type = 31835;
+                    array_push($references_found[$reference_type], $word);
+                    $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+
+                } else {
+
+                    //This word is not referencing anything!
+                    $final_message .= $word;
+
 
                 }
 
-            } elseif (substr($word, 0, 1)=='#' && ctype_alnum(substr($word, 1))) {
-
-                $reference_type = 31834;
-                array_push($references_found[$reference_type], $word);
-                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
-
-            } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
-
-                $reference_type = 31835;
-                array_push($references_found[$reference_type], $word);
-                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
-
-            } else {
-
-                //This word is not referencing anything!
-                $final_message .= $word;
-
-
             }
-
         }
         $final_message .= '</div>';
     }
