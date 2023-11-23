@@ -1634,15 +1634,13 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
 
     if($plain_no_html){
         return
-            $x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) ."\n"
-            . $x['x__message']
-            . ( $x['x__type']==41949 ? "\n".'https://www.google.com/maps/search/'.urlencode($x['e__title']) : '' );
+            ( $x['x__type']==41949 ? "\n".'https://www.google.com/maps/search/'.urlencode($x['e__title']) : $x['e__title'] )
+            ."\n". $x['x__message'];
     } else {
         return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
-            . '<span class="">'.$x['e__title'] . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+            . '<span>'.( $x['x__type']==41949 ? '<div class="payment_box"><a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['e__title'].'</a></div>' : $x['e__title'] ) . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.nl2br($x['x__message']).'</div></div>' : '' )
-            . ( $x['x__type']==41949 ? '<div class="payment_box"><a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank" style="text-decoration:underline;" class="sub_note main__title">'.$x['e__title'].'</a></div>' : '' )
             . '</span></div>';
     }
 
