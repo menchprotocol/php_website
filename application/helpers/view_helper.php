@@ -1681,7 +1681,7 @@ function view_message($str, $validate_only = false) {
                 $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
                 $fileInfo = pathinfo($word);
                 foreach($extension_detect as $extension_type => $extension_ids) {
-                    if(in_array($fileInfo['extension'], $extension_ids)){
+                    if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
                         $reference_type = $extension_type;
                         break;
                     }
