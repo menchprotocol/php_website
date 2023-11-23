@@ -1525,7 +1525,7 @@ function view_list_source_items($i, $x__creator, $x, $plain_no_html = false, $ap
     } else {
         return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
-            . '<span>'.( $x['x__type']==41949 ? '<a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank" style="text-decoration:underline;">'.$x['e__title'].'<span style="text-decoration:none;"> <i class="far fa-external-link"></i></span></a>' : $x['e__title'] ) . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+            . '<span>'.( $x['x__type']==41949 ? '<a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank"><span style="text-decoration:underline;">'.$x['e__title'].'</span> <i class="far fa-external-link"></i></a>' : $x['e__title'] ) . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.nl2br($x['x__message']).'</div></div>' : '' )
             . '</span></div>';
     }
