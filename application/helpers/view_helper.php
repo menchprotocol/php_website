@@ -1087,7 +1087,7 @@ function view_i__message($i, $plain_no_html = false, $exclude_title = false){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     return $CI->X_model->message_view(( $exclude_title ? strip_first_line($i['i__message']) : $i['i__message'] ), true, $member_e, $i['i__id'], $plain_no_html)
-        .'<br />'.view_list_sources($i, 0, $plain_no_html);
+        .view_list_sources($i, 0, $plain_no_html);
 }
 
 
