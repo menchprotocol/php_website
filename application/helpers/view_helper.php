@@ -1696,7 +1696,7 @@ function view_message($str, $validate_only = false) {
 
             $reference_type = 31834;
             array_push($references_found[$reference_type], $word);
-            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), substr($word, 1)), $formatted_string);
+            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), $word), $formatted_string);
 
             /*count($CI->I_model->fetch(array(
                 'i__hashtag' => substr($word, 1),
@@ -1706,7 +1706,7 @@ function view_message($str, $validate_only = false) {
 
             $reference_type = 31835;
             array_push($references_found[$reference_type], $word);
-            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), substr($word, 1)), $formatted_string);
+            $formatted_string = str_replace($word, sprintf($reference_template[$reference_type], substr($word, 1), $word), $formatted_string);
 
             /*count($CI->E_model->fetch(array(
                 'e__handler' => substr($word, 1),
