@@ -503,6 +503,12 @@ img.no-frame {
     text-align: center !important;
 }
 
+.center-block{
+    display: block;
+    width: 100%;
+    text-align: center !important;
+}
+
 .featured-frame{
     text-align: center;
     width: 89px;
@@ -4309,7 +4315,7 @@ main {
 }
 
 .sub__handle {
-    font-size: 0.89em;
+    font-size: 0.75em;
 }
 
 .active_bars_1 td { width:100.0% !important; }
