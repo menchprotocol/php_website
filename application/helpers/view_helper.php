@@ -1941,6 +1941,9 @@ function view_card_e($x__type, $e, $extra_class = null)
         }
     }
 
+    //Source Handle
+    $ui .= '<div class="sub__handle grey show-on-hover center-block">@<span class="e__handle_'.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+
     $ui .= '</div>';
 
 
@@ -1990,9 +1993,6 @@ function view_card_e($x__type, $e, $extra_class = null)
         }
         $ui .= '</div>';
     }
-
-    //Source Handle
-    $ui .= '<div class="sub__handle grey show-on-hover center-block">@<span class="e__handle_'.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
 
     $ui .= '</div>';
