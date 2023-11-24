@@ -1264,8 +1264,6 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
     }
 
 
-    return $suggestion;
-
     if(in_array($suggestion, $master_list)){
         //Duplicate, try again:
         return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
