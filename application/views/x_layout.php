@@ -28,7 +28,7 @@ if(isset($_GET['go'])){
 
                     if(count($this->X_model->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__down' => substr(1, $ref),
+                        'x__down' => substr($ref, 1),
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
                         continue;
