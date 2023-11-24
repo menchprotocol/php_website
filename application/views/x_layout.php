@@ -20,7 +20,7 @@ if(isset($_GET['go'])){
         $i_title = view_title($i, true);
         $handler = generate_handle(12273, $i_title, $master_list);
         array_push($master_list, $handler);
-        echo '<tr>#'.$handler.'<td></td><td>'.$i_title.'</td></tr>';
+        echo '<tr><td>#'.$handler.'</td><td>'.$i_title.'</td></tr>';
         //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
         if($stats['ideas']>100){
             break;
