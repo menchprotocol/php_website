@@ -55,7 +55,7 @@ if(isset($_GET['go'])){
                             if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
                                 $urls_found++;
                                 $fileInfo = pathinfo($f_url['x__message']);
-                                if((!substr_count($f_url['x__message'], '&list=') && ((substr_count($f_url['x__message'], 'youtube.com/watch')==1) || substr_count($f_url['x__message'], 'youtu.be/')==1)) || in_array($fileInfo['extension'], array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v','pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p','jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif','pdf','pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'))){
+                                if((!substr_count($f_url['x__message'], '&list=') && ((substr_count($f_url['x__message'], 'youtube.com/watch')==1) || substr_count($f_url['x__message'], 'youtu.be/')==1)) || (isset($fileInfo['extension']) && in_array($fileInfo['extension'], array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v','pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p','jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif','pdf','pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe')))){
                                     $urls_media++;
                                     $url = $f_url['x__message'];
                                 }
