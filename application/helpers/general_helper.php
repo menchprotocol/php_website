@@ -1254,9 +1254,15 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
         $suggestion = ($increment==1 ? $suggestion : substr($suggestion, 0, -strlen($increment)) ).$increment;
         $increment++;
     } else {
-        $word_arr = explode(' ', substr($string, 0, $max_adj_length));
-        unset($word_arr[count($word_arr)-1]);
-        $suggestion = preg_replace(view_memory(32103,41985), '', join(' ',$word_arr));
+
+        if(strlen($string)>$max_allowed_length){
+            //Shorten and remove the last word:
+            $word_arr = explode(' ', substr($string, 0, $max_adj_length));
+            unset($word_arr[count($word_arr)-1]);
+            $string = join(' ',$word_arr);
+        }
+
+        $suggestion = preg_replace(view_memory(32103,41985), '', $string);
     }
 
     if(strlen($suggestion)<4 || is_numeric($suggestion)){

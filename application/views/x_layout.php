@@ -22,9 +22,6 @@ if(isset($_GET['go'])){
         array_push($master_list, $handler);
         echo '<tr><td>#'.$handler.'</td><td>'.$i_title.'</td></tr>';
         //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
-        if($stats['ideas']>1000){
-            break;
-        }
     }
     echo '</table>';
 
