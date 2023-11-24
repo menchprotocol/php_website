@@ -22,7 +22,7 @@ if(isset($_GET['go'])){
         array_push($master_list, $handler);
         echo '<tr>#'.$handler.'<td></td><td>'.$i_title.'</td></tr>';
         //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
-        if($stats['ideas']>500){
+        if($stats['ideas']>5){
             break;
         }
     }

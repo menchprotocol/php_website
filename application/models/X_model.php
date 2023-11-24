@@ -669,15 +669,6 @@ class X_model extends CI_Model
 
     }
 
-    function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $plain_no_html = false)
-    {
-
-        return view_links($message_input);
-
-
-
-    }
-
 
     function message_compile($message_input, $is_discovery_mode, $member_e = array(), $message_i__id = 0, $strict_validation = true, $plain_no_html = false)
     {
