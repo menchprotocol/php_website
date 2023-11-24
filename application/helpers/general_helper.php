@@ -1255,6 +1255,7 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
         $increment++;
     } else {
 
+        $string = preg_replace("/[^A-Za-z0-9 ]/", "", $string);
         if(strlen($string)>$max_allowed_length){
             //Shorten and remove the last word:
             $word_arr = explode(' ', substr($string, 0, $max_adj_length));
