@@ -21,9 +21,11 @@ if(isset($_GET['go'])){
         if(isset($view_links['references_found'][31835])){
             foreach($view_links['references_found'][31835] as $ref){
                 $stats['e_refs']++;
-                if(is_numeric(substr($ref, 1)) && count($this->E_model->fetch(array(
+                $es = $this->E_model->fetch(array(
                     'e__id' => substr($ref, 1),
-                )))){
+                ));
+
+                if(is_numeric(substr($ref, 1)) && count($es)){
                     $stats['e_refs_found']++;
 
                     //Any links above it?
@@ -34,6 +36,7 @@ if(isset($_GET['go'])){
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
                         $urls_found = 0;
+                        $url = '';
                         foreach($this->X_model->fetch(array(
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -42,12 +45,15 @@ if(isset($_GET['go'])){
                             $stats['e_refs_found_follow']++;
                             if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
                                 $urls_found++;
+                                $url = $f_url['x__message'];
                             }
                         }
                         if($urls_found==1){
+                            echo '<div>One: '.$es[0]['e__title'].' ['.$url.']</div>';
                             $stats['e_refs_found_url_one']++;
                         }
                         if($urls_found>1){
+                            echo '<div>Many: '.$es[0]['e__title'].'</div>';
                             $stats['e_refs_found_url_many']++;
                         }
                     }
