@@ -12,7 +12,6 @@ if(isset($_GET['go'])){
         'e_refs_found_url_one' => 0,
         'e_refs_found_url_many' => 0,
     );
-    die('hii');
     echo '<table>';
     foreach($this->I_model->fetch(array(
         'i__id > 0' => null, //IDEA LINKS
@@ -23,7 +22,7 @@ if(isset($_GET['go'])){
         array_push($master_list, $handler);
         echo '<tr>#'.$handler.'<td></td><td>'.$i_title.'</td></tr>';
         //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
-        if($stats['ideas']>1000){
+        if($stats['ideas']>100){
             break;
         }
     }
