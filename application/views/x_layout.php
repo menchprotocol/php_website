@@ -12,6 +12,7 @@ if(isset($_GET['go'])){
         'e_refs_found_url_one' => 0,
         'e_refs_found_url_many' => 0,
     );
+    die('hii');
     echo '<table>';
     foreach($this->I_model->fetch(array(
         'i__id > 0' => null, //IDEA LINKS
