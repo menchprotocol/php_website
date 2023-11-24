@@ -1248,7 +1248,11 @@ function generate_handle($s__type, $string, $suggestion = null, $increment = 1){
         if(strlen($suggestion)>$max_adj_length){
             $suggestion = substr($suggestion, 0, $max_adj_length);
         }
-        $suggestion = $suggestion.$increment;
+        if($increment==1){
+            $suggestion = $suggestion.$increment;
+        } elseif($increment>1){
+            $suggestion = substr($suggestion, 0, -strlen($increment)).$increment;
+        }
         $increment++;
     } else {
         $suggestion = substr(preg_replace(view_memory(32103,41985), '', $string), 0, view_memory(6404,41985));
