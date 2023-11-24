@@ -5,12 +5,57 @@ if(isset($_GET['go'])){
     $stats = array(
         'ideas' => 0,
         'e_refs' => 0,
-        'e_refs_with_1_url' => 0,
+        'e_refs_found' => 0,
+        'e_refs_found_url_one' => 0,
+        'e_refs_found_url_many' => 0,
     );
     foreach($this->I_model->fetch(array(
         'i__id > 0' => null, //IDEA LINKS
     )) as $i){
+
         $stats['ideas']++;
+        //Scan for references:
+        $view_links = view_links($i['i__message'], true);
+        //Go through the source references:
+        if(isset($view_links['references_found'][31835])){
+            foreach($view_links['references_found'][31835] as $ref){
+                $stats['e_refs']++;
+                if(is_numeric(substr(1, $ref)) && count($this->E_model->fetch(array(
+                    'e__id' => substr(1, $ref),
+                )))){
+                    $stats['e_refs_found']++;
+                    //Any links above it?
+
+                    if(count($this->X_model->fetch(array(
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__down' => substr(1, $ref),
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        continue;
+                    }
+
+                    $urls_found = 0;
+                    foreach($this->X_model->fetch(array(
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                        'x__down' => substr(1, $ref),
+                        'LENGTH(x__message)>0' => null,
+                    ), array(), 0) as $f_url){
+                        if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
+                            $urls_found++;
+                        }
+                    }
+                    if($urls_found==1){
+                        $stats['e_refs_found_url_one']++;
+                    }
+                    if($urls_found>1){
+                        $stats['e_refs_found_url_many']++;
+                    }
+                }
+
+            }
+        }
 
     }
 
