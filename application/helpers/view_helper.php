@@ -1199,7 +1199,14 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $e___4737 = $CI->config->item('e___4737'); //Idea Status
     $first_segment = $CI->uri->segment(1);
     $current_i = ( substr($first_segment, 0, 1)=='~' ? intval(substr($first_segment, 1)) : 0 );
-    $click_locked = ( $step_by_step && !$has_discovered ? 'Go Next to Discover this Idea' : false );
+
+    if($focus_card){
+        $click_locked = true;
+    } elseif($step_by_step && !$has_discovered){
+        $click_locked = 'Go Next to Discover this Idea';
+    } else {
+        $click_locked = false;
+    }
     $locked_info = ( strlen($click_locked) ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' );
 
     //Top action menu:
