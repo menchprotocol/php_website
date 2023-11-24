@@ -62,7 +62,8 @@ if(isset($_GET['go'])){
                             }
                         }
                         if($urls_found==1 && $urls_media==1){
-                            echo '<div>Merge: '.$es[0]['e__title'].' ['.$url.']</div>';
+                            echo '<div>Merge: '.$es[0]['e__title'].'</div>';
+                            echo '<div>'.view_links($url).'</div>';
                             $stats['e_refs_found_url_one']++;
                         }
 
