@@ -71,7 +71,7 @@ if(isset($_GET['go'])){
                             echo '<div>Merge: '.$es[0]['e__title'].' / '.$ref.' --> '.$url.' / <a href="/~'.$i['i__id'].'">#'.$i['i__id'].'</a></div>';
                             echo '<div>'.view_links($url).'</div>';
                             $stats['e_refs_found_url_one']++;
-                            break;
+                            die('done');
                         }
 
                     }
