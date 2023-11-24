@@ -1232,7 +1232,9 @@ function js_reload($timer = 1){
 }
 
 function strip_first_line($text) {
-    return substr($text, strpos($text, "\n") + 1);
+    $lines = explode("\n", $text);
+    unset($lines[0]);
+    return join("\n",$lines);
 }
 
 

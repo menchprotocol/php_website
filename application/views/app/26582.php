@@ -62,7 +62,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Now let's see who will receive this:
         $total_sent = 0;
         $list_settings = list_settings($drafting_message['i__id']);
-        $i_plain_message = view_i__message($drafting_message, true, true);
+        $i_plain_message = view_i__message($drafting_message, true);
 
         foreach($list_settings['query_string'] as $x) {
             //Send to all of them IF NOT SENT

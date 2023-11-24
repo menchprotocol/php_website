@@ -969,7 +969,6 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $i_title = view_i_title($i);
     $member_e = superpower_unlocked();
     $spots_remaining = i_spots_remaining($i['i__id']);
 
@@ -985,25 +984,21 @@ function view_card_x_select($i, $x__creator, $previously_selected){
     $ui .= '</div>';
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
-    $ui .= '<a '.$href.'>'.$i_title.'</a>';
 
+
+    $ui .= '<a '.$href.'>'.view_i_title($i, true).'</a>';
     $ui .= '<div class="cover-text">';
-
-
     if($spots_remaining >= 0){
         //$ui .= '<a '.$href.' class="doblock" style="padding-bottom:2px;"><span class="mini-font '.( $spots_remaining==0 ? ' grey ' : ' isgreen ' ).'">[' .( $spots_remaining==0 ? 'Not Available' : $spots_remaining . ' Remaining' ) .']</span></a>';
     }
-
     //Messages:
-    $ui .= '<a '.$href.' class="hideIfEmpty doblock">';
+    $ui .= '<span class="hideIfEmpty doblock">';
 
+    $ui .= view_i__message($i, true);
 
-    $ui .= view_i__message($primary_i, false, true);
+    $ui .= view_text_links($i['x__message']);
 
-    $ui .= $CI->X_model->message_view($message_x['x__message'], true, $member_e, $i['i__id'], true);
-
-    $ui .= view_list_e($i, $x__creator);
-    $ui .= '</a>';
+    $ui .= '</span>';
 
     $ui .= '</div>';
 
@@ -1019,16 +1014,10 @@ function view_hash($string){
     return substr(md5($string.view_memory(6404,30863)), 0, 6);
 }
 
-function view_text_links($string) {
-    return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1">$1</a>', $string);
-}
 
 
-function view_i__message($i, $plain_no_html = false, $exclude_title = false){
-    $CI =& get_instance();
-    $member_e = superpower_unlocked();
-    return $CI->X_model->message_view(( $exclude_title ? strip_first_line($i['i__message']) : $i['i__message'] ), true, $member_e, $i['i__id'], $plain_no_html)
-        .view_list_e($i, 0, $plain_no_html);
+function view_i__message($i, $exclude_title = false){
+    return view_text_links(( $exclude_title ? strip_first_line($i['i__message']) : $i['i__message'] )).view_list_e($i, 0);
 }
 
 
@@ -1065,7 +1054,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
     $has_sortable = !$focus_card && $write_access_i && in_array($x__type, $CI->config->item('n___4603'));
-    $i_title = view_i_title($i);
 
     if($discovery_mode || $cache_app) {
         if($link_creator && $top_i__id){
@@ -1328,16 +1316,16 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Idea Message
     if(!$discovery_mode){
-        $ui .= '<div class="sub__handle grey">#'.$i['i__hashtag'].'</div>';
+        $ui .= '<div class="sub__handle grey" title="'.$x__type.' NOT IN @14378">#'.$i['i__hashtag'].'</div>';
     }
     $ui .= '<div class="main__title">'.view_i_title($i, true).'</div>';
-    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_html_' . $i['i__id'] . '">'.view_i__message($i, $cache_app, true).( $click_locked ? '</div>' : '</a>' );
+    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_html_' . $i['i__id'] . '">'.view_i__message($i, true).( $click_locked ? '</div>' : '</a>' );
 
     $ui .= '<div class="i__message_text_' . $i['i__id'] . ' hidden" item_handler="'.$i['i__hashtag'].'">'.$i['i__message'].'</div>';
 
     //Link Message, if Any:
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($write_access_i || $link_creator)){
-        $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.$CI->X_model->message_view( $i['x__message'], true, $member_e, $i['i__id']).( $click_locked ? '</div>' : '</a>' );
+        $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.view_text_links( $i['x__message']).( $click_locked ? '</div>' : '</a>' );
     }
 
     $ui .= '</div>';
@@ -1545,7 +1533,7 @@ function convertURLs($string)
     return 1;
 }
 
-function view_message($str, $validate_only = false) {
+function view_text_links($str, $validate_only = false) {
 
     /*
      * If $validate_only = true this means we have to just validate the URL
@@ -1564,7 +1552,6 @@ function view_message($str, $validate_only = false) {
     //Analyze the message to find referencing URLs and Members in the message text:
     $CI =& get_instance();
     $formatted_string = $str; //Will format as we detect various references
-
 
     //All the possible reference types that can be found:
     $references_found = array(
@@ -1966,7 +1953,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         } elseif($has_x_progress && strlen($e['x__message'])){
 
             //DISCOVERY PROGRESS
-            $ui .= '<span class="mini-font light-bg">'.$CI->X_model->message_view($e['x__message'], false, $member_e).'</span>';
+            $ui .= '<span class="mini-font light-bg">'.view_text_links($e['x__message']).'</span>';
 
         }
     }

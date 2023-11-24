@@ -672,67 +672,9 @@ class X_model extends CI_Model
     function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $plain_no_html = false)
     {
 
-        return view_message($message_input);
+        return view_text_links($message_input);
 
 
-        /*
-         *
-         * The primary function that constructs messages based on the following inputs:
-         *
-         *
-         * - $message_input:        The message text which may include source
-         *                          references like "@123". This may NOT include
-         *                          URLs as they must be first turned into an
-         *                          source and then referenced within a message.
-         *
-         *
-         * - $member_e:         The source object that this message is supposed
-         *                          to be delivered to. May be an empty array for
-         *                          when we want to show these messages to guests,
-         *                          and it may contain the full source object or it
-         *                          may only contain the source ID, which enables this
-         *                          function to fetch further information from that
-         *                          source as required based on its other parameters.
-         *
-         * */
-
-        //This could happen with random messages
-        if(strlen($message_input) < 1){
-            return false;
-        }
-
-
-        //Validate message:
-        $msg_validation = $this->X_model->message_compile($message_input, $is_discovery_mode, $member_e, $message_i__id, false, $plain_no_html);
-
-
-
-        //Did we have ane error in message validation?
-        if(!isset($msg_validation['output_messages'])){
-
-            return false;
-
-        } elseif (!$msg_validation['status']) {
-
-            //Log Error Transaction:
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => (isset($member_e['e__id']) ? $member_e['e__id'] : 0),
-                'x__message' => 'message_compile() returned error [' . (isset($msg_validation['message']) ? $msg_validation['message'] : '') . '] for input message [' . $message_input . ']',
-                'x__metadata' => array(
-                    'clean_message' => $message_input,
-                    'member_e' => $member_e,
-                    'message_i__id' => $message_i__id
-                ),
-            ));
-
-            return false;
-
-        }
-
-
-        //Message validation passed...
-        return $msg_validation['output_messages'];
 
     }
 

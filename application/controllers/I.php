@@ -351,7 +351,7 @@ class I extends CI_Controller {
 
         return view_json(array(
             'status' => 1,
-            'message_html' => view_message(trim($_POST['input__4736'])),
+            'message_html' => view_text_links(trim($_POST['input__4736'])),
         ));
 
     }

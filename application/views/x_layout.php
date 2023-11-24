@@ -1,5 +1,22 @@
 <?php
 
+if(isset($_GET['go'])){
+
+    $stats = array(
+        'ideas' => 0,
+        'e_refs' => 0,
+        'e_refs_with_1_url' => 0,
+    );
+    foreach($this->I_model->fetch(array(
+        'i__id > 0' => null, //IDEA LINKS
+    )) as $i){
+        $stats['ideas']++;
+
+    }
+
+    print_r($stats);
+}
+
 if(!in_array($i['i__access'], $this->config->item('n___31871')) && !write_access_i($i['i__id'])){
 
     echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This is not active.</div>';
@@ -168,7 +185,7 @@ echo '<div class="light-bg large-frame">';
 
 //Title:
 echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.view_i_title($i, true).'</h1>';
-$messages_without_title = view_i__message($i, false, true);
+$messages_without_title = view_i__message($i, true);
 if($messages_without_title){
     echo $messages_without_title;
 } elseif(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
@@ -677,7 +694,7 @@ if($top_i__id) {
         if (count($x_completes)) {
 
             echo '<div class="file_saving_result greybg">';
-            echo view_headline(13977, null, $e___11035[13977], $this->X_model->message_view($x_completes[0]['x__message'], true), true);
+            echo view_headline(13977, null, $e___11035[13977], view_text_links($x_completes[0]['x__message']), true);
             echo '</div>';
 
         } else {

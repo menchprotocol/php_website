@@ -729,7 +729,7 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         return view_json(array(
             'status' => 1,
-            'message' => view_headline(13977, null, $e___11035[13977], $this->X_model->message_view($new_message, true, $member_e, $_POST['i__id']), true),
+            'message' => view_headline(13977, null, $e___11035[13977], view_text_links($cdn_status['cdn_url']), true),
         ));
 
     }
