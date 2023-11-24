@@ -13,83 +13,9 @@ if(isset($_GET['go'])){
     foreach($this->I_model->fetch(array(
         'i__id > 0' => null, //IDEA LINKS
     )) as $i){
-
         $stats['ideas']++;
-        //Scan for references:
-        $view_links = view_links($i['i__message'], true);
-        //Go through the source references:
-        if(isset($view_links['references_found'][31835])){
-            foreach($view_links['references_found'][31835] as $ref){
-                $stats['e_refs']++;
-
-                $es = array();
-                if(is_numeric(substr($ref, 1))){
-                    $es = $this->E_model->fetch(array(
-                        'e__id' => substr($ref, 1),
-                    ));
-                }
-
-                if(count($es)){
-                    $stats['e_refs_found']++;
-
-                    //Any links above it?
-                    if(!count($this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
-                        'x__down' => substr($ref, 1),
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    ))) && !count($this->X_model->fetch(array(
-                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__up' => substr($ref, 1),
-                        )))){
-                        $links_found = 0;
-                        $urls_found = 0;
-                        $urls_media = 0;
-                        $url = '';
-                        foreach($this->X_model->fetch(array(
-                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__down' => substr($ref, 1),
-                        ), array(), 0) as $f_url){
-                            $links_found++;
-                            $stats['e_refs_found_follow']++;
-                            if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
-                                $urls_found++;
-                                $fileInfo = pathinfo($f_url['x__message']);
-                                if((!substr_count($f_url['x__message'], '&list=') && ((substr_count($f_url['x__message'], 'youtube.com/watch')==1) || substr_count($f_url['x__message'], 'youtu.be/')==1)) || (isset($fileInfo['extension']) && in_array($fileInfo['extension'], array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v','pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p','jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif','pdf','pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe')))){
-                                    $urls_media++;
-                                    $url = $f_url['x__message'];
-                                }
-                            }
-                        }
-                        if($urls_media>0){
-
-                            $this->I_model->update($i['i__id'], array(
-                                'i__message' => str_replace($ref, $url, $i['i__message']),
-                            ));
-                            $this->X_model->create(array(
-                                'x__creator' => 1,
-                                'x__type' => 4983, //IDEA SOURCES
-                                'x__up' => substr($ref, 1),
-                                'x__right' => $i['i__id'],
-                            ));
-
-                            echo '<div>Merge: '.$es[0]['e__title'].' / '.$ref.' --> '.$url.' / <a href="/~'.$i['i__id'].'">#'.$i['i__id'].'</a></div>';
-                            echo '<div>'.view_links($url).'</div>';
-                            $stats['e_refs_found_url_one']++;
-
-                        }
-
-                    }
-                } else {
-                    //Invalid Ref:
-                    echo '<div>Invalid: '.$ref.'</div>';
-                }
-
-            }
-        }
-
+        $i_title = view_title($i, true);
+        echo '<div>#'.generate_handle($i_title).' / '.$i_title.'</div>';
     }
 
     print_r($stats);

@@ -1239,9 +1239,9 @@ function remove_first_line($text) {
 
 
 
-function generate_handle($title){
+function generate_handle($string){
     //Generates a Suitable Handle from the title:
-    return substr(preg_replace(view_memory(32103,41985), '', $title), 0, view_memory(6404,41985));
+    return substr(preg_replace(view_memory(32103,41985), '', $string), 0, view_memory(6404,41985));
 }
 
 function validate_handler($string, $i__id = null, $e__id = null){
