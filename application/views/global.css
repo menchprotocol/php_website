@@ -3643,6 +3643,11 @@ h4.main__title{
     text-align: left;
 }
 
+.msg .line{
+    min-height: 8pm;
+    padding-bottom: 5px;
+}
+
 .msg>span>a{
     text-decoration: underline;
 }
