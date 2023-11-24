@@ -1239,9 +1239,39 @@ function remove_first_line($text) {
 
 
 
-function generate_handle($string){
+function generate_handle($s__type, $string, $suggestion = null, $increment = 1){
     //Generates a Suitable Handle from the title:
-    return substr(preg_replace(view_memory(32103,41985), '', $string), 0, view_memory(6404,41985));
+
+    if($suggestion){
+        //Previous suggestion did not work, let's tweak and try again:
+        $max_adj_length = view_memory(6404,41985) - 5; //Reduce handler to give space for $increment extension up to 99999
+        if(strlen($suggestion)>$max_adj_length){
+            $suggestion = substr($suggestion, 0, $max_adj_length);
+        }
+        $suggestion = $suggestion.$increment;
+        $increment++;
+    } else {
+        $suggestion = substr(preg_replace(view_memory(32103,41985), '', $string), 0, view_memory(6404,41985));
+    }
+
+    //Make sure not exist in DB:
+    if($s__type==12273){
+        //Search ideas:
+        if(count($this->I_model->fetch(array(
+            'i__hashtag' => $suggestion,
+        )))){
+            return generate_handle($s__type, $string, $suggestion, $increment);
+        }
+    } elseif($s__type==12274){
+        //Search ideas:
+        if(count($this->E_model->fetch(array(
+            'e__handler' => $suggestion,
+        )))){
+            return generate_handle($s__type, $string, $suggestion, $increment);
+        }
+    }
+
+    return $suggestion;
 }
 
 function validate_handler($string, $i__id = null, $e__id = null){
