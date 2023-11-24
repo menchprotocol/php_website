@@ -16,7 +16,7 @@ if(isset($_GET['go'])){
         $handler = generate_handle(12274, $e['e__title'], $master_list);
         array_push($master_list, $handler);
         echo '<tr><td>@'.$handler.' {'.strlen($handler).'}</td><td>'.$e['e__title'].' ['.strlen($e['e__title']).']</td></tr>';
-        //$this->E_model->update($e['e__id'], array( 'e__handle' => $handler ));
+        $this->E_model->update($e['e__id'], array( 'e__handle' => $handler ));
     }
 
     /*
