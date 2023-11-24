@@ -21,11 +21,15 @@ if(isset($_GET['go'])){
         if(isset($view_links['references_found'][31835])){
             foreach($view_links['references_found'][31835] as $ref){
                 $stats['e_refs']++;
-                $es = $this->E_model->fetch(array(
-                    'e__id' => substr($ref, 1),
-                ));
 
-                if(is_numeric(substr($ref, 1)) && count($es)){
+                $es = array();
+                if(is_numeric(substr($ref, 1))){
+                    $es = $this->E_model->fetch(array(
+                        'e__id' => substr($ref, 1),
+                    ));
+                }
+
+                if(count($es)){
                     $stats['e_refs_found']++;
 
                     //Any links above it?
