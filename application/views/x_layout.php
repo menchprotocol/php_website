@@ -21,7 +21,7 @@ if(isset($_GET['go'])){
         $handler = generate_handle(12273, $i_title, $master_list);
         array_push($master_list, $handler);
         echo '<tr><td>#'.$handler.' ['.strlen($handler).']</td><td>'.$i_title.' ['.strlen($i_title).']</td></tr>';
-        //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
+        $this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
     }
     echo '</table>';
 
