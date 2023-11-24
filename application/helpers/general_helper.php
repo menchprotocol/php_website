@@ -1244,7 +1244,7 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
 
     //Previous suggestion did not work, let's tweak and try again:
     $max_allowed_length = view_memory(6404,41985);
-    $max_adj_length = $max_allowed_length - 5; //Reduce handler to give space for $increment extension up to 99999
+    $max_adj_length = $max_allowed_length - 3; //Reduce handler to give space for $increment extension up to 99999
     $recommended_length = $max_allowed_length/2;
 
     if(strlen($suggestion)){
@@ -1258,7 +1258,7 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
         $string = preg_replace("/[^A-Za-z0-9 ]/", "", $string);
         if(strlen($string)>$max_allowed_length){
             //Shorten and remove the last word:
-            $word_arr = explode(' ', substr($string, 0, $max_adj_length));
+            $word_arr = explode(' ', substr($string, 0, $max_allowed_length));
             unset($word_arr[count($word_arr)-1]);
             $string = join(' ',$word_arr);
         }
