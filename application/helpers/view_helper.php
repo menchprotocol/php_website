@@ -1062,7 +1062,7 @@ function view_links($str, $validate_only = false) {
                     if(strlen($video_id)){
                         $reference_type = 4257; //YouTube URL
                         array_push($references_found[$reference_type], $word);
-                        $final_message .=  sprintf($reference_template[$reference_type], $video_id, $video_id);
+                        $final_message .=  @sprintf($reference_template[$reference_type], $video_id, $video_id);
                     }
                 }
 
@@ -1079,7 +1079,7 @@ function view_links($str, $validate_only = false) {
                     }
 
                     array_push($references_found[$reference_type], $word);
-                    $final_message .=  sprintf($reference_template[$reference_type], $word, $word);
+                    $final_message .=  @sprintf($reference_template[$reference_type], $word, $word);
 
                 }
 
@@ -1087,13 +1087,13 @@ function view_links($str, $validate_only = false) {
 
                 $reference_type = 31834;
                 array_push($references_found[$reference_type], $word);
-                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+                $final_message .=  @sprintf($reference_template[$reference_type], substr($word, 1), $word);
 
             } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
 
                 $reference_type = 31835;
                 array_push($references_found[$reference_type], $word);
-                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+                $final_message .=  @sprintf($reference_template[$reference_type], substr($word, 1), $word);
 
             } else {
 
