@@ -843,7 +843,7 @@ function load_card_clickers(){
 
     $( ".card_click_e" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect('/@'+$(this).attr('e__handler'));
+            js_redirect('/@'+$(this).attr('e__handle'));
         }
     });
 

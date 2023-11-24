@@ -1288,7 +1288,7 @@ function generate_handle($s__type, $string, $master_list = false, $suggestion = 
         )))){
         return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
     } elseif($s__type==12274 && count($CI->E_model->fetch(array(
-            'e__handler' => $suggestion,
+            'e__handle' => $suggestion,
         )))){
         return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
     } else {
@@ -1359,7 +1359,7 @@ function validate_handler($string, $i__id = null, $e__id = null){
     } elseif($e__id>0){
         foreach($CI->E_model->fetch(array(
             'e__id !=' => $e__id,
-            'e__handler' => $string,
+            'e__handle' => $string,
         ), 0) as $matched){
             return array(
                 'status' => 0,
