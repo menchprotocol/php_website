@@ -1436,11 +1436,6 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     $ui .= '<div class="cover-text">';
 
-    //Idea Message
-    if(!$discovery_mode){
-        $ui .= '<div class="sub__handle grey show-on-hover">#<span class="i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
-    }
-
     $ui .= '<div class="main__title">'.view_first_line($i['i__message'], true).'</div>';
 
     $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_ui_' . $i['i__id'] . '">'.view_message($i, true, !$click_locked).( $click_locked ? '</div>' : '</a>' );
@@ -1450,6 +1445,11 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     //Link Message, if Any:
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($write_access_i || $link_creator)){
         $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.view_links( $i['x__message']).( $click_locked ? '</div>' : '</a>' );
+    }
+
+    //Idea Message
+    if(!$discovery_mode){
+        $ui .= '<div class="sub__handle grey show-on-hover">#<span class="i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
     }
 
     $ui .= '</div>';
@@ -1965,8 +1965,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
 
-    //Idea Message
-    $ui .= '<div class="sub__handle grey show-on-hover">@<span class="e__handle_'.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
@@ -1975,6 +1973,10 @@ function view_card_e($x__type, $e, $extra_class = null)
         //Static:
         $ui .= '<div class="main__title">'.( $is_cache ? '<a href="'.$href.'" class="main__title">'.$e['e__title'].'</a>' : $e['e__title'] ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
     }
+
+
+    //Source Handle
+    $ui .= '<div class="sub__handle grey show-on-hover center">@<span class="e__handle_'.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     $ui .= '</div>';
     $ui .= '</div>';
