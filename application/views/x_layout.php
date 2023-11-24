@@ -38,7 +38,6 @@ if(isset($_GET['go'])){
                     foreach($this->X_model->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         'x__down' => substr($ref, 1),
                         'LENGTH(x__message)>0' => null,
                     ), array(), 0) as $f_url){
