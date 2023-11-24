@@ -1207,7 +1207,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     } else {
         $click_locked = false;
     }
-    $locked_info = ( strlen($click_locked) ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' );
+    $locked_info = ( strlen($click_locked)>1 ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' );
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
