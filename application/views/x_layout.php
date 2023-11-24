@@ -29,6 +29,7 @@ if(isset($_GET['go'])){
                     //Any links above it?
                     if(!count($this->X_model->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
                         'x__down' => substr($ref, 1),
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
