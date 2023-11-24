@@ -11,68 +11,6 @@ function view_db_field($field_name){
 
 
 
-function view_url_embed($url, $full_message = null, $return_array = false)
-{
-
-
-    /*
-     *
-     * Detects and displays URLs from supported website with an embed widget
-     *
-     * Alert: Changes to this function requires us to re-calculate all current
-     *       values for x__type as this could change the equation for those
-     *       transaction types. Change with care...
-     *
-     * */
-
-
-
-    $clean_url = null;
-    $embed_html_code = null;
-    $prefix__message = null;
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035');
-
-    if(($url)){
-
-        //See if $url has a valid embed video in it, and transform it if it does:
-        $has_embed = (substr_count($url, 'youtube.com/embed/')==1);
-
-        if (!substr_count($url, '&list=') && ((substr_count($url, 'youtube.com/watch')==1) || substr_count($url, 'youtu.be/')==1 || $has_embed)) {
-
-            $start_time = 0;
-            $end_time = 0;
-            $video_id = extract_youtube_id($url);
-
-            if ($video_id) {
-
-                //Set the Clean URL:
-                $clean_url = 'https://www.youtube.com/watch?v=' . $video_id;
-
-                $embed_html_code .= '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe id="youtubeplayer'.$video_id.'"  src="//www.youtube.com/embed/' . $video_id . '?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=' . $start_time . ($end_time ? '&end=' . $end_time : '') . '" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div>';
-
-            }
-
-        }
-    }
-
-
-    if ($return_array) {
-
-        //Return all aspects of this parsed URL:
-        return array(
-            'status' => ( $embed_html_code ? 1 : 0 ),
-            'view_url_embed' => $embed_html_code,
-            'clean_url' => $clean_url,
-        );
-
-    } else {
-
-        //Just return the embed code:
-        return $embed_html_code;
-
-    }
-}
 
 function view_i_title($i, $string_only = false){
     $lines = explode("\n", $i['i__message']);
@@ -114,6 +52,9 @@ function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
     }
 }
 
+function view_url($string){
+    return preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank">$0</a>', $string);
+}
 
 function view_number($number)
 {
@@ -1526,7 +1467,7 @@ function view_list_e_items($i, $x__creator, $x, $plain_no_html = false, $append_
         return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
             . '<span>'.( $x['x__type']==41949 ? '<a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank"><span style="text-decoration:underline;">'.$x['e__title'].'</span> <i class="far fa-external-link"></i></a>' : $x['e__title'] ) . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
-            . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.nl2br($x['x__message']).'</div></div>' : '' )
+            . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.nl2br(view_url($x['x__message'])).'</div></div>' : '' )
             . '</span></div>';
     }
 
