@@ -179,7 +179,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Core Variables',
             ));
-        } elseif (!isset($_POST['input__4736']) || !isset($_POST['link_i__id']) || intval($_POST['link_i__id']) < 1) {
+        } elseif (!isset($_POST['input__4736']) || !isset($_POST['link_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Follower Idea ID',
