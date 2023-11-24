@@ -7,7 +7,7 @@ if(!isset($_GET['i__id'])){
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id'], true);
-echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
+echo '<h1>' . view_title($list_settings['i']) . '</h1>';
 echo count($list_settings['query_string']) . ' Contacts<br />';
 echo $list_settings['contact_details']['email_count'] . ' Emails<br />';
 echo $list_settings['contact_details']['phone_count'] . ' Phones<br /><br />';

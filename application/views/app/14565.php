@@ -50,11 +50,14 @@ if(!count($primary_i)){
 }
 
 
-echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_i_title($primary_i, true) . '</h1>';
-echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
+
+echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_title($primary_i, true)).'\'); }); </script> ';
 
 
-$top_messages = view_i__message($primary_i, true);
+
+echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_title($primary_i, true) . '</h1>';
+
+$top_messages = view_message($primary_i, true);
 
 //Did we find any?
 $messages = '';

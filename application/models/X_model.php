@@ -151,7 +151,7 @@ class X_model extends CI_Model
 
                     //IDEA
                     foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                        $plain_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__id']."\n\n";
+                        $plain_message .= $m['m__title'] . ': '.view_title($this_i, true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__id']."\n\n";
                     }
 
                 } elseif (in_array(6160 , $m['m__following'])) {
@@ -625,7 +625,7 @@ class X_model extends CI_Model
         if($sms_subscriber && $twilio_account_sid && $twilio_auth_token && $twilio_from_number){
 
             //Yes, generate message
-            $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).$plain_message;
+            $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).strip_tags($plain_message);
             if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
                 $sms_message  = 'We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (it may end-up in Spam)';
             }
@@ -672,7 +672,7 @@ class X_model extends CI_Model
     function message_view($message_input, $is_discovery_mode = true, $member_e = array(), $message_i__id = 0, $plain_no_html = false)
     {
 
-        return view_text_links($message_input);
+        return view_links($message_input);
 
 
 
@@ -1126,7 +1126,7 @@ class X_model extends CI_Model
             if(strlen($clone_urls)){
                 //Send DM with all the new clone idea URLs:
                 $clone_urls = $clone_urls.'You have been added as a subscriber so you will be notified when anyone start using your link.';
-                $i_title = view_i_title($i, true);
+                $i_title = view_title($i, true);
                 $this->X_model->send_dm($add_fields['x__creator'], $i_title , $clone_urls);
                 //Also DM all watchers of the idea:
                 foreach($this->X_model->fetch(array(
@@ -1311,9 +1311,9 @@ class X_model extends CI_Model
                         if(!in_array(intval($watcher['x__up']), $sent_watchers)){
                             array_push($sent_watchers, intval($watcher['x__up']));
 
-                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.view_i_title($i, true),
+                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.view_title($i, true),
                                 //Message Body:
-                                view_i_title($i, true).':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
+                                view_title($i, true).':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
                                 ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
                                 $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
                                 $discoverer_contact

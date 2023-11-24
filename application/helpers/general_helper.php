@@ -1231,7 +1231,7 @@ function js_reload($timer = 1){
     echo '<script> $(document).ready(function () { setTimeout(function () { location.reload(true); }, '.$timer.'); }); </script>';
 }
 
-function strip_first_line($text) {
+function remove_first_line($text) {
     $lines = explode("\n", $text);
     unset($lines[0]);
     return join("\n",$lines);
@@ -1421,7 +1421,7 @@ function send_qr($x__id, $x__creator){
         'x__id' => $x__id,
         'x__right > 0' => null,
     ), array('x__right')) as $top_i){
-        $additional_info = ' for '.view_i_title($top_i, true);
+        $additional_info = ' for '.view_title($top_i, true);
         break;
     }
 

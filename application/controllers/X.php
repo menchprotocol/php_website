@@ -533,7 +533,7 @@ class X extends CI_Controller
         $e___14874 = $this->config->item('e___14874'); //Mench Cards
 
         $this->load->view('header', array(
-            'title' => view_i_title($is[0], true).( $top_i__id > 0 ? ' > '.view_i_title($top_is[0],  true) : '' ),
+            'title' => view_title($is[0], true).( $top_i__id > 0 ? ' > '.view_title($top_is[0],  true) : '' ),
             'i' => $is[0],
             'flash_message' => $flash_message,
         ));
@@ -699,7 +699,7 @@ class X extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, view_i_title($is[0]).' BY '.$member_e['e__title']);
+        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, view_title($is[0]).' BY '.$member_e['e__title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -729,7 +729,7 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         return view_json(array(
             'status' => 1,
-            'message' => view_headline(13977, null, $e___11035[13977], view_text_links($cdn_status['cdn_url']), true),
+            'message' => view_headline(13977, null, $e___11035[13977], view_links($cdn_status['cdn_url']), true),
         ));
 
     }

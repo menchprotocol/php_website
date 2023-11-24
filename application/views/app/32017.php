@@ -23,7 +23,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
         $ticket_holder_ui = '';
 
 
-        $ticket_holder_ui .= '<h3>'.view_i_title($ticket_type).'</h3>';
+        $ticket_holder_ui .= '<h3>'.view_title($ticket_type).'</h3>';
         $ticket_holder_ui .= '<table class="table table-sm table-striped stats-table mini-stats-table" style="margin-bottom: 34px;">';
         $ticket_holder_ui .= '<tr style="font-weight: bold;">';
         $ticket_holder_ui .= '<th>#</th>';

@@ -79,7 +79,7 @@ foreach($this->I_model->fetch(array(
     if(!$signed_i){
 
         //Allow users to sign:
-        echo view_i__message($i_sign);
+        echo view_message($i_sign);
 
         echo '<form method="POST" action="">';
         echo view_sign($i_sign, ( isset($_POST['x_write']) ? $_POST['x_write'] : '' ));

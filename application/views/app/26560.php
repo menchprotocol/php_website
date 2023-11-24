@@ -37,8 +37,8 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0 && isset($_GET['x__creato
         $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x[0]['x__id'].'&x__creator='.$x[0]['x__creator'].'&checkin_32016=1';
 
         //Display UI:
-        echo '<h2 style="text-align: center;">'.view_i_title($is_top[0]).'</h2>';
-        echo '<h3 style="text-align: center;">'.view_i_title($is_discovery[0]).'</h3>';
+        echo '<h2 style="text-align: center;">'.view_title($is_top[0]).'</h2>';
+        echo '<h3 style="text-align: center;">'.view_title($is_discovery[0]).'</h3>';
         echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__id'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.' Ticket'.view__s($quantity).'</b></h3>';
 
 

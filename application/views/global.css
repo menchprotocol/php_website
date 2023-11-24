@@ -1077,7 +1077,7 @@ textarea.note-textarea{
     width: 100%;
     margin-bottom: 0;
 }
-.card_e_click, .card_click_i, .x_remove, .ignore-click, a:hover, a:hover * {
+.card_click_e, .card_click_i, .x_remove, .ignore-click, a:hover, a:hover * {
     cursor: pointer !important;
 }
 
@@ -3647,6 +3647,16 @@ h4.main__title{
     min-height: 8pm;
     padding-bottom: 5px;
 }
+
+.msg .first_line{
+    font-size: 1.4em;
+    padding-bottom: 8px;
+}
+.remove_first_line .first_line{
+    display: none;
+}
+
+
 
 .msg>span>a{
     text-decoration: underline;

@@ -13,7 +13,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id']);
-echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
+echo '<h1>' . view_title($list_settings['i']) . '</h1>';
 
 
 //List the idea:

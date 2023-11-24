@@ -12,12 +12,6 @@ function view_db_field($field_name){
 
 
 
-function view_i_title($i, $string_only = false){
-    $lines = explode("\n", $i['i__message']);
-    return ( $string_only ? $lines['0'] : '<span class="main__title">'.$lines['0'].'</span>' );
-}
-
-
 function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 {
 
@@ -125,7 +119,7 @@ function view_card_x($x, $has_x__reference = false)
 
             //IDEA
             foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_i){
-                $ui .= '<div class="simple-line"><a href="/~'.$focus_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/~'.$focus_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_title($focus_i).'</a></div>';
             }
 
 
@@ -950,21 +944,6 @@ function view__load__e($e){
 
 
 
-
-function view_add_item($focus_card, $x__type){
-
-    //TODO make add buttons like idea/source cards
-
-    if($focus_card==12273){
-        //Idea adder
-
-    } elseif($focus_card==12274){
-        //Source adder
-
-    }
-
-}
-
 function view_card_x_select($i, $x__creator, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
@@ -985,23 +964,11 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
     $ui .= '<div class="cover-content"><div class="inner-content">';
 
-
-    $ui .= '<a '.$href.'>'.view_i_title($i, true).'</a>';
     $ui .= '<div class="cover-text">';
-    if($spots_remaining >= 0){
-        //$ui .= '<a '.$href.' class="doblock" style="padding-bottom:2px;"><span class="mini-font '.( $spots_remaining==0 ? ' grey ' : ' isgreen ' ).'">[' .( $spots_remaining==0 ? 'Not Available' : $spots_remaining . ' Remaining' ) .']</span></a>';
-    }
-    //Messages:
-    $ui .= '<span class="hideIfEmpty doblock">';
-
-    $ui .= view_i__message($i, true);
-
-    $ui .= view_text_links($i['x__message']);
-
-    $ui .= '</span>';
-
+    $ui .= '<a '.$href.' class="hideIfEmpty doblock">';
+    $ui .= view_message($i, false, true);
+    $ui .= '</a>';
     $ui .= '</div>';
-
 
     $ui .= '</div></div>';
     $ui .= '</div>';
@@ -1016,9 +983,157 @@ function view_hash($string){
 
 
 
-function view_i__message($i, $exclude_title = false){
-    return view_text_links(( $exclude_title ? strip_first_line($i['i__message']) : $i['i__message'] )).view_list_e($i, 0);
+function view_message($i, $remove_first_line = false, $strip_hrefs = false){
+    return '<div class="'.( $remove_first_line ? 'remove_first_line' : '' ).'">'.( $strip_hrefs ? str_replace('<a ','<span ',str_replace('</a>','</span>',$i['i__cache'])) : $i['i__cache'] ).'</div>'.( !$strip_hrefs ? view_list_e($i, 0) : '' );
 }
+
+function view_title($i, $string_only = false){
+    $lines = explode("\n", $i['i__message']);
+    return ( $string_only ? $lines['0'] : '<span class="main__title">'.$lines['0'].'</span>' );
+}
+
+function view_links($str, $validate_only = false) {
+
+    /*
+     * If $validate_only = true this means we have to just validate the URL
+     *
+     * Examples:
+     *
+     * YouTube URL:    https://www.youtube.com/watch?v=-dVwv4wPA88
+     * Audio URL:      https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
+     * Video URL:      https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
+     * Image URL:      https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
+     * File URL:       https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
+     *
+     * */
+
+    //Display Images, Audio, Video & PDF Files:
+    //Analyze the message to find referencing URLs and Members in the message text:
+    $CI =& get_instance();
+    $formatted_string = $str; //Will format as we detect various references
+
+    //All the possible reference types that can be found:
+    $references_found = array(
+        4258 => array(), //Video URL
+        4259 => array(), //Audio URL
+        4260 => array(), //Image URL
+        4261 => array(), //File URL
+        4256 => array(), //Generic URL
+        4257 => array(), //YouTUbe URL
+        31834 => array(), //Synonym Idea
+        31835 => array(), //Source Mention
+    );
+
+
+    $extension_detect = array(
+        4258 => array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v'),
+        4259 => array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'),
+        4260 => array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif'),
+        4261 => array('pdf','pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'),
+    );
+
+
+    $reference_template = array(
+        4258 => '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video><!-- %s -->',
+        4259 => '<audio controls src="%s">Your Browser Does Not Support Audio</audio><!-- %s -->',
+        4260 => '<img src="%s" class="content-image" /><!-- %s -->',
+        4261 => '<a href="%s" target="_blank" class="ignore-click"><u>Download File</u></a><!-- %s -->',
+        4256 => '<a href="%s" target="_blank" class="ignore-click"><span class="url_truncate"><u>%s</u></span></a>',
+        4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
+        31834 => '<a href="/%s"><u>%s</u></a>',
+        31835 => '<a href="/@%s"><u>%s</u></a>',
+    );
+
+
+    //See what we can find:
+    $final_message = '<div class="msg">';
+    foreach(explode("\n", $str) as $line_index => $line) {
+        $final_message .= '<div class="line '.(!$line_index ? 'first_line' : '').'">';
+        foreach(explode(' ', $line) as $word_index => $word) { //'/\s+/'
+
+            $reference_type = 0;
+            $final_message .= ( $word_index>0 ? ' ' : '' );
+
+            if (filter_var($word, FILTER_VALIDATE_URL)) {
+
+                //Valid YouTube ID?
+                if (!substr_count($word, '&list=') && ((substr_count($word, 'youtube.com/watch')==1) || substr_count($word, 'youtu.be/')==1)) {
+                    $video_id = extract_youtube_id($word);
+                    if(strlen($video_id)){
+                        $reference_type = 4257; //YouTube URL
+                        array_push($references_found[$reference_type], $word);
+                        $final_message .=  sprintf($reference_template[$reference_type], $video_id, $video_id);
+                    }
+                }
+
+                if(!$reference_type){
+
+                    //Determine URL type:
+                    $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
+                    $fileInfo = pathinfo($word);
+                    foreach($extension_detect as $extension_type => $extension_ids) {
+                        if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
+                            $reference_type = $extension_type;
+                            break;
+                        }
+                    }
+
+                    array_push($references_found[$reference_type], $word);
+                    $final_message .=  sprintf($reference_template[$reference_type], $word, $word);
+
+                }
+
+            } elseif (substr($word, 0, 1)=='#' && ctype_alnum(substr($word, 1))) {
+
+                $reference_type = 31834;
+                array_push($references_found[$reference_type], $word);
+                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+
+            } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
+
+                $reference_type = 31835;
+                array_push($references_found[$reference_type], $word);
+                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
+
+            } else {
+
+                //This word is not referencing anything!
+                $final_message .= $word;
+
+
+            }
+
+        }
+        $final_message .= '</div>';
+    }
+    $final_message .= '</div>';
+
+    //$formatted_string = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $formatted_string);
+    //$formatted_string = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $formatted_string);
+
+    if($validate_only){
+        return array(
+            'references_found' => $references_found,
+            'final_message' => $final_message,
+        );
+    } else {
+        //Return formatted message:
+        return $final_message;
+    }
+
+    /*
+     * Preg Replace method (Old):
+     *
+
+    $str = str_replace('"https://','"//',preg_replace('/(https?:\/\/.*\.(?:pdf))/i', '<img src="$1" class="overflowhide" />', $str));
+    $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $str);
+    $str = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $str);
+    $str = preg_replace('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/', '<a href="/-31807?url=$0" target="_blank"><u>$0</u></a>', $str);
+
+    */
+
+}
+
 
 
 function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e = false){
@@ -1088,7 +1203,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
     $locked_info = ( strlen($click_locked) ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' );
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
+    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" '.( $x__id ? ' x__id="'.$x__id.'" ' : '' ).' class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
      ' : ' edge-cover card_click_i col-md-4 col-6 ' ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card___12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
@@ -1316,16 +1431,18 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Idea Message
     if(!$discovery_mode){
-        $ui .= '<div class="sub__handle grey" title="'.$x__type.' NOT IN @14378">#'.$i['i__hashtag'].'</div>';
+        $ui .= '<div class="sub__handle grey" title="'.$x__type.' NOT IN @14378">#<span class="i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
     }
-    $ui .= '<div class="main__title">'.view_i_title($i, true).'</div>';
-    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_html_' . $i['i__id'] . '">'.view_i__message($i, true).( $click_locked ? '</div>' : '</a>' );
 
-    $ui .= '<div class="i__message_text_' . $i['i__id'] . ' hidden" item_handler="'.$i['i__hashtag'].'">'.$i['i__message'].'</div>';
+    $ui .= '<div class="main__title">'.view_title($i, true).'</div>';
+
+    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_ui_' . $i['i__id'] . '">'.view_message($i, true, !$click_locked).( $click_locked ? '</div>' : '</a>' );
+
+    $ui .= '<div class="i__message_text_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
 
     //Link Message, if Any:
     if(isset($i['x__message']) && strlen($i['x__message'])>0 && ($write_access_i || $link_creator)){
-        $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.view_text_links( $i['x__message']).( $click_locked ? '</div>' : '</a>' );
+        $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font greybg messages_link_' . $i['x__id'] . '">'.view_links( $i['x__message']).( $click_locked ? '</div>' : '</a>' );
     }
 
     $ui .= '</div>';
@@ -1533,147 +1650,6 @@ function convertURLs($string)
     return 1;
 }
 
-function view_text_links($str, $validate_only = false) {
-
-    /*
-     * If $validate_only = true this means we have to just validate the URL
-     *
-     * Examples:
-     *
-     * YouTube URL:    https://www.youtube.com/watch?v=-dVwv4wPA88
-     * Audio URL:      https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
-     * Video URL:      https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
-     * Image URL:      https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
-     * File URL:       https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
-     *
-     * */
-
-    //Display Images, Audio, Video & PDF Files:
-    //Analyze the message to find referencing URLs and Members in the message text:
-    $CI =& get_instance();
-    $formatted_string = $str; //Will format as we detect various references
-
-    //All the possible reference types that can be found:
-    $references_found = array(
-        4258 => array(), //Video URL
-        4259 => array(), //Audio URL
-        4260 => array(), //Image URL
-        4261 => array(), //File URL
-        4256 => array(), //Generic URL
-        4257 => array(), //YouTUbe URL
-        31834 => array(), //Synonym Idea
-        31835 => array(), //Source Mention
-    );
-
-
-    $extension_detect = array(
-        4258 => array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v'),
-        4259 => array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'),
-        4260 => array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif'),
-        4261 => array('pdf','pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'),
-    );
-
-
-    $reference_template = array(
-        4258 => '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video><!-- %s -->',
-        4259 => '<audio controls src="%s">Your Browser Does Not Support Audio</audio><!-- %s -->',
-        4260 => '<img src="%s" class="content-image" /><!-- %s -->',
-        4261 => '<a href="%s" target="_blank" class="ignore-click"><u>Download File</u></a><!-- %s -->',
-        4256 => '<a href="%s" target="_blank" class="ignore-click"><span class="url_truncate"><u>%s</u></span></a>',
-        4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
-        31834 => '<a href="/%s"><u>%s</u></a>',
-        31835 => '<a href="/@%s"><u>%s</u></a>',
-    );
-
-
-    //See what we can find:
-    $final_message = '<div class="msg">';
-    foreach(explode("\n", $str) as $line_index => $line) {
-        $final_message .= '<div class="line">';
-        foreach(explode(' ', $line) as $word_index => $word) { //'/\s+/'
-
-            $reference_type = 0;
-            $final_message .= ( $word_index>0 ? ' ' : '' );
-
-            if (filter_var($word, FILTER_VALIDATE_URL)) {
-
-                //Valid YouTube ID?
-                if (!substr_count($word, '&list=') && ((substr_count($word, 'youtube.com/watch')==1) || substr_count($word, 'youtu.be/')==1)) {
-                    $video_id = extract_youtube_id($word);
-                    if(strlen($video_id)){
-                        $reference_type = 4257; //YouTube URL
-                        array_push($references_found[$reference_type], $word);
-                        $final_message .=  sprintf($reference_template[$reference_type], $video_id, $video_id);
-                    }
-                }
-
-                if(!$reference_type){
-
-                    //Determine URL type:
-                    $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
-                    $fileInfo = pathinfo($word);
-                    foreach($extension_detect as $extension_type => $extension_ids) {
-                        if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
-                            $reference_type = $extension_type;
-                            break;
-                        }
-                    }
-
-                    array_push($references_found[$reference_type], $word);
-                    $final_message .=  sprintf($reference_template[$reference_type], $word, $word);
-
-                }
-
-            } elseif (substr($word, 0, 1)=='#' && ctype_alnum(substr($word, 1))) {
-
-                $reference_type = 31834;
-                array_push($references_found[$reference_type], $word);
-                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
-
-            } elseif (substr($word, 0, 1)=='@' && ctype_alnum(substr($word, 1))) {
-
-                $reference_type = 31835;
-                array_push($references_found[$reference_type], $word);
-                $final_message .=  sprintf($reference_template[$reference_type], substr($word, 1), $word);
-
-            } else {
-
-                //This word is not referencing anything!
-                $final_message .= $word;
-
-
-            }
-
-        }
-        $final_message .= '</div>';
-    }
-    $final_message .= '</div>';
-
-    //$formatted_string = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $formatted_string);
-    //$formatted_string = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $formatted_string);
-
-    if($validate_only){
-        return array(
-            'references_found' => $references_found,
-            'final_message' => $final_message,
-        );
-    } else {
-        //Return formatted message:
-        return $final_message;
-    }
-
-    /*
-     * Preg Replace method (Old):
-     *
-
-    $str = str_replace('"https://','"//',preg_replace('/(https?:\/\/.*\.(?:pdf))/i', '<img src="$1" class="overflowhide" />', $str));
-    $str = preg_replace("/@+([a-zA-Z0-9]+)/", '<a href="/@$1"><u>$0</u></a>', $str);
-    $str = preg_replace("/#+([a-zA-Z0-9]+)/", '<a href="/$1"><u>$0</u></a>', $str);
-    $str = preg_replace('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/', '<a href="/-31807?url=$0" target="_blank"><u>$0</u></a>', $str);
-
-    */
-
-}
 
 
 function view_pill($focus_card, $x__type, $counter, $m, $ui = null, $is_open = true){
@@ -1755,7 +1731,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $show_text_editor = $write_access_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_e_click col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding card___12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click_e col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     //Source Link Groups
     $link_type_id = 0;
@@ -1953,7 +1929,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         } elseif($has_x_progress && strlen($e['x__message'])){
 
             //DISCOVERY PROGRESS
-            $ui .= '<span class="mini-font light-bg">'.view_text_links($e['x__message']).'</span>';
+            $ui .= '<span class="mini-font light-bg">'.view_links($e['x__message']).'</span>';
 
         }
     }

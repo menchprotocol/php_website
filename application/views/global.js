@@ -805,7 +805,7 @@ function edit_i(i__id){
 
     $('#modal_i__id').val(i__id);
     $('.note_error_4736').html('');
-    $('.input__32337').val($('.i__message_text_'+i__id).attr('item_handler'));
+    $('.input__32337').val($('.card___12273_'+i__id).attr('i__hashtag'));
     $('.input__4736').val($('.i__message_text_'+i__id).text()).focus();
     $('#modal31911').modal('show');
     setTimeout(function () {
@@ -838,17 +838,18 @@ function js_redirect(url, timer = 0){
 
 function load_card_clickers(){
 
-    $(".card_e_click, .card_click_i").unbind();
+    $(".card_click_e, .card_click_i").unbind();
+    var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click';
 
-    $( ".card_e_click" ).click(function(e) {
-        if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click').length < 1){
-            js_redirect('/@'+$(this).attr('e__id'));
+    $( ".card_click_e" ).click(function(e) {
+        if($(e.target).closest(ignore_clicks).length < 1){
+            js_redirect('/@'+$(this).attr('e__handler'));
         }
     });
 
     $('.card_click_i').click(function(e) {
-        if($(e.target).closest('a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click').length < 1){
-            js_redirect('/~'+$(this).attr('i__id'));
+        if($(e.target).closest(ignore_clicks).length < 1){
+            js_redirect('/~'+$(this).attr('i__hashtag'));
         }
     });
 
@@ -871,13 +872,6 @@ $(document).ready(function () {
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');
     });
-
-    if(window.location.hash && 0) {
-        var the_hash = window.location.hash.substring(1);
-        if(!(the_hash==$('.nav-link.active').attr('x__type')) && isNormalInteger(the_hash)){
-            toggle_pills(the_hash);
-        }
-    }
 
     load_covers();
 
@@ -2532,9 +2526,9 @@ function i_edit_save(){
 
             //Update Idea Message:
             $('.i__message_text_'+i__id).text(i__message);
-            $('.i__message_text_'+i__id).attr('item_handler', i__hashtag);
-            $('.i__message_html_'+i__id).html(data.message_html);
-            $(".card___12273_"+i__id).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash idea
+            $('.i__message_ui_'+i__id).html(data.message_html);
+            $(".i__hashtag_"+i__id).text(i__hashtag);
+            $(".card___12273_"+i__id).attr('i__hashtag', i__hashtag).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash idea
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
