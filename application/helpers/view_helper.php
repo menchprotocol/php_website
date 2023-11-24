@@ -53,7 +53,7 @@ function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 }
 
 function view_url($string){
-    return preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank">$0</a>', $string);
+    return preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank"><u>$0<u> <i class="far fa-external-link"></i></a>', $string);
 }
 
 function view_number($number)
