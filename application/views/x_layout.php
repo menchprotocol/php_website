@@ -63,8 +63,9 @@ if(isset($_GET['go'])){
                                 }
                             }
                         }
-                        if($urls_found==1 && $urls_media==1 && $links_found<=2){
+                        if($urls_media==1){
 
+                            /*
                             $this->I_model->update($i['i__id'], array(
                                 'i__message' => str_replace($ref, $url, $i['i__message']),
                             ));
@@ -74,6 +75,8 @@ if(isset($_GET['go'])){
                                 'x__up' => substr($ref, 1),
                                 'x__right' => $i['i__id'],
                             ));
+                            */
+
                             echo '<div>Merge: '.$es[0]['e__title'].' / '.$ref.' --> '.$url.' / <a href="/~'.$i['i__id'].'">#'.$i['i__id'].'</a></div>';
                             echo '<div>'.view_links($url).'</div>';
                             $stats['e_refs_found_url_one']++;
