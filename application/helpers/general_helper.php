@@ -1250,8 +1250,8 @@ function generate_handle($s__type, $string, $suggestion = null, $increment = 1){
         }
         if($increment==1){
             $suggestion = $suggestion.$increment;
-        } elseif($increment>1){
-            $suggestion = substr($suggestion, 0, -strlen($increment)).$increment;
+        } else {
+            $suggestion = substr($suggestion, 0, (strlen($increment.'') * -1)).$increment;
         }
         $increment++;
     } else {
