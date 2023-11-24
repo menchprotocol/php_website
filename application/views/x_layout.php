@@ -25,34 +25,34 @@ if(isset($_GET['go'])){
                     'e__id' => substr($ref, 1),
                 )))){
                     $stats['e_refs_found']++;
-                    //Any links above it?
 
-                    if(count($this->X_model->fetch(array(
+                    //Any links above it?
+                    if(!count($this->X_model->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__down' => substr($ref, 1),
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
-                        continue;
-                    }
-
-                    $urls_found = 0;
-                    foreach($this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__down' => substr($ref, 1),
-                        'LENGTH(x__message)>0' => null,
-                    ), array(), 0) as $f_url){
-                        $stats['e_refs_found_follow']++;
-                        if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
-                            $urls_found++;
+                        $urls_found = 0;
+                        foreach($this->X_model->fetch(array(
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__down' => substr($ref, 1),
+                        ), array(), 0) as $f_url){
+                            $stats['e_refs_found_follow']++;
+                            if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
+                                $urls_found++;
+                            }
+                        }
+                        if($urls_found==1){
+                            $stats['e_refs_found_url_one']++;
+                        }
+                        if($urls_found>1){
+                            $stats['e_refs_found_url_many']++;
                         }
                     }
-                    if($urls_found==1){
-                        $stats['e_refs_found_url_one']++;
-                    }
-                    if($urls_found>1){
-                        $stats['e_refs_found_url_many']++;
-                    }
+                } else {
+                    //Invalid Ref:
+                    echo '<div>Invalid: '.$ref.'</div>';
                 }
 
             }
