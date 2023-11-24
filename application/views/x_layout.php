@@ -44,6 +44,7 @@ if(isset($_GET['go'])){
                             'x__up' => substr($ref, 1),
                         )))){
                         $urls_found = 0;
+                        $urls_media = 0;
                         $url = '';
                         foreach($this->X_model->fetch(array(
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -53,16 +54,18 @@ if(isset($_GET['go'])){
                             $stats['e_refs_found_follow']++;
                             if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
                                 $urls_found++;
-                                $url = $f_url['x__message'];
+                                $fileInfo = pathinfo($f_url['x__message']);
+                                if((!substr_count($f_url['x__message'], '&list=') && ((substr_count($f_url['x__message'], 'youtube.com/watch')==1) || substr_count($f_url['x__message'], 'youtu.be/')==1)) || in_array($fileInfo['extension'], array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v','pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p','jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif','pdf','pdc','doc','docx','tex','txt','7z','rar','zip','csv','sql','tar','xml','exe'))){
+                                    $urls_media++;
+                                    $url = $f_url['x__message'];
+                                }
                             }
                         }
-                        if($urls_found==1){
+                        if($urls_found==1 && $urls_media==1){
                             echo '<div>Merge: '.$es[0]['e__title'].' ['.$url.']</div>';
                             $stats['e_refs_found_url_one']++;
                         }
-                        if($urls_found>1){
-                            $stats['e_refs_found_url_many']++;
-                        }
+
                     }
                 } else {
                     //Invalid Ref:
