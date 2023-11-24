@@ -302,6 +302,7 @@ class I_model extends CI_Model
     {
 
         $i_new = $this->I_model->create(array(
+            'i__title' => view_first_line($i['i__message'], true),
             'i__message' => $i['i__message'],
             'i__hashtag' => generate_handle(12273, view_first_line($i['i__message'], true)),
             'i__type' => $i['i__type'],
@@ -508,6 +509,7 @@ class I_model extends CI_Model
 
             //Create new Idea:
             $i_new = $this->I_model->create(array(
+                'i__title' => view_first_line($i__message, true),
                 'i__message' => $i__message,
                 'i__hashtag' => generate_handle(12273, view_first_line($i__message, true)),
                 'i__type' => 6677, //New Default Ideas
@@ -683,6 +685,7 @@ class I_model extends CI_Model
         }
 
         $i_new = $this->I_model->create(array(
+            'i__title' => view_first_line($this_i[0]['i__message'], true),
             'i__message' => ( $clone_title ? $clone_title : "Copy Of ".view_first_line($this_i[0]['i__message'], true) ),
             'i__hashtag' => generate_handle(12273, view_first_line($this_i[0]['i__message'], true)),
             'i__type' => $this_i[0]['i__type'],
