@@ -6,6 +6,7 @@ if(isset($_GET['go'])){
         'ideas' => 0,
         'e_refs' => 0,
         'e_refs_found' => 0,
+        'e_refs_found_follow' => 0,
         'e_refs_found_url_one' => 0,
         'e_refs_found_url_many' => 0,
     );
@@ -41,6 +42,7 @@ if(isset($_GET['go'])){
                         'x__down' => substr($ref, 1),
                         'LENGTH(x__message)>0' => null,
                     ), array(), 0) as $f_url){
+                        $stats['e_refs_found_follow']++;
                         if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
                             $urls_found++;
                         }
