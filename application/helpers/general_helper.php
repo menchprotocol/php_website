@@ -1256,7 +1256,7 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
     } else {
         $word_arr = explode(' ', substr($string, 0, $max_adj_length));
         $new_arr = array_pop($word_arr);
-        $suggestion = preg_replace(view_memory(32103,41985), '', join('',$new_arr));
+        $suggestion = preg_replace(view_memory(32103,41985), '', join(' ',$new_arr));
     }
 
     if(strlen($suggestion)<4 || is_numeric($suggestion)){
