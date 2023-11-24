@@ -83,12 +83,12 @@ if(!$is_u_request || isset($_GET['cron'])){
                         'x__left' => $down_or['i__id'],
                     ));
                     //Has this user discovered this idea or no?
-                    $plain_message .= view_title($down_or, true).":\n";
+                    $plain_message .= view_first_line($down_or['i__message'], true).":\n";
                     $plain_message .= 'https://'.get_domain('m__message', $x['e__id'], $drafting_message['x__website']).$top_link.'/'.$down_or['i__id'].( !count($discoveries) ? '/'.$x['e__id'].'/'.view_hash($x['e__id']) : '' )."\n\n";
 
                 }
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], view_title($drafting_message, true), view_message($drafting_message, true)."\n\n".trim($plain_message), array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], view_first_line($drafting_message['i__message'], true), view_message($drafting_message, true)."\n\n".trim($plain_message), array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $drafting_message['i__id'],
                 ), 0, $drafting_message['x__website'], true);

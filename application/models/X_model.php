@@ -151,7 +151,7 @@ class X_model extends CI_Model
 
                     //IDEA
                     foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                        $plain_message .= $m['m__title'] . ': '.view_title($this_i, true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__id']."\n\n";
+                        $plain_message .= $m['m__title'] . ': '.view_first_line($this_i['i__message'], true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__id']."\n\n";
                     }
 
                 } elseif (in_array(6160 , $m['m__following'])) {
@@ -958,7 +958,7 @@ class X_model extends CI_Model
             if(strlen($clone_urls)){
                 //Send DM with all the new clone idea URLs:
                 $clone_urls = $clone_urls.'You have been added as a subscriber so you will be notified when anyone start using your link.';
-                $i_title = view_title($i, true);
+                $i_title = view_first_line($i['i__message'], true);
                 $this->X_model->send_dm($add_fields['x__creator'], $i_title , $clone_urls);
                 //Also DM all watchers of the idea:
                 foreach($this->X_model->fetch(array(
@@ -1143,9 +1143,9 @@ class X_model extends CI_Model
                         if(!in_array(intval($watcher['x__up']), $sent_watchers)){
                             array_push($sent_watchers, intval($watcher['x__up']));
 
-                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.view_title($i, true),
+                            $this->X_model->send_dm($watcher['x__up'], $es_discoverer[0]['e__title'].' Discovered: '.view_first_line($i['i__message'], true),
                                 //Message Body:
-                                view_title($i, true).':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
+                                view_first_line($i['i__message'], true).':'."\n".'https://'.$domain_url.'/~'.$i['i__id']."\n\n".
                                 ( strlen($add_fields['x__message']) ? $add_fields['x__message']."\n\n" : '' ).
                                 $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__id']."\n\n".
                                 $discoverer_contact

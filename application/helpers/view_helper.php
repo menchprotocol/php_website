@@ -119,7 +119,7 @@ function view_card_x($x, $has_x__reference = false)
 
             //IDEA
             foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_i){
-                $ui .= '<div class="simple-line"><a href="/~'.$focus_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_title($focus_i).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/~'.$focus_i['i__id'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_first_line($focus_i['i__message']).'</a></div>';
             }
 
 
@@ -987,8 +987,8 @@ function view_message($i, $remove_first_line = false, $strip_hrefs = false){
     return '<div class="'.( $remove_first_line ? 'remove_first_line' : '' ).'">'.( $strip_hrefs ? str_replace('<a ','<span ',str_replace('</a>','</span>',$i['i__cache'])) : $i['i__cache'] ).'</div>'.( !$strip_hrefs ? view_list_e($i, 0) : '' );
 }
 
-function view_title($i, $string_only = false){
-    $lines = explode("\n", $i['i__message']);
+function view_first_line($string, $string_only = false){
+    $lines = explode("\n", $string);
     return ( $string_only ? $lines['0'] : '<span class="main__title">'.$lines['0'].'</span>' );
 }
 
@@ -1441,7 +1441,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
         $ui .= '<div class="sub__handle grey" title="'.$x__type.' NOT IN @14378">#<span class="i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
     }
 
-    $ui .= '<div class="main__title">'.view_title($i, true).'</div>';
+    $ui .= '<div class="main__title">'.view_first_line($i['i__message'], true).'</div>';
 
     $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font i__message_ui_' . $i['i__id'] . '">'.view_message($i, true, !$click_locked).( $click_locked ? '</div>' : '</a>' );
 

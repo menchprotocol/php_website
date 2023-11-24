@@ -20,7 +20,7 @@ if(isset($_GET['i__id']) && isset($_GET['top_i__id'])){
         $is = $this->I_model->fetch(array(
             'i__id' => $_GET['i__id'],
         ));
-        echo '<h1>' . view_title($is[0]) . '</h1>';
+        echo '<h1>' . view_first_line($is[0]['i__message']) . '</h1>';
     }
     echo '</div>';
 }

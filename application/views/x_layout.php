@@ -17,10 +17,9 @@ if(isset($_GET['go'])){
         'i__id > 0' => null, //IDEA LINKS
     )) as $i){
         $stats['ideas']++;
-        $i_title = view_title($i, true);
-        $handler = generate_handle(12273, $i_title, $master_list);
+        $handler = generate_handle(12273, view_first_line($i['i__message'], true), $master_list);
         array_push($master_list, $handler);
-        echo '<tr><td>#'.$handler.' ['.strlen($handler).']</td><td>'.$i_title.' ['.strlen($i_title).']</td></tr>';
+        echo '<tr><td>#'.$handler.' {'.strlen($handler).'}</td><td>'.$i_title.' ['.strlen($i_title).']</td></tr>';
         $this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
     }
     echo '</table>';
@@ -119,7 +118,7 @@ if($x__creator && $top_i__id!=$i['i__id']){
             }
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$followings_i['i__id'].'"><u>'.view_title($followings_i).'</u></a>';
+            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$followings_i['i__id'].'"><u>'.view_first_line($followings_i['i__message']).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -130,7 +129,7 @@ if($x__creator && $top_i__id!=$i['i__id']){
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$followings_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
-                    $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_title($i_subset).'</a>';
+                    $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_first_line($i_subset['i__message']).'</a>';
                 }
                 $breadcrum_content .= '</div>';
                 $breadcrum_content .= '</div>';
@@ -175,7 +174,7 @@ if($top_i__id){
                 'i__id' => $to_discover_id,
             ));
             $counter++;
-            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__id'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_title($is[0]).'</p>';
+            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__id'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_first_line($is[0]['i__message']).'</p>';
         }
     }
 
@@ -195,7 +194,7 @@ if($top_completed || $is_or_7712){
 echo '<div class="light-bg large-frame">';
 
 //Title:
-echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.view_title($i, true).'</h1>';
+echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.view_first_line($i['i__message'], true).'</h1>';
 $messages_without_title = view_message($i, true);
 if($messages_without_title){
     echo $messages_without_title;
@@ -476,7 +475,7 @@ if($top_i__id) {
 
                 $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
-                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.view_title($i, true).'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.view_first_line($i['i__message'], true).'">';
                 $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-0-'.$x__creator.'">';
 
                 $ticket_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';

@@ -24,7 +24,7 @@ $count_totals = array(
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id']);
-echo '<h1>' . view_title($list_settings['i']) . '</h1>';
+echo '<h1>' . view_first_line($list_settings['i']['i__message']) . '</h1>';
 
 foreach($list_settings['query_string'] as $x){
 
@@ -59,7 +59,7 @@ foreach($list_settings['query_string'] as $x){
             }
         }
 
-        $i_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_title($i2, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_title($i2, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_title($i2, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
+        $i_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_first_line($i2['i__message'], true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_first_line($i2['i__message'], true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_first_line($i2['i__message'], true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
 
         if(count($discoveries)){
             if(!isset($count_totals['i'][$i2['i__id']])){
@@ -164,7 +164,7 @@ foreach($list_settings['column_i'] as $i2){
 
     array_push($table_sortable, '#th_i_'.$i2['i__id']);
 
-    echo '<th id="th_i_'.$i2['i__id'].'"><div></div><a class="icon-block-xxs" href="/~'.$i2['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : view_title($i2, true) ).'</span></th>';
+    echo '<th id="th_i_'.$i2['i__id'].'"><div></div><a class="icon-block-xxs" href="/~'.$i2['i__id'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : view_first_line($i2['i__message'], true) ).'</span></th>';
 
 }
 echo '</tr>';

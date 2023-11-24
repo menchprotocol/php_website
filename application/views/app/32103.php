@@ -14,7 +14,7 @@ if($i__id > 0){
         die('Invalid Idea ID');
     }
 
-    echo '<h2>' . view_title($is[0]) . '</h2>';
+    echo '<h2>' . view_first_line($is[0]['i__message']) . '</h2>';
 
     $preg_query = $this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

@@ -7,7 +7,7 @@ if(!isset($_GET['i__id'])){
 
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__id'], true);
-echo '<h1 class="no-print">' . view_title($list_settings['i']) . '</h1>';
+echo '<h1 class="no-print">' . view_first_line($list_settings['i']['i__message']) . '</h1>';
 
 
 if(!$list_settings['list_config'][34513]){
@@ -28,7 +28,7 @@ foreach($this->X_model->fetch(array(
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__id'].'">'.view_title($link_i).'</a></h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__id'].'">'.view_first_line($link_i['i__message']).'</a></h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     foreach($sub_list_settings['query_string'] as $x){
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';

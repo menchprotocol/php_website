@@ -100,7 +100,7 @@ class I extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => view_title($is[0], true).' | '.$e___14874[12273]['m__title'],
+            'title' => view_first_line($is[0]['i__message'], true).' | '.$e___14874[12273]['m__title'],
             'i' => $is[0],
             'flash_message' => $flash_message,
         ));
@@ -260,7 +260,7 @@ class I extends CI_Controller {
 
                 foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_title($next_i), $next_i['x__message']);
+                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_first_line($next_i['i__message']), $next_i['x__message']);
                         $listed_items++;
                     }
                 }
