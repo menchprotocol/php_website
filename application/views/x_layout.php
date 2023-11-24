@@ -15,7 +15,7 @@ if(isset($_GET['go'])){
     )) as $i){
         $stats['ideas']++;
         $i_title = view_title($i, true);
-        $handler = generate_handle($i_title, $i['i__id']);
+        $handler = generate_handle(12273, $i_title);
         echo '<div>#'.$handler.' / '.$i_title.'</div>';
         $this->I_model->update($i['i__id'], array(
             'i__hashtag' => $handler,
