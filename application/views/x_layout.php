@@ -20,8 +20,8 @@ if(isset($_GET['go'])){
         if(isset($view_links['references_found'][31835])){
             foreach($view_links['references_found'][31835] as $ref){
                 $stats['e_refs']++;
-                if(is_numeric(substr(1, $ref)) && count($this->E_model->fetch(array(
-                    'e__id' => substr(1, $ref),
+                if(is_numeric(substr($ref, 1)) && count($this->E_model->fetch(array(
+                    'e__id' => substr($ref, 1),
                 )))){
                     $stats['e_refs_found']++;
                     //Any links above it?
@@ -39,7 +39,7 @@ if(isset($_GET['go'])){
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                        'x__down' => substr(1, $ref),
+                        'x__down' => substr($ref, 1),
                         'LENGTH(x__message)>0' => null,
                     ), array(), 0) as $f_url){
                         if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
