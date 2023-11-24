@@ -38,7 +38,11 @@ if(isset($_GET['go'])){
                         'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
                         'x__down' => substr($ref, 1),
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    )))){
+                    ))) && !count($this->X_model->fetch(array(
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__up' => substr($ref, 1),
+                        )))){
                         $urls_found = 0;
                         $url = '';
                         foreach($this->X_model->fetch(array(
@@ -53,11 +57,10 @@ if(isset($_GET['go'])){
                             }
                         }
                         if($urls_found==1){
-                            echo '<div>One: '.$es[0]['e__title'].' ['.$url.']</div>';
+                            echo '<div>Merge: '.$es[0]['e__title'].' ['.$url.']</div>';
                             $stats['e_refs_found_url_one']++;
                         }
                         if($urls_found>1){
-                            echo '<div>Many: '.$es[0]['e__title'].'</div>';
                             $stats['e_refs_found_url_many']++;
                         }
                     }
