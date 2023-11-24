@@ -1438,7 +1438,7 @@ function view_card_i($x__type, $top_i__id = 0, $previous_i = null, $i, $focus_e 
 
     //Idea Message
     if(!$discovery_mode){
-        $ui .= '<div class="sub__handle grey" title="'.$x__type.' NOT IN @14378">#<span class="i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
+        $ui .= '<div class="sub__handle grey show-on-hover">#<span class="i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
     }
 
     $ui .= '<div class="main__title">'.view_first_line($i['i__message'], true).'</div>';
@@ -1964,6 +1964,9 @@ function view_card_e($x__type, $e, $extra_class = null)
     //Title Cover
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
+
+    //Idea Message
+    $ui .= '<div class="sub__handle grey show-on-hover">@<span class="e__handle_'.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
