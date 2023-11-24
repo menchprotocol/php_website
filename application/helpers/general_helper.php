@@ -1239,45 +1239,53 @@ function remove_first_line($text) {
 
 
 
-function generate_handle($s__type, $string, $suggestion = null, $increment = 1){
+function generate_handle($s__type, $string, $master_list, $suggestion = null, $increment = 1){
     //Generates a Suitable Handle from the title:
 
+    //Previous suggestion did not work, let's tweak and try again:
+    $max_allowed_length = view_memory(6404,41985);
+    $max_adj_length = $max_allowed_length - 5; //Reduce handler to give space for $increment extension up to 99999
+    $recommended_length = $max_allowed_length/2;
+
     if($suggestion){
-        //Previous suggestion did not work, let's tweak and try again:
-        $max_adj_length = view_memory(6404,41985) - 5; //Reduce handler to give space for $increment extension up to 99999
         if(strlen($suggestion)>$max_adj_length){
             $suggestion = substr($suggestion, 0, $max_adj_length);
         }
-        if($increment==1){
-            $suggestion = $suggestion.$increment;
-        } else {
-            $suggestion = substr($suggestion, 0, (strlen($increment.'') * -1)).$increment;
-        }
+        $suggestion = ($increment==1 ? $suggestion : substr($suggestion, 0, -strlen($increment)) ).$increment;
         $increment++;
     } else {
-        $suggestion = substr(preg_replace(view_memory(32103,41985), '', $string), 0, view_memory(6404,41985));
+        $word_arr = explode(' ', substr($string, 0, $max_adj_length));
+        $word_arr = array_pop($word_arr);
+        $suggestion = preg_replace(view_memory(32103,41985), '', join('',$word_arr));
     }
 
-    //Make sure not exist in DB:
-    $CI =& get_instance();
+    if(in_array($suggestion, $master_list)){
+        //Duplicate, try again:
+        return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
+    }
 
+    return $suggestion;
+
+    //Make sure not exist in DB:
+    /*
+    $CI =& get_instance();
     if($s__type==12273){
         //Search ideas:
         if(count($CI->I_model->fetch(array(
             'i__hashtag' => $suggestion,
         )))){
-            return generate_handle($s__type, $string, $suggestion, $increment);
+            return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
         }
     } elseif($s__type==12274){
         //Search ideas:
         if(count($CI->E_model->fetch(array(
             'e__handler' => $suggestion,
         )))){
-            return generate_handle($s__type, $string, $suggestion, $increment);
+            return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
         }
     }
+    */
 
-    return $suggestion;
 }
 
 function validate_handler($string, $i__id = null, $e__id = null){

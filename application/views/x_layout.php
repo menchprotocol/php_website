@@ -3,6 +3,7 @@
 if(isset($_GET['go'])){
 
     boost_power();
+    $master_list = array();
     $stats = array(
         'ideas' => 0,
         'e_refs' => 0,
@@ -11,17 +12,18 @@ if(isset($_GET['go'])){
         'e_refs_found_url_one' => 0,
         'e_refs_found_url_many' => 0,
     );
+    echo '<table>';
     foreach($this->I_model->fetch(array(
         'i__id > 0' => null, //IDEA LINKS
     )) as $i){
         $stats['ideas']++;
         $i_title = view_title($i, true);
-        $handler = generate_handle(12273, $i_title);
-        echo '<div>#'.$handler.' / '.$i_title.'</div>';
-        $this->I_model->update($i['i__id'], array(
-            'i__hashtag' => $handler,
-        ));
+        $handler = generate_handle(12273, $i_title, $master_list);
+        array_push($master_list, $handler);
+        echo '<tr>#'.$handler.'<td></td><td>'.$i_title.'</td></tr>';
+        //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
     }
+    echo '</table>';
 
     print_r($stats);
 }
