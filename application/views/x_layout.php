@@ -43,6 +43,7 @@ if(isset($_GET['go'])){
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__up' => substr($ref, 1),
                         )))){
+                        $links_found = 0;
                         $urls_found = 0;
                         $urls_media = 0;
                         $url = '';
@@ -51,6 +52,7 @@ if(isset($_GET['go'])){
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__down' => substr($ref, 1),
                         ), array(), 0) as $f_url){
+                            $links_found++;
                             $stats['e_refs_found_follow']++;
                             if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
                                 $urls_found++;
@@ -61,7 +63,7 @@ if(isset($_GET['go'])){
                                 }
                             }
                         }
-                        if($urls_found==1 && $urls_media==1){
+                        if($urls_found==1 && $urls_media==1 && $links_found<=2){
                             echo '<div>Merge: '.$es[0]['e__title'].'</div>';
                             echo '<div>'.view_links($url).'</div>';
                             $stats['e_refs_found_url_one']++;
