@@ -1247,7 +1247,7 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
     $max_adj_length = $max_allowed_length - 5; //Reduce handler to give space for $increment extension up to 99999
     $recommended_length = $max_allowed_length/2;
 
-    if($suggestion){
+    if(strlen($suggestion)){
         if(strlen($suggestion)>$max_adj_length){
             $suggestion = substr($suggestion, 0, $max_adj_length);
         }
@@ -1255,16 +1255,21 @@ function generate_handle($s__type, $string, $master_list, $suggestion = null, $i
         $increment++;
     } else {
         $word_arr = explode(' ', substr($string, 0, $max_adj_length));
-        $word_arr = array_pop($word_arr);
-        $suggestion = preg_replace(view_memory(32103,41985), '', join('',$word_arr));
+        $new_arr = array_pop($word_arr);
+        $suggestion = preg_replace(view_memory(32103,41985), '', join('',$new_arr));
+    }
+
+    if(strlen($suggestion)<4 || is_numeric($suggestion)){
+        $suggestion = 'Idea'.$suggestion;
     }
 
     if(in_array($suggestion, $master_list)){
         //Duplicate, try again:
         return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
+    } else {
+        return $suggestion;
     }
 
-    return $suggestion;
 
     //Make sure not exist in DB:
     /*
