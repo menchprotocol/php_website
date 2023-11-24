@@ -4135,7 +4135,11 @@ main {
 }
 
 .payment_box{
-    padding-top: 5px; padding-left: 40px; line-height:120%;
+    padding-top: 5px;
+    padding-left: 40px;
+    line-height:120%;
+    overflow-x: hidden;
+    overflow-y: visible;
 }
 .cover-content .payment_box{
     padding-top: 1px; padding-left:24px;
