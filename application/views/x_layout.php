@@ -2,6 +2,7 @@
 
 if(isset($_GET['go'])){
 
+    boost_power();
     $stats = array(
         'ideas' => 0,
         'e_refs' => 0,
