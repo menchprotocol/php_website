@@ -1255,16 +1255,18 @@ function generate_handle($s__type, $string, $suggestion = null, $increment = 1){
     }
 
     //Make sure not exist in DB:
+    $CI =& get_instance();
+
     if($s__type==12273){
         //Search ideas:
-        if(count($this->I_model->fetch(array(
+        if(count($CI->I_model->fetch(array(
             'i__hashtag' => $suggestion,
         )))){
             return generate_handle($s__type, $string, $suggestion, $increment);
         }
     } elseif($s__type==12274){
         //Search ideas:
-        if(count($this->E_model->fetch(array(
+        if(count($CI->E_model->fetch(array(
             'e__handler' => $suggestion,
         )))){
             return generate_handle($s__type, $string, $suggestion, $increment);
