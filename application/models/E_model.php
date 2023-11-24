@@ -1258,6 +1258,7 @@ class E_model extends CI_Model
         //Create
         $focus_e = $this->E_model->create(array(
             'e__title' => $validate_e__title['e__title_clean'],
+            'e__handle' => generate_handle(12274, $validate_e__title['e__title_clean']),
             'e__cover' => $e__cover,
         ), true, $x__creator);
 

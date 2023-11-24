@@ -5,23 +5,32 @@ if(isset($_GET['go'])){
     boost_power();
     $master_list = array();
     $stats = array(
-        'ideas' => 0,
-        'e_refs' => 0,
-        'e_refs_found' => 0,
-        'e_refs_found_follow' => 0,
-        'e_refs_found_url_one' => 0,
-        'e_refs_found_url_many' => 0,
+        'total' => 0,
     );
     echo '<table>';
+
+    foreach($this->E_model->fetch(array(
+        'e__id > 0' => null,
+    )) as $e){
+        $stats['total']++;
+        $handler = generate_handle(12274, $e['e__title'], $master_list);
+        array_push($master_list, $handler);
+        echo '<tr><td>@'.$handler.' {'.strlen($handler).'}</td><td>'.$e['e__title'].' ['.strlen($e['e__title']).']</td></tr>';
+        //$this->E_model->update($e['e__id'], array( 'e__handle' => $handler ));
+    }
+
+    /*
     foreach($this->I_model->fetch(array(
         'i__id > 0' => null, //IDEA LINKS
     )) as $i){
-        $stats['ideas']++;
+        $stats['total']++;
         $handler = generate_handle(12273, view_first_line($i['i__message'], true), $master_list);
         array_push($master_list, $handler);
         echo '<tr><td>#'.$handler.' {'.strlen($handler).'}</td><td>'.$i_title.' ['.strlen($i_title).']</td></tr>';
-        $this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
+        //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
+        $this->E_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
     }
+    */
     echo '</table>';
 
     print_r($stats);

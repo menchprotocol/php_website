@@ -33,6 +33,7 @@ foreach($emojis as $count => $emoji_html){
         //Add Emoji:
         $new_emoji = $this->E_model->create(array(
             'e__title' => $emoji_name,
+            'e__handle' => generate_handle(12274, $emoji_name),
             'e__cover' => $emoji_icon,
             'e__access' => 28951,
         ), true);
