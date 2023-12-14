@@ -9,6 +9,7 @@ $route['404_override']                  = 'app/load'; //Page not found
 foreach($this->config->item('e___6287') as $app_id => $app) {
     $route[$app['m__handle']] = "app/load/".$app_id;
 }
+$route['stats'] = "app/load/".$app_id;
 
 //$route['-(:any)']                       = "app/load/$1";
 $route['@(:any)']                       = "e/e_layout/$1"; //Source
@@ -17,4 +18,3 @@ $route['~(:any)']                       = "i/i_layout/$1"; //Ideate
 $route['(:any)/(:any)/@(:any)']         = "x/x_layout/$1/$2/$3"; //Discovery Started
 $route['(:any)/(:any)']                 = "x/x_layout/$1/$2/0"; //Discovery Started
 $route['(:any)']                        = "x/x_layout/0/$1/0"; //Discovery Preview
-
