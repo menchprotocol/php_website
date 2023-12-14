@@ -85,7 +85,7 @@ foreach($this->X_model->fetch(array(
     'x__up' => 42043, //Handle Cache
     'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
-), array(), 0) as $handle){
+), array(''), 0) as $handle){
 
     $memory_text .= '$config[\'handle___'.$handle['x__down'].'\'] = array('."\n";
     foreach($this->X_model->fetch(array(
