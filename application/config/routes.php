@@ -6,10 +6,9 @@ $route['default_controller']            = "app/index"; //Redirects to default ap
 $route['404_override']                  = 'app/load'; //Page not found
 
 //Custom Apps:
-foreach($this->config->item('e___6287') as $app_id => $app) {
-    $route[$app['m__handle']] = "app/load/".$app_id;
-}
-$route['stats'] = "app/load/".$app_id;
+$route['stats'] = "app/load/33292";
+$route['routes'] = "app/load/42006";
+//$route['stats'] = "app/load/".$app_id;
 
 //$route['-(:any)']                       = "app/load/$1";
 $route['@(:any)']                       = "e/e_layout/$1"; //Source
