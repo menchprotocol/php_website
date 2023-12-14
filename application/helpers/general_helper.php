@@ -82,7 +82,7 @@ function current_s__type(){
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
 
-    if(0 && strlen($first_segment) && !array_key_exists($first_segment, $CI->config->item('handle___6287'))){
+    if(strlen($first_segment) && !array_key_exists($first_segment, $CI->config->item('handle___6287'))){
 
         //DISCOVERY
         return 6255;
