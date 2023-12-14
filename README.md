@@ -1,1 +1,1 @@
-Visit [mench.com](https://mench.com/) to get started.
+Visit [mench.com](https://mench.com/) to get started ✨
