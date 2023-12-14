@@ -8,6 +8,7 @@ $route['404_override']                  = 'app/load'; //Page not found
 //Custom Apps:
 $route['stats'] = "app/load/33292";
 $route['routes'] = "app/load/42006";
+$route['cache'] = "app/load/4527";
 //$route['stats'] = "app/load/".$app_id;
 
 //$route['-(:any)']                       = "app/load/$1";
