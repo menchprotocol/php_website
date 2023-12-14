@@ -36,7 +36,7 @@ if($is_u_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
     echo nl2br($plain_message);
-    echo '<div style="padding: 21px 0;"><a href="/-12114?email_trigger=1">Email Me This Report</a></div>';
+    echo '<div style="padding: 21px 0;"><a href="'.view_app_link(12114).'?email_trigger=1">Email Me This Report</a></div>';
 
 } else {
 

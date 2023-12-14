@@ -2,7 +2,7 @@
 
 if($member_e){
     //Remove all Active Cache:
-    echo '<div class="msg alert alert-warning" role="alert">Deleted '.reset_cache($member_e['e__id']).' active caches</div>';
+    echo '<div class="alert alert-warning" role="alert">Deleted '.reset_cache($member_e['e__id']).' active caches</div>';
 }
 
 
@@ -28,5 +28,5 @@ foreach($this->config->item('e___14599') as $app_e__id => $cache_apps){
 echo '</div>';
 
 if($found_cache){
-    echo '<a href="/-14599?reset=1" class="btn btn-default">RESET ACTIVE CACHE</a>';
+    echo '<a href="'.view_app_link(14599).'?reset=1" class="btn btn-default">RESET ACTIVE CACHE</a>';
 }

@@ -1,10 +1,10 @@
 <?php
 
-function includes_any($string, $items)
+function includes_any($str, $items)
 {
-    //Determines if any of the items in array $items includes $string
+    //Determines if any of the items in array $items includes $str
     foreach($items as $item) {
-        if (substr_count($string, $item) > 0) {
+        if (substr_count($str, $item) > 0) {
             return $item;
         }
     }
@@ -35,90 +35,9 @@ function detect_missing_columns($add_fields, $required_columns, $x__creator)
 }
 
 
-function fetch_file_ext($url)
-{
-    //A function that attempts to fetch the file extension of an input URL:
-    //https://cdn.fbsbx.com/v/t59.3654-21/19359558_10158969505640587_4006997452564463616_n.aac/audioclip-1500335487327-1590.aac?oh=5344e3d423b14dee5efe93edd432d245&oe=596FEA95
-    $url_parts = explode('?', $url, 2);
-    $url_parts = explode('/', $url_parts[0]);
-    $file_parts = explode('.', end($url_parts));
-    return end($file_parts);
-}
-
-
-function extract_e_references($x__message)
-{
-
-    //Analyzes a message text to extract Source References (Like @123) and URLs
-    $CI =& get_instance();
-    $member_e = superpower_unlocked();
-
-    //Replace non-ascii characters with space:
-    $x__message = preg_replace('/[[:^print:]]/', ' ', $x__message);
-
-    //Analyze the message to find referencing URLs and Members in the message text:
-    $string_references = array(
-        'ref_urls' => array(),
-        'ref_e' => array(),
-        'ref_time_found' => false,
-        'ref_time_start' => 0,
-        'ref_time_end' => 0,
-    );
-
-    //See what we can find:
-    foreach(preg_split('/\s+/', $x__message) as $word) {
-        if (filter_var($word, FILTER_VALIDATE_URL)) {
-
-            if(substr_count($word,'|')==2){
-                //See if this is it:
-                $times = explode('|',$word);
-                $ref_time_start = second_calc($times[1]);
-                $ref_time_end = second_calc($times[2]);
-                if($ref_time_start>=0 && $ref_time_end>0 && $ref_time_start<$ref_time_end && $word==$times[0].'|'.$times[1].'|'.$times[2]){
-                    $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = $ref_time_start;
-                    $string_references['ref_time_end'] = $ref_time_end;
-                    $word = $times[0];
-                }
-            }
-
-            array_push($string_references['ref_urls'], $word);
-
-        } elseif (substr($word, 0, 1)=='@' && is_numeric(substr($word, 1, 1))) {
-
-            $e__id = intval(substr($word, 1));
-            array_push($string_references['ref_e'], $e__id);
-
-            if(substr_count($word,'|')==2){
-                //See if this is it:
-                $times = explode('|',$word);
-                $ref_time_start = second_calc($times[1]);
-                $ref_time_end = second_calc($times[2]);
-                if($ref_time_start>=0 && $ref_time_end>0 && $ref_time_start<$ref_time_end && $word=='@'.$e__id.'|'.$times[1].'|'.$times[2]){
-                    $string_references['ref_time_found'] = true;
-                    $string_references['ref_time_start'] = $ref_time_start;
-                    $string_references['ref_time_end'] = $ref_time_end;
-                }
-            }
-        }
-    }
-
-
-    //Slicing only supported with a single reference:
-    $total_references = count($string_references['ref_e']) + count($string_references['ref_urls']);
-    if($total_references > 1){
-        $string_references['ref_time_found'] = false;
-        $string_references['ref_time_start'] = 0;
-        $string_references['ref_time_end'] = 0;
-    }
-
-    return $string_references;
-}
-
-
-function second_calc($string){
+function second_calc($str){
     $seconds = -1; //Error
-    $parts = explode(':',$string);
+    $parts = explode(':',$str);
     if(count($parts)==3 && $parts[0] < 60 && $parts[1] < 60 && $parts[2] < 60){
         //HH:MM:SS
         $seconds = (intval($parts[0]) * 3600) + (intval($parts[1]) * 60) + intval($parts[2]);
@@ -133,22 +52,22 @@ function second_calc($string){
 }
 
 
-function is_valid_date($string)
+function is_valid_date($str)
 {
-    //Determines if the input $string is a valid date
-    if (!$string) {
+    //Determines if the input $str is a valid date
+    if (!$str) {
         return false;
     }
 
     try {
-        new \DateTime($string);
+        new \DateTime($str);
         return true;
     } catch (\Exception $e) {
         return false;
     }
 }
 
-function current_card_id(){
+function current_s__type(){
 
     /*
      *
@@ -163,7 +82,7 @@ function current_card_id(){
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
 
-    if($first_letter!='-' && is_numeric($first_segment)){
+    if(strlen($first_segment) && !array_key_exists($first_segment, $CI->config->item('handle___6287'))){
 
         //DISCOVERY
         return 6255;
@@ -175,7 +94,7 @@ function current_card_id(){
 
     } else {
 
-        //SOURCE
+        //Specific App or Source:
         return 12274;
 
     }
@@ -183,9 +102,9 @@ function current_card_id(){
 }
 
 
-function int_hash($string){
+function int_hash($str){
     $int_length = 4;
-    $numhash = unpack('N2', md5($string, true));
+    $numhash = unpack('N2', md5($str, true));
     $int_val = $numhash[1] & 0x000FFFFF;
     if(strlen($int_val) < $int_length){
         return str_pad($int_val, $int_length, "0", STR_PAD_RIGHT);
@@ -203,16 +122,6 @@ function validateDate($date, $format)
 
 function current_link(){
     return 'https://' .get_server('SERVER_NAME') . get_server('REQUEST_URI');
-}
-
-
-
-function is_valid_e_string($string){
-    return substr($string, 0, 1)=='@' && is_numeric(one_two_explode('@',' ',$string));
-}
-
-function is_valid_i_string($string){
-    return substr($string, 0, 1)=='#' && is_numeric(one_two_explode('#',' ',$string));
 }
 
 function string_is_icon($icon_code){
@@ -290,10 +199,10 @@ function format_percentage($percent){
 }
 
 
-function new_member_redirect($e__id, $sign_i__id){
+function new_member_redirect($e__id, $sign_i__hashtag){
     //Is there a redirect app?
-    if($sign_i__id > 0) {
-        return '/' . $sign_i__id;
+    if(strlen($sign_i__hashtag)) {
+        return '/' . $sign_i__hashtag;
     } elseif(isset($_GET['url'])) {
         return $_GET['url'];
     } else {
@@ -309,13 +218,13 @@ function prefix_common_words($strs) {
 
         $prefix_common_words = explode(' ',$strs[0]);
 
-        foreach($strs as $string){
+        foreach($strs as $str){
 
             if(!count($prefix_common_words)){
                 break;  //No common words, terminate
             }
 
-            $words = explode(' ',$string);
+            $words = explode(' ',$str);
             foreach($words as $word_count => $word){
                 if(!isset($prefix_common_words[$word_count])) {
 
@@ -408,19 +317,49 @@ function i_spots_remaining($i__id){
         'x__right' => $i__id,
         'x__up' => 26189,
     ), array(), 1);
-    if(count($max_available) && strlen($max_available[0]['x__message']) && is_numeric($max_available[0]['x__message'])){
+    if(count($max_available) && is_numeric($max_available[0]['x__message'])){
+
         //We have a limit! See if we've met it already:
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__type IN (' . join(',', $CI->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__left' => $i__id,
         );
         if($member_e){
             //Do not count current user to give them option to edit & resubmit:
             $query_filters['x__creator !='] = $member_e['e__id'];
         }
-        $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
-        $spots_remaining = intval($max_available[0]['x__message'])-$query[0]['totals'];
+
+        //Navigation?
+        $must_follow = array();
+        foreach($CI->X_model->fetch(array(
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 32235, //Navigation
+            'x__right' => $i__id,
+        )) as $follow){
+            array_push($must_follow, $follow['x__up']);
+        }
+
+        $current_discoveries = 0;
+        if(count($must_follow)){
+            //We must qualify each discovery individually:
+            foreach($CI->X_model->fetch($query_filters) as $e){
+                if(count($must_follow)==count($CI->X_model->fetch(array(
+                        'x__down' => $e['x__creator'],
+                        'x__up IN (' . join(',', $must_follow) . ')' => null,
+                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                    $current_discoveries++;
+                }
+            }
+        } else {
+            $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+            $current_discoveries = $query[0]['totals'];
+        }
+
+
+        $spots_remaining = intval($max_available[0]['x__message'])-$current_discoveries;
         if($spots_remaining < 0){
             $spots_remaining = 0;
         }
@@ -500,14 +439,18 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x_
     }
 
     //Return false:
-    return array(
-        'status' => false,
-        'return_i__id' => $return_i__id,
-        'message' => $log_message,
-    );
-
+    foreach($CI->I_model->fetch(array(
+        'i__id' => $return_i__id,
+    )) as $i){
+        return array(
+            'status' => false,
+            'return_i__hashtag' => $i['i__hashtag'],
+            'message' => $log_message,
+        );
+    }
 
 }
+
 
 function i_is_available($i__id, $log_tnx, $check_inventory = true){
 
@@ -540,7 +483,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
             }
         }
         if(!$meets_inc1_prereq && $x__creator > 0){
-            return access_blocked($log_tnx, "You cannot play this note because you are missing a requirement, ".$double_check,$x__creator, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot discover this idea because you are missing a requirement, ".$double_check,$x__creator, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -572,7 +515,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, "You cannot play this note because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check,$x__creator, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot discover this idea because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check,$x__creator, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -604,7 +547,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         }
 
         if(!$excludes_all){
-            return access_blocked($log_tnx, "You cannot play this note because you belong to [".$e_pre['e__title']."]",$x__creator, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, "You cannot discover this idea because you belong to [".$e_pre['e__title']."]",$x__creator, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
         }
     }
 
@@ -612,7 +555,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
     //Any Limits on Selection?
     if($check_inventory && !i_spots_remaining($i__id)){
         //Limit is reached, cannot complete this at this time:
-        return access_blocked($log_tnx, "You cannot play this note because there are no spots remaining.", $x__creator, $i__id, 26189, 0);
+        return access_blocked($log_tnx, "You cannot discover this idea because there are no spots remaining.", $x__creator, $i__id, 26189, 0);
     }
     
 
@@ -674,43 +617,23 @@ function cookie_delete(){
     setcookie('auth_cookie', null, -1, '/');
 }
 
-function universal_check() {
+function auto_login() {
 
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
+
     if(
-        !superpower_unlocked()
-        && isset($_COOKIE['auth_cookie'])
-        && !(substr($first_segment, 0, 1)=='-' && in_array(intval(substr($first_segment, 1)), $CI->config->item('n___14582')))
+        !superpower_unlocked() //User must not be logged in
+        && !array_key_exists($first_segment, $CI->config->item('handle___14582'))
+        && (isset($_COOKIE['auth_cookie']) || (isset($_GET['e__handle']) && isset($_GET['e__hash']))) //We can auto login with either method:
     ) {
-        header("Location: " . '/-4269'.( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
+
+        header("Location: " . view_app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
         exit;
-    }
-}
-
-
-function superpower_active($superpower_e__id, $boolean_only = false){
-
-    if( intval($superpower_e__id)>0 ){
-
-        $CI =& get_instance();
-        $is_match = ( superpower_unlocked($superpower_e__id) ? ( in_array($superpower_e__id, $CI->session->userdata('session_superpowers_activated')) ? true : false ) : false);
-
-        if($boolean_only){
-            return $is_match;
-        } else {
-            return ' superpower-'.$superpower_e__id . ' ' . ( $is_match ? '' : ' hidden ' );
-        }
-
-    } else {
-
-        //Ignore calls without a proper superpower:
-        return false;
 
     }
 }
-
 
 function round_minutes($seconds){
     $minutes = round($seconds/60);
@@ -719,7 +642,7 @@ function round_minutes($seconds){
 
 
 
-function list_settings($i__id, $fetch_contact = false){
+function list_settings($i__hashtag, $fetch_contact = false){
 
     $CI =& get_instance();
     $e___6287 = $CI->config->item('e___6287'); //APP
@@ -735,245 +658,214 @@ function list_settings($i__id, $fetch_contact = false){
         'phone_count' => 0,
     );
 
-    $is = $CI->I_model->fetch(array(
-        'i__id' => $i__id,
-    ));
+   foreach($CI->I_model->fetch(array(
+       'i__hashtag' => $i__hashtag,
+   )) as $i){
 
-    foreach($e___40946 as $x__type => $m) {
-        $list_config[intval($x__type)] = array(); //Assume no links for this type
+       foreach($e___40946 as $x__type => $m) {
+           $list_config[intval($x__type)] = array(); //Assume no links for this type
+       }
+       //Now search for these settings across sources:
+       foreach($CI->X_model->fetch(array(
+           'x__right' => $i['i__id'],
+           'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
+           'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+           'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+       ), array('x__up'), 0) as $setting_link){
+           array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
+       }
+       //Now search for these settings across ideas:
+       foreach($CI->X_model->fetch(array(
+           'x__left' => $i['i__id'],
+           'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
+           'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+           'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+       ), array('x__right'), 0) as $setting_link){
+           array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
+       }
+
+       //Can only have one focus view, pick first one if any:
+       if(count($list_config[34513])){
+           foreach($list_config[34513] as $first_frame){
+               $list_config[34513] = $first_frame;
+               break;
+           }
+       } else {
+           $list_config[34513] = 0;
+       }
+
+       if(count($list_config[32426])){
+           foreach($list_config[32426] as $first_frame){
+               $list_config[32426] = $first_frame;
+               break;
+           }
+       } else {
+           $list_config[32426] = 0;
+       }
+
+
+
+       //Generate filter:
+       $query_string = array();
+       if(count($list_config[40791])){
+           $query_string = $CI->X_model->fetch(array(
+               'x__left IN (' . join(',', $list_config[40791]) . ')' => null,
+               'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+               'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+           ), array('x__creator'), 1000, 0, array('x__id' => 'DESC'));
+       } elseif(count($list_config[27984])>0){
+           $query_string = $CI->X_model->fetch(array(
+               'x__up IN (' . join(',', $list_config[27984]) . ')' => null,
+               'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+               'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+           ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+       } else {
+           $query_string = $CI->X_model->fetch(array(
+               'x__left' => $i['i__id'],
+               'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+           ), array('x__creator'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+       }
+
+       //Clean list:
+       $unique_users_count = array();
+       foreach($query_string as $key => $x) {
+
+           if (in_array($x['e__id'], $unique_users_count)) {
+
+               unset($query_string[$key]);
+
+           } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
+                   'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
+                   'x__down' => $x['e__id'],
+                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               )))) {
+
+               //Must follow NONE of these sources:
+               unset($query_string[$key]);
+
+           } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
+                   'x__left IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
+                   'x__creator' => $x['e__id'],
+                   'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                   'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               )))) {
+
+               //They have discovered at-least one, so skip this:
+               unset($query_string[$key]);
+
+           } elseif (count($list_config[40791]) && count($list_config[27984])) {
+
+               foreach($list_config[27984] as $limit_27984){
+                   if(!count($CI->X_model->fetch(array(
+                       'x__up' => $limit_27984,
+                       'x__down' => $x['e__id'],
+                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                       'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                   )))){
+                       //Must be included in ALL Sources, since not lets continue:
+                       unset($query_string[$key]);
+                       break;
+                   }
+               }
+
+           }
+
+           array_push($unique_users_count, $x['e__id']);
+
+       }
+
+
+
+
+       //Determine columns if any:
+       if($list_config[34513]){
+
+           $column_e = $CI->X_model->fetch(array(
+               'x__up' => $list_config[34513],
+               'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+               'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+           ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
+
+           foreach($CI->X_model->fetch(array(
+               'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+               'x__up' => $list_config[34513],
+               'x__right !=' => $i['i__id'],
+               'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+           ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
+               array_push($column_i, $link_i);
+           }
+
+       }
+
+
+       if($fetch_contact){
+           foreach($query_string as $count => $x){
+
+               //Fetch email & phone:
+               $fetch_names = $CI->X_model->fetch(array(
+                   'x__up' => 30198, //Full Legal Name
+                   'x__down' => $x['e__id'],
+                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               ));
+               $fetch_emails = $CI->X_model->fetch(array(
+                   'x__up' => 3288, //Email
+                   'x__down' => $x['e__id'],
+                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               ));
+               $fetch_phones = $CI->X_model->fetch(array(
+                   'x__up' => 4783, //Phone
+                   'x__down' => $x['e__id'],
+                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               ));
+
+               $query_string[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
+               $query_string[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
+               $query_string[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
+
+               $contact_details['full_list'] .= $query_string[$count]['extension_name']."\t".$query_string[$count]['extension_email']."\t".$query_string[$count]['extension_phone']."\n";
+
+               if($query_string[$count]['extension_email']){
+                   $contact_details['email_count']++;
+                   $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string[$count]['extension_email'];
+               }
+               if($query_string[$count]['extension_phone']){
+                   $contact_details['phone_count']++;
+               }
+           }
+       }
+
+
+       //Append Navigation:
+       foreach($column_i as $key => $i2){
+           $must_follow = array();
+           foreach($CI->X_model->fetch(array(
+               'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               'x__type' => 32235, //Navigation
+               'x__right' => $i2['i__id'],
+           )) as $follow){
+               array_push($must_follow, $follow['x__up']);
+           }
+           $column_i[$key]['must_follow'] = $must_follow;
+       }
+
+
+
+       return array(
+           'i' => $i,
+           'list_config' => $list_config,
+           'column_e' => $column_e,
+           'column_i' => $column_i,
+           'query_string' => $query_string,
+           'contact_details' => $contact_details, //Optional addon
+       );
     }
-    //Now search for these settings across sources:
-    foreach($CI->X_model->fetch(array(
-        'x__right' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
-        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ), array('x__up'), 0) as $setting_link){
-        array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
-    }
-    //Now search for these settings across ideas:
-    foreach($CI->X_model->fetch(array(
-        'x__left' => $i__id,
-        'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
-        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__right'), 0) as $setting_link){
-        array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
-    }
-
-    //Can only have one focus view, pick first one if any:
-    if(count($list_config[34513])){
-        foreach($list_config[34513] as $first_frame){
-            $list_config[34513] = $first_frame;
-            break;
-        }
-    } else {
-        $list_config[34513] = 0;
-    }
-
-    if(count($list_config[32426])){
-        foreach($list_config[32426] as $first_frame){
-            $list_config[32426] = $first_frame;
-            break;
-        }
-    } else {
-        $list_config[32426] = 0;
-    }
-
-
-
-    //Generate filter:
-    $query_string = array();
-    if(count($list_config[40791])){
-        $query_string = $CI->X_model->fetch(array(
-            'x__left IN (' . join(',', $list_config[40791]) . ')' => null,
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__creator'), 1000, 0, array('x__id' => 'DESC'));
-    } elseif(count($list_config[27984])>0){
-        $query_string = $CI->X_model->fetch(array(
-            'x__up IN (' . join(',', $list_config[27984]) . ')' => null,
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-    } else {
-        $query_string = $CI->X_model->fetch(array(
-            'x__left' => $i__id,
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        ), array('x__creator'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-    }
-
-    //Clean list:
-    $unique_users_count = array();
-    foreach($query_string as $key => $x) {
-
-        if (in_array($x['e__id'], $unique_users_count)) {
-
-            unset($query_string[$key]);
-
-        } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
-                'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
-                'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))) {
-
-            //Must follow NONE of these sources:
-            unset($query_string[$key]);
-
-        } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
-                'x__left IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
-                'x__creator' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))) {
-
-            //They have discovered at-least one, so skip this:
-            unset($query_string[$key]);
-
-        } elseif (count($list_config[40791]) && count($list_config[27984])) {
-
-            foreach($list_config[27984] as $limit_27984){
-                if(!count($CI->X_model->fetch(array(
-                    'x__up' => $limit_27984,
-                    'x__down' => $x['e__id'],
-                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-                    //Must be included in ALL Sources, since not lets continue:
-                    unset($query_string[$key]);
-                    break;
-                }
-            }
-
-        }
-
-        array_push($unique_users_count, $x['e__id']);
-
-    }
-
-
-
-
-    //Determine columns if any:
-    if($list_config[34513]){
-
-        $column_e = $CI->X_model->fetch(array(
-            'x__up' => $list_config[34513],
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
-
-        foreach($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__up' => $list_config[34513],
-            'x__right !=' => $i__id,
-            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
-            array_push($column_i, $link_i);
-        }
-
-    } elseif(0) {
-
-        foreach($CI->I_model->fetch(array(
-            'i__id IN (' . join(',', $list_config[40791]) . ')' => null, //SOURCE LINKS
-        ), 0, 0, array('i__id' => 'ASC')) as $loaded_i){
-
-            $all_ids = $CI->I_model->recursive_down_ids($loaded_i, 'ALL');
-            $or_ids = $CI->I_model->recursive_down_ids($loaded_i, 'OR');
-
-            $count = 0;
-            foreach($all_ids as $recursive_down_id){
-                foreach($CI->I_model->fetch(array(
-                    'i__id' => $recursive_down_id,
-                ), 0, 0, array('i__id' => 'ASC')) as $focus_i){
-                    $count++;
-
-                    if(!$list_config[34513]){
-                        foreach($CI->X_model->fetch(array(
-                            'x__right' => $focus_i['i__id'],
-                            'x__type IN (' . join(',', $CI->config->item('n___31023')) . ')' => null, //Idea Source Action Links
-                            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                        ), array('x__up'), 0) as $focus_e){
-                            if(!in_array($focus_e['e__id'], $es_added) && (!count($list_config[27984]) || !in_array($focus_e['e__id'], $list_config[27984]))){
-                                array_push($column_e, $focus_e);
-                                array_push($es_added, $focus_e['e__id']);
-                            }
-                            array_push($is_with_action_es, $focus_i['i__id']);
-                        }
-                    }
-                }
-            }
-
-            $count = 0;
-            foreach($or_ids as $recursive_down_id){
-                foreach($CI->I_model->fetch(array(
-                    'i__id' => $recursive_down_id,
-                ), 0, 0, array('i__id' => 'ASC')) as $focus_i){
-                    $count++;
-                    if(!$list_config[34513] && !in_array($focus_i['i__id'], $is_with_action_es)){ // && isset($_GET['all_i'])
-                        array_push($column_i, $focus_i);
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    if($fetch_contact){
-        foreach($query_string as $count => $x){
-
-            //Fetch email & phone:
-            $fetch_names = $CI->X_model->fetch(array(
-                'x__up' => 30198, //Full Legal Name
-                'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
-            $fetch_emails = $CI->X_model->fetch(array(
-                'x__up' => 3288, //Email
-                'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
-            $fetch_phones = $CI->X_model->fetch(array(
-                'x__up' => 4783, //Phone
-                'x__down' => $x['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ));
-
-            $query_string[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
-            $query_string[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
-            $query_string[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
-
-            $contact_details['full_list'] .= $query_string[$count]['extension_name']."\t".$query_string[$count]['extension_email']."\t".$query_string[$count]['extension_phone']."\n";
-
-            if($query_string[$count]['extension_email']){
-                $contact_details['email_count']++;
-                $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string[$count]['extension_email'];
-            }
-            if($query_string[$count]['extension_phone']){
-                $contact_details['phone_count']++;
-            }
-        }
-    }
-
-
-
-    return array(
-        'i' => $is[0],
-        'list_config' => $list_config,
-        'column_e' => $column_e,
-        'column_i' => $column_i,
-        'query_string' => $query_string,
-        'contact_details' => $contact_details, //Optional addon
-    );
-
 }
 
 
@@ -1054,7 +946,7 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
 function home_url(){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    return ( $member_e ? '/@'.$member_e['e__id'] : '/' );
+    return ( $member_e ? '/@'.$member_e['e__handle'] : '/' );
 }
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
@@ -1088,13 +980,13 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/@'.$member_e['e__id'];
+            $goto_url = '/@'.$member_e['e__handle'];
         } else {
-            $goto_url = '/-4269'.( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' );
+            $goto_url = view_app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' );
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
 }
@@ -1103,29 +995,6 @@ function get_server($var_name){
     return ( isset($_SERVER[$var_name]) ? $_SERVER[$var_name] : null );
 }
 
-function fetch_cookie_order($cookie_name){
-
-    $CI =& get_instance();
-    $current_cookie = get_cookie($cookie_name);
-    $new_order_value = (is_null($current_cookie) ? 0 : intval($current_cookie)+1 );
-
-    //Set or update the cookie:
-    $CI->input->set_cookie(array(
-        'name'   => $cookie_name,
-        'value'  => $new_order_value."", //Cast to string
-        'domain' => '.'.get_server('SERVER_NAME'),
-        'expire' => '2592000', //1 Week
-        'secure' => FALSE,
-    ));
-
-    return $new_order_value;
-}
-
-function qr_code($url, $width = 150, $height = 150) {
-    $url    = urlencode($url);
-    $image  = '<img src="http://chart.apis.google.com/chart?chs='.$width.'x'.$height.'&cht=qr&chl='.$url.'" alt="QR code" width="'.$width.'" height="'.$height.'"/>';
-    return $image;
-}
 
 function upload_to_cdn($file_url, $x__creator = 0, $x__metadata = null, $is_local = false, $page_title = null)
 {
@@ -1231,39 +1100,36 @@ function js_reload($timer = 1){
     echo '<script> $(document).ready(function () { setTimeout(function () { location.reload(true); }, '.$timer.'); }); </script>';
 }
 
-function remove_first_line($text) {
-    $lines = explode("\n", $text);
-    unset($lines[0]);
-    return join("\n",$lines);
-}
 
-
-
-function generate_handle($s__type, $string, $master_list = false, $suggestion = null, $increment = 1){
+function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
     //Generates a Suitable Handle from the title:
 
     //Previous suggestion did not work, let's tweak and try again:
     $max_allowed_length = view_memory(6404,41985);
-    $max_adj_length = $max_allowed_length - 3; //Reduce handler to give space for $increment extension up to 99999
+    $max_adj_length = $max_allowed_length - 3; //Reduce target_element to give space for $increment extension up to 99999
     $recommended_length = $max_allowed_length/2;
 
     if(strlen($suggestion)){
+
+        //Previous suggestion that was a duplicate, so it needs to be modified:
         if(strlen($suggestion)>$max_adj_length){
             $suggestion = substr($suggestion, 0, $max_adj_length);
         }
         $suggestion = ($increment==1 ? $suggestion : substr($suggestion, 0, -strlen($increment)) ).$increment;
         $increment++;
+
     } else {
 
-        $string = preg_replace("/[^A-Za-z0-9 ]/", "", $string);
-        if(strlen($string)>$max_allowed_length){
+        //Create new suggestion from string:
+        $str = preg_replace("/[^A-Za-z0-9 ]/", "", $str);
+        if(strlen($str)>$max_allowed_length){
             //Shorten and remove the last word:
-            $word_arr = explode(' ', substr($string, 0, $max_allowed_length));
+            $word_arr = explode(' ', substr($str, 0, $max_allowed_length));
             unset($word_arr[count($word_arr)-1]);
-            $string = join(' ',$word_arr);
+            $str = join(' ',$word_arr);
         }
+        $suggestion = preg_replace(view_memory(32103,41985), '', $str);
 
-        $suggestion = preg_replace(view_memory(32103,41985), '', $string);
     }
 
     if(strlen($suggestion)<4 || is_numeric($suggestion)){
@@ -1271,26 +1137,16 @@ function generate_handle($s__type, $string, $master_list = false, $suggestion = 
     }
 
 
-    if($master_list){
-        //Mass entry:
-        if(in_array($suggestion, $master_list)){
-            //Duplicate, try again:
-            return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
-        } else {
-            return $suggestion;
-        }
-    }
-
     //Make sure no duplicates:
     $CI =& get_instance();
     if($s__type==12273 && count($CI->I_model->fetch(array(
             'i__hashtag' => $suggestion,
         )))){
-        return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
+        return generate_handle(12273, $str, $suggestion, $increment);
     } elseif($s__type==12274 && count($CI->E_model->fetch(array(
             'e__handle' => $suggestion,
         )))){
-        return generate_handle($s__type, $string, $master_list, $suggestion, $increment);
+        return generate_handle(12274, $str, $suggestion, $increment);
     } else {
         //All good:
         return $suggestion;
@@ -1298,10 +1154,63 @@ function generate_handle($s__type, $string, $master_list = false, $suggestion = 
 
 }
 
-function validate_handler($string, $i__id = null, $e__id = null){
+function valid_data_type($data_types, $data_value, $data_title){
+
+    $CI =& get_instance();
+    $e___4592 = $CI->config->item('e___4592'); //Data types
+
+    if($data_types==4319 && !is_numeric($data_value)){
+        //Number:
+        return array(
+            'status' => 0,
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+        );
+    } elseif($data_types==4318 && !strtotime($data_value)){
+        //Time:
+        return array(
+            'status' => 0,
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+        );
+    } elseif($data_types==4255 && !strlen($data_value)){
+        //Text:
+        return array(
+            'status' => 0,
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+        );
+    } elseif($data_types==32097 && !filter_var($data_value, FILTER_VALIDATE_EMAIL)){
+        //Email:
+        return array(
+            'status' => 0,
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+        );
+    } elseif($data_types==7657 && ($data_value<0 || $data_value>100)){
+        //Percentage:
+        return array(
+            'status' => 0,
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'].' which is a number between 0 & 100.',
+        );
+    } elseif($data_types==4256 && !filter_var($data_value, FILTER_VALIDATE_URL)){
+        //URL:
+        return array(
+            'status' => 0,
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+        );
+    }
+
+    //All good:
+    return array(
+        'status' => 1,
+        'message' => 'Good',
+    );
+
+}
+
+function validate_handle($str, $i__id = null, $e__id = null){
+
+    $CI =& get_instance();
 
     //Validate:
-    if($i__id && $e__id){
+    if(($i__id && $e__id) || (!$i__id && !$e__id)){
 
         return array(
             'status' => 0,
@@ -1309,7 +1218,7 @@ function validate_handler($string, $i__id = null, $e__id = null){
             'message' => 'Must set either Idea or Source ID! Pick one...',
         );
 
-    } elseif(!strlen($string)){
+    } elseif(!strlen($str)){
 
         return array(
             'status' => 0,
@@ -1317,7 +1226,7 @@ function validate_handler($string, $i__id = null, $e__id = null){
             'message' => 'Hashtag Missing',
         );
 
-    } elseif (!preg_match(view_memory(26611,41985), $string)) {
+    } elseif (!preg_match(view_memory(26611,41985), $str)) {
 
         return array(
             'status' => 0,
@@ -1325,15 +1234,7 @@ function validate_handler($string, $i__id = null, $e__id = null){
             'message' => view_memory(30998,41985),
         );
 
-    } elseif (is_numeric($string) && $string!=$i__id) {
-
-        return array(
-            'status' => 0,
-            'db_duplicate' => 0,
-            'message' => 'If numbers only must be set to '.$i__id.$e__id.' as the original ID (Or mix letters & numbers)',
-        );
-
-    } elseif (strlen($string) > view_memory(6404,41985)) {
+    } elseif (strlen($str) > view_memory(6404,41985)) {
 
         return array(
             'status' => 0,
@@ -1341,30 +1242,38 @@ function validate_handler($string, $i__id = null, $e__id = null){
             'message' => 'Must be '.view_memory(6404,41985).' characters or less',
         );
 
+    } elseif ($i__id && array_key_exists($str, $CI->config->item('handle___6287'))) {
+
+        return array(
+            'status' => 0,
+            'db_duplicate' => 1,
+            'message' => 'Hashtag #'.$str.' already in use by App @'.$str,
+        );
+
     }
 
+
     //Syntax good! Now let's check the DB for duplicates...
-    $CI =& get_instance();
     if($i__id > 0){
         foreach($CI->I_model->fetch(array(
             'i__id !=' => $i__id,
-            'i__hashtag' => $string,
+            'i__hashtag' => $str,
         ), 0) as $matched){
             return array(
                 'status' => 0,
                 'db_duplicate' => 1,
-                'message' => 'Hashtag #'.$string.' already in use by Idea #'.$matched['i__id'],
+                'message' => 'Hashtag #'.$str.' is already assigned to another idea.',
             );
         }
     } elseif($e__id>0){
         foreach($CI->E_model->fetch(array(
             'e__id !=' => $e__id,
-            'e__handle' => $string,
+            'e__handle' => $str,
         ), 0) as $matched){
             return array(
                 'status' => 0,
                 'db_duplicate' => 1,
-                'message' => 'Handler @'.$string.' already in use by Source @'.$matched['e__id'],
+                'message' => 'Handle @'.$str.' is already assigned to another source.',
             );
         }
     }
@@ -1379,60 +1288,30 @@ function validate_handler($string, $i__id = null, $e__id = null){
 
 }
 
-function validate_i__message($string){
 
-    $title_clean = trim($string);
+function validate_e__title($str){
+
+    //Validate:
+    $title_clean = trim($str);
     while(substr_count($title_clean , '  ') > 0){
         $title_clean = str_replace('  ',' ',$title_clean);
     }
 
-    //Validate:
-    if(!strlen(trim($string))){
-
-        return array(
-            'status' => 0,
-            'message' => 'Title missing',
-        );
-
-    } elseif (strlen($string) > view_memory(6404,4736)) {
-
-        return array(
-            'status' => 0,
-            'message' => 'Must be '.view_memory(6404,4736).' characters or less',
-        );
-
-    }
-
-    //All good, return success:
-    return array(
-        'status' => 1,
-    );
-
-}
-
-function validate_e__title($string){
-
-    //Validate:
-    $title_clean = trim($string);
-    while(substr_count($title_clean , '  ') > 0){
-        $title_clean = str_replace('  ',' ',$title_clean);
-    }
-
-    if(!strlen(trim($string))){
+    if(!strlen(trim($str))){
 
         return array(
             'status' => 0,
             'message' => 'Source title missing',
         );
 
-    } elseif(strlen(trim($string)) < 1){
+    } elseif(strlen(trim($str)) < 1){
 
         return array(
             'status' => 0,
             'message' => 'Enter Source title to continue.',
         );
 
-    } elseif (strlen($string) > view_memory(6404,6197)) {
+    } elseif (strlen($str) > view_memory(6404,6197)) {
 
         return array(
             'status' => 0,
@@ -1447,6 +1326,29 @@ function validate_e__title($string){
         'e__title_clean' => trim($title_clean),
     );
 
+}
+
+function number_x__weight($str){
+    //Set x__weight for caching purposes if message value is numerical:
+    if(is_numeric($str)){
+        return intval($str);
+    } elseif(strtotime($str)){
+        return strtotime($str);
+    } else {
+        return 0;
+    }
+}
+
+function delete_all_between($beginning, $end, $string) {
+    $beginningPos = strpos($string, $beginning);
+    $endPos = strpos($string, $end);
+    if ($beginningPos === false || $endPos === false) {
+        return $string;
+    }
+
+    $textToDelete = substr($string, $beginningPos, ($endPos + strlen($end)) - $beginningPos);
+
+    return delete_all_between($beginning, $end, str_replace($textToDelete, '', $string)); // recursion to ensure all occurrences are replaced
 }
 
 function user_website($x__creator){
@@ -1465,7 +1367,7 @@ function user_website($x__creator){
     return 0;
 }
 
-function send_qr($x__id, $x__creator){
+function email_ticket($x__id, $i__hashtag, $x__creator){
 
     $CI =& get_instance();
     $user_website = user_website($x__creator);
@@ -1473,15 +1375,18 @@ function send_qr($x__id, $x__creator){
     $additional_info = '';
     foreach($CI->X_model->fetch(array(
         'x__id' => $x__id,
-        'x__right > 0' => null,
     ), array('x__right')) as $top_i){
-        $additional_info = ' for '.view_first_line($top_i['i__message'], true);
+        $additional_info = ' for '.view_i_title($top_i, true);
         break;
     }
 
-    $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket'.$additional_info,
-        'Upon arrival simply have your QR code ready to be scanned:'.
-        "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).'/-26560?x__id='.$x__id.'&x__creator='.$x__creator."\n", array(), 0, $user_website);
+    foreach($CI->E_model->fetch(array(
+        'e__id' => $x__creator,
+    )) as $e){
+        $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket'.$additional_info,
+            'Upon arrival have your QR code ready to be scanned:'.
+            "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).'/'.$i__hashtag.'?e__handle='.$e['e__handle'].'&e__hash='.view_e__hash($e['e__handle'])."\n", array(), 0, $user_website);
+    }
 
 }
 
@@ -1639,39 +1544,16 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
 
     //Log transaction:
     if($log_tr){
-
-        if(isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])){
-
-            //It's an email for a specific idea, discover the idea:
-            $is = $CI->I_model->fetch(array(
-                'i__id' => $x_data['x__left'],
-            ));
-            $CI->X_model->mark_complete($x_data['x__right'], $is[0], array(
-                'x__type' => ( $sms_success ? 40961 : 40963 ), //Idea SMS Success/Fail
-                'x__creator' => $e__id,
-                'x__down' => $template_id,
-                'x__message' => $single_message,
-                'x__metadata' => array(
-                    'post' => $post,
-                    'response' => $y,
-                ),
-            ));
-
-        } else {
-
-            $CI->X_model->create(array_merge($x_data, array(
-                'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
-                'x__creator' => $e__id,
-                'x__message' => $single_message,
-                'x__down' => $template_id,
-                'x__metadata' => array(
-                    'post' => $post,
-                    'response' => $y,
-                ),
-            )));
-
-        }
-
+        $CI->X_model->create(array_merge($x_data, array(
+            'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
+            'x__creator' => $e__id,
+            'x__message' => $single_message,
+            'x__down' => $template_id,
+            'x__metadata' => array(
+                'post' => $post,
+                'response' => $y,
+            ),
+        )));
     }
 
     return true;
@@ -1715,7 +1597,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message .= get_domain('m__title', $e__id, $x__website);
     if($e__id > 0 && !in_array($template_id, $CI->config->item('n___31779'))){
         //User specific notifications:
-        $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__website).'/-28904?e__id='.$e__id.'&e__hash='.md5($e__id.view_memory(6404,30863)).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
+        $email_message .= '<div><a href="https://'.get_domain('m__message', $e__id, $x__website).view_app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__hash='.view_e__hash($es[0]['e__handle']).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
 
     //Loadup amazon SES:
@@ -1781,13 +1663,11 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         )));
 
         //Can we also mark the discovery as complete?
-        if(isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])) {
+        if($e__id && isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])) {
             foreach ($CI->I_model->fetch(array(
                 'i__id' => $x_data['x__left'],
             )) as $email_i) {
-                $CI->X_model->read_only_complete($x_data['x__right'], $email_i, array_merge($x_data, array(
-                    'x__creator' => $e__id,
-                )));
+                $CI->X_model->read_only_complete($e__id, $x_data['x__right'], $email_i, $x_data);
             }
         }
 
@@ -1859,14 +1739,14 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function write_access_e($e__id, $member_e = array()){
+function write_access_e($e__handle, $member_e = array()){
 
     if(!$member_e){
         //Fetch from session:
         $member_e = superpower_unlocked();
     }
 
-    if(!$member_e || $e__id < 1){
+    if(!$member_e || !strlen($e__handle)){
         return false;
     }
 
@@ -1875,44 +1755,41 @@ function write_access_e($e__id, $member_e = array()){
     return (
 
         //Member is the source
-        $e__id==$member_e['e__id']
+        $e__handle==$member_e['e__handle']
 
         //Member has Advance source editing superpower
-        || superpower_active(13422, true)
+        || superpower_unlocked(13422)
 
         //If Source Follows this Member
         || count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__up' => $member_e['e__id'],
-            'x__down' => $e__id,
-        )))
+            'e__handle' => $e__handle,
+        ), array('x__down')))
+
     );
 
 }
 
-function write_access_i($i__id, $member_e = array()){
+function write_access_i($i__hashtag){
 
-    if(!$member_e){
-        //Fetch from session:
-        $member_e = superpower_unlocked();
-    }
-
-    if(!$member_e || $i__id < 1){
+    $member_e = superpower_unlocked();
+    if(!$member_e || !strlen($i__hashtag)){
         return false;
     }
 
     //Ways a member can modify an idea:
     $CI =& get_instance();
     return (
-        superpower_active(12700, true) || //WALKIE TALKIE
+        superpower_unlocked(12700) || //WALKIE TALKIE
         (
             count($CI->X_model->fetch(array( //IDEA SOURCE
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-                'x__right' => $i__id,
+                'i__hashtag' => $i__hashtag,
                 'x__up' => $member_e['e__id'],
-            )))
+            )), array('x__right'))
         )
     );
 
@@ -2130,8 +2007,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //See if this idea has a time-range:
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['i__id']);
-                //$export_row['s__url'] = '/~' . $s['i__id'];
-                $export_row['s__url'] = '/' . $s['i__id'];
+                $export_row['s__handle'] = $s['i__hashtag'];
+                $export_row['s__url'] = '/~' . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
                 $export_row['s__access'] = intval($s['i__access']);
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['i__message'];
@@ -2185,7 +2062,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //SOURCES
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['e__id']);
-                $export_row['s__url'] = '/@' . $s['e__id'];
+                $export_row['s__handle'] = $s['e__handle'];
+                $export_row['s__url'] = '/@' . $s['e__handle'];
                 $export_row['s__access'] = intval($s['e__access']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
@@ -2229,7 +2107,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 //Non-Hidden APPS
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['e__id']);
-                $export_row['s__url'] = '/-' . $s['e__id'];
+                $export_row['s__handle'] = $s['e__handle'];
+                $export_row['s__url'] = view_app_link($s['e__id']);
                 $export_row['s__access'] = intval($s['e__access']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
@@ -2450,14 +2329,14 @@ function x__metadata_update($x__id, $new_fields, $x__creator = 0)
 }
 
 
-function one_two_explode($one, $two, $string)
+function one_two_explode($one, $two, $str)
 {
-    //A quick function to extract a subset of $string between $one and $two
+    //A quick function to extract a subset of $str between $one and $two
     if (strlen($one) > 0) {
-        if (substr_count($string, $one) < 1) {
+        if (substr_count($str, $one) < 1) {
             return NULL;
         }
-        $temp = explode($one, $string, 2);
+        $temp = explode($one, $str, 2);
         if (strlen($two) > 0) {
             $temp = explode($two, $temp[1], 2);
             return trim($temp[0]);
@@ -2465,7 +2344,7 @@ function one_two_explode($one, $two, $string)
             return trim($temp[1]);
         }
     } else {
-        $temp = explode($two, $string, 2);
+        $temp = explode($two, $str, 2);
         return trim($temp[0]);
     }
 }

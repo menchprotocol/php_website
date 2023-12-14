@@ -25,7 +25,7 @@ if(isset($_POST)){
     $(':button').on('click', function () {
         $.ajax({
             // Your server script to process the upload
-            url: '/-13572',
+            url: '<?= view_app_link(13572) ?>',
             type: 'POST',
 
             // Form data

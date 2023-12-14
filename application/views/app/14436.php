@@ -2,11 +2,10 @@
 
 $client_id = website_setting(14881);
 $client_secret = website_setting(14882);
-$server_name = get_server('SERVER_NAME');
 
 use Auth0\SDK\Auth0;
 
-if($client_id && $client_secret && $server_name){
+if($client_id && $client_secret){
 
     //This page is loaded after member successfully authenticates via Auth0
     header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -19,7 +18,7 @@ if($client_id && $client_secret && $server_name){
         'domain' => 'mench.auth0.com',
         'client_id' => $client_id,
         'client_secret' => $client_secret,
-        'redirect_uri' => 'https://'.$server_name.'/-14564',
+        'redirect_uri' => 'https://'.get_server('SERVER_NAME').view_app_link(14564),
         'scope' => 'openid profile email',
     ]);
 

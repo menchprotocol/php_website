@@ -1,6 +1,6 @@
 <?php
 
-//Offers a permanent /-14373 Website URL for Terms which redirects to the Website Term...
+//Offers a permanent Website URL for Terms which redirects to the Website Term...
 
 $website_terms = $this->E_model->scissor_i(website_setting(0), 14373); //Website Terms
 if(!count($website_terms)){
@@ -9,7 +9,7 @@ if(!count($website_terms)){
 }
 
 foreach($website_terms as $i_item) {
-    js_php_redirect('/'.$i_item['i__id'], 13);
+    js_php_redirect('/'.$i_item['i__hashtag'], 13);
     break;
 }
 

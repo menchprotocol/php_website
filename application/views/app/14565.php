@@ -51,21 +51,15 @@ if(!count($primary_i)){
 
 
 
-echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_first_line($primary_i['i__message'], true)).'\'); }); </script> ';
+echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
 
 
 
-echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_first_line($primary_i['i__message'], true) . '</h1>';
+echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_i_title($primary_i, true) . '</h1>';
 
-$top_messages = view_message($primary_i, true);
 
 //Did we find any?
-$messages = '';
-if(strlen($top_messages)){
-    $messages .= '<div class="center-frame hide-subline maxwidth hideIfEmpty">';
-    $messages .= $top_messages;
-    $messages .= '</div>';
-}
+$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_i_links($primary_i) . '</div>';
 
 
 
@@ -174,7 +168,7 @@ if(strlen($secondary_i)){
 echo '<div class="narrow-bar slim_flat">';
 $social_ui = '';
 foreach($this->E_model->scissor_e($website_id, 14904) as $social_box) {
-    $social_ui .= '<li><a href="/-14904?e__id='.$social_box['e__id'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover($social_box['e__cover'], true).'</a></li>';
+    $social_ui .= '<li><a href="'.view_app_link(14904).'?e__handle='.$social_box['e__handle'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover($social_box['e__cover'], true).'</a></li>';
 }
 if($social_ui){
     echo '<div class="social-footer">';

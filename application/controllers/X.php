@@ -10,76 +10,13 @@ class X extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        universal_check();
+        auto_login();
 
     }
 
     function x_create(){
         return view_json($this->X_model->create($_POST));
     }
-
-    function x__history()
-    {
-
-        if (!isset($_POST['x__id']) || $_POST['x__id']<1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing inputs',
-            ));
-        }
-
-        $x__history = '';
-
-        $session_name = 'session_'.date("YmdHms");
-
-        if(!$this->session->userdata($session_name)){
-
-            //Generate history preview, if any:
-
-            //See if this is duplicate to either transaction:
-            $xs = $this->X_model->fetch(array(
-                'x__id' => $_POST['x__id'],
-            ));
-            $array_history = array();
-            foreach($this->X_model->fetch(array(
-                'x__up' => $xs[0]['x__up'],
-                'x__down' => $xs[0]['x__down'],
-                'x__type' => 10657, //Past Deleted
-            ), array(), 0) as $x_history) {
-                $x__metadata = unserialize($x_history['x__metadata']);
-                if(strlen($x__metadata['fields_changed'][0]['before'])>1 && !in_array($x__metadata['fields_changed'][0]['before'], $array_history)){
-                    array_push($array_history, $x__metadata['fields_changed'][0]['before']);
-                }
-                if(strlen($x__metadata['fields_changed'][0]['after'])>1 && !in_array($x__metadata['fields_changed'][0]['after'], $array_history)){
-                    array_push($array_history, $x__metadata['fields_changed'][0]['after']);
-                }
-            }
-
-            if(count($array_history)){
-                $x__history .= '<div style="margin: 13px 0;">History:</div>';
-            }
-
-            foreach($array_history as $image){
-                $x__history .= '<a href="javascript:void(0)" onclick="x_message_save(\''.$image.'\');" class="icon-block-lg">'.view_cover($image, true).'</a>';
-            }
-
-            $this->session->set_userdata($session_name, $x__history);
-
-        } else {
-
-            $x__history = $this->session->userdata($session_name);
-
-        }
-
-
-        return view_json(array(
-            'status' => 1,
-            'x__history' => $x__history,
-        ));
-
-    }
-
-
 
 
     function x_set_text(){
@@ -96,7 +33,7 @@ class X extends CI_Controller
                 'original_val' => '',
             ));
 
-        } elseif(!isset($_POST['s__id']) || !isset($_POST['cache_e__id']) || !isset($_POST['input__4736'])){
+        } elseif(!isset($_POST['s__id']) || !isset($_POST['cache_e__id']) || !isset($_POST['new_i__message'])){
 
             return view_json(array(
                 'status' => 0,
@@ -119,7 +56,7 @@ class X extends CI_Controller
             }
 
 
-            $validate_e__title = validate_e__title($_POST['input__4736']);
+            $validate_e__title = validate_e__title($_POST['new_i__message']);
             if(!$validate_e__title['status']){
                 return view_json(array_merge($validate_e__title, array(
                     'original_val' => $es[0]['e__title'],
@@ -164,24 +101,24 @@ class X extends CI_Controller
             'x__creator' => ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 ),
             'x__type' => 14576, //MODAL VIEWED
             'x__up' => $_POST['apply_id'],
-            'x__down' => ( $_POST['apply_id']==4997 ? $_POST['card__id'] : 0 ),
-            'x__right' => ( $_POST['apply_id']==12589 ? $_POST['card__id'] : 0 ),
+            'x__down' => ( $_POST['apply_id']==4997 ? $_POST['s__id'] : 0 ),
+            'x__right' => ( $_POST['apply_id']==12589 ? $_POST['s__id'] : 0 ),
         ));
 
-        if(!isset($_POST['apply_id']) || !isset($_POST['card__id'])){
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing Core Data</div>';
+        if(!isset($_POST['apply_id']) || !isset($_POST['s__id'])){
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing Core Data</div>';
         } else {
             if($_POST['apply_id']==4997){
 
                 //Source list:
-                $counter = view_e_covers(12274, $_POST['card__id'], 0, false);
+                $counter = view_e_covers(12274, $_POST['s__id'], 0, false);
                 if(!$counter){
-                    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
                 } else {
-                    echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
-                    foreach(view_e_covers(12274, $_POST['card__id'], 1, true) as $e) {
+                    foreach(view_e_covers(12274, $_POST['s__id'], 1, true) as $e) {
                         array_push($ids, $e['e__id']);
                         echo view_card_e(12274, $e);
                     }
@@ -196,14 +133,14 @@ class X extends CI_Controller
                     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
-                    'x__left' => $_POST['card__id'],
+                    'x__left' => $_POST['s__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 $counter = count($is_next);
 
                 if(!$counter){
-                    echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Ideas yet...</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Ideas yet...</div>';
                 } else {
-                    echo '<div class="msg alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
                     foreach($is_next as $i) {
@@ -215,109 +152,106 @@ class X extends CI_Controller
                 }
 
             } else {
-                echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Unknown Apply ID</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Unknown Apply ID</div>';
             }
         }
     }
 
 
 
-    function x_start($i__id){
+    function x_start($focus_i__hashtag){
 
         //Adds Idea to the Members read
 
         $member_e = superpower_unlocked();
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
+        //valid idea?
+        $is = $this->I_model->fetch(array(
+            'i__hashtag' => $focus_i__hashtag,
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ));
+        if(!count($is)){
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #'.$focus_i__hashtag.' is not active</div>', true);
+        }
+
         //Check to see if added to read for logged-in members:
         if(!$member_e){
-            return redirect_message('/-4269?i__id='.$i__id);
+            return redirect_message(view_app_link(4269).'?i__hashtag='.$focus_i__hashtag);
         }
 
         //Add this Idea to their read If not there:
-        $next_i__id = $i__id;
+        $next_i__hashtag = $focus_i__hashtag;
 
-        if(!in_array($i__id, $this->X_model->started_ids($member_e['e__id']))){
-
-            //valid idea?
-            $is = $this->I_model->fetch(array(
-                'i__id' => $i__id,
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ));
-            if(!count($is)){
-                return redirect_message('/', '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid idea ID</div>', true);
-            }
+        if(!in_array($is[0]['i__id'], $this->X_model->started_ids($member_e['e__id']))){
 
             //is available?
-            $i_is_available = i_is_available($i__id, true);
+            $i_is_available = i_is_available($is[0]['i__id'], true);
             if(!$i_is_available['status']){
-                return redirect_message('/'.$i_is_available['return_i__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
+                return redirect_message('/'.$i_is_available['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
             }
 
             //Is startable?
             if(!count($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i__id,
+                'x__right' => $is[0]['i__id'],
                 'x__up' => 4235,
             )))){
-                return redirect_message('/'.$i__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not startable.</div>');
+                return redirect_message('/'.$focus_i__hashtag, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not startable.</div>');
             }
 
             //Add Starting Point:
-            $this->X_model->mark_complete($i__id, $is[0], array(
-                'x__type' => 4235, //Get started
+            $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
+                'x__type' => 4235, //Get started
+                'x__right' => $is[0]['i__id'],
+                'x__left' => $is[0]['i__id'],
             ));
 
             //Mark as complete:
-            $this->X_model->read_only_complete($i__id, $is[0]);
+            $this->X_model->read_only_complete($member_e['e__id'], $is[0]['i__id'], $is[0]);
 
             //Now return next idea:
-            $next_i__id = $this->X_model->find_next($member_e['e__id'], $i__id, $is[0]);
-
-
-            if(!$next_i__id){
+            $next_i__hashtag = $this->X_model->find_next($member_e['e__id'], $is[0]['i__hashtag'], $is[0]);
+            if(!$next_i__hashtag){
                 //Failed to add to read:
                 return redirect_message(home_url());
             }
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$i__id.'/'.$next_i__id);
+        return redirect_message('/'.$focus_i__hashtag.'/'.$next_i__hashtag);
 
     }
 
 
-    function x_next($top_i__id, $i__id = 0){
-
-        if(!$i__id){
-            die('missing valid ID');
-        }
+    function x_next($top_i__hashtag, $focus_i__hashtag){
 
         $member_e = superpower_unlocked();
-        $i_is_available = i_is_available($i__id, true, false);
         $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
+            'i__hashtag' => $focus_i__hashtag,
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
 
         if(!$member_e){
-            return redirect_message('/-4269?i__id='.$top_i__id);
-        } elseif(!$this->X_model->started_ids($member_e['e__id'], $top_i__id)) {
-            return redirect_message('/'.$top_i__id);
+            return redirect_message(view_app_link(4269).'?i__hashtag='.$top_i__hashtag);
+        } elseif(!$this->X_model->started_ids($member_e['e__id'], $top_i__hashtag)) {
+            return redirect_message('/'.$top_i__hashtag);
         } elseif(!count($is)) {
-            return redirect_message('/'.$top_i__id, '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>This idea is not published yet</div>');
-        } elseif(!$i_is_available['status']){
-            return redirect_message('/'.$top_i__id.'/'.$i_is_available['return_i__id'], '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
+            return redirect_message('/'.$top_i__hashtag, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$focus_i__hashtag.' is not active</div>');
         }
 
+        $i_is_available = i_is_available($is[0]['i__id'], true, false);
+        if(!$i_is_available['status']){
+            return redirect_message('/'.$top_i__hashtag.'/'.$i_is_available['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
+        }
 
         //Go to Next Idea:
-        $next_i__id = $this->X_model->find_next($member_e['e__id'], $top_i__id, $is[0]);
-        if($next_i__id > 0){
+        $next_i__hashtag = $this->X_model->find_next($member_e['e__id'], $is[0]['i__hashtag'], $is[0]);
+        if($next_i__hashtag){
 
-            return redirect_message('/'.$top_i__id.'/'.$next_i__id );
+            return redirect_message('/'.$top_i__hashtag.'/'.$next_i__hashtag );
 
         } else {
 
@@ -325,12 +259,13 @@ class X extends CI_Controller
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
-                'x__right' => $top_i__id,
+                'x__right' => $is[0]['i__id'],
                 //TODO Maybe log additional details like total ideas, time, etc...
             ));
 
-            //Go to Rating App since it's first completion:
-            return redirect_message('/'.$top_i__id.'/'.$top_i__id);
+            return redirect_message('/'.$top_i__hashtag);
+
+            //TODO Go to Rating or Checkout App since the entire tree is discovered...
 
         }
     }
@@ -381,39 +316,10 @@ class X extends CI_Controller
     }
 
 
-    function x_previous($previous_level_id, $i__id){
-
-        $current_i__id = $previous_level_id;
-
-        //Make sure not a select idea:
-        if(!count($this->I_model->fetch(array(
-            'i__id' => $current_i__id,
-            'i__type IN (' . join(',', $this->config->item('n___7712')) . ')' => null, //SELECT IDEA
-        )))){
-            //FIND NEXT IDEAS
-            foreach($this->X_model->fetch(array(
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
-                'x__left' => $previous_level_id,
-            ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
-                if($next_i['i__id']==$i__id){
-                    break;
-                } else {
-                    $current_i__id = $next_i['i__id'];
-                }
-            }
-        }
-
-        return redirect_message('/'.$current_i__id);
-
-    }
 
 
 
-
-
-    function x_layout($top_i__id, $i__id, $member__id=0, $discovery_hash=null)
+    function x_layout($top_i__hashtag=null, $focus_i__hashtag)
     {
 
         /*
@@ -425,126 +331,132 @@ class X extends CI_Controller
 
         $flash_message = null;
         $member_e = superpower_unlocked();
-        $x__creator = ($member__id > 0 ? $member__id : ($member_e ? $member_e['e__id'] : 0));
+        $focus_es = array();
 
-        //Fetch data:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
+        if($top_i__hashtag && $top_i__hashtag==$focus_i__hashtag){
+            //Cleaner URL:
+            return redirect_message('/'.$focus_i__hashtag);
+        }
+
+        if(isset($_GET['e__handle'])){
+            $focus_es = $this->E_model->fetch(array(
+                'e__handle' => $_GET['e__handle'],
+            ));
+            if(!count($focus_es)){
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid User Handler</div>');
+            }
+        } elseif($member_e){
+            $focus_es[0] = $member_e;
+        }
+
+        //Validate Top Idea:
+        $top_is = array();
+        if($top_i__hashtag && count($focus_es)){
+            $top_is = $this->I_model->fetch(array(
+                'i__hashtag' => $top_i__hashtag,
+            ));
+            if ( !count($top_is) ) {
+                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea #' . $top_i__hashtag . ' not found</div>');
+            }
+        }
+
+
+        //Validate Focus Idea:
+        $focus_is = $this->I_model->fetch(array(
+            'i__hashtag' => $focus_i__hashtag,
         ));
-        if ( !count($is) ) {
-            return redirect_message( ( $top_i__id > 0 ? '/'.$top_i__id : home_url() ), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea ID ' . $i__id . ' not found</div>');
+        if ( !count($focus_is) ) {
+            return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not active</div>');
         }
 
 
         //Log Link Click discovery if authenticated:
         if(
-            strlen($discovery_hash)
-            && $member__id>0
-            && ($discovery_hash == view_hash($member__id))
+            isset($_GET['e__hash'])
+            && count($focus_es) //We have a user
         ){
 
-            $this->X_model->mark_complete($top_i__id, $is[0], array(
-                'x__type' => 29393, //Link Click
-                'x__creator' => $member__id,
-            ));
+            //Validate Hash:
+            if($_GET['e__hash'] == view_e__hash($focus_es[0]['e__handle'])){
 
-            //Inform user of changes:
-            $flash_message = '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have successfully discovered this idea!</div>';
+                $this->X_model->mark_complete(29393, $focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
 
-            //If not logged in, log them in:
-            if(!$member_e){
-                foreach($this->E_model->fetch(array(
-                    'e__id' => $member__id,
-                )) as $logged_e){
-                    $this->E_model->activate_session($logged_e, true);
+                //Inform user of changes:
+                $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have discovered this idea</div>';
+
+                //If not logged in, log them in:
+                if(!$member_e){
+                    $this->E_model->activate_session($focus_es[0], true);
                 }
-            }
 
+            } else {
+
+                $flash_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Invalid Hash: Idea could not be discovered at this time.</div>';
+
+            }
         }
 
 
-        if($top_i__id > 0){
 
-            $top_is = $this->I_model->fetch(array(
-                'i__id' => $top_i__id,
-            ));
-            if ( !count($top_is) ) {
+        //Has the user discovered this?
+        $x_completes = array();
+        if(count($focus_es)) {
 
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea ID ' . $top_i__id . ' not found</div>');
-
-            }
-
-        } elseif($member_e) {
-
-            //Do we have a direct discovery?
-            foreach($this->X_model->fetch(array(
+            //Fetch discovery
+            $x_completes = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $member_e['e__id'],
-                'x__left' => $i__id,
+                'x__creator' => $focus_es[0]['e__id'],
+                'x__left' => $focus_is[0]['i__id'],
                 'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ), array('x__right')) as $x){
-                return redirect_message('/'.$x['x__right'].'/'.$i__id);
+            ), array('x__right'));
+
+            //Missing focus Idea?
+            if(!$top_i__hashtag) {
+
+                //Do we have a direct discovery?
+                $this_discovery = null;
+                foreach($x_completes as $x){
+                    $this_discovery = $x['i__hashtag'];
+                    break;
+                }
+
+                if($this_discovery){
+                    //We have a discovery here, make sure its not the same as the starting point:
+                    if($this_discovery!=$focus_i__hashtag){
+                        return redirect_message('/'.$this_discovery.'/'.$focus_i__hashtag);
+                    }
+                } else {
+                    //No discovery here, let's see if we can find any above:
+                    $top_x_i__hashtag = $this->X_model->find_previous_discovered($focus_is[0]['i__id'], $focus_es[0]['e__id']);
+                    if($top_x_i__hashtag){
+                        return redirect_message('/'.$top_x_i__hashtag.'/'.$focus_i__hashtag);
+                    }
+                }
             }
-
-            //Any of tops been discovered?
-            $top_discovery_id = $this->I_model->recursive_up_ids($i__id, $member_e['e__id']);
-            if($top_discovery_id > 0){
-                return redirect_message('/'.$top_discovery_id.'/'.$i__id);
-            }
-
         }
 
 
-    //Determine Member:
-        /*
-        $member_e = false;
-        if(isset($_GET['load__e']) && superpower_active(14005, true)){
-
-            //Fetch This Member
-            $e_filters = $this->E_model->fetch(array(
-                'e__id' => $_GET['load__e'],
-                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ));
-            if(count($e_filters)){
-                echo view__load__e($member_e);
-                $member_e = $e_filters[0];
-            }
-
-        }
-        if(!$member_e){
-            $member_e = superpower_unlocked();
-        }
-        */
-
-
-
-        if($member_e) {
-            //VIEW DISCOVERY
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 7610, //MEMBER VIEWED DISCOVERY
-                'x__left' => $top_i__id,
-                'x__right' => $is[0]['i__id'],
-                'x__weight' => fetch_cookie_order('7610_' . $is[0]['i__id']),
-            ));
-        }
-
-        $e___14874 = $this->config->item('e___14874'); //Mench Cards
+        //VIEW DISCOVERY
+        $this->X_model->create(array(
+            'x__creator' => ( count($focus_es) ? $focus_es[0]['e__id'] : 14068 ), //Guest Member
+            'x__type' => 7610, //MEMBER VIEWED DISCOVERY
+            'x__left' => ( count($top_is) ? $top_is[0]['i__id'] : 0 ),
+            'x__right' => $focus_is[0]['i__id'],
+        ));
 
         $this->load->view('header', array(
-            'title' => view_first_line($is[0]['i__message'], true).( $top_i__id > 0 ? ' > '.view_first_line($top_is[0]['i__message'],  true) : '' ),
-            'i' => $is[0],
+            'title' => view_i_title($focus_is[0], true).( count($top_is) ? ' > '.view_i_title($top_is[0],  true) : '' ),
             'flash_message' => $flash_message,
         ));
 
-
-
         $this->load->view('x_layout', array(
-            'top_i__id' => $top_i__id,
-            'i' => $is[0],
-            'member_e' => $member_e,
+            'top_i' => $top_is[0],
+            'focus_i' => $focus_is[0],
+            'member_e' => $focus_es[0],
+            'x_completes' => $x_completes,
         ));
+
         $this->load->view('footer');
 
     }
@@ -699,7 +611,7 @@ class X extends CI_Controller
             $mime = mime_content_type($temp_local);
         }
 
-        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, view_first_line($is[0]['i__message']).' BY '.$member_e['e__title']);
+        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, view_i_title($is[0]).' BY '.$member_e['e__title']);
         if (!$cdn_status['status']) {
             //Oops something went wrong:
             return view_json($cdn_status);
@@ -719,9 +631,7 @@ class X extends CI_Controller
         }
 
         //Save new answer:
-        $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-            'x__type' => 12117,
-            'x__creator' => $member_e['e__id'],
+        $this->X_model->mark_complete(12117, $member_e['e__id'], $_POST['top_i__id'], $is[0], array(
             'x__message' => $cdn_status['cdn_url'],
         ));
 
@@ -729,7 +639,7 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         return view_json(array(
             'status' => 1,
-            'message' => view_headline(13977, null, $e___11035[13977], view_links($cdn_status['cdn_url']), true),
+            'message' => view_headline(13977, null, $e___11035[13977], $cdn_status['cdn_url'], true),
         ));
 
     }
@@ -849,7 +759,7 @@ class X extends CI_Controller
 
 
         //Mark as complete?
-        if($this->X_model->read_only_complete($_POST['top_i__id'], $is[0])){
+        if($this->X_model->read_only_complete($member_e['e__id'], $_POST['top_i__id'], $is[0])){
             //All good:
             return view_json(array(
                 'status' => 1,
@@ -892,11 +802,9 @@ class X extends CI_Controller
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
 
-        //Log Skip:
-        $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
-            'x__type' => 31022, //Skipped
-            'x__creator' => $member_e['e__id'],
-        ));
+        //Log Skipped:
+        $this->X_model->mark_complete(31022, $member_e['e__id'], intval($_POST['top_i__id']), $is[0]);
+
         //All good:
         return view_json(array(
             'status' => 1,
@@ -953,10 +861,9 @@ class X extends CI_Controller
             'x__creator' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )))){
-            $this->X_model->mark_complete($_POST['top_i__id'], $is[0], array(
-                'x__type' => 26595, //Ticket Issued
+            //Ticket Issued:
+            $this->X_model->mark_complete(26595, $member_e['e__id'], $_POST['top_i__id'], $is[0], array(
                 'x__weight' => $_POST['paypal_quantity'],
-                'x__creator' => $member_e['e__id'],
             ));
         }
 
@@ -1047,9 +954,7 @@ class X extends CI_Controller
                 'x__up' => 28239, //Can Skip
             )))){
                 //Log Skip:
-                $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
-                    'x__type' => 31022, //Skipped
-                    'x__creator' => $member_e['e__id'],
+                $this->X_model->mark_complete(31022, $member_e['e__id'], intval($_POST['top_i__id']), $is[0], array(
                     'x__message' => $_POST['x_write'],
                 ));
                 //All good:
@@ -1077,7 +982,7 @@ class X extends CI_Controller
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__right' => $_POST['i__id'],
-                'x__up' => 26556, //Time Starts
+                'x__up' => 42203, //Time Equal or Great Than
             ), array(), 1);
             $time_ends = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1173,12 +1078,12 @@ class X extends CI_Controller
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Following Add
                 'x__right' => $is[0]['i__id'],
-                'x__up' => 30198,
+                'x__up' => 30198, //Full Name
             )))){
                 $this->X_model->create(array(
                     'x__creator' => 14068, //Guest Member
                     'x__type' => 7545, //Following Add
-                    'x__up' => 30198,
+                    'x__up' => 30198, //Full Name
                     'x__right' => $is[0]['i__id'],
                 ));
             }
@@ -1252,9 +1157,7 @@ class X extends CI_Controller
         }
 
         //Save new answer:
-        $this->X_model->mark_complete(intval($_POST['top_i__id']), $is[0], array(
-            'x__type' => $x__type,
-            'x__creator' => $member_e['e__id'],
+        $this->X_model->mark_complete($x__type, $member_e['e__id'], intval($_POST['top_i__id']), $is[0], array(
             'x__message' => $_POST['x_write'],
         ));
 
@@ -1268,140 +1171,158 @@ class X extends CI_Controller
 
 
 
+    function load_stats_33292(){
 
+        $miscstats = '';
 
+        //See if we have any idea or source targets to limit our stats:
+        if(strlen($_POST['e__handle'])){
 
-    function x_message_load(){
-
-        $member_e = superpower_unlocked(10939);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
+            //See stats for this source:
+            $es = $this->E_model->fetch(array(
+                'e__handle' => $_POST['e__handle'],
             ));
-        } elseif (!isset($_POST['x__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing core inputs',
+
+        } elseif(strlen($_POST['i__hashtag'])){
+
+            //See stats for this idea:
+            $is = $this->I_model->fetch(array(
+                'i__hashtag' => $_POST['i__hashtag'],
             ));
-        }
 
-        $this->X_model->create(array(
-            'x__creator' => $member_e['e__id'],
-            'x__type' => 14576, //MODAL VIEWED
-            'x__up' => 13571,
-            'x__reference' => $_POST['x__id'],
-        ));
+            $recursive_down_ids = $this->I_model->recursive_down_ids($is[0], 'ALL');
 
-        $fetch_xs = $this->X_model->fetch(array(
-            'x__id' => $_POST['x__id'],
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ));
-        if(!count($fetch_xs)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Transaction ID',
-            ));
-        }
+            //List stats:
+            $miscstats .= '<div>Tree Ideas: '.number_format(count($recursive_down_ids['recursive_i_ids']), 0).'</div>';
+            $miscstats .= '<div>Tree Levels: '.$recursive_down_ids['total_levels'].'</div>';
+            //$miscstats .= '<div>Tree Minimum Discoveries: '.$recursive_down_ids['total_levels'].'</div>';
+            //$miscstats .= '<div>Tree Maximum Discoveries: '.$recursive_down_ids['total_levels'].'</div>';
 
-        return view_json(array(
-            'status' => 1,
-            'x__message' => $fetch_xs[0]['x__message'],
-        ));
-
-    }
-
-
-
-
-
-    function x_message_save()
-    {
-
-
-        //Auth member and check required variables:
-        $member_e = superpower_unlocked(10939);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
-            ));
-        } elseif (!isset($_POST['x__id']) || !isset($_POST['x__message']) || !intval($_POST['x__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing source transaction data',
-            ));
         }
 
 
-        //Yes, first validate source transaction:
-        $e_x = $this->X_model->fetch(array(
-            'x__id' => $_POST['x__id'],
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ));
-        if (count($e_x) < 1) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'INVALID TRANSACTION ID',
-            ));
-        }
-
-        //Transaction content change?
-        if ($e_x[0]['x__message']==$_POST['x__message']) {
-
-            //Transaction content has not changed:
-            $x__message = $e_x[0]['x__message'];
-
-        } else {
-
-            //Change transaction type ONLY if source link:
-            if(!in_array($e_x[0]['x__type'], $this->config->item('n___32292'))){
-
-                $x__message = $_POST['x__message'];
-                $this->X_model->update($_POST['x__id'], array(
-                    'x__message' => $x__message,
-                ), $member_e['e__id'], 26191 /* SOURCE CONTENT UPDATE */);
-
-            } else {
-
-                //it is a source link! We should update this:
-
-                //Update variables:
-                $x__message = $_POST['x__message'];
-
-                $this->X_model->update($_POST['x__id'], array(
-                    'x__message' => $x__message,
-                    'x__type' => 4230,
-                ), $member_e['e__id'], 10657 /* SOURCE LINK CONTENT UPDATE */);
-
-            }
-        }
-
-
-        //Show success:
-        return view_json(array(
-            'status' => 1,
-            'x__message_final' => $x__message, //In case content was updated
-        ));
-
-    }
-
-    function load_platform_stats(){
         //Count transactions:
-        $already_added = array();
         $return_array = array();
-        foreach($this->config->item('e___33292') as $x__type => $m) {
-            foreach($this->config->item('e___'.$x__type) as $x__type2 => $m2) {
-                if(!in_array($x__type2, $already_added)){
-                    array_push($already_added , $x__type2);
+        foreach($this->config->item('e___33292') as $x__type1 => $m1) {
+            $level1_total = 0;
+            foreach($this->config->item('e___'.$x__type1) as $x__type2 => $m2) {
+                $level2_total = 0;
+                foreach($this->config->item('e___'.$x__type2) as $x__type3 => $m3) {
+
+                    if($x__type2==12273){
+
+                        if(strlen($_POST['e__handle'])){
+
+                            $sub_counter = $this->X_model->fetch(array(
+                                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                                'x__up' => $es[0]['e__id'],
+                                'i__type' => $x__type3,
+                                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                            ), array('x__right'), 0, 0, 'COUNT(i__id) as totals');
+
+                        } elseif(strlen($_POST['i__hashtag'])){
+
+                            //See stats for this idea:
+                            $sub_counter = $this->I_model->fetch(array(
+                                'i__type' => $x__type3,
+                                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                                'i__id IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
+                            ), 0, 0, array(), 'COUNT(i__id) as totals');
+
+                        } else {
+
+                            $sub_counter = $this->I_model->fetch(array(
+                                'i__type' => $x__type3,
+                                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                            ), 0, 0, array(), 'COUNT(i__id) as totals');
+
+                        }
+
+                    } elseif($x__type2==12274){
+
+                        if(strlen($_POST['e__handle'])){
+
+                            $sub_counter = $this->X_model->fetch(array(
+                                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__up' => $es[0]['e__id'],
+                                'e__access' => $x__type3,
+                            ), array('x__down'), 0, 0, 'COUNT(i__id) as totals');
+
+                        } elseif(strlen($_POST['i__hashtag'])){
+
+                            //See stats for this idea:
+                            $sub_counter = $this->X_model->fetch(array(
+                                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                                'x__right IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
+                                'e__access' => $x__type3,
+                            ), array('x__up'), 0, 0, 'COUNT(i__id) as totals');
+
+                        } else {
+
+                            $sub_counter = $this->E_model->fetch(array(
+                                'e__access' => $x__type3,
+                            ), 0, 0, array(), 'COUNT(e__id) as totals');
+
+                        }
+
+                    } else {
+
+                        if(strlen($_POST['e__handle'])){
+
+                            $sub_counter = $this->X_model->fetch(array(
+                                'x__type' => $x__type3,
+                                '( x__down = ' . $es[0]['e__id'] . ' OR x__up = ' . $es[0]['e__id'] . ' OR x__creator = ' . $es[0]['e__id'] . ' )' => null,
+                                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+                        } elseif(strlen($_POST['i__hashtag'])){
+
+                            $sub_counter = $this->X_model->fetch(array(
+                                'x__type' => $x__type3,
+                                '( x__left IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ') OR x__right IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . '))' => null,
+                                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+                        } else {
+
+                            $sub_counter = $this->X_model->fetch(array(
+                                'x__type' => $x__type3,
+                                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+                        }
+
+                    }
+
+                    $level2_total += $sub_counter[0]['totals'];
                     array_push($return_array , array(
-                        'sub_id' => $x__type2,
-                        'sub_counter' => number_format(count_interactions($x__type2), 0),
+                        'sub_id' => $x__type3,
+                        'sub_counter' => number_format($sub_counter[0]['totals'], 0),
                     ));
+
                 }
+
+                $level1_total += $level2_total;
+                array_push($return_array , array(
+                    'sub_id' => $x__type2,
+                    'sub_counter' => number_format($level2_total, 0),
+                ));
+
             }
+
+            array_push($return_array , array(
+                'sub_id' => $x__type1,
+                'sub_counter' => number_format($level1_total, 0),
+            ));
+
         }
-        return view_json($return_array);
+        return view_json(array(
+            'return_array' => $return_array,
+            'miscstats' => $miscstats,
+        ));
     }
 
 
@@ -1468,7 +1389,9 @@ class X extends CI_Controller
         }
 
         //Show basic UI for now:
-        return redirect_message('/@'.$e__id, '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        foreach($this->E_model->fetch(array('e__id' => $e__id)) as $e){
+            return redirect_message('/@'.$e['e__handle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+        }
 
     }
 

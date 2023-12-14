@@ -15,13 +15,18 @@ class I_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__creator = 0)
+    function create($add_fields, $x__creator = 14068)
     {
 
         //What is required to create a new Idea?
         if (detect_missing_columns($add_fields, array('i__message', 'i__type'), $x__creator)) {
             return false;
+        } elseif(!in_array($add_fields['i__type'], $this->config->item('n___4737'))){
+            return false;
         }
+
+        //Auto generate a Hashtag:
+        $add_fields['i__hashtag'] = generate_handle(12273, view_i_title($add_fields, true));
 
         //Lets now add:
         $this->db->insert('table__i', $add_fields);
@@ -33,32 +38,34 @@ class I_model extends CI_Model
 
         if ($add_fields['i__id'] > 0) {
 
-            if ($x__creator > 0) {
+            //Log transaction new Idea:
+            $this->X_model->create(array(
+                'x__creator' => $x__creator,
+                'x__right' => $add_fields['i__id'],
+                'x__message' => $add_fields['i__message'],
+                'x__type' => 4250, //New Idea Created
+            ));
 
-                //Log transaction new Idea:
-                $this->X_model->create(array(
-                    'x__creator' => $x__creator,
-                    'x__right' => $add_fields['i__id'],
-                    'x__message' => $add_fields['i__message'],
-                    'x__type' => 4250, //New Idea Created
-                ));
+            //Log transaction new Idea hashtag:
+            $this->X_model->create(array(
+                'x__creator' => $x__creator,
+                'x__right' => $add_fields['i__id'],
+                'x__message' => $add_fields['i__hashtag'],
+                'x__type' => 42168, //Idea Generated Hashtag
+            ));
 
-                //Fetch to return the complete source data:
-                $is = $this->I_model->fetch(array(
-                    'i__id' => $add_fields['i__id'],
-                ));
+            //Sync messages:
+            $view_sync_links = view_sync_links($add_fields['i__message'], true, $add_fields['i__id']);
 
-                //Update Algolia:
-                update_algolia(12273, $add_fields['i__id']);
+            //Fetch to return the complete source data:
+            $is = $this->I_model->fetch(array(
+                'i__id' => $add_fields['i__id'],
+            ));
 
-                return $is[0];
+            //Update Algolia:
+            update_algolia(12273, $add_fields['i__id']);
 
-            } else {
-
-                //Return provided inputs plus the new source ID:
-                return $add_fields;
-
-            }
+            return $is[0];
 
         } else {
 
@@ -302,9 +309,7 @@ class I_model extends CI_Model
     {
 
         $i_new = $this->I_model->create(array(
-            'i__title' => view_first_line($i['i__message'], true),
             'i__message' => $i['i__message'],
-            'i__hashtag' => generate_handle(12273, view_first_line($i['i__message'], true)),
             'i__type' => $i['i__type'],
         ), $x__creator);
 
@@ -446,7 +451,7 @@ class I_model extends CI_Model
             //Determine which is followings Idea, and which is follower
             if($focus_is_i){
 
-                //Must be adding PREVIOUS or NEXT
+                //Must be adding idea to idea as PREVIOUS or NEXT
 
                 //Duplicate Check:
                 if (count($this->X_model->fetch(array(
@@ -462,12 +467,12 @@ class I_model extends CI_Model
                 }
 
                 //Tree Check if Next
-                if($x__type==12273 && count($this->X_model->find_previous(0, $link_i[0]['i__id'], $focus_i[0]['i__id']))){
+                if($x__type==12273 && count($this->X_model->find_previous(0, $link_i[0]['i__hashtag'], $focus_i[0]['i__id']))){
                     return array(
                         'status' => 0,
                         'message' => 'Idea already added as previous so it cannot be added as next',
                     );
-                } elseif($x__type==11019 && count($this->X_model->find_previous(0, $focus_i[0]['i__id'], $link_i[0]['i__id']))){
+                } elseif($x__type==11019 && count($this->X_model->find_previous(0, $focus_i[0]['i__hashtag'], $link_i[0]['i__id']))){
                     return array(
                         'status' => 0,
                         'message' => 'Idea already added as next so it cannot be added as previous',
@@ -509,9 +514,7 @@ class I_model extends CI_Model
 
             //Create new Idea:
             $i_new = $this->I_model->create(array(
-                'i__title' => view_first_line($i__message, true),
                 'i__message' => $i__message,
-                'i__hashtag' => generate_handle(12273, view_first_line($i__message, true)),
                 'i__type' => 6677, //New Default Ideas
             ), $x__creator);
 
@@ -562,7 +565,11 @@ class I_model extends CI_Model
             //Adding PREVIOUS or NEXT Idea from Idea
             $relation = $this->X_model->create(array(
                 'x__creator' => $x__creator,
-                'x__type' => 4228, //Idea Transaction Regular read
+                'x__type' => ( !$is_upwards && count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__left' => $focus_id,
+                ), array(), 1)) ? 4228 : 4228 ), //TODO Insert Idea Drafting ID and Test Drafting link when top idea discovered
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__weight' => 0,
@@ -606,6 +613,7 @@ class I_model extends CI_Model
         //Return result:
         return array(
             'status' => 1,
+            'new_i__hashtag' => $i_new['i__hashtag'],
             'new_i__id' => $i_new['i__id'],
             'new_i_html' => $new_i_html,
         );
@@ -614,14 +622,14 @@ class I_model extends CI_Model
 
 
 
-    function recursive_down_ids($i, $scope, $current_level = 0, $loop_breaker_ids = array()){
+    function recursive_down_ids($i, $scope, $total_levels = 0, $loop_breaker_ids = array()){
 
         /*
          *
          * $fetch can be either:
-         * - ALL any and all nodes in the tree
-         * - AND only AND nodes that are similar for all
-         * - OR only what is different for all
+         * - ALL includes both AND and OR ideas
+         * - AND ideas only
+         * - OR ideas only
          * */
 
         if(!($scope=='ALL' || $scope=='AND' || $scope=='OR')){
@@ -638,7 +646,7 @@ class I_model extends CI_Model
             return array();
         }
 
-        $current_level++;
+        $total_levels++;
         $recursive_i_ids = array();
         array_push($loop_breaker_ids, intval($i['i__id']));
 
@@ -657,19 +665,22 @@ class I_model extends CI_Model
             }
 
             //Add to current array if we found anything:
-            foreach($this->I_model->recursive_down_ids($next_i, $scope, $current_level, $loop_breaker_ids) as $recursive_i_id){
+            $recursive_down_ids = $this->I_model->recursive_down_ids($next_i, $scope, $total_levels, $loop_breaker_ids);
+            foreach($recursive_down_ids['recursive_i_ids'] as $recursive_i_id){
                 if(!in_array($recursive_i_id, $recursive_i_ids)){
                     array_push($recursive_i_ids, $recursive_i_id);
                 }
             }
         }
 
-        return array_unique($recursive_i_ids);
+        return array(
+            'recursive_i_ids' => array_unique($recursive_i_ids),
+            'total_levels' => $total_levels,
+        );
 
     }
 
     function recursive_clone($i__id, $do_recursive, $x__creator, $previous_i = null, $clone_title = null) {
-
 
         //Create Clone -or- Link & move-on?
         //Validate Idea:
@@ -681,13 +692,12 @@ class I_model extends CI_Model
                 'status' => 0,
                 'message' => 'Invalid idea ID',
                 'new_i__id' => 0,
+                'new_i__hashtag' => '',
             );
         }
 
         $i_new = $this->I_model->create(array(
-            'i__title' => view_first_line($this_i[0]['i__message'], true),
-            'i__message' => ( $clone_title ? $clone_title : "Copy Of ".view_first_line($this_i[0]['i__message'], true) ),
-            'i__hashtag' => generate_handle(12273, view_first_line($this_i[0]['i__message'], true)),
+            'i__message' => ( $clone_title ? $clone_title : "Copy Of ".view_i_title($this_i[0], true) ),
             'i__type' => $this_i[0]['i__type'],
         ), $x__creator);
 
@@ -720,12 +730,12 @@ class I_model extends CI_Model
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
             'x__right' => $i__id,
-        ), array(), 0) as $x){
+        ), array('x__left'), 0) as $x){
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__type' => $x['x__type'],
                 'x__right' => $i_new['i__id'],
-                'x__left' => $x['x__left'],
+                'x__left' => $x['i__id'],
                 'x__message' => $x['x__message'],
                 'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
@@ -740,17 +750,23 @@ class I_model extends CI_Model
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
             'x__left' => $i__id,
-        ), array(), 0) as $x){
-            if($do_recursive){
+        ), array('x__right'), 0) as $x){
+
+            if($do_recursive && !count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__right' => $i__id,
+                    'x__up' => 42208, //No-Clone Idea
+                )))){
                 //Clone Followers Recursively:
-                $this->I_model->recursive_clone($x['x__right'], $do_recursive, $x__creator, $this_i[0]);
+                $this->I_model->recursive_clone($x['i__id'], $do_recursive, $x__creator, $this_i[0]);
             } else {
                 //Link Followers:
                 $this->X_model->create(array(
                     'x__creator' => $x__creator,
                     'x__type' => $x['x__type'],
                     'x__left' => $i_new['i__id'],
-                    'x__right' => $x['x__right'],
+                    'x__right' => $x['i__id'],
                     'x__message' => $x['x__message'],
                     'x__weight' => $x['x__weight'],
                     'x__reference' => $x['x__reference'],
@@ -763,6 +779,7 @@ class I_model extends CI_Model
         return array(
             'status' => 1,
             'new_i__id' => $i_new['i__id'],
+            'new_i__hashtag' => $i_new['i__hashtag'],
         );
 
     }
@@ -770,7 +787,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_starting_points($i__id, $current_level = 0, $loop_breaker_ids = array()){
+    function recursive_starting_points($i__id, $total_levels = 0, $loop_breaker_ids = array()){
 
         /*
          *
@@ -784,7 +801,7 @@ class I_model extends CI_Model
         array_push($loop_breaker_ids, intval($i__id));
 
         $recursive_i_ids = array();
-        $current_level++;
+        $total_levels++;
 
         foreach($this->X_model->fetch(array(
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -807,7 +824,7 @@ class I_model extends CI_Model
             }
 
 
-            $recursive_is = $this->I_model->recursive_starting_points($prev_i['i__id'], $current_level, $loop_breaker_ids);
+            $recursive_is = $this->I_model->recursive_starting_points($prev_i['i__id'], $total_levels, $loop_breaker_ids);
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -815,7 +832,7 @@ class I_model extends CI_Model
             }
         }
 
-        if($current_level==1){
+        if($total_levels==1){
             return array_unique($recursive_i_ids);
         } else {
             return $recursive_i_ids;
@@ -824,65 +841,7 @@ class I_model extends CI_Model
     }
 
 
-    function recursive_up_ids($i__id, $first_discovery = 0, $current_level = 0, $loop_breaker_ids = array()){
-
-        /*
-         *
-         * Returns integer if $first_discovery>0 or array otherwise
-         *
-         * */
-
-        if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
-            return ( $first_discovery>0 ? 0 : array() );
-        }
-        array_push($loop_breaker_ids, intval($i__id));
-
-        $recursive_i_ids = array();
-        $current_level++;
-
-        foreach($this->X_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
-            'x__right' => $i__id,
-        ), array('x__left')) as $prev_i){
-
-            if($first_discovery > 0){
-                foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__creator' => $first_discovery,
-                    'x__left' => $prev_i['i__id'],
-                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                ), array('x__right')) as $x){
-                    return $x['x__right'];
-                }
-            }
-
-            array_push($recursive_i_ids, intval($prev_i['i__id']));
-
-            $recursive_is = $this->I_model->recursive_up_ids($prev_i['i__id'], $first_discovery, $current_level, $loop_breaker_ids);
-
-            //Add to current array if we found anything:
-            if(!$first_discovery && count($recursive_is) > 0){
-                $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
-            }
-        }
-
-        if($first_discovery) {
-            return 0;
-        } elseif($current_level==1){
-            return array_unique($recursive_i_ids);
-        } else {
-            return $recursive_i_ids;
-        }
-
-    }
-
-
-
-
-    function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__creator)
+   function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__creator)
     {
 
         //Alert: Has a twin function called e_mass_update()
@@ -896,18 +855,18 @@ class I_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && !is_valid_e_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && !view_valid_handle_e($action_command1)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Source. Format must be: @123 Source Title',
+                'message' => 'Unknown Source. Format must be: @SourceHandle',
             );
 
-        } elseif(in_array($action_e__id , array(12611,12612,27240,28801)) && !is_valid_i_string($action_command1)){
+        } elseif(in_array($action_e__id , array(12611,12612,27240,28801)) && !view_valid_handle_i($action_command1)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Idea. Format must be: #123 Idea Title',
+                'message' => 'Unknown Idea. Format must be: #IdeaHashtag',
             );
 
         }
@@ -933,107 +892,114 @@ class I_model extends CI_Model
 
             //Logic here must match items in e_mass_actions config variable
 
-            if(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087))){
+            if(in_array($action_e__id , array(12591,12592,27080,27985,27081,27986,27082,27083,27084,27085,27086,27087)) && view_valid_handle_e($action_command1)){
 
                 //Check if it has this item:
-                $e__up_id = intval(one_two_explode('@',' ',$action_command1));
-                $i_has_e = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $next_i['i__id'],
-                    'x__up' => $e__up_id,
-                ));
+                foreach($this->E_model->fetch(array(
+                    'e__handle' => view_valid_handle_e($action_command1),
+                )) as $e){
 
-                if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
-
-                    $e_mapper = array(
-                        12591 => 4983,  //Sources
-                        27080 => 13865, //Following Includes Any
-                        27985 => 27984, //Following Includes All
-                        27082 => 26600, //Following Excludes All
-                        27084 => 7545,  //Following Add
-                        27086 => 26599, //Following Remove
-                    );
-
-                    //Missing & Must be Added:
-                    $this->X_model->create(array(
-                        'x__creator' => $x__creator,
-                        'x__up' => $e__up_id,
-                        'x__type' => $e_mapper[$action_e__id],
+                    $i_has_e = $this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                         'x__right' => $next_i['i__id'],
-                        'x__message' => trim($action_command2),
-                    ), true);
+                        'x__up' => $e['e__id'],
+                    ));
 
-                    $applied_success++;
+                    if(in_array($action_e__id , array(12591,27080,27985,27082,27084,27086)) && !count($i_has_e)){
 
-                } elseif(in_array($action_e__id , array(12592,27081,27986,27083,27085,27087)) && count($i_has_e)){
+                        $e_mapper = array(
+                            12591 => 4983,  //Sources
+                            27080 => 13865, //Following Includes Any
+                            27985 => 27984, //Following Includes All
+                            27082 => 26600, //Following Excludes All
+                            27084 => 7545,  //Following Add
+                            27086 => 26599, //Following Remove
+                        );
 
-                    //Has and must be deleted:
-                    $this->X_model->update($i_has_e[0]['x__id'], array(
-                        'x__access' => 6173,
-                    ), $x__creator, 10673 /* IDEA NOTES Unpublished */);
+                        //Missing & Must be Added:
+                        $this->X_model->create(array(
+                            'x__creator' => $x__creator,
+                            'x__up' => $e['e__id'],
+                            'x__type' => $e_mapper[$action_e__id],
+                            'x__right' => $next_i['i__id'],
+                            'x__message' => trim($action_command2),
+                        ), true);
 
-                    $applied_success++;
+                        $applied_success++;
 
+                    } elseif(in_array($action_e__id , array(12592,27081,27986,27083,27085,27087)) && count($i_has_e)){
+
+                        //Has and must be deleted:
+                        $this->X_model->update($i_has_e[0]['x__id'], array(
+                            'x__access' => 6173,
+                        ), $x__creator, 10673 /* IDEA NOTES Unpublished */);
+
+                        $applied_success++;
+
+                    }
                 }
 
-            } elseif(in_array($action_e__id , array(12611,12612,27240,28801))){
+            } elseif(in_array($action_e__id , array(12611,12612,27240,28801)) && view_valid_handle_i($action_command1)){
 
-                //Check if it hs this item:
-                $focus_id = intval(one_two_explode('#',' ',$action_command1));
+                foreach($this->I_model->fetch(array(
+                    'i__hashtag' => view_valid_handle_i($action_command1),
+                )) as $i){
 
-                if($action_e__id==27240){
+                    if($action_e__id==27240){
 
-                    //Copy
-                    $status = $this->I_model->duplicate($next_i, $focus_id, $x__creator);
-
-                    if($status['status']){
-                        //Add Source since not there:
-                        $applied_success++;
-                    }
-
-                } else {
-
-                    $is_previous = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
-                        'x__left' => $focus_id,
-                        'x__right' => $next_i['i__id'],
-                    ), array(), 0);
-
-
-                    //See how to adjust:
-                    if(in_array($action_e__id, array(12611, 28801)) && !count($is_previous)){
-
-                        //Link
-                        $status = $this->I_model->create_or_link(12273, 11019, '', $x__creator, $next_i['i__id'], $focus_id);
+                        //Copy
+                        $status = $this->I_model->duplicate($next_i, $i['i__id'], $x__creator);
 
                         if($status['status']){
-
-                            if($action_e__id==28801){
-                                //Also remove old link:
-                                $this->X_model->update($next_i['x__id'], array(
-                                    'x__access' => 6173, //Transaction Deleted
-                                ), $x__creator, 10673 /* Member Transaction Unpublished  */);
-                            }
-
                             //Add Source since not there:
                             $applied_success++;
                         }
+
+                    } else {
+
+                        $is_previous = $this->X_model->fetch(array(
+                            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+                            'x__left' => $i['i__id'],
+                            'x__right' => $next_i['i__id'],
+                        ), array(), 0);
+
+
+                        //See how to adjust:
+                        if(in_array($action_e__id, array(12611, 28801)) && !count($is_previous)){
+
+                            //Link
+                            $status = $this->I_model->create_or_link(12273, 11019, '', $x__creator, $next_i['i__id'], $i['i__id']);
+
+                            if($status['status']){
+
+                                if($action_e__id==28801){
+                                    //Also remove old link:
+                                    $this->X_model->update($next_i['x__id'], array(
+                                        'x__access' => 6173, //Transaction Deleted
+                                    ), $x__creator, 10673 /* Member Transaction Unpublished  */);
+                                }
+
+                                //Add Source since not there:
+                                $applied_success++;
+                            }
+                        }
+
+
+                        if($action_e__id==12612 && count($is_previous)){
+                            //Unlink
+                            $this->X_model->update($is_previous[0]['x__id'], array(
+                                'x__access' => 6173,
+                            ), $x__creator, 13579 /* IDEA NOTES Unpublished */);
+
+                            $applied_success++;
+                        }
+
+
                     }
-
-
-                    if($action_e__id==12612 && count($is_previous)){
-                        //Unlink
-                        $this->X_model->update($is_previous[0]['x__id'], array(
-                            'x__access' => 6173,
-                        ), $x__creator, 13579 /* IDEA NOTES Unpublished */);
-
-                        $applied_success++;
-                    }
-
-
                 }
+
             }
         }
 

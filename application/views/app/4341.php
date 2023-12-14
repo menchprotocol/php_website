@@ -255,8 +255,9 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
 <?php
 
-
-echo '<div class="inline-block margin-top-down '.superpower_active(14005).'" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">'.$e___11035[12707]['m__title'].'</a></div>';
+if(superpower_unlocked(14005)){
+    echo '<div class="inline-block margin-top-down" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">'.$e___11035[12707]['m__title'].'</a></div>';
+}
 
 
 echo '<div class="show-filter '.( $has_filters && 0 ? '' : 'hidden' ).'">';
@@ -338,9 +339,9 @@ echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
 echo '<input type="text" name="x__message_search" value="' . ((isset($_GET['x__message_search'])) ? $_GET['x__message_search'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
+if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0 && superpower_unlocked(14005)){
     //Give Option to Replace:
-    echo '<td class="' . superpower_active(14005) . '"><div>';
+    echo '<td><div>';
     echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
     echo '<input type="text" name="x__message_replace" value="' . ((isset($_GET['x__message_replace'])) ? $_GET['x__message_replace'] : '') . '" class="form-control border">';
     echo '</div></td>';
@@ -436,7 +437,7 @@ echo '</tr></table>';
 echo '<input type="submit" class="btn btn-6255" value="Apply" />';
 
 if($has_filters){
-    echo ' &nbsp;<a href="/-4341" style="font-size: 0.8em;">Remove Filters</a>';
+    echo ' &nbsp;<a href="'.view_app_link(4341).'" style="font-size: 0.8em;">Remove Filters</a>';
 }
 
 echo '</form>';

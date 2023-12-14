@@ -1,7 +1,12 @@
 <?php
 
-$sign_i__id = ( isset($_GET['i__id']) && $_GET['i__id'] > 0 ? $_GET['i__id'] : 0 );
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ($sign_i__id > 0 ? '/' . $sign_i__id : home_url()) );
+$sign_i = array();
+if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
+    $sign_i = $this->I_model->fetch(array(
+        'i__hashtag' => $_GET['i__hashtag'],
+    ));
+}
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? '/' . $sign_i['i__hashtag'] : home_url()) );
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
@@ -20,7 +25,7 @@ if(superpower_unlocked()) {
         'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ));
 
-    if(count($es) && $cookie_parts[2]==md5($cookie_parts[0].$cookie_parts[1].view_memory(6404,30863))){
+    if(count($es) && $cookie_parts[2]==view_e__hash($cookie_parts[0].$cookie_parts[1])){
 
         //Assign session & log transaction:
         $this->E_model->activate_session($es[0], false, true);
@@ -34,14 +39,28 @@ if(superpower_unlocked()) {
 
     js_php_redirect($next_url, 13);
 
+} elseif(isset($_GET['e__handle']) && isset($_GET['e__hash']) && view_e__hash($_GET['e__handle'])==$_GET['e__hash']){
+
+    $es = $this->E_model->fetch(array(
+        'e__handle' => $_GET['e__handle'],
+        'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+    ));
+
+    if(count($es)){
+        //Assign session & log transaction:
+        $this->E_model->activate_session($es[0], false, true);
+    }
+
+    js_php_redirect($next_url, 13);
+
 } else {
 
 
-    if($sign_i__id || isset($_GET['url'])){
+    if(count($sign_i) || isset($_GET['url'])){
         //Assign Session variable so we can detect upon social login:
         $session_data = $this->session->all_userdata();
-        if($sign_i__id){
-            $session_data['login_i__id'] = $_GET['i__id'];
+        if(count($sign_i)){
+            $session_data['login_i__hashtag'] = $sign_i[0]['i__hashtag'];
         }
         if(isset($_GET['url'])){
             $session_data['redirect_url'] = urldecode($_GET['url']);
@@ -54,8 +73,8 @@ if(superpower_unlocked()) {
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
     $this_attempt = array(
-        'x__type' => ( $sign_i__id > 0 ? 7560 : 7561 ),
-        'x__left' => $sign_i__id,
+        'x__type' => ( count($sign_i) ? 7560 : 7561 ),
+        'x__left' => ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ),
     );
 
     $current_sign_i_attempt = array(); //Will try to find this...
@@ -123,7 +142,7 @@ if(superpower_unlocked()) {
 
 
         var go_next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
-        var sign_i__id = <?= $sign_i__id ?>;
+        var sign_i__id = <?= ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ) ?>;
         var referrer_url = '<?= @$_GET['url'] ?>';
         var logged_messenger = false;
         var logged_website = false;
@@ -288,14 +307,8 @@ if(superpower_unlocked()) {
                 <?php
                 //Back only if coming from an idea:
                 $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
-                if ($sign_i__id > 0) {
-                    $sign_i = $this->I_model->fetch(array(
-                        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                        'i__id' => $sign_i__id,
-                    ));
-                    if (count($sign_i)) {
-                        $intro_message = str_replace('%s','<br /><a href="/' . $sign_i__id . '"><u>'.view_first_line($sign_i[0]['i__message']).'</u></a>', $e___4269[7560]['m__message']);
-                    }
+                if (count($sign_i)) {
+                    $intro_message = str_replace('%s','<br /><a href="/' . $sign_i[0]['i__hashtag'] . '"><u>'.view_i_title($sign_i[0]).'</u></a>', $e___4269[7560]['m__message']);
                 }
                 ?>
                 <div class="doclear">&nbsp;</div>
@@ -326,7 +339,7 @@ if(superpower_unlocked()) {
                 if(strlen(website_setting(14881)) && strlen(website_setting(14882))){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="/-14436" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_link(14436).'" onclick="load_away()" class="btn btn-large btn-default">';
                     echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
                     echo '</a></div>';
                     echo '</div>';
@@ -335,10 +348,10 @@ if(superpower_unlocked()) {
 
 
                 //ANONYMOUS LOGIN:
-                if(intval(view_memory(6404,14938))){
+                if(intval(view_memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="/-14938?i__id='.$sign_i__id.'" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_link(14938).'?i__hashtag=' . $sign_i[0]['i__hashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
                     echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
                     echo ( strlen($e___11035[14938]['m__message']) ? ': '.$e___11035[14938]['m__message'] : '' );
                     echo '</a></div>';
@@ -363,7 +376,7 @@ if(superpower_unlocked()) {
 
                     <div class="main__title"><span class="icon-block"><?= $e___4269[14026]['m__cover'] ?></span><?= $e___4269[14026]['m__title'] ?></div>
 
-                    <!-- User Name -->
+                    <!-- Account Name -->
                     <div style="padding:21px 0 3px; display:block;">
                         <div class="main__title"><span class="icon-block"><?= $e___4269[40893]['m__cover'] ?></span><?= $e___4269[40893]['m__title'] ?></div>
                         <div class="form-group"><input type="text" placeholder="" id="new_username" class="form-control border main__title white-border" /></div>

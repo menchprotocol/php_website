@@ -1,15 +1,15 @@
 <?php
 
-if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
+if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])) {
     return view_json(array(
         'status' => 0,
-        'message' => 'Missing e__id',
+        'message' => 'Missing e__handle',
     ));
 } else {
 
     //Login as user:
     $es = $this->E_model->fetch(array(
-        'e__id' => intval($_GET['e__id']),
+        'e__handle' => $_GET['e__handle'],
     ));
 
     if (!count($es) || !in_array($es[0]['e__access'], $this->config->item('n___7358'))) {
@@ -39,7 +39,7 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])) {
             //Assign session & log transaction:
             $this->E_model->activate_session($es[0]);
 
-            js_php_redirect('/@'.$es[0]['e__id']);
+            js_php_redirect('/@'.$es[0]['e__handle']);
         }
 
 

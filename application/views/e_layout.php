@@ -5,7 +5,7 @@ $limit = view_memory(6404,11064);
 $new_order = ( $this->session->userdata('session_page_count') + 1 );
 $this->session->set_userdata('session_page_count', $new_order);
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$write_access_e = write_access_e($e['e__id']);
+$write_access_e = write_access_e($e['e__handle']);
 $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4994, //Member Viewed Source
@@ -99,6 +99,7 @@ if(!$focus_tab){
 ?>
 
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
+<input type="hidden" id="focus_handle" value="<?= $e['e__handle'] ?>" />
 <input type="hidden" id="focus_card" value="12274" />
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script type="text/javascript">
@@ -114,7 +115,7 @@ if(!$focus_tab){
             //$(this).prop('checked')
         });
 
-        set_autosize($('.texttype__lg.text__6197_'+fetch_int_val('#focus_id')));
+        set_autosize($('.text__6197_'+fetch_int_val('#focus_id')));
     });
 
     //Define file upload variables:

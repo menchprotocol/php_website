@@ -17,9 +17,9 @@ if($memory_detected){
 } else {
 
     //Define Manually (Might need to be updated)
-    $n___7357 = array(30826, 4755, 6181);
+    $n___7357 = array(41980, 4755, 6181);
     $n___7359 = array(6176);
-    $n___32292 = array(32486, 4230, 32489, 33335, 32293, 32488, 32487);
+    $n___32292 = array(41011, 41899, 40563, 32486, 4230, 32489, 33335, 32487, 32293, 32488);
 
 }
 
@@ -28,7 +28,6 @@ foreach($this->X_model->fetch(array(
     'x__up' => 4527,
     'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
-    'x__type !=' => 10673, //SOURCE LINKS
     'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
 ), array('x__down'), 0) as $en){
 
@@ -37,7 +36,6 @@ foreach($this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
-        'x__type !=' => 10673, //SOURCE LINKS
         'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
 
@@ -63,13 +61,13 @@ foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
             'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
-            'x__type !=' => 10673, //SOURCE LINKS
             'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
         ), array('x__up'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
 
         $memory_text .= '     '.$follower['e__id'].' => array('."\n";
+        $memory_text .= '        \'m__handle\' => \''.$follower['e__handle'].'\','."\n";
         $memory_text .= '        \'m__title\' => \''.(str_replace('\'','\\\'',str_replace($prefix_common_words,'',$follower['e__title']) )).'\','."\n";
         $memory_text .= '        \'m__message\' => \''.(str_replace('\'','\\\'',$follower['x__message'])).'\','."\n";
         $memory_text .= '        \'m__cover\' => \''.str_replace('\'','\\\'',view_cover($follower['e__cover'])).'\','."\n";
@@ -81,7 +79,27 @@ foreach($this->X_model->fetch(array(
 
 }
 
-//Also save a hash of the memory file for cache busting purposes:
+//Append all App Handlers for quick checking:
+$memory_text .= "\n"."\n";
+foreach($this->X_model->fetch(array(
+    'x__up' => 42043, //Handle Cache
+    'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+    'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
+), array(), 0) as $handle){
+
+    $memory_text .= '$config[\'handle___'.$handle['x__down'].'\'] = array('."\n";
+    foreach($this->X_model->fetch(array(
+        'x__up' => $handle['e__id'],
+        'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $n___32292) . ')' => null, //SOURCE LINKS
+        'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+    ), array('x__down'), 0) as $app){
+        $memory_text .= '     \''.$app['e__handle'].'\' => '.$app['e__id'].','."\n";
+    }
+    $memory_text .= ');'."\n";
+}
+
+$memory_text .= "\n"."\n";
 $memory_text .= '$config[\'cache_time\'] = \''.time().'\';'."\n";
 $memory_text .= '$config[\'cache_buster\'] = \''.md5($memory_text).'\';'."\n";
 
@@ -92,7 +110,7 @@ fwrite($myfile, $memory_text);
 fclose($myfile);
 
 
-echo '<div class="margin-top-down"><div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated memory & removed '.reset_cache($x__creator).' cached pages.</div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated memory & removed '.reset_cache($x__creator).' cached pages.</div></div>';
 
 
 //Show:

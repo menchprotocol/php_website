@@ -56,7 +56,7 @@ if($search_for_set){
         echo '</div>';
 
         if($replaced > 0){
-            echo '<div class="msg alert alert-danger" role="alert">Replaced '.$replaced.' titles</div>';
+            echo '<div class="alert alert-danger" role="alert">Replaced '.$replaced.' titles</div>';
         }
 
     }

@@ -3,15 +3,22 @@
 
 <?php
 
-
 $member_e = superpower_unlocked();
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-    $e___13571 = $this->config->item('e___13571'); //SOURCE EDITOR
+
+    //This is a HACK! 12 is a fixed number of max dynamic variables that is fixed in edit_save_i() & edit_save_e()
+    $dynamic_edit = '';
+    for ($p = 1; $p <= view_memory(6404,42206); $p++) {
+        $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
+        $dynamic_edit .= '<h3 class="main__title mini-font"></h3>';
+        $dynamic_edit .= '<input type="text" class="form-control unsaved_warning edit_dynamic_'.$p.'" value="">';
+        $dynamic_edit .= '</div>';
+    }
 
     //Apply to All Sources
-    if(superpower_active(12703, true)){
+    if(superpower_unlocked(12703)){
         ?>
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -21,8 +28,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <h5 class="modal-title main__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="/-27196?e__id=12274">
-                    <input type="hidden" name="card__id" value="" />
+                    <form method="POST" action="<?= view_app_link(27196) ?>?focus_id=12274">
+                    <input type="hidden" name="s__id" value="" />
                     <div class="modal-body">
                             <?php
 
@@ -152,8 +159,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <?php
     }
 
+
     //Apply to All Ideas
-    if(superpower_active(12700, true)){
+    if(superpower_unlocked(12700)){
         ?>
         <div class="modal fade" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -162,8 +170,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <h5 class="modal-title main__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="/-27196?e__id=12273">
-                    <input type="hidden" name="card__id" value="" />
+                    <form method="POST" action="<?= view_app_link(27196) ?>?focus_id=12273">
+                    <input type="hidden" name="s__id" value="" />
                     <div class="modal-body">
                         <?php
 
@@ -238,112 +246,70 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     ?>
 
-    <!-- ACCOUNT SETTINGS Modal -->
-    <div class="modal fade" id="modal6225" tabindex="-1" role="dialog" aria-labelledby="modal6225Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content slim_flat">
-                <div class="modal-header">
-                    <h5 class="modal-title main__title" id="modal6225Label"><?= $e___11035[6225]['m__cover'].' '.$e___11035[6225]['m__title'] ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <?= view_e_settings(6225, false) ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 
     <!-- Edit Idea Modal -->
     <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
+
                 <div class="modal-header">
-                    <h5 class="modal-title main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?></h5>
+                    <h5 class="modal-title main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?> <span class="grey show_id" title="Idea ID"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
 
-                    <input type="hidden" id="modal_i__id" value="0" />
+                    <input type="hidden" class="edit_i__id" value="0" />
+                    <input type="hidden" class="edit_x__id" value="0" />
+                    <input type="hidden" class="link_i__id" value="0" />
+                    <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
-                    <h5 class="main__title"><?= $e___11035[32337]['m__title'] ?></h5>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">#</span>
-                        <input type="text" class="form-control input__32337" maxlength="<?= view_memory(6404,41985) ?>">
+                    <div class="row">
+                        <div class="col-12 col-md-8">
+
+                            <!-- Idea Message -->
+                            <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning edit_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <?php
+                            echo '<div class="add_notes_form">';
+                            echo '<form class="box box4736" method="post" enctype="multipart/form-data">';
+
+                            //UPLOAD
+                            echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
+                            echo '<label class="hidden"></label>';
+                            echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+
+                            //GIF
+                            //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="image_api_search()" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
+
+                            echo '</form>';
+                            echo '</div>';
+                            ?>
+
+                            <!-- Idea Hashtag -->
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">#</span>
+                                <input type="text" class="form-control unsaved_warning edit_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                            </div>
+
+                            <!-- Link Message -->
+                            <textarea class="form-control text-edit border hidden unsaved_warning edit_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>
+
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+                            <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                            <div class="dynamic_editing_radio"></div>
+                        </div>
                     </div>
-
-                    <h5 class="main__title"><?= $e___11035[4736]['m__title'] ?></h5>
-                    <textarea class="form-control note-textarea algolia_search new-note editing-mode input__4736" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-
-                    <div class="note_error_4736 hideIfEmpty zq6255 msg alert alert-danger" style="margin:8px 0;"></div>
-
-                    <table>
-                        <tr>
-                            <td style="width: 100%;">
-                                <?php
-
-                                //CONTROLLER
-                                echo '<div class="no-padding add_notes_4736">';
-                                echo '<div class="add_notes_form note_pad">';
-                                echo '<form class="box box4736" method="post" enctype="multipart/form-data">';
-
-                                //UPLOAD
-                                echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
-                                echo '<label class="hidden"></label>';
-                                echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
-
-                                //GIF
-                                //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="image_api_search()" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
-
-                                echo '</form>';
-                                echo '</div>';
-                                echo '</div>';
-                                ?>
-                            </td>
-                            <td style="width: 50px;">
-                                <?= '<div class="save_button inline-block"><a href="javascript:i_edit_save()" class="btn btn-default" style="width:104px;" title="Shortcut: Ctrl + Enter">'.$e___11035[14422]['m__cover'].' '.$e___11035[14422]['m__title'].'</a></div>' ?>
-                            </td>
-                        </tr>
-                    </table>
-
-
                 </div>
-            </div>
-        </div>
-    </div>
 
-
-
-
-
-    <!-- EDIT MESSAGE Modal -->
-    <div class="modal fade" id="modal13571" tabindex="-1" role="dialog" aria-labelledby="modal13571Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content slim_flat">
-                <div class="modal-header">
-                    <h5 class="modal-title main__title" id="modal13571Label"><?= $e___11035[13571]['m__cover'].' '.$e___11035[13571]['m__title'] ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <textarea class="form-control text-edit border" id="x__message" name="x__message" data-lpignore="true" placeholder="<?= $e___13571[4372]['m__message'] ?>"></textarea>
-                    <div class="save_results margin-top-down-half hideIfEmpty"></div>
-                    <input type="hidden" class="modal_x__id" value="0" />
-                </div>
                 <div class="modal-footer">
-                    <table style="width: 100%;">
-                        <tr>
-                            <td>
-                                <button type="button" onclick="x_message_save()" class="btn btn-default">SAVE</button>
-                            </td>
-                        </tr>
-                    </table>
-                    <div id="x__history" class="hideIfEmpty" style="margin-top: 10px;"></div>
+                    <button type="button" onclick="edit_save_i()" class="btn btn-default">SAVE</button>
                 </div>
+
             </div>
         </div>
     </div>
-
 
 
 
@@ -354,42 +320,71 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-content slim_flat">
 
                 <div class="modal-header">
-                    <h5 class="modal-title main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?></h5>
+                    <h5 class="modal-title main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?> <span class="grey show_id"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body block_search_results">
+                <div class="modal-body">
+
+                    <input type="hidden" class="edit_e__id" value="0" />
+                    <input type="hidden" class="edit_x__id" value="0" />
+                    <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-8">
 
-                            <!-- IMAGE DROP STARTS -->
+                            <!-- Source Cover Search -->
+                            <div id="upload_results" class="center"></div>
+                            <div id="img_results_emojis" class="icons_small"></div>
+                            <div class="doclear">&nbsp;</div>
+                            <div id="return_covers" class="icons_small"></div>
+                            <div id="img_results_icons" class="icons_small"></div>
+                            <div class="doclear">&nbsp;</div>
+                            <div id="img_results_local" class="icons_large"></div>
+                            <div id="img_results_tenor" class="icons_large"></div>
+                            <div id="img_results_unsplash" class="icons_large"></div>
+                            <div class="doclear">&nbsp;</div>
+
+                            <table style="width: 100%; padding: 0; margin: 0;"><tr>
+                                    <!-- Source Title -->
+                                    <td style="width: 69%;"><input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning edit_e__title" /></td>
+
+                                    <!-- Source Handle -->
+                                    <td><div class="input-group mb-3">
+                                            <span class="input-group-text">@</span>
+                                            <input type="text" class="form-control unsaved_warning edit_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
+                                        </div></td>
+                            </tr></table>
+
+
+                            <!-- Link Message -->
+                            <textarea class="form-control text-edit border hidden unsaved_warning edit_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
+
+
+                        </div>
+                        <div class="col-12 col-md-4">
+
+                            <!-- IMAGE DROP -->
                             <div class="coverUploader">
                                 <form class="box coverUpload" method="post" enctype="multipart/form-data">
-
-                                <!-- COVER PREVIEW -->
-                                <a name="preview_cover" style="height: 1px;">&nbsp;</a>
-                                <div class="card_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
-                                    <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                                    <div class="cover-content"><div class="inner-content"><span><textarea placeholder="Title" id="card__title" class="form-control main__title inline-block texttype__lg center" style="overflow: hidden;overflow-wrap: break-word;height: 42px;"></textarea></span></div></div>
-                                </div>
-
-                                    <input type="hidden" id="edit_e__id" value="0" />
-
-                                    <!-- IMAGE DROP ENDS -->
-                            </form>
+                                    <a name="preview_cover" style="height: 1px;">&nbsp;</a>
+                                    <div class="card_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
+                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                        <!-- <div class="cover-content"><div class="inner-content"><span></span></div></div> -->
+                                    </div>
+                                </form>
                             </div>
 
-                            <!-- Power Edit (Required Superpower) -->
-                            <div class="<?= superpower_active(14003) ?>"><input type="text" id="card__cover" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted" style="margin-top: 5px;"></div>
+                            <!-- Source Cover Editor -->
+                            <div><input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning edit_e__cover" style="margin-top: 5px;"></div>
 
-                            <!-- CONTROLLER -->
-                            <table style="width: 100%; margin-bottom: 34px;">
+
+                            <!-- Image CONTROLLER -->
+                            <table style="width: 100%; margin-bottom: 21px;">
                                 <tr>
                                     <td style="width: 100%;">
                                         <!-- SEARCH -->
                                         <input id="search_cover" type="text" style="padding-left: 0; padding-right: 0;" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
-
                                     </td>
                                     <td>
                                         <!-- DELETE -->
@@ -400,31 +395,19 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <input class="inputfile" type="file" name="file" id="coverUpload" />
                                         <label class="icon-block" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
                                     </td>
-                                    <td>
-                                        <!-- SAVE -->
-                                        <button type="button" onclick="e_edit_save()" class="btn btn-default">SAVE</button>
-                                    </td>
                                 </tr>
                             </table>
 
-
-                        </div>
-                        <div class="col-12 col-md-6">
-
-                            <div id="upload_results" class="center"></div>
-                            <div id="img_results_emojis" class="icons_small"></div>
-                            <div class="doclear">&nbsp;</div>
-                            <div id="icon_suggestions" class="icons_small"></div>
-                            <div id="img_results_icons" class="icons_small"></div>
-                            <div class="doclear">&nbsp;</div>
-                            <div id="img_results_local" class="icons_large"></div>
-                            <div id="img_results_tenor" class="icons_large"></div>
-                            <div id="img_results_unsplash" class="icons_large"></div>
-                            <div class="doclear">&nbsp;</div>
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+                            <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                            <div class="dynamic_editing_radio"></div>
 
                         </div>
                     </div>
+                </div>
 
+                <div class="modal-footer">
+                    <button type="button" onclick="edit_save_e()" class="btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>

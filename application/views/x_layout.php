@@ -1,59 +1,23 @@
 <?php
 
-if(isset($_GET['go'])){
+if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_access_i($focus_i['i__hashtag'])){
 
-    boost_power();
-    $master_list = array();
-    $stats = array(
-        'total' => 0,
-    );
-    echo '<table>';
-
-    foreach($this->E_model->fetch(array(
-        'e__id > 0' => null,
-    )) as $e){
-        $stats['total']++;
-        $handler = generate_handle(12274, $e['e__title'], $master_list);
-        array_push($master_list, $handler);
-        echo '<tr><td>@'.$handler.' {'.strlen($handler).'}</td><td>'.$e['e__title'].' ['.strlen($e['e__title']).']</td></tr>';
-        $this->E_model->update($e['e__id'], array( 'e__handle' => $handler ));
-    }
-
-    /*
-    foreach($this->I_model->fetch(array(
-        'i__id > 0' => null, //IDEA LINKS
-    )) as $i){
-        $stats['total']++;
-        $handler = generate_handle(12273, view_first_line($i['i__message'], true), $master_list);
-        array_push($master_list, $handler);
-        echo '<tr><td>#'.$handler.' {'.strlen($handler).'}</td><td>'.$i_title.' ['.strlen($i_title).']</td></tr>';
-        //$this->I_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
-        $this->E_model->update($i['i__id'], array( 'i__hashtag' => $handler ));
-    }
-    */
-    echo '</table>';
-
-    print_r($stats);
-}
-
-if(!in_array($i['i__access'], $this->config->item('n___31871')) && !write_access_i($i['i__id'])){
-
-    echo '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This is not active.</div>';
+    echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This is not active.</div>';
 
 } else {
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___31127 = $this->config->item('e___31127'); //Action Buttons Pending
 $e___4737 = $this->config->item('e___4737'); //Idea Types
-$is_or_7712 = in_array($i['i__type'], $this->config->item('n___7712'));
-$is_single_click = in_array($i['i__type'], $this->config->item('n___40680'));
+$is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
+$is_single_click = in_array($focus_i['i__type'], $this->config->item('n___40680'));
 
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-    'x__left' => $i['i__id'],
+    'x__left' => $focus_i['i__id'],
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
 //Filter Next Ideas:
@@ -67,35 +31,111 @@ foreach($is_next as $in_key => $in_value){
 
 
 
-$i['i__message'] = str_replace('"','',$i['i__message']);
+$focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
-$top_i__id = ( $x__creator>0 ? $top_i__id : 0 );
-$x_completes = ( $top_i__id ? $this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-    'x__creator' => $x__creator,
-    'x__left' => $i['i__id'],
-)) : array() );
+$top_i__id = ( count($top_i) ? $top_i[0]['i__id'] : 0 );
+$top_i__hashtag = ( count($top_i) ? $top_i[0]['i__hashtag'] : 0 );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
-$can_skip = count($this->X_model->fetch(array(
+$can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-    'x__right' => $i['i__id'],
+    'x__right' => $focus_i['i__id'],
     'x__up' => 28239, //Can Skip
 )));
 
 
 
+if(isset($_GET['go1'])){
+
+    //Sync Ideas & Sources
+    $stats = array(
+        'active_ideas' => 0,
+        'old_links_removed' => 0,
+        'old_links_kept' => 0,
+        'new_links_added' => 0,
+        'missing_creation' => 0,
+    );
+    foreach($this->I_model->fetch(array(
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    ), 1) as $i_fix){
+
+        $stats['active_ideas']++;
+
+        $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
+
+        $stats['old_links_removed'] += $view_sync_links['sync_stats']['old_links_removed'];
+        $stats['old_links_kept'] += $view_sync_links['sync_stats']['old_links_kept'];
+        $stats['new_links_added'] += $view_sync_links['sync_stats']['new_links_added'];
+
+        if(!count($this->X_model->fetch(array(
+            'x__right' => $i_fix['i__id'],
+            'x__type' => 4250, //New Idea Created
+        )))){
+            echo '<div> Idea #'.$i_fix['i__id'].' Missing creation link.</div>';
+            $stats['missing_creation']++;
+            if(0){
+                $this->X_model->create(array(
+                    'x__creator' => $x__creator,
+                    'x__right' => $i_fix['i__id'],
+                    'x__message' => $i_fix['i__message'],
+                    'x__type' => 4250, //New Idea Created
+                ));
+            }
+        }
+
+    }
+}
+
+if(isset($_GET['go2'])){
+
+    $updated = 0;
+    foreach($this->X_model->fetch(array(
+        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+        'x__right' => $focus_i['i__id'],
+        'x__up' => 26562, //Total Due
+    )) as $ticket){
+
+        $parts = explode(' ', $ticket['x__message'], 2);
+        $currency_id = ( $parts[0]=='CAD' ? 112233 : ( $parts[0]=='USD' ? 112233 : 0 ) );
+        if($currency_id > 0 && doubleval($parts[1])>0){
+
+            $updated++;
+
+            //All good, update:
+            $this->X_model->update($ticket['x__id'], array(
+                'x__message' => doubleval($parts[1]),
+            ));
+
+            $this->X_model->create(array(
+                'x__creator' => $member_e['e__id'],
+                'x__type' => 4983, //IDEA SOURCES
+                'x__up' => $currency_id,
+                'x__right' => $focus_i['i__id'],
+            ));
+
+        } else {
+            echo 'ERROR for x_id='.$ticket['x__id'].' with value ['.$ticket['x__message'].']<br />';
+        }
+
+    }
+
+    echo 'Currency updated for '.$updated.' ideas.';
+
+}
 
 
-//Check for time limits?
-if($x__creator && $top_i__id!=$i['i__id']){
 
-    $find_previous = $this->X_model->find_previous($x__creator, $top_i__id, $i['i__id']);
+
+
+//Breadcrump for logged in users
+if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
+
+    $find_previous = $this->X_model->find_previous($x__creator, $top_i__hashtag, $focus_i['i__id']);
     if(count($find_previous)){
 
         $nav_list = array();
-        $main_branch = array(intval($i['i__id']));
+        $main_branch = array(intval($focus_i['i__id']));
         foreach($find_previous as $followings_i){
             //First add-up the main branch:
             array_push($main_branch, intval($followings_i['i__id']));
@@ -127,7 +167,7 @@ if($x__creator && $top_i__id!=$i['i__id']){
             }
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$followings_i['i__id'].'"><u>'.view_first_line($followings_i['i__message']).'</u></a>';
+            $breadcrum_content .= '<a href="/'.$top_i__hashtag.'/'.$followings_i['i__hashtag'].'"><u>'.view_i_title($followings_i).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -138,7 +178,7 @@ if($x__creator && $top_i__id!=$i['i__id']){
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$followings_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
-                    $breadcrum_content .= '<a href="/'.$top_i__id.'/'.$i_subset['i__id'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_first_line($i_subset['i__message']).'</a>';
+                    $breadcrum_content .= '<a href="/'.$top_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
                 }
                 $breadcrum_content .= '</div>';
                 $breadcrum_content .= '</div>';
@@ -160,22 +200,20 @@ if($x__creator && $top_i__id!=$i['i__id']){
 
 
 
-if($top_i__id){
+if($top_i__hashtag){
 
     echo '<div class="active_navigation">';
 
-    $is_this = $this->I_model->fetch(array(
-        'i__id' => $top_i__id,
-    ));
-    $tree_progress = $this->X_model->tree_progress($x__creator, $is_this[0]);
+    $tree_progress = $this->X_model->tree_progress($x__creator, $top_i[0]);
     $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
-    $go_next_url = '/x/x_next/' . $top_i__id . '/' . $i['i__id'];
+    $go_next_url = '/x/x_next/' . $top_i__hashtag . '/' . $focus_i['i__hashtag'];
 
     if($top_completed){
-        echo '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
+        echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
     }
 
     if(isset($_GET['list'])){
+        //Secret list for debugging
         echo '<p style="padding:10px;">'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Discovered:</p>';
         $counter = 0;
         foreach($tree_progress['list_total'] as $to_discover_id){
@@ -183,13 +221,13 @@ if($top_i__id){
                 'i__id' => $to_discover_id,
             ));
             $counter++;
-            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__id'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_first_line($is[0]['i__message']).'</p>';
+            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
         }
     }
 
 } else {
 
-    $go_next_url = '/x/x_start/'.$i['i__id'];
+    $go_next_url = '/x/x_start/'.$focus_i['i__hashtag'];
 
 }
 
@@ -198,24 +236,14 @@ if($top_completed || $is_or_7712){
 }
 
 
-
-
 echo '<div class="light-bg large-frame">';
 
-//Title:
-echo '<h1 class="msg-frame" style="text-align: left; padding: 10px 0 !important; font-size:2.5em;">'.view_first_line($i['i__message'], true).'</h1>';
-$messages_without_title = view_message($i, true);
-if($messages_without_title){
-    echo $messages_without_title;
-} elseif(!count($x_completes) && $i['i__type']==6677 && $top_i__id && $member_e) {
-    //Auto complete:
-    echo '<script> $(document).ready(function () { go_next() }); </script>';
-}
-
+//Idea message:
+echo view_i_links($focus_i);
 
 
 $x_selects = array();
-if($top_i__id) {
+if($top_i__hashtag) {
 
     if ($is_or_7712) {
 
@@ -227,12 +255,10 @@ if($top_i__id) {
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $x__creator,
-                'x__left' => $i['i__id'],
+                'x__left' => $focus_i['i__id'],
             )))) {
-                array_push($x_completes, $this->X_model->mark_complete($top_i__id, $i, array(
-                    'x__type' => 31022, //Skipped
-                    'x__creator' => $x__creator,
-                )));
+                //Skipped:
+                $this->X_model->mark_complete(31022, $x__creator, $top_i__id, $focus_i);
             }
 
         } else {
@@ -242,13 +268,13 @@ if($top_i__id) {
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
-                'x__left' => $i['i__id'],
+                'x__left' => $focus_i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
                 //See if this answer was selected:
                 if (count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__left' => $i['i__id'],
+                    'x__left' => $focus_i['i__id'],
                     'x__right' => $x['i__id'],
                     'x__creator' => $x__creator,
                 )))) {
@@ -259,13 +285,13 @@ if($top_i__id) {
             if (count($x_selects) > 0) {
                 //MODIFY ANSWER
                 echo '<div class="edit_toggle_answer">';
-                echo view_i_list(13980, $top_i__id, $i, $x_selects, $member_e);
+                echo view_i_list(13980, $top_i__hashtag, $focus_i, $x_selects, $member_e);
                 echo '</div>';
             }
 
 
             //Open for list to be printed:
-            $select_answer = '<div class="row list-answers" i__type="' . $i['i__type'] . '">';
+            $select_answer = '<div class="row list-answers" i__type="' . $focus_i['i__type'] . '">';
 
             //List next ideas to choose from:
             foreach ($is_next as $key => $next_i) {
@@ -274,7 +300,7 @@ if($top_i__id) {
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__left' => $i['i__id'],
+                    'x__left' => $focus_i['i__id'],
                     'x__right' => $next_i['i__id'],
                     'x__creator' => $x__creator,
                 )));
@@ -288,99 +314,81 @@ if($top_i__id) {
 
             //HTML:
             echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-            echo view_headline($i['i__type'], null, $e___4737[$i['i__type']], $select_answer, true);
+            echo view_headline($focus_i['i__type'], null, $e___4737[$focus_i['i__type']], $select_answer, true);
             echo '</div>';
 
         }
 
-    } elseif ($i['i__type']==26560) {
+    } elseif ($focus_i['i__type']==26560) {
 
         //TICKET
         $ticket_ui = '';
 
         if(isset($_GET['cancel_pay']) && !count($x_completes)){
-            $ticket_ui .= '<div class="msg alert alert-danger" role="alert">You cancelled your payment.</div>';
+            $ticket_ui .= '<div class="alert alert-danger" role="alert">You cancelled your payment.</div>';
         }
-
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
 
-            $ticket_ui .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
+            $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
 
             //Referesh soon so we can check if completed or not
-            js_php_redirect('/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1', 2584);
+            js_php_redirect('/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 2584);
 
         } elseif(count($x_completes)){
 
             foreach($x_completes as $x_complete){
+
                 $x__metadata = unserialize($x_complete['x__metadata']);
-                $quantity = ( isset($x__metadata['quantity']) && $x__metadata['quantity']>1 ? $x__metadata['quantity'] : ( $x_complete['x__weight'] > 0 ? $x_complete['x__weight'] : 1 ) );
+                $quantity = ( $x_complete['x__weight'] >= 2 ? $x_complete['x__weight'] : ( isset($x__metadata['quantity']) && $x__metadata['quantity']>=2 ? $x__metadata['quantity'] : 1 ) );
 
                 if($x__metadata['mc_gross']!=0){
-                    $ticket_ui .= '<div class="msg alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
+                    $ticket_ui .= '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
                 }
 
-                if($x__metadata['mc_gross']>=0){
-                    $ticket_ui .= '<div class="msg">Here is your QR Ticket that has also been emailed to you:</div>';
-                    $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/-26560?x__id='.$x_complete['x__id'].'&x__creator='.$x_complete['x__creator'].'&checkin_32016=1').'</div>';
+                if(in_array($x_complete['x__type'], $this->config->item('n___40986'))){
+                    //Successful discovery... Show QR Code:
+                    foreach($this->E_model->fetch(array(
+                        'e__id' => $x_complete['x__creator'],
+                    )) as $e){
+                        $ticket_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
+                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__hash='.view_e__hash($e['e__handle'])).'</div>';
+                    }
                 }
+
             }
-
 
             $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$x__metadata['mc_gross'].'">';
             $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
 
-            //Invite Your Friends (If 2 or more items):
-            if($x__metadata['quantity']>1 && 0){
-
-                //TODO Complete
-
-                $ticket_ui .= '<h2>Invite Your Friends</h2>';
-                $ticket_ui .= '<p>So they can get inside independantly. If not invited, they must check-in with you.</p>';
-
-                for($f=2;$f<=$x__metadata['quantity'];$f++) {
-                    $ticket_ui .= '<div class="row">';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3">Ticket #'.$f.' Name:</div>';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="text" id="invite_name_'.$f.'" placeholder="Full Name" class="form-control white-border border maxout" /></div>';
-                    $ticket_ui .= '</div>';
-                    $ticket_ui .= '<div class="row">';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="email" id="invite_email_'.$f.'" placeholder="Email" class="form-control white-border border maxout" /></div>';
-                    $ticket_ui .= '<div class="col-6 col-md-4 col-lg-3"><input type="number" id="invite_phone_'.$f.'" placeholder="Cell Phone" class="form-control white-border border maxout" /></div>';
-                    $ticket_ui .= '</div>';
-                    $ticket_ui .= '<br /><br />';
-                }
-
-                $ticket_ui .= '<h3>Custom Message</h3>';
-                $ticket_ui .= '<textarea class="border i_content  x_input" placeholder="" id="invite_message"></textarea>';
-                $ticket_ui .= '<script> $(document).ready(function () { set_autosize($(\'#invite_message\')); }); </script>';
-
-            }
-
-
-
         } else {
 
-
-            $valid_paid_ticket = false; //Unless proven otherwise
+            $valid_currency = false; //Until we can find and verify from DB
 
             $paypal_email =  website_setting(30882);
 
+            $currency_types = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__right' => $focus_i['i__id'],
+                'x__up IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //Currency
+            ));
             $total_dues = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i['i__id'],
+                'x__right' => $focus_i['i__id'],
                 'x__up' => 26562, //Total Due
             ));
             $cart_max = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i['i__id'],
+                'x__right' => $focus_i['i__id'],
                 'x__up' => 29651, //Cart Max Quantity
             ));
             $cart_min = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $i['i__id'],
+                'x__right' => $focus_i['i__id'],
                 'x__up' => 31008, //Cart Min Quantity
             ));
 
@@ -392,50 +400,43 @@ if($top_i__id) {
             $unit_price = 0;
             $unit_fee = 0;
             $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
-            $spots_remaining = i_spots_remaining($i['i__id']);
+            $spots_remaining = i_spots_remaining($focus_i['i__id']);
             $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
             $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
             $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message'])>0 : 1 );
             $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
 
+            if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $total_dues[0]['x__message']>0 && count($currency_types)==1){
 
-            if(count($total_dues) && filter_var($paypal_email, FILTER_VALIDATE_EMAIL)){
+                $valid_currency = true;
+                $e___26661 = $this->config->item('e___26661'); //Currency
 
-                $price_parts = explode(' ',$total_dues[0]['x__message']);
+                $digest_fees = count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__right' => $focus_i['i__id'],
+                    'x__up' => 30589, //Digest Fees
+                )));
 
-                if (count($price_parts)==2 && is_numeric($price_parts[1]) && in_array($price_parts[0], array('CAD','USD','AUD','BRL','CNY','CZK','DKK','EUR','HKD','HUF','ILS','JPY','MYR','MXN','TWD','NZD','NOK','PHP','PLN','GBP','RUB','SGD','SEK','CHF','THB'))){
+                //Break down amount & currency
+                $unit_currency = $e___26661[$currency_types[0]['x__up']]['m__message'];
+                $unit_price = doubleval($total_dues[0]['x__message']);
+                $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2, ".", "");
 
-                    $valid_paid_ticket = true;
-
-                    $digest_fees = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                        'x__right' => $i['i__id'],
-                        'x__up' => 30589, //Digest Fees
-                    ));
-                    $allow_refunds = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                        'x__right' => $i['i__id'],
-                        'x__up' => 30615, //Is Refundable
-                    ));
-
-                    //Break down amount & currency
-                    $currency_parts = explode(' ',$total_dues[0]['x__message'],2);
-                    $unit_currency = $currency_parts[0];
-                    $unit_price = number_format($currency_parts[1], 2, ".", "");
-                    $unit_fee = number_format($currency_parts[1] * ( count($digest_fees) ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2, ".", "");
-
-                    //Append information to cart:
-                    $info_append .= '<div class="sub_note">';
-                    if(!count($allow_refunds)){
-                        $info_append .= 'Final sale. ';
-                    }
-
-                    $info_append .= 'You Do Not need to create a Paypal account: You can pay by only entering your credit card details & checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="/-14373" target="_blank"><u>Terms of Use</u></a>.';
-                    $info_append .= '</div>';
-
+                //Append information to cart:
+                $info_append .= '<div class="sub_note">';
+                if(!count($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__right' => $focus_i['i__id'],
+                    'x__up' => 30615, //Is Refundable
+                )))){
+                    $info_append .= 'Final sale. ';
                 }
+
+                $info_append .= 'No need to create a Paypal account: You can pay by only entering your credit card details to checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.';
+                $info_append .= '</div>';
+
             }
 
 
@@ -456,14 +457,72 @@ if($top_i__id) {
 
             if($max_allowed > 1 || $min_allowed > 1){
                 $ticket_ui .= '<div>';
-                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1)" class="adjust_counter"><i class="fas fa-minus-circle"></i></a>';
+                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1)" class="sale_increment"><i class="fas fa-minus-circle"></i></a>';
                 $ticket_ui .= '<span id="current_sales" class="main__title" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
-                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1)" class="adjust_counter"><i class="fas fa-plus-circle"></i></a>';
+                $ticket_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1)" class="sale_increment"><i class="fas fa-plus-circle"></i></a>';
                 $ticket_ui .= '</div>';
             } else {
                 $ticket_ui .= '<span id="current_sales" style="display: none;">'.$min_allowed.'</span>';
             }
 
+
+            $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/'..'?e__handle='.$x[0]['e__handle'].'&e__hash='.view_e__hash($x[0]['e__handle']);
+
+
+            //Display UI:
+            echo '<h2 style="text-align: center;">'.view_i_title($is_top[0]).'</h2>';
+            echo '<h3 style="text-align: center;">'.view_i_title($is_discovery[0]).'</h3>';
+            echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__handle'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.' Ticket'.view__s($quantity).'</b></h3>';
+
+
+            //Is Ticket Scanner Admin?
+            /*
+            if(isset($_GET['e__handle']) && isset($_GET['e__hash']) && superpower_unlocked(31000)){
+
+                $ticket_checked_in = $this->X_model->fetch(array(
+                    'x__reference' => $x[0]['x__id'],
+                    'x__type' => 32016,
+                ), array('x__up'));
+
+                //See how many tickets have already been checked-in for this user, and give option to check-in the remaining tickets that have not yet been checked-in:
+                if(count($ticket_checked_in)){
+
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ticket already checked-in!</div>';
+
+                    echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Already Checked-In by <a href="/@'.$ticket_checked_in[0]['e__handle'].'">'.$ticket_checked_in[0]['e__title'].'</a> about <span class="underdot" title="'.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago</span>.</div>';
+
+
+                } else {
+
+                    //All good to check-in:
+                    $this->X_model->create(array(
+                        'x__type' => 32016,
+                        'x__creator' => $x[0]['e__id'], //Ticket Buyer
+                        'x__up' => $member_e['e__id'], //Ticket Scanner
+                        'x__weight' => $quantity, //Tickets Checked-in (They can check-in in multiple rounds)
+                        'x__right' => $x[0]['x__right'],
+                        'x__left' => $x[0]['x__left'],
+                        'x__reference' => $x[0]['x__id'],
+                    ));
+
+                    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successful checkin for '.$quantity.' Ticket'.view__s($quantity).'</div>';
+
+                }
+
+                if(isset($_GET['attempt_checkin'])){
+                    //QR Code Scanned, auto check-in:
+
+
+
+                } elseif(!count($ticket_checked_in)) {
+
+                    //Give option for manual checkin:
+                    echo '<div style="text-align: center;"><div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="'.$qr_link.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
+
+                }
+
+            }
+            */
 
             if($unit_price > 0){
                 $ticket_ui .= '<div style="padding: 8px 0 21px;" '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' + '.$unit_fee.' in Fees" data-toggle="tooltip" data-placement="top" ' : '' ).'><span id="total_ui" class="main__title">'.(($unit_fee+$unit_price)*$min_allowed).'</span> '.$unit_currency.'</div>';
@@ -477,22 +536,22 @@ if($top_i__id) {
             $ticket_ui .= '</div>';
 
 
-            if($valid_paid_ticket){
+            if($valid_currency){
 
                 //Load Paypal Pay button:
                 $ticket_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="paypal_form" target="_top">';
 
                 $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
-                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.view_first_line($i['i__message'], true).'">';
-                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$i['i__id'].'-0-'.$x__creator.'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.view_i_title($focus_i, true).'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$focus_i['i__id'].'-0-'.$x__creator.'">';
 
                 $ticket_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $ticket_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
                 $ticket_ui .= '<input type="hidden" name="no_shipping" value="1">';
-                $ticket_ui .= '<input type="hidden" name="notify_url" value="https://mench.com/-26595">';
-                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?cancel_pay=1">';
-                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__id.'/'.$i['i__id'].'?process_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="notify_url" value="https://mench.com'.view_app_link(26595).'">';
+                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?cancel_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1">';
                 $ticket_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                 $ticket_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
@@ -559,7 +618,7 @@ if($top_i__id) {
 
         echo $ticket_ui;
 
-    } elseif (in_array($i['i__type'], $this->config->item('n___34849'))) {
+    } elseif (in_array($focus_i['i__type'], $this->config->item('n___34849'))) {
 
         //Do we have a text response from before?
         $previous_response = '';
@@ -568,7 +627,7 @@ if($top_i__id) {
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Following Add
-                'x__right' => $i['i__id'],
+                'x__right' => $focus_i['i__id'],
             )) as $append_e){
                 //Does the user have this source with any values?
                 foreach($this->X_model->fetch(array(
@@ -591,19 +650,19 @@ if($top_i__id) {
         $input_attributes = '';
         $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
 
-        if ($i['i__type']==6683) {
+        if ($focus_i['i__type']==6683) {
 
             //Text response
             $message_ui = '<textarea class="border i_content x_input greybg" placeholder="" id="x_write">' . $previous_response . '</textarea>';
 
-        } elseif ($i['i__type']==32603) {
+        } elseif ($focus_i['i__type']==32603) {
 
-            $message_ui = view_sign($i, $previous_response);
+            $message_ui = view_sign($focus_i, $previous_response);
 
         } else {
 
             //Determine type:
-            if($i['i__type']==31794){
+            if($focus_i['i__type']==31794){
 
                 //Number
                 $input_type = 'number';
@@ -612,7 +671,7 @@ if($top_i__id) {
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i['i__id'],
+                    'x__right' => $focus_i['i__id'],
                     'x__up' => 31813, //Steps
                 )) as $num_steps){
                     if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
@@ -624,7 +683,7 @@ if($top_i__id) {
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i['i__id'],
+                    'x__right' => $focus_i['i__id'],
                     'x__up' => 31800, //Min Value
                 )) as $num_steps){
                     if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
@@ -636,7 +695,7 @@ if($top_i__id) {
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i['i__id'],
+                    'x__right' => $focus_i['i__id'],
                     'x__up' => 31801, //Max Value
                 )) as $num_steps){
                     if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
@@ -644,50 +703,21 @@ if($top_i__id) {
                     }
                 }
 
-            } elseif($i['i__type']==30350){
+            } elseif($focus_i['i__type']==30350){
 
-                //Time, figure out which type:
-
-                if(count($this->X_model->fetch(array(
+                $input_type = (count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i['i__id'],
+                    'x__right' => $focus_i['i__id'],
                     'x__up' => 32442, //Select Time
-                )))){
+                ))) ? 'datetime-local'  : 'date' );
 
-                    $input_type = 'datetime-local';
-
-                } elseif(count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i['i__id'],
-                    'x__up' => 32446, //Select Week
-                )))){
-
-                    $input_type = 'week';
-
-                } elseif(count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i['i__id'],
-                    'x__up' => 32447, //Select Month
-                )))){
-
-                    $input_type = 'month';
-
-                } else {
-
-                    //Date selector:
-                    $input_type = 'date';
-
-                }
-
-            } elseif($i['i__type']==31794){
+            } elseif($focus_i['i__type']==31794){
 
                 //Number
                 $input_type = 'number';
 
-            } elseif($i['i__type']==31795){
+            } elseif($focus_i['i__type']==31795){
 
                 //URL
                 $input_type = 'url';
@@ -702,29 +732,29 @@ if($top_i__id) {
         $message_ui .= '<script> $(document).ready(function () { set_autosize($(\'#x_write\')); $(\'#x_write\').focus(); }); </script>';
         echo '<div>'.$message_ui.'</div>';
 
-    } elseif ($i['i__type']==7637) {
+    } elseif ($focus_i['i__type']==7637) {
 
         //FILE UPLOAD
         echo '<div class="userUploader">';
         echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
 
-        echo '<input class="inputfile" type="file" name="file" id="fileType' . $i['i__type'] . '" />';
+        echo '<input class="inputfile" type="file" name="file" id="fileType' . $focus_i['i__type'] . '" />';
 
         if (count($x_completes)) {
 
-            echo '<div class="file_saving_result greybg">';
-            echo view_headline(13977, null, $e___11035[13977], view_links($x_completes[0]['x__message']), true);
+            echo '<div class="file_save_result greybg">';
+            echo view_headline(13977, null, $e___11035[13977], view_sync_links($x_completes[0]['x__message']), true);
             echo '</div>';
 
         } else {
 
             //for when added:
-            echo '<div class="file_saving_result center"></div>';
+            echo '<div class="file_save_result center"></div>';
 
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" for="fileType' . $i['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" for="fileType' . $focus_i['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
 
         echo '<div class="doclear">&nbsp;</div>';
@@ -740,24 +770,24 @@ if($top_i__id) {
 
 
 $pathways_count = 0;
-if(!$top_i__id){
+if(!$top_i__hashtag){
 
     if(count($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-        'x__right' => $i['i__id'],
+        'x__right' => $focus_i['i__id'],
         'x__up' => 4235,
     )))){
 
         //Get Started
-        echo '<div class="nav-controller select-btns msg-frame"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
+        echo '<div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
         echo '<div class="doclear">&nbsp;</div>';
 
     } else {
 
         //Show Link to Top, if any:
         $pathways = '<div class="row list-pathways">';
-        foreach($this->I_model->recursive_starting_points($i['i__id']) as $top_id){
+        foreach($this->I_model->recursive_starting_points($focus_i['i__id']) as $top_id){
             foreach($this->I_model->fetch(array(
                 'i__id' => $top_id,
             )) as $top_start){
@@ -780,14 +810,16 @@ if(!$top_i__id){
 
     foreach($this->config->item('e___13289') as $x__type => $m2) {
 
-        $superpower_actives = array_intersect($this->config->item('n___10957'), $m2['m__following']);
-        if(count($superpower_actives) && !superpower_unlocked(end($superpower_actives))){
+        $superpowers_required = array_intersect($this->config->item('n___10957'), $m2['m__following']);
+        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
             continue;
         }
 
         $control_btn = '';
 
-        if($x__creator && in_array($x__type, $this->config->item('n___12274'))){
+        if($x__creator && in_array($x__type, $this->config->item('n___12274')) && 0){
+
+            //TODO Remove later
 
             //Sources
             if(is_array($this->config->item('n___'.$x__type))){
@@ -796,17 +828,33 @@ if(!$top_i__id){
                     //Is this action already taken?
                     $action_xs = $this->X_model->fetch(array(
                         'x__up' => $x__creator,
-                        'x__right' => $i['i__id'],
+                        'x__right' => $focus_i['i__id'],
                         'x__type' => $x__type,
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ));
 
-                    $control_btn = '<a class="round-btn btn_control_'.$x__type.'" href="javascript:void(0);" onclick="x_link_toggle('.$x__type.', '.$i['i__id'].')" current_x_id="'.( count($action_xs) ? $action_xs[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? '' : 'hidden' ).'">'.$m2['m__cover'].'</span><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? 'hidden' : '' ).'">'.$e___31127[$pending_action_id]['m__cover'].'</span></a><span class="nav-title main__title">'.$m2['m__title'].'</span>';
+                    $control_btn = '<a class="round-btn btn_control_'.$x__type.'" href="javascript:void(0);" onclick="x_link_toggle('.$x__type.', '.$focus_i['i__id'].')" current_x_id="'.( count($action_xs) ? $action_xs[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? '' : 'hidden' ).'">'.$m2['m__cover'].'</span><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? 'hidden' : '' ).'">'.$e___31127[$pending_action_id]['m__cover'].'</span></a><span class="nav-title main__title">'.$m2['m__title'].'</span>';
 
                     break;// Ignore if more than one...
                 }
             }
 
+        } elseif($x__type==112233){
+
+            //TODO imeplement IDs
+            $control_btn = view_toggle_dropdown(112233, 112255, $focus_i['i__id']);
+
+        } elseif($x__type==6255){
+
+            //Count total
+            $sub_counter = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__right' => $focus_i['i__id'],
+            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
+            //Discoveries:
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="alert(\'The total number of times this idea has been discovered.\')">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.view_number($sub_counter[0]['totals']).' '.$m2['m__title'].'</span>';
 
         } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
 
@@ -822,18 +870,18 @@ if(!$top_i__id){
 
             //Edit response:
             $control_btn = '<div style="padding-left: 8px;" class="edit_toggle_answer"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
+
             $control_btn .= '<div style="padding-left: 8px;" class="edit_toggle_answer hidden"><a class="controller-nav round-btn main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">'.$e___11035[40639]['m__cover'].'</a><span class="nav-title main__title">'.$e___11035[40639]['m__title'].'</span></div>';
 
-        } elseif($x__type==31796 && $top_completed && in_array($i['i__type'], $this->config->item('n___34849'))){
+        } elseif($x__type==14422 && $top_completed && in_array($focus_i['i__type'], $this->config->item('n___34849'))){
 
-            //Update Response
+            //Save Response
             $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
-        } elseif($x__type==28239 && $can_skip && !$top_completed){ // && !count($x_completes)
+        } elseif($x__type==42205 && $can_skip && !$top_completed && !count($x_completes)){
 
             //SKIP
-            $control_btn = '<div style="padding-left: 13px;" class="edit_toggle_answer"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
-
+            $control_btn = '<div style="padding-left: 13px;" class="edit_toggle_answer"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="x_skip()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
         }
 
@@ -861,24 +909,30 @@ if(!$top_i__id){
 
 //NEXT IDEAS:
 echo '<div class="nav-body">';
-if(!($is_or_7712 && $top_i__id)){
-    echo view_i_list(12211, $top_i__id, $i, $is_next, $member_e);
+
+//Append add new idea as a comment button at the end:
+$body_append = '<a href="javascript:void(0);" onclick="edit_load_i(0,0,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
+
+if(!($is_or_7712 && $top_i__hashtag)){
+    echo view_i_list(12211, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_append);
+} else {
+    //Options have already been presented in the form of selections...
 }
 echo '</div>';
 
 
 
-if($top_i__id && !$top_completed) {
+if($top_i__hashtag && !$top_completed) {
     echo '<div style="padding: 0 5px;"><div class="progress">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div></div>';
-} elseif(!$top_i__id && $pathways_count > 0){
+} elseif(!$top_i__hashtag && $pathways_count > 0){
     echo view_headline(40798, $pathways_count, $e___11035[40798], $pathways, true);
 }
 
 echo '</div>';
 
-if($top_i__id){
+if($top_i__hashtag){
     echo '</div>';
 }
 
@@ -886,13 +940,14 @@ if($top_i__id){
 
 <style> .headline_12211, .headline_13980 { display: none !important; } </style>
 <script>
-    var focus_i__type = <?= $i['i__type'] ?>;
+    var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
 </script>
 
 <input type="hidden" id="focus_card" value="12273" />
-<input type="hidden" id="focus_id" value="<?= $i['i__id'] ?>" />
-<input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
+    <input type="hidden" id="focus_id" value="<?= $focus_i['i__id'] ?>" />
+    <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
+<input type="hidden" id="top_i__id" value="<?= $top_i__hashtag ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
 <script type="text/javascript">
@@ -911,7 +966,7 @@ if($top_i__id){
             });
             if(answer_count==1){
                 //Only 1 option, select and go next only if the user cannot skip:
-                toggle_answer(single_id);
+                select_answer(single_id);
             }
         }
 
@@ -951,7 +1006,7 @@ if($top_i__id){
 
 
     var is_toggling = false;
-    function toggle_answer(i__id){
+    function select_answer(i__id){
 
         if(is_toggling){
             return false;
@@ -964,15 +1019,15 @@ if($top_i__id){
         //Clear all if single selection:
         var is_single_selection = (i__type==6684);
         if(is_single_selection){
-            //Single Selection, clear all:
+            //Single Selection, clear all previously selected answers, if any:
             $('.answer-item').removeClass('isSelected');
         }
 
-        //Is setected?
+        //Is selected?
         if($('.x_select_'+i__id).hasClass('isSelected')){
 
-            //Previously Selected, delete selection:
-            if(i__type==7231){
+            //Previously Selected, delete Multi-selection:
+            if(!is_single_selection){
                 //Multi Selection
                 $('.x_select_'+i__id).removeClass('isSelected');
             }
@@ -985,7 +1040,7 @@ if($top_i__id){
             $('.x_select_'+i__id).addClass('isSelected');
 
             if(is_single_selection){
-                //Auto submit answer:
+                //Auto submit answer since they selected one:
                 go_next();
             } else {
                 //Flash call to action:
@@ -1007,41 +1062,41 @@ if($top_i__id){
         if (is_logged_in && js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
             //SELECT ONE/SOME
-            return x_select(go_next_url);
+            return x_select();
 
         } else if(is_logged_in && js_n___34849.includes(focus_i__type)) {
 
             if(focus_i__type==32603 && !$("#DigitalSignAgreement").is(':checked')){
                 if(can_skip){
-                    x_skip(go_next_url);
+                    x_skip();
                 } else {
                     //Must upload file first:
-                    alert('Please agree to our terms of service before going next.');
+                    alert('Please agree to terms of service before going next.');
                 }
             } else {
                 //SUBMIT TEXT RESPONSE:
-                return x_write(go_next_url);
+                return x_write();
             }
 
-        } else if (is_logged_in && focus_i__type==7637 && !$('.file_saving_result').html().length ) {
+        } else if (is_logged_in && focus_i__type==7637 && !$('.file_save_result').html().length ) {
 
             if(!can_skip){
                 //Must upload file first:
                 alert('Please upload a file before going next.');
             } else {
-                x_skip(go_next_url);
+                x_skip();
             }
 
         } else if (is_logged_in && focus_i__type==26560 ) {
 
-            return x_free_ticket(go_next_url);
+            return x_free_ticket();
 
         } else if(go_next_url && go_next_url.length > 0) {
 
             if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#top_i__id').val()) > 0) {
 
                 //READ:
-                return read_only_complete(go_next_url);
+                return read_only_complete();
 
             } else {
 
@@ -1060,7 +1115,7 @@ if($top_i__id){
             return false;
         }
 
-        $('.file_saving_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
+        $('.file_save_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
 
         if (isAdvancedUpload) {
 
@@ -1092,13 +1147,13 @@ if($top_i__id){
                 },
                 success: function (data) {
                     //Render new file:
-                    $('.file_saving_result').html(data.message);
+                    $('.file_save_result').html(data.message);
                     $('.go_next_upload').removeClass('hidden');
 
                 },
                 error: function (data) {
                     //Show Error:
-                    $('.file_saving_result').html(data.responseText);
+                    $('.file_save_result').html(data.responseText);
                 }
             });
         } else {
@@ -1108,7 +1163,7 @@ if($top_i__id){
     }
 
 
-    function x_write(go_next_url){
+    function x_write(){
         $.post("/x/x_write", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
@@ -1117,7 +1172,7 @@ if($top_i__id){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(go_next_url);
+                js_redirect($('#go_next_url').val());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1128,7 +1183,7 @@ if($top_i__id){
 
 
 
-    function read_only_complete(go_next_url){
+    function read_only_complete(){
         $.post("/x/read_only_complete", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
@@ -1136,7 +1191,7 @@ if($top_i__id){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(go_next_url);
+                js_redirect($('#go_next_url').val());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1145,7 +1200,13 @@ if($top_i__id){
     }
 
 
-    function x_skip(go_next_url){
+    function x_skip(){
+
+        if(!can_skip){
+            alert('You cannot skip this...');
+            return false;
+        }
+
         $.post("/x/x_skip", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
@@ -1153,7 +1214,7 @@ if($top_i__id){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(go_next_url);
+                js_redirect($('#go_next_url').val());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1162,7 +1223,7 @@ if($top_i__id){
     }
 
 
-    function x_free_ticket(go_next_url){
+    function x_free_ticket(){
         $.post("/x/x_free_ticket", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
@@ -1171,7 +1232,7 @@ if($top_i__id){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(go_next_url);
+                js_redirect($('#go_next_url').val());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1179,7 +1240,7 @@ if($top_i__id){
         });
     }
 
-    function x_select(go_next_url){
+    function x_select(){
 
         //Check
         var selection_i__id = [];
@@ -1200,7 +1261,7 @@ if($top_i__id){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(go_next_url);
+                js_redirect($('#go_next_url').val());
             } else {
                 //Show error:
                 alert(data.message);

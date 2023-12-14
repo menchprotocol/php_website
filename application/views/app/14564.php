@@ -1,6 +1,6 @@
 <?php
 
-if(isset($_GET['i__id'])){
+if(isset($_GET['i__hashtag'])){
 
     //New account to be created:
     $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0)); //, urldecode($_GET['image_url'])
@@ -11,7 +11,7 @@ if(isset($_GET['i__id'])){
         ));
         echo 'ERROR Creating New Account! Admin is notified...';
     } else {
-        js_php_redirect(new_member_redirect($member_result['e']['e__id'], $_GET['i__id']), 13);
+        js_php_redirect(new_member_redirect($member_result['e']['e__id'], $_GET['i__hashtag']), 13);
     }
 
 } else {
@@ -28,7 +28,7 @@ if(isset($_GET['i__id'])){
         'domain' => 'mench.auth0.com',
         'client_id' => website_setting(14881),
         'client_secret' => website_setting(14882),
-        'redirect_uri' => 'https://'.get_server('SERVER_NAME').'/-14564',
+        'redirect_uri' => 'https://'.get_server('SERVER_NAME').view_app_link(14564),
         'scope' => 'openid profile email',
     ]);
 
@@ -54,8 +54,9 @@ if(isset($_GET['i__id'])){
      * */
 
     $userInfo = $auth0->getUser();
-    $sign_i__id = intval($this->session->userdata('login_i__id'));
+    $login_i__hashtag = intval($this->session->userdata('login_i__hashtag'));
     $redirect_url = $this->session->userdata('redirect_url');
+    $sign_is = array();
 
 
     if($userInfo && isset($userInfo['email'])){
@@ -91,11 +92,11 @@ if(isset($_GET['i__id'])){
 
             //Activate Session:
             $this->E_model->activate_session($member_emails[0], true);
-            js_php_redirect(($sign_i__id > 0 ? '/x/x_start/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() )), 13);
+            js_php_redirect(( $login_i__hashtag ? '/x/x_start/'.$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() )), 13);
 
         } else {
 
-            js_php_redirect('/-14564?i__id='.$sign_i__id.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
+            js_php_redirect(view_app_link(14564).'/'.$login_i__hashtag.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
 
         }
 
@@ -111,7 +112,7 @@ if(isset($_GET['i__id'])){
             ),
         ));
 
-        js_php_redirect(( $sign_i__id ? '/'.$sign_i__id : ( $redirect_url ? $redirect_url : home_url() ) ), 13);
+        js_php_redirect(( $login_i__hashtag ? '/'.$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() ) ), 13);
 
     }
 

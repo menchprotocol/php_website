@@ -5,24 +5,24 @@ $limit = view_memory(6404,11064);
 $new_order = ( $this->session->userdata('session_page_count') + 1 );
 $this->session->set_userdata('session_page_count', $new_order);
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$write_access_i = write_access_i($i['i__id']);
+$write_access_i = write_access_i($focus_i['i__hashtag']);
 $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
-    'x__right' => $i['i__id'],
+    'x__right' => $focus_i['i__id'],
     'x__weight' => $new_order,
 ));
 
 
 //Focusing on a certain source?
-if(isset($_GET['load__e']) && superpower_active(14005, true)){
+if(isset($_GET['focus__e']) && superpower_unlocked(14005)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
-        'e__id' => intval($_GET['load__e']),
+        'e__id' => intval($_GET['focus__e']),
         'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
-        echo view__load__e($e_filters[0]);
+        echo view__focus__e($e_filters[0]);
     }
 }
 
@@ -30,13 +30,16 @@ if(isset($_GET['load__e']) && superpower_active(14005, true)){
 
 
 //Load Top:
-$counter_top = view_i_covers(11019, $i['i__id'], 0, false);
-echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_i ? '<div class="new-list-11019"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder '.superpower_active(10939).'">
+$counter_top = view_i_covers(11019, $focus_i['i__id'], 0, false);
+if($write_access_i){
+    echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_i ? '<div class="new-list-11019"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder ">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick add-input algolia_search dotransparent"
                                placeholder="'.$e___11035[31773]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>' : '' ).'</div>';
+}
+
 echo '<script type="text/javascript"> $(document).ready(function () { initiate_algolia(); load_search(12273,11019); }); </script>';
 echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true);  }, 377); }); </script>';
 
@@ -45,7 +48,7 @@ echo '<script type="text/javascript"> $(document).ready(function () { setTimeout
 
 //Focus Source:
 echo '<div class="main_item row justify-content">';
-echo view_card_i(4250, 0, null, $i);
+echo view_card_i(4250, 0, null, $focus_i);
 echo '</div>';
 
 
@@ -53,7 +56,7 @@ $coins_count = array();
 $body_content = '';
 echo '<ul class="nav nav-tabs nav12273">';
 foreach($this->config->item('e___41092') as $x__type => $m) {
-    $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
+    $coins_count[$x__type] = view_i_covers($x__type, $focus_i['i__id'], 0, false);
     if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $this->config->item('n___12144'))){ continue; }
 
     $input_content = '';
@@ -62,7 +65,7 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
         if($x__type==12273){
 
             //IDEAS
-            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder '.superpower_active(10939).'">
+            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_12273 list-adder">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick add-input algolia_search dotransparent"
@@ -71,7 +74,7 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
 
         } elseif($x__type==12274){
 
-            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder '.superpower_active(10939).'">
+            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -114,7 +117,8 @@ if(!$focus_tab){
 
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
 <input type="hidden" id="focus_card" value="12273" />
-<input type="hidden" id="focus_id" value="<?= $i['i__id'] ?>" />
+<input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
+<input type="hidden" id="focus_id" value="<?= $focus_i['i__id'] ?>" />
 <script type="text/javascript">
 
     $(document).ready(function () {

@@ -1,17 +1,17 @@
 <?php
 $member_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
+$e_segment = view_valid_handle_e($first_segment);
 $second_segment = $this->uri->segment(2);
-$i__id = ( isset($i['i__id']) ? $i['i__id'] : 0 );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$e___4527 = $this->config->item('e___4527');
 $e___14870 = $this->config->item('e___14870'); //Website Partner
-$current_card_id = current_card_id();
+$handle___40904 = $this->config->item('handle___40904');
+$s__type = current_s__type();
 $website_id = website_setting(0);
 $website_favicon = website_setting(31887);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
-$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$current_card_id.'.png' ));
+$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$s__type.'.png' ));
 $bgVideo = null;
 
 //Transaction Website
@@ -21,14 +21,14 @@ $is_emoji = false;
 if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
     $padding_hack = 1; //For URL
 } elseif(string_is_icon($domain_logo)){
-    $padding_hack = 4; //For Icon (4 before)
+    $padding_hack = 2; //For Icon (4 before)
 } else {
     $padding_hack = 2; //For Emoji
     $is_emoji = true;
 }
 
 //Generate Body Class String:
-$body_class = 'platform-'.$current_card_id; //Always append current coin
+$body_class = 'platform-'.$s__type; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     if($member_e){
         //Look at their session:
@@ -44,6 +44,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
         //If not found, fetch platform defaults:
         if(!strlen($this_class)){
+            $e___4527 = $this->config->item('e___4527');
             foreach(array_intersect($this->config->item('n___'.$e__id), $e___4527[6404]['m__following']) as $this_e_id) {
                 $this_class = ' custom_ui_'.$e__id.'_'.$this_e_id.' ';
             }
@@ -85,7 +86,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     }
 
 
-    //Do we have Google Tags?
+    //Do we have Google Tags or second google analytics?
     $google_tag_code = website_setting(38216);
     if(strlen($google_tag_code) > 0){
         echo view_google_tag($google_tag_code);
@@ -93,21 +94,16 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 
     echo '<script type="text/javascript"> ';
-    //MEMBER VARIABLES
-    echo ' var js_session_superpowers_activated = ' . json_encode( ($member_e && count($this->session->userdata('session_superpowers_activated'))) ? $this->session->userdata('session_superpowers_activated') : array() ) . '; ';
-
-    foreach($this->config->item('e___33412') as $x__type => $m){
-        ${"session_superpowers_" . $x__type} = intval(is_array($this->session->userdata('session_superpowers_activated')) && in_array($x__type, $this->session->userdata('session_superpowers_activated')));
-        echo ' var superpower_js_'.$x__type.' = ' . ${"session_superpowers_" . $x__type} . '; ';
-    }
-
+    //JS VARIABLES
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
+    echo ' var js_pl_handle = \'' . ( $member_e ? $member_e['e__handle'] : '' ) . '\'; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
     echo ' var website_id = "' . $website_id . '"; ';
-    echo ' var search_and_filter = ( superpower_js_12701 ? \'\' : \' AND ( _tags:publicly_searchable \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
+    echo ' var js_session_superpowers_unlocked = ' . json_encode(($member_e ? $this->session->userdata('session_superpowers_unlocked') : array())) . ';';
+    echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:publicly_searchable \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
-    //JAVASCRIPT PLATFORM MEMORYwq
+    //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('e___11054') as $x__type => $m){
         if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
             echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
@@ -130,7 +126,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>" type="text/javascript"></script>
-
 
     <?php
 
@@ -248,17 +243,10 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                 echo 'background: transparent !important; ';
                 echo '}';
 
-                echo '  .msg>span { border-radius: 0; } ';
                 echo ' .halfbg { background: rgba(0, 0, 0, 0.69) !important; border-radius: 0; } ';
                 echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 0; } ';
                 echo ' .top-header-position.fixed-top { background: none !important; } ';
-
-                echo ' .msg>span { display: block; padding: 0; } ';
-                //echo ' .halfbg, .msg>span, .msg { line-height: 150% !important; } ';
-                echo ' .msg>span u, .msg>span a { line-height: 100% !important; padding:0 !important; } ';
-
-                echo '.list-border, .msg { max-width:610px; margin: 0 auto !important; }';
-                echo ' @media (max-width:610px) { .list-border, .msg { max-width:100%; margin: 0 auto; } }';
+                echo ' .i_cache>span u, .i_cache>span a { line-height: 100% !important; padding:0 !important; } ';
 
                 //Force Dark Mode:
                 $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
@@ -279,21 +267,21 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
 $i_view = 0;
 $quick_id = 0;
-$discovery_i__id = ( intval($first_segment)==$first_segment ? ( strlen($second_segment)>0 && intval($second_segment)==$second_segment ? $second_segment : $first_segment ) : 0 );
-if($discovery_i__id>0 && write_access_i($discovery_i__id)) {
+$discovery_i__hashtag = ( strlen($first_segment) ? ( strlen($second_segment) ? $second_segment : $first_segment ) : 0 );
+if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
 
     //Ideation Mode:
-    $_GET['i__id'] = $discovery_i__id;
+    $_GET['i__hashtag'] = $discovery_i__hashtag;
     $i_view = 30795;
-    $quick_href = '/~'.$discovery_i__id;
+    $quick_href = '/~'.$discovery_i__hashtag;
 
-} elseif(!strlen($first_segment) && write_access_e($website_id)) {
+} elseif(!strlen($first_segment) && superpower_unlocked(12703)) {
 
     //Edit Website Home Page:
-    $quick_href = '/@' . $website_id;
+    $quick_href = '/@' . $e___14870[$website_id]['m__handle'];
     $quick_id = 33287;
 
-} elseif(substr($first_segment, 0, 1)=='@' && intval(substr($first_segment, 1))==$website_id) {
+} elseif($e_segment && $e_segment==$e___14870[$website_id]['m__handle']) {
 
     //Edit Website Home Page:
     $quick_href = '/?reset_cache=1';
@@ -302,42 +290,40 @@ if($discovery_i__id>0 && write_access_i($discovery_i__id)) {
 } elseif(substr($first_segment, 0, 1)=='~') {
 
     //Discovery Mode:
-    $_GET['i__id'] = substr($first_segment, 1);
+    $_GET['i__hashtag'] = substr($first_segment, 1);
     $i_view = 33286;
-    $quick_href = '/' . $_GET['i__id'];
+    $quick_href = '/' . $_GET['i__hashtag'];
 
-} elseif(substr($first_segment, 0, 1)=='-' && $session_superpowers_13422) {
+} elseif(array_key_exists($first_segment, $this->config->item('handle___6287')) && superpower_unlocked(13422)) {
 
     //Source Mode:
-    $app_id = substr($first_segment, 1);
-    if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
-        $i_view = $app_id;
+    if(array_key_exists($first_segment, $handle___40904) && isset($_GET['i__hashtag'])){
+        $i_view = $handle___40904[$first_segment];
     } else {
         $quick_id = 33287;
     }
-    $quick_href = '/@' . $app_id;
+    $quick_href = '/@' . $first_segment;
 
-} elseif(substr($first_segment, 0, 1)=='@' && in_array(intval(substr($first_segment, 1)), $this->config->item('n___6287'))) {
+} elseif($e_segment && array_key_exists($e_segment, $this->config->item('handle___6287'))) {
 
     //App Store:
-    $app_id = substr($first_segment, 1);
-    if(in_array($app_id, $this->config->item('n___40904')) && isset($_GET['i__id'])){
-        $i_view = $app_id;
+    if(array_key_exists($e_segment, $handle___40904) && isset($_GET['i__hashtag'])){
+        $i_view = $handle___40904[$e_segment];
     } else {
         $quick_id = 6287;
     }
-    $quick_href = '/-' . substr($first_segment, 1);
+    $quick_href = '/'.view_valid_handle_e($first_segment);
 
-} elseif(isset($_GET['e__id']) && intval($_GET['e__id'])) {
+} elseif(isset($_GET['e__handle']) && strlen($_GET['e__handle'])) {
 
     //Source Mode:
-    $quick_href = '/@' . $_GET['e__id'];
+    $quick_href = '/@' . $_GET['e__handle'];
     $quick_id = 33287;
 
-} elseif(isset($_GET['i__id']) && intval($_GET['i__id'])) {
+} elseif(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])) {
 
     //Ideation Mode:
-    $quick_href = '/~'.$_GET['i__id'];
+    $quick_href = '/~'.$_GET['i__hashtag'];
     $quick_id = 33286;
 
 }
@@ -406,6 +392,10 @@ if(!$basic_header_footer){
                     echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
 
 
+                    //Always give option to instantly add idea:
+                    echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="edit_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
+
+
                     if($i_view > 0){
                         $e___40904 = $this->config->item('e___40904'); //Idea Views
                         echo '<td class="block-menu">';
@@ -416,8 +406,8 @@ if(!$basic_header_footer){
                         echo '<div class="dropdown-menu">';
                         foreach($e___40904 as $x__type => $m) {
 
-                            $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__following']);
-                            if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                            $superpowers_required = array_intersect($this->config->item('n___10957'), $m['m__following']);
+                            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                                 continue;
                             }
 
@@ -426,7 +416,7 @@ if(!$basic_header_footer){
                                 continue;
                             }
 
-                            echo '<a href="'.$m['m__message'].$_GET['i__id'].'" class="dropdown-item main__title"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+                            echo '<a href="'.$m['m__message'].$_GET['i__hashtag'].'" class="dropdown-item main__title"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
 
                         }
                         echo '</div>';
@@ -453,8 +443,8 @@ if(!$basic_header_footer){
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
 
-                        $superpower_actives = array_intersect($this->config->item('n___10957'), $m['m__following']);
-                        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+                        $superpowers_required = array_intersect($this->config->item('n___10957'), $m['m__following']);
+                        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                             continue;
                         }
 
@@ -470,8 +460,8 @@ if(!$basic_header_footer){
 
                             //Profile
                             $m['m__cover'] = view_cover($member_e['e__cover'], 1);
-                            $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__id'].'</div>';
-                            $href = 'href="/@'.$member_e['e__id'].'" ';
+                            $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__handle'].'</div>';
+                            $href = 'href="/@'.$member_e['e__handle'].'" ';
 
                         } elseif(in_array($x__type, $this->config->item('n___13566'))) {
 
@@ -487,7 +477,7 @@ if(!$basic_header_footer){
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
                             //APP
-                            $href = 'href="/-'.$x__type.( $x__type==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
+                            $href = 'href="'.view_app_link($x__type).( $x__type==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
 
                         } elseif(in_array($x__type, $this->config->item('n___14925'))){
 
@@ -504,11 +494,6 @@ if(!$basic_header_footer){
                             } else {
                                 continue;
                             }
-
-                        } elseif(substr($m['m__message'], 0, 1)=='/'){
-
-                            //Direct Link
-                            $href = 'href="'.$m['m__message'].'"';
 
                         } else {
 
@@ -530,7 +515,6 @@ if(!$basic_header_footer){
             </table>
         </div>
     </div>
-
 
 <?php
 
@@ -555,9 +539,5 @@ if(strlen($flash_message) > 0) {
 
 }
 
-if(intval($this->session->userdata('is_anonymous'))>0){
-    echo '<div class="alert alert-warning"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span><a href="javascript:void(0);" x__type="6225" class="trigger_modal" onclick="toggle_headline(3288)"><b><u>Add email</u></b></a> to save your account.</div>';
-
-}
 
 ?>

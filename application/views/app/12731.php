@@ -31,7 +31,7 @@ foreach($active_i as $count=>$in){
         //Update idea:
         echo '<tr class="panel-title down-border">';
         echo '<td style="text-align: left;">'.$invalid_outcomes.'</td>';
-        echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/~'.$in['i__id'].'">'.view_first_line($in['i__message']).'</a></td>';
+        echo '<td style="text-align: left;">'.view_cache(4737 /* Idea Status */, $in['i__type'], true, 'right').' <a href="/~'.$in['i__hashtag'].'">'.view_i_title($in).'</a></td>';
         echo '</tr>';
 
     }

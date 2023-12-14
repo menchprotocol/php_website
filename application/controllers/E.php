@@ -10,14 +10,14 @@ class E extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        universal_check();
+        auto_login();
 
     }
 
     function view_body_e(){
         //Authenticate Member:
         if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
             echo view_body_e($_POST['x__type'], $_POST['counter'], $_POST['e__id']);
         }
@@ -26,12 +26,12 @@ class E extends CI_Controller
 
 
     //Lists sources
-    function e_layout($e__id)
+    function e_layout($e__handle)
     {
 
         //Validate source ID and fetch data:
         $es = $this->E_model->fetch(array(
-            'e__id' => $e__id,
+            'e__handle' => $e__handle,
         ));
         if (count($es) < 1) {
             return redirect_message(home_url());
@@ -39,7 +39,7 @@ class E extends CI_Controller
 
         $member_e = superpower_unlocked();
         //Make sure not a private source:
-        if(!in_array($es[0]['e__access'], $this->config->item('n___33240') /* PUBLIC/GUEST Access */) && !write_access_e($e__id)){
+        if(!in_array($es[0]['e__access'], $this->config->item('n___33240') /* PUBLIC/GUEST Access */) && !write_access_e($es[0]['e__handle'])){
             $member_e = superpower_unlocked(13422, true);
         }
 
@@ -47,7 +47,7 @@ class E extends CI_Controller
 
         //Load views:
         $this->load->view('header', array(
-            'title' => $es[0]['e__title'].' | '.$e___14874[12274]['m__title'],
+            'title' => $es[0]['e__title'].' @'.$es[0]['e__handle'].' | '.$e___14874[12274]['m__title'],
         ));
         $this->load->view('e_layout', array(
             'e' => $es[0],
@@ -63,7 +63,7 @@ class E extends CI_Controller
 
         if (!isset($_POST['e__id']) || !isset($_POST['x__type']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
 
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
 
         } else {
 
@@ -73,13 +73,13 @@ class E extends CI_Controller
             if($_POST['x__type']==11030 || $_POST['x__type']==12274){
 
                 //SOURCES
-                $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                $current_e__handle = view_valid_handle_e($_POST['first_segment']);
                 $e___6177 = $this->config->item('e___6177'); //Source Status
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
                 foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $e_e) {
                     if(isset($e_e['e__id'])){
-                        $ui .= view_card('/@'.$e_e['e__id'], $e_e['e__id']==$current_e, $e_e['x__type'], $e_e['e__access'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
+                        $ui .= view_card('/@'.$e_e['e__handle'], $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__access'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
                         $listed_items++;
                     }
                 }
@@ -87,14 +87,14 @@ class E extends CI_Controller
             } elseif($_POST['x__type']==12273 || $_POST['x__type']==6255){
 
                 //IDEAS
-                $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
                 $e___31004 = $this->config->item('e___31004'); //Idea Status
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
                 foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_first_line($next_i['i__message']), $next_i['x__message']);
+                        $ui .= view_card('/~'.$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                         $listed_items++;
                     }
                 }
@@ -103,7 +103,7 @@ class E extends CI_Controller
 
             if($listed_items < $_POST['counter']){
                 //We have more to show:
-                $ui .= view_more('/@'.$_POST['e__id'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                $ui .= view_more('/@'.$_POST['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
             }
 
             echo $ui;
@@ -182,7 +182,7 @@ class E extends CI_Controller
 
 
 
-    function e_remove(){
+    function e_delete(){
 
         //Auth member and check required variables:
         $member_e = superpower_unlocked(10939);
@@ -317,7 +317,7 @@ class E extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'new_e__id' => $focus_e['e__id'],
+            'new_e__handle' => $focus_e['e__handle'],
         ));
 
 
@@ -387,9 +387,14 @@ class E extends CI_Controller
         //Set some variables:
         $_POST['x__type'] = intval($_POST['x__type']);
         $is_upwards = in_array($_POST['x__type'], $this->config->item('n___14686'));
-        $url_e = false;
 
-        $_POST['e_existing_id'] = ( !intval($_POST['e_existing_id']) && !substr_count($_POST['e_new_string'], ' ') && substr($_POST['e_new_string'], 0, 1)=='@' && intval(substr($_POST['e_new_string'],1)) > 0 ? intval(substr($_POST['e_new_string'],1)) : intval($_POST['e_existing_id']) );
+        if(!intval($_POST['e_existing_id']) && view_valid_handle_e($_POST['e_new_string'])){
+            foreach($this->E_model->fetch(array(
+                'e__handle' => substr($_POST['e_new_string'], 1),
+            )) as $e){
+                $_POST['e_existing_id'] = $e['e__id'];
+            }
+        }
         $adding_to_existing = ( intval($_POST['e_existing_id']) > 0 );
 
         //Are we adding an existing source?
@@ -501,95 +506,136 @@ class E extends CI_Controller
     }
 
 
-
-    function e_toggle_superpower($superpower_e__id){
-
-        //Toggles the advance session variable for the member on/off for logged-in members:
-        $member_e = superpower_unlocked();
-        $superpower_e__id = intval($superpower_e__id);
-        $e___10957 = $this->config->item('e___10957');
-
-        if(!$member_e){
-
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-
-        } elseif(!in_array($superpower_e__id, $this->session->userdata('session_superpowers_unlocked'))){
-
-            //Access not authorized:
-            return view_json(array(
-                'status' => 0,
-                'message' => 'You have not yet unlocked the superpower of '.$e___10957[$superpower_e__id]['m__title'],
-            ));
-
-        }
-
-        //Figure out new toggle state:
-        $session_data = $this->session->all_userdata();
-
-        if(in_array($superpower_e__id, $session_data['session_superpowers_activated'])){
-            //Previously there, turn it off:
-            $session_data['session_superpowers_activated'] = array_diff($session_data['session_superpowers_activated'], array($superpower_e__id));
-            $toggled_setting = 'DEACTIVATED';
-        } else {
-            //Not there, turn it on:
-            array_push($session_data['session_superpowers_activated'], $superpower_e__id);
-            $toggled_setting = 'ACTIVATED';
-        }
-
-
-        //Update Session:
-        $this->session->set_userdata($session_data);
-
-
-        //Log Transaction:
-        $this->X_model->create(array(
-            'x__creator' => $member_e['e__id'],
-            'x__type' => 5007, //TOGGLE SUPERPOWER
-            'x__up' => $superpower_e__id,
-            'x__message' => 'SUPERPOWER '.$toggled_setting, //To be used when member logs in again
-        ));
-
-        //Return to JS function:
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Success',
-        ));
-    }
-
-
-    function edit_e()
+    function edit_load_e()
     {
+
         $member_e = superpower_unlocked();
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['e__id'])) {
+        } elseif (!isset($_POST['e__id']) || !isset($_POST['x__id'])) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Coin ID',
+                'message' => 'Missing Core IDs',
             ));
         }
 
-
-        //Log Modal View:
-        $this->X_model->create(array(
-            'x__creator' => $member_e['e__id'],
-            'x__type' => 14576, //MODAL VIEWED
-            'x__up' => 31912, //Edit Source
-            'x__down' => $_POST['e__id'],
+        $es = $this->E_model->fetch(array(
+            'e__id' => $_POST['e__id'],
+            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
+        if (!count($es)) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Source is no longer active',
+            ));
+        } elseif (!write_access_e($es[0]['e__handle'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You are missing permission to edit this Source',
+            ));
+        }
 
+        //Fetch dynamic data based on idea type:
+        $return_inputs = array();
+        $return_radios = '';
+        $input_pointer = 0;
 
-        //Any suggestions?
-        $icon_suggestions = array();
+        //Fetch Source Templates, if any:
+        foreach($this->X_model->fetch(array(
+            'x__up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //SOURCE TEMPLATE GROUPS
+            'x__down' => $es[0]['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        )) as $e_group) {
+
+            //Find template for this group:
+            foreach($this->X_model->fetch(array(
+                'x__down' => $e_group['e__id'],
+                'x__up IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            )) as $e_template) {
+
+                //Load template:
+                foreach($this->config->item('e___'.$e_template['x__up']) as $dynamic_e__id => $m) {
+
+                    //Make sure it's a dynamic input field:
+                    if(!in_array($dynamic_e__id, $this->config->item('n___42179'))){
+                        continue;
+                    }
+
+                    //Let's first determine the data type:
+                    $data_types = array_intersect($m['m__following'], $this->config->item('n___4592'));
+
+                    if(count($data_types)!=1){
+                        //This is strange, we are expecting 1 match only... report this:
+                        $this->X_model->create(array(
+                            'x__type' => 4246, //Platform Bug Reports
+                            'x__creator' => $member_e['e__id'],
+                            'x__up' => 31912, //Edit Source
+                            'x__down' => $dynamic_e__id,
+                            'x__reference' => $_POST['x__id'],
+                            'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
+                        ));
+                        continue; //Go to the next dynamic data type...
+
+                    } elseif ($input_pointer >= view_memory(6404, 42206)) {
+                        //Monitor if we ever reach the maximum:
+                        $this->X_model->create(array(
+                            'x__type' => 4246, //Platform Bug Reports
+                            'x__creator' => $member_e['e__id'],
+                            'x__up' => 42179, //Dynamic Input Fields
+                            'x__down' => $dynamic_e__id,
+                            'x__right' => $_POST['i__id'],
+                            'x__reference' => $_POST['x__id'],
+                            'x__metadata' => $_POST,
+                            'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion...',
+                        ));
+                    }
+
+                    //We found 1 match as expected:
+                    $input_pointer++;
+                    $data_type = $data_types[0];
+                    $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
+
+                    if(in_array($data_type, $this->config->item('n___42188'))){
+
+                        //Single or Multiple Choice:
+                        $return_radios .= view_radio_e($dynamic_e__id, $es[0]['e__id'], 0);
+
+                    } else {
+
+                        //Fetch the current value:
+                        $d__value = '';
+                        foreach($this->X_model->fetch(array(
+                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__down' => $es[0]['e__id'],
+                            'x__up' => $dynamic_e__id,
+                        )) as $curr_val){
+                            $d__value = $curr_val['x__message'];
+                            break;
+                        }
+
+                        //Add to main array:
+                        $this_data_type = $this->config->item('e___'.$data_type);
+                        $return_inputs[$dynamic_e__id] = array(
+                            'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                            'd__value' => $d__value,
+                            'd__placeholder' => $this_data_type[$dynamic_e__id]['m__message'],
+                        );
+
+                    }
+                }
+            }
+        }
 
 
         //Find Past Selected Icons for Source:
+        $return_covers = array();
         $unique_covers = array();
         foreach($this->X_model->fetch(array(
             'x__down' => $_POST['e__id'],
@@ -601,7 +647,7 @@ class E extends CI_Controller
                 $cover = ( substr_count($x__metadata['before'], 'class="') ? one_two_explode('class="','"',$x__metadata['before']) : $x__metadata['before'] );
                 if(strlen($cover) && !in_array($cover, $unique_covers)){
                     array_push($unique_covers, $cover);
-                    array_push($icon_suggestions, array(
+                    array_push($return_covers, array(
                         'cover_preview' => $cover,
                         'cover_apply' => $cover,
                         'new_title' => $x['x__time'],
@@ -609,12 +655,11 @@ class E extends CI_Controller
                 }
             }
         }
-
         if($member_e['e__id']==$_POST['e__id']){
-            //Show animal icons:
+            //Also append animal icons for user cover selection:
             foreach($this->config->item('e___12279') as $e__id => $m) {
                 $cover = one_two_explode('class="','"',$m['m__cover']);
-                array_push($icon_suggestions, array(
+                array_push($return_covers, array(
                     'cover_preview' => $cover,
                     'cover_apply' => $cover,
                     'new_title' => $cover.' ('.$m['m__title'].')',
@@ -622,35 +667,34 @@ class E extends CI_Controller
             }
         }
 
+        $return_array = array(
+            'status' => 1,
+            'return_inputs' => $return_inputs,
+            'return_radios' => $return_radios,
+            'return_covers' => $return_covers, //Past covers for quick editing
+        );
 
-
-        //SOURCE
-        $es = $this->E_model->fetch(array(
-            'e__id' => $_POST['e__id'],
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        //Log Modal View:
+        $this->X_model->create(array(
+            'x__creator' => $member_e['e__id'],
+            'x__type' => 14576, //MODAL VIEWED
+            'x__up' => 31912, //Edit Source
+            'x__down' => $es[0]['e__id'],
+            'x__reference' => $_POST['x__id'],
+            'x__metadata' => $return_array,
         ));
-        if(count($es)){
-            return view_json(array(
-                'status' => 1,
-                'card__title' => $es[0]['e__title'],
-                'card__cover' => $es[0]['e__cover'],
-                'icon_suggestions' => $icon_suggestions,
-            ));
-        }
 
+        //Return everything we found:
+        return view_json($return_array);
 
-        //Could not find:
-        return view_json(array(
-            'status' => 0,
-            'message' => 'Could not find coin',
-        ));
     }
 
 
 
 
-    function e_edit_save()
+    function edit_save_e()
     {
+
         $member_e = superpower_unlocked();
         if (!$member_e) {
             return view_json(array(
@@ -662,42 +706,226 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
             ));
-        } elseif (!isset($_POST['card__title'])) {
+        } elseif (!isset($_POST['edit_e__title'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source Title',
             ));
-        } elseif (!isset($_POST['card__cover'])) {
+        } elseif (!isset($_POST['edit_e__cover'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source Cover',
             ));
+        } elseif(!isset($_POST['edit_x__id']) || !isset($_POST['edit_x__message'])){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Transaction Data',
+            ));
         }
+
+
+
+
+        $es = $this->E_model->fetch(array(
+            'e__id' => $_POST['edit_e__id'],
+            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        ));
+        if(!count($es)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Source Not Active',
+            ));
+        }
+
+
+
+        //Validate Dynamic Inputs:
+        $input_pointer = 0;
+        $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
+        //Fetch Source Templates, if any:
+        foreach($this->X_model->fetch(array(
+            'x__up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //SOURCE TEMPLATE GROUPS
+            'x__down' => $es[0]['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        )) as $e_group) {
+
+            //Find template for this group:
+            foreach ($this->X_model->fetch(array(
+                'x__down' => $e_group['e__id'],
+                'x__up IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            )) as $e_template) {
+
+                //Load template:
+                foreach ($this->config->item('e___' . $e_template['x__up']) as $dynamic_e__id => $m) {
+
+                    //Make sure it's a dynamic input field:
+                    if (!in_array($dynamic_e__id, $this->config->item('n___42179'))) {
+                        continue;
+                    }
+
+                    //Let's first determine the data type:
+                    $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
+
+                    if (count($data_types) != 1) {
+                        //This is strange, we are expecting 1 match only... report this:
+                        $this->X_model->create(array(
+                            'x__type' => 4246, //Platform Bug Reports
+                            'x__creator' => $member_e['e__id'],
+                            'x__up' => 42179, //Dynamic Input Fields
+                            'x__down' => $dynamic_e__id,
+                            'x__right' => $_POST['i__id'],
+                            'x__reference' => $_POST['x__id'],
+                            'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong...',
+                        ));
+                        continue; //Go to the next dynamic data type...
+                    }
+
+                    //We found 1 match as expected:
+                    $input_pointer++; //Starts at 1
+                    $data_type = $data_types[0];
+                    $is_required = in_array($data_type, $this->config->item('n___42174')); //Required Settings
+
+                    //Validate input if required or provided:
+                    if ($is_required || strlen($_POST['edit_dynamic_' . $input_pointer])) {
+                        $valid_data_type = valid_data_type($data_types, $_POST['edit_dynamic_' . $input_pointer], $e___42179[$dynamic_e__id]['m__title']);
+                        if (!$valid_data_type['status']) {
+                            //We had an error:
+                            return view_json($valid_data_type);
+                        }
+                    }
+
+                    //Yes value is valid!
+
+                    //Fetch the current value:
+                    $values = $this->X_model->fetch(array(
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__up' => $dynamic_e__id,
+                        'x__down' => $es[0]['e__id'],
+                    ));
+
+                    //Update if needed:
+                    if (count($values) && !strlen($_POST['edit_dynamic_' . $input_pointer])) {
+
+                        //Remove Link:
+                        $this->X_model->update($values[0]['x__id'], array(
+                            'x__access' => 6173, //Transaction Removed
+                        ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+
+                    } elseif (!count($values)) {
+
+                        //Create Link:
+                        $this->X_model->create(array(
+                            'x__creator' => $member_e['e__id'],
+                            'x__type' => 4230,
+                            'x__up' => $dynamic_e__id,
+                            'x__down' => $es[0]['e__id'],
+                            'x__message' => $_POST['edit_dynamic_' . $input_pointer],
+                            'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                        ));
+
+                    } elseif ($values[0]['x__message'] != $_POST['edit_dynamic_' . $input_pointer]) {
+
+                        //Update Link:
+                        $this->X_model->update($values[0]['x__id'], array(
+                            'x__message' => $_POST['edit_dynamic_' . $input_pointer],
+                            'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                        ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
+
+                    }
+                }
+            }
+        }
+
+
+
+        //Validate Source Handle & save if needed:
+        if($es[0]['e__handle'] !== trim($_POST['edit_e__handle'])){
+
+            $validate_handle = validate_handle(trim($_POST['edit_e__handle']), null, $es[0]['e__id']);
+            if(!$validate_handle['status']){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => $validate_handle['message'],
+                ));
+            }
+
+            //Update Handles everywhere they are referenced:
+            foreach ($this->X_model->fetch(array(
+                'x__up' => $es[0]['e__id'],
+                'x__type' => 31835, //Source Mention
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            )) as $ref) {
+                $this->I_model->update($ref['x__right'], array(
+                    'i__message' => preg_replace('/\b@'.$es[0]['e__handle'].'\b/', '@'.trim($_POST['edit_e__handle']), $ref['x__message']),
+                ), false, $member_e['e__id']);
+            }
+            $es[0]['e__handle'] = trim($_POST['edit_e__handle']);
+
+        }
+
+        //Validate Source Title & save if needed:
+        if($es[0]['e__title'] != trim($_POST['edit_e__title'])){
+            $validate_e__title = validate_e__title($_POST['edit_e__title']);
+            if(!$validate_e__title['status']){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => $validate_e__title['message'],
+                ));
+            }
+            $es[0]['e__title'] = $validate_e__title['e__title_clean'];
+        }
+
+        //Save Source Cover if needed:
+        if($es[0]['e__cover'] != trim($_POST['edit_e__cover'])){
+            //TODO validate e__cover?
+            $es[0]['e__cover'] = trim($_POST['edit_e__cover']);
+        }
+
+        //Update:
+        $this->E_model->update($es[0]['e__id'], array(
+            'e__title' => $validate_e__title['e__title_clean'],
+            'e__cover' => trim($_POST['edit_e__cover']),
+            'e__handle' => trim($_POST['edit_e__handle']),
+        ), true, $member_e['e__id']);
+
+
+        //Do we have a link reference message that need to be saved?
+        if($_POST['edit_x__id']>0){
+
+            //Fetch transaction:
+            foreach($this->X_model->fetch(array(
+                'x__id' => $_POST['edit_x__id'],
+            )) as $this_x){
+
+                $es[0] = array_merge($es[0], $this_x);
+
+                if($this_x['x__message'] != trim($_POST['edit_x__message'])){
+
+                    $this->X_model->update($this_x['x__id'], array(
+                        'x__message' => trim($_POST['edit_x__message']),
+                        'x__weight' => number_x__weight(trim($_POST['edit_x__message'])),
+                    ), $member_e['e__id'], 42171);
+
+                }
+            }
+        }
+
 
         //Reset member session data if this data belongs to the logged-in member:
         if ($_POST['edit_e__id']==$member_e['e__id']) {
-
-            $es = $this->E_model->fetch(array(
-                'e__id' => intval($_POST['edit_e__id']),
-            ));
-            if(count($es)){
-                //Re-activate Session with new data:
-                $es[0]['e__title'] = trim($_POST['card__title']);
-                $es[0]['e__cover'] = trim($_POST['card__cover']);
-                $this->E_model->activate_session($es[0], true);
-            }
-
+            $this->E_model->activate_session($es[0], true);
         }
 
-        //SOURCE
-        $this->E_model->update($_POST['edit_e__id'], array(
-            'e__title' => trim($_POST['card__title']),
-            'e__cover' => trim($_POST['card__cover']),
-        ), true, $member_e['e__id']);
 
         return view_json(array(
             'status' => 1,
+            'message' => 'updated',
         ));
+
 
     }
 
@@ -713,19 +941,13 @@ class E extends CI_Controller
          *
          * */
 
-        if(isset($_POST['member__id_override']) && intval($_POST['member__id_override']) > 0){
-            $member_e['e__id'] = intval($_POST['member__id_override']);
-        } else {
-            $member_e = superpower_unlocked();
-            if (!$member_e) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => view_unauthorized_message(),
-                ));
-            }
-        }
-
-        if (!isset($_POST['focus_id']) || intval($_POST['focus_id']) < 1) {
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['focus_id']) || intval($_POST['focus_id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing followings source',
@@ -735,6 +957,11 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing selected source',
             ));
+        } elseif (!isset($_POST['down_e__id']) || !isset($_POST['right_i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Down/Right Element',
+            ));
         } elseif (!isset($_POST['enable_mulitiselect']) || !isset($_POST['was_previously_selected'])) {
             return view_json(array(
                 'status' => 0,
@@ -743,32 +970,33 @@ class E extends CI_Controller
         }
 
 
-        //Dispatch Any Emails Necessary:
-        foreach($this->E_model->scissor_e(31065, $_POST['selected_e__id']) as $e_item) {
-            $this->X_model->send_dm($member_e['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
-        }
+        if($_POST['down_e__id'] > 0){
 
-        if($_POST['focus_id']==28904){
-
-            //Add special transaction to monitor unsubscribes:
-            if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
-                $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
-                    'x__type' => 29648, //Communication Downgraded
-                    'x__up' => $_POST['focus_id'],
-                    'x__down' => $_POST['selected_e__id'],
-                ));
+            //Dispatch Any Emails Necessary:
+            foreach($this->E_model->scissor_e(31065, $_POST['selected_e__id']) as $e_item) {
+                $this->X_model->send_dm($member_e['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
             }
 
-            //Inform user if they Permanently Unsubscribed:
-            if(in_array($_POST['selected_e__id'], $this->config->item('n___31057'))){
-                //$e___31065 = $this->config->item('e___31065'); //NAVIGATION
-                //$this->X_model->send_dm($member_e['e__id'], $e___31065[31066]['m__title'], $e___31065[31066]['m__message'], array(), 31066);
+            if($_POST['focus_id']==28904){
+
+                //Add special transaction to monitor unsubscribes:
+                if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
+                    $this->X_model->create(array(
+                        'x__creator' => $member_e['e__id'],
+                        'x__type' => 29648, //Communication Downgraded
+                        'x__up' => $_POST['focus_id'],
+                        'x__down' => $_POST['selected_e__id'],
+                    ));
+                }
+
             }
 
         }
+
+
 
         if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
+
             //Since this is not a multi-select we want to delete all existing options...
 
             //Fetch all possible answers based on followings source:
@@ -790,13 +1018,24 @@ class E extends CI_Controller
                 array_push($possible_answers, $answer_e['e__id']);
             }
 
-            //Delete selected options for this member:
-            foreach($this->X_model->fetch(array(
-                'x__up IN (' . join(',', $possible_answers) . ')' => null,
-                'x__down' => $member_e['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )) as $delete){
+            //Delete previously selected options:
+            if($_POST['down_e__id']){
+                $delete_query = $this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $possible_answers) . ')' => null,
+                    'x__down' => $_POST['down_e__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                ));
+            } elseif($_POST['right_i__id']){
+                $delete_query = $this->X_model->fetch(array(
+                    'x__up IN (' . join(',', $possible_answers) . ')' => null,
+                    'x__right' => $_POST['right_i__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                ));
+            }
+
+            foreach($delete_query as $delete){
                 //Should usually delete a single option:
                 $this->X_model->update($delete['x__id'], array(
                     'x__access' => 6173, //Transaction Removed
@@ -807,29 +1046,26 @@ class E extends CI_Controller
 
         //Add new option if not previously there:
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
-            $this->X_model->create(array(
-                'x__up' => $_POST['selected_e__id'],
-                'x__down' => $member_e['e__id'],
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 4230,
-            ));
+            if($_POST['down_e__id']){
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__up' => $_POST['selected_e__id'],
+                    'x__type' => 4230,
+                    'x__down' => $_POST['down_e__id'],
+                ));
+            } elseif($_POST['right_i__id']){
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__up' => $_POST['selected_e__id'],
+                    'x__type' => 4983, //IDEA SOURCES
+                    'x__right' => $_POST['right_i__id'],
+                ));
+            }
         }
 
 
-        //Log Account Update transaction type:
-        $_POST['account_update_function'] = 'e_radio'; //Add this variable to indicate which My Account function created this transaction
-        $this->X_model->create(array(
-            'x__creator' => $member_e['e__id'],
-            'x__type' => 6224, //My Account updated
-            'x__message' => 'My Account '.( $_POST['enable_mulitiselect'] ? 'Multi-Select Radio Field ' : 'Single-Select Radio Field ' ).( $_POST['was_previously_selected'] ? 'Deleted' : 'Created' ),
-            'x__metadata' => $_POST,
-            'x__up' => $_POST['focus_id'],
-            'x__down' => $_POST['selected_e__id'],
-        ));
-
-
         //Update Session:
-        if(count($member_e) >= 2){
+        if($_POST['down_e__id'] && count($member_e) >= 2){
             $this->E_model->activate_session($member_e, true);
         }
 
@@ -837,7 +1073,7 @@ class E extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Updated', //NOT shown in UI
+            'message' => 'Updated',
         ));
     }
 
@@ -903,305 +1139,6 @@ class E extends CI_Controller
             'new_avatar' => $new_avatar,
         ));
     }
-
-
-
-    function e_email()
-    {
-
-        $member_e = superpower_unlocked();
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['e_email']) || !filter_var($_POST['e_email'], FILTER_VALIDATE_EMAIL)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Email',
-            ));
-        }
-
-
-        if (strlen($_POST['e_email']) > 0) {
-
-            //Cleanup:
-            $_POST['e_email'] = trim(strtolower($_POST['e_email']));
-
-            //Check to make sure not duplicate:
-            $duplicates = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__up' => 3288, //Email
-                'x__down !=' => $member_e['e__id'],
-                'LOWER(x__message)' => $_POST['e_email'],
-            ));
-            if (count($duplicates) > 0) {
-                //This is a duplicate, disallow:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Email already in-use by another account. Enter another Email or contact support for assistance.',
-                ));
-            }
-        }
-
-
-        //Fetch existing email:
-        $u_accounts = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Email
-        ));
-        if (count($u_accounts) > 0) {
-
-            if (strlen($_POST['e_email'])==0) {
-
-                //Delete email:
-                $this->X_model->update($u_accounts[0]['x__id'], array(
-                    'x__access' => 6173, //Transaction Removed
-                ), $member_e['e__id'], 6224 /* Member Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Email deleted',
-                );
-
-            } elseif ($u_accounts[0]['x__message'] != $_POST['e_email']) {
-
-                //Update if not duplicate:
-                $this->X_model->update($u_accounts[0]['x__id'], array(
-                    'x__message' => $_POST['e_email'],
-                ), $member_e['e__id'], 6224 /* Member Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Email updated',
-                );
-
-            } else {
-
-                $return = array(
-                    'status' => 0,
-                    'message' => 'Email unchanged',
-                );
-
-            }
-
-        } elseif (strlen($_POST['e_email']) > 0) {
-
-            //Create new transaction:
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__down' => $member_e['e__id'],
-                'x__type' => 4230,
-                'x__up' => 3288, //Email
-                'x__message' => $_POST['e_email'],
-            ), true);
-
-            $this->E_model->activate_subscription($member_e['e__id']);
-
-            $return = array(
-                'status' => 1,
-                'message' => 'Email added',
-            );
-
-        } else {
-
-            $return = array(
-                'status' => 0,
-                'message' => 'Email unchanged',
-            );
-
-        }
-
-
-        if($return['status']){
-            //Log Account Update transaction type:
-            $_POST['account_update_function'] = 'e_email'; //Add this variable to indicate which My Account function created this transaction
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 6224, //My Account updated
-                'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_email']) > 0 ? ': '.$_POST['e_email'] : ''),
-                'x__metadata' => $_POST,
-            ));
-        }
-
-
-        //Return results:
-        return view_json($return);
-
-
-    }
-
-
-
-
-
-
-    function e_fullname()
-    {
-
-        $member_e = superpower_unlocked();
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['e_fullname']) || !strlen($_POST['e_fullname'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Full Name',
-            ));
-        }
-
-
-        //Cleanup:
-        $return = e_link_message(30198, $member_e['e__id'], trim($_POST['e_fullname']));
-
-
-        //Return results:
-        return view_json($return);
-
-
-    }
-
-
-    function e_phone()
-    {
-
-        $member_e = superpower_unlocked();
-
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['e_phone']) || (strlen($_POST['e_phone'])>0 && intval(preg_replace("/[^0-9]/", "", $_POST['e_phone'] ))<10000000)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Phone number',
-            ));
-        }
-
-
-
-        if (strlen($_POST['e_phone']) > 0) {
-
-            //Cleanup digits only:
-            $_POST['e_phone'] = trim(preg_replace("/[^0-9]/", "", $_POST['e_phone'] ));
-
-            //Check to make sure not duplicate:
-            $duplicates = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__up' => 4783, //Phone
-                'x__down !=' => $member_e['e__id'],
-                'x__message' => $_POST['e_phone'],
-            ));
-            if (count($duplicates) > 0) {
-                //This is a duplicate, disallow:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Phone already in-use by another account. Enter another phone or contact support for assistance.',
-                ));
-            }
-
-        }
-
-
-        //Fetch existing phone:
-        $u_phones = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => 4783, //Phone
-        ));
-        if (count($u_phones) > 0) {
-
-            if (strlen($_POST['e_phone'])==0) {
-
-                //Delete phone:
-                $this->X_model->update($u_phones[0]['x__id'], array(
-                    'x__access' => 6173, //Transaction Removed
-                ), $member_e['e__id'], 6224 /* Member Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Phone deleted',
-                );
-
-            } elseif ($u_phones[0]['x__message'] != $_POST['e_phone']) {
-
-                //Update if not the same:
-                $this->X_model->update($u_phones[0]['x__id'], array(
-                    'x__message' => $_POST['e_phone'],
-                ), $member_e['e__id'], 6224 /* Member Account Updated */);
-
-                $return = array(
-                    'status' => 1,
-                    'message' => 'Phone updated',
-                );
-
-            } else {
-
-                $return = array(
-                    'status' => 0,
-                    'message' => 'Phone unchanged',
-                );
-
-            }
-
-        } elseif (strlen($_POST['e_phone']) > 0) {
-
-            //Add Phone:
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__down' => $member_e['e__id'],
-                'x__type' => 4230,
-                'x__up' => 4783, //Phone
-                'x__message' => $_POST['e_phone'],
-            ), true);
-
-            $this->E_model->activate_subscription($member_e['e__id']);
-
-            $return = array(
-                'status' => 1,
-                'message' => 'Phone added',
-            );
-
-        } else {
-
-            $return = array(
-                'status' => 0,
-                'message' => 'Phone unchanged',
-            );
-
-        }
-
-
-        if($return['status']){
-            //Log Account Update transaction type:
-            $_POST['account_update_function'] = 'e_phone'; //Add this variable to indicate which My Account function created this transaction
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 6224, //My Account updated
-                'x__message' => 'My Account '.$return['message']. ( strlen($_POST['e_phone']) > 0 ? ': '.$_POST['e_phone'] : ''),
-                'x__metadata' => $_POST,
-            ));
-        }
-
-
-        //Return results:
-        return view_json($return);
-
-
-    }
-
-
-
 
 
 
@@ -1335,16 +1272,18 @@ class E extends CI_Controller
         }
 
 
+        //Set default sign in URL:
+        $sign_url = '/@'.$es[0]['e__handle'];
+
+        //See if we can find a better one:
         if (intval($_POST['sign_i__id']) > 0) {
-
-            $sign_url = '/x/x_start/'.$_POST['sign_i__id'];
-
+            foreach($this->I_model->fetch(array(
+                'i__id' => $_POST['sign_i__id'],
+            )) as $i){
+                $sign_url = '/x/x_start/'.$i['i__hashtag'];
+            }
         } elseif (isset($_POST['referrer_url']) && strlen(urldecode($_POST['referrer_url'])) > 1) {
-
             $sign_url = urldecode($_POST['referrer_url']);
-
-        } else {
-            $sign_url = '/@'.$es[0]['e__id'];
         }
 
         return view_json(array(

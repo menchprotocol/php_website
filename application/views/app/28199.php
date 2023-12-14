@@ -6,12 +6,16 @@ $filters = array(
     'x__up' => 28199,
 );
 
-if(isset($_GET['i__id']) && intval($_GET['i__id'])>0){
-    $filters['x__right'] = intval($_GET['i__id']);
-    $buffer_time = 0;
-} else {
-    //Give it some extra time in case they are in Paypal making the payment
-    $buffer_time = 300;
+//Give it some extra time in case they are in Paypal making the payment
+$buffer_time = 300;
+
+if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
+    foreach($this->I_model->fetch(array(
+        'i__hashtag' => $_GET['i__hashtag'],
+    )) as $i){
+        $filters['x__right'] = $i['i__id'];
+        $buffer_time = 0;
+    }
 }
 
 $links_deleted = 0;
@@ -56,7 +60,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
             if($deleted){
                 $links_deleted++;
-                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="/@'.$x_progress['e__id'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="/-12722?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
+                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="/@'.$x_progress['e__handle'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="'.view_app_link(12722).'?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
             }
 
 
@@ -72,6 +76,8 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
 
 if(isset($filters['x__right'])){
-    //We were deleting a single item, redirect back:
-    js_php_redirect('/~'.$filters['x__right'], 0);
+    foreach($this->I_model->fetch(array('i__id' => $filters['x__right'])) as $i){
+        //We were deleting a single item, redirect back:
+        js_php_redirect('/~'.$i['i__hashtag'], 0);
+    }
 }

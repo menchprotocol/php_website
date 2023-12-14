@@ -1,13 +1,13 @@
 <?php
 
-if(!isset($_GET['i__id'])){
-    die('Missing Idea ID i__id');
+if(!isset($_GET['i__hashtag'])){
+    die('Missing Idea ID i__hashtag');
 }
 
 
 //Generate list & settings:
-$list_settings = list_settings($_GET['i__id'], true);
-echo '<h1>' . view_first_line($list_settings['i']['i__message']) . '</h1>';
+$list_settings = list_settings($_GET['i__hashtag'], true);
+echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
 echo count($list_settings['query_string']) . ' Contacts<br />';
 echo $list_settings['contact_details']['email_count'] . ' Emails<br />';
 echo $list_settings['contact_details']['phone_count'] . ' Phones<br /><br />';

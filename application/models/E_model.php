@@ -58,7 +58,6 @@ class E_model extends CI_Model
             'session_up' => $e,
             'session_up_ids' => array(),
             'session_superpowers_unlocked' => array(),
-            'session_superpowers_activated' => array(),
         );
 
         //Make sure they also belong to this website's members:
@@ -96,7 +95,7 @@ class E_model extends CI_Model
 
                 //Create Cookie:
                 $cookie_time = time();
-                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.md5($e['e__id'].$cookie_time.view_memory(6404,30863));
+                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.view_e__hash($e['e__id'].$cookie_time);
                 setcookie('auth_cookie', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }
@@ -159,23 +158,11 @@ class E_model extends CI_Model
 
                 //It's unlocked!
                 array_push($session_data['session_superpowers_unlocked'], intval($e_up['e__id']));
-
-                //Was the latest toggle to de-activate? If not, assume active:
-                $last_advance_settings = $this->X_model->fetch(array(
-                    'x__creator' => $e['e__id'],
-                    'x__type' => 5007, //TOGGLE SUPERPOWER
-                    'x__up' => $e_up['e__id'],
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array(), 1); //Fetch the single most recent supoerpower toggle only
-                if(!count($last_advance_settings) || !substr_count($last_advance_settings[0]['x__message'] , ' DEACTIVATED')){
-                    array_push($session_data['session_superpowers_activated'], intval($e_up['e__id']));
-                }
-
             }
         }
 
 
-        //Determine Account Defaults if missing any of the CUSTOM UI
+        //Determine Defaults if missing any of the CUSTOM UI
         foreach($this->config->item('e___13890') as $e__id => $m){
 
             //Set Default:
@@ -231,7 +218,7 @@ class E_model extends CI_Model
             $unsubscribed_time = $unsubscribed['x__time'];
             $this->X_model->update($unsubscribed['x__id'], array(
                 'x__access' => 6173,
-            ), $e['e__id'], 31064); //Login Resubscribe
+            ), $e['e__id'], 31064); //Resubscribe
         }
         if($unsubscribed_time){
             //Add to subscribed again:
@@ -241,7 +228,7 @@ class E_model extends CI_Model
                 'x__creator' => $e['e__id'],
                 'x__down' => $e['e__id'],
             ));
-            $this->session->set_flashdata('flash_message', '<div class="msg alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
         }
         */
 
@@ -414,8 +401,9 @@ class E_model extends CI_Model
 
             //Send Welcome Email if any:
             if($phone_number || $email){
-                foreach($this->E_model->scissor_e($x__website, 14929) as $e_item){
-                    $this->X_model->send_dm($added_e['new_e']['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
+                $e___14929 = $this->config->item('e___14929'); //Welcome Email Templates
+                if(isset($e___14929[$x__website]['m__message']) && strlen($e___14929[$x__website]['m__message'])){
+                    $this->X_model->send_dm($added_e['new_e']['e__id'], 'Welcome to '.$e___14929[$x__website]['m__title'], $e___14929[$x__website]['m__message']);
                 }
             }
 
@@ -436,7 +424,7 @@ class E_model extends CI_Model
     }
 
 
-    function create($add_fields, $external_sync = false, $x__creator = 0)
+    function create($add_fields, $x__creator = 14068)
     {
 
         //What is required to create a new Idea?
@@ -448,8 +436,8 @@ class E_model extends CI_Model
             $add_fields['e__access'] = 6181; //PUBLIC SOURCE
         }
 
-        //Transform text:
-        $add_fields['e__title'] = $add_fields['e__title'];
+        //Generate Handle:
+        $add_fields['e__handle'] = generate_handle(12274, $add_fields['e__title']);
 
         //Lets now add:
         $this->db->insert('table__e', $add_fields);
@@ -461,12 +449,22 @@ class E_model extends CI_Model
 
         if ($add_fields['e__id'] > 0) {
 
+            //Generate new references:
+
             //Log transaction new source:
             $this->X_model->create(array(
                 'x__creator' => ($x__creator > 0 ? $x__creator : $add_fields['e__id']),
                 'x__down' => $add_fields['e__id'],
                 'x__type' => 4251, //New Source Created
                 'x__message' => $add_fields['e__title'],
+            ));
+
+            //Log transaction new Idea hashtag:
+            $this->X_model->create(array(
+                'x__creator' => $x__creator,
+                'x__right' => $add_fields['i__id'],
+                'x__message' => $add_fields['i__hashtag'],
+                'x__type' => 42169, //Source Generated Handle
             ));
 
             //Fetch to return the complete source data:
@@ -987,18 +985,18 @@ class E_model extends CI_Model
                 'message' => 'Missing primary command',
             );
 
-        } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441, 26149)) && !is_valid_e_string($action_command1)){
+        } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441, 26149)) && !view_valid_handle_e($action_command1)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Source. Format must be: @123 Source Name',
+                'message' => 'Unknown Source. Format must be: @SourceHandle',
             );
 
-        } elseif(in_array($action_e__id, array(11956)) && !is_valid_e_string($action_command2)){
+        } elseif(in_array($action_e__id, array(11956)) && !view_valid_handle_e($action_command2)){
 
             return array(
                 'status' => 0,
-                'message' => 'Unknown Source. Format must be: @123 Source Name',
+                'message' => 'Unknown Source. Format must be: @SourceHandle',
             );
 
         }
@@ -1042,111 +1040,112 @@ class E_model extends CI_Model
                 $applied_success++;
 
 
-            } elseif (in_array($action_e__id, array(26149))) {
+            } elseif (in_array($action_e__id, array(26149)) && view_valid_handle_e($action_command1)) {
 
                 //Go through all followings of this source:
-                //Add Follower Sources:
-                $focus_id = intval(one_two_explode('@',' ',$action_command1));
+                foreach($this->E_model->fetch(array(
+                    'e__handle' => view_valid_handle_e($action_command1),
+                )) as $e){
 
-                //Go through all followings and add the ones missing:
-                foreach($this->X_model->fetch(array(
-                    'x__up' => $focus_id,
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__down'), 0, 0) as $e__up){
-
-                    //Add if not added as the follower:
-                    if(!count($this->X_model->fetch(array(
-                        'x__up' => $e__up['e__id'],
-                        'x__down' => $x['e__id'],
+                    //Go through all followings and add the ones missing:
+                    foreach($this->X_model->fetch(array(
+                        'x__up' => $e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    )))){
+                        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                    ), array('x__down'), 0, 0) as $e__up){
 
-                        //Must be added:
-                        $this->X_model->create(array(
-                            'x__creator' => $x__creator,
+                        //Add if not added as the follower:
+                        if(!count($this->X_model->fetch(array(
                             'x__up' => $e__up['e__id'],
                             'x__down' => $x['e__id'],
-                            'x__type' => 4230,
-                            'x__message' => $e__up['x__message'],
-                        ));
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        )))){
 
-                        $applied_success++;
-                    }
-
-                }
-
-            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441))) { //Add/Delete/Migrate followings source
-
-                //What member searched for:
-                $focus_id = intval(one_two_explode('@',' ',$action_command1));
-
-                //See if follower source has searched followings source:
-                $down_up_e = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $x['e__id'], //This follower source
-                    'x__up' => $focus_id,
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                ));
-
-                if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0) || ($action_e__id==12928 && view_e_covers(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_e_covers(12273, $x['e__id'],0, false))){
-
-                    $add_fields = array(
-                        'x__creator' => $x__creator,
-                        'x__type' => 4230,
-                        'x__down' => $x['e__id'], //This follower source
-                        'x__up' => $focus_id,
-                    );
-
-                    if($action_e__id==13441){
-                        //Copy message only if moving:
-                        $add_fields['x__message'] = $x['x__message'];
-                    }
-
-                    //Following Member Addition
-                    $this->X_model->create($add_fields);
-
-                    $applied_success++;
-
-                    if($action_e__id==13441){
-                        //Since we're migrating we should remove from here:
-                        $this->X_model->update($x['x__id'], array(
-                            'x__access' => 6173, //Transaction Deleted
-                        ), $x__creator, 10673 /* Member Transaction Unpublished  */);
-                    }
-
-                } elseif(in_array($action_e__id, array(5982, 11956)) && count($down_up_e) > 0){
-
-                    if($action_e__id==5982){
-
-                        //Following Member Removal
-                        foreach($down_up_e as $delete_tr){
-
-                            $this->X_model->update($delete_tr['x__id'], array(
-                                'x__access' => 6173, //Transaction Deleted
-                            ), $x__creator, 10673 /* Member Transaction Unpublished  */);
+                            //Must be added:
+                            $this->X_model->create(array(
+                                'x__creator' => $x__creator,
+                                'x__up' => $e__up['e__id'],
+                                'x__down' => $x['e__id'],
+                                'x__type' => 4230,
+                                'x__message' => $e__up['x__message'],
+                            ));
 
                             $applied_success++;
                         }
+                    }
+                }
 
-                    } elseif($action_e__id==11956) {
+            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441)) && view_valid_handle_e($action_command1)) { //Add/Delete/Migrate followings source
 
-                        $followings_new_e__id = intval(one_two_explode('@',' ',$action_command2));
+                //What member searched for:
+                foreach($this->E_model->fetch(array(
+                    'e__handle' => view_valid_handle_e($action_command1),
+                )) as $e){
 
-                        //Add as a followings because it meets the condition
-                        $this->X_model->create(array(
+                    //See if follower source has searched followings source:
+                    $down_up_e = $this->X_model->fetch(array(
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__down' => $x['e__id'], //This follower source
+                        'x__up' => $e['e__id'],
+                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    ));
+
+                    if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0) || ($action_e__id==12928 && view_e_covers(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_e_covers(12273, $x['e__id'],0, false))){
+
+                        $add_fields = array(
                             'x__creator' => $x__creator,
                             'x__type' => 4230,
                             'x__down' => $x['e__id'], //This follower source
-                            'x__up' => $followings_new_e__id,
-                        ));
+                            'x__up' => $e['e__id'],
+                        );
+
+                        if($action_e__id==13441){
+                            //Copy message only if moving:
+                            $add_fields['x__message'] = $x['x__message'];
+                        }
+
+                        //Following Member Addition
+                        $this->X_model->create($add_fields);
 
                         $applied_success++;
 
-                    }
+                        if($action_e__id==13441){
+                            //Since we're migrating we should remove from here:
+                            $this->X_model->update($x['x__id'], array(
+                                'x__access' => 6173, //Transaction Deleted
+                            ), $x__creator, 10673 /* Member Transaction Unpublished  */);
+                        }
 
+                    } elseif(in_array($action_e__id, array(5982, 11956)) && count($down_up_e) > 0){
+
+                        if($action_e__id==5982){
+
+                            //Following Member Removal
+                            foreach($down_up_e as $delete_tr){
+                                $this->X_model->update($delete_tr['x__id'], array(
+                                    'x__access' => 6173, //Transaction Deleted
+                                ), $x__creator, 10673 /* Member Transaction Unpublished  */);
+                                $applied_success++;
+                            }
+
+                        } elseif($action_e__id==11956 && view_valid_handle_e($action_command2)) {
+
+                            foreach($this->E_model->fetch(array(
+                                'e__handle' => view_valid_handle_e($action_command2),
+                            )) as $e){
+                                //Add as a followings because it meets the condition
+                                $this->X_model->create(array(
+                                    'x__creator' => $x__creator,
+                                    'x__type' => 4230,
+                                    'x__down' => $x['e__id'], //This follower source
+                                    'x__up' => $e['e__id'],
+                                ));
+                                $applied_success++;
+                            }
+                        }
+                    }
                 }
 
             } elseif ($action_e__id==5943) { //Member Mass Update Member Icon
@@ -1258,9 +1257,8 @@ class E_model extends CI_Model
         //Create
         $focus_e = $this->E_model->create(array(
             'e__title' => $validate_e__title['e__title_clean'],
-            'e__handle' => generate_handle(12274, $validate_e__title['e__title_clean']),
             'e__cover' => $e__cover,
-        ), true, $x__creator);
+        ), $x__creator);
 
         //Return success:
         return array(

@@ -10,7 +10,7 @@ class App extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        universal_check();
+        auto_login();
 
     }
 
@@ -19,7 +19,7 @@ class App extends CI_Controller
         $this->load(14565);
     }
 
-    function load($app_e__id = 14563 /* Error if none provided */, $i__id = 0, $e__id = 0){
+    function load($app_e__id = 14563 /* Error if none provided */){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
@@ -27,16 +27,39 @@ class App extends CI_Controller
             $app_e__id = 4527;
         }
 
-        if($i__id > 0){
-            $_GET['i__id'] = $i__id;
+        //Any ideas passed?
+        $warning_alerts = '';
+        $i = null;
+        $e = null;
+
+        if(isset($_GET['i__hashtag'])){
+            foreach($this->I_model->fetch(array(
+                'i__hashtag' => $_GET['i__hashtag'],
+            )) as $i_found){
+                $i = $i_found;
+            }
+            if(!$i){
+                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤫</div>';
+            }
         }
-        if($e__id > 0){
-            $_GET['e__id'] = $e__id;
+        
+        if(isset($_GET['e__handle'])){
+            foreach($this->E_model->fetch(array(
+                'e__handle' => $_GET['e__handle'],
+            )) as $e_found){
+                $e = $e_found;
+            }
+            if(!$e){
+                $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤫</div>';
+            }
         }
+
 
         //Validate App
         if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
-            return redirect_message('/@'.$app_e__id, '<div class="msg alert alert-danger" role="alert">@'.$app_e__id.' Is not an APP, yet 🤫</div>');
+            foreach($this->E_model->fetch(array('e__id' => $app_e__id)) as $e){
+                return redirect_message('/@'.$e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$e['e__handle'].' Is not an APP, yet 🤫</div>');
+            }
         }
 
 
@@ -50,13 +73,13 @@ class App extends CI_Controller
         if($memory_detected && $is_u_request){
             //Needs superpowers?
             $member_e = superpower_unlocked();
-            $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
-            if($is_u_request && count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+            $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
+            if($is_u_request && count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 if(!$member_e){
                     //No user, maybe they can login to get it:
-                    return redirect_message('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to gain access.</div>');
+                    return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to gain access.</div>');
                 } else {
-                    die(view_unauthorized_message(end($superpower_actives)));
+                    die(view_unauthorized_message(end($superpowers_required)));
                 }
             }
         }
@@ -67,16 +90,16 @@ class App extends CI_Controller
         //MEMBER REDIRECT?
         if($member_e && in_array($app_e__id, $this->config->item('n___14639'))){
             //Should redirect them:
-            return redirect_message('/@'.$member_e['e__id']);
+            return redirect_message('/@'.$member_e['e__handle']);
         } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
-            return redirect_message('/-4269?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
+            return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
         }
 
 
         //Cache App?
-        $x__left = ( isset($_GET['i__id']) && intval($_GET['i__id']) ? $_GET['i__id'] : 0 );
-        $x__down = ( isset($_GET['e__id']) && intval($_GET['e__id']) ? $_GET['e__id'] : 0 );
+        $x__left = ( $i ? $i['i__id'] : 0 );
+        $x__down = ( $e ? $e['e__id'] : 0 );
         $title = null;
         $ui = null;
         $new_cache = false;
@@ -131,7 +154,6 @@ class App extends CI_Controller
 
             if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
                 $ui .= '<h1>' . $e___6287[$app_e__id]['m__title'] . '</h1>';
-                //if(strlen($e___6287[$app_e__id]['m__message']) > 0){ $ui .= '<p class="msg">'.$e___6287[$app_e__id]['m__message'].'</p>'; }
             }
             $ui .= $raw_app;
         }
@@ -168,25 +190,21 @@ class App extends CI_Controller
             $log_data['x__message'] = current_link();
 
             //Any more data to append?
-            if(isset($_GET['e__id']) && intval($_GET['e__id'])){
-                $es = $this->E_model->fetch(array(
-                    'e__id IN (' . $_GET['e__id'] . ')' => null,
-                    'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                ));
-                if(count($es)){
-                    $log_data['x__down'] = $es[0]['e__id'];
-                    $title = $es[0]['e__title'].' | '.$title;
+            if(isset($_GET['e__handle']) && strlen($_GET['e__handle'])){
+                foreach($this->E_model->fetch(array(
+                    'e__handle' => $_GET['e__handle'],
+                )) as $e){
+                    $log_data['x__down'] = $e['e__id'];
+                    $title = $e['e__title'].' | '.$title;
                 }
             }
 
-            if(isset($_GET['i__id']) && intval($_GET['i__id'])){
-                $is = $this->I_model->fetch(array(
-                    'i__id IN (' . $_GET['i__id'] . ')' => null,
-                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                ));
-                if(count($is)){
-                    $log_data['x__left'] = $is[0]['i__id'];
-                    $title = view_first_line($is[0]['i__message'], true).' | '.$title;
+            if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
+                foreach($this->I_model->fetch(array(
+                    'i__hashtag' => $_GET['i__hashtag'],
+                )) as $i){
+                    $log_data['x__left'] = $i['i__id'];
+                    $title = view_i_title($i, true).' | '.$title;
                 }
             }
         }
@@ -280,7 +298,7 @@ class App extends CI_Controller
                         'x__message' => $new_content,
                     ), $member_e['e__id'], 12360, update_description($x['x__message'], $new_content));
 
-                    $message .= '<div class="msg alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
+                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 
                 }
 
@@ -299,7 +317,7 @@ class App extends CI_Controller
         } else {
 
             //Show no transaction warning:
-            $message .= '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
 
         }
 

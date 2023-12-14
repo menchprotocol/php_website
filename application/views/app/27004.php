@@ -1,7 +1,6 @@
 <?php
 
 $commission_rate = intval(website_setting(27017))/100;
-$superpower_28727 = superpower_active(28727, true);
 $e___6287 = $this->config->item('e___6287'); //APP
 $gross_transactions = 0;
 $gross_sales = 0;
@@ -17,22 +16,21 @@ $all_e = array();
 
 
 
-if(!isset($_GET['e__id']) || $_GET['e__id']<1){
-
-
+if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
+    
     echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
     foreach($this->E_model->fetch_recursive(12274, $member_e['e__id'], array(27004)) as $e){
-        echo '<div><a href="/-27004?e__id='.$e['e__id'].'" class="main__title">'.$e['e__title'].'</a></div>';
+        echo '<div><a href="'.view_app_link(27004).'?e__handle='.$e['e__handle'].'" class="main__title">'.$e['e__title'].'</a></div>';
     }
 
 } else {
 
 
     //Show header:
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="/-27004"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
 
     $es = $this->E_model->fetch(array(
-        'e__id' => $_GET['e__id'],
+        'e__handle' => $_GET['e__handle'],
     ));
     echo '<h2>'.$es[0]['e__title'].'</h2>';
 
@@ -40,7 +38,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
-        'x__up' => $_GET['e__id'],
+        'x__up' => $es[0]['e__id'],
     ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
 
@@ -131,8 +129,8 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
 
             $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden">';
-            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-xs e_cover_micro">'.view_cover($es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
-            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="/-4341?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
+            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-xs e_cover_micro">'.view_cover($es[0]['e__cover'],true).'</span><a href="/@'.$es[0]['e__handle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$x__metadata['first_name'].' '.$x__metadata['last_name'].'</td>';
+            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view_app_link(4341).'?x__id='.$x['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
             $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($x__metadata['mc_gross'], 2).'</td>';
@@ -190,7 +188,7 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_first_line($i['i__message']).'</u></a>' : view_first_line($i['i__message']) ).' <a href="/~'.$i['i__id'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_i_title($i).'</u></a>' : view_i_title($i) ).' <a href="/~'.$i['i__hashtag'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';
@@ -217,16 +215,24 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
 
 
 
+    $other_es = array();
 
-    $filters = array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__up' => $_GET['e__id'], //Member
-    );
-    if(count($all_e)){
-        $filters[ 'x__down NOT IN (' . join(',', $all_e) . ')'] = null;
+    foreach($this->E_model->fetch(array(
+        'e__handle' => $_GET['e__handle'],
+    )) as $e){
+        $filters = array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__up' => $e['e__id'], //Member
+        );
+        if(count($all_e)){
+            $filters[ 'x__down NOT IN (' . join(',', $all_e) . ')'] = null;
+        }
+        $other_es = $this->X_model->fetch($filters, array('x__down'), 0);
     }
-    $other_es = $this->X_model->fetch($filters, array('x__down'), 0);
+
+
+
 
 
     if(count($other_es)){
@@ -251,10 +257,10 @@ if(!isset($_GET['e__id']) || $_GET['e__id']<1){
         //Doo We Have other?
         foreach($other_es as $other_e){
             $other_e_content .= '<tr class="transaction_columns thr_e hidden">';
-            $other_e_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['e__cover'],true).'</span><a href="/@'.$other_e['e__id'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
+            $other_e_content .= '<td><span class="icon-block e_cover_micro">'.view_cover($other_e['e__cover'],true).'</span><a href="/@'.$other_e['e__handle'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
             $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $other_e_content .= '<td style="text-align: right;"><a href="/-4341?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
+            $other_e_content .= '<td style="text-align: right;"><a href="'.view_app_link(4341).'?x__id='.$other_e['x__id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="fal fa-atlas"></i></a></td>';
             $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
@@ -367,7 +373,7 @@ if(count($i_query)){
                         $is = $this->I_model->fetch(array(
                             'i__id' => $origin,
                         ));
-                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_first_line($is[0]['i__message'], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
+                        echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_i_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";
                     }
                 }
                 ?>

@@ -17,8 +17,8 @@ foreach($this->X_model->fetch(array(
         continue;
     }
 
-    $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
-    if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+    $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
+    if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
         continue;
     }
 
@@ -43,8 +43,8 @@ foreach($this->X_model->fetch(array(
     }
 
     if(isset($e___6287[$app['e__id']])){
-        $superpower_actives = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
-        if(count($superpower_actives) && !superpower_active(end($superpower_actives), true)){
+        $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app['e__id']]['m__following']);
+        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
             continue;
         }
     }

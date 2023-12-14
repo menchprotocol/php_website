@@ -2,16 +2,16 @@
 
 //SOURCE LIST DUPLICATES
 
-if(isset($_GET['e__id'])){
+if(isset($_GET['e__handle'])){
 
-    //Find Link Content DUplicates for this Source:
+    //Find Link Content Duplicates for this Source:
     $main_index = array();
     $duplicates_found = array();
     foreach($this->X_model->fetch(array(
-        'x__up' => $_GET['e__id'],
+        'e__handle' => $_GET['e__handle'],
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array(), 0) as $x) {
+    ), array('x__up'), 0) as $x) {
         $x__message_md5 = substr(md5($x['x__message']), 0, 16);
         if(!isset($main_index[$x__message_md5])){
             $main_index[$x__message_md5] = array();
@@ -27,38 +27,12 @@ if(isset($_GET['e__id'])){
 
     }
 
-    $merged = false;
-    if(isset($_GET['auto_merge']) && $_GET['e__id']==3288){//THis is for email only for now...
-        foreach($duplicates_found as $x__message_md5 => $e__ids){
-            $lowest_e_id = 98999899899;
-            foreach($e__ids as $e__id){
-                if($e__id < $lowest_e_id){
-                    $lowest_e_id = $e__id;
-                }
-            }
-
-            foreach($e__ids as $this_e__id){
-                if($this_e__id != $lowest_e_id){
-                    $merged = true;
-                    array_push($duplicates_found[$x__message_md5], '@'.$this_e__id.' Merges Into @'.$lowest_e_id);
-                    array_push($duplicates_found[$x__message_md5], $this->X_model->update_dropdown($this_e__id,$this_e__id,6177,6178,$lowest_e_id)); break;
-                }
-            }
-
-            if($merged){
-                break;
-            }
-
-        }
-    }
-
-
     echo 'Here are the '.count($duplicates_found).' duplicates found:<hr />';
     print_r($duplicates_found);
 
 } elseif(!isset($_GET['search_by_name'])){
 
-    echo '<p>Either enter ?e__id= in URL to search specific source Follower Message Duplicates (Finding duplicate emails for example) or <a href="/-7268?search_by_name=1"><b>Find Duplicate Sources by Name</b></a></p>.';
+    echo '<p>Either enter ?e__id= in URL to search specific source Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_link(7268).'?search_by_name=1"><b>Find Duplicate Sources by Name</b></a></p>.';
 
 } else {
 
@@ -78,7 +52,7 @@ if(isset($_GET['e__id'])){
                 $prev_title = $en['e__title'];
             }
 
-            echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__access']]['m__title'].': '.$e___6177[$en['e__access']]['m__message'].'">' . $e___6177[$en['e__access']]['m__cover'] . '</span> <a href="/@' . $en['e__id'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__access']]['m__title'].': '.$e___6177[$en['e__access']]['m__message'].'">' . $e___6177[$en['e__access']]['m__cover'] . '</span> <a href="/@' . $en['e__handle'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
         }
 
     } else {

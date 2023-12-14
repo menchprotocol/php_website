@@ -1,8 +1,8 @@
 <?php
 
-if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
+if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
 
-    echo 'Missing source ID (Append ?e__id=SOURCE_ID in URL)';
+    echo 'Missing e__handle';
 
 } else {
 
@@ -15,19 +15,24 @@ if(!isset($_GET['e__id']) || !intval($_GET['e__id'])){
 
     //Fetch followings URLs:
     $url_found = false;
-    foreach($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__down' => $_GET['e__id'],
-        'LENGTH(x__message)>0' => null,
-    ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $f_url){
-        if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
-            $url_found = true;
-            js_php_redirect($f_url['x__message'], 1);
-            break;
+    foreach($this->E_model->fetch(array(
+        'e__handle' => $_GET['e__handle'],
+    )) as $e){
+        foreach($this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__down' => $e['e__id'],
+            'LENGTH(x__message)>0' => null,
+        ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $f_url){
+            if(filter_var($f_url['x__message'], FILTER_VALIDATE_URL)){
+                $url_found = true;
+                js_php_redirect($f_url['x__message'], 1);
+                break;
+            }
         }
     }
+
 
     if(!$url_found){
         js_php_redirect(home_url(), 1);

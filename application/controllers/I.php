@@ -9,7 +9,7 @@ class I extends CI_Controller {
 
         $this->output->enable_profiler(FALSE);
 
-        universal_check();
+        auto_login();
 
     }
 
@@ -31,34 +31,34 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid Following Source',
             ));
-        } elseif (!isset($_POST['do_template'])) {
+        } elseif (!isset($_POST['do_recursive'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing template parameter',
             ));
         }
 
-        return view_json($this->I_model->recursive_clone(intval($_POST['i__id']), intval($_POST['do_template']), $member_e['e__id']));
+        return view_json($this->I_model->recursive_clone(intval($_POST['i__id']), intval($_POST['do_recursive']), $member_e['e__id']));
 
     }
 
 
-    function i_layout($i__id, $append_e__id = 0){
+    function i_layout($i__hashtag, $append_e__id = 0){
 
         //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
-            'i__id' => $i__id,
+            'i__hashtag' => $i__hashtag,
         ));
         if ( count($is) < 1) {
-            return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__id . ' Not Found</div>');
+            return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__hashtag . ' Not Found</div>');
         }
 
         $member_e = superpower_unlocked(10939); //Idea Pen?
         if(!$member_e){
             if(in_array($is[0]['i__access'], $this->config->item('n___31871'))){
-                return redirect_message('/'.$i__id);
+                return redirect_message('/'.$i__hashtag);
             } else {
-                return redirect_message(home_url(), '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__id . ' is not published yet.</div>');
+                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__hashtag . ' is not published yet.</div>');
             }
         }
 
@@ -70,7 +70,7 @@ class I extends CI_Controller {
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__left' => $i__id,
+                'x__left' => $is[0]['i__id'],
             ), array(), 0) as $x){
                 if(!count($this->X_model->fetch(array(
                     'x__up' => $append_e__id,
@@ -92,7 +92,7 @@ class I extends CI_Controller {
             }
 
 
-            $flash_message = '<div class="msg alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
+            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
 
         }
 
@@ -100,59 +100,17 @@ class I extends CI_Controller {
 
         //Load views:
         $this->load->view('header', array(
-            'title' => view_first_line($is[0]['i__message'], true).' | '.$e___14874[12273]['m__title'],
-            'i' => $is[0],
+            'title' => view_i_title($is[0], true).' | '.$e___14874[12273]['m__title'],
             'flash_message' => $flash_message,
         ));
         $this->load->view('i_layout', array(
-            'i' => $is[0],
+            'focus_i' => $is[0],
             'member_e' => $member_e,
         ));
         $this->load->view('footer');
 
     }
 
-
-
-    function i_navigate($previous_i__id, $current_i__id, $action){
-
-        $trigger_next = false;
-        $track_previous = 0;
-
-        foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
-            'x__left' => $previous_i__id,
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i){
-            if($action=='next'){
-                if($trigger_next){
-                    return redirect_message('/~' . $i['i__id'] );
-                }
-                if($i['i__id']==$current_i__id){
-                    $trigger_next = true;
-                }
-            } elseif($action=='previous'){
-                if($i['i__id']==$current_i__id){
-                    if($track_previous > 0){
-                        return redirect_message('/~' . $track_previous );
-                    } else {
-                        //First item:
-                        break;
-                    }
-                } else {
-                    $track_previous = $i['i__id'];
-                }
-            }
-        }
-
-        if($previous_i__id > 0){
-            return redirect_message('/~' .$previous_i__id );
-        } else {
-            die('Could not find matching idea');
-        }
-
-    }
 
 
 
@@ -179,22 +137,26 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Missing Core Variables',
             ));
-        } elseif (!isset($_POST['input__4736']) || !isset($_POST['link_i__id'])) {
+        } elseif (!isset($_POST['new_i__message']) || !isset($_POST['link_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing either Idea Outcome OR Follower Idea ID',
             ));
         }
 
-        $validate_i__message = validate_i__message($_POST['input__4736']);
+        $validate_i__message = validate_i__message($_POST['new_i__message']);
         if(!$validate_i__message['status']){
             //We had an error, return it:
             return view_json($validate_i__message);
         }
 
 
-        if(!$_POST['link_i__id'] && !substr_count($_POST['input__4736'], ' ') && substr($_POST['input__4736'], 0, 1)=='#' && intval(substr($_POST['input__4736'],1)) > 0){
-            $_POST['link_i__id'] = intval(substr($_POST['input__4736'],1));
+        if(!$_POST['link_i__id'] && view_valid_handle_i($_POST['new_i__message'])){
+            foreach($this->I_model->fetch(array(
+                'i__hashtag' => view_valid_handle_i($_POST['new_i__message']),
+            )) as $i){
+                $_POST['link_i__id'] = $i['i__id'];
+            }
         }
 
         $x_i = array();
@@ -215,14 +177,14 @@ class I extends CI_Controller {
         }
 
         //All seems good, go ahead and try to create/link the Idea:
-        return view_json($this->I_model->create_or_link($_POST['focus_card'], $_POST['x__type'], trim($_POST['input__4736']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
+        return view_json($this->I_model->create_or_link($_POST['focus_card'], $_POST['x__type'], trim($_POST['new_i__message']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
 
     }
 
     function view_body_i(){
         //Authenticate Member:
         if (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
             echo view_body_i($_POST['x__type'], $_POST['counter'], $_POST['i__id']);
         }
@@ -231,7 +193,7 @@ class I extends CI_Controller {
     function i_load_cover(){
 
         if (!isset($_POST['i__id']) || !isset($_POST['x__type']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
-            echo '<div class="msg alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
 
             $ui = '';
@@ -241,10 +203,10 @@ class I extends CI_Controller {
                 //SOURCES
                 $e___6177 = $this->config->item('e___6177'); //Source Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                $current_e = ( substr($_POST['first_segment'], 0, 1)=='@' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                $current_e__handle = view_valid_handle_e($_POST['first_segment']);
                 foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $e_e) {
                     if(isset($e_e['e__id'])){
-                        $ui .= view_card('/@'.$e_e['e__id'], $e_e['e__id']==$current_e, $e_e['x__type'], $e_e['e__access'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
+                        $ui .= view_card('/@'.$e_e['e__handle'], $current_e__handle && $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__access'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
                         $listed_items++;
                     }
                 }
@@ -255,12 +217,11 @@ class I extends CI_Controller {
                 $e___31004 = $this->config->item('e___31004'); //Idea Status
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
-                $superpower_10939 = superpower_active(10939, true);
-                $current_i = ( substr($_POST['first_segment'], 0, 1)=='~' ? intval(substr($_POST['first_segment'], 1)) : 0 );
+                $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
 
                 foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                     if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__id'], $next_i['i__id']==$current_i, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_first_line($next_i['i__message']), $next_i['x__message']);
+                        $ui .= view_card('/~'.$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                         $listed_items++;
                     }
                 }
@@ -269,7 +230,11 @@ class I extends CI_Controller {
 
             if($listed_items < $_POST['counter']){
                 //We have more to show:
-                $ui .= view_more('/~'.$_POST['i__id'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                foreach($this->I_model->fetch(array(
+                    'i__id' => $_POST['i__id'],
+                )) as $i){
+                    $ui .= view_more('/~'.$i['i__hashtag'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                }
             }
 
             echo $ui;
@@ -277,41 +242,179 @@ class I extends CI_Controller {
     }
 
 
+    function edit_load_i()
+    {
 
-    function i_edit_save(){
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ));
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['i__id']) || !isset($_POST['x__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Core IDs',
+            ));
+        } elseif (!count($is)) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea is no longer active',
+            ));
+        } elseif (!write_access_i($is[0]['i__hashtag'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You are missing permission to edit this idea',
+            ));
+        }
 
-        if(!isset($_POST['input__4736'])){
+        //Fetch dynamic data based on idea type:
+        $return_inputs = array();
+        $return_radios = '';
+        $input_pointer = 0;
+
+
+        $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
+        foreach(array_intersect($this->config->item('n___'.$is[0]['i__type']), $this->config->item('n___42179')) as $dynamic_e__id){
+
+            //Let's first determine the data type:
+            $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
+
+            if(count($data_types)!=1) {
+                //This is strange, we are expecting 1 match only... report this:
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__creator' => $member_e['e__id'],
+                    'x__up' => 42179, //Dynamic Input Fields
+                    'x__down' => $dynamic_e__id,
+                    'x__right' => $is[0]['i__id'],
+                    'x__reference' => $_POST['x__id'],
+                    'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong...',
+                ));
+                continue; //Go to the next dynamic data type...
+            } elseif($input_pointer >= view_memory(6404,42206)){
+
+                //Monitor if we ever reach the maximum:
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__creator' => $member_e['e__id'],
+                    'x__up' => 42179, //Dynamic Input Fields
+                    'x__down' => $dynamic_e__id,
+                    'x__right' => $_POST['i__id'],
+                    'x__reference' => $_POST['x__id'],
+                    'x__metadata' => $_POST,
+                    'x__message' => 'Dynamic Fields Reach their maximum limit of '.view_memory(6404,42206).'  which may require field expansion...',
+                ));
+
+            }
+
+            //We found 1 match as expected:
+            $input_pointer++;
+            $data_type = $data_types[0];
+            $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
+
+            if(in_array($data_type, $this->config->item('n___42188'))){
+
+                //Single or Multiple Choice:
+                $return_radios .= view_radio_e($dynamic_e__id, 0, $is[0]['i__id']);
+
+            } else {
+
+                //Fetch the current value:
+                $d__value = '';
+                foreach($this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 4983, //IDEA SOURCES
+                    'x__right' => $is[0]['i__id'],
+                    'x__up' => $dynamic_e__id,
+                )) as $curr_val){
+                    $d__value = $curr_val['x__message'];
+                    break;
+                }
+
+                //Add to main array:
+                $this_data_type = $this->config->item('e___'.$data_type);
+                $return_inputs[$dynamic_e__id] = array(
+                    'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                    'd__value' => $d__value,
+                    'd__placeholder' => $this_data_type[$dynamic_e__id]['m__message'],
+                );
+
+            }
+
+        }
+
+        $return_array = array(
+            'status' => 1,
+            'return_inputs' => $return_inputs,
+            'return_radios' => $return_radios,
+        );
+
+        //Log Modal View:
+        $this->X_model->create(array(
+            'x__creator' => $member_e['e__id'],
+            'x__type' => 14576, //MODAL VIEWED
+            'x__up' => 31911, //Edit Idea
+            'x__right' => $is[0]['i__id'],
+            'x__reference' => $_POST['x__id'],
+            'x__metadata' => $return_array,
+        ));
+
+        //Return everything we found:
+        return view_json($return_array);
+
+    }
+
+
+
+
+    function edit_save_i(){
+
+
+        $member_e = superpower_unlocked();
+        if (!$member_e) {
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing idea message',
+                'message' => view_unauthorized_message(),
             ));
 
-        } elseif(!isset($_POST['input__32337'])){
+        } elseif(!isset($_POST['edit_i__message']) || !strlen($_POST['edit_i__message'])){
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing idea hashtag',
+                'message' => 'Missing Idea message',
             ));
 
-        } elseif(!isset($_POST['i__id'])){
+        } elseif(!isset($_POST['edit_i__hashtag']) || !strlen($_POST['edit_i__hashtag'])){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Idea hashtag',
+            ));
+
+        } elseif(!isset($_POST['edit_i__id']) || !intval($_POST['edit_i__id'])){
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif (!write_access_i($_POST['i__id'])) {
+        } elseif(!isset($_POST['edit_x__id']) || !isset($_POST['edit_x__message'])){
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'You are missing permission to write to this idea',
+                'message' => 'Missing Transaction Data',
             ));
 
         }
 
         $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
+            'i__id' => $_POST['edit_i__id'],
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)){
@@ -321,8 +424,9 @@ class I extends CI_Controller {
             ));
         }
 
+
         //Validate Idea Message:
-        $validate_i__message = validate_i__message($_POST['input__4736']);
+        $validate_i__message = validate_i__message($_POST['edit_i__message']);
         if(!$validate_i__message['status']){
             return view_json(array(
                 'status' => 0,
@@ -330,20 +434,144 @@ class I extends CI_Controller {
             ));
         }
 
-        //Validate Idea Hashtag:
-        $validate_handler = validate_handler($_POST['input__32337'], $_POST['i__id']);
-        if(!$validate_handler['status']){
-            return view_json(array(
-                'status' => 0,
-                'message' => $validate_handler['message'],
+
+        //Validate Dynamic Inputs:
+        $input_pointer = 0;
+        $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
+        $e___4592 = $this->config->item('e___4592'); //Data types
+        foreach(array_intersect($this->config->item('n___'.$is[0]['i__type']), $this->config->item('n___42179')) as $dynamic_e__id){
+
+            //Let's first determine the data type:
+            $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
+
+            if(count($data_types)!=1){
+                //This is strange, we are expecting 1 match only... report this:
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__creator' => $member_e['e__id'],
+                    'x__up' => 42179, //Dynamic Input Fields
+                    'x__down' => $dynamic_e__id,
+                    'x__right' => $_POST['i__id'],
+                    'x__reference' => $_POST['x__id'],
+                    'x__message' => 'Found '.count($data_types).' Data Types (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
+                ));
+                continue; //Go to the next dynamic data type...
+            }
+
+            //We found 1 match as expected:
+            $input_pointer++; //Starts at 1
+            $data_type = $data_types[0];
+            $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
+
+            //Validate input if required or provided:
+            if($is_required || strlen($_POST['edit_dynamic_'.$input_pointer])){
+                $valid_data_type = valid_data_type($data_types, $_POST['edit_dynamic_'.$input_pointer], $e___42179[$dynamic_e__id]['m__title']);
+                if(!$valid_data_type['status']){
+                    //We had an error:
+                    return view_json($valid_data_type);
+                }
+            }
+
+            //Yes value is valid!
+
+            //Fetch the current value:
+            $values = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 4983, //IDEA SOURCES
+                'x__right' => $is[0]['i__id'],
+                'x__up' => $dynamic_e__id,
             ));
+
+            //Update if needed:
+            if(count($values) && !strlen($_POST['edit_dynamic_'.$input_pointer] )){
+
+                //Remove Link:
+                $this->X_model->update($values[0]['x__id'], array(
+                    'x__access' => 6173, //Transaction Removed
+                ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+
+            } elseif(!count($values)){
+
+                //Create Link:
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__type' => 4983, //IDEA SOURCES
+                    'x__up' => $dynamic_e__id,
+                    'x__right' => $is[0]['i__id'],
+                    'x__message' => $_POST['edit_dynamic_'.$input_pointer],
+                    'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                ));
+
+            } elseif($values[0]['x__message']!=$_POST['edit_dynamic_'.$input_pointer]){
+
+                //Update Link:
+                $this->X_model->update($values[0]['x__id'], array(
+                    'x__message' => $_POST['edit_dynamic_'.$input_pointer],
+                    'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
+
+            }
         }
 
-        //All good, Save:
-        $this->I_model->update($is[0]['i__id'], array(
-            'i__message' => trim($_POST['input__4736']),
-            'i__hashtag' => trim($_POST['input__32337']),
-        ));
+
+
+        //Validate Idea Hashtag & save if needed:
+        if($is[0]['i__hashtag'] !== trim($_POST['edit_i__hashtag'])){
+
+            $validate_handle = validate_handle($_POST['edit_i__hashtag'], $is[0]['i__id'], null);
+            if(!$validate_handle['status']){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => $validate_handle['message'],
+                ));
+            }
+
+
+            //Update Handles everywhere they are referenced:
+            foreach ($this->X_model->fetch(array(
+                'x__left' => $is[0]['i__id'],
+                'x__type' => 31834, //Idea Reference
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            )) as $ref) {
+                $this->I_model->update($ref['x__right'], array(
+                    'i__message' => preg_replace('/\b#'.$is[0]['i__hashtag'].'\b/', '@'.trim($_POST['edit_i__hashtag']), $ref['i__message']),
+                ), false, $member_e['e__id']);
+            }
+
+            //Save hashtag since changed:
+            $is[0]['i__hashtag'] = trim($_POST['edit_i__hashtag']);
+            $this->I_model->update($is[0]['i__id'], array(
+                'i__hashtag' => $is[0]['i__hashtag'],
+            ), true, $member_e['e__id']);
+
+
+        }
+
+
+        //Do we have a link reference message that need to be saved?
+        if($_POST['edit_x__id']>0){
+            //Fetch transaction:
+            foreach($this->X_model->fetch(array(
+                'x__id' => $_POST['edit_x__id'],
+            )) as $this_x){
+
+                $is[0] = array_merge($is[0], $this_x);
+
+                if($this_x['x__message'] != trim($_POST['edit_x__message'])){
+                    $this->X_model->update($this_x['x__id'], array(
+                        'x__message' => trim($_POST['edit_x__message']),
+                        'x__weight' => number_x__weight(trim($_POST['edit_x__message'])),
+                    ), $member_e['e__id'], 42171);
+                }
+            }
+        }
+
+
+        //Update Links based on edit_i__message / Sync Idea Synonym & Source References links:
+        $view_sync_links = view_sync_links($_POST['edit_i__message'], true, $is[0]['i__id']);
+        $is[0]['i__message'] = trim($_POST['edit_i__message']);
+        $is[0]['i__cache'] = $view_sync_links['i__cache'];
+
 
         //Update Search Index:
         update_algolia(12273, $is[0]['i__id']);
@@ -351,7 +579,9 @@ class I extends CI_Controller {
 
         return view_json(array(
             'status' => 1,
-            'message_html' => view_links(trim($_POST['input__4736'])),
+            'return_i__cache' => $view_sync_links['i__cache'],
+            'return_i__cache_links' => view_i_links($is[0]),
+            'message' => $view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 
     }
