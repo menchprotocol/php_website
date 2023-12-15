@@ -1312,22 +1312,14 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
 
             if (data.status) {
 
-                console.log('WOWWWWWWWWWWW');
-                console.log(data);
-
                 var field_counter = 0;
 
                 //Dynamic Input Fields:
                 for (var i=0, item; item = data.return_inputs[i]; i++) {
-                    // Look no need to do list[i] in the body of the loop
-                    console.log("Looping: index ", i, "item" + item);
-
                     field_counter++;
-                    console.log('DYNAMIC LOAD '+field_counter);
                     $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
                     $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).val(item["d__value"]);
-
                 }
 
                 //Dynamic Radio fields (if any):
@@ -1468,13 +1460,12 @@ function edit_load_e(e__id, x__id){
             var field_counter = 0;
 
             //Dynamic Input Fields:
-            data.return_inputs.forEach(function(input_field) {
-                //Update the fields:
+            for (var i=0, item; item = data.return_inputs[i]; i++) {
                 field_counter++;
-                $("#modal31912 .dynamic_"+field_counter+" h3").html(input_field["d__title"]);
+                $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                 $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
-                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',input_field["d__placeholder"]).val(input_field["d__value"]);
-            });
+                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).val(item["d__value"]);
+            }
 
             //Dynamic Radio fields (if any):
             $("#modal31912 .dynamic_editing_radio").html(data.return_radios);
