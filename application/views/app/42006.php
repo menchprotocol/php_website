@@ -17,7 +17,7 @@ foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0) as $app) {
-    echo '$route[\''.$app['m__handle'].'\'] = "app/load/'.$app['e__id'].'"; //'.$app['e__title']."\n";
+    echo '$route[\''.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'"; //'.$app['e__title']."\n";
 }
 
 echo "\n";
