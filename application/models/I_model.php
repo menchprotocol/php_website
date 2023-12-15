@@ -632,6 +632,8 @@ class I_model extends CI_Model
          * - OR ideas only
          * */
 
+        $this->deepest_level = ( $this->deepest_level<$total_levels ? $total_levels : $this->deepest_level );
+
         if(!($scope=='ALL' || $scope=='AND' || $scope=='OR')){
             return false;
         }
@@ -676,7 +678,7 @@ class I_model extends CI_Model
 
         return array(
             'recursive_i_ids' => array_unique($recursive_i_ids),
-            'total_levels' => ( isset($recursive_down_ids['total_levels']) ? $recursive_down_ids['total_levels'] : $total_levels ),
+            'total_levels' => $this->deepest_level,
         );
 
     }
