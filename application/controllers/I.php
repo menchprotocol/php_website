@@ -45,6 +45,8 @@ class I extends CI_Controller {
 
     function i_layout($i__hashtag, $append_e__id = 0){
 
+        die('i_layout');
+
         //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
             'i__hashtag' => $i__hashtag,

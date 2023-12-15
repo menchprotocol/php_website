@@ -322,7 +322,7 @@ class X extends CI_Controller
     function x_layout($top_i__hashtag=null, $focus_i__hashtag)
     {
 
-        die('aaaa');
+        die('x_layout');
         /*
          *
          * Enables a Member to DISCOVER an IDEA
