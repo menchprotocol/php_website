@@ -1182,6 +1182,12 @@ class X extends CI_Controller
             $es = $this->E_model->fetch(array(
                 'e__handle' => $_POST['e__handle'],
             ));
+            if(!count($es)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Handle',
+                ));
+            }
 
         } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag'])){
 
@@ -1189,6 +1195,12 @@ class X extends CI_Controller
             $is = $this->I_model->fetch(array(
                 'i__hashtag' => $_POST['i__hashtag'],
             ));
+            if(!count($is)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Invalid Hashtag',
+                ));
+            }
 
             $recursive_down_ids = $this->I_model->recursive_down_ids($is[0], 'ALL');
 
@@ -1320,6 +1332,7 @@ class X extends CI_Controller
 
         }
         return view_json(array(
+            'status' => 1,
             'return_array' => $return_array,
             'miscstats' => $miscstats,
         ));
