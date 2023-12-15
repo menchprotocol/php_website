@@ -171,7 +171,7 @@ class I extends CI_Controller {
                 //validate Idea:
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Idea #'.$_POST['link_i__id'].' is not active',
+                    'message' => 'Idea #'.$_POST['link_i__id'].' is not active.',
                 ));
             }
         }

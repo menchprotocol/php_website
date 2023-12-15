@@ -172,7 +172,7 @@ class X extends CI_Controller
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)){
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #'.$focus_i__hashtag.' is not active</div>', true);
+            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #'.$focus_i__hashtag.' is not currently active</div>', true);
         }
 
         //Check to see if added to read for logged-in members:
@@ -239,7 +239,7 @@ class X extends CI_Controller
         } elseif(!$this->X_model->started_ids($member_e['e__id'], $top_i__hashtag)) {
             return redirect_message('/'.$top_i__hashtag);
         } elseif(!count($is)) {
-            return redirect_message('/'.$top_i__hashtag, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$focus_i__hashtag.' is not active</div>');
+            return redirect_message('/'.$top_i__hashtag, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$focus_i__hashtag.' is not currently active.</div>');
         }
 
         $i_is_available = i_is_available($is[0]['i__id'], true, false);
@@ -366,7 +366,7 @@ class X extends CI_Controller
             'i__hashtag' => $focus_i__hashtag,
         ));
         if ( !count($focus_is) ) {
-            return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not active</div>');
+            return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not active right now</div>');
         }
 
 
