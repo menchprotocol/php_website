@@ -1231,7 +1231,7 @@ class X extends CI_Controller
                                 'x__up' => $es[0]['e__id'],
                                 'i__type' => $x__type3,
                                 'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                            ), array('x__right'), 0, 0, 'COUNT(x__id) as totals');
+                            ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } elseif(strlen($_POST['i__hashtag'])){
 
@@ -1260,7 +1260,7 @@ class X extends CI_Controller
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                 'x__up' => $es[0]['e__id'],
                                 'e__access' => $x__type3,
-                            ), array('x__down'), 0, 0, 'COUNT(x__id) as totals');
+                            ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } elseif(strlen($_POST['i__hashtag'])){
 
@@ -1270,7 +1270,7 @@ class X extends CI_Controller
                                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                                 'x__right IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
                                 'e__access' => $x__type3,
-                            ), array('x__up'), 0, 0, 'COUNT(x__id) as totals');
+                            ), array('x__up'), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } else {
 
