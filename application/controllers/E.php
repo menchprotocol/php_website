@@ -598,7 +598,10 @@ class E extends CI_Controller
 
                     //We found 1 match as expected:
                     $input_pointer++;
-                    $data_type = $data_types[0];
+                    foreach($data_types as $data_type_this){
+                        $data_type = $data_type_this;
+                        break;
+                    }
                     $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
 
                     if(in_array($data_type, $this->config->item('n___42188'))){
