@@ -451,9 +451,9 @@ class X extends CI_Controller
         ));
 
         $this->load->view('x_layout', array(
-            'top_i' => $top_is[0],
             'focus_i' => $focus_is[0],
-            'member_e' => $focus_es[0],
+            'top_i' => ( count($top_is) ? $top_is[0] : array() ),
+            'member_e' => ( count($focus_es) ? $focus_es[0] : array() ),
             'x_completes' => $x_completes,
         ));
 
