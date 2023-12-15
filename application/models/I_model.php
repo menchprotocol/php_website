@@ -622,7 +622,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_down_ids($i, $scope, $total_levels = 0, $loop_breaker_ids = array()){
+    function recursive_down_ids($i, $scope, $deepest_level = 0, $loop_breaker_ids = array()){
 
         /*
          *
@@ -631,8 +631,6 @@ class I_model extends CI_Model
          * - AND ideas only
          * - OR ideas only
          * */
-
-        $this->deepest_level = ( $this->deepest_level<$total_levels ? $total_levels : $this->deepest_level );
 
         if(!($scope=='ALL' || $scope=='AND' || $scope=='OR')){
             return false;
@@ -648,7 +646,6 @@ class I_model extends CI_Model
             return array();
         }
 
-        $total_levels++;
         $recursive_i_ids = array();
         array_push($loop_breaker_ids, intval($i['i__id']));
 
@@ -667,18 +664,21 @@ class I_model extends CI_Model
             }
 
             //Add to current array if we found anything:
-            $recursive_down_ids = $this->I_model->recursive_down_ids($next_i, $scope, $total_levels, $loop_breaker_ids);
+            $recursive_down_ids = $this->I_model->recursive_down_ids($next_i, $scope, ++$deepest_level, $loop_breaker_ids);
             foreach($recursive_down_ids['recursive_i_ids'] as $recursive_i_id){
                 if(!in_array($recursive_i_id, $recursive_i_ids)){
                     array_push($recursive_i_ids, $recursive_i_id);
                 }
             }
 
+            $deepest_level = ( $recursive_down_ids['deepest_level']>$deepest_level ? $recursive_down_ids['deepest_level'] : $deepest_level );
+
+
         }
 
         return array(
             'recursive_i_ids' => array_unique($recursive_i_ids),
-            'total_levels' => $this->deepest_level,
+            'deepest_level' => $deepest_level,
         );
 
     }
@@ -790,7 +790,7 @@ class I_model extends CI_Model
 
 
 
-    function recursive_starting_points($i__id, $total_levels = 0, $loop_breaker_ids = array()){
+    function recursive_starting_points($i__id, $deepest_level = 0, $loop_breaker_ids = array()){
 
         /*
          *
@@ -804,7 +804,7 @@ class I_model extends CI_Model
         array_push($loop_breaker_ids, intval($i__id));
 
         $recursive_i_ids = array();
-        $total_levels++;
+        $deepest_level++;
 
         foreach($this->X_model->fetch(array(
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -827,7 +827,7 @@ class I_model extends CI_Model
             }
 
 
-            $recursive_is = $this->I_model->recursive_starting_points($prev_i['i__id'], $total_levels, $loop_breaker_ids);
+            $recursive_is = $this->I_model->recursive_starting_points($prev_i['i__id'], $deepest_level, $loop_breaker_ids);
 
             //Add to current array if we found anything:
             if(count($recursive_is) > 0){
@@ -835,7 +835,7 @@ class I_model extends CI_Model
             }
         }
 
-        if($total_levels==1){
+        if($deepest_level==1){
             return array_unique($recursive_i_ids);
         } else {
             return $recursive_i_ids;
