@@ -1312,6 +1312,9 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
 
             if (data.status) {
 
+                console.log('WOWWWWWWWWWWW');
+                console.log(data);
+
                 var field_counter = 0;
 
                 //Dynamic Input Fields:
