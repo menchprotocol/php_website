@@ -24,11 +24,9 @@ echo "\n";
 
 
 //Fixed Application Logic:
-echo '$route[\'@(:any)\']                       = "e/e_layout/$1"; //Source';
-echo '$route[\'~(:any)@(:any)\']                = "i/i_layout/$1/$2"; //Append Source (To be deprecated soon & merged into mass apply function)';
-echo '$route[\'~(:any)\']                       = "i/i_layout/$1"; //Ideate';
-echo '$route[\'(:any)/(:any)/@(:any)\']         = "x/x_layout/$1/$2/$3"; //Discovery Started';
-echo '$route[\'(:any)/(:any)\']                 = "x/x_layout/$1/$2/0"; //Discovery Started';
-echo '$route[\'(:any)\']                        = "x/x_layout/0/$1/0"; //Discovery Preview';
+echo '$route[\'@([a-zA-Z0-9]+)\'] = "e/e_layout/$1"; //Source';
+echo '$route[\'~([a-zA-Z0-9]+)\'] = "i/i_layout/$1"; //Ideate';
+echo '$route[\'([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "x/x_layout/$1/$2"; //Discovery Sequence';
+echo '$route[\'([a-zA-Z0-9]+)\'] = "x/x_layout/0/$1/0"; //Discovery Single';
 
-
+echo '</textarea>';

@@ -10,10 +10,7 @@ $route['stats'] = "app/load/33292";
 $route['routes'] = "app/load/42006";
 $route['cache'] = "app/load/4527";
 
-//$route['-([a-zA-Z0-9]+)']                             = "app/load/$1";
-$route['@([a-zA-Z0-9]+)']                               = "e/e_layout/$1"; //Source
-$route['~([a-zA-Z0-9]+)@([a-zA-Z0-9]+)']                        = "i/i_layout/$1/$2"; //Append Source (To be deprecated soon & merged into mass apply function)
-$route['~([a-zA-Z0-9]+)']                               = "i/i_layout/$1"; //Ideate
-$route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)/@([a-zA-Z0-9]+)']                 = "x/x_layout/$1/$2/$3"; //Discovery Started
-$route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)']                         = "x/x_layout/$1/$2/0"; //Discovery Started
-$route['([a-zA-Z0-9]+)']                        = "x/x_layout/0/$1/0"; //Discovery Preview
+$route['@([a-zA-Z0-9]+)'] = "e/e_layout/$1"; //Source
+$route['~([a-zA-Z0-9]+)'] = "i/i_layout/$1"; //Ideate
+$route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)'] = "x/x_layout/$1/$2"; //Discovery Sequence
+$route['([a-zA-Z0-9]+)'] = "x/x_layout/0/$1/0"; //Discovery Single

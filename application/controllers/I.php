@@ -43,7 +43,7 @@ class I extends CI_Controller {
     }
 
 
-    function i_layout($i__hashtag, $append_e__id = 0){
+    function i_layout($i__hashtag){
 
         //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
@@ -64,36 +64,37 @@ class I extends CI_Controller {
 
         //Import Discoveries?
         $flash_message = '';
-        if($append_e__id>0){
-
-            $completed = 0;
-            foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__left' => $is[0]['i__id'],
-            ), array(), 0) as $x){
-                if(!count($this->X_model->fetch(array(
-                    'x__up' => $append_e__id,
-                    'x__down' => $x['x__creator'],
-                    'x__message' => $x['x__message'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        if(isset($_GET['e__handle'])){
+            foreach($this->E_model->fetch(array(
+                'e__handle' => $_GET['e__handle'],
+            )) as $e_append){
+                $completed = 0;
+                foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
-                    //Add source link:
-                    $completed++;
-                    $this->X_model->create(array(
-                        'x__creator' => ($member_e ? $member_e['e__id'] : $x['x__creator']),
-                        'x__up' => $append_e__id,
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__left' => $is[0]['i__id'],
+                ), array(), 0) as $x){
+                    if(!count($this->X_model->fetch(array(
+                        'x__up' => $e_append['e__id'],
                         'x__down' => $x['x__creator'],
                         'x__message' => $x['x__message'],
-                        'x__type' => 4230,
-                    ));
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        //Add source link:
+                        $completed++;
+                        $this->X_model->create(array(
+                            'x__creator' => ($member_e ? $member_e['e__id'] : $x['x__creator']),
+                            'x__up' => $e_append['e__id'],
+                            'x__down' => $x['x__creator'],
+                            'x__message' => $x['x__message'],
+                            'x__type' => 4230,
+                        ));
+                    }
                 }
+
+                $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$e_append['e__handle'].'</div>';
             }
-
-
-            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$append_e__id.'</div>';
-
         }
 
         $e___14874 = $this->config->item('e___14874'); //Mench Cards
