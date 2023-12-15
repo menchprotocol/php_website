@@ -1176,14 +1176,14 @@ class X extends CI_Controller
         $miscstats = '';
 
         //See if we have any idea or source targets to limit our stats:
-        if(strlen($_POST['e__handle'])){
+        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
 
             //See stats for this source:
             $es = $this->E_model->fetch(array(
                 'e__handle' => $_POST['e__handle'],
             ));
 
-        } elseif(strlen($_POST['i__hashtag'])){
+        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag'])){
 
             //See stats for this idea:
             $is = $this->I_model->fetch(array(
@@ -1263,7 +1263,7 @@ class X extends CI_Controller
                         } else {
 
                             $sub_counter = $this->E_model->fetch(array(
-                                'e__access' => $x__type3,
+                                'e__access > 0' => NULL,//$x__type3
                             ), 0, 0, array(), 'COUNT(e__id) as totals');
 
                         }
