@@ -1315,14 +1315,17 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
                 var field_counter = 0;
 
                 //Dynamic Input Fields:
-                data.return_inputs.forEach(function(input_field) {
-                    //Update the fields:
+                for (var i=0, item; item = data.return_inputs[i]; i++) {
+                    // Look no need to do list[i] in the body of the loop
+                    console.log("Looping: index ", i, "item" + item);
+
                     field_counter++;
                     console.log('DYNAMIC LOAD '+field_counter);
-                    $("#modal31911 .dynamic_"+field_counter+" h3").html(input_field["d__title"]);
+                    $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
-                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',input_field["d__placeholder"]).val(input_field["d__value"]);
-                });
+                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).val(item["d__value"]);
+
+                }
 
                 return_inputs
 
