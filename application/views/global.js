@@ -1330,8 +1330,6 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
 
                 }
 
-                return_inputs
-
                 //Dynamic Radio fields (if any):
                 $("#modal31911 .dynamic_editing_radio").html(data.return_radios);
 
