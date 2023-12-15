@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$route['translate_uri_dashes']          = FALSE;
+$route['default_controller']            = "app/index"; //Redirects to default app
+$route['404_override']                  = 'app/load'; //Page not found
+
+//Custom Apps:
 $route['SendReminder'] = "app/load/42216";
 $route['URLRoutes'] = "app/load/42006";
 $route['External'] = "app/load/31807";
