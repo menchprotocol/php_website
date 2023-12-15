@@ -1304,7 +1304,7 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
     if(i__id){
         //Load dynamic data:
         $.post("/i/edit_load_i", {
-            e__id: e__id,
+            i__id: i__id,
             x__id: x__id,
         }, function (data) {
 
