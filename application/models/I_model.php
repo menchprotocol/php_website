@@ -671,12 +671,12 @@ class I_model extends CI_Model
                     array_push($recursive_i_ids, $recursive_i_id);
                 }
             }
-            $total_levels = $recursive_down_ids['total_levels'];
+
         }
 
         return array(
             'recursive_i_ids' => array_unique($recursive_i_ids),
-            'total_levels' => $total_levels,
+            'total_levels' => ( isset($recursive_down_ids['total_levels']) ? $recursive_down_ids['total_levels'] : $total_levels ),
         );
 
     }
