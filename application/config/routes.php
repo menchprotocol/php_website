@@ -18,4 +18,4 @@ $route['~(:alphanum)']                          = "i/i_layout/$1"; //Ideate
 $route['(:alphanum)/(:alphanum)/@(:alphanum)']  = "x/x_layout/$1/$2/$3"; //Discovery Started
 $route['(:alphanum)/(:alphanum)']               = "x/x_layout/$1/$2/0"; //Discovery Started
 $route['(:alphanum)']                           = "x/x_layout/0/$1/0"; //Discovery Preview
-$route['(:any)']                                = "x/x_layout/0/$1/0"; //Discovery Preview
+//$route['(:any)']                                = "x/x_layout/0/$1/0"; //Discovery Preview
