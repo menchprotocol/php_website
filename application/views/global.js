@@ -833,23 +833,12 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-    $("#modal31911").on("hide.bs.modal", function (e) {
-        var r = confirm("Your changes are unsaved! Close this window?");
-        if (r==true) {
-            console.log('continue...');
-        } else {
-            e.preventDefault();
-            return false;
-        }
-    });
-
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');
     });
 
     load_covers();
-
 
     //Should we auto start?
     if (isAdvancedUpload) {
