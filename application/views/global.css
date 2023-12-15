@@ -733,7 +733,9 @@ p.menu_header {
 .fixed-top, .fixed-bottom {
     z-index: 999 !important;
 }
-
+.fixed-top {
+    background-color: #FFFFFF;
+}
 
 .no-horizonal-margin{
     margin-top: 0 !important;
