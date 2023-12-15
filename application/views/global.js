@@ -1318,10 +1318,13 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
                 data.return_inputs.forEach(function(input_field) {
                     //Update the fields:
                     field_counter++;
+                    console.log('DYNAMIC LOAD '+field_counter);
                     $("#modal31911 .dynamic_"+field_counter+" h3").html(input_field["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
                     $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',input_field["d__placeholder"]).val(input_field["d__value"]);
                 });
+
+                return_inputs
 
                 //Dynamic Radio fields (if any):
                 $("#modal31911 .dynamic_editing_radio").html(data.return_radios);
