@@ -1206,9 +1206,6 @@ class X extends CI_Controller
 
             //List stats:
             $miscstats .= '<div>Tree Ideas: '.number_format(count($recursive_down_ids['recursive_i_ids']), 0).'</div>';
-            $miscstats .= '<div>Tree Levels: '.$recursive_down_ids['deepest_level'].'</div>';
-            //$miscstats .= '<div>Tree Minimum Discoveries: '.$recursive_down_ids['deepest_level'].'</div>';
-            //$miscstats .= '<div>Tree Maximum Discoveries: '.$recursive_down_ids['deepest_level'].'</div>';
 
         }
 

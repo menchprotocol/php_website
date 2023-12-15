@@ -1267,7 +1267,7 @@ class X_model extends CI_Model
 
 
 
-    function tree_progress($e__id, $i, $deepest_level = 0, $loop_breaker_ids = array())
+    function tree_progress($e__id, $i, $current_level = 0, $loop_breaker_ids = array())
     {
 
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
@@ -1279,7 +1279,7 @@ class X_model extends CI_Model
             return false;
         }
 
-        $deepest_level++;
+        $current_level++;
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         //Count completed:
@@ -1315,7 +1315,7 @@ class X_model extends CI_Model
         ), array('x__right')) as $expansion_in) {
 
             //Fetch recursive:
-            $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $deepest_level, $loop_breaker_ids);
+            $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
 
             //Addup completion stats for this:
             $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
@@ -1340,7 +1340,7 @@ class X_model extends CI_Model
         }
 
 
-        if($deepest_level==1){
+        if($current_level==1){
 
             /*
              *
