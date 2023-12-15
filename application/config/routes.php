@@ -9,8 +9,7 @@ $route['404_override']                  = 'app/load'; //Page not found
 $route['stats'] = "app/load/33292";
 $route['routes'] = "app/load/42006";
 $route['cache'] = "app/load/4527";
-$route['/cache'] = "app/load/4527";
-//$route['stats'] = "app/load/".$app_id;
+
 
 //$route['-(:any)']                             = "app/load/$1";
 $route['@(:alphanum)']                          = "e/e_layout/$1"; //Source
@@ -19,4 +18,4 @@ $route['~(:alphanum)']                          = "i/i_layout/$1"; //Ideate
 $route['(:alphanum)/(:alphanum)/@(:alphanum)']  = "x/x_layout/$1/$2/$3"; //Discovery Started
 $route['(:alphanum)/(:alphanum)']               = "x/x_layout/$1/$2/0"; //Discovery Started
 $route['(:alphanum)']                           = "x/x_layout/0/$1/0"; //Discovery Preview
-$route['(:segment)']                           = "x/x_layout/0/$1/0"; //Discovery Preview
+$route['(:segment)']                            = "x/x_layout/0/$1/0"; //Discovery Preview
