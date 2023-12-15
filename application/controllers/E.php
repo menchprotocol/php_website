@@ -550,10 +550,10 @@ class E extends CI_Controller
         //Fetch Source Templates, if any:
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //SOURCE TEMPLATE GROUPS
-            'x__down' => $_POST['e__id'],
+            'x__down' => $es[0]['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        )) as $e_group) {
+        ), array('x__up')) as $e_group) {
 
             //Find template for this group:
             foreach($this->X_model->fetch(array(
@@ -582,7 +582,7 @@ class E extends CI_Controller
                             'x__up' => 31912, //Edit Source
                             'x__down' => $dynamic_e__id,
                             'x__reference' => $_POST['x__id'],
-                            'x__message' => 'Found '.count($data_types).' Data Types (@'.$_POST['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
+                            'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
                         ));
                         continue; //Go to the next dynamic data type...
 
@@ -611,7 +611,7 @@ class E extends CI_Controller
                     if(in_array($data_type, $this->config->item('n___42188'))){
 
                         //Single or Multiple Choice:
-                        $return_radios .= view_radio_e($dynamic_e__id, $_POST['e__id'], 0);
+                        $return_radios .= view_radio_e($dynamic_e__id, $es[0]['e__id'], 0);
 
                     } else {
 
@@ -620,7 +620,7 @@ class E extends CI_Controller
                         foreach($this->X_model->fetch(array(
                             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__down' => $_POST['e__id'],
+                            'x__down' => $es[0]['e__id'],
                             'x__up' => $dynamic_e__id,
                         )) as $curr_val){
                             $d__value = $curr_val['x__message'];
@@ -688,7 +688,7 @@ class E extends CI_Controller
             'x__creator' => $member_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
             'x__up' => 31912, //Edit Source
-            'x__down' => $_POST['e__id'],
+            'x__down' => $es[0]['e__id'],
             'x__reference' => $_POST['x__id'],
             'x__metadata' => $return_array,
         ));
