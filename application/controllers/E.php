@@ -544,6 +544,7 @@ class E extends CI_Controller
 
         //Fetch dynamic data based on idea type:
         $return_inputs = array();
+        $return_unique_inputs = array();
         $return_radios = '';
         $input_pointer = 0;
 
@@ -630,13 +631,15 @@ class E extends CI_Controller
                         //Add to main array:
                         $this_data_type = $this->config->item('e___'.$data_type);
 
-                        array_push($return_inputs, array(
-                            'd__id' => $dynamic_e__id,
-                            'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                            'd__value' => $d__value,
-                            'd__placeholder' => $this_data_type[$dynamic_e__id]['m__message'],
-                        ));
-
+                        if(!in_array($return_unique_inputs, $dynamic_e__id)){
+                            array_push($return_unique_inputs, $dynamic_e__id);
+                            array_push($return_inputs, array(
+                                'd__id' => $dynamic_e__id,
+                                'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                                'd__value' => $d__value,
+                                'd__placeholder' => $this_data_type[$dynamic_e__id]['m__message'],
+                            ));
+                        }
                     }
                 }
             }
