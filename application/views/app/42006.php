@@ -17,16 +17,16 @@ foreach($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__down'), 0) as $app) {
-    echo '$route[\''.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'"; //'.$app['e__title']."\n";
+    echo '$route[\''.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
 }
 
 echo "\n";
 
 
 //Fixed Application Logic:
-echo '$route[\'@([a-zA-Z0-9]+)\'] = "e/e_layout/$1"; //Source';
-echo '$route[\'~([a-zA-Z0-9]+)\'] = "i/i_layout/$1"; //Ideate';
-echo '$route[\'([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "x/x_layout/$1/$2"; //Discovery Sequence';
-echo '$route[\'([a-zA-Z0-9]+)\'] = "x/x_layout/0/$1/0"; //Discovery Single';
+echo '$route[\'@([a-zA-Z0-9]+)\'] = "e/e_layout/$1"; //Source'."\n";
+echo '$route[\'~([a-zA-Z0-9]+)\'] = "i/i_layout/$1"; //Ideate'."\n";
+echo '$route[\'([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "x/x_layout/$1/$2"; //Discovery Sequence'."\n";
+echo '$route[\'([a-zA-Z0-9]+)\'] = "x/x_layout/0/$1/0"; //Discovery Single'."\n";
 
 echo '</textarea>';
