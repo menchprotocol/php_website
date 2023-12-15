@@ -631,7 +631,7 @@ class E extends CI_Controller
                         //Add to main array:
                         $this_data_type = $this->config->item('e___'.$data_type);
 
-                        if(!in_array($return_unique_inputs, $dynamic_e__id)){
+                        if(!in_array($dynamic_e__id, $return_unique_inputs)){
                             array_push($return_unique_inputs, $dynamic_e__id);
                             array_push($return_inputs, array(
                                 'd__id' => $dynamic_e__id,
