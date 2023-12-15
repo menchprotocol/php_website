@@ -1207,7 +1207,7 @@ class X extends CI_Controller
             $level1_total = 0;
             foreach($this->config->item('e___'.$x__type1) as $x__type2 => $m2) {
                 $level2_total = 0;
-                foreach($this->config->item('e___'.$x__type2) as $x__type3 => $m3) {
+                foreach($this->config->item('e___'.map_primary_links($x__type2)) as $x__type3 => $m3) {
 
                     if($x__type2==12273){
 
@@ -1263,7 +1263,7 @@ class X extends CI_Controller
                         } else {
 
                             $sub_counter = $this->E_model->fetch(array(
-                                'e__access > 0' => NULL,//$x__type3
+                                'e__access' => $x__type3,
                             ), 0, 0, array(), 'COUNT(e__id) as totals');
 
                         }
