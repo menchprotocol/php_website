@@ -1376,6 +1376,7 @@ function save_i(){
 
             //Reset errors:
             $("#modal31911 .save_results").html('');
+            has_unsaved_changes = false;
             $('#modal31911').modal('hide');
 
             //Update Idea Message:
@@ -1529,6 +1530,7 @@ function save_e(){
 
             //Reset errors:
             $("#modal31912 .save_results").html('');
+            has_unsaved_changes = false;
             $('#modal31912').modal('hide');
 
 
