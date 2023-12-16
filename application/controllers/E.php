@@ -38,14 +38,14 @@ class E extends CI_Controller
             //See if we need to lookup the ID:
             if(is_int($e__handle)){
                 //Maybe its an ID?
-                $es = $this->E_model->fetch(array(
+                foreach ($this->E_model->fetch(array(
                     'e__id' => $e__handle,
-                ));
+                )) as $e_redirect){
+                    return redirect_message('/@'.$e_redirect['e__handle']);
+                }
             }
 
-            if (count($es) < 1) {
-                return redirect_message(home_url());
-            }
+            return redirect_message(home_url());
         }
 
         $member_e = superpower_unlocked();
