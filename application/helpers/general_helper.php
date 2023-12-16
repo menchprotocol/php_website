@@ -1572,7 +1572,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $domain_email = website_setting(28614, $e__id, $x__website);
     $email_domain = '"'.$domain_name.'" <'.( strlen($domain_email) ? $domain_email : 'support@mench.com' ).'>';
     if(!strlen($domain_email)){
-        $this->X_model->create(array(
+        $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.$to_emails.')',
         ));
