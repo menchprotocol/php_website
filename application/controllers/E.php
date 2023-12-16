@@ -763,7 +763,7 @@ class E extends CI_Controller
             'x__down' => $es[0]['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        )) as $e_group) {
+        ), array('x__up')) as $e_group) {
 
             //Find template for this group:
             foreach ($this->X_model->fetch(array(
