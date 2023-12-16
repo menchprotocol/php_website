@@ -1475,9 +1475,6 @@ class E extends CI_Controller
 
         if($valid_email) {
 
-
-            die('vali2f email');
-
             //Email:
             send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', $x__creator, array(), 0, 0, false);
 
