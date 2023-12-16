@@ -1585,7 +1585,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     if(!strlen($domain_email)){
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.$to_emails.')',
+            'x__message' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
         ));
     }
 
