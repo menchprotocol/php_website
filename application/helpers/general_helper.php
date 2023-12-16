@@ -627,7 +627,7 @@ function auto_login() {
     $first_segment = $CI->uri->segment(1);
     $member_e = superpower_unlocked();
 
-    if(!array_key_exists($first_segment, $CI->config->item('handle___14582'))){
+    if(!array_key_exists($first_segment, $CI->config->item('handle___14582')) && !in_array($first_segment, array('e','i','x'))){
         if(!$member_e || $member_e['e__id']!=1){
             die('Website under maintenance...');
         }
