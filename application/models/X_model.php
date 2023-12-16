@@ -567,7 +567,10 @@ class X_model extends CI_Model
                 $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
 
                 //ASSUME that we found 1 match as expected:
-                $data_type = $data_types[0];
+                foreach($data_types as $data_type_this){
+                    $data_type = $data_type_this;
+                    break;
+                }
                 $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
                 
                 if(!$is_required){
