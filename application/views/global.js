@@ -1260,6 +1260,7 @@ function save_load_i(i__id, x__id, link_i__id = 0){
 
     //Reset Fields:
     $("#modal31911 .unsaved_warning").val('');
+    has_unsaved_changes = false;
     $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__message").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
@@ -1406,6 +1407,7 @@ function save_load_e(e__id, x__id){
 
     //Reset Fields:
     $("#modal31912 .unsaved_warning").val('');
+    has_unsaved_changes = false;
     $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
     $("#modal31912 .dynamic_item, #modal31912 .save_x__message").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
@@ -1544,8 +1546,8 @@ function save_e(){
 
             console.log(data.message); //To check what happened...
 
-            if(x__id){
-                $('.ui_x__message_'+x__id).text(modify_data['save_x__message']);
+            if( modify_data['save_x__id'] ){
+                $('.ui_x__message_'+ modify_data['save_x__id'] ).text(modify_data['save_x__message']);
             }
 
             //Tooltips:
