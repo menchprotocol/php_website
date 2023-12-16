@@ -1451,16 +1451,17 @@ class E extends CI_Controller
 
 
         //Search for email/phone to see if it exists...
-        $u_accounts = $this->X_model->fetch(array(
+        $x__creator = 0;
+        foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up IN (' . join(',', $this->config->item('n___32078')) . ')' => null, //Phone or Email
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down'));
-
-        $x__creator = ( count($u_accounts) ? $u_accounts[0]['e__id'] : 0 );
-
+        ), array('x__down')) as $map_e){
+            $x__creator = $map_e['e__id'];
+            break;
+        }
 
         //Send Sign In Key
         $passcode = rand(1000,9999);
