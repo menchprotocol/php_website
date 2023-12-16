@@ -1936,9 +1936,6 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
 
-
-
-
     //Title Cover
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';

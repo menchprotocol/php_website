@@ -197,6 +197,7 @@ if(superpower_unlocked()) {
 
             //Lock fields:
             contact_searching = true;
+            var account_email_phone = $('#account_email_phone').val();
             $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
             $('#account_email_phone').prop('disabled', true);
             $('#sign_code_errors').html('');
@@ -205,7 +206,7 @@ if(superpower_unlocked()) {
             //Check email and validate:
             $.post("/e/contact_search", {
 
-                account_email_phone: $('#account_email_phone').val(),
+                account_email_phone: account_email_phone,
                 sign_i__id: sign_i__id,
 
             }, function (data) {

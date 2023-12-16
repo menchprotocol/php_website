@@ -1434,6 +1434,11 @@ class E extends CI_Controller
             ));
         }
 
+        return view_json(array(
+            'status' => 0,
+            'message' => 'Hiii',
+        ));
+
 
         if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
