@@ -602,10 +602,10 @@ function redirect_message($url, $message = null, $log_error = false)
     if (!$message) {
         //Do a permanent redirect if message not available:
         header("Location: " . $url, true, 301);
-        exit;
+        return false;
     } else {
         header("Location: " . $url, true);
-        exit;
+        return false;
     }
 }
 
