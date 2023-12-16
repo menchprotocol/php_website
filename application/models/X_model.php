@@ -623,7 +623,10 @@ class X_model extends CI_Model
 
         if($e__id!=1){
             //TODO Remove
-            return false;
+            return array(
+                'status' => 0,
+                'message' => 'System is down for now',
+            );
         }
 
         $sms_subscriber = false;
