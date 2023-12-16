@@ -34,7 +34,18 @@ class E extends CI_Controller
             'e__handle' => $e__handle,
         ));
         if (count($es) < 1) {
-            return redirect_message(home_url());
+
+            //See if we need to lookup the ID:
+            if(is_int($e__handle)){
+                //Maybe its an ID?
+                $es = $this->E_model->fetch(array(
+                    'e__id' => $e__handle,
+                ));
+            }
+
+            if (count($es) < 1) {
+                return redirect_message(home_url());
+            }
         }
 
         $member_e = superpower_unlocked();
