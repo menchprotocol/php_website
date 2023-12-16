@@ -625,9 +625,14 @@ function auto_login() {
     date_default_timezone_set(view_memory(6404,11079));
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
+    $member_e = superpower_unlocked();
+
+    if(!$member_e || $member_e['e__id']!=1){
+        die('Website under maintenance...');
+    }
 
     if(
-        !superpower_unlocked() //User must not be logged in
+        !$member_e //User must not be logged in
         && !array_key_exists($first_segment, $CI->config->item('handle___14582'))
         && (isset($_COOKIE['auth_cookie']) || (isset($_GET['e__handle']) && isset($_GET['e__hash']))) //We can auto login with either method:
     ) {
