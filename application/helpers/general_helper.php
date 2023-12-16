@@ -1575,12 +1575,12 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
 
 function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true){
 
-    die('Domain email is missing! ('.join(' & ',$to_emails).') ('.$subject.') ('.$email_body.')');
     $CI =& get_instance();
     $domain_name = get_domain('m__title', $e__id, $x__website);
     $domain_email = website_setting(28614, $e__id, $x__website);
     $email_domain = '"'.$domain_name.'" <'.( strlen($domain_email) ? $domain_email : 'support@mench.com' ).'>';
 
+    die('Domain email is missing! ('.join(' & ',$to_emails).') ('.$subject.') ('.$email_body.')');
 
     if(!strlen($domain_email)){
         $CI->X_model->create(array(
