@@ -1455,9 +1455,10 @@ class E extends CI_Controller
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'));
 
-
-
         $x__creator = ( count($u_accounts) ? $u_accounts[0]['e__id'] : 0 );
+        die('$x__creator='.$x__creator);
+
+
 
         //Send Sign In Key
         $passcode = rand(1000,9999);
@@ -1471,6 +1472,8 @@ class E extends CI_Controller
         $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].' for '.get_domain('m__title');
 
         if($valid_email) {
+
+            die('valif email');
 
             //Email:
             send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', 0, array(), 0, 0, false);
@@ -1489,6 +1492,9 @@ class E extends CI_Controller
 
         } elseif($possible_phone) {
 
+            die('poss phone');
+
+
             //SMS:
             send_sms($_POST['account_email_phone'], $plain_message, 0, array(), 0, 0, false);
 
@@ -1505,6 +1511,9 @@ class E extends CI_Controller
             ));
 
         }
+
+        die('yessss');
+
 
         return view_json(array(
             'status' => 1,
