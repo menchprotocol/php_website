@@ -889,8 +889,8 @@ class E extends CI_Controller
         }
 
         //Validate Source Title & save if needed:
+        $validate_e__title = validate_e__title($_POST['save_e__title']);
         if($es[0]['e__title'] != trim($_POST['save_e__title'])){
-            $validate_e__title = validate_e__title($_POST['save_e__title']);
             if(!$validate_e__title['status']){
                 return view_json(array(
                     'status' => 0,
