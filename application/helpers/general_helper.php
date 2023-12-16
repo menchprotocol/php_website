@@ -629,7 +629,7 @@ function auto_login() {
 
     if(!array_key_exists($first_segment, $CI->config->item('handle___14582')) && !in_array($first_segment, array('e','i','x'))){
         if(!$member_e || $member_e['e__id']!=1){
-            die('Website under maintenance...');
+            //die('Website under maintenance...');
         }
     }
 
