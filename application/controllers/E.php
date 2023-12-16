@@ -1451,7 +1451,7 @@ class E extends CI_Controller
 
 
         //Search for email/phone to see if it exists...
-        $x__creator = 0;
+        $x__creator = 1;
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
