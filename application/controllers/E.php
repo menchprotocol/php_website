@@ -737,6 +737,11 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Source Title',
             ));
+        } elseif (!isset($_POST['save_e__handle'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source Handle',
+            ));
         } elseif (!isset($_POST['save_e__cover'])) {
             return view_json(array(
                 'status' => 0,
@@ -748,7 +753,6 @@ class E extends CI_Controller
                 'message' => 'Missing Transaction Data',
             ));
         }
-
 
 
 
@@ -1472,10 +1476,11 @@ class E extends CI_Controller
         if($valid_email) {
 
 
+            die('vali2f email');
+
             //Email:
             send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', $x__creator, array(), 0, 0, false);
 
-            die('vali2f email');
 
             //Log new key:
             $this->X_model->create(array(
