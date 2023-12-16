@@ -979,7 +979,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4259 => '<audio controls src="%s"></audio><!-- %s -->',
         4260 => '<img src="%s" class="content-image" /><!-- %s -->',
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate"><u>%s</u></span></spanaa>',
-        4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" frameborder="0" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
+        4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
         31834 => '<spanaa href="/%s"><u>%s</u></spanaa>',
         31835 => '<spanaa href="/@%s"><u>%s</u></spanaa>',
     );
@@ -1951,7 +1951,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     } else {
         //Static:
         $ui .= '<input type="hidden" class="text__6197_'.$e['e__id'].'" value="'.$e['e__title'].'">';
-        $ui .= '<div>'.( $is_cache ? '<a href="'.$href.'" class="main__title static__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title static__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
+        $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="main__title static__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title static__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
     }
 
 

@@ -115,7 +115,7 @@ if(superpower_unlocked()) {
     }
     ?>
 
-    <script type="text/javascript">
+    <script>
 
         function load_away(){
             $('.login-content').html('<div class="center"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');

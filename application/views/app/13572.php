@@ -15,7 +15,7 @@ if(isset($_POST)){
     <input type="button" value="Upload" />
 </form>
 
-<script type="text/javascript">
+<script>
 
     $(':file').on('change', function () {
         var file = this.files[0];

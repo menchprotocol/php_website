@@ -560,7 +560,7 @@ if($top_i__hashtag) {
                 $ticket_ui .= '</form>';
 
                 //Hide Standard Next Button:
-                $ticket_ui .= '<script type="text/javascript"> $(document).ready(function () { $("#next_div").hide(); }); </script>';
+                $ticket_ui .= '<script> $(document).ready(function () { $("#next_div").hide(); }); </script>';
 
             } else {
 
@@ -572,7 +572,7 @@ if($top_i__hashtag) {
 
             ?>
 
-            <script type="text/javascript">
+            <script>
                 var busy_processing = false;
                 function sale_increment(increment){
 
@@ -950,7 +950,7 @@ if($top_i__hashtag){
 <input type="hidden" id="top_i__id" value="<?= $top_i__hashtag ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
-<script type="text/javascript">
+<script>
 
     var audio_played = false;
     $(document).ready(function () {

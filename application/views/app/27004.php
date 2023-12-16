@@ -318,8 +318,8 @@ if(count($i_query)){
     echo '<div id="chart_div" style="margin:0 0 21px;"></div>';
     echo '<div id="chart_origin_div" style="margin:0 0 21px;"></div>';
     ?>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
 
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});

@@ -24,7 +24,7 @@ echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[31774]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11030"></div></div>' : '' ).'</div>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
+echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
 
 
 //Focus Source:
@@ -66,7 +66,7 @@ foreach($this->config->item('e___41091') as $x__type => $m) {
 
         }
 
-        $body_content .= '<script type="text/javascript"> $(document).ready(function () { load_search(12274, '.$x__type.'); }); </script>';
+        $body_content .= '<script> $(document).ready(function () { load_search(12274, '.$x__type.'); }); </script>';
 
     }
 
@@ -84,14 +84,14 @@ $focus_tab = 0;
 foreach($this->config->item($focus_menu) as $x__type => $m) {
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
-        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
+        echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
     }
 }
 if(!$focus_tab){
     foreach($this->config->item($focus_menu) as $x__type => $m) {
         $focus_tab = $x__type;
-        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
+        echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
     }
 }
@@ -102,7 +102,7 @@ if(!$focus_tab){
 <input type="hidden" id="focus_handle" value="<?= $e['e__handle'] ?>" />
 <input type="hidden" id="focus_card" value="12274" />
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
-<script type="text/javascript">
+<script>
 
     $(document).ready(function () {
 

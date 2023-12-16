@@ -40,8 +40,8 @@ if($write_access_i){
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11019"></div></div>' : '' ).'</div>';
 }
 
-echo '<script type="text/javascript"> $(document).ready(function () { initiate_algolia(); load_search(12273,11019); }); </script>';
-echo '<script type="text/javascript"> $(document).ready(function () { setTimeout(function () { load_tab(11019, true);  }, 377); }); </script>';
+echo '<script> $(document).ready(function () { initiate_algolia(); load_search(12273,11019); }); </script>';
+echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11019, true);  }, 377); }); </script>';
 
 
 
@@ -84,7 +84,7 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
 
         }
 
-        $body_content .= '<script type="text/javascript"> $(document).ready(function () { load_search(12273, '.$x__type.'); }); </script>';
+        $body_content .= '<script> $(document).ready(function () { load_search(12273, '.$x__type.'); }); </script>';
 
     }
 
@@ -98,14 +98,14 @@ $focus_tab = 0;
 foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
     if($coins_count[$x__type] > 0){
         $focus_tab = $x__type;
-        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
+        echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
     }
 }
 if(!$focus_tab){
     foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
         $focus_tab = $x__type;
-        echo '<script type="text/javascript"> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
+        echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
     }
 }
@@ -119,7 +119,7 @@ if(!$focus_tab){
 <input type="hidden" id="focus_card" value="12273" />
 <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
 <input type="hidden" id="focus_id" value="<?= $focus_i['i__id'] ?>" />
-<script type="text/javascript">
+<script>
 
     $(document).ready(function () {
         //Look for power editor updates:

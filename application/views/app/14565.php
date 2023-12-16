@@ -198,7 +198,7 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
 
-<script type="text/javascript">
+<script>
     $(window).scroll(function() {
         if($(window).scrollTop()  > 110) {
             $('.fixed-top').removeClass('top-header-position');

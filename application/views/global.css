@@ -2143,7 +2143,7 @@ input.form-control {
 
 .cover-content .inner-content .main__title {
     padding:3px 0 0;
-    display: block;
+    display: inline-block;
     min-height: 21px;
 }
 .source-info span .main__title {
