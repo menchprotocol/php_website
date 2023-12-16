@@ -756,26 +756,30 @@ p.menu_header {
 
 
 .fa-spin-reverse-slow{
-    -webkit-animation: fa-spin-reverse 20s infinite linear;
-    animation: fa-spin-reverse 20s infinite linear;
+    -webkit-animation: fa-spin-reverse 21s infinite linear;
+    animation: fa-spin-reverse 21s infinite linear;
 }
 .fa-spin-reverse-med{
-    -webkit-animation: fa-spin-reverse 10s infinite linear;
-    animation: fa-spin-reverse 10s infinite linear;
+    -webkit-animation: fa-spin-reverse 8s infinite linear;
+    animation: fa-spin-reverse 8s infinite linear;
 }
 .fa-spin-reverse{
     -webkit-animation: fa-spin-reverse 2s infinite linear;
     animation: fa-spin-reverse 2s infinite linear;
 }
 
-.fa-spin-med {
-    -webkit-animation: fa-spin-slow 10s infinite linear;
-    animation: fa-spin-slow 10s infinite linear;
-}
 
+.fa-spin-med {
+    -webkit-animation: fa-spin-slow 8s infinite linear;
+    animation: fa-spin-slow 8s infinite linear;
+}
 .fa-spin-slow {
-    -webkit-animation: fa-spin-slow 20s infinite linear;
-    animation: fa-spin-slow 20s infinite linear;
+    -webkit-animation: fa-spin-slow 21s infinite linear;
+    animation: fa-spin-slow 21s infinite linear;
+}
+.fa-spin-super-slow {
+    -webkit-animation: fa-spin-slow 4181s infinite linear;
+    animation: fa-spin-slow 4181s infinite linear;
 }
 
 
