@@ -791,7 +791,7 @@ class E extends CI_Controller
                             'x__creator' => $member_e['e__id'],
                             'x__up' => 42179, //Dynamic Input Fields
                             'x__down' => $dynamic_e__id,
-                            'x__right' => $es[0]['e__id'],
+                            'x__right' => $_POST['save_e__id'],
                             'x__reference' => $_POST['save_x__id'],
                             'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong...',
                         ));
