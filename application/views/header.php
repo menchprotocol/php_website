@@ -59,7 +59,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 <html lang="en" >
 <head>
 
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
 
     <meta name="theme-color" content="#FFFFFF">
     <link rel="icon" id="favicon" href="<?= $logo ?>">
@@ -71,7 +71,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     }
 
     if(isset($_SERVER['SERVER_NAME'])){
-        echo '<link rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'" />';
+        echo '<link rel="canonical" href="https://'.$_SERVER['SERVER_NAME'].get_server('REQUEST_URI').'">';
     }
     ?>
 
@@ -116,7 +116,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo view_memory(6404,4523);
     ?>
 
-    <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet"/>
+    <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.js"></script>
