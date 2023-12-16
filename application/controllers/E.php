@@ -1456,8 +1456,6 @@ class E extends CI_Controller
         ), array('x__down'));
 
         $x__creator = ( count($u_accounts) ? $u_accounts[0]['e__id'] : 0 );
-        die('$x__creator='.$x__creator);
-
 
 
         //Send Sign In Key
@@ -1476,7 +1474,7 @@ class E extends CI_Controller
             die('valif email');
 
             //Email:
-            send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', 0, array(), 0, 0, false);
+            send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', $x__creator, array(), 0, 0, false);
 
             //Log new key:
             $this->X_model->create(array(
