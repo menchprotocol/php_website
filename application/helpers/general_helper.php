@@ -1333,8 +1333,10 @@ function validate_e__title($str){
 
 function number_x__weight($str){
     //Set x__weight for caching purposes if message value is numerical:
-    if(is_numeric($str)){
+    if(is_int($str)){
         return intval($str);
+    } elseif(is_double($str)){
+        return doubleval($str);
     } elseif(strtotime($str)){
         return strtotime($str);
     } else {
