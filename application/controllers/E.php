@@ -1471,10 +1471,11 @@ class E extends CI_Controller
 
         if($valid_email) {
 
-            die('valif email');
 
             //Email:
             send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', $x__creator, array(), 0, 0, false);
+
+            die('vali2f email');
 
             //Log new key:
             $this->X_model->create(array(
@@ -1489,9 +1490,6 @@ class E extends CI_Controller
             ));
 
         } elseif($possible_phone) {
-
-            die('poss phone');
-
 
             //SMS:
             send_sms($_POST['account_email_phone'], $plain_message, 0, array(), 0, 0, false);
@@ -1509,8 +1507,6 @@ class E extends CI_Controller
             ));
 
         }
-
-        die('yessss');
 
 
         return view_json(array(
