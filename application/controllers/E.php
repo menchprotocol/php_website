@@ -1451,16 +1451,12 @@ class E extends CI_Controller
 
 
         //Search for email/phone to see if it exists...
-        $x__creator = 1;
-        $u = array(
-            'e__title' => 'Shervin',
-            'e__cover' => '',
-        );
+        $x__creator = 0;
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up IN (' . join(',', $this->config->item('n___32078')) . ')' => null, //Phone or Email
+            'x__up' => ( filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783 ), //Email / Phone
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down')) as $map_e){
             $u = $map_e;
