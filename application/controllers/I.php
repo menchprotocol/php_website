@@ -471,7 +471,9 @@ class I extends CI_Controller {
                 break;
             }
             $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
-
+            if(!isset($_POST['save_dynamic_' . $input_pointer])){
+                $_POST['save_dynamic_' . $input_pointer] = '';
+            }
             //Validate input if required or provided:
             if($is_required || strlen($_POST['save_dynamic_'.$input_pointer])){
                 $valid_data_type = valid_data_type($data_types, $_POST['save_dynamic_'.$input_pointer], $e___42179[$dynamic_e__id]['m__title']);
