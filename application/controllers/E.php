@@ -1452,6 +1452,7 @@ class E extends CI_Controller
 
         //Search for email/phone to see if it exists...
         $x__creator = 1;
+        $u = array();
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
@@ -1459,6 +1460,7 @@ class E extends CI_Controller
             'x__up IN (' . join(',', $this->config->item('n___32078')) . ')' => null, //Phone or Email
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down')) as $map_e){
+            $u = $map_e;
             $x__creator = $map_e['e__id'];
             break;
         }
@@ -1516,7 +1518,7 @@ class E extends CI_Controller
             'status' => 1,
             'account_id' => $x__creator,
             'valid_email' => ( $valid_email ? 1 : 0 ),
-            'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover($u_accounts[0]['e__cover'], true). '</span>'.$u_accounts[0]['e__title'] : '' ),
+            'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover($u['e__cover'], true). '</span>'.$u['e__title'] : '' ),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
