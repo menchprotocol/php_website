@@ -510,7 +510,7 @@ class E extends CI_Controller
     }
 
 
-    function edit_load_e()
+    function save_load_e()
     {
 
         $member_e = superpower_unlocked();
@@ -707,7 +707,7 @@ class E extends CI_Controller
 
 
 
-    function edit_save_e()
+    function save_e()
     {
 
         $member_e = superpower_unlocked();
@@ -716,22 +716,22 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['edit_e__id'])) {
+        } elseif (!isset($_POST['save_e__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Coin ID',
             ));
-        } elseif (!isset($_POST['edit_e__title'])) {
+        } elseif (!isset($_POST['save_e__title'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source Title',
             ));
-        } elseif (!isset($_POST['edit_e__cover'])) {
+        } elseif (!isset($_POST['save_e__cover'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Source Cover',
             ));
-        } elseif(!isset($_POST['edit_x__id']) || !isset($_POST['edit_x__message'])){
+        } elseif(!isset($_POST['save_x__id']) || !isset($_POST['save_x__message'])){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Transaction Data',
@@ -742,7 +742,7 @@ class E extends CI_Controller
 
 
         $es = $this->E_model->fetch(array(
-            'e__id' => $_POST['edit_e__id'],
+            'e__id' => $_POST['save_e__id'],
             'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if(!count($es)){
@@ -791,8 +791,8 @@ class E extends CI_Controller
                             'x__creator' => $member_e['e__id'],
                             'x__up' => 42179, //Dynamic Input Fields
                             'x__down' => $dynamic_e__id,
-                            'x__right' => $_POST['e__id'],
-                            'x__reference' => $_POST['x__id'],
+                            'x__right' => $es[0]['e__id'],
+                            'x__reference' => $_POST['save_x__id'],
                             'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong...',
                         ));
                         continue; //Go to the next dynamic data type...
@@ -807,8 +807,8 @@ class E extends CI_Controller
                     $is_required = in_array($data_type, $this->config->item('n___42174')); //Required Settings
 
                     //Validate input if required or provided:
-                    if ($is_required || strlen($_POST['edit_dynamic_' . $input_pointer])) {
-                        $valid_data_type = valid_data_type($data_types, $_POST['edit_dynamic_' . $input_pointer], $e___42179[$dynamic_e__id]['m__title']);
+                    if ($is_required || strlen($_POST['save_dynamic_' . $input_pointer])) {
+                        $valid_data_type = valid_data_type($data_types, $_POST['save_dynamic_' . $input_pointer], $e___42179[$dynamic_e__id]['m__title']);
                         if (!$valid_data_type['status']) {
                             //We had an error:
                             return view_json($valid_data_type);
@@ -826,7 +826,7 @@ class E extends CI_Controller
                     ));
 
                     //Update if needed:
-                    if (count($values) && !strlen($_POST['edit_dynamic_' . $input_pointer])) {
+                    if (count($values) && !strlen($_POST['save_dynamic_' . $input_pointer])) {
 
                         //Remove Link:
                         $this->X_model->update($values[0]['x__id'], array(
@@ -841,16 +841,16 @@ class E extends CI_Controller
                             'x__type' => 4230,
                             'x__up' => $dynamic_e__id,
                             'x__down' => $es[0]['e__id'],
-                            'x__message' => $_POST['edit_dynamic_' . $input_pointer],
-                            'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                            'x__message' => $_POST['save_dynamic_' . $input_pointer],
+                            'x__weight' => number_x__weight($_POST['save_dynamic_' . $input_pointer]),
                         ));
 
-                    } elseif ($values[0]['x__message'] != $_POST['edit_dynamic_' . $input_pointer]) {
+                    } elseif ($values[0]['x__message'] != $_POST['save_dynamic_' . $input_pointer]) {
 
                         //Update Link:
                         $this->X_model->update($values[0]['x__id'], array(
-                            'x__message' => $_POST['edit_dynamic_' . $input_pointer],
-                            'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                            'x__message' => $_POST['save_dynamic_' . $input_pointer],
+                            'x__weight' => number_x__weight($_POST['save_dynamic_' . $input_pointer]),
                         ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
                     }
@@ -861,9 +861,9 @@ class E extends CI_Controller
 
 
         //Validate Source Handle & save if needed:
-        if($es[0]['e__handle'] !== trim($_POST['edit_e__handle'])){
+        if($es[0]['e__handle'] !== trim($_POST['save_e__handle'])){
 
-            $validate_handle = validate_handle(trim($_POST['edit_e__handle']), null, $es[0]['e__id']);
+            $validate_handle = validate_handle(trim($_POST['save_e__handle']), null, $es[0]['e__id']);
             if(!$validate_handle['status']){
                 return view_json(array(
                     'status' => 0,
@@ -878,16 +878,16 @@ class E extends CI_Controller
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )) as $ref) {
                 $this->I_model->update($ref['x__right'], array(
-                    'i__message' => preg_replace('/\b@'.$es[0]['e__handle'].'\b/', '@'.trim($_POST['edit_e__handle']), $ref['x__message']),
+                    'i__message' => preg_replace('/\b@'.$es[0]['e__handle'].'\b/', '@'.trim($_POST['save_e__handle']), $ref['x__message']),
                 ), false, $member_e['e__id']);
             }
-            $es[0]['e__handle'] = trim($_POST['edit_e__handle']);
+            $es[0]['e__handle'] = trim($_POST['save_e__handle']);
 
         }
 
         //Validate Source Title & save if needed:
-        if($es[0]['e__title'] != trim($_POST['edit_e__title'])){
-            $validate_e__title = validate_e__title($_POST['edit_e__title']);
+        if($es[0]['e__title'] != trim($_POST['save_e__title'])){
+            $validate_e__title = validate_e__title($_POST['save_e__title']);
             if(!$validate_e__title['status']){
                 return view_json(array(
                     'status' => 0,
@@ -898,34 +898,34 @@ class E extends CI_Controller
         }
 
         //Save Source Cover if needed:
-        if($es[0]['e__cover'] != trim($_POST['edit_e__cover'])){
+        if($es[0]['e__cover'] != trim($_POST['save_e__cover'])){
             //TODO validate e__cover?
-            $es[0]['e__cover'] = trim($_POST['edit_e__cover']);
+            $es[0]['e__cover'] = trim($_POST['save_e__cover']);
         }
 
         //Update:
         $this->E_model->update($es[0]['e__id'], array(
             'e__title' => $validate_e__title['e__title_clean'],
-            'e__cover' => trim($_POST['edit_e__cover']),
-            'e__handle' => trim($_POST['edit_e__handle']),
+            'e__cover' => trim($_POST['save_e__cover']),
+            'e__handle' => trim($_POST['save_e__handle']),
         ), true, $member_e['e__id']);
 
 
         //Do we have a link reference message that need to be saved?
-        if($_POST['edit_x__id']>0){
+        if($_POST['save_x__id']>0){
 
             //Fetch transaction:
             foreach($this->X_model->fetch(array(
-                'x__id' => $_POST['edit_x__id'],
+                'x__id' => $_POST['save_x__id'],
             )) as $this_x){
 
                 $es[0] = array_merge($es[0], $this_x);
 
-                if($this_x['x__message'] != trim($_POST['edit_x__message'])){
+                if($this_x['x__message'] != trim($_POST['save_x__message'])){
 
                     $this->X_model->update($this_x['x__id'], array(
-                        'x__message' => trim($_POST['edit_x__message']),
-                        'x__weight' => number_x__weight(trim($_POST['edit_x__message'])),
+                        'x__message' => trim($_POST['save_x__message']),
+                        'x__weight' => number_x__weight(trim($_POST['save_x__message'])),
                     ), $member_e['e__id'], 42171);
 
                 }
@@ -934,7 +934,7 @@ class E extends CI_Controller
 
 
         //Reset member session data if this data belongs to the logged-in member:
-        if ($_POST['edit_e__id']==$member_e['e__id']) {
+        if ($_POST['save_e__id']==$member_e['e__id']) {
             $this->E_model->activate_session($es[0], true);
         }
 

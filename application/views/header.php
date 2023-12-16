@@ -393,7 +393,7 @@ if(!$basic_header_footer){
 
 
                     //Always give option to instantly add idea:
-                    echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="edit_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
+                    echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="save_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
 
 
                     if($i_view > 0){

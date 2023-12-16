@@ -635,10 +635,10 @@ function x_create(add_fields){
 
 
 function update__cover(new_cover){
-    $('#modal31912 .edit_e__cover').val( new_cover );
+    $('#modal31912 .save_e__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
     //Save and close:
-    edit_save_e();
+    save_e();
 }
 function image_cover(cover_preview, cover_apply, new_title){
     return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
@@ -668,7 +668,7 @@ function cover_upload(droppedFiles, uploadType) {
         }
 
         ajaxData.append('upload_type', uploadType);
-        ajaxData.append('edit_e__id', $('#modal31912 .edit_e__id').val());
+        ajaxData.append('save_e__id', $('#modal31912 .save_e__id').val());
 
         $.ajax({
             url: '/x/cover_upload',
@@ -877,7 +877,7 @@ $(document).ready(function () {
     });
 
     //Keep an eye for icon change:
-    $('#modal31912 .edit_e__cover').keyup(function() {
+    $('#modal31912 .save_e__cover').keyup(function() {
         update_cover_main($(this).val(), '.demo_cover');
     });
 
@@ -1256,14 +1256,14 @@ function e_load_search(x__type) {
 
 
 
-function edit_load_i(i__id, x__id, link_i__id = 0){
+function save_load_i(i__id, x__id, link_i__id = 0){
 
     //Reset Fields:
     $("#modal31911 .unsaved_warning").val('');
     $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio').html('');
-    $("#modal31911 .dynamic_item, #modal31911 .edit_x__message").addClass('hidden');
+    $("#modal31911 .dynamic_item, #modal31911 .save_x__message").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
-    $('#modal31911 .edit_i__id, #modal31911 .edit_x__id').val(0);
+    $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
 
     //Load Instant Fields:
     if(link_i__id){
@@ -1271,28 +1271,28 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
         $('#modal31911 .link_i__id').val(i__id);
     }
     if(i__id){
-        $('#modal31911 .edit_i__id').val(i__id);
+        $('#modal31911 .save_i__id').val(i__id);
         $("#modal31911 .show_id").text('ID '+i__id);
-        $('#modal31911 .edit_i__hashtag').val($('.ui_i__hashtag_'+i__id).text());
-        $('#modal31911 .edit_i__message').val($('.ui_i__message_'+i__id).text()).focus();
+        $('#modal31911 .save_i__hashtag').val($('.ui_i__hashtag_'+i__id).text());
+        $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id).text()).focus();
     }
     if(x__id){
-        $('#modal31911 .edit_x__id').val(x__id);
-        $('#modal31911 .edit_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
+        $('#modal31911 .save_x__id').val(x__id);
+        $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
     }
 
     //Activate Modal:
     $('#modal31911').modal('show');
 
-    activate_handle_search($('#modal31911 .edit_i__message'));
+    activate_handle_search($('#modal31911 .save_i__message'));
 
     setTimeout(function () {
-        set_autosize($('#modal31911 .edit_i__message, #modal31911 .edit_x__message'));
+        set_autosize($('#modal31911 .save_i__message, #modal31911 .save_x__message'));
     }, 144);
 
     if(i__id){
         //Load dynamic data:
-        $.post("/i/edit_load_i", {
+        $.post("/i/save_load_i", {
             i__id: i__id,
             x__id: x__id,
         }, function (data) {
@@ -1344,7 +1344,7 @@ function edit_load_i(i__id, x__id, link_i__id = 0){
 
 
 var i_saving = false; //Prevent double saving
-function edit_save_i(){
+function save_i(){
 
     if(i_saving){
         return false;
@@ -1353,19 +1353,19 @@ function edit_save_i(){
     }
 
     var modify_data = {
-        edit_i__id:         $('#modal31911 .edit_i__id').val(),
-        edit_x__id:         $('#modal31911 .edit_x__id').val(),
-        edit_x__message:    $('#modal31911 .edit_x__message').val().trim(),
-        edit_i__message:    $('#modal31911 .edit_i__message').val().trim(),
-        edit_i__hashtag:    $('#modal31911 .edit_i__hashtag').val().trim(),
+        save_i__id:         $('#modal31911 .save_i__id').val(),
+        save_x__id:         $('#modal31911 .save_x__id').val(),
+        save_x__message:    $('#modal31911 .save_x__message').val().trim(),
+        save_i__message:    $('#modal31911 .save_i__message').val().trim(),
+        save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
     };
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
-        modify_data['edit_dynamic_'+i] = $('#modal31911 .edit_dynamic_'+i).val().trim();
+        modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).val().trim();
     }
 
-    $.post("/i/edit_save_i", modify_data, function (data) {
+    $.post("/i/save_i", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -1379,13 +1379,13 @@ function edit_save_i(){
             $('#modal31911').modal('hide');
 
             //Update Idea Message:
-            $('.ui_i__message_'+modify_data['edit_i__id']).text(modify_data['edit_i__message']);
-            $(".ui_i__hashtag_"+modify_data['edit_i__id']).text(modify_data['edit_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
-            $('.ui_i__cache_'+modify_data['edit_i__id']).html(( parseInt($('.ui_i__cache_'+modify_data['edit_i__id']).attr('show_cache_links')) ? data.return_i__cache_links : data.return_i__cache ));
+            $('.ui_i__message_'+modify_data['save_i__id']).text(modify_data['save_i__message']);
+            $(".ui_i__hashtag_"+modify_data['save_i__id']).text(modify_data['save_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+            $('.ui_i__cache_'+modify_data['save_i__id']).html(( parseInt($('.ui_i__cache_'+modify_data['save_i__id']).attr('show_cache_links')) ? data.return_i__cache_links : data.return_i__cache ));
             console.log(data.message); //To check what happened...
 
             if(x__id){
-                $('.ui_x__message_'+x__id).text(modify_data['edit_x__message']);
+                $('.ui_x__message_'+x__id).text(modify_data['save_x__message']);
             }
 
             //Tooltips:
@@ -1402,12 +1402,12 @@ function edit_save_i(){
 
 
 
-function edit_load_e(e__id, x__id){
+function save_load_e(e__id, x__id){
 
     //Reset Fields:
     $("#modal31912 .unsaved_warning").val('');
     $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
-    $("#modal31912 .dynamic_item, #modal31912 .edit_x__message").addClass('hidden');
+    $("#modal31912 .dynamic_item, #modal31912 .save_x__message").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
 
     //Source resets:
@@ -1416,20 +1416,20 @@ function edit_load_e(e__id, x__id){
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
-    $('#modal31912 .edit_e__id').val(e__id);
-    $('#modal31912 .edit_x__id').val(x__id);
+    $('#modal31912 .save_e__id').val(e__id);
+    $('#modal31912 .save_x__id').val(x__id);
     $("#modal31912 .show_id").text('ID '+e__id);
-    $('#modal31912 .edit_e__handle').val($('.ui_e__handle_'+e__id).text());
+    $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id).text());
 
-    $('#modal31912 .edit_e__title').val($('.text__6197_'+e__id).val()).focus();
+    $('#modal31912 .save_e__title').val($('.text__6197_'+e__id).val()).focus();
     var current_cover = $('.ui_e__cover_'+e__id).attr('raw_cover');
-    $('#modal31912 .edit_e__cover').val(current_cover).focus();
+    $('#modal31912 .save_e__cover').val(current_cover).focus();
     update_cover_main(current_cover, '.demo_cover');
 
     if(x__id){
-        $('#modal31912 .edit_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
+        $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
         setTimeout(function () {
-            set_autosize($('#modal31912 .edit_x__message'));
+            set_autosize($('#modal31912 .save_x__message'));
         }, 144);
     }
 
@@ -1437,7 +1437,7 @@ function edit_load_e(e__id, x__id){
     $('#modal31912').modal('show');
 
 
-    $.post("/e/edit_load_e", {
+    $.post("/e/save_load_e", {
         e__id: e__id,
         x__id: x__id
     }, function (data) {
@@ -1496,7 +1496,7 @@ function edit_load_e(e__id, x__id){
 }
 
 e_saving = false;
-function edit_save_e(){
+function save_e(){
 
     if(e_saving){
         return false;
@@ -1505,20 +1505,20 @@ function edit_save_e(){
     }
 
     var modify_data = {
-        edit_e__id:         $('#modal31912 .edit_e__id').val(),
-        edit_e__title:      $('#modal31912 .edit_e__title').val().trim(),
-        edit_e__cover:      $('#modal31912 .edit_e__cover').val().trim(),
-        edit_e__handle:     $('#modal31912 .edit_e__handle').val().trim(),
-        edit_x__id:         $('#modal31912 .edit_x__id').val(),
-        edit_x__message:    $('#modal31912 .edit_x__message').val().trim(),
+        save_e__id:         $('#modal31912 .save_e__id').val(),
+        save_e__title:      $('#modal31912 .save_e__title').val().trim(),
+        save_e__cover:      $('#modal31912 .save_e__cover').val().trim(),
+        save_e__handle:     $('#modal31912 .save_e__handle').val().trim(),
+        save_x__id:         $('#modal31912 .save_x__id').val(),
+        save_x__message:    $('#modal31912 .save_x__message').val().trim(),
     };
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
-        modify_data['edit_dynamic_'+i] = $('#modal31912 .edit_dynamic_'+i).val().trim();
+        modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).val().trim();
     }
 
-    $.post("/e/edit_save_e", modify_data, function (data) {
+    $.post("/e/save_e", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -1533,19 +1533,19 @@ function edit_save_e(){
 
 
             //Update Title:
-            update_text_name(6197, $('#modal31912 .edit_e__id').val(), $('#modal31912 .edit_e__title').val());
+            update_text_name(6197, $('#modal31912 .save_e__id').val(), $('#modal31912 .save_e__title').val());
 
             //Update Mini Icon:
-            update_cover_mini($('#modal31912 .edit_e__cover').val(), '.mini_6197_'+$('#modal31912 .edit_e__id').val());
+            update_cover_mini($('#modal31912 .save_e__cover').val(), '.mini_6197_'+$('#modal31912 .save_e__id').val());
 
             //Update Main Icons:
-            update_cover_main($('#modal31912 .edit_e__cover').val(), '.s__12274_'+$('#modal31912 .edit_e__id').val());
+            update_cover_main($('#modal31912 .save_e__cover').val(), '.s__12274_'+$('#modal31912 .save_e__id').val());
 
 
             console.log(data.message); //To check what happened...
 
             if(x__id){
-                $('.ui_x__message_'+x__id).text(modify_data['edit_x__message']);
+                $('.ui_x__message_'+x__id).text(modify_data['save_x__message']);
             }
 
             //Tooltips:
@@ -2415,9 +2415,9 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
             }
 
-            if( data.trigger_i_edit_modal ){
+            if( data.trigger_i_save_modal ){
                 //We need to show idea modal:
-                edit_load_i(o__id, $('.s__12273_'+o__id).attr('x__id'));
+                save_load_i(o__id, $('.s__12273_'+o__id).attr('x__id'));
             }
 
         } else {

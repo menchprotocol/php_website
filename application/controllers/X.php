@@ -658,7 +658,7 @@ class X extends CI_Controller
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif (!isset($_POST['edit_e__id'])) {
+        } elseif (!isset($_POST['save_e__id'])) {
 
             return view_json(array(
                 'status' => 0,
@@ -713,7 +713,7 @@ class X extends CI_Controller
             $invite_x = $this->X_model->create(array(
                 'x__type' => 25990,
                 'x__creator' => $member_e['e__id'],
-                'x__down' => $_POST['edit_e__id'],
+                'x__down' => $_POST['save_e__id'],
                 'x__message' => $cdn_status['cdn_url'],
             ));
 

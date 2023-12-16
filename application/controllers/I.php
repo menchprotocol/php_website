@@ -243,7 +243,7 @@ class I extends CI_Controller {
     }
 
 
-    function edit_load_i()
+    function save_load_i()
     {
 
         $is = $this->I_model->fetch(array(
@@ -378,7 +378,7 @@ class I extends CI_Controller {
 
 
 
-    function edit_save_i(){
+    function save_i(){
 
 
         $member_e = superpower_unlocked();
@@ -389,28 +389,28 @@ class I extends CI_Controller {
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif(!isset($_POST['edit_i__message']) || !strlen($_POST['edit_i__message'])){
+        } elseif(!isset($_POST['save_i__message']) || !strlen($_POST['save_i__message'])){
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea message',
             ));
 
-        } elseif(!isset($_POST['edit_i__hashtag']) || !strlen($_POST['edit_i__hashtag'])){
+        } elseif(!isset($_POST['save_i__hashtag']) || !strlen($_POST['save_i__hashtag'])){
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea hashtag',
             ));
 
-        } elseif(!isset($_POST['edit_i__id']) || !intval($_POST['edit_i__id'])){
+        } elseif(!isset($_POST['save_i__id']) || !intval($_POST['save_i__id'])){
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif(!isset($_POST['edit_x__id']) || !isset($_POST['edit_x__message'])){
+        } elseif(!isset($_POST['save_x__id']) || !isset($_POST['save_x__message'])){
 
             return view_json(array(
                 'status' => 0,
@@ -420,7 +420,7 @@ class I extends CI_Controller {
         }
 
         $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['edit_i__id'],
+            'i__id' => $_POST['save_i__id'],
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)){
@@ -432,7 +432,7 @@ class I extends CI_Controller {
 
 
         //Validate Idea Message:
-        $validate_i__message = validate_i__message($_POST['edit_i__message']);
+        $validate_i__message = validate_i__message($_POST['save_i__message']);
         if(!$validate_i__message['status']){
             return view_json(array(
                 'status' => 0,
@@ -473,8 +473,8 @@ class I extends CI_Controller {
             $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
 
             //Validate input if required or provided:
-            if($is_required || strlen($_POST['edit_dynamic_'.$input_pointer])){
-                $valid_data_type = valid_data_type($data_types, $_POST['edit_dynamic_'.$input_pointer], $e___42179[$dynamic_e__id]['m__title']);
+            if($is_required || strlen($_POST['save_dynamic_'.$input_pointer])){
+                $valid_data_type = valid_data_type($data_types, $_POST['save_dynamic_'.$input_pointer], $e___42179[$dynamic_e__id]['m__title']);
                 if(!$valid_data_type['status']){
                     //We had an error:
                     return view_json($valid_data_type);
@@ -492,7 +492,7 @@ class I extends CI_Controller {
             ));
 
             //Update if needed:
-            if(count($values) && !strlen($_POST['edit_dynamic_'.$input_pointer] )){
+            if(count($values) && !strlen($_POST['save_dynamic_'.$input_pointer] )){
 
                 //Remove Link:
                 $this->X_model->update($values[0]['x__id'], array(
@@ -507,16 +507,16 @@ class I extends CI_Controller {
                     'x__type' => 4983, //IDEA SOURCES
                     'x__up' => $dynamic_e__id,
                     'x__right' => $is[0]['i__id'],
-                    'x__message' => $_POST['edit_dynamic_'.$input_pointer],
-                    'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                    'x__message' => $_POST['save_dynamic_'.$input_pointer],
+                    'x__weight' => number_x__weight($_POST['save_dynamic_' . $input_pointer]),
                 ));
 
-            } elseif($values[0]['x__message']!=$_POST['edit_dynamic_'.$input_pointer]){
+            } elseif($values[0]['x__message']!=$_POST['save_dynamic_'.$input_pointer]){
 
                 //Update Link:
                 $this->X_model->update($values[0]['x__id'], array(
-                    'x__message' => $_POST['edit_dynamic_'.$input_pointer],
-                    'x__weight' => number_x__weight($_POST['edit_dynamic_' . $input_pointer]),
+                    'x__message' => $_POST['save_dynamic_'.$input_pointer],
+                    'x__weight' => number_x__weight($_POST['save_dynamic_' . $input_pointer]),
                 ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
             }
@@ -525,9 +525,9 @@ class I extends CI_Controller {
 
 
         //Validate Idea Hashtag & save if needed:
-        if($is[0]['i__hashtag'] !== trim($_POST['edit_i__hashtag'])){
+        if($is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
 
-            $validate_handle = validate_handle($_POST['edit_i__hashtag'], $is[0]['i__id'], null);
+            $validate_handle = validate_handle($_POST['save_i__hashtag'], $is[0]['i__id'], null);
             if(!$validate_handle['status']){
                 return view_json(array(
                     'status' => 0,
@@ -543,12 +543,12 @@ class I extends CI_Controller {
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )) as $ref) {
                 $this->I_model->update($ref['x__right'], array(
-                    'i__message' => preg_replace('/\b#'.$is[0]['i__hashtag'].'\b/', '@'.trim($_POST['edit_i__hashtag']), $ref['i__message']),
+                    'i__message' => preg_replace('/\b#'.$is[0]['i__hashtag'].'\b/', '@'.trim($_POST['save_i__hashtag']), $ref['i__message']),
                 ), false, $member_e['e__id']);
             }
 
             //Save hashtag since changed:
-            $is[0]['i__hashtag'] = trim($_POST['edit_i__hashtag']);
+            $is[0]['i__hashtag'] = trim($_POST['save_i__hashtag']);
             $this->I_model->update($is[0]['i__id'], array(
                 'i__hashtag' => $is[0]['i__hashtag'],
             ), true, $member_e['e__id']);
@@ -558,27 +558,27 @@ class I extends CI_Controller {
 
 
         //Do we have a link reference message that need to be saved?
-        if($_POST['edit_x__id']>0){
+        if($_POST['save_x__id']>0){
             //Fetch transaction:
             foreach($this->X_model->fetch(array(
-                'x__id' => $_POST['edit_x__id'],
+                'x__id' => $_POST['save_x__id'],
             )) as $this_x){
 
                 $is[0] = array_merge($is[0], $this_x);
 
-                if($this_x['x__message'] != trim($_POST['edit_x__message'])){
+                if($this_x['x__message'] != trim($_POST['save_x__message'])){
                     $this->X_model->update($this_x['x__id'], array(
-                        'x__message' => trim($_POST['edit_x__message']),
-                        'x__weight' => number_x__weight(trim($_POST['edit_x__message'])),
+                        'x__message' => trim($_POST['save_x__message']),
+                        'x__weight' => number_x__weight(trim($_POST['save_x__message'])),
                     ), $member_e['e__id'], 42171);
                 }
             }
         }
 
 
-        //Update Links based on edit_i__message / Sync Idea Synonym & Source References links:
-        $view_sync_links = view_sync_links($_POST['edit_i__message'], true, $is[0]['i__id']);
-        $is[0]['i__message'] = trim($_POST['edit_i__message']);
+        //Update Links based on save_i__message / Sync Idea Synonym & Source References links:
+        $view_sync_links = view_sync_links($_POST['save_i__message'], true, $is[0]['i__id']);
+        $is[0]['i__message'] = trim($_POST['save_i__message']);
         $is[0]['i__cache'] = $view_sync_links['i__cache'];
 
 

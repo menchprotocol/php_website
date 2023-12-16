@@ -1303,7 +1303,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Edit
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a href="javascript:void(0);" onclick="edit_load_i('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a href="javascript:void(0);" onclick="save_load_i('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13909 && $has_sortable){
@@ -1444,7 +1444,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Link Message, if Any:
     if($x__id){
-        $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="edit_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
+        $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
     }
 
     //Raw Data:
@@ -1796,7 +1796,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Edit Source
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="edit_load_e('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="save_load_e('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13006 && $has_sortable){
@@ -1913,7 +1913,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $grant_access = $write_access_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
     if ($x__id > 0 && !$is_app) {
-        $ui .= '<span '.( $grant_access ? ' onclick="edit_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.$e['x__message'].'</span>';
+        $ui .= '<span '.( $grant_access ? ' onclick="save_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.$e['x__message'].'</span>';
     }
 
     //Source Handle

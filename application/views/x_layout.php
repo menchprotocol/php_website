@@ -284,7 +284,7 @@ if($top_i__hashtag) {
 
             if (count($x_selects) > 0) {
                 //MODIFY ANSWER
-                echo '<div class="edit_toggle_answer">';
+                echo '<div class="save_toggle_answer">';
                 echo view_i_list(13980, $top_i__hashtag, $focus_i, $x_selects, $member_e);
                 echo '</div>';
             }
@@ -313,7 +313,7 @@ if($top_i__hashtag) {
             $select_answer .= '</div>';
 
             //HTML:
-            echo '<div class="edit_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
+            echo '<div class="save_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
             echo view_headline($focus_i['i__type'], null, $e___4737[$focus_i['i__type']], $select_answer, true);
             echo '</div>';
 
@@ -869,9 +869,9 @@ if(!$top_i__hashtag){
         } elseif($x__type==13495 && count($x_selects)){
 
             //Edit response:
-            $control_btn = '<div style="padding-left: 8px;" class="edit_toggle_answer"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
+            $control_btn = '<div style="padding-left: 8px;" class="save_toggle_answer"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.save_toggle_answer\').toggleClass(\'hidden\');">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
-            $control_btn .= '<div style="padding-left: 8px;" class="edit_toggle_answer hidden"><a class="controller-nav round-btn main-next" href="javascript:void(0);" onclick="$(\'.edit_toggle_answer\').toggleClass(\'hidden\');">'.$e___11035[40639]['m__cover'].'</a><span class="nav-title main__title">'.$e___11035[40639]['m__title'].'</span></div>';
+            $control_btn .= '<div style="padding-left: 8px;" class="save_toggle_answer hidden"><a class="controller-nav round-btn main-next" href="javascript:void(0);" onclick="$(\'.save_toggle_answer\').toggleClass(\'hidden\');">'.$e___11035[40639]['m__cover'].'</a><span class="nav-title main__title">'.$e___11035[40639]['m__title'].'</span></div>';
 
         } elseif($x__type==14422 && $top_completed && in_array($focus_i['i__type'], $this->config->item('n___34849'))){
 
@@ -881,7 +881,7 @@ if(!$top_i__hashtag){
         } elseif($x__type==42205 && $can_skip && !$top_completed && !count($x_completes)){
 
             //SKIP
-            $control_btn = '<div style="padding-left: 13px;" class="edit_toggle_answer"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="x_skip()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
+            $control_btn = '<div style="padding-left: 13px;" class="save_toggle_answer"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="x_skip()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
         }
 
@@ -911,7 +911,7 @@ if(!$top_i__hashtag){
 echo '<div class="nav-body">';
 
 //Append add new idea as a comment button at the end:
-$body_append = '<a href="javascript:void(0);" onclick="edit_load_i(0,0,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
+$body_append = '<a href="javascript:void(0);" onclick="save_load_i(0,0,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
 
 if(!($is_or_7712 && $top_i__hashtag)){
     echo view_i_list(12211, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_append);

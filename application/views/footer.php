@@ -8,12 +8,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
-    //This is a HACK! 12 is a fixed number of max dynamic variables that is fixed in edit_save_i() & edit_save_e()
+    //This is a HACK! 12 is a fixed number of max dynamic variables that is fixed in save_i() & save_e()
     $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
         $dynamic_edit .= '<h3 class="main__title mini-font"></h3>';
-        $dynamic_edit .= '<input type="text" class="form-control unsaved_warning edit_dynamic_'.$p.'" value="">';
+        $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" value="">';
         $dynamic_edit .= '</div>';
     }
 
@@ -259,8 +259,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 <div class="modal-body">
 
-                    <input type="hidden" class="edit_i__id" value="0" />
-                    <input type="hidden" class="edit_x__id" value="0" />
+                    <input type="hidden" class="save_i__id" value="0" />
+                    <input type="hidden" class="save_x__id" value="0" />
                     <input type="hidden" class="link_i__id" value="0" />
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
@@ -268,7 +268,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-8">
 
                             <!-- Idea Message -->
-                            <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning edit_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <?php
                             echo '<div class="add_notes_form">';
                             echo '<form class="box box4736" method="post" enctype="multipart/form-data">';
@@ -288,11 +288,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <!-- Idea Hashtag -->
                             <div class="input-group mb-3">
                                 <span class="input-group-text">#</span>
-                                <input type="text" class="form-control unsaved_warning edit_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                                <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
                             </div>
 
                             <!-- Link Message -->
-                            <textarea class="form-control text-edit border hidden unsaved_warning edit_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>
+                            <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>
 
                         </div>
                         <div class="col-12 col-md-4">
@@ -304,7 +304,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" onclick="edit_save_i()" class="btn btn-default">SAVE</button>
+                    <button type="button" onclick="save_i()" class="btn btn-default">SAVE</button>
                 </div>
 
             </div>
@@ -326,8 +326,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 <div class="modal-body">
 
-                    <input type="hidden" class="edit_e__id" value="0" />
-                    <input type="hidden" class="edit_x__id" value="0" />
+                    <input type="hidden" class="save_e__id" value="0" />
+                    <input type="hidden" class="save_x__id" value="0" />
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
                     <div class="row">
@@ -347,18 +347,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <table style="width: 100%; padding: 0; margin: 0;"><tr>
                                     <!-- Source Title -->
-                                    <td style="width: 69%;"><input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning edit_e__title" /></td>
+                                    <td style="width: 69%;"><input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" /></td>
 
                                     <!-- Source Handle -->
                                     <td><div class="input-group mb-3">
                                             <span class="input-group-text">@</span>
-                                            <input type="text" class="form-control unsaved_warning edit_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
+                                            <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
                                         </div></td>
                             </tr></table>
 
 
                             <!-- Link Message -->
-                            <textarea class="form-control text-edit border hidden unsaved_warning edit_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
+                            <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
 
 
                         </div>
@@ -376,7 +376,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
                             <!-- Source Cover Editor -->
-                            <div><input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning edit_e__cover" style="margin-top: 5px;"></div>
+                            <div><input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;"></div>
 
 
                             <!-- Image CONTROLLER -->
@@ -407,7 +407,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" onclick="edit_save_e()" class="btn btn-default">SAVE</button>
+                    <button type="button" onclick="save_e()" class="btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>

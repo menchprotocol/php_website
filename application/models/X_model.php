@@ -411,7 +411,7 @@ class X_model extends CI_Model
 
 
         //See if anything is being deleted:
-        $trigger_i_edit_modal = 0;
+        $trigger_i_save_modal = 0;
         $deletion_redirect = null;
         $delete_element = null;
         $links_removed = -1;
@@ -602,7 +602,7 @@ class X_model extends CI_Model
 
                 if(!$already_responded){
                     //We are missing a required response, auto open modal:
-                    $trigger_i_edit_modal = 1;
+                    $trigger_i_save_modal = 1;
                 }
 
             }
@@ -614,15 +614,17 @@ class X_model extends CI_Model
             'message' => 'Delete status ['.$status.'] with '.$links_removed.' Links removed',
             'deletion_redirect' => $deletion_redirect,
             'delete_element' => $delete_element,
-            'trigger_i_edit_modal' => $trigger_i_edit_modal,
+            'trigger_i_save_modal' => $trigger_i_save_modal,
         );
 
     }
     function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true)
     {
 
-        return false;
-        //TODO Remove
+        if($e__id!=1){
+            //TODO Remove
+            return false;
+        }
 
         $sms_subscriber = false;
         $bypass_notifications = in_array($template_id, $this->config->item('n___31779'));
