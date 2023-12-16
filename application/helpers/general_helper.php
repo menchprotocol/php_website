@@ -1580,7 +1580,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $domain_email = website_setting(28614, $e__id, $x__website);
     $email_domain = '"'.$domain_name.'" <'.( strlen($domain_email) ? $domain_email : 'support@mench.com' ).'>';
 
-    die('Domain email is missing! ('.join(' & ',$to_emails).') ('.$subject.') ('.$email_body.')');
+    die('Domain email is missing! ('.join(' & ',$to_emails).') ('.$subject.') ('.$email_body.') ('.$domain_name.') ('.$domain_email.') ');
 
     if(!strlen($domain_email)){
         $CI->X_model->create(array(
