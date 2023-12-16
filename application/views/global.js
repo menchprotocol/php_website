@@ -1259,6 +1259,7 @@ function e_load_search(x__type) {
 function save_load_i(i__id, x__id, link_i__id = 0){
 
     //Reset Fields:
+    has_unsaved_changes = false;
     $("#modal31911 .unsaved_warning").val('');
     $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__message").addClass('hidden');
@@ -1406,7 +1407,9 @@ function save_i(){
 function save_load_e(e__id, x__id){
 
     //Reset Fields:
+    has_unsaved_changes = false;
     $("#modal31912 .unsaved_warning").val('');
+
     $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
     $("#modal31912 .dynamic_item, #modal31912 .save_x__message").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
@@ -1535,14 +1538,13 @@ function save_e(){
 
 
             //Update Title:
-            update_text_name(6197, $('#modal31912 .save_e__id').val(), $('#modal31912 .save_e__title').val());
+            update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
 
             //Update Mini Icon:
-            update_cover_mini($('#modal31912 .save_e__cover').val(), '.mini_6197_'+$('#modal31912 .save_e__id').val());
+            update_cover_mini(modify_data['save_e__cover'], '.mini_6197_'+modify_data['save_e__id']);
 
             //Update Main Icons:
-            update_cover_main($('#modal31912 .save_e__cover').val(), '.s__12274_'+$('#modal31912 .save_e__id').val());
-
+            update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
 
             console.log(data.message); //To check what happened...
 
