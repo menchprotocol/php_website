@@ -41,7 +41,6 @@ class E extends CI_Controller
                 foreach ($this->E_model->fetch(array(
                     'e__id' => $e__handle,
                 )) as $e_redirect){
-                    die('hi'.$e_redirect['e__handle']);
                     return redirect_message('/@'.$e_redirect['e__handle']);
                 }
             }
