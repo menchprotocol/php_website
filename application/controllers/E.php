@@ -36,11 +36,12 @@ class E extends CI_Controller
         if (count($es) < 1) {
 
             //See if we need to lookup the ID:
-            if(is_int($e__handle)){
+            if(is_numeric($e__handle)){
                 //Maybe its an ID?
                 foreach ($this->E_model->fetch(array(
                     'e__id' => $e__handle,
                 )) as $e_redirect){
+                    die('hi'.$e_redirect['e__handle']);
                     return redirect_message('/@'.$e_redirect['e__handle']);
                 }
             }
