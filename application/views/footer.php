@@ -401,7 +401,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="coverUploader">
                                 <form class="box coverUpload" method="post" enctype="multipart/form-data">
                                     <a name="preview_cover" style="height: 1px;">&nbsp;</a>
-                                    <div class="card_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
+                                    <div class="card_cover demo_cover" style="width: 255px !important; margin:-144px auto 21px !important;">
                                         <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
                                         <!-- <div class="cover-content"><div class="inner-content"><span></span></div></div> -->
                                     </div>
