@@ -9,7 +9,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])) {
 
     //Login as user:
     $es = $this->E_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     ));
 
     if (!count($es) || !in_array($es[0]['e__access'], $this->config->item('n___7358'))) {

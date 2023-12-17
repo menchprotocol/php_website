@@ -670,7 +670,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
     );
 
    foreach($CI->I_model->fetch(array(
-       'i__hashtag' => $i__hashtag,
+       'LOWER(i__hashtag)' => strtolower($i__hashtag),
    )) as $i){
 
        foreach($e___40946 as $x__type => $m) {
@@ -1151,11 +1151,11 @@ function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
     //Make sure no duplicates:
     $CI =& get_instance();
     if($s__type==12273 && count($CI->I_model->fetch(array(
-            'i__hashtag' => $suggestion,
+            'LOWER(i__hashtag)' => strtolower($suggestion),
         )))){
         return generate_handle(12273, $str, $suggestion, $increment);
     } elseif($s__type==12274 && count($CI->E_model->fetch(array(
-            'e__handle' => $suggestion,
+            'LOWER(e__handle)' => strtolower($suggestion),
         )))){
         return generate_handle(12274, $str, $suggestion, $increment);
     } else {
@@ -1268,7 +1268,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
     if($i__id > 0){
         foreach($CI->I_model->fetch(array(
             'i__id !=' => $i__id,
-            'i__hashtag' => $str,
+            'LOWER(i__hashtag)' => strtolower($str),
         ), 0) as $matched){
             return array(
                 'status' => 0,
@@ -1279,7 +1279,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
     } elseif($e__id>0){
         foreach($CI->E_model->fetch(array(
             'e__id !=' => $e__id,
-            'e__handle' => $str,
+            'LOWER(e__handle)' => strtolower($str),
         ), 0) as $matched){
             return array(
                 'status' => 0,
@@ -1789,7 +1789,7 @@ function write_access_e($e__handle, $member_e = array()){
             'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__up' => $member_e['e__id'],
-            'e__handle' => $e__handle,
+            'LOWER(e__handle)' => strtolower($e__handle),
         ), array('x__down')))
 
     );
@@ -1811,7 +1811,7 @@ function write_access_i($i__hashtag){
             count($CI->X_model->fetch(array( //IDEA SOURCE
                 'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-                'i__hashtag' => $i__hashtag,
+                'LOWER(i__hashtag)' => strtolower($i__hashtag),
                 'x__up' => $member_e['e__id'],
             )), array('x__right'))
         )

@@ -17,7 +17,7 @@ echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
 
 
 foreach($this->E_model->fetch(array(
-    'e__handle' => $_GET['e__handle'],
+    'LOWER(e__handle)' => strtolower($_GET['e__handle']),
 )) as $e){
     //List the idea:
     print_r(array(

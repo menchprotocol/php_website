@@ -895,7 +895,7 @@ class I_model extends CI_Model
 
                 //Check if it has this item:
                 foreach($this->E_model->fetch(array(
-                    'e__handle' => view_valid_handle_e($action_command1),
+                    'LOWER(e__handle)' => strtolower(view_valid_handle_e($action_command1)),
                 )) as $e){
 
                     $i_has_e = $this->X_model->fetch(array(
@@ -942,7 +942,7 @@ class I_model extends CI_Model
             } elseif(in_array($action_e__id , array(12611,12612,27240,28801)) && view_valid_handle_i($action_command1)){
 
                 foreach($this->I_model->fetch(array(
-                    'i__hashtag' => view_valid_handle_i($action_command1),
+                    'LOWER(i__hashtag)' => strtolower(view_valid_handle_i($action_command1)),
                 )) as $i){
 
                     if($action_e__id==27240){

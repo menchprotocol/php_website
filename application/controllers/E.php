@@ -31,7 +31,7 @@ class E extends CI_Controller
 
         //Validate source ID and fetch data:
         $es = $this->E_model->fetch(array(
-            'e__handle' => $e__handle,
+            'LOWER(e__handle)' => strtolower($e__handle),
         ));
         if (count($es) < 1) {
 
@@ -405,7 +405,7 @@ class E extends CI_Controller
 
         if(!intval($_POST['e_existing_id']) && view_valid_handle_e($_POST['e_new_string'])){
             foreach($this->E_model->fetch(array(
-                'e__handle' => substr($_POST['e_new_string'], 1),
+                'LOWER(e__handle)' => strtolower(substr($_POST['e_new_string'], 1)),
             )) as $e){
                 $_POST['e_existing_id'] = $e['e__id'];
             }
@@ -925,7 +925,7 @@ class E extends CI_Controller
         $this->E_model->update($es[0]['e__id'], array(
             'e__title' => $validate_e__title['e__title_clean'],
             'e__cover' => trim($_POST['save_e__cover']),
-            'e__handle' => trim($_POST['save_e__handle']),
+            'LOWER(e__handle)' => strtolower(trim($_POST['save_e__handle'])),
         ), true, $member_e['e__id']);
 
 

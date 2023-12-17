@@ -13,7 +13,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])) {
     $paid_ticket_types = 0;
 
     foreach($this->E_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e){
         foreach($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

@@ -9,7 +9,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__id' => $_GET['x__id'],
-            'e__handle' => $_GET['e__handle'],
+            'LOWER(e__handle)' => strtolower($_GET['e__handle']),
         ), array('x__creator'), 0) as $x){
 
             //Show Header:

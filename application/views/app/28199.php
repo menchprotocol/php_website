@@ -11,7 +11,7 @@ $buffer_time = 300;
 
 if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
     foreach($this->I_model->fetch(array(
-        'i__hashtag' => $_GET['i__hashtag'],
+        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     )) as $i){
         $filters['x__right'] = $i['i__id'];
         $buffer_time = 0;

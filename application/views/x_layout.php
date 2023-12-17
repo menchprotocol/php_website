@@ -124,70 +124,7 @@ if(isset($_GET['go2'])) {
 
     echo 'Currency updated for ' . $updated . ' ideas.';
 
-} if(isset($_GET['go3'])){
-
-        boost_power();
-
-        /*
-                echo '<br /><br /><br /><br /><br /><br />';
-                $fixed = array();
-                $total_fixed = 0;
-                foreach($this->E_model->fetch(array(
-                    'e__id > 0' => null, //ACTIVE
-                ), 0) as $e_dup){
-
-                    if(in_array($e_dup['e__id'], $fixed)){
-                        continue;
-                    }
-                    array_push($fixed, $e_dup['e__id']);
-
-                    //See if duplicated:
-                    foreach($this->E_model->fetch(array(
-                        'e__id !=' => $e_dup['e__id'], //ACTIVE
-                        'LOWER(e__handle)' => strtolower($e_dup['e__handle']), //ACTIVE
-                    )) as $e_fix){
-                        //Update to something unique:
-                        array_push($fixed, $e_fix['e__id']);
-                        $this->E_model->update($e_dup['e__id'], array(
-                            'e__handle' => $e_dup['e__handle'].rand(1000,9999),
-                        ), false, $member_e['e__id']);
-                        $total_fixed++;
-                    }
-                }
-
-                echo '<br />'.$total_fixed.' Fixed<br /><br /><br /><br /><br />';
-
-                 */
-                    echo '<br /><br /><br /><br /><br /><br />';
-                    $fixed = array();
-                    $total_fixed = 0;
-                    foreach($this->I_model->fetch(array(
-                        'i__id > 0' => null, //ACTIVE
-                    ), 0) as $e_dup){
-
-                        if(in_array($e_dup['i__id'], $fixed)){
-                            continue;
-                        }
-                        array_push($fixed, $e_dup['i__id']);
-
-                        //See if duplicated:
-                        foreach($this->I_model->fetch(array(
-                            'i__id !=' => $e_dup['i__id'], //ACTIVE
-                            'LOWER(i__hashtag)' => strtolower($e_dup['i__hashtag']), //ACTIVE
-                        )) as $e_fix){
-                            //Update to something unique:
-                            array_push($fixed, $e_fix['i__id']);
-                            $this->I_model->update($e_dup['i__id'], array(
-                                'i__hashtag' => $e_dup['i__hashtag'].rand(1000,9999),
-                            ), false, $member_e['e__id']);
-                            $total_fixed++;
-                        }
-                    }
-
-                    echo '<br />'.$total_fixed.' Fixed<br /><br /><br /><br /><br />';
-
-
-    }
+}
 
 
 

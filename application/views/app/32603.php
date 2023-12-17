@@ -7,7 +7,7 @@ $signed_i = false;
 if(isset($_GET['i__hashtag'])){
 
     foreach($this->I_model->fetch(array(
-        'i__hashtag' => $_GET['i__hashtag'],
+        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
         'i__type' => 32603, //Sign Agreement
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     )) as $i_sign){

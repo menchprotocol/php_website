@@ -5,13 +5,13 @@ $i__hashtag = ( !$e__handle && isset($_GET['i__hashtag']) ? $_GET['i__hashtag'] 
 
 if($e__handle){
     foreach($this->E_model->fetch(array(
-        'e__handle' => $e__handle,
+        'LOWER(e__handle)' => strtolower($e__handle),
     )) as $e){
         echo '<h1><a href="/@'.$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a></h1>';
     }
 } elseif($i__hashtag){
     foreach($this->I_model->fetch(array(
-        'i__hashtag' => $i__hashtag,
+        'LOWER(i__hashtag)' => strtolower($i__hashtag),
     )) as $i){
         echo '<h1><a href="/'.$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a></h1>';
     }

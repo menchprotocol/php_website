@@ -1044,7 +1044,7 @@ class E_model extends CI_Model
 
                 //Go through all followings of this source:
                 foreach($this->E_model->fetch(array(
-                    'e__handle' => view_valid_handle_e($action_command1),
+                    'LOWER(e__handle)' => strtolower(view_valid_handle_e($action_command1)),
                 )) as $e){
 
                     //Go through all followings and add the ones missing:
@@ -1081,7 +1081,7 @@ class E_model extends CI_Model
 
                 //What member searched for:
                 foreach($this->E_model->fetch(array(
-                    'e__handle' => view_valid_handle_e($action_command1),
+                    'LOWER(e__handle)' => strtolower(view_valid_handle_e($action_command1)),
                 )) as $e){
 
                     //See if follower source has searched followings source:
@@ -1133,7 +1133,7 @@ class E_model extends CI_Model
                         } elseif($action_e__id==11956 && view_valid_handle_e($action_command2)) {
 
                             foreach($this->E_model->fetch(array(
-                                'e__handle' => view_valid_handle_e($action_command2),
+                                'LOWER(e__handle)' => strtolower(view_valid_handle_e($action_command2)),
                             )) as $e){
                                 //Add as a followings because it meets the condition
                                 $this->X_model->create(array(

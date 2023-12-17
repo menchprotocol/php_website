@@ -3,7 +3,7 @@
 $community_pills = '';
 $is_open = true;
 
-foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->E_model->fetch(array('e__handle' => $_GET['e__handle'])) : $this->E_model->scissor_e(website_setting(0), 13207) ) as $e_item) {
+foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->E_model->fetch(array('LOWER(e__handle)' => strtolower($_GET['e__handle']))) : $this->E_model->scissor_e(website_setting(0), 13207) ) as $e_item) {
 
     foreach($this->X_model->fetch(array(
         'x__up' => $e_item['e__id'],

@@ -3,7 +3,7 @@
 if(isset($_GET['i__hashtag'])){
 
     foreach($this->I_model->fetch(array(
-        'i__hashtag' => $_GET['i__hashtag'],
+        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     )) as $i){
 
         echo '<h2>' . view_i_title($i) . '</h2>';
@@ -40,7 +40,7 @@ if(isset($_GET['i__hashtag'])){
                 echo '<p>SOURCES Applying against ['.$preg_query[0]['x__message'].'] results in:</p>';
 
                 foreach($this->E_model->fetch(array(
-                    'e__handle' => $_GET['e__handle'],
+                    'LOWER(e__handle)' => strtolower($_GET['e__handle']),
                 )) as $e){
                     foreach($this->X_model->fetch(array(
                         'x__up' => $e['e__id'],

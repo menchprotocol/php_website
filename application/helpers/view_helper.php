@@ -1099,7 +1099,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 if($db_type==31834){
                     $x__type = 31834;
                     foreach($CI->I_model->fetch(array(
-                        'i__hashtag' => substr($db_val, 1),
+                        'LOWER(i__hashtag)' => strtolower(substr($db_val, 1)),
                     )) as $target){
                         $x__left = $target['i__id'];
                     }

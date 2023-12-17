@@ -9,7 +9,7 @@ if(isset($_GET['search_for'])){
 } elseif(isset($_GET['e__handle'])){
 
     $es = $this->E_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     ));
     if(!count($es)){
         return view_json(array(

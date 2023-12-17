@@ -30,7 +30,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
     echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
 
     $es = $this->E_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     ));
     echo '<h2>'.$es[0]['e__title'].'</h2>';
 
@@ -218,7 +218,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
     $other_es = array();
 
     foreach($this->E_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e){
         $filters = array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

@@ -168,7 +168,7 @@ class X extends CI_Controller
 
         //valid idea?
         $is = $this->I_model->fetch(array(
-            'i__hashtag' => $focus_i__hashtag,
+            'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)){
@@ -230,7 +230,7 @@ class X extends CI_Controller
 
         $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
-            'i__hashtag' => $focus_i__hashtag,
+            'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
 
@@ -340,7 +340,7 @@ class X extends CI_Controller
 
         if(isset($_GET['e__handle'])){
             $focus_es = $this->E_model->fetch(array(
-                'e__handle' => $_GET['e__handle'],
+                'LOWER(e__handle)' => strtolower($_GET['e__handle']),
             ));
             if(!count($focus_es)){
                 return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid User Handler</div>');
@@ -353,7 +353,7 @@ class X extends CI_Controller
         $top_is = array();
         if($top_i__hashtag && count($focus_es)){
             $top_is = $this->I_model->fetch(array(
-                'i__hashtag' => $top_i__hashtag,
+                'LOWER(i__hashtag)' => strtolower($top_i__hashtag),
             ));
             if ( !count($top_is) ) {
                 return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea #' . $top_i__hashtag . ' not found</div>');
@@ -363,7 +363,7 @@ class X extends CI_Controller
 
         //Validate Focus Idea:
         $focus_is = $this->I_model->fetch(array(
-            'i__hashtag' => $focus_i__hashtag,
+            'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
         ));
         if ( !count($focus_is) ) {
             return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not active right now</div>');
@@ -1180,7 +1180,7 @@ class X extends CI_Controller
 
             //See stats for this source:
             $es = $this->E_model->fetch(array(
-                'e__handle' => $_POST['e__handle'],
+                'LOWER(e__handle)' => strtolower($_POST['e__handle']),
             ));
             if(!count($es)){
                 return view_json(array(
@@ -1193,7 +1193,7 @@ class X extends CI_Controller
 
             //See stats for this idea:
             $is = $this->I_model->fetch(array(
-                'i__hashtag' => $_POST['i__hashtag'],
+                'LOWER(i__hashtag)' => strtolower($_POST['i__hashtag']),
             ));
             if(!count($is)){
                 return view_json(array(

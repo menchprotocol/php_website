@@ -34,7 +34,7 @@ class App extends CI_Controller
 
         if(isset($_GET['i__hashtag'])){
             foreach($this->I_model->fetch(array(
-                'i__hashtag' => $_GET['i__hashtag'],
+                'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
             )) as $i_found){
                 $i = $i_found;
             }
@@ -45,7 +45,7 @@ class App extends CI_Controller
         
         if(isset($_GET['e__handle'])){
             foreach($this->E_model->fetch(array(
-                'e__handle' => $_GET['e__handle'],
+                'LOWER(e__handle)' => strtolower($_GET['e__handle']),
             )) as $e_found){
                 $e = $e_found;
             }
@@ -192,7 +192,7 @@ class App extends CI_Controller
             //Any more data to append?
             if(isset($_GET['e__handle']) && strlen($_GET['e__handle'])){
                 foreach($this->E_model->fetch(array(
-                    'e__handle' => $_GET['e__handle'],
+                    'LOWER(e__handle)' => strtolower($_GET['e__handle']),
                 )) as $e){
                     $log_data['x__down'] = $e['e__id'];
                     $title = $e['e__title'].' | '.$title;
@@ -201,7 +201,7 @@ class App extends CI_Controller
 
             if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
                 foreach($this->I_model->fetch(array(
-                    'i__hashtag' => $_GET['i__hashtag'],
+                    'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
                 )) as $i){
                     $log_data['x__left'] = $i['i__id'];
                     $title = view_i_title($i, true).' | '.$title;

@@ -3,7 +3,7 @@
 $sign_i = array();
 if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
     $sign_i = $this->I_model->fetch(array(
-        'i__hashtag' => $_GET['i__hashtag'],
+        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     ));
 }
 $next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? '/' . $sign_i['i__hashtag'] : home_url()) );
@@ -42,7 +42,7 @@ if(superpower_unlocked()) {
 } elseif(isset($_GET['e__handle']) && isset($_GET['e__hash']) && view_e__hash($_GET['e__handle'])==$_GET['e__hash']){
 
     $es = $this->E_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
         'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ));
 

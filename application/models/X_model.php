@@ -1100,7 +1100,7 @@ class X_model extends CI_Model
 
                     //Update Source Cover:
                     foreach($this->E_model->fetch(array(
-                        'e__handle' => view_valid_handle_e($x_data['x__message']),
+                        'LOWER(e__handle)' => strtolower(view_valid_handle_e($x_data['x__message'])),
                     )) as $e){
                         foreach($this->X_model->fetch(array(
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -1392,7 +1392,7 @@ class X_model extends CI_Model
 
             return count($this->X_model->fetch(array(
                 'x__left = x__right' => NULL,
-                'i__hashtag' => $i__hashtag,
+                'LOWER(i__hashtag)' => strtolower($i__hashtag),
                 'x__creator' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

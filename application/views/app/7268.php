@@ -8,7 +8,7 @@ if(isset($_GET['e__handle'])){
     $main_index = array();
     $duplicates_found = array();
     foreach($this->X_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array('x__up'), 0) as $x) {

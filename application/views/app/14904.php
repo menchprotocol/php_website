@@ -16,7 +16,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
     //Fetch followings URLs:
     $url_found = false;
     foreach($this->E_model->fetch(array(
-        'e__handle' => $_GET['e__handle'],
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e){
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS

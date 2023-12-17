@@ -47,7 +47,7 @@ class I extends CI_Controller {
 
         //Validate/fetch Idea:
         $is = $this->I_model->fetch(array(
-            'i__hashtag' => $i__hashtag,
+            'LOWER(i__hashtag)' => strtolower($i__hashtag),
         ));
         if ( count($is) < 1) {
             return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__hashtag . ' Not Found</div>');
@@ -66,7 +66,7 @@ class I extends CI_Controller {
         $flash_message = '';
         if(isset($_GET['e__handle'])){
             foreach($this->E_model->fetch(array(
-                'e__handle' => $_GET['e__handle'],
+                'LOWER(e__handle)' => strtolower($_GET['e__handle']),
             )) as $e_append){
                 $completed = 0;
                 foreach($this->X_model->fetch(array(
@@ -154,7 +154,7 @@ class I extends CI_Controller {
 
         if(!$_POST['link_i__id'] && view_valid_handle_i($_POST['new_i__message'])){
             foreach($this->I_model->fetch(array(
-                'i__hashtag' => view_valid_handle_i($_POST['new_i__message']),
+                'LOWER(i__hashtag)' => strtolower(view_valid_handle_i($_POST['new_i__message'])),
             )) as $i){
                 $_POST['link_i__id'] = $i['i__id'];
             }

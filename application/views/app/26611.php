@@ -2,7 +2,7 @@
 
 if(isset($_GET['i__hashtag'])){
     foreach($this->I_model->fetch(array(
-        'i__hashtag' => $_GET['i__hashtag'],
+        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     )) as $i){
 
         echo '<h2>' . view_i_title($i) . '</h2>';
