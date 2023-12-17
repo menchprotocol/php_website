@@ -265,6 +265,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
+                    <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+
                     <div class="row">
                         <div class="col-12 col-md-8">
 
@@ -295,13 +297,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <!-- Link Message -->
                             <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>
 
+
+
+
+                            <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+
+
                             </form>
                             </div>
 
                         </div>
                         <div class="col-12 col-md-4">
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
-                            <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
                             <div class="dynamic_editing_radio"></div>
                         </div>
                     </div>
@@ -334,56 +340,22 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" class="save_x__id" value="0" />
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
+                    <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+
                     <div class="row">
-                        <div class="col-12 col-md-8">
+                        <div class="col-12 col-md-7">
 
-                            <!-- Source Cover Search -->
-                            <div id="upload_results" class="center"></div>
-                            <div id="img_results_emojis" class="icons_small"></div>
-                            <div class="doclear">&nbsp;</div>
-                            <div id="return_covers" class="icons_small"></div>
-                            <div id="img_results_icons" class="icons_small"></div>
-                            <div class="doclear">&nbsp;</div>
-                            <div id="img_results_local" class="icons_large"></div>
-                            <div id="img_results_tenor" class="icons_large"></div>
-                            <div id="img_results_unsplash" class="icons_large"></div>
-                            <div class="doclear">&nbsp;</div>
-
-                            <table style="width: 100%; padding: 0; margin: 0;"><tr>
-                                    <!-- Source Title -->
-                                    <td style="width: 69%;"><input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" /></td>
-
-                                    <!-- Source Handle -->
-                                    <td><div class="input-group mb-3">
-                                            <span class="input-group-text">@</span>
-                                            <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
-                                        </div></td>
-                            </tr></table>
-
-
-                            <!-- Link Message -->
-                            <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
-
-
-                        </div>
-                        <div class="col-12 col-md-4">
-
-                            <!-- IMAGE DROP -->
-                            <div class="coverUploader">
-                                <form class="box coverUpload" method="post" enctype="multipart/form-data">
-                                    <a name="preview_cover" style="height: 1px;">&nbsp;</a>
-                                    <div class="card_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
-                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                                        <!-- <div class="cover-content"><div class="inner-content"><span></span></div></div> -->
-                                    </div>
-                                </form>
+                            <!-- Source Handle -->
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">@</span>
+                                <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
                             </div>
 
-                            <!-- Source Cover Editor -->
-                            <div><input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;"></div>
+                            <!-- Source Title -->
+                            <input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" />
 
 
-                            <!-- Image CONTROLLER -->
+                            <!-- Source Cover -->
                             <table style="width: 100%; margin-bottom: 21px;">
                                 <tr>
                                     <td style="width: 100%;">
@@ -402,8 +374,40 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </tr>
                             </table>
 
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
+
+                            <div id="upload_results" class="center"></div>
+                            <div id="img_results_emojis" class="icons_small"></div>
+                            <div class="doclear">&nbsp;</div>
+                            <div id="return_covers" class="icons_small"></div>
+                            <div id="img_results_icons" class="icons_small"></div>
+                            <div class="doclear">&nbsp;</div>
+                            <div id="img_results_local" class="icons_large"></div>
+                            <div id="img_results_tenor" class="icons_large"></div>
+                            <div id="img_results_unsplash" class="icons_large"></div>
+                            <div class="doclear">&nbsp;</div>
+
+
+                            <!-- Link Message -->
+                            <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
+
                             <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+
+
+                        </div>
+                        <div class="col-12 col-md-5">
+
+                            <!-- IMAGE DROP -->
+                            <div class="coverUploader">
+                                <form class="box coverUpload" method="post" enctype="multipart/form-data">
+                                    <a name="preview_cover" style="height: 1px;">&nbsp;</a>
+                                    <div class="card_cover demo_cover" style="width: 255px !important; margin:-21px auto 74px !important;">
+                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                        <!-- <div class="cover-content"><div class="inner-content"><span></span></div></div> -->
+                                    </div>
+                                </form>
+                            </div>
+
                             <div class="dynamic_editing_radio"></div>
 
                         </div>
