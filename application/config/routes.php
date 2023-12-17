@@ -1,4 +1,6 @@
-<?phpdefined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] = "app/index"; //Redirects to default app
