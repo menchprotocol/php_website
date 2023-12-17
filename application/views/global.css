@@ -3507,7 +3507,9 @@ h4.main__title{
 
 
 
-
+.points-col{
+    float: right;
+}
 
 
 /* SHAPE: Rounded Square */
