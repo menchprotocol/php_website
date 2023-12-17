@@ -33,6 +33,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         echo '<div class="large_cover">'.$m2['m__cover'].'</div>';
         echo '<div class="main__title large_title"><b class="card_count_'.$e__id2.'"><i class="far fa-yin-yang fa-spin"></i></b></div>';
         echo '<div class="main__title large_title">'.$m2['m__title'].'</div>';
+        echo '<div class="main__title large_title">'.$m2['m__title'].'</div>';
         echo '</div>';
 
         echo '<table class="card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';

@@ -925,7 +925,7 @@ class E extends CI_Controller
         $this->E_model->update($es[0]['e__id'], array(
             'e__title' => $validate_e__title['e__title_clean'],
             'e__cover' => trim($_POST['save_e__cover']),
-            'LOWER(e__handle)' => strtolower(trim($_POST['save_e__handle'])),
+            'e__handle' => trim($_POST['save_e__handle']),
         ), true, $member_e['e__id']);
 
 
