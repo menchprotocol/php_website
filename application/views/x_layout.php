@@ -45,6 +45,8 @@ $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || c
 
 
 
+
+
 if(isset($_GET['go1'])){
 
     //Sync Ideas & Sources
@@ -86,19 +88,19 @@ if(isset($_GET['go1'])){
     }
 }
 
-if(isset($_GET['go2'])){
+if(isset($_GET['go2'])) {
 
     $updated = 0;
-    foreach($this->X_model->fetch(array(
+    foreach ($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'x__right' => $focus_i['i__id'],
         'x__up' => 26562, //Total Due
-    )) as $ticket){
+    )) as $ticket) {
 
         $parts = explode(' ', $ticket['x__message'], 2);
-        $currency_id = ( $parts[0]=='CAD' ? 112233 : ( $parts[0]=='USD' ? 112233 : 0 ) );
-        if($currency_id > 0 && doubleval($parts[1])>0){
+        $currency_id = ($parts[0] == 'CAD' ? 112233 : ($parts[0] == 'USD' ? 112233 : 0));
+        if ($currency_id > 0 && doubleval($parts[1]) > 0) {
 
             $updated++;
 
@@ -115,12 +117,26 @@ if(isset($_GET['go2'])){
             ));
 
         } else {
-            echo 'ERROR for x_id='.$ticket['x__id'].' with value ['.$ticket['x__message'].']<br />';
+            echo 'ERROR for x_id=' . $ticket['x__id'] . ' with value [' . $ticket['x__message'] . ']<br />';
         }
 
     }
 
-    echo 'Currency updated for '.$updated.' ideas.';
+    echo 'Currency updated for ' . $updated . ' ideas.';
+
+} if(isset($_GET['go3'])){
+
+    foreach($this->E_model->fetch(array(
+        'e__id > 0' => null, //ACTIVE
+    ), 1) as $e_dup){
+        //See if duplicated:
+        if(count($this->E_model->fetch(array(
+            'e__id !=' => $e_dup['e__id'], //ACTIVE
+            'LOWER(e__handle)' => strtolower($e_dup['e__handle']), //ACTIVE
+        ), 1))){
+            echo 'DUPLOCATED: @'.$e_dup['e__handle'];
+        }
+    }
 
 }
 
