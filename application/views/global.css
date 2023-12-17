@@ -462,7 +462,7 @@ img.no-frame {
     line-height: 100%;
     width:100%;
     height:100%;
-    border: 1px solid #999999;
+    border: 1px solid #dee2e6;
 }
 
 
@@ -1050,7 +1050,7 @@ a.headline {
 .full-text{
     width: 100%;
     height: 200px;
-    border: 1px solid #999999 !important;
+    border: 1px solid #dee2e6 !important;
     border-radius: 21px;
     margin: 0;
 }
@@ -1148,7 +1148,7 @@ a.headline {
 .modal-content .form-control{
     border-radius: 0;
     margin:0 5px 5px 0;
-    border: 1px solid #999 !important;
+    border: 1px solid #dee2e6 !important;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
     width:34px;
@@ -4199,7 +4199,7 @@ main {
 .list-adder{
     padding: 8px 0 0 !important;
     margin:0 1px 5px !important;
-    border: 1px solid #999999 !important;
+    border: 1px solid #dee2e6 !important;
     background-color: #EFEFEF !important;
 }
 
