@@ -30,7 +30,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     
     foreach($this->config->item('e___'.$e__id1) as $e__id2 => $m2) {
 
-        echo '<div class="card_cover no-padding col-6 card_frame_'.$e__id2.( !in_array($e__id2, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
+        echo '<div class="card_cover no-padding col-12 col-sm-6 card_frame_'.$e__id2.( !in_array($e__id2, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
         echo '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id2.'" e__id="'.$e__id2.'">';
         echo '<div title="'.$m2['m__message'].'">';
         echo '<div class="large_cover">'.$m2['m__cover'].'</div>';
