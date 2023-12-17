@@ -126,6 +126,7 @@ if(isset($_GET['go2'])) {
 
 } if(isset($_GET['go3'])){
 
+    echo '<br /><br /><br /><br /><br /><br />';
     foreach($this->E_model->fetch(array(
         'e__id > 0' => null, //ACTIVE
     ), 1) as $e_dup){
@@ -137,8 +138,9 @@ if(isset($_GET['go2'])) {
             echo 'DUPLOCATED: @'.$e_dup['e__handle'];
         }
     }
+        echo '<br /><br /><br /><br /><br /><br />';
 
-}
+    }
 
 
 
