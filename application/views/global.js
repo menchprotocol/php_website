@@ -903,7 +903,7 @@ $(document).ready(function () {
 
     $("#modal31911, #modal31912").on("hide.bs.modal", function (e) {
         if(has_unsaved_changes){
-            var r = confirm("Changes are unsaved! Close this window?");
+            var r = confirm("Changes are unsaved! Close this window? Cancel to stay here:");
             if (!(r==true)) {
                 e.preventDefault();
                 return false;

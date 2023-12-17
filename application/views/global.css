@@ -2089,7 +2089,7 @@ input.form-control {
 .card_cover .large_title{
     font-size: 1.3em;
     font-weight: bold;
-    margin: 8px 0 0;
+    margin: 13px 0 -8px;
     display: block;
     min-height: 25px;
     line-height: 75%;
