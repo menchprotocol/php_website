@@ -131,6 +131,10 @@ h3{
     font-weight: bold;
     padding-bottom: 13px;
 }
+.modal-content h3 {
+    padding: 13px 0 0 0 !important;
+    margin: 0 !important;
+}
 
 a {
     text-decoration: none;
@@ -203,6 +207,8 @@ li a {
     font-weight: bold;
     text-decoration: none;
 }
+
+
 .e-appendix a, .e-appendix a .url_truncate {
     text-decoration: underline;
 }
