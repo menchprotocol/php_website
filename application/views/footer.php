@@ -356,6 +356,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                             <!-- Source Cover -->
+                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
                             <table style="width: 100%; margin-bottom: 21px;">
                                 <tr>
                                     <td style="width: 100%;">
@@ -374,7 +375,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </tr>
                             </table>
 
-                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
 
                             <div id="upload_results" class="center"></div>
                             <div id="img_results_emojis" class="icons_small"></div>
