@@ -3,6 +3,7 @@
 $e__handle = ( isset($_GET['e__handle']) ? $_GET['e__handle'] : null );
 $i__hashtag = ( !$e__handle && isset($_GET['i__hashtag']) ? $_GET['i__hashtag'] : null );
 
+
 if($e__handle){
     foreach($this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($e__handle),
@@ -22,8 +23,10 @@ echo '<div class="center miscstats hideIfEmpty"></div>';
 
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
-    echo '<h3 class="center centerh grey card_frame_'.$e__id1.'"><span class="icon-block">'.$m1['m__cover'].'</span><b class="card_count_'.$e__id1.'"><i class="far fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</h3>';
-    echo '<div class="row justify-content list-covers card_frame_'.$e__id1.'">';
+    echo '<h3 class="center centerh advanced-stats hidden grey card_frame_'.$e__id1.'"><span class="icon-block">'.$m1['m__cover'].'</span><b class="card_count_'.$e__id1.'"><i class="far fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</h3>';
+
+
+    echo '<div class="row justify-content list-covers card_frame_'.$e__id1.( !in_array($e__id1, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
     
     foreach($this->config->item('e___'.$e__id1) as $e__id2 => $m2) {
 
@@ -50,6 +53,9 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     echo '</div>';
 
 }
+
+echo '<div class="advanced-stats" style="padding: 34px 0;"><a href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><u>See More</u></a></div>';
+
 ?>
 
 <script>
