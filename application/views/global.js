@@ -1,4 +1,7 @@
 
+//Define some global variables:
+var has_unsaved_changes = false; //Tracks source/idea modal edits
+
 
 // url Async requesting function
 function images_api_getasync(api_id, query, callback) {
@@ -897,6 +900,15 @@ $(document).ready(function () {
     });
 
 
+    $("#modal31911, #modal31912").on("hide.bs.modal", function (e) {
+        if(has_unsaved_changes){
+            var r = confirm("Changes are unsaved! Close this window?");
+            if (!(r==true)) {
+                e.preventDefault();
+                return false;
+            }
+        }
+    });
 
 
     //Load Algolia on Focus:
@@ -1327,18 +1339,8 @@ function save_load_i(i__id, x__id, link_i__id = 0){
     }
 
     //Track unsaved changes to prevent unwated modal closure:
-    var has_unsaved_changes = false;
     $("#modal31911 .unsaved_warning").change(function() {
         has_unsaved_changes = true;
-    });
-    $("#modal31911").on("hide.bs.modal", function (e) {
-        if(has_unsaved_changes){
-            var r = confirm("Changes are unsaved! Close this window?");
-            if (!(r==true)) {
-                e.preventDefault();
-                return false;
-            }
-        }
     });
 
 }
@@ -1407,11 +1409,7 @@ function save_i(){
 function save_load_e(e__id, x__id){
 
     //Reset Fields:
-    var has_unsaved_changes = false;
-    //Track unsaved changes to prevent unwated modal closure:
-    $("#modal31912 .unsaved_warning").change(function() {
-        has_unsaved_changes = true;
-    });
+    has_unsaved_changes = false;
 
     $("#modal31912 .unsaved_warning").val('');
 
@@ -1486,14 +1484,9 @@ function save_load_e(e__id, x__id){
 
     });
 
-    $("#modal31912").on("hide.bs.modal", function (e) {
-        if(has_unsaved_changes){
-            var r = confirm("Changes are unsaved! Close this window?");
-            if (!(r==true)) {
-                e.preventDefault();
-                return false;
-            }
-        }
+    //Track unsaved changes to prevent unwated modal closure:
+    $("#modal31912 .unsaved_warning").change(function() {
+        has_unsaved_changes = true;
     });
 
 }
