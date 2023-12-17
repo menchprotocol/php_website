@@ -1141,7 +1141,8 @@ a.headline {
 
 .modal-content .form-control{
     border-radius: 0;
-    margin-bottom: 5px;
+    margin:0 5px 5px 0;
+    border: 1px solid #999 !important;
 }
 .platform-navigation .block-x, .platform-navigation .block-menu {
     width:34px;
@@ -1961,7 +1962,7 @@ i, .btn .show-max {
 
 
 input.form-control {
-    border-radius: 21px !important;
+    border-radius: 0 !important;
 }
 
 .coin-12273 .cover-content{
