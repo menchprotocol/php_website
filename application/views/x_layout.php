@@ -129,7 +129,7 @@ if(isset($_GET['go2'])) {
     echo '<br /><br /><br /><br /><br /><br />';
     foreach($this->E_model->fetch(array(
         'e__id > 0' => null, //ACTIVE
-    ), 1) as $e_dup){
+    ), 0) as $e_dup){
         //See if duplicated:
         if(count($this->E_model->fetch(array(
             'e__id !=' => $e_dup['e__id'], //ACTIVE
