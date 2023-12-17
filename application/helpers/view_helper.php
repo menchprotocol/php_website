@@ -1944,11 +1944,11 @@ function view_card_e($x__type, $e, $extra_class = null)
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
         $ui .= view_input(6197, $e['e__title'], $e['e__id'], $write_access_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
-        $ui .= '<div class="hidden static__6197_'.$e['e__id'].'">'.$e['e__title'].'</div>';
+        $ui .= '<div class="hidden text__6197_'.$e['e__id'].'">'.$e['e__title'].'</div>';
     } else {
         //Static:
         $ui .= '<input type="hidden" class="text__6197_'.$e['e__id'].'" value="'.$e['e__title'].'">';
-        $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="main__title static__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title static__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
+        $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
     }
 
 
