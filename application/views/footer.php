@@ -262,16 +262,25 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" class="save_i__id" value="0" />
                     <input type="hidden" class="save_x__id" value="0" />
                     <input type="hidden" class="link_i__id" value="0" />
+
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
                     <div class="row">
                         <div class="col-12 col-md-8">
 
+                            <div class="add_notes_form">
+                            <form class="box box4736" method="post" enctype="multipart/form-data">
+
+                            <!-- Idea Hashtag -->
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">#</span>
+                                <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                            </div>
+
                             <!-- Idea Message -->
                             <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+
                             <?php
-                            echo '<div class="add_notes_form">';
-                            echo '<form class="box box4736" method="post" enctype="multipart/form-data">';
 
                             //UPLOAD
                             echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
@@ -281,18 +290,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             //GIF
                             //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="image_api_search()" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
 
-                            echo '</form>';
-                            echo '</div>';
                             ?>
-
-                            <!-- Idea Hashtag -->
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">#</span>
-                                <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
-                            </div>
 
                             <!-- Link Message -->
                             <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>
+
+                            </form>
+                            </div>
 
                         </div>
                         <div class="col-12 col-md-4">
