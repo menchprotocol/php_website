@@ -3,7 +3,7 @@
 echo '<div style="margin-bottom:13px;">Copy/Paste the following code in routes.php</div>';
 echo '<textarea class="mono-space" readonly style="background-color:#FFFFFF; color:#000000 !important; padding:5px; font-size:0.65em; height:377px; width: 100%; border-radius: 21px;">';
 
-echo '<?php';
+echo '<?php'."\n\n";
 echo 'defined(\'BASEPATH\') or exit(\'No direct script access allowed\');'."\n"."\n";
 echo '$route[\'translate_uri_dashes\'] = FALSE;'."\n";
 echo '$route[\'default_controller\'] = "app/index"; //Redirects to default app'."\n";

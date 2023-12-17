@@ -1407,7 +1407,12 @@ function save_i(){
 function save_load_e(e__id, x__id){
 
     //Reset Fields:
-    has_unsaved_changes = false;
+    var has_unsaved_changes = false;
+    //Track unsaved changes to prevent unwated modal closure:
+    $("#modal31912 .unsaved_warning").change(function() {
+        has_unsaved_changes = true;
+    });
+
     $("#modal31912 .unsaved_warning").val('');
 
     $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
@@ -1481,12 +1486,6 @@ function save_load_e(e__id, x__id){
 
     });
 
-
-    //Track unsaved changes to prevent unwated modal closure:
-    var has_unsaved_changes = false;
-    $("#modal31912 .unsaved_warning").change(function() {
-        has_unsaved_changes = true;
-    });
     $("#modal31912").on("hide.bs.modal", function (e) {
         if(has_unsaved_changes){
             var r = confirm("Changes are unsaved! Close this window?");
@@ -1533,9 +1532,6 @@ function save_e(){
 
             //Reset errors:
             $("#modal31912 .save_results").html('');
-            has_unsaved_changes = false;
-            $('#modal31912').modal('hide');
-
 
             //Update Title:
             update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
@@ -1555,8 +1551,9 @@ function save_e(){
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
-            //Load Images:
             e_saving = false;
+            has_unsaved_changes = false;
+            $('#modal31912').modal('hide');
 
         }
 
