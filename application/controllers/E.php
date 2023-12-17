@@ -46,6 +46,9 @@ class E extends CI_Controller
             }
 
             return redirect_message(home_url());
+        } elseif($es[0]['e__handle']!==$e__handle){
+            //Adjust URL:
+            return redirect_message('/@'.$es[0]['e__handle']);
         }
 
         $member_e = superpower_unlocked();
