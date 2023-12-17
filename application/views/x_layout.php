@@ -134,7 +134,7 @@ if(isset($_GET['go2'])) {
         if(count($this->E_model->fetch(array(
             'e__id !=' => $e_dup['e__id'], //ACTIVE
             'LOWER(e__handle)' => strtolower($e_dup['e__handle']), //ACTIVE
-        ), 1))){
+        )))){
             echo 'DUPLOCATED: @'.$e_dup['e__handle'];
         }
     }
