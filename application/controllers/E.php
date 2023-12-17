@@ -772,6 +772,7 @@ class E extends CI_Controller
         //Validate Dynamic Inputs:
         $input_pointer = 0;
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
+
         //Fetch Source Templates, if any:
         foreach($this->X_model->fetch(array(
             'x__up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //SOURCE TEMPLATE GROUPS

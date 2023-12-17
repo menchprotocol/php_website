@@ -2,6 +2,8 @@
 
 $e__handle = ( isset($_GET['e__handle']) ? $_GET['e__handle'] : null );
 $i__hashtag = ( !$e__handle && isset($_GET['i__hashtag']) ? $_GET['i__hashtag'] : null );
+$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___42225 = $this->config->item('e___42225'); //MENCH Points
 
 
 if($e__handle){
@@ -39,6 +41,12 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         echo '</div>';
 
         echo '<table class="card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
+
+
+
+        echo '<tr class="advanced-stats hidden mobile-shrink" title="'.$e___11035[42225]['m__title'].'"><td style="text-align: right;" width="28%">&nbsp;</td><td style="text-align: right; padding-right: 5px;">'.$e___11035[42225]['m__cover'].'</td></tr>';
+
+
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
             echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'"><td style="text-align: right;" width="28%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td><td style="text-align: left;"><span class="icon-block-xs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="points-col advanced-stats hidden"> x'.rand(1,89).'</span></td></tr>';
         }
@@ -53,7 +61,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 }
 
-echo '<div class="advanced-stats center center-frame"><a href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><u>See More</u></a></div>';
+echo '<div class="advanced-stats center center-frame" style="padding-top: 55px !important;"><a href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><u>See More</u></a></div>';
 
 ?>
 

@@ -894,9 +894,17 @@ function view_e__hash($string){
 
 
 function view_i_title($i, $string_only = false){
-    $lines = explode("\n", $i['i__message']);
-    $title = ( strlen($lines['0']) && !filter_var($lines['0'], FILTER_VALIDATE_URL) ? $lines['0'] : '#'.$i['i__hashtag'] );
-    return ( $string_only ? $title : '<span class="main__title">'.$title.'</span>' );
+
+    //Break down by lines:
+    foreach(explode("\n", $i['i__message']) as $line){
+        if(strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)){
+            return ( $string_only ? $line : '<span class="main__title">'.$line.'</span>' );
+        }
+    }
+
+    //If not yet found we need to use other data to generate title:
+    return ( isset($i['i__hashtag']) && strlen($i['i__hashtag']) ? $i['i__hashtag'] : ( isset($i['i__id']) && intval($i['i__id']) ? 'Idea Number '.$i['i__id'] : 'Idea'.rand(100000000000,999999999999) ) );
+
 }
 
 function view_valid_handle_e($string){

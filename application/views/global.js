@@ -193,6 +193,8 @@ function load_editor(){
 
         $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
+            console.log('Yoooo');
+            console.log(suggestion);
             $(this).val('@' + suggestion.s__handle);
 
         }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
