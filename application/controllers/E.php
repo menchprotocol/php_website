@@ -115,7 +115,7 @@ class E extends CI_Controller
             if($listed_items < $_POST['counter']){
                 //We have more to show:
                 foreach($this->E_model->fetch(array(
-                    'e__id' => $_GET['e__id'],
+                    'e__id' => $_POST['e__id'],
                 )) as $e_this){
                     $ui .= view_more('/@'.$e_this['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
                 }
