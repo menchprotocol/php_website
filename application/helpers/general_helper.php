@@ -1583,10 +1583,13 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     //die('Domain email is missing! ('.join(' & ',$to_emails).') ('.$subject.') ('.$email_body.') ('.$domain_name.') ('.$domain_email.') '.$email_domain);
 
     if(!strlen($domain_email)){
+        //TODO activate late
+        /*
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
         ));
+        */
     }
 
     $name = 'New User';
