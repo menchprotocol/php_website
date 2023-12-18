@@ -43,7 +43,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         echo '<table class="card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
 
-        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins" title="'.$e___11035[42225]['m__title'].'"><td style="text-align: right;" width="28%">&nbsp;</td><td style="text-align: right; padding-right: 5px;"><span class="mench-coins-col">'.$e___11035[42225]['m__cover'].'</span></td></tr>';
+        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins" title="'.$e___11035[42225]['m__title'].'"><td style="text-align: right;" width="28%">&nbsp;</td><td style="text-align: right;"><span class="mench-coins-col">'.$e___11035[42225]['m__cover'].'</span></td></tr>';
 
 
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
