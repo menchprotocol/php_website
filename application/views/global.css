@@ -1936,6 +1936,14 @@ i, .btn .show-max {
     margin: 0;
     top:unset;
 }
+.coin-12273 .cover-content{
+    position: relative;
+    width: 100% !important;
+    margin: 0;
+    top:unset;
+    overflow-y: visible;
+    max-height: none;
+}
 
 .edge-cover.coin-12274 .cover-content,
 .focus-cover.coin-12274 .cover-content{
