@@ -75,8 +75,8 @@ echo '<div class="advanced-stats center center-frame" style="padding-top: 55px !
             //Update stats numbers:
             data.return_array.forEach(function(item) {
                 if(!item.sub_counter){
-                    //Hide this item:
-                    $(".card_frame_"+item.sub_id).addClass('hidden');
+                    //TODO Maybe Hide this item?
+                    //$(".card_frame_"+item.sub_id).addClass('hidden');
                 } else if (item.sub_counter != $(".card_count_"+item.sub_id+":first").text()){
                     $(".card_count_"+item.sub_id).removeClass('hidden').text(item.sub_counter).hide().fadeIn().hide().fadeIn();
                 }
