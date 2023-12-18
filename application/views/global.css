@@ -1913,6 +1913,10 @@ i, .btn .show-max {
     padding: 7px;
 }
 
+.mench-coins {
+    color: #6C3082 !important;
+    font-weight: bold;
+}
 
 .cover-content{
     padding: 0;
