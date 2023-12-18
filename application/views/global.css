@@ -776,6 +776,10 @@ p.menu_header {
 }
 
 
+.fa-spin-fast {
+    -webkit-animation: fa-spin-slow 0.5s infinite linear;
+    animation: fa-spin-slow 0.5s infinite linear;
+}
 .fa-spin-med {
     -webkit-animation: fa-spin-slow 8s infinite linear;
     animation: fa-spin-slow 8s infinite linear;
