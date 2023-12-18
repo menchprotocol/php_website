@@ -47,7 +47,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
-            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'"><td style="text-align: right;" width="21%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td><td style="text-align: left;"><span class="icon-block-xs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : 0 ).'</span></td></tr>';
+            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'"><td style="text-align: right;" width="21%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td><td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : 0 ).'</span></td></tr>';
         }
         echo '</table>';
 
@@ -60,7 +60,6 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 }
 
-echo '<div class="advanced-stats center center-frame" style="padding-top: 55px !important;"><a href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><u>See More</u></a></div>';
 
 ?>
 
