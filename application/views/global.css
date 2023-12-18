@@ -3527,10 +3527,13 @@ h4.main__title{
 
 
 
-.points-col{
+.mench-coins-col{
     float: right;
     width: 34px;
     text-align: center;
+}
+.mench-coins-col .mench-coins {
+    margin-left: 5px;
 }
 
 
