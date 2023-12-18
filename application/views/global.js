@@ -1293,7 +1293,6 @@ function save_load_i(i__id, x__id, link_i__id = 0){
     if(x__id){
         $('#modal31911 .save_x__id').val(x__id);
         //$('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
-
     }
 
     //Activate Modal:
