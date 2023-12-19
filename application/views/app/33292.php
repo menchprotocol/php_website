@@ -90,7 +90,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
     $(document).ready(function () {
 
-        $("h1").append('&nbsp;<span><a href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><i class="fas fa-search-plus advanced-stats"></i><i class="fas fa-search-minus advanced-stats hidden"></i></a></span>');
+        $("h1").append('&nbsp;<span><a href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><i class="fas fa-search-plus advanced-stats" style="font-size: 0.34em !important;"></i><i class="fas fa-search-minus advanced-stats hidden" style="font-size: 0.34em !important;"></i></a></span>');
 
         //Load initial stats:
         load_stats_33292();
