@@ -1466,7 +1466,7 @@ function save_load_e(e__id, x__id){
                 field_counter++;
                 $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                 $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
-                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).val(item["d__value"]);
+                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).val(item["d__value"]).attr('d__id',item["d__id"]);
             }
 
             //Dynamic Radio fields (if any):
@@ -1517,8 +1517,9 @@ function save_e(){
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
-        modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).val().trim();
+        modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
     }
+
 
     $.post("/e/save_e", modify_data, function (data) {
 

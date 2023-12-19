@@ -13,7 +13,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
         $dynamic_edit .= '<h3 class="main__title mini-font"></h3>';
-        $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" dynamic_e__id="" value="">';
+        $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" d__id="" value="">';
         $dynamic_edit .= '</div>';
     }
 

@@ -826,6 +826,8 @@ class E extends CI_Controller
                     $is_required = in_array($data_type, $this->config->item('n___42174')); //Required Settings
                     if(!isset($_POST['save_dynamic_' . $input_pointer])){
                         $_POST['save_dynamic_' . $input_pointer] = '';
+                    } else {
+                        $dynamic_input = explode('____',$_POST['save_dynamic_' . $input_pointer],2);
                     }
 
                     //Validate input if required or provided:
