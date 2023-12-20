@@ -198,7 +198,7 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
 <style>
-    .msg {
+    .msg, .main__title, h2, div, i {
         color: #FFFFFF !important;
     }
 </style>
