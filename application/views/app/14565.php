@@ -197,7 +197,11 @@ echo '</div>';
 echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
-
+<style>
+    .msg {
+        color: #FFFFFF !important;
+    }
+</style>
 <script>
     $(window).scroll(function() {
         if($(window).scrollTop()  > 110) {
