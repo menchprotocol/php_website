@@ -28,7 +28,7 @@ if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
 }
 
 //Generate Body Class String:
-$body_class = 'platform-'.$s__type; //Always append current coin
+$body_class = ' custom_ui_13884_13885 platform-'.$s__type; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     if($member_e){
         //Look at their session:
