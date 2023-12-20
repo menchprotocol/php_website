@@ -1816,7 +1816,7 @@ function write_access_i($i__hashtag){
                 'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
                 'LOWER(i__hashtag)' => strtolower($i__hashtag),
                 'x__up' => $member_e['e__id'],
-            )), array('x__right'))
+            ), array('x__right')))
         )
     );
 
