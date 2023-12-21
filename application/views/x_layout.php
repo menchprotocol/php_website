@@ -64,19 +64,6 @@ if(isset($_GET['go1'])){
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), 0) as $i_fix){
 
-        if(strlen($i_fix['i__cache'])){
-            $stats['cached_ideas']++;
-            continue;
-        }
-
-        $stats['active_ideas']++;
-
-        $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
-
-        $stats['old_links_removed'] += $view_sync_links['sync_stats']['old_links_removed'];
-        $stats['old_links_kept'] += $view_sync_links['sync_stats']['old_links_kept'];
-        $stats['new_links_added'] += $view_sync_links['sync_stats']['new_links_added'];
-
         if(!count($this->X_model->fetch(array(
             'x__right' => $i_fix['i__id'],
             'x__type' => 4250, //New Idea Created
@@ -92,6 +79,19 @@ if(isset($_GET['go1'])){
                 ));
             }
         }
+
+        if(strlen($i_fix['i__cache'])){
+            $stats['cached_ideas']++;
+            continue;
+        }
+
+        $stats['active_ideas']++;
+
+        $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
+
+        $stats['old_links_removed'] += $view_sync_links['sync_stats']['old_links_removed'];
+        $stats['old_links_kept'] += $view_sync_links['sync_stats']['old_links_kept'];
+        $stats['new_links_added'] += $view_sync_links['sync_stats']['new_links_added'];
 
     }
 }
