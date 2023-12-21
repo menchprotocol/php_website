@@ -105,7 +105,7 @@ if(isset($_GET['go2'])) {
     foreach ($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-        'x__right' => $focus_i['i__id'],
+        //'x__right' => $focus_i['i__id'],
         'x__up' => 26562, //Total Due
     )) as $ticket) {
 
@@ -128,12 +128,13 @@ if(isset($_GET['go2'])) {
             ));
 
         } else {
-            echo 'ERROR for x_id=' . $ticket['x__id'] . ' with value [' . $ticket['x__message'] . ']<br />';
+            echo 'ERROR for x_id=' . $ticket['x__id'] . ' with value [' . $ticket['x__message'] . ']<br /><br /><br />';
         }
 
     }
 
     echo 'Currency updated for ' . $updated . ' ideas.';
+    echo '<br /><br /><br /><br />';
 
 }
 
