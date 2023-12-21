@@ -33,8 +33,8 @@ foreach($is_next as $in_key => $in_value){
 
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
-$top_i__id = ( count($top_i) ? $top_i[0]['i__id'] : 0 );
-$top_i__hashtag = ( count($top_i) ? $top_i[0]['i__hashtag'] : 0 );
+$top_i__id = ( count($top_i) ? $top_i['i__id'] : 0 );
+$top_i__hashtag = ( count($top_i) ? $top_i['i__hashtag'] : 0 );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -217,7 +217,7 @@ if(isset($_GET['go2'])) {
 
         echo '<div class="active_navigation">';
 
-        $tree_progress = $this->X_model->tree_progress($x__creator, $top_i[0]);
+        $tree_progress = $this->X_model->tree_progress($x__creator, $top_i);
         $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
         $go_next_url = '/x/x_next/' . $top_i__hashtag . '/' . $focus_i['i__hashtag'];
 
