@@ -1117,7 +1117,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 } elseif($db_type==31835) {
                     $x__type = 31835;
                     foreach($CI->E_model->fetch(array(
-                        'e__id' => substr($db_val, 1), //TODO UPDATE to e__handle
+                        'LOWER(e__handle)' => strtolower(substr($db_val, 1)),
                     )) as $target){
                         $str = str_replace('@'.$target['e__id'],'@'.$target['e__handle'], $str); //TODO Remove!
                         $x__up = $target['e__id'];
