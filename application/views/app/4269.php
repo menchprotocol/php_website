@@ -416,6 +416,6 @@ if(superpower_unlocked()) {
 
     <?php
     if(website_setting(0) != 2738){
-        echo '<div class="center" style="padding-top: 34px;">POWERED BY<span class="icon-block-xs">'.$e___14870[2738]['m__cover'].'</span><a href="'.$e___4269[2738]['m__message'].'" class="custom_ui_14506_30982 main__title itemsetting" title="Exchange Ideas that Matter">'.$e___14870[2738]['m__title'].'</a></div>';
+        echo '<div class="center" style="padding-top: 34px;">POWERED BY<span class="icon-block-xs">'.$e___14870[2738]['m__cover'].'</span><a href="'.$e___14870[2738]['m__message'].'" class="custom_ui_14506_30982 main__title itemsetting" title="Exchange Ideas that Matter">'.$e___14870[2738]['m__title'].'</a></div>';
     }
 }
