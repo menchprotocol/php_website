@@ -1930,6 +1930,9 @@ i, .btn .show-max {
     max-height: 69%;
     top:36px;
 }
+.coin-6255 .cover-content{
+    top:5px;
+}
 
 .mini-cover .cover-content{
     max-height: 85%;
@@ -1961,7 +1964,7 @@ i, .btn .show-max {
 
 
 .is-cache .cover-content{
-    max-height: 80%;
+    max-height: 93%;
 }
 
 .list-answers .cover-content{
@@ -2072,9 +2075,11 @@ input.form-control {
 }
 .card_cover{
     position: relative;
-    margin:0 0 0 0 !important;
+    margin:0 0 5px 0 !important;
     padding: 0 0 0 0 !important;
     border-radius: 0 !important;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.69) !important;
 }
 .card_cover.coin-12274,
 .card_cover.coin-6287{
