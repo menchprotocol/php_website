@@ -102,12 +102,25 @@ if(isset($_GET['go2'])) {
 
 
     $updated = 0;
+    $already = 0;
     foreach ($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         //'x__right' => $focus_i['i__id'],
         'x__up' => 26562, //Total Due
-    ), 0) as $ticket) {
+    ), array(), 0) as $ticket) {
+
+        //linked to any currency?
+        if(count($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 4983, //IDEA SOURCES
+            'x__right' => $ticket['x__right'],
+            'x__up IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //PUBLIC
+        )))){
+            //Already linked to currency:
+            $already++;
+          continue;
+        }
 
         $parts = explode(' ', $ticket['x__message'], 2);
         $currency_id = ($parts[0] == 'CAD' ? 112233 : ($parts[0] == 'USD' ? 112233 : 0));
@@ -133,7 +146,7 @@ if(isset($_GET['go2'])) {
 
     }
 
-    echo 'Currency updated for ' . $updated . ' ideas.';
+    echo 'Currency updated for ' . $updated . ' ideas & '.$already.' already.';
     echo '<br /><br /><br /><br />';
 
 }
