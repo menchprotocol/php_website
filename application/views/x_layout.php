@@ -122,27 +122,13 @@ if(isset($_GET['go2'])) {
           continue;
         }
 
-        $parts = explode(' ', $ticket['x__message'], 2);
-        $currency_id = ($parts[0] == 'CAD' ? 112233 : ($parts[0] == 'USD' ? 112233 : 0));
-        if ($currency_id > 0 && doubleval($parts[1]) > 0) {
-
-            $updated++;
-
-            //All good, update:
-            $this->X_model->update($ticket['x__id'], array(
-                'x__message' => doubleval($parts[1]),
-            ));
-
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 4983, //IDEA SOURCES
-                'x__up' => $currency_id,
-                'x__right' => $focus_i['i__id'],
-            ));
-
-        } else {
-            echo 'ERROR for x_id=' . $ticket['x__id'] . ' with value [' . $ticket['x__message'] . ']<br /><br /><br />';
-        }
+        $updated++;
+        $this->X_model->create(array(
+            'x__creator' => $member_e['e__id'],
+            'x__type' => 4983, //IDEA SOURCES
+            'x__up' => 26092,
+            'x__right' => $ticket['x__right'],
+        ));
 
     }
 
