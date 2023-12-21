@@ -49,8 +49,11 @@ $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || c
 
 if(isset($_GET['go1'])){
 
+    boost_power();
+
     //Sync Ideas & Sources
     $stats = array(
+        'cached_ideas' => 0,
         'active_ideas' => 0,
         'old_links_removed' => 0,
         'old_links_kept' => 0,
@@ -60,6 +63,11 @@ if(isset($_GET['go1'])){
     foreach($this->I_model->fetch(array(
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), 0) as $i_fix){
+
+        if(strlen($i_fix['i__cache'])){
+            $stats['cached_ideas']++;
+            continue;
+        }
 
         $stats['active_ideas']++;
 
@@ -89,6 +97,9 @@ if(isset($_GET['go1'])){
 }
 
 if(isset($_GET['go2'])) {
+
+    boost_power();
+
 
     $updated = 0;
     foreach ($this->X_model->fetch(array(
