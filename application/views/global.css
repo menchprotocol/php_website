@@ -1933,6 +1933,9 @@ i, .btn .show-max {
 .coin-6255 .cover-content{
     top:5px;
 }
+.coin-6255 .card_covers {
+    display: none;
+}
 
 .mini-cover .cover-content{
     max-height: 85%;
@@ -1965,13 +1968,6 @@ i, .btn .show-max {
 
 .is-cache .cover-content{
     max-height: 93%;
-}
-
-.list-answers .cover-content{
-    top:48px;
-}
-.list-answers .coin-6255 .cover-content{
-    top:40px;
 }
 
 
