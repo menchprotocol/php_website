@@ -4228,6 +4228,7 @@ main {
     font-size: 0.75em;
 }
 
+.active_bars_0 { display: none !important; }
 .active_bars_1 td { width:100.0% !important; }
 .active_bars_2 td { width:50.00% !important; }
 .active_bars_3 td { width:33.34% !important; }

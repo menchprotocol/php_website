@@ -968,7 +968,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     $CI =& get_instance();
 
     //All the possible reference types that can be found:
-    $references_links = array(31834, 31835, 42172); //The types of links logged in DB
     $i__references = array(
         4258 => array(), //Video URL
         4259 => array(), //Audio URL
@@ -1068,14 +1067,14 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         $member_e = superpower_unlocked();
         foreach($CI->X_model->fetch(array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $references_links) . ')' => null,
+            'x__type IN (' . join(',', $CI->config->item('n___4736')) . ')' => null, //Idea Message Links 3x
             'x__right' => $save_i__id,
         )) as $x){
 
-            $target_x__type = ( $x['x__type']==42172 ? $x['x__up'] : $x['x__type'] );
+            $reference_type = ( $x['x__type']==42172 ? $x['x__up'] : $x['x__type'] );
 
             //Is this still valid?
-            if(!in_array($x['x__message'], $i__references[$target_x__type])){
+            if(!in_array($x['x__message'], $i__references[$reference_type])){
 
                 //Not valid, must be removed:
                 $CI->X_model->update($x['x__id'], array(
@@ -1090,9 +1089,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 $sync_stats['old_links_kept']++;
 
                 //Remove from add new to DB list (Since we dont need to add this):
-                foreach($references_add_to_db[$target_x__type] as $key=>$val){
+                foreach($references_add_to_db[$reference_type] as $key=>$val){
                     if($val==$x['x__message']){
-                        unset($references_add_to_db[$target_x__type][$key]);
+                        unset($references_add_to_db[$reference_type][$key]);
                         break;
                     }
                 }
@@ -1452,7 +1451,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Link Message, if Any:
     if($x__id){
-        $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
+        $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
     }
 
     //Raw Data:
