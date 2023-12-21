@@ -665,11 +665,14 @@ class I_model extends CI_Model
 
             //Add to current array if we found anything:
             $recursive_down_ids = $this->I_model->recursive_down_ids($next_i, $scope, $loop_breaker_ids);
-            foreach($recursive_down_ids['recursive_i_ids'] as $recursive_i_id){
-                if(!in_array($recursive_i_id, $recursive_i_ids)){
-                    array_push($recursive_i_ids, $recursive_i_id);
+            if(isset($recursive_down_ids['recursive_i_ids'])){
+                foreach($recursive_down_ids['recursive_i_ids'] as $recursive_i_id){
+                    if(!in_array($recursive_i_id, $recursive_i_ids)){
+                        array_push($recursive_i_ids, $recursive_i_id);
+                    }
                 }
             }
+
 
         }
 
