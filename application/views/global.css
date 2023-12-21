@@ -2075,13 +2075,13 @@ input.form-control {
 }
 .flip-content .card_cover{
     background: rgba(0, 0, 0, 0.69) !important;
+    height: 200px;
 }
 .card_cover{
     position: relative;
     margin:0 0 0 0 !important;
     padding: 0 0 0 0 !important;
     border-radius: 0 !important;
-    height: 200px;
 }
 .card_cover.coin-12274,
 .card_cover.coin-6287{
