@@ -1104,6 +1104,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             foreach($db_vals as $db_val){
 
                 //Additional source/idea reference?
+                $x__left = 0;
+                $x__up = 0;
+
                 if($db_type==31834){
                     $x__type = 31834;
                     foreach($CI->I_model->fetch(array(
@@ -1111,7 +1114,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     )) as $target){
                         $x__left = $target['i__id'];
                     }
-                    $x__up = 0;
                 } elseif($db_type==31835) {
                     $x__type = 31835;
                     foreach($CI->E_model->fetch(array(
@@ -1120,11 +1122,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         $str = str_replace('@'.$target['e__id'],'@'.$target['e__handle'], $str); //TODO Remove!
                         $x__up = $target['e__id'];
                     }
-                    $x__left = 0;
                 } else {
                     $x__type = 42172; //Message URLs
                     $x__up = $db_type;
-                    $x__left = 0;
                 }
 
                 $CI->X_model->create(array(
