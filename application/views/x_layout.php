@@ -107,7 +107,7 @@ if(isset($_GET['go2'])) {
         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         //'x__right' => $focus_i['i__id'],
         'x__up' => 26562, //Total Due
-    )) as $ticket) {
+    ), 0) as $ticket) {
 
         $parts = explode(' ', $ticket['x__message'], 2);
         $currency_id = ($parts[0] == 'CAD' ? 112233 : ($parts[0] == 'USD' ? 112233 : 0));
