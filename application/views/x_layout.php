@@ -785,12 +785,9 @@ if(isset($_GET['go2'])) {
 $pathways_count = 0;
 if(!$top_i__hashtag){
 
-    if(count($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-        'x__right' => $focus_i['i__id'],
-        'x__up' => 4235,
-    )))){
+
+
+    if($is_startable){
 
         //Get Started
         echo '<div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';

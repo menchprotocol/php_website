@@ -399,6 +399,13 @@ class X extends CI_Controller
 
 
         //Has the user discovered this?
+        $is_startable = count($this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__right' => $focus_is[0]['i__id'],
+            'x__up' => 4235,
+        )));
+
         $x_completes = array();
         if(count($focus_es)) {
 
@@ -450,11 +457,13 @@ class X extends CI_Controller
             'flash_message' => $flash_message,
         ));
 
+
         $this->load->view('x_layout', array(
             'focus_i' => $focus_is[0],
-            'top_i' => ( count($top_is) ? $top_is[0] : array() ),
+            'top_i' => ( count($top_is) ? $top_is[0] : ( !$top_i__hashtag && $is_startable && count($x_completes) ? $focus_is[0] : array() ) ),
             'member_e' => ( count($focus_es) ? $focus_es[0] : array() ),
             'x_completes' => $x_completes,
+            'is_startable' => $is_startable,
         ));
 
         $this->load->view('footer');
