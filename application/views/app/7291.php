@@ -19,7 +19,7 @@ if($client_id && $client_secret && $server_name){
         'domain' => 'mench.auth0.com',
         'client_id' => $client_id,
         'client_secret' => $client_secret,
-        'redirect_uri' => 'https://'.$server_name.view_app_link(14564),
+        'redirect_uri' => 'https://'.$server_name.'/-14564',
         'scope' => 'openid profile email',
     ]);
 
