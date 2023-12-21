@@ -1932,6 +1932,7 @@ i, .btn .show-max {
 }
 .coin-6255 .cover-content{
     top:5px;
+    max-height: 95%;
 }
 .coin-6255 .card_covers {
     display: none;
@@ -2085,6 +2086,9 @@ input.form-control {
 }
 .edge-cover.coin-12274{
     padding: 0 0 0 0 !important;
+}
+.card_cover.coin-6255{
+    margin:0 0 2px 0 !important;
 }
 
 .mini-cover.coin-12274{
