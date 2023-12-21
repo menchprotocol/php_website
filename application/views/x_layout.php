@@ -59,7 +59,7 @@ if(isset($_GET['go1'])){
     );
     foreach($this->I_model->fetch(array(
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), 0) as $i_fix){
+    ), 144) as $i_fix){
 
         $stats['active_ideas']++;
 
