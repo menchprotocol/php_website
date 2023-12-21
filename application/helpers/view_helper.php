@@ -1356,7 +1356,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                         } elseif($e__id_dropdown==30795 && !$discovery_mode && superpower_unlocked(10939)){
 
                             //Discover Idea
-                            $action_buttons .= '<a href="/'.$i['i__id'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="/'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==33286 && $discovery_mode && $write_access_i){
 
