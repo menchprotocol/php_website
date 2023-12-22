@@ -834,9 +834,7 @@ var algolia_index = false;
 $(document).ready(function () {
 
     $('.card_click_x').click(function(e) {
-        if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect('/'+$(this).attr('i__hashtag'));
-        }
+        js_redirect('/'+$(this).attr('i__hashtag'));
     });
 
     //Watchout for file uplods:
