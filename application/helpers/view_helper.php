@@ -1231,7 +1231,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $locked_info = ( strlen($click_locked)>1 ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' );
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" x__id="'.$x__id.'" class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
+    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" x__id="'.$x__id.'" class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12
      ' : ' edge-cover col-md-4 col-6 ' ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 card_click_x ' : ' coin-12273 card_click_i ' ).' s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
@@ -1370,7 +1370,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                         } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $write_access_i){
 
                             //Unlink
-                            $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item main__title x_remove" i__hashtag="'.$i['i__hashtag'].'" x__id="'.$x__id.'" x__type="'.$x__type.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$x__id.', '.$x__type.',\''.$i['i__hashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==30873 && !$discovery_mode){
 

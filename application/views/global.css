@@ -1039,7 +1039,7 @@ textarea.note-textarea{
     width: 100%;
     margin-bottom: 0;
 }
-.card_click_e, .card_click_i, .x_remove, .ignore-click, a:hover, a:hover * {
+.card_click_e, .card_click_i, .ignore-click, a:hover, a:hover * {
     cursor: pointer !important;
 }
 

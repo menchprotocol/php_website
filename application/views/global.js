@@ -586,51 +586,47 @@ function loadtab(x__type, tab_data_id){
 }
 
 
-
 var init_in_process = 0;
-function init_remove(){
-    $(".x_remove").click(function(event) {
+function x_remove(x__id, x__type, i__hashtag){
 
-        if(init_in_process==x__id){
-            return false;
-        }
-        init_in_process = x__id;
+    if(init_in_process==x__id){
+        return false;
+    }
+    init_in_process = x__id;
 
-        event.preventDefault();
+    var r = confirm("Remove idea #"+i__hashtag+"?");
+    if (!(r==true)) {
+        return false;
+    }
 
-        var x__id = $(this).attr('x__id');
+    //Save changes:
+    $.post("/x/x_remove", {
+        x__id:x__id
+    }, function (data) {
+        //Update UI to confirm with member:
+        if (!data.status) {
 
-        var r = confirm("Remove idea #"+$(this).attr('i__hashtag')+"?");
-        if (r==true) {
-            //Save changes:
-            $.post("/x/x_remove", {
-                x__id:x__id
-            }, function (data) {
-                //Update UI to confirm with member:
-                if (!data.status) {
+            //There was some sort of an error returned!
+            alert(data.message);
 
-                    //There was some sort of an error returned!
-                    alert(data.message);
+        } else {
 
-                } else {
+            adjust_counter(x__type, -1);
 
-                    adjust_counter($(this).attr('x__type'), -1);
+            //REMOVE BOOKMARK from UI:
+            $('.cover_x_'+x__id).fadeOut();
 
-                    //REMOVE BOOKMARK from UI:
-                    $('.cover_x_'+x__id).fadeOut();
+            setTimeout(function () {
 
-                    setTimeout(function () {
+                //Delete from body:
+                $('.cover_x_'+x__id).remove();
 
-                        //Delete from body:
-                        $('.cover_x_'+x__id).remove();
-
-                    }, 233);
-                }
-            });
+            }, 233);
         }
     });
-}
 
+    return false;
+}
 
 
 function x_create(add_fields){
@@ -890,8 +886,6 @@ $(document).ready(function () {
     $('#modal31912 .save_e__cover').keyup(function() {
         update_cover_main($(this).val(), '.demo_cover');
     });
-
-    init_remove();
 
     set_autosize($('#sugg_note'));
     set_autosize($('.texttype__lg'));
@@ -1643,7 +1637,6 @@ function load_tab(x__type, auto_load){
         load_card_clickers();
         initiate_algolia();
         load_editor();
-        init_remove();
         x_set_start_text();
         set_autosize($('.x_set_class_text'));
 
@@ -1957,8 +1950,6 @@ function add_to_list(x__type, sort_i_grabr, html_content, increment) {
         $("#list-in-" + x__type).prepend(html_content);
     }
 
-
-    init_remove();
 
     //Tooltips:
     $('[data-toggle="tooltip"]').tooltip();
