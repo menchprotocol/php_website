@@ -837,6 +837,12 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $('.card_click_x').click(function(e) {
+        if($(e.target).closest(ignore_clicks).length < 1){
+            js_redirect('/'+$(this).attr('i__hashtag'));
+        }
+    });
+
     //Watchout for file uplods:
     $('.coverUpload').find('input[type="file"]').change(function () {
         cover_upload(droppedFiles, 'file');
