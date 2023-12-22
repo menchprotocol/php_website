@@ -137,7 +137,7 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
 
 //Start darker background:
 if($messages){
-    echo '<div class="halfbg narrow-bar slim_flat">';
+    echo '<div class="halfbg narrow-bar slim_flat" style="margin-bottom: 2px;">';
     echo $messages;
     echo '</div>';
 }
