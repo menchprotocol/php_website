@@ -2143,10 +2143,11 @@ input.form-control {
     text-align: center !important;
 }
 
-.coin-12273 .inner-content,
-.coin-6255 .inner-content{
+.coin-12273 .inner-content{
     height: 200px;
-
+}
+.coin-6255 .inner-content{
+    height: auto;
 }
 .bottom-wrapper{
     display: block;
