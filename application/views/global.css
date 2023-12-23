@@ -2136,6 +2136,13 @@ input.form-control {
     overflow-y: auto;
 }
 
+.modal-body input.form-control {
+    background-color: #FFFFFF;
+}
+.mini-cover .inner-content {
+    text-align: center !important;
+}
+
 .coin-12273 .inner-content,
 .coin-6255 .inner-content{
     height: 200px;
@@ -2458,7 +2465,7 @@ input.form-control {
 
 
 .cover-btn i {
-    margin-top: -34%;
+    margin-top: -24%;
     font-size: 1.15em !important;
 }
 .focus-cover .cover-btn i {

@@ -1442,7 +1442,7 @@ function save_load_e(e__id, x__id){
         $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
         setTimeout(function () {
             set_autosize($('#modal31912 .save_x__message'));
-        }, 144);
+        }, 377);
     }
 
     //Activate Modal:
