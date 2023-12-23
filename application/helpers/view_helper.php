@@ -996,11 +996,15 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     //See what we can find:
     $i__cache = '<div class="i_cache">';
     foreach(explode("\n", $str) as $line_index => $line) {
-        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').'">';
-        foreach(explode(' ', $line) as $word_index => $word) { //'/\s+/'
+
+        $single_media_line = false;
+        $i__cache_line = '';
+        $lines = explode(' ', $line);
+
+        foreach($lines as $word_index => $word) { //'/\s+/'
 
             $reference_type = 0;
-            $i__cache .= ( $word_index>0 ? ' ' : '' );
+            $i__cache_line .= ( $word_index>0 ? ' ' : '' );
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
@@ -1010,7 +1014,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     if(strlen($video_id)){
                         $reference_type = 4257; //YouTube URL
                         array_push($i__references[$reference_type], $word);
-                        $i__cache .=  @sprintf($ui_template[$reference_type], $video_id, $video_id);
+                        $i__cache_line .=  @sprintf($ui_template[$reference_type], $video_id, $video_id);
                     }
                 }
 
@@ -1027,7 +1031,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     }
 
                     array_push($i__references[$reference_type], $word);
-                    $i__cache .=  @sprintf($ui_template[$reference_type], $word, $word);
+                    $i__cache_line .=  @sprintf($ui_template[$reference_type], $word, $word);
 
                 }
 
@@ -1035,23 +1039,27 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
-                $i__cache .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
             } elseif (view_valid_handle_e($word)) {
 
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
-                $i__cache .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
             } else {
 
                 //This word is not referencing anything!
-                $i__cache .= $word;
+                $i__cache_line .= $word;
 
             }
 
         }
+
+        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( count($lines)==1 && $reference_type ? 'media_line' : '').'">';
+        $i__cache .= $i__cache_line;
         $i__cache .= '</div>';
+
     }
     $i__cache .= '</div>';
 
