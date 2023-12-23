@@ -2140,7 +2140,7 @@ input.form-control {
 }
 
 .coin-12273 .inner-content{
-    height: 200px;
+    height: auto; /* 200px */
 }
 .mini-cover.coin-12273 .inner-content{
     height: 89px;
