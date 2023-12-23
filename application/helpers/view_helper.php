@@ -1059,7 +1059,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
         }
 
-        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( count($lines)<=2 && $reference_type_last>0 ? 'media_line' : '').'">';
+        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( count($lines)<=2 && $reference_type_last>0 ? 'media_line' : '').'" title="'.count($lines).' / '.$reference_type_last.'">';
         $i__cache .= $i__cache_line;
         $i__cache .= '</div>';
 
