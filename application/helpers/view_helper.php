@@ -797,6 +797,8 @@ function view_i_list($x__type, $top_i__hashtag, $i, $next_is, $member_e, $body_p
 
     $e___13369 = $CI->config->item('e___13369'); //IDEA LISTS
 
+    echo count($next_is).'|||';
+
     //Build Body UI:
     $body = '<div class="row justify-content">';
     foreach($next_is as $key => $next_i){
