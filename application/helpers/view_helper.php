@@ -784,13 +784,14 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
 }
 
 
-function view_i_list($x__type, $top_i__hashtag, $i, $next_is, $member_e, $body_append = null){
+function view_i_list($x__type, $top_i__hashtag, $i, $next_is, $member_e, $body_prepend = null){
 
     //If no list just return the next step:
     $CI =& get_instance();
     if(!count($next_is)){
         return false;
     } elseif(!in_array($x__type, $CI->config->item('n___13369'))){
+        die('@'.$x__type.' NOT in @13369');
         return false;
     }
 
@@ -803,7 +804,7 @@ function view_i_list($x__type, $top_i__hashtag, $i, $next_is, $member_e, $body_a
     }
     $body .= '</div>';
 
-    return view_headline($x__type, count($next_is), $e___13369[$x__type], $body.$body_append, isset($_GET['open']));
+    return view_headline($x__type, count($next_is), $e___13369[$x__type], $body_prepend.$body, isset($_GET['open']));
 
 }
 
