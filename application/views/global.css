@@ -2146,6 +2146,13 @@ input.form-control {
 .coin-12273 .inner-content{
     height: 200px;
 }
+.mini-cover.coin-12273 .inner-content{
+    height: 89px;
+    margin-top: -5px !important;
+}
+.focus-cover .inner-content{
+    height: 377px;
+}
 .coin-6255 .inner-content{
     height: 100%;
     overflow: visible;
@@ -3600,7 +3607,7 @@ h4.main__title{
 }
 
 .i_cache .line{
-    min-height: 8pm;
+    min-height: 8px;
     padding-bottom: 5px;
 }
 
