@@ -34,7 +34,7 @@ foreach($is_next as $in_key => $in_value){
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( count($top_i) ? $top_i['i__id'] : 0 );
-$top_i__hashtag = ( count($top_i) ? $top_i['i__hashtag'] : 0 );
+$top_i__hashtag = ( count($top_i) && $x__creator ? $top_i['i__hashtag'] : 0 );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -925,7 +925,7 @@ $body_append = '<a href="javascript:void(0);" onclick="save_load_i(0,0,'.$focus_
 
 $body_append = '';
 
-if(!$is_or_7712){ //$top_i__hashtag
+if(!($top_i__hashtag && $is_or_7712)){
     echo view_i_list(12211, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_append);
 } else {
     //Options have already been presented in the form of selections...
