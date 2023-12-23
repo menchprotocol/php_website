@@ -1301,12 +1301,7 @@ a.headline {
 .card_cover.focus-cover {
     padding-bottom: 5px !important;
 }
-.card_cover.edge-cover {
-    min-height: 200px;
-    max-height: 250px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+
 .card_cover.coin-12274.focus-cover {
     padding-bottom: 21px !important;
 }
@@ -2078,7 +2073,6 @@ input.form-control {
 }
 .flip-content .card_cover{
     background: rgba(0, 0, 0, 0.69) !important;
-    height: 200px;
 }
 .card_cover{
     position: relative;
