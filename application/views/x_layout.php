@@ -918,19 +918,16 @@ if(!$top_i__hashtag){
 
 
 //NEXT IDEAS:
-echo '<div class="nav-body">';
-
 //Append add new idea as a comment button at the end:
 $body_append = '<a href="javascript:void(0);" onclick="save_load_i(0,0,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
-
 $body_append = '';
-
+echo '11';
 if(!($top_i__hashtag && $is_or_7712)){
+    echo '22';
     echo view_i_list(12211, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_append);
 } else {
     //Options have already been presented in the form of selections...
 }
-echo '</div>';
 
 
 
