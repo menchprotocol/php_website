@@ -2135,6 +2135,8 @@ input.form-control {
     font-size: 1em;
     display: block;
     vertical-align: middle;
+    height: 200px;
+    overflow-y: auto;
 }
 .bottom-wrapper{
     display: block;
