@@ -1301,6 +1301,11 @@ a.headline {
 .card_cover.focus-cover {
     padding-bottom: 5px !important;
 }
+.card_cover.edge-cover {
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 .card_cover.coin-12274.focus-cover {
     padding-bottom: 21px !important;
 }
