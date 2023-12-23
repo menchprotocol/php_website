@@ -2057,8 +2057,6 @@ input.form-control {
 .cover-text {
     line-height: 120%;
     text-align: left;
-    margin-left: 5px;
-    margin-right: 5px;
 }
 
 .cover-text .mini-font {
@@ -2225,7 +2223,7 @@ input.form-control {
 }
 
 .cover-content .i_cache{
-    font-size: 0.8em !important;
+    font-size: 1em !important;
 }
 .focus-cover .cover-content .i_cache{
     font-size: 1.1em !important;
@@ -3682,11 +3680,11 @@ h4.main__title{
 /* MEDIUM */
 .custom_ui_13491_13493 .i_cache,
 .custom_ui_13491_13493 .regtext{
-    font-size:1.131em;
+    font-size:1.3em;
 }
 .custom_ui_13491_13493 .i_cache i,
 .custom_ui_13491_13493 .regtext i{
-    font-size:1.131em;
+    font-size:1.3em;
 } /* To get to 1.15em*/
 
 
@@ -3694,11 +3692,11 @@ h4.main__title{
 /* LARGE */
 .custom_ui_13491_13494 .i_cache,
 .custom_ui_13491_13494 .regtext {
-    font-size:1.15em;
+    font-size:1.6em;
 }
 .custom_ui_13491_13494 .i_cache i,
 .custom_ui_13491_13494 .regtext i {
-    font-size:0.96em;
+    font-size:1.4em;
 }
 
 
