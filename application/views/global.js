@@ -1299,8 +1299,9 @@ function save_load_i(i__id, x__id, link_i__id = 0){
     activate_handle_search($('#modal31911 .save_i__message'));
 
     setTimeout(function () {
-        set_autosize($('#modal31911 .save_i__message, #modal31911 .save_x__message'));
-    }, 144);
+        set_autosize($('#modal31911 .save_i__message'));
+        set_autosize($('#modal31911 .save_x__message'));
+    }, 377);
 
     if(i__id){
         //Load dynamic data:
