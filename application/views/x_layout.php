@@ -923,7 +923,9 @@ echo '<div class="nav-body">';
 //Append add new idea as a comment button at the end:
 $body_append = '<a href="javascript:void(0);" onclick="save_load_i(0,0,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
 
-if(!($is_or_7712 && $top_i__hashtag)){
+$body_append = '';
+
+if(!$is_or_7712){ //$top_i__hashtag
     echo view_i_list(12211, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_append);
 } else {
     //Options have already been presented in the form of selections...
@@ -953,16 +955,14 @@ if($top_i__hashtag){
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
 </script>
-
 <input type="hidden" id="focus_card" value="12273" />
-    <input type="hidden" id="focus_id" value="<?= $focus_i['i__id'] ?>" />
-    <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
+<input type="hidden" id="focus_id" value="<?= $focus_i['i__id'] ?>" />
+<input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__hashtag ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
 <script>
 
-    var audio_played = false;
     $(document).ready(function () {
 
         //Auto next a single answer:
