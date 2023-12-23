@@ -1923,7 +1923,7 @@ i, .btn .show-max {
 .cover-content{
     padding: 0;
     width: calc(100% - 4px) !important;
-    position: absolute;
+    position: relative;
     overflow-x: visible;
     overflow-y: auto;
     display: block;
