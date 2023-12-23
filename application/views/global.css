@@ -2133,8 +2133,13 @@ input.form-control {
     font-size: 1em;
     display: block;
     vertical-align: middle;
-    height: 200px;
     overflow-y: auto;
+}
+
+.coin-12273 .inner-content,
+.coin-6255 .inner-content{
+    height: 200px;
+
 }
 .bottom-wrapper{
     display: block;
