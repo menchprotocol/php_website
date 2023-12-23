@@ -2147,7 +2147,9 @@ input.form-control {
     height: 200px;
 }
 .coin-6255 .inner-content{
-    height: auto;
+    height: 100%;
+    overflow: visible;
+    padding-bottom: 21px;
 }
 .bottom-wrapper{
     display: block;
