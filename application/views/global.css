@@ -1933,7 +1933,7 @@ i, .btn .show-max {
 }
 .coin-6255 .cover-content{
     top:5px;
-    max-height: 95%;
+    max-height: 100%;
 }
 .coin-6255 .card_covers {
     display: none;
@@ -2149,7 +2149,7 @@ input.form-control {
 .coin-6255 .inner-content{
     height: 100%;
     overflow: visible;
-    padding-bottom: 21px;
+    padding: 13px 0 21px;
 }
 .bottom-wrapper{
     display: block;

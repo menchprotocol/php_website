@@ -1452,7 +1452,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Idea Message (Remaining)
     $show_cache_links = $focus_card && $click_locked;
-    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="mini-font ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($show_cache_links).'">'.( $show_cache_links ? view_i_links($i) : $i['i__cache'] ).( $click_locked ? '</div>' : '</a>' );
+    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($show_cache_links).'">'.( $show_cache_links ? view_i_links($i) : $i['i__cache'] ).( $click_locked ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
