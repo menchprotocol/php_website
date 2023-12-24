@@ -1483,16 +1483,15 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 continue; //Does not have permission
             }
             */
-            $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
-            if(strlen($coins_ui)){
-                $active_bars++;
-                $bottom_bar_ui .= '<span class="hideIfEmpty ">'; //'.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'
-                $bottom_bar_ui .= $coins_ui;
-                $bottom_bar_ui .= '</span>';
-            } else {
-                $ui .= '<div>Nothing for @'.$e__id_bottom_bar.'</div>';
 
-            }
+            $coins_count = view_i_covers($e__id_bottom_bar, $i['i__id'], 0, false);
+
+
+            $active_bars++;
+            $bottom_bar_ui .= '<span class="hideIfEmpty" title="'.$m_bottom_bar['m__title'].'"><span class="icon-block">'.$m_bottom_bar['m__cover']. '</span>';
+            //'.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'
+            $bottom_bar_ui .= $coins_count;
+            $bottom_bar_ui .= '</span>';
         }
 
         if($bottom_bar_ui){
