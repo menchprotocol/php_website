@@ -1233,14 +1233,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $i = array_merge($i, $discoveries[0]);
     }
 
-    if($focus_card){
-        $click_locked = true;
-    } elseif($step_by_step && !$has_discovered){
-        $click_locked = 'Go Next to Discover this Idea';
-    } else {
-        $click_locked = false;
-    }
-    $locked_info = ( strlen($click_locked)>1 ? ' data-toggle="tooltip" data-placement="top" title="'.$click_locked.'" ' : '' );
+
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" x__id="'.$x__id.'" class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
@@ -1462,8 +1455,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
 
     //Idea Message (Remaining)
-    $show_cache_links = $focus_card && $click_locked;
-    $ui .= ( $click_locked ? '<div' . $locked_info : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($show_cache_links).'">'.( $show_cache_links ? view_i_links($i) : $i['i__cache'] ).( $click_locked ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($focus_card).'">'.( $focus_card ? view_i_links($i) : $i['i__cache'] ).( $focus_card ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
