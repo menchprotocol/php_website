@@ -2089,6 +2089,9 @@ input.form-control {
     margin:0 0 5px !important;
     border-bottom: 1px solid #999;
 }
+.flip-content .card_cover.coin-6255{
+    border-bottom: 0px solid;
+}
 
 .mini-cover.coin-12274{
     border-radius: 50% !important;
@@ -2602,7 +2605,7 @@ h4.main__title{
 }
 
 .slim_flat{
-    margin-bottom: 144px !important;
+    margin-bottom: 233px !important;
 }
 
 @media (max-width:610px) {
