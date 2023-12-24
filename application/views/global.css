@@ -2084,6 +2084,7 @@ input.form-control {
 }
 .card_cover.coin-6255{
     margin:0 0 5px !important;
+    border-bottom: 1px solid #999;
 }
 
 .mini-cover.coin-12274{
@@ -3937,6 +3938,7 @@ h4.main__title{
 
 .cover-text .i_cache {
     margin: 0 !important;
+    padding-left: 13px;
 }
 
 .main_title{
