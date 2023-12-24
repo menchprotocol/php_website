@@ -1474,6 +1474,8 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //&& (!$discovery_mode || superpower_unlocked(10939))
     if(!$cache_app && !$focus_card ){
 
+        $ui .= '<div>hiii</div>';
+
         $active_bars = 0;
         $bottom_bar_ui = '';
         foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
