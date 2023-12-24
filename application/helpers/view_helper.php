@@ -1474,9 +1474,9 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //&& (!$discovery_mode || superpower_unlocked(10939))
     if(!$cache_app && !$focus_card ){
 
-        $active_bars = 0;
         $bottom_bar_ui = '';
         foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
+
             /*
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
             if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
@@ -1487,15 +1487,14 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             $coins_count = view_i_covers($e__id_bottom_bar, $i['i__id'], 0, false);
 
 
-            $active_bars++;
-            $bottom_bar_ui .= '<span class="hideIfEmpty" title="'.$m_bottom_bar['m__title'].'"><span class="icon-block">'.$m_bottom_bar['m__cover']. '</span>';
+            $bottom_bar_ui .= '<span title="'.$m_bottom_bar['m__title'].'"><span class="icon-block">'.$m_bottom_bar['m__cover']. '</span>';
             //'.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'
             $bottom_bar_ui .= $coins_count;
             $bottom_bar_ui .= '</span>';
         }
 
         if($bottom_bar_ui){
-            $ui .= '<div class="card_covers">';
+            $ui .= '<div class="">'; //card_covers
             $ui .= $bottom_bar_ui;
             $ui .= '</div>';
         }
