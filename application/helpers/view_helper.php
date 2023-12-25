@@ -1057,7 +1057,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                     //We need to find a YouTUbe URL and replace:
                     $split_parts = explode('|',$word,3);
-                    if(is_int($split_parts[0]) && is_int($split_parts[1]) && is_int($split_parts[2])){
+                    if(is_int($split_parts[0]) && strlen($split_parts[1]) && strlen($split_parts[2])){
                         foreach($CI->X_model->fetch(array(
                             'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
                             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
