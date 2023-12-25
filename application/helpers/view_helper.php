@@ -1066,8 +1066,12 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         ), array('x__up'), 0) as $top_source){
                             $video_id = extract_youtube_id($top_source['x__message']);
                             if(strlen($video_id)){
+
+                                $start_explode = explode(':',$split_parts[1]);
+                                $end_explode = explode(':',$split_parts[2]);
+
                                 array_push($replace_from, $word);
-                                array_push($replace_to, 'https://www.youtube.com/embed/'.$video_id.'?start='.$split_parts[1].'&end='.$split_parts[2]);
+                                array_push($replace_to, 'https://www.youtube.com/embed/'.$video_id.'?start='.( count($start_explode)==3 ? (($start_explode[0] * 3600)+($start_explode[1] * 60)+($start_explode[2])) : ($start_explode[0] * 60)+($start_explode[1]) ).'&end='.( count($end_explode)==3 ? (($end_explode[0] * 3600)+($end_explode[1] * 60)+($end_explode[2])) : ($end_explode[0] * 60)+($end_explode[1]) ));
                                 break;
                             }
                         }
