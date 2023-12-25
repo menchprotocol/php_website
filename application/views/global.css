@@ -2152,7 +2152,8 @@ input.form-control {
     height: 89px;
     margin-top: -5px !important;
 }
-.coin-6255 .inner-content{
+.coin-6255 .inner-content,
+.coin-12273 .inner-content{
     overflow: visible;
     padding: 5px 0 0 0;
     max-height: 420px;
