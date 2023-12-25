@@ -64,8 +64,13 @@ if(isset($_GET['go1'])){
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), 500) as $i_fix){
 
-        $view_sync_links = view_sync_links($i_fix['i__message'], true);
         echo nl2br($i_fix['i__message']).'<br />Replace['.count($view_sync_links['replace_from']).']<br />';
+
+        $view_sync_links = view_sync_links($i_fix['i__message'], true);
+        foreach($view_sync_links['i__references'] as $ref_type => $ref_amount){
+            echo '<div>['.count($ref_amount).'] off ['.$ref_type.']</div>';
+        }
+
         if(count($view_sync_links['replace_from'])){
             //Show all:
             foreach($view_sync_links['replace_from'] as $index=>$val){
