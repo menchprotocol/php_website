@@ -1490,7 +1490,14 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             $ui .= '<div class="card_covers">';
             $ui .= $bottom_bar_ui;
             $ui .= '</div>';
+        } else {
+            $ui .= 'NO BOTTOM';
         }
+
+    } else {
+
+        $ui .= 'IS CACHE/FOCUS';
+
 
     }
 
