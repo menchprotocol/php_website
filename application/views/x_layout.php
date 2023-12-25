@@ -69,7 +69,9 @@ if(isset($_GET['go1'])){
         echo nl2br($i_fix['i__message']).'<br />Replace['.count($view_sync_links['replace_from']).']<br />';
 
         foreach($view_sync_links['i__references'] as $ref_type => $ref_amount){
-            echo '<div>['.count($ref_amount).'] off ['.$ref_type.']</div>';
+            if(count($ref_amount) > 0){
+                echo '<div>['.count($ref_amount).'] off ['.$ref_type.']</div>';
+            }
         }
 
         if(count($view_sync_links['replace_from'])){
