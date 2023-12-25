@@ -910,9 +910,13 @@ function view_i_title($i, $string_only = false){
 
 function view_valid_handle_e($string){
     $CI =& get_instance();
+    /*
     return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && count($CI->E_model->fetch(array(
         ( is_int(substr($string, 1)) ? 'e__id' : 'LOWER(e__handle)'  ) => strtolower(substr($string, 1)),
     ))) ? substr($string, 1) : false );
+    */
+
+    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) ? substr($string, 1) : false );
 }
 
 function view_valid_handle_i($string){
