@@ -2086,7 +2086,8 @@ input.form-control {
     padding: 0 0 0 0 !important;
 }
 .card_cover.coin-6255{
-    margin:0 0 5px !important;
+    margin:0 0 !important;
+    padding:8px 0 !important;
     border-bottom: 1px solid #999;
 }
 .flip-content .card_cover.coin-6255{
