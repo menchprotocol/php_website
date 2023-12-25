@@ -1821,7 +1821,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= view_dropdown(6177, $e['e__access'], null, $write_access_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==4362 && 0 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
+            } elseif($x__type_top_bar==4362 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
 
                 //Creation Time:
                 $active_bars++;
