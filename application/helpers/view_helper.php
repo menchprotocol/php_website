@@ -1051,7 +1051,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
-            } elseif (view_valid_handle_e(( substr($word, 0, 1)=='@' && substr_count($word, '|')==2 ? '@'.intval(substr($word, 1)) : $word ))) {
+            } elseif (view_valid_handle_e(( substr_count($word, '|')==2 ? '@'.intval(substr($word, 1)) : $word ))) {
 
                 if(substr($word, 0, 1)=='@' && substr_count($word, '|')==2){
 
@@ -1309,7 +1309,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" x__id="'.$x__id.'" class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 card_click_x ' : ' coin-12273 card_click_i ' ).' s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 card_click_x ' : ' coin-12273 card_click_i ' ).' coinface-12273 s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
     //Determine Link Group
