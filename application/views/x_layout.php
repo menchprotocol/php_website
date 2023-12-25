@@ -479,63 +479,64 @@ if(isset($_GET['go2'])) {
                 }
 
 
-                $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/'.$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__hash='.view_e__hash($x[0]['e__handle']);
-
-
-                //Display UI:
-                echo '<h2 style="text-align: center;">'.view_i_title($is_top[0]).'</h2>';
-                echo '<h3 style="text-align: center;">'.view_i_title($is_discovery[0]).'</h3>';
-                echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__handle'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.' Ticket'.view__s($quantity).'</b></h3>';
-
-
-                //Is Ticket Scanner Admin?
                 /*
-                if(isset($_GET['e__handle']) && isset($_GET['e__hash']) && superpower_unlocked(31000)){
-
-                    $ticket_checked_in = $this->X_model->fetch(array(
-                        'x__reference' => $x[0]['x__id'],
-                        'x__type' => 32016,
-                    ), array('x__up'));
-
-                    //See how many tickets have already been checked-in for this user, and give option to check-in the remaining tickets that have not yet been checked-in:
-                    if(count($ticket_checked_in)){
-
-                        echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ticket already checked-in!</div>';
-
-                        echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Already Checked-In by <a href="/@'.$ticket_checked_in[0]['e__handle'].'">'.$ticket_checked_in[0]['e__title'].'</a> about <span class="underdot" title="'.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago</span>.</div>';
+                                //Display UI:
+                                echo '<h2 style="text-align: center;">'.view_i_title($is_top[0]).'</h2>';
+                                echo '<h3 style="text-align: center;">'.view_i_title($is_discovery[0]).'</h3>';
+                                echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__handle'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.' Ticket'.view__s($quantity).'</b></h3>';
 
 
-                    } else {
+                                //Is Ticket Scanner Admin?
 
-                        //All good to check-in:
-                        $this->X_model->create(array(
-                            'x__type' => 32016,
-                            'x__creator' => $x[0]['e__id'], //Ticket Buyer
-                            'x__up' => $member_e['e__id'], //Ticket Scanner
-                            'x__weight' => $quantity, //Tickets Checked-in (They can check-in in multiple rounds)
-                            'x__right' => $x[0]['x__right'],
-                            'x__left' => $x[0]['x__left'],
-                            'x__reference' => $x[0]['x__id'],
-                        ));
+                                if(isset($_GET['e__handle']) && isset($_GET['e__hash']) && superpower_unlocked(31000)){
 
-                        echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successful checkin for '.$quantity.' Ticket'.view__s($quantity).'</div>';
+                                    $ticket_checked_in = $this->X_model->fetch(array(
+                                        'x__reference' => $x[0]['x__id'],
+                                        'x__type' => 32016,
+                                    ), array('x__up'));
 
-                    }
+                                    //See how many tickets have already been checked-in for this user, and give option to check-in the remaining tickets that have not yet been checked-in:
+                                    if(count($ticket_checked_in)){
 
-                    if(isset($_GET['attempt_checkin'])){
-                        //QR Code Scanned, auto check-in:
+                                        echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ticket already checked-in!</div>';
+
+                                        echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Already Checked-In by <a href="/@'.$ticket_checked_in[0]['e__handle'].'">'.$ticket_checked_in[0]['e__title'].'</a> about <span class="underdot" title="'.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago</span>.</div>';
 
 
+                                    } else {
 
-                    } elseif(!count($ticket_checked_in)) {
+                                        //All good to check-in:
+                                        $this->X_model->create(array(
+                                            'x__type' => 32016,
+                                            'x__creator' => $x[0]['e__id'], //Ticket Buyer
+                                            'x__up' => $member_e['e__id'], //Ticket Scanner
+                                            'x__weight' => $quantity, //Tickets Checked-in (They can check-in in multiple rounds)
+                                            'x__right' => $x[0]['x__right'],
+                                            'x__left' => $x[0]['x__left'],
+                                            'x__reference' => $x[0]['x__id'],
+                                        ));
 
-                        //Give option for manual checkin:
-                        echo '<div style="text-align: center;"><div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="'.$qr_link.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
+                                        echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successful checkin for '.$quantity.' Ticket'.view__s($quantity).'</div>';
 
-                    }
+                                    }
 
-                }
-                */
+                                    if(isset($_GET['attempt_checkin'])){
+                                        //QR Code Scanned, auto check-in:
+
+
+
+                                    } elseif(!count($ticket_checked_in)) {
+
+                                                $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/'.$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__hash='.view_e__hash($x[0]['e__handle']);
+
+
+                                        //Give option for manual checkin:
+                                        echo '<div style="text-align: center;"><div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="'.$qr_link.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
+
+                                    }
+
+                                }
+                                */
 
             if($unit_price > 0){
                 $ticket_ui .= '<div style="padding: 8px 0 21px;" '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' + '.$unit_fee.' in Fees" data-toggle="tooltip" data-placement="top" ' : '' ).'><span id="total_ui" class="main__title">'.(($unit_fee+$unit_price)*$min_allowed).'</span> '.$unit_currency.'</div>';
