@@ -62,7 +62,7 @@ if(isset($_GET['go1'])){
     );
     foreach($this->I_model->fetch(array(
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), 40) as $i_fix){
+    ), 500) as $i_fix){
 
         echo $i_fix['i__message'].'<br /><br />';
 
