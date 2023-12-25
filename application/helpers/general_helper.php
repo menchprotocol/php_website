@@ -374,11 +374,11 @@ function i_spots_remaining($i__id){
 function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x__down){
 
     $return_i__id = $i__id;
+    $CI =& get_instance();
 
     //Log Access Block:
     if($log_tnx){
 
-        $CI =& get_instance();
         $access_blocked = $CI->X_model->create(array(
             'x__type' => ( $x__creator>0 ? 29737 : 30341 ), //Access Blocked
             'x__creator' => $x__creator,
