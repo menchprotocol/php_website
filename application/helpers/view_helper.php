@@ -1523,7 +1523,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $ui .= '<div class="cover-text">';
 
     //Raw Data:
-    $ui .= '<div class="sub__handle grey">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
+    $ui .= '<div class="sub__handle grey '.( $discovery_mode ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
 
     //Idea Message (Remaining)
