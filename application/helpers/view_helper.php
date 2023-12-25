@@ -1051,9 +1051,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
-            } elseif (view_valid_handle_e(( substr_count($word, '|')==2 ? '@'.intval(substr($word, 1)) : $word ))) {
+            } elseif (view_valid_handle_e(( substr_count($word, '|')==2 ? '@'.one_two_explode('@','|',$word) : $word ))) {
 
-                if(substr($word, 0, 1)=='@' && substr_count($word, '|')==2){
+                if(substr_count($word, '|')==2 && is_int(one_two_explode('@','|',$word))){
 
                     //We need to find a YouTUbe URL and replace:
                     $split_parts = explode('|',$word,3);
@@ -1077,7 +1077,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         }
                     }
 
-                } elseif(substr($word, 0, 1)=='@' && is_int(substr($word, 1))) {
+                } elseif(is_int(substr($word, 1))) {
 
                     $valid_urls = array();
                     foreach($CI->X_model->fetch(array(
