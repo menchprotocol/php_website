@@ -1609,14 +1609,16 @@ function view_list_e_items($i, $x__creator, $x, $plain_no_html = false, $append_
         $x['x__message'] = ( strlen($x['x__message']) ? $messages.( $plain_no_html ? $x['x__message'] : nl2br($x['x__message']) ) : $messages );
     }
 
+    $show_google_maps_link = ( $x['x__type']==41949 && in_array($x['e__access'], $CI->config->item('n___41981')));
+
     if($plain_no_html){
         return
-            ( $x['x__type']==41949 ? "\n".'https://www.google.com/maps/search/'.urlencode($x['e__title']) : $x['e__title'] )
+            ( $show_google_maps_link ? "\n".'https://www.google.com/maps/search/'.urlencode($x['e__title']) : $x['e__title'] )
             ."\n". $x['x__message'];
     } else {
         return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
-            . '<span>'.( $x['x__type']==41949 ? '<a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank"><span style="text-decoration:underline;">'.$x['e__title'].'</span> <i class="far fa-external-link"></i></a>' : $x['e__title'] ) . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+            . '<span>'.( $show_google_maps_link ? '<a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank"><span style="text-decoration:underline;">'.$x['e__title'].'</span> <i class="far fa-external-link"></i></a>' : $x['e__title'] ) . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
             . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.nl2br(view_url($x['x__message'])).'</div></div>' : '' )
             . '</span></div>';
     }
