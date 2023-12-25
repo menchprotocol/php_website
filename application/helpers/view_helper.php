@@ -2001,7 +2001,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '</div>';
 
     //Bottom Bar
-    if(!$is_cache && !$is_app && !$focus_card && superpower_unlocked(10939)){
+    if(!$is_cache && !$is_app && !$focus_card){
         $ui .= '<div class="card_covers">';
         foreach($CI->config->item('e___31916') as $menu_id => $m) {
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
