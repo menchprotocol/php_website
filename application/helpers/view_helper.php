@@ -1462,6 +1462,8 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
     }
 
+    //Idea Links, if any:
+    $ui .= view_i_links($i, $focus_card);
 
 
     $ui .= '</div>';
