@@ -1562,7 +1562,7 @@ function view_list_e($i, $x__creator = 0, $plain_no_html = false){
     foreach($e___33602 as $x__sort_id => $sort) {
         $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
     }
-    $order_columns['e__title'] = 'DESC';
+    $order_columns['e__title'] = 'ASC';
 
     //Query Relevant Sources:
     foreach($CI->X_model->fetch(array(
