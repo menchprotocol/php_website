@@ -2155,9 +2155,6 @@ input.form-control {
     height: 89px;
     margin-top: -5px !important;
 }
-.focus-cover.coin-12274 .inner-content{
-    height: 377px;
-}
 .coin-6255 .inner-content{
     overflow: visible;
     padding: 5px 0 0 0;
@@ -3600,7 +3597,7 @@ h4.main__title{
 
 .cover-link.coinType12274 .cover-btn,
 .cover-link.coinType6287 .cover-btn{
-    top: 43% !important;
+    top: 44% !important;
 }
 
 
