@@ -1280,7 +1280,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && !$discovery_mode && isset($i['x__time']) && strtotime($i['x__time']) > 0){
+            } elseif($x__type_top_bar==4362 && 0 && !$discovery_mode && isset($i['x__time']) && strtotime($i['x__time']) > 0){
 
                 //Creation Time:
                 $active_bars++;
@@ -1821,7 +1821,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= view_dropdown(6177, $e['e__access'], null, $write_access_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==4362 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
+            } elseif($x__type_top_bar==4362 && 0 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
 
                 //Creation Time:
                 $active_bars++;
