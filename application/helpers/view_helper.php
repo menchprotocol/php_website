@@ -1126,18 +1126,13 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     }
     $i__cache .= '</div>';
 
-    if(isset($_GET['go1']) && count($replace_from)){
-        //Show all:
-        foreach($replace_from as $index=>$val){
-            echo '<div>['.$replace_from[$index].'] Replaced to ['.$replace_to[$index].']</div>';
-        }
-    }
-
 
     $sync_stats = array(
         'old_links_removed' => 0,
         'old_links_kept' => 0,
         'new_links_added' => 0,
+        'replace_from' => $replace_from,
+        'replace_to' => $replace_to,
     );
     if(intval($save_i__id) > 0){
 

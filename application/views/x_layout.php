@@ -68,6 +68,13 @@ if(isset($_GET['go1'])){
 
         $view_sync_links = view_sync_links($i_fix['i__message'], true);
 
+        if(count($view_sync_links['replace_from'])){
+            //Show all:
+            foreach($view_sync_links['replace_from'] as $index=>$val){
+                echo '<div>['.$view_sync_links['replace_from'][$index].'] Replaced to ['.$view_sync_links['replace_to'][$index].']</div>';
+            }
+        }
+
         echo '<hr /><br />';
 
         $stats['old_links_removed'] += $view_sync_links['sync_stats']['old_links_removed'];
