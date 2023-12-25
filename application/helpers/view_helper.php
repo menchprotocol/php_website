@@ -1116,8 +1116,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     }
                 }
 
-                array_push($replace_from, $word);
-                array_push($replace_to, '@'.$e_redirect['e__handle']);
 
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
