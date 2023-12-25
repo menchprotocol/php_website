@@ -940,8 +940,8 @@ function validate_i__message($str){
 
 }
 
-function view_i_links($i){
-    return str_replace('spanaa','a',$i['i__cache']).view_list_e($i);
+function view_i_links($i, $replace_links = true){
+    return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).view_list_e($i);
 }
 
 function view_sync_links($str, $return_array = false, $save_i__id = 0) {
@@ -1280,13 +1280,13 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && 0 && !$discovery_mode && isset($i['x__time']) && strtotime($i['x__time']) > 0){
+            } elseif($x__type_top_bar==4362 && 0 && isset($i['x__time']) && strtotime($i['x__time']) > 0){
 
                 //Creation Time:
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).'">' . view_time_difference(strtotime($i['x__time']), true) . '</div></td>';
 
-            } elseif($x__type_top_bar==41037 && $write_access_i && !$focus_card && !$discovery_mode){
+            } elseif($x__type_top_bar==41037 && $write_access_i && !$focus_card){
 
                 //Selector
                 $active_bars++;
@@ -1307,7 +1307,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Access (Shown when deleted only)
                 $active_bars++;
                 $top_bar_ui .= '<td><div>';
-                $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i && !$discovery_mode, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31911 && $write_access_i){
@@ -1352,12 +1352,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                         $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
-                        if($e__id_dropdown==12589 && !$discovery_mode){
+                        if($e__id_dropdown==12589 && $write_access_i){
 
                             //Mass Apply
                             $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==30795 && !$discovery_mode && superpower_unlocked(10939)){
+                        } elseif($e__id_dropdown==30795 && !$discovery_mode){
 
                             //Discover Idea
                             $action_buttons .= '<a href="/'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1377,7 +1377,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Unlink
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$x__id.', '.$x__type.',\''.$i['i__hashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==30873 && !$discovery_mode){
+                        } elseif($e__id_dropdown==30873 && $write_access_i){
 
                             //Clone Idea Tree:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1387,7 +1387,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Stats
                             $action_buttons .= '<a href="'.view_app_link(33292).'?i__hashtag='.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==29771 && !$discovery_mode){
+                        } elseif($e__id_dropdown==29771 && $write_access_i){
 
                             //Clone Single Idea:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1397,7 +1397,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Transaction Details
                             $action_buttons .= '<a href="'.view_app_link(4341).'?x__id='.$x__id.'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==6182 && $write_access_i && !$discovery_mode){
+                        } elseif($e__id_dropdown==6182 && $write_access_i){
 
                             //Delete Permanently
                             $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__access'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
@@ -1410,7 +1410,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                                 $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
                             }
 
-                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287')) && !$discovery_mode){
+                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
 
                             //Standard button
                             $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).'?i__hashtag='.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1825,7 +1825,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).'">' . view_time_difference(strtotime($e['x__time']), true) . '</div></td>';
 
-            } elseif($x__type_top_bar==41037 && $write_access_e && !$focus_card && !$discovery_mode){
+            } elseif($x__type_top_bar==41037 && $write_access_e && !$focus_card){
 
                 //Selector
                 $active_bars++;
@@ -1918,7 +1918,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Filter applies only when browsing an idea
                             $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?focus__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287')) && !$discovery_mode){
+                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
 
                             //Standard button
                             $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).'?e__handle='.$e['e__handle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
