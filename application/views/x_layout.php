@@ -462,10 +462,10 @@ if(isset($_GET['go2'])) {
                 //Is multi selectable, allow show down for quantity:
 
                 $ticket_ui .= '<div class="source-info ticket-notice">'
-                    . '<span class="icon-block">'. $e___11035[31837]['m__cover'] . '</span>'
-                    . '<span>'.$e___11035[31837]['m__title'] . '</span>'
+                    . '<span class="icon-block">'. $e___11035[31076]['m__cover'] . '</span>'
+                    . '<span>'.$e___11035[31076]['m__title'] . '</span>'
                     . '<div class="payment_box">'
-                    . ( strlen($e___11035[31837]['m__message']) ? '<div class="sub_note main__title">'.nl2br($e___11035[31837]['m__message']).'</div>' : '' );
+                    . ( strlen($e___11035[31076]['m__message']) ? '<div class="sub_note main__title">'.nl2br($e___11035[31076]['m__message']).'</div>' : '' );
 
 
                 if($max_allowed > 1 || $min_allowed > 1){
