@@ -1045,9 +1045,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
-            } elseif (view_valid_handle_e(( subtr($word, 0, 1)=='@' && substr_count($word, '|')==2 ? '@'.intval(subtr($word, 1)) : $word ))) {
+            } elseif (view_valid_handle_e(( substr($word, 0, 1)=='@' && substr_count($word, '|')==2 ? '@'.intval(substr($word, 1)) : $word ))) {
 
-                if(subtr($word, 0, 1)=='@' && substr_count($word, '|')==2){
+                if(substr($word, 0, 1)=='@' && substr_count($word, '|')==2){
 
                     //We need to find a YouTUbe URL and replace:
                     $split_parts = explode('|',$word,3);
@@ -1067,13 +1067,13 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         }
                     }
 
-                } elseif(subtr($word, 0, 1)=='@' && is_int(subtr($word, 1))) {
+                } elseif(substr($word, 0, 1)=='@' && is_int(substr($word, 1))) {
 
                     $valid_urls = array();
                     foreach($CI->X_model->fetch(array(
                         'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__down' => subtr($word, 1),
+                        'x__down' => substr($word, 1),
                         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array('x__up'), 0) as $top_source){
                         if(filter_var($top_source['x__message'], FILTER_VALIDATE_URL)){
@@ -1092,7 +1092,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     } else {
 
                         foreach ($CI->E_model->fetch(array(
-                            'e__id' => subtr($word, 1),
+                            'e__id' => substr($word, 1),
                         )) as $e_redirect){
                             foreach($valid_urls as $valid_url){
                                 //Replace the entire source:
