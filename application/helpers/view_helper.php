@@ -1302,12 +1302,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_access_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31004 && $access_locked){
+            } elseif($x__type_top_bar==31004 && $write_access_i){
 
                 //Idea Access (Shown when deleted only)
                 $active_bars++;
                 $top_bar_ui .= '<td><div>';
-                $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i && !$access_locked, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31911 && $write_access_i){
