@@ -1747,7 +1747,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $write_access_e = ( $access_locked ? false :  write_access_e($e['e__handle']) );
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')) || !superpower_unlocked(10939); //DISCOVERY MODE
+    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
@@ -1776,7 +1776,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $show_text_editor = $write_access_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinx'.$x__type.' coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click_e col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click_e col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     //Source Link Groups
     $link_type_id = 0;
@@ -1900,7 +1900,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Delete Permanently
                             $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__access'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==33292 && !$discovery_mode){
+                        } elseif($e__id_dropdown==33292){
 
                             //Stats
                             $action_buttons .= '<a href="'.view_app_link(33292).'?e__handle='.$e['e__handle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
