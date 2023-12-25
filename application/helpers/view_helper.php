@@ -908,22 +908,21 @@ function view_i_title($i, $string_only = false){
 
 }
 
-function view_valid_handle_e($string){
+function view_valid_handle_e($string, $check_db = false){
     $CI =& get_instance();
     /*
-    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && count($CI->E_model->fetch(array(
-        ( is_int(substr($string, 1)) ? 'e__id' : 'LOWER(e__handle)'  ) => strtolower(substr($string, 1)),
-    ))) ? substr($string, 1) : false );
+    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && ? substr($string, 1) : false );
     */
-
-    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) ? substr($string, 1) : false );
+    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->E_model->fetch(array(
+            ( is_int(substr($string, 1)) ? 'e__id' : 'LOWER(e__handle)'  ) => strtolower(substr($string, 1)),
+        )))) ? substr($string, 1) : false );
 }
 
-function view_valid_handle_i($string){
+function view_valid_handle_i($string, $check_db = false){
     $CI =& get_instance();
-    return ( substr($string, 0, 1)=='#' && ctype_alnum(substr($string, 1)) && count($CI->I_model->fetch(array(
+    return ( substr($string, 0, 1)=='#' && ctype_alnum(substr($string, 1)) && ( !$check_db || count($CI->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower(substr($string, 1)),
-    ))) ? substr($string, 1) : false );
+    )))) ? substr($string, 1) : false );
 }
 
 
@@ -1068,6 +1067,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                             'x__down' => $split_parts[0],
                             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         ), array('x__up'), 0) as $top_source){
+
                             $video_id = extract_youtube_id($top_source['x__message']);
                             if(strlen($video_id)){
 
@@ -1089,7 +1089,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__down' => substr($word, 1),
                         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    ), array('x__up'), 0) as $top_source){
+                    ), array(), 0) as $top_source){
                         if(filter_var($top_source['x__message'], FILTER_VALIDATE_URL)){
                             array_push($valid_urls, $top_source['x__message']);
                         }
@@ -1108,15 +1108,16 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         foreach ($CI->E_model->fetch(array(
                             'e__id' => substr($word, 1),
                         )) as $e_redirect){
-                            foreach($valid_urls as $valid_url){
-                                //Replace the entire source:
-                                array_push($replace_from, $word);
-                                array_push($replace_to, '@'.$e_redirect['e__handle']);
-                            }
+                            //Replace the entire source:
+                            array_push($replace_from, $word);
+                            array_push($replace_to, '@'.$e_redirect['e__handle']);
                         }
 
                     }
                 }
+
+                array_push($replace_from, $word);
+                array_push($replace_to, '@'.$e_redirect['e__handle']);
 
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
