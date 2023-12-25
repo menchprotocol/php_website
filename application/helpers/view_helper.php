@@ -992,6 +992,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         31835 => '<spanaa href="/@%s"><u>%s</u></spanaa>',
     );
 
+    $replace_from = array();
+    $replace_to = array();
+
 
     //See what we can find:
     $i__cache = '<div class="i_cache">';
@@ -1042,7 +1045,64 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
-            } elseif (view_valid_handle_e($word)) {
+            } elseif (view_valid_handle_e(( subtr($word, 0, 1)=='@' && substr_count($word, '|')==2 ? '@'.intval(subtr($word, 1)) : $word ))) {
+
+                if(subtr($word, 0, 1)=='@' && substr_count($word, '|')==2){
+
+                    //We need to find a YouTUbe URL and replace:
+                    $split_parts = explode('|',$word,3);
+                    if(is_int($split_parts[0]) && is_int($split_parts[1]) && is_int($split_parts[2])){
+                        foreach($CI->X_model->fetch(array(
+                            'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
+                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__down' => $split_parts[0],
+                            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        ), array('x__up'), 0) as $top_source){
+                            $video_id = extract_youtube_id($top_source['x__message']);
+                            if(strlen($video_id)){
+                                array_push($replace_from, $word);
+                                array_push($replace_to, 'https://www.youtube.com/embed/'.$video_id.'?start='.$split_parts[1].'&end='.$split_parts[2]);
+                                break;
+                            }
+                        }
+                    }
+
+                } elseif(subtr($word, 0, 1)=='@' && is_int(subtr($word, 1))) {
+
+                    $valid_urls = array();
+                    foreach($CI->X_model->fetch(array(
+                        'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
+                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__down' => subtr($word, 1),
+                        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    ), array('x__up'), 0) as $top_source){
+                        if(filter_var($top_source['x__message'], FILTER_VALIDATE_URL)){
+                            array_push($valid_urls, $top_source['x__message']);
+                        }
+                    }
+
+                    if(count($valid_urls)==1){
+
+                        foreach($valid_urls as $valid_url){
+                            //Replace the entire source:
+                            array_push($replace_from, $word);
+                            array_push($replace_to, $valid_url);
+                        }
+
+                    } else {
+
+                        foreach ($CI->E_model->fetch(array(
+                            'e__id' => subtr($word, 1),
+                        )) as $e_redirect){
+                            foreach($valid_urls as $valid_url){
+                                //Replace the entire source:
+                                array_push($replace_from, $word);
+                                array_push($replace_to, '@'.$e_redirect['e__handle']);
+                            }
+                        }
+
+                    }
+                }
 
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
@@ -1065,6 +1125,13 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     }
     $i__cache .= '</div>';
+
+    if(isset($_GET['go1']) && count($replace_from)){
+        //Show all:
+        foreach($replace_from as $index=>$val){
+            echo '<div>['.$replace_from[$index].'] Replaced to ['.$replace_to[$index].']</div>';
+        }
+    }
 
 
     $sync_stats = array(
