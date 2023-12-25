@@ -1455,15 +1455,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
 
     //Idea Message (Remaining)
-    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($focus_card).'">'.( $focus_card ? view_i_links($i) : $i['i__cache'] ).( $focus_card ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
         $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
     }
-
-    //Idea Links, if any:
-    $ui .= view_i_links($i, $focus_card);
 
 
     $ui .= '</div>';
