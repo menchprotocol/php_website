@@ -1483,6 +1483,8 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $bottom_bar_ui .= '<span class="hideIfEmpty">'; //'.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'
                 $bottom_bar_ui .= $coins_ui;
                 $bottom_bar_ui .= '</span>';
+            } else {
+                $bottom_bar_ui .= 'NO COINS For @'.$e__id_bottom_bar.' #'.$i['i__hashtag'].' ID'.$i['i__id'];
             }
         }
 
