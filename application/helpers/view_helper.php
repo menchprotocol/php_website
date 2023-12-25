@@ -909,11 +909,16 @@ function view_i_title($i, $string_only = false){
 }
 
 function view_valid_handle_e($string){
-    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) ? substr($string, 1) : false );
+    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && count($this->E_model->fetch(array(
+        ( is_int(substr($string, 1)) ? 'e__id' : 'LOWER(e__handle)'  ) => strtolower(substr($string, 1)),
+    ))) ? substr($string, 1) : false );
 }
 
 function view_valid_handle_i($string){
-    return ( substr($string, 0, 1)=='#' && ctype_alnum(substr($string, 1)) ? substr($string, 1) : false );
+    $CI =& get_instance();
+    return ( substr($string, 0, 1)=='#' && ctype_alnum(substr($string, 1)) && count($this->I_model->fetch(array(
+        'LOWER(i__hashtag)' => strtolower(substr($string, 1)),
+    ))) ? substr($string, 1) : false );
 }
 
 
