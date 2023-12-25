@@ -1611,7 +1611,7 @@ function view_list_e_items($i, $x__creator, $x, $plain_no_html = false, $append_
         $x['x__message'] = ( strlen($x['x__message']) ? $messages.( $plain_no_html ? $x['x__message'] : nl2br($x['x__message']) ) : $messages );
     }
 
-    $show_google_maps_link = ( $x['x__type']==41949 && in_array($x['e__access'], $CI->config->item('n___41981')));
+    $show_google_maps_link = ( !$plain_no_html && $x['x__type']==41949 && in_array($x['e__access'], $CI->config->item('n___41981')));
 
     if($plain_no_html){
         return
