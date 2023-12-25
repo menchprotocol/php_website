@@ -1131,8 +1131,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         'old_links_removed' => 0,
         'old_links_kept' => 0,
         'new_links_added' => 0,
-        'replace_from' => $replace_from,
-        'replace_to' => $replace_to,
     );
     if(intval($save_i__id) > 0){
 
@@ -1227,6 +1225,8 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             'i__references' => $i__references,
             'i__cache' => $i__cache,
             'sync_stats' => $sync_stats,
+            'replace_from' => $replace_from,
+            'replace_to' => $replace_to,
         );
     } else {
         //Return formatted message:
