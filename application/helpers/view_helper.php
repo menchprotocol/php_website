@@ -1250,7 +1250,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $write_access_i && !$discovery_mode, false, $i['i__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $write_access_i, false, $i['i__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1274,7 +1274,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             //Determine hover state:
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $link_type_ui && ($write_access_i || $link_creator)){
+            if($x__type_top_bar==31770 && $link_type_ui){
 
                 //Links
                 $active_bars++;
@@ -1294,12 +1294,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= '<input class="form-check-input " type="checkbox"  />';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==4737 && $write_access_i && !$discovery_mode){
+            } elseif($x__type_top_bar==4737){
 
                 //Idea Type
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_access_i && !$discovery_mode, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_access_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31004 && $access_locked){
@@ -1310,7 +1310,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i && !$discovery_mode, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31911 && $write_access_i && !$discovery_mode){
+            } elseif($x__type_top_bar==31911 && $write_access_i){
 
                 //Idea Edit
                 $active_bars++;
@@ -1318,7 +1318,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="save_load_i('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==13909 && $has_sortable){
+            } elseif($x__type_top_bar==13909 && $write_access_i && $has_sortable){
 
                 //Sort Idea
                 $active_bars++;
@@ -1382,7 +1382,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Clone Idea Tree:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==33292 && !$discovery_mode){
+                        } elseif($e__id_dropdown==33292){
 
                             //Stats
                             $action_buttons .= '<a href="'.view_app_link(33292).'?i__hashtag='.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
