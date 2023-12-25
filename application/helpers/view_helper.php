@@ -1274,7 +1274,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             //Determine hover state:
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $link_type_ui){
+            if($x__type_top_bar==31770 && $link_type_ui && (!$discovery_mode || $write_access_i)){
 
                 //Links
                 $active_bars++;
