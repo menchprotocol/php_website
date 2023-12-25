@@ -978,13 +978,6 @@ class E_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif($action_e__id != 5943 && $action_e__id != 12318 && strlen(trim($action_command1)) < 1){
-
-            return array(
-                'status' => 0,
-                'message' => 'Missing primary command',
-            );
-
         } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441, 26149)) && !view_valid_handle_e($action_command1)){
 
             return array(
