@@ -1960,9 +1960,6 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<span '.( $grant_access ? ' onclick="save_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.$e['x__message'].'</span>';
     }
 
-    //Source Handle
-    $ui .= '<div class="sub__handle grey show-on-hover center-block light-bg" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
-
     $ui .= '</div>';
 
 
@@ -1995,7 +1992,8 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
     }
 
-
+    //Source Handle
+    $ui .= '<div class="sub__handle grey show-on-hover center-block light-bg" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     $ui .= '</div>';
     $ui .= '</div>';
