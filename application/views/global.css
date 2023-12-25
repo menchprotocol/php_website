@@ -3896,8 +3896,8 @@ h4.main__title{
 
 .large-frame{
     width: 100%;
-    margin: -16px auto 0 !important;
-    padding: 0;
+    margin: 0 auto !important;
+    padding: 0 5px;
 }
 .large-frame>div{
     padding-bottom: 0;
