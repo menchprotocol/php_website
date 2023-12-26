@@ -1117,6 +1117,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 }
 
 
+                array_push($replace_from, $word);
+                array_push($replace_to, '@WOW');
+
+
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
