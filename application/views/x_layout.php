@@ -45,7 +45,9 @@ $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || c
 
 
 
-
+/*
+ *
+ * //TODO Remove at the end
 
 if(isset($_GET['go1'])){
 
@@ -143,7 +145,7 @@ if(isset($_GET['go2'])) {
     echo '<br /><br /><br /><br />';
 
 }
-
+*/
 
 
 

@@ -34,6 +34,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<div class="card_cover no-padding col-6 card_frame_'.$e__id2.( !in_array($e__id2, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
         echo '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id2.'" e__id="'.$e__id2.'">';
+
         echo '<div title="'.$m2['m__message'].'">';
         echo '<div class="large_cover">'.$m2['m__cover'].'</div>';
         echo '<div class="main__title large_title"><b class="card_count_'.$e__id2.'"><i class="far fa-yin-yang fa-spin"></i></b></div>';
@@ -42,13 +43,14 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<table class="card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
-
-        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins" title="'.$e___11035[42225]['m__title'].'"><td style="text-align: right;" width="21%">&nbsp;</td><td style="text-align: right;"><span class="mench-coins-col">'.$e___11035[42225]['m__cover'].'</span></td></tr>';
-
+        if(in_array($e__id2, $this->config->item('n___42225'))){
+            echo '<tr class="advanced-stats hidden mobile-shrink mench-coins" title="'.$e___11035[42225]['m__title'].'"><td style="text-align: right;" width="21%">&nbsp;</td><td style="text-align: right;"><span class="mench-coins-col">'.$e___11035[42225]['m__cover'].'</span></td></tr>';
+        }
 
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
-            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'"><td style="text-align: right;" width="21%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td><td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : 0 ).'</span></td></tr>';
+            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'"><td style="text-align: right;" width="21%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td><td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td></tr>';
         }
+
         echo '</table>';
 
         echo '</div>';
