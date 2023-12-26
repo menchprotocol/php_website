@@ -186,7 +186,7 @@ function view_time_difference($t, $micro = false)
 
     $second_time = time(); //Now
 
-    $time = $second_time - ( is_int($t) ? $t : strtotime($t)); // to get the time since that moment
+    $time = $second_time - (is_int($t) ? $t : strtotime(substr($t, 0, 19))); // to get the time since that moment
     $has_future = ($time < 0);
     $time = abs($time);
     if($micro){
@@ -1540,7 +1540,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__right' => $i['i__id'],
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__creator')) as $creator){
-        $ui .= '<div class="creator_headline"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><a href="/@'.$creator['e__handle'].'">'.$creator['e__title'].' <span class="grey mini-font">@'.$creator['e__handle'].'</span> <span class="grey mini-font" title="'.date("Y-m-d H:i:s", $creator['x__time']).'">'.view_time_difference($creator['x__time'], true).'</span></a></div>';
+        $ui .= '<div class="creator_headline"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><a href="/@'.$creator['e__handle'].'">'.$creator['e__title'].' <span class="grey mini-font">@'.$creator['e__handle'].'</span> <span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).'">'.view_time_difference($creator['x__time'], true).'</span></a></div>';
     }
 
     //Raw Data:
