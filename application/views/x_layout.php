@@ -68,17 +68,7 @@ if(isset($_GET['go1'])){
 
         $view_sync_links = view_sync_links($i_fix['i__message'], true);
 
-        echo htmlentities(nl2br($i_fix['i__message'])).'<br />';
-
-        if(count($view_sync_links['replace_from']) > 0){
-            echo 'Replace['.count($view_sync_links['replace_from']).']<br />';
-        }
-
-        foreach($view_sync_links['i__references'] as $ref_type => $ref_amount){
-            if(count($ref_amount) > 0){
-                echo '<div>['.count($ref_amount).'] off ['.$ref_type.']</div>';
-            }
-        }
+        echo nl2br(htmlentities($i_fix['i__message'])).'<br />';
 
         if(count($view_sync_links['replace_from'])){
             //Show all:
