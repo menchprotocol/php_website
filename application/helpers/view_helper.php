@@ -186,7 +186,7 @@ function view_time_difference($t, $micro = false)
 
     $second_time = time(); //Now
 
-    $time = $second_time - (is_numeric($t) ? $t : strtotime(substr($t, 0, 19))); // to get the time since that moment
+    $time = $second_time - ( is_numeric($t) ? $t : strtotime($t)); // to get the time since that moment
     $has_future = ($time < 0);
     $time = abs($time);
     if($micro){
