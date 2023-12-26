@@ -79,6 +79,7 @@ if(isset($_GET['go1'])){
         }
 
         if(count($view_sync_links['replace_from'])){
+            echo '<div>WEE ['.count($view_sync_links['replace_from']).']</div>';
             //Show all:
             foreach($view_sync_links['replace_from'] as $index=>$val){
                 echo '<div>['.$view_sync_links['replace_from'][$index].'] Replaced to ['.$view_sync_links['replace_to'][$index].']</div>';
