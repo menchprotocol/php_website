@@ -1062,11 +1062,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     $split_parts = explode('|',substr($word, 1),3);
                     if(is_numeric($split_parts[0]) && strlen($split_parts[1]) && strlen($split_parts[2])){
                         foreach($CI->X_model->fetch(array(
-                            'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
                             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__down' => $split_parts[0],
                             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        ), array('x__up'), 0) as $top_source){
+                        ), array(), 0) as $top_source){
 
                             $video_id = extract_youtube_id($top_source['x__message']);
                             if(strlen($video_id)){
