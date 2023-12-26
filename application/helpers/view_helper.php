@@ -1082,18 +1082,24 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 } elseif(is_numeric(substr($word, 1))) {
 
+                    $total_parents = 0;
                     $valid_urls = array();
                     foreach($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__down' => substr($word, 1),
                         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array(), 0) as $top_source){
+                        $total_parents++;
                         if(filter_var($top_source['x__message'], FILTER_VALIDATE_URL)){
                             array_push($valid_urls, $top_source['x__message']);
                         }
                     }
 
-                    if(count($valid_urls)==1){
+                    if(count($valid_urls)==1 && $total_parents<=2 && !count(CI->X_model->fetch(array(
+                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__up' => substr($word, 1),
+                            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        ), array(), 0))){
 
                         foreach($valid_urls as $valid_url){
                             //Replace the entire source:
