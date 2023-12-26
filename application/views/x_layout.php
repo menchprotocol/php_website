@@ -88,14 +88,13 @@ if(isset($_GET['go1'])){
                 $edited++;
             }
         }
-
-        echo '<hr />Edited ['.$edited.']<br />';
-
         $stats['old_links_removed'] += $view_sync_links['sync_stats']['old_links_removed'];
         $stats['old_links_kept'] += $view_sync_links['sync_stats']['old_links_kept'];
         $stats['new_links_added'] += $view_sync_links['sync_stats']['new_links_added'];
-
     }
+
+    echo '<hr />Edited ['.$edited.']<br />';
+
 }
 
 if(isset($_GET['go2'])) {
