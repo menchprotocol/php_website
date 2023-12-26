@@ -84,7 +84,7 @@ if(isset($_GET['go1'])){
             //Show all:
             $starting_message = $i_fix['i__message'];
             foreach($view_sync_links['replace_from'] as $index=>$val){
-                if(substr_count($view_sync_links['replace_from'].' ')){
+                if(substr_count($starting_message, $view_sync_links['replace_from'].' ')){
                     $starting_message = str_replace($view_sync_links['replace_from'].' ',$view_sync_links['replace_to'].' ',$starting_message);
                     echo '<div>['.$view_sync_links['replace_from'][$index].' ] Replaced to ['.$view_sync_links['replace_to'][$index].' ]</div>';
                 } else {
