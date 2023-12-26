@@ -1081,7 +1081,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         }
                     }
 
-                } elseif(is_int(substr($word, 1))) {
+                } else {
 
                     $valid_urls = array();
                     foreach($CI->X_model->fetch(array(
