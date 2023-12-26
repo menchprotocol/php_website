@@ -1056,10 +1056,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
             } elseif (view_valid_handle_e(( substr_count($word, '|')==2 ? '@'.one_two_explode('@','|',$word) : $word ))) {
 
-                if(substr_count($word, '|')==2 && is_int(one_two_explode('@','|',$word))){
+                if(substr_count($word, '|')==2){
 
                     //We need to find a YouTUbe URL and replace:
-                    $split_parts = explode('|',$word,3);
+                    $split_parts = explode('|',substr($word, 1),3);
                     if(is_int($split_parts[0]) && strlen($split_parts[1]) && strlen($split_parts[2])){
                         foreach($CI->X_model->fetch(array(
                             'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
