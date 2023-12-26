@@ -66,7 +66,7 @@ if(isset($_GET['go1'])){
 
         $view_sync_links = view_sync_links($i_fix['i__message'], true);
 
-        echo nl2br($i_fix['i__message']).'<br />';
+        echo htmlentities(nl2br($i_fix['i__message'])).'<br />';
 
         if(count($view_sync_links['replace_from']) > 0){
             echo 'Replace['.count($view_sync_links['replace_from']).']<br />';
