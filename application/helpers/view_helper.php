@@ -1105,20 +1105,26 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                     } else {
 
+                        $done = false;
                         foreach ($CI->E_model->fetch(array(
                             'e__id' => substr($word, 1),
                         )) as $e_redirect){
+                            $done = true;
                             //Replace the entire source:
                             array_push($replace_from, $word);
                             array_push($replace_to, '@'.$e_redirect['e__handle']);
                         }
 
+                        if(!$done){
+                            array_push($replace_from, $word);
+                            array_push($replace_to, '@WOW');
+                        }
+
                     }
+
                 }
 
 
-                array_push($replace_from, $word);
-                array_push($replace_to, '@WOW');
 
 
                 $reference_type = 31835;
