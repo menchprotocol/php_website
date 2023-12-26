@@ -61,7 +61,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])) {
                 $ticket_holder_ui .= '<th><a href="/@'.$es[0]['e__handle'].'"><u>'.$es[0]['e__title'].'</u></a></th>';
                 $ticket_holder_ui .= '<td><u>'.$this_count.'</u></td>';
                 $ticket_holder_ui .= '<td></td>';
-                $ticket_holder_ui .= '<td>'.( count($ticket_checked_in) ? '<a href="/@'.$ticket_checked_in[0]['e__handle'].'" title="Checked-In by '.$ticket_checked_in[0]['e__title'].' about ' . view_time_difference(strtotime($ticket_checked_in[0]['x__time'])) . ' Ago at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">'.view_cover($ticket_checked_in[0]['e__cover'], true).'</a>' : '' ).'</td>';
+                $ticket_holder_ui .= '<td>'.( count($ticket_checked_in) ? '<a href="/@'.$ticket_checked_in[0]['e__handle'].'" title="Checked-In by '.$ticket_checked_in[0]['e__title'].' about ' . view_time_difference($ticket_checked_in[0]['x__time']) . ' Ago at '.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">'.view_cover($ticket_checked_in[0]['e__cover'], true).'</a>' : '' ).'</td>';
                 $ticket_holder_ui .= '</tr>';
 
             }

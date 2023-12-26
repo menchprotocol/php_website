@@ -132,7 +132,7 @@ function view_card_x($x, $has_x__reference = false)
                 }
             } else {
                 //Simple Reference to avoid Loop:
-                $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
+                $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference($x['x__time']) . ' Ago</span></div>';
             }
 
         } elseif($e__id==4367){
@@ -143,7 +143,7 @@ function view_card_x($x, $has_x__reference = false)
         } elseif($e__id==4362){
 
             //TIME
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference(strtotime($x['x__time'])) . ' Ago</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference($x['x__time']) . ' Ago</span></div>';
 
         } elseif($e__id==4370 && $x['x__weight'] > 0){
 
@@ -1352,7 +1352,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //Top Bar
     $top_bar_ui = '';
     $active_bars = 0;
-    if(!$cache_app){
+    if(!$cache_app && !$discovery_mode){
         foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
             //Determine hover state:
@@ -1368,7 +1368,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                 //Creation Time:
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).'">' . view_time_difference(strtotime($i['x__time']), true) . '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).'">' . view_time_difference($i['x__time'], true) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_access_i && !$focus_card){
 
@@ -1533,6 +1533,15 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
     $ui .= '<div class="cover-text">';
+
+    //Show Creator:
+    foreach($CI->X_model->fetch(array(
+        'x__type' => 4250,
+        'x__right' => $i['i__id'],
+        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+    ), array('x__creator')) as $creator){
+        $ui .= '<div class="creator_headline"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><a href="/@'.$creator['e__handle'].'">'.$creator['e__title'].' <span class="grey mini-font">@'.$creator['e__handle'].'</span> <span class="grey mini-font" title="'.date("Y-m-d H:i:s", $creator['x__time']).'">'.view_time_difference($creator['x__time'], true).'</span></a></div>';
+    }
 
     //Raw Data:
     $ui .= '<div class="sub__handle grey '.( $discovery_mode ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
@@ -1794,7 +1803,7 @@ function view_e_line($e)
 
     $ui = '<a href="/@'.$e['e__handle'].'" class="doblock">';
     $ui .= '<span class="icon-block">'.view_cover($e['e__cover'], true).'</span>';
-    $ui .= '<span class="main__title">'.$e['e__title'].'<span class="grey" style="padding-left:8px;">' . view_time_difference(strtotime($e['x__time'])) . ' Ago</span></span>';
+    $ui .= '<span class="main__title">'.$e['e__title'].'<span class="grey" style="padding-left:8px;">' . view_time_difference($e['x__time']) . ' Ago</span></span>';
     $ui .= '</a>';
     return $ui;
 
@@ -1906,7 +1915,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 //Creation Time:
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).'">' . view_time_difference(strtotime($e['x__time']), true) . '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).'">' . view_time_difference($e['x__time'], true) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_access_e && !$focus_card){
 
