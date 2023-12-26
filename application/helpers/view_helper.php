@@ -186,7 +186,7 @@ function view_time_difference($t, $micro = false)
 
     $second_time = time(); //Now
 
-    $time = $second_time - (is_int($t) ? $t : strtotime(substr($t, 0, 19))); // to get the time since that moment
+    $time = $second_time - (is_numeric($t) ? $t : strtotime(substr($t, 0, 19))); // to get the time since that moment
     $has_future = ($time < 0);
     $time = abs($time);
     if($micro){
@@ -914,7 +914,7 @@ function view_valid_handle_e($string, $check_db = false){
     return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && ? substr($string, 1) : false );
     */
     return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->E_model->fetch(array(
-            ( is_int(substr($string, 1)) ? 'e__id' : 'LOWER(e__handle)'  ) => strtolower(substr($string, 1)),
+            ( is_numeric(substr($string, 1)) ? 'e__id' : 'LOWER(e__handle)'  ) => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false );
 }
 
@@ -1056,11 +1056,11 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
             } elseif (view_valid_handle_e(( substr_count($word, '|')==2 ? '@'.one_two_explode('@','|',$word) : $word ))) {
 
-                if(substr_count($word, '|')==2 && is_int(one_two_explode('@','|',$word))){
+                if(substr_count($word, '|')==2 && is_numeric(one_two_explode('@','|',$word))){
 
                     //We need to find a YouTUbe URL and replace:
                     $split_parts = explode('|',substr($word, 1),3);
-                    if(is_int($split_parts[0]) && strlen($split_parts[1]) && strlen($split_parts[2])){
+                    if(is_numeric($split_parts[0]) && strlen($split_parts[1]) && strlen($split_parts[2])){
                         foreach($CI->X_model->fetch(array(
                             'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
                             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -1081,7 +1081,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         }
                     }
 
-                } elseif(is_int(substr($word, 1))) {
+                } elseif(is_numeric(substr($word, 1))) {
 
                     $valid_urls = array();
                     foreach($CI->X_model->fetch(array(
@@ -1113,11 +1113,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                             //Replace the entire source:
                             array_push($replace_from, $word);
                             array_push($replace_to, '@'.$e_redirect['e__handle']);
-                        }
-
-                        if(!$done){
-                            array_push($replace_from, $word);
-                            array_push($replace_to, '@WOW');
                         }
 
                     }
