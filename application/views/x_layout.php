@@ -60,6 +60,8 @@ if(isset($_GET['go1'])){
         'new_links_added' => 0,
         'missing_creation' => 0,
     );
+
+    $edited = 0;
     foreach($this->I_model->fetch(array(
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), 0) as $i_fix){
@@ -79,14 +81,24 @@ if(isset($_GET['go1'])){
         }
 
         if(count($view_sync_links['replace_from'])){
-            echo '<div>WEE ['.count($view_sync_links['replace_from']).']</div>';
             //Show all:
+            $starting_message = $i_fix['i__message'];
             foreach($view_sync_links['replace_from'] as $index=>$val){
-                echo '<div>['.$view_sync_links['replace_from'][$index].'] Replaced to ['.$view_sync_links['replace_to'][$index].']</div>';
+                if(substr_count($view_sync_links['replace_from'].' ')){
+                    $starting_message = str_replace($view_sync_links['replace_from'].' ',$view_sync_links['replace_to'].' ',$starting_message);
+                    echo '<div>['.$view_sync_links['replace_from'][$index].' ] Replaced to ['.$view_sync_links['replace_to'][$index].' ]</div>';
+                } else {
+                    $starting_message = str_replace($view_sync_links['replace_from'],$view_sync_links['replace_to'],$starting_message);
+                    echo '<div>['.$view_sync_links['replace_from'][$index].'] Replaced to ['.$view_sync_links['replace_to'][$index].']</div>';
+                }
+            }
+            if($starting_message!=$i_fix['i__message']){
+                //view_sync_links($starting_message, true);
+                $edited++;
             }
         }
 
-        echo '<hr /><br />';
+        echo '<hr />Edited ['.$edited.']<br />';
 
         $stats['old_links_removed'] += $view_sync_links['sync_stats']['old_links_removed'];
         $stats['old_links_kept'] += $view_sync_links['sync_stats']['old_links_kept'];
