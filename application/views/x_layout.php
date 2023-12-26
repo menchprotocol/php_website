@@ -69,6 +69,7 @@ if(isset($_GET['go1'])){
 
         $view_sync_links = view_sync_links($i_fix['i__message'], true);
 
+        echo '<a href="/~'.$i_fix['i__hashtag'].'">#'.$i_fix['i__hashtag'].'</a></<br />';
         echo nl2br(htmlentities($i_fix['i__message'])).'<br />';
 
         if(count($view_sync_links['replace_from'])){
@@ -86,7 +87,7 @@ if(isset($_GET['go1'])){
                 }
             }
             if($starting_message!=$i_fix['i__message']){
-                //view_sync_links($starting_message, true);
+                view_sync_links($starting_message, true, $i_fix['i__id']);
                 $edited++;
             }
         }
