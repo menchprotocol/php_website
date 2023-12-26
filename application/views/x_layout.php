@@ -62,6 +62,7 @@ if(isset($_GET['go1'])){
     );
 
     $edited = 0;
+    $edited_sources = 0;
     foreach($this->I_model->fetch(array(
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), 0) as $i_fix){
@@ -75,6 +76,7 @@ if(isset($_GET['go1'])){
             $starting_message = $i_fix['i__message'];
 
             foreach($view_sync_links['replace_from'] as $index=>$val){
+                $edited_sources++;
                 if(substr_count($starting_message, $view_sync_links['replace_from'][$index].' ')){
                     $starting_message = str_replace($view_sync_links['replace_from'][$index].' ',$view_sync_links['replace_to'][$index].' ',$starting_message);
                     echo '<div>['.$view_sync_links['replace_from'][$index].' ] Replaced to ['.$view_sync_links['replace_to'][$index].' ]</div>';
@@ -93,7 +95,7 @@ if(isset($_GET['go1'])){
         $stats['new_links_added'] += $view_sync_links['sync_stats']['new_links_added'];
     }
 
-    echo '<hr />Edited ['.$edited.']<br />';
+    echo '<hr />Edited ['.$edited.']['.$edited_sources.']<br />';
 
 }
 
