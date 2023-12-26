@@ -1095,7 +1095,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         }
                     }
 
-                    if(count($valid_urls)==1 && $total_parents<=2 && !count(CI->X_model->fetch(array(
+                    if(count($valid_urls)==1 && $total_parents<=2 && !count($CI->X_model->fetch(array(
                             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__up' => substr($word, 1),
                             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
