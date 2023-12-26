@@ -1074,7 +1074,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                                 $end_explode = explode(':',$split_parts[2]);
 
                                 array_push($replace_from, $word);
-                                array_push($replace_to, 'https://www.youtube.com/embed/'.$video_id.'?start='.( count($start_explode)==3 ? (($start_explode[0] * 3600)+($start_explode[1] * 60)+($start_explode[2])) : ($start_explode[0] * 60)+($start_explode[1]) ).'&end='.( count($end_explode)==3 ? (($end_explode[0] * 3600)+($end_explode[1] * 60)+($end_explode[2])) : ( count($end_explode)==2 ? ($end_explode[0] * 60)+($end_explode[1]) : $end_explode[0] ) ));
+                                array_push($replace_to, 'https://www.youtube.com/embed/'.$video_id.'?start='.( count($start_explode)==3 ? (($start_explode[0] * 3600)+($start_explode[1] * 60)+($start_explode[2])) : ( count($start_explode)==2 ? ($start_explode[0] * 60)+($start_explode[1]) : $start_explode[0] ) ).'&end='.( count($end_explode)==3 ? (($end_explode[0] * 3600)+($end_explode[1] * 60)+($end_explode[2])) : ( count($end_explode)==2 ? ($end_explode[0] * 60)+($end_explode[1]) : $end_explode[0] ) ));
                                 break;
                             }
                         }
