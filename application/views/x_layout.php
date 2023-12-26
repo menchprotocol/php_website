@@ -62,7 +62,7 @@ if(isset($_GET['go1'])){
     );
     foreach($this->I_model->fetch(array(
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), 500) as $i_fix){
+    ), 0) as $i_fix){
 
         $view_sync_links = view_sync_links($i_fix['i__message'], true);
 
