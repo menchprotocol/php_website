@@ -1084,7 +1084,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                     $valid_urls = array();
                     foreach($CI->X_model->fetch(array(
-                        'x__up IN (' . join(',', $CI->config->item('n___30820')) . ')' => null, //Active Member
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__down' => substr($word, 1),
                         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1120,9 +1119,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     }
 
                 }
-
-
-
 
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
