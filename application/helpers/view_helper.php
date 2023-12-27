@@ -1540,7 +1540,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__right' => $i['i__id'],
         'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__creator')) as $creator){
-        $ui .= '<div class="creator_headline"><span class="icon-block-img">'.view_cover($creator['e__cover']).'</span><a href="/@'.$creator['e__handle'].'">'.$creator['e__title'].' <span class="grey mini-font">@'.$creator['e__handle'].'</span> <span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).'">'.view_time_difference($creator['x__time'], true).'</span></a></div>';
+        $ui .= '<div class="creator_headline"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><a href="/@'.$creator['e__handle'].'">'.$creator['e__title'].' <span class="grey mini-font">@'.$creator['e__handle'].'</span> <span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).'">'.view_time_difference($creator['x__time'], true).'</span></a></div>';
     }
 
     //Raw Data:
