@@ -41,8 +41,8 @@ class I_model extends CI_Model
             //Log transaction new Idea:
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
+                'x__up' => $x__creator,
                 'x__right' => $add_fields['i__id'],
-                'x__message' => $add_fields['i__message'],
                 'x__type' => 4250, //New Idea Created
             ));
 
