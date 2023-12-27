@@ -71,7 +71,6 @@ body {
     display: block;
 }
 .inner-content img {
-    border-radius: 0px !important;
     display: inline-block;
 }
 .focus-cover .content-image {
