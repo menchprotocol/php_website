@@ -1199,6 +1199,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 //Additional source/idea reference?
                 $x__left = 0;
                 $x__up = 0;
+                $x__message = '';
 
                 if($db_type==31834){
                     $x__type = 31834;
@@ -1218,12 +1219,13 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 } else {
                     $x__type = 42172; //Message URLs
                     $x__up = $db_type;
+                    $x__message = $db_val;
                 }
 
                 $CI->X_model->create(array(
                     'x__type' => $x__type,
                     'x__creator' => $member_e['e__id'],
-                    'x__message' => $db_val,
+                    'x__message' => $x__message,
                     'x__right' => $save_i__id,
                     'x__left' => $x__left,
                     'x__up' => $x__up,
