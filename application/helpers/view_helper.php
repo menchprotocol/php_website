@@ -1366,7 +1366,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && 0 && isset($i['x__time']) && strtotime($i['x__time']) > 0){
+            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0){
 
                 //Creation Time:
                 $active_bars++;
