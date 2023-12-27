@@ -1544,11 +1544,11 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     }
 
     //Raw Data:
-    $ui .= '<div class="sub__handle grey '.( $discovery_mode ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
+    $ui .= '<div class="sub__handle space-left grey '.( $discovery_mode ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
 
     //Idea Message (Remaining)
-    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="space-left ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
