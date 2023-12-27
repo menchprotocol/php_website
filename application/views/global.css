@@ -1569,13 +1569,13 @@ i, .btn .show-max {
     line-height: 100%;
     width: 21px !important;
     /*height: 21px !important;*/
-    margin: -3px 0 0 0 !important;
+    margin: -6px 0 -5px 2px !important;
 }
 .icon-block-xxs img{
     line-height: 100%;
     width: 18px !important;
     /*height: 16px !important;*/
-    margin: -5px 0 0 0 !important;
+    margin: -6px 3px -5px 2px !important;
 }
 .platform-logo img{
     margin:-11px 0px 0px 3px !important;
