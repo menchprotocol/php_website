@@ -1067,6 +1067,10 @@ a.headline {
 .space-left{
     padding-left: 40px !important;
 }
+.focus-cover .space-left,
+.focus-cover .i_cache{
+    padding-left: 0px !important;
+}
 .space-all{
     padding:13px 40px !important;
 }
