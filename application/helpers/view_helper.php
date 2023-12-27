@@ -1553,7 +1553,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Link Message, if Any:
     if($x__id){
-        $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
+        $ui .= '<div class="space-content"><div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div></div>';
     }
 
 
