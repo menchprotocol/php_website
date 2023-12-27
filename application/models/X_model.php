@@ -1283,7 +1283,7 @@ class X_model extends CI_Model
         }
 
         $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
-        if(!count($recursive_down_ids['recursive_i_ids'])){
+        if(!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids'])){
             return false;
         }
 
