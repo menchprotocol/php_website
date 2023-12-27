@@ -1546,7 +1546,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     }
 
     //Raw Data:
-    $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
 
     //Idea Message (Remaining)
@@ -1557,6 +1556,8 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $ui .= '<div '.( ($write_access_i || $link_creator) ? ' onclick="save_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div>';
     }
 
+
+    $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
 
     $ui .= '</div>';
     $ui .= '</div>';
