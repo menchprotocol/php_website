@@ -1066,7 +1066,8 @@ a.headline {
     cursor: grab;
 }
 .focus-cover .space-content,
-.focus-cover .i_cache{
+.focus-cover .i_cache,
+.large-frame>.i_cache{
     padding: 0 8px !important;
 }
 
