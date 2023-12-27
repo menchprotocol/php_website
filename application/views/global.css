@@ -1064,22 +1064,14 @@ a.headline {
 .sort_i_grab, .sort_e_grab, .fa-sort, .fa-arrows{
     cursor: grab;
 }
-.space-left{
-    padding-left: 40px !important;
-}
-.focus-cover .space-left,
+.focus-cover .space-content,
 .focus-cover .i_cache{
     padding: 0 5px !important;
 }
-.space-all{
-    padding:13px 40px !important;
-}
-.space-sides{
-    padding:0 40px !important;
-}
+
 .space-content{
-    padding-left:40px;
-    padding-right:40px;
+    padding-left: 40px;
+    padding-right: 40px;
     display: block;
     line-height: 150%;
 }
