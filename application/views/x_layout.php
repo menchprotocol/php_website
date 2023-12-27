@@ -470,7 +470,7 @@ if(isset($_GET['go2'])) {
 
                 //Is multi selectable, allow show down for quantity:
 
-                $ticket_ui .= '<div class="source-info ticket-notice">'
+                $ticket_ui .= '<div class="source-info space-content ticket-notice">'
                     . '<span class="icon-block">'. $e___11035[31076]['m__cover'] . '</span>'
                     . '<span>'.$e___11035[31076]['m__title'] . '</span>'
                     . '<div class="payment_box">'
