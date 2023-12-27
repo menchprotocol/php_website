@@ -1072,8 +1072,8 @@ a.headline {
 }
 
 .space-content{
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
     display: block;
     line-height: 150%;
 }
@@ -3625,6 +3625,7 @@ h4.main__title{
 
 .media_line {
     display: inline-block;
+    width: 100%;
 }
 
 .i_cache .first_line{
