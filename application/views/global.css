@@ -900,6 +900,7 @@ h4 .halfbg {
     border: 1px solid transparent;
     border-radius: 0;
     padding:0;
+    z-index: 999999 !important;
 }
 
 .dropdown_12274, .dropdown_11030{
