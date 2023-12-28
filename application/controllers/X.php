@@ -738,10 +738,6 @@ class X extends CI_Controller
     function read_only_complete(){
 
         //Validate/Fetch idea:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
         $member_e = superpower_unlocked();
 
         if (!$member_e) {
@@ -759,7 +755,13 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea ID.',
             ));
-        } elseif(count($is) < 1){
+        }
+
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ));
+        if(count($is) < 1){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea not published.',
