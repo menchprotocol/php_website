@@ -879,9 +879,9 @@ if(!$top_i__hashtag){
         } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
 
             //Ideas
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(12211)">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.count($is_next).' '.$m2['m__title'].'</span>';
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(6255)">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.count($is_next).' '.$m2['m__title'].'</span>';
 
-        } elseif($x__type==12211 && !$top_completed){
+        } elseif($x__type==6255 && !$top_completed){
 
             //NEXT
             $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
@@ -932,7 +932,7 @@ if(!$top_i__hashtag){
 $body_prepend = '<a href="javascript:void(0);" onclick="save_load_i(0,0,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
 $body_prepend = '';
 if(!($top_i__hashtag && $is_or_7712)){
-    echo view_i_list(12211, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_prepend);
+    echo view_i_list(6255, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_prepend);
 }
 
 
@@ -953,7 +953,7 @@ if($top_i__hashtag){
 
 ?>
 
-<style> .headline_12211, .headline_13980 { display: none !important; } </style>
+<style> .headline_6255, .headline_13980 { display: none !important; } </style>
 <script>
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
