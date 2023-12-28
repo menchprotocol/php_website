@@ -105,7 +105,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('e___11054') as $x__type => $m){
-        if(is_array($this->config->item('e___'.$x__type)) && count($this->config->item('e___'.$x__type))){
+        if(is_array($this->config->item('e___'.$x__type))){
             echo ' var js_e___'.$x__type.' = ' . json_encode($this->config->item('e___'.$x__type)) . ';';
             echo ' var js_n___'.$x__type.' = ' . json_encode($this->config->item('n___'.$x__type)) . ';';
         }
