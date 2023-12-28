@@ -313,7 +313,7 @@ function view_body_e($x__type, $counter, $e__id){
     $ui = '';
 
 
-    if($x__type==12273){
+    if(in_array($x__type, $CI->config->item('n___11020'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
@@ -321,7 +321,7 @@ function view_body_e($x__type, $counter, $e__id){
         }
         $ui .= '</div>';
 
-    } elseif($x__type==12274 || $x__type==11030){
+    } elseif(in_array($x__type, $CI->config->item('n___11028'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e) {
@@ -374,7 +374,7 @@ function view_body_i($x__type, $counter, $i__id){
         }
         $ui .= '</div>';
 
-    } elseif($x__type==12273){
+    } elseif($x__type==12273 || $x__type==13542){
 
         //IDEAS
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
@@ -454,7 +454,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     $first_segment = $CI->uri->segment(1);
     $privacy_access = ( superpower_unlocked(12703) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
 
-    if($x__type==12274){
+    if($x__type==12274 || $x__type==11029){
 
         //DOWN
         $order_columns = array();
@@ -462,7 +462,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $order_columns['x__weight'] = 'ASC';
         $order_columns['e__title'] = 'ASC';
 
-        $join_objects = array('x__down');
+        $joins_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -476,7 +476,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $order_columns = array();
         $order_columns['x__type'] = 'DESC';
         $order_columns['x__id'] = 'DESC';
-        $join_objects = array('x__up');
+        $joins_objects = array('x__up');
         $query_filters = array(
             'x__down' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -505,7 +505,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__up' => $e__id,
         );
-        $join_objects = array('x__right');
+        $joins_objects = array('x__right');
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
@@ -521,7 +521,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $order_columns['x__id'] = 'DESC';
 
         //DISCOVERIES
-        $join_objects = array('x__left');
+        $joins_objects = array('x__left');
         $query_filters = array(
             'x__creator' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERY GROUP
@@ -540,7 +540,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     if($page_num > 0){
 
         $limit = view_memory(6404,11064);
-        $query = $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
+        $query = $CI->X_model->fetch($query_filters, $joins_objects, $limit, ($page_num-1)*$limit, $order_columns);
         if(in_array($x__type, $CI->config->item('n___14686'))){
             $query = array_reverse($query);
         }
@@ -549,7 +549,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     } else {
 
         $e___11035 = $CI->config->item('e___11035');
-        $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        $query = $CI->X_model->fetch($query_filters, $joins_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
         $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
@@ -593,7 +593,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
     if($x__type==12274){
 
         //SOURCES
-        $join_objects = array('x__up');
+        $joins_objects = array('x__up');
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
@@ -610,7 +610,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
         //IDEAS PREVIOUS
         $order_columns = array('x__id' => 'DESC');
-        $join_objects = array('x__left');
+        $joins_objects = array('x__left');
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -618,11 +618,11 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'x__right' => $i__id,
         );
 
-    } elseif($x__type==12273){
+    } elseif($x__type==12273 || $x__type==13542){
 
         //IDEAS NEXT
         $order_columns = array('x__weight' => 'ASC');
-        $join_objects = array('x__right');
+        $joins_objects = array('x__right');
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -632,10 +632,9 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
-
         //DISCOVERIES
         $order_columns = array('x__id' => 'DESC');
-        $join_objects = array('x__creator');
+        $joins_objects = array('x__creator');
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
@@ -656,12 +655,12 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
     if($page_num > 0){
 
         $limit = view_memory(6404,11064);
-        return $CI->X_model->fetch($query_filters, $join_objects, $limit, ($page_num-1)*$limit, $order_columns);
+        return $CI->X_model->fetch($query_filters, $joins_objects, $limit, ($page_num-1)*$limit, $order_columns);
 
     } else {
 
         $e___11035 = $CI->config->item('e___11035'); //COINS
-        $query = $CI->X_model->fetch($query_filters, $join_objects, 1, 0, array(), 'COUNT(x__id) as totals');
+        $query = $CI->X_model->fetch($query_filters, $joins_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
         $title_desc = number_format($count_query, 0).( isset($e___11035[$x__type]['m__title']) ? ' '.$e___11035[$x__type]['m__title'] : '' );
@@ -1552,7 +1551,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     }
 
 
-    //Show Creator, if different than linker:
+    //Show Creator, if any, and if different than linker:
     foreach($CI->X_model->fetch(array(
         'x__type' => 4250,
         'x__up !=' => $link_user,

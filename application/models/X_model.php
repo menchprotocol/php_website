@@ -193,27 +193,27 @@ class X_model extends CI_Model
 
     }
 
-    function fetch($query_filters = array(), $join_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
         $this->db->from('table__x');
 
         //IDA JOIN?
-        if (in_array('x__left', $join_objects)) {
+        if (in_array('x__left', $joins_objects)) {
             $this->db->join('table__i', 'x__left=i__id','left');
-        } elseif (in_array('x__right', $join_objects)) {
+        } elseif (in_array('x__right', $joins_objects)) {
             $this->db->join('table__i', 'x__right=i__id','left');
         }
 
         //SOURCE JOIN?
-        if (in_array('x__up', $join_objects)) {
+        if (in_array('x__up', $joins_objects)) {
             $this->db->join('table__e', 'x__up=e__id','left');
-        } elseif (in_array('x__down', $join_objects)) {
+        } elseif (in_array('x__down', $joins_objects)) {
             $this->db->join('table__e', 'x__down=e__id','left');
-        } elseif (in_array('x__type', $join_objects)) {
+        } elseif (in_array('x__type', $joins_objects)) {
             $this->db->join('table__e', 'x__type=e__id','left');
-        } elseif (in_array('x__creator', $join_objects)) {
+        } elseif (in_array('x__creator', $joins_objects)) {
             $this->db->join('table__e', 'x__creator=e__id','left');
         }
 

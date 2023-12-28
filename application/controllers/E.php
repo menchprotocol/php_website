@@ -84,7 +84,7 @@ class E extends CI_Controller
             $ui = '';
             $listed_items = 0;
 
-            if($_POST['x__type']==11030 || $_POST['x__type']==12274){
+            if(in_array($_POST['x__type'], $this->config->item('n___11028'))){
 
                 //SOURCES
                 $current_e__handle = view_valid_handle_e($_POST['first_segment']);

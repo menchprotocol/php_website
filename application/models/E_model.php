@@ -531,10 +531,10 @@ class E_model extends CI_Model
         $flat_items = array();
         $s__level++;
 
-        if($x__type==12274){
+        if($x__type==12274 || $x__type==11029){
             //Downwards:
             $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
-            $join_objects = array('x__down');
+            $joins_objects = array('x__down');
             $query_filters = array(
                 'x__up' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -543,7 +543,7 @@ class E_model extends CI_Model
         } elseif($x__type==11030){
             //Upwards:
             $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
-            $join_objects = array('x__up');
+            $joins_objects = array('x__up');
             $query_filters = array(
                 'x__down' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -552,7 +552,7 @@ class E_model extends CI_Model
         }
 
 
-        foreach($this->X_model->fetch($query_filters, $join_objects, 0, 0, $order_columns) as $e_down) {
+        foreach($this->X_model->fetch($query_filters, $joins_objects, 0, 0, $order_columns) as $e_down) {
 
             //Filter Sources, if needed:
             $qualified_e = true;

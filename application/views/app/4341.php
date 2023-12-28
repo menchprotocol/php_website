@@ -9,35 +9,6 @@ $any_i_e_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( is
 $followings_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 ? ' OR x__reference = '.$_GET['x__reference'].' ' : false );
 
 
-
-//Apply filters:
-if(isset($_GET['i__type']) && strlen($_GET['i__type']) > 0){
-    if(isset($_GET['x__type']) && $_GET['x__type']==4250){ //IDEA created
-        //Filter idea status based on
-        $joined_by = array('x__right');
-        $query_filters['( i__type IN (' . $_GET['i__type'] . '))'] = null;
-    } else {
-        unset($_GET['i__type']);
-    }
-}
-
-if(isset($_GET['e__access']) && strlen($_GET['e__access']) > 0){
-    if(isset($_GET['x__type']) && $_GET['x__type']==4251){ //SOURCE Created
-
-        //Filter idea status based on
-        $joined_by = array('x__down');
-
-        if (substr_count($_GET['e__access'], ',') > 0) {
-            //This is multiple:
-            $query_filters['( e__access IN (' . $_GET['e__access'] . '))'] = null;
-        } else {
-            $query_filters['e__access'] = intval($_GET['e__access']);
-        }
-    } else {
-        unset($_GET['e__access']);
-    }
-}
-
 if(isset($_GET['x__access']) && strlen($_GET['x__access']) > 0){
     if (substr_count($_GET['x__access'], ',') > 0) {
         //This is multiple:
@@ -197,33 +168,10 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
     $(document).ready(function () {
 
-        check_i_e__access();
-
-        //Watch for Idea status change:
-        $("#x__type").change(function () {
-            check_i_e__access();
-        });
-
         //Load first page of transactions:
         app_4341(x_filters, x_joined_by, 1);
 
     });
-
-
-    function check_i_e__access(){
-        //Checks to see if the Idea/Source status filter should be visible
-        //Would only make visible if Transaction type is Created Idea/Member
-
-        //Hide both in/en status:
-        $(".filter-statuses").addClass('hidden');
-
-        //Show only if creating new in/en Transaction type:
-        if($("#x__type").val()==4250){
-            $(".filter-in-status").removeClass('hidden');
-        } else if($("#x__type").val()==4251){
-            $(".e_access_filter").removeClass('hidden');
-        }
-    }
 
 
     function app_4341(x_filters, x_joined_by, page_num){

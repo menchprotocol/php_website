@@ -199,7 +199,7 @@ class I extends CI_Controller {
 
             $ui = '';
             $listed_items = 0;
-            if($_POST['x__type']==12274 || $_POST['x__type']==6255){
+            if(in_array($_POST['x__type'], $this->config->item('n___11028')) || $_POST['x__type']==6255){
 
                 //SOURCES
                 $e___6177 = $this->config->item('e___6177'); //Source Types
@@ -212,7 +212,7 @@ class I extends CI_Controller {
                     }
                 }
 
-            } elseif($_POST['x__type']==11019 || $_POST['x__type']==12273){
+            } elseif(in_array($_POST['x__type'], $this->config->item('n___11020'))){
 
                 //IDEAS
                 $e___31004 = $this->config->item('e___31004'); //Idea Status
