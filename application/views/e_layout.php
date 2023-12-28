@@ -20,22 +20,24 @@ if(!$member_e['e__id'] && in_array($e['e__id'], $this->config->item('n___14870')
     js_php_redirect('https://'.$e___14870[$e['e__id']]['m__message'], 13);
 }
 
+if(in_array(11030, $this->config->item('n___14686'))){
 
-/*
+    //Load Top:
+    $counter_top = view_e_covers(11030, $e['e__id'], 0, false);
 
-//Load Top:
-$counter_top = view_e_covers(11030, $e['e__id'], 0, false);
-
-echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_e ? '<div class="new-list-11030"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11030 list-adder">
+    echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_e ? '<div class="new-list-11030"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11030 list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[31774]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11030"></div></div>' : '' ).'</div>';
-echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
+    echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
 
-*/
+}
+
+
+
 
 //Focus Source:
 echo '<div class="main_item row justify-content">';
