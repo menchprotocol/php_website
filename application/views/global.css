@@ -901,13 +901,19 @@ h4 .halfbg {
     z-index: 999999 !important;
 }
 
-.dropdown_12274, .dropdown_11030{
+.dropdown_12274,
+.dropdown_11029,
+.dropdown_11030 {
     border-radius: 0;
 }
-.dropdown_12274.list-adder, .dropdown_11030.list-adder{
+.dropdown_12274.list-adder,
+.dropdown_11029.list-adder,
+.dropdown_11030.list-adder{
     border-radius: 21px !important;
 }
-.dropdown_12274 a, .dropdown_11030 a {
+.dropdown_12274 a,
+.dropdown_11029 a,
+.dropdown_11030 a {
     border-radius: 0;
 }
 
