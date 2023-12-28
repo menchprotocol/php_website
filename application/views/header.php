@@ -132,6 +132,10 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     //Load Fonts Dynamically
     echo '<style> ';
 
+    if(!$member_e){
+        echo ' .creator_headline{ display: none; } ';
+    }
+
     //Font Helps:
     $e___29711 = $this->config->item('e___29711'); //Google Font Family
     $e___29763 = $this->config->item('e___29763'); //CSS Font Family
