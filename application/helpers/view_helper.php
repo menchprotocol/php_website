@@ -495,8 +495,9 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
         }
         $order_columns['x__weight'] = 'ASC';
-        */
         $order_columns['x__id'] = 'DESC';
+        */
+        $order_columns['x__time'] = 'DESC';
 
         $join_objects = array('x__right');
         $query_filters = array(
