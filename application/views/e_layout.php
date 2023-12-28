@@ -15,7 +15,7 @@ $this->X_model->create(array(
 
 
 //Website redirect hack:
-if(!$member_e['e__id'] && in_array($e['e__id'], $this->config->item('n___14870'))){
+if(!$member_e['e__id'] && in_array($e['e__id'], $this->config->item('n___14870')) && $e['e__id']!=website_setting(0)){
     $e___14870 = $this->config->item('e___14870'); //Website Partner
     js_php_redirect('https://'.$e___14870[$e['e__id']]['m__message'], 13);
 }
