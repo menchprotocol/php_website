@@ -2135,6 +2135,7 @@ input.form-control {
     overflow-y: auto;
 }
 
+.focus-cover.coin-12273,
 .modal-body input.form-control {
     background-color: #FFFFFF;
 }
