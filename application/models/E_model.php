@@ -521,9 +521,9 @@ class E_model extends CI_Model
         return $q->result_array();
     }
 
-    function fetch_recursive($direction, $e__id, $include_any_e = array(), $exclude_all_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
+    function fetch_recursive($x__type, $e__id, $include_any_e = array(), $exclude_all_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
 
-        if(!in_array($direction, $this->config->item('n___11028'))){
+        if(!in_array($x__type, $this->config->item('n___11028'))){
             //Invalid direction:
             return false;
         }
@@ -531,7 +531,7 @@ class E_model extends CI_Model
         $flat_items = array();
         $s__level++;
 
-        if($direction==12274){
+        if($x__type==12274){
             //Downwards:
             $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
             $join_objects = array('x__down');
@@ -540,7 +540,7 @@ class E_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
-        } elseif($direction==11030){
+        } elseif($x__type==11030){
             //Upwards:
             $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
             $join_objects = array('x__up');
@@ -588,7 +588,7 @@ class E_model extends CI_Model
                 break;
             }
 
-            foreach($this->E_model->fetch_recursive($direction, $e_down['e__id'], $include_any_e, $exclude_all_e, $hard_level, $hard_limit, $s__level) as $e_recursive_down){
+            foreach($this->E_model->fetch_recursive($x__type, $e_down['e__id'], $include_any_e, $exclude_all_e, $hard_level, $hard_limit, $s__level) as $e_recursive_down){
                 if(!isset($flat_items[$e_recursive_down['e__id']])){
                     $e_recursive_down['s__count'] = count($flat_items)+1;
                     $flat_items[$e_recursive_down['e__id']] = $e_recursive_down;
