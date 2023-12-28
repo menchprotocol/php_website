@@ -397,7 +397,7 @@ if(count($i_query)){
     }
     tr.main__title{
         background-color: #CCCCCC !important;
-        border-top:1px solid #999999 !important;
+        border-top:1px solid #dee2e6 !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;
