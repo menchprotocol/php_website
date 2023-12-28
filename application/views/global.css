@@ -1403,6 +1403,12 @@ label {
 .btn.dropdown-toggle{
     border: 0 !important;
     padding: 0 !important;
+
+    max-width: 233px;
+    display: block;
+    white-space: unset;
+    text-align: left;
+    font-size: 0.89em;
 }
 
 .table-striped .btn.dropdown-toggle{
