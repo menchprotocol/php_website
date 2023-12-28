@@ -864,7 +864,12 @@ if(!$top_i__hashtag){
             //TODO imeplement IDs
             $control_btn = view_toggle_dropdown(112233, 112255, $focus_i['i__id']);
 
-        } elseif($x__type==6255){
+        } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
+
+            //Ideas
+            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(6255)">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.count($is_next).' '.$m2['m__title'].'</span>';
+
+        } elseif($x__type==6255 && !$top_completed){
 
             //Count total
             $sub_counter = $this->X_model->fetch(array(
@@ -873,18 +878,8 @@ if(!$top_i__hashtag){
                 'x__right' => $focus_i['i__id'],
             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-            //Discoveries:
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="alert(\'The total number of times this idea has been discovered.\')">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.view_number($sub_counter[0]['totals']).' '.$m2['m__title'].'</span>';
-
-        } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
-
-            //Ideas
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(6255)">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.count($is_next).' '.$m2['m__title'].'</span>';
-
-        } elseif($x__type==6255 && !$top_completed){
-
             //NEXT
-            $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
+            $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.view_number($sub_counter[0]['totals']).' '.$m2['m__title'].'</span></div>';
 
         } elseif($x__type==13495 && count($x_selects)){
 
