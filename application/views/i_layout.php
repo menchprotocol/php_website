@@ -97,7 +97,7 @@ echo '</ul>';
 echo $body_content;
 $focus_tab = 0;
 foreach($this->config->item('e___26005') as $x__type => $m) { //Load Focus Tab:
-    if($coins_count[$x__type] > 0){
+    if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
         echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
