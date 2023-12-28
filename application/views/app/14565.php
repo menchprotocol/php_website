@@ -198,6 +198,9 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
 <style>
+    .creator_headline{
+        display: none;
+    }
     .msg, .main__title, h2, div, i, a {
         color: #FFFFFF !important;
     }
