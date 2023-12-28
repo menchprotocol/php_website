@@ -14,6 +14,8 @@ $this->X_model->create(array(
 ));
 
 
+/*
+
 //Load Top:
 $counter_top = view_e_covers(11030, $e['e__id'], 0, false);
 
@@ -26,6 +28,7 @@ echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11030"></div></div>' : '' ).'</div>';
 echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
 
+*/
 
 //Focus Source:
 echo '<div class="main_item row justify-content">';

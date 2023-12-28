@@ -28,7 +28,7 @@ if(isset($_GET['focus__e']) && superpower_unlocked(14005)){
 
 
 
-
+/*
 //Load Top:
 $counter_top = view_i_covers(11019, $focus_i['i__id'], 0, false);
 if($write_access_i){
@@ -43,7 +43,7 @@ if($write_access_i){
 echo '<script> $(document).ready(function () { initiate_algolia(); load_search(12273,11019); }); </script>';
 echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11019, true);  }, 377); }); </script>';
 
-
+*/
 
 
 //Focus Source:
