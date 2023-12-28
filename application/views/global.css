@@ -2877,7 +2877,7 @@ h4.main__title{
 .custom_ui_13884_13886 .modal-content,
 .custom_ui_13884_13886 .fa-gif-wrap,
 .custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-link{
-    border-color: #FFFFFF !important;
+    border-color: #999999 !important;
 }
 .custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_13886 .nav-tabs .nav-x.active,
@@ -3036,12 +3036,12 @@ h4.main__title{
 .custom_ui_13884_13885 .btn.btn-default,
 .custom_ui_13884_13885 .fa-gif-wrap
 {
-    border-color: #000000 !important;
+    border-color: #999999 !important;
 }
 
 .custom_ui_13884_13885 .inner-content .texttype__lg,
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-link{
-    border-color: #000000 !important;
+    border-color: #999999 !important;
 }
 .custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
 .custom_ui_13884_13885 .nav-tabs .nav-x.active,
@@ -3135,7 +3135,7 @@ h4.main__title{
 }
 
 .dropdown_d33293 {
-    border-color: #000000 !important;
+    border-color: #999999 !important;
 }
 
 .coin-6287 .coinType12274 {
@@ -3736,6 +3736,8 @@ h4.main__title{
 .card_reverse .black-background {
     background-color: transparent !important;
 }
+
+.input-group-text,
 .btn-grey .fa-gif-wrap {
     border-color: #999999 !important;
 }
