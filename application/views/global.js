@@ -441,7 +441,7 @@ function toggle_pills(x__type){
         $('.headline_body_' + x__type).removeClass('hidden');
 
         //Do we need to load data via ajax?
-        if( $('.headline_body_' + x__type + ' .tab_content').html() && !$('.headline_body_' + x__type + ' .tab_content').html().length ){
+        if( !$('.headline_body_' + x__type + ' .tab_content').html().length ){
             $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
             load_tab(x__type, false);
         }
