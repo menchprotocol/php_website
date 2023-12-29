@@ -8,7 +8,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
-    //This is a HACK! 12 is a fixed number of max dynamic variables that is fixed in save_i() & save_e()
+    //This is a HACK! 12 is a fixed number of max dynamic variables that is fixed in editor_save_i() & editor_save_e()
     $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
@@ -314,7 +314,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" onclick="save_i()" class="btn btn-default">SAVE</button>
+                    <button type="button" onclick="editor_save_i()" class="btn btn-default">SAVE</button>
                 </div>
 
             </div>
@@ -415,7 +415,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" onclick="save_e()" class="btn btn-default">SAVE</button>
+                    <button type="button" onclick="editor_save_e()" class="btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>

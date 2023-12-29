@@ -31,9 +31,8 @@ class E_model extends CI_Model
                 'x__access' => 6173,
             ), $e__id, 10673 /* IDEA NOTES Unpublished */);
         }
-        //Remove is_anonymous session:
+
         $session_data = $this->session->all_userdata();
-        $session_data['is_anonymous'] = 0;
         $this->session->set_userdata($session_data);
 
 
@@ -375,7 +374,6 @@ class E_model extends CI_Model
 
             //Assign session key:
             $session_data = $this->session->all_userdata();
-            $session_data['is_anonymous'] = 1;
             $this->session->set_userdata($session_data);
 
         }

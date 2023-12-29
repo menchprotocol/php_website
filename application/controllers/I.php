@@ -243,7 +243,7 @@ class I extends CI_Controller {
     }
 
 
-    function save_load_i()
+    function editor_load_i()
     {
 
         $is = $this->I_model->fetch(array(
@@ -378,7 +378,7 @@ class I extends CI_Controller {
 
 
 
-    function save_i(){
+    function editor_save_i(){
 
 
         $member_e = superpower_unlocked();

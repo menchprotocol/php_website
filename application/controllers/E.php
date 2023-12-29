@@ -524,7 +524,7 @@ class E extends CI_Controller
     }
 
 
-    function save_load_e()
+    function editor_load_e()
     {
 
         $member_e = superpower_unlocked();
@@ -721,7 +721,7 @@ class E extends CI_Controller
 
 
 
-    function save_e()
+    function editor_save_e()
     {
 
         $member_e = superpower_unlocked();

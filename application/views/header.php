@@ -398,7 +398,7 @@ if(!$basic_header_footer){
 
 
                     //Always give option to instantly add idea:
-                    echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="save_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
+                    echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
 
 
                     if($i_view > 0){
@@ -463,42 +463,30 @@ if(!$basic_header_footer){
 
                         if($x__type==26105 && $member_e) {
 
-                            //Profile
+                            //Profile View
                             $m['m__cover'] = view_cover($member_e['e__cover'], 1);
                             $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__handle'].'</div>';
                             $href = 'href="/@'.$member_e['e__handle'].'" ';
 
-                        } elseif(in_array($x__type, $this->config->item('n___13566'))) {
+                        } elseif($x__type==42246 && $member_e) {
 
-                            //MODAL
-                            $href = 'href="javascript:void(0);"';
-                            $extra_class = ' trigger_modal ';
+                            //Profile Edit
+                            $href = ' href="javascript:void(0);" onclick="editor_load_e('.$member_e['e__id'].', 0) ';
 
-                        } elseif($x__type==7291 && intval($this->session->userdata('is_anonymous'))>0){
+                        } elseif($x__type==28615){
 
-                            //FINAL logout Warning if anonymous:
-                            $href = 'href="javascript:final_logout();"';
+                            //Phone US
+                            $href = 'href="tel:'.preg_replace("/[^0-9]/", "", website_setting($x__type)).'"';
+
+                        } elseif($x__type==28614){
+
+                            //Email US
+                            $href = 'href="mailto:'.website_setting($x__type).'"';
 
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 
                             //APP
                             $href = 'href="'.view_app_link($x__type).( $x__type==4269 ? ( isset($_SERVER['REQUEST_URI']) ? '?url='.urlencode($_SERVER['REQUEST_URI']) /* Append current URL for redirects */ : '' ) : '' ).'"';
-
-                        } elseif(in_array($x__type, $this->config->item('n___14925'))){
-
-                            //Domain Setting
-                            $setting_value =  website_setting($x__type);
-                            if($setting_value){
-                                if($x__type==28615){
-                                    //Phone
-                                    $href = 'href="tel:'.preg_replace("/[^0-9]/", "", $setting_value).'"';
-                                } elseif($x__type==28614){
-                                    //Email
-                                    $href = 'href="mailto:'.$setting_value.'"';
-                                }
-                            } else {
-                                continue;
-                            }
 
                         } else {
 

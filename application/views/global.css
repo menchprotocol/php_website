@@ -1400,10 +1400,8 @@ label {
 .coin-cover .btn{
     padding:0px;
 }
-.btn.dropdown-toggle{
-    border: 0 !important;
-    padding: 0 !important;
 
+.btn.dropdown-toggle.combo-toggle{
     max-width: 233px;
     display: block;
     white-space: unset;
@@ -1411,6 +1409,10 @@ label {
     font-size: 0.89em;
 }
 
+.btn.dropdown-toggle{
+    border: 0 !important;
+    padding: 0 !important;
+}
 .table-striped .btn.dropdown-toggle{
     border: 0 !important;
     padding: 0 !important;

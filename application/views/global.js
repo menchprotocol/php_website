@@ -1267,7 +1267,7 @@ function e_load_search(x__type) {
 
 
 
-function save_load_i(i__id, x__id, link_i__id = 0){
+function editor_load_i(i__id, x__id, link_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1305,7 +1305,7 @@ function save_load_i(i__id, x__id, link_i__id = 0){
 
     if(i__id){
         //Load dynamic data:
-        $.post("/i/save_load_i", {
+        $.post("/i/editor_load_i", {
             i__id: i__id,
             x__id: x__id,
         }, function (data) {
@@ -1349,7 +1349,7 @@ function save_load_i(i__id, x__id, link_i__id = 0){
 
 
 var i_saving = false; //Prevent double saving
-function save_i(){
+function editor_save_i(){
 
     if(i_saving){
         return false;
@@ -1411,7 +1411,7 @@ function save_i(){
 
 
 
-function save_load_e(e__id, x__id){
+function editor_load_e(e__id, x__id){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1449,7 +1449,7 @@ function save_load_e(e__id, x__id){
     $('#modal31912').modal('show');
 
 
-    $.post("/e/save_load_e", {
+    $.post("/e/editor_load_e", {
         e__id: e__id,
         x__id: x__id
     }, function (data) {
@@ -1497,7 +1497,7 @@ function save_load_e(e__id, x__id){
 }
 
 e_saving = false;
-function save_e(){
+function editor_save_e(){
 
     if(e_saving){
         return false;
@@ -2304,17 +2304,6 @@ function isNormalInteger(str) {
 }
 
 
-
-function final_logout(){
-    var r = confirm("FINAL WARNING: You are about to permanently lose access to your anonymous account since you have not yet added your email. Are you sure you want to continue?");
-    if (r==true) {
-        //Redirect:
-        js_redirect('/logout');
-    } else {
-        return false;
-    }
-}
-
 function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
     /*
@@ -2417,7 +2406,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
 
             if( data.trigger_i_save_modal ){
                 //We need to show idea modal:
-                save_load_i(o__id, $('.s__12273_'+o__id).attr('x__id'));
+                editor_load_i(o__id, $('.s__12273_'+o__id).attr('x__id'));
             }
 
         } else {
