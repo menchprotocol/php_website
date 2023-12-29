@@ -1098,9 +1098,9 @@ function update_cover_main(cover_code, target_css){
     //Update:
     if(validURL(cover_code)){
         $(target_css+' .cover-link').css('background-image','url(\''+cover_code+'\')');
-    } else if(cover_code.indexOf('fa-')>=0) {
+    } else if(cover_code && cover_code.indexOf('fa-')>=0) {
         $(target_css+' .cover-btn').html('<i class="'+cover_code+'"></i>');
-    } else if(cover_code.length > 0) {
+    } else if(cover_code && cover_code.length > 0) {
         $(target_css+' .cover-btn').text(cover_code);
     }
 }
@@ -1109,7 +1109,7 @@ function view_cover_js(cover_code){
     if(cover_code && cover_code.length){
         if(validURL(cover_code)){
             return '<img src="'+cover_code+'" />';
-        } else if(cover_code.indexOf('fa-')>=0) {
+        } else if(cover_code && cover_code.indexOf('fa-')>=0) {
             return '<i class="'+cover_code+'"></i>';
         } else {
             return cover_code;
