@@ -471,7 +471,7 @@ if(!$basic_header_footer){
                         } elseif($x__type==42246 && $member_e) {
 
                             //Profile Edit
-                            $href = ' href="javascript:void(0);" onclick="editor_load_e('.$member_e['e__id'].', 0) ';
+                            $href = ' href="javascript:void(0);" onclick="editor_load_e('.$member_e['e__id'].', 0)" ';
 
                         } elseif($x__type==28615){
 
