@@ -490,6 +490,7 @@ if(!$basic_header_footer){
 
                         } else {
 
+                            //Unknown
                             continue;
 
                         }

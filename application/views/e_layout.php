@@ -20,7 +20,7 @@ if(!$member_e['e__id'] && in_array($e['e__id'], $this->config->item('n___14870')
     js_php_redirect('https://'.$e___14870[$e['e__id']]['m__message'], 13);
 }
 
-if(in_array(11030, $this->config->item('n___14686'))){
+if(intval(view_memory(6404,14686))){
 
     //Load Top:
     $counter_top = view_e_covers(11030, $e['e__id'], 0, false);

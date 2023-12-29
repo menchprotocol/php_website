@@ -27,7 +27,7 @@ if(isset($_GET['focus__e']) && superpower_unlocked(14005)){
 }
 
 
-if(in_array(11019, $this->config->item('n___14686'))){
+if(intval(view_memory(6404,14686))){
 
     //Load Top:
     $counter_top = view_i_covers(11019, $focus_i['i__id'], 0, false);

@@ -519,7 +519,7 @@ function view_load_page(x__type) {
 
     current_page[x__type]++; //Now we can increment current page
 
-    if(js_n___14686.includes(x__type)){
+    if(js_n___14686.includes(x__type) && parseInt(js_e___6404[14686]['m__message'])){
         $(e_loader).insertBefore(e_list);
     } else {
         $(e_loader).insertAfter(e_list);
@@ -533,7 +533,7 @@ function view_load_page(x__type) {
         $('.load-more').remove();
         if(data.length){
 
-            if(js_n___14686.includes(x__type)){
+            if(js_n___14686.includes(x__type) && parseInt(js_e___6404[14686]['m__message'])){
                 //Upwards link:
                 $(e_list).prepend(data);
                 //$('html, body').scrollTop(top_element.offset().top - 55);
@@ -1595,7 +1595,7 @@ function load_tab(x__type, auto_load){
             i__id:fetch_int_val('#focus_id')
         }, function (data) {
             $('.headline_body_' + x__type + ' .tab_content').html(data);
-            if(auto_load){ // && js_n___14686.includes(x__type)
+            if(auto_load && parseInt(js_e___6404[14686]['m__message']) && js_n___14686.includes(x__type)){
                 window.scrollTo({
                     top: ($('.main_item').offset().top - 59),
                     behavior: 'instant',
@@ -1613,7 +1613,7 @@ function load_tab(x__type, auto_load){
             e__id:fetch_int_val('#focus_id')
         }, function (data) {
             $('.headline_body_'+x__type + ' .tab_content').html(data);
-            if(auto_load){ // && js_n___14686.includes(x__type)
+            if(auto_load && parseInt(js_e___6404[14686]['m__message']) && js_n___14686.includes(x__type)){
                 window.scrollTo({
                     top: ($('.main_item').offset().top - 59),
                     behavior: 'instant',
@@ -1649,7 +1649,7 @@ function load_tab(x__type, auto_load){
             var $win = $(window);
             $win.scroll(function () {
 
-                if(js_n___14686.includes(x__type)) {
+                if(parseInt(js_e___6404[14686]['m__message']) && js_n___14686.includes(x__type)) {
                     //Upwards loading from top:
                     if(parseInt($win.scrollTop()) <= 377){
                         view_load_page(x__type);
@@ -1937,12 +1937,12 @@ function add_to_list(x__type, sort_i_grabr, html_content, increment) {
 
     //See if we previously have a list in place?
     if ($("#list-in-" + x__type + " " + sort_i_grabr).length > 0) {
-        if(!js_n___14686.includes(x__type)){
-            //Downwards add to start"
-            $("#list-in-" + x__type + " " + sort_i_grabr + ":first").before(html_content);
-        } else {
+        if(parseInt(js_e___6404[14686]['m__message']) && js_n___14686.includes(x__type)){
             //Upwards adds to end:
             $("#list-in-" + x__type + " " + sort_i_grabr + ":last").after(html_content);
+        } else {
+            //Downwards add to start"
+            $("#list-in-" + x__type + " " + sort_i_grabr + ":first").before(html_content);
         }
     } else {
         //Raw list, add before input filed:

@@ -541,7 +541,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         $limit = view_memory(6404,11064);
         $query = $CI->X_model->fetch($query_filters, $joins_objects, $limit, ($page_num-1)*$limit, $order_columns);
-        if(in_array($x__type, $CI->config->item('n___14686'))){
+        if(intval(view_memory(6404,14686)) && in_array($x__type, $CI->config->item('n___14686'))){
             $query = array_reverse($query);
         }
         return $query;
