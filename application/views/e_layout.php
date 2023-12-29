@@ -118,6 +118,12 @@ if(!$focus_tab){
 
     $(document).ready(function () {
 
+        <?php
+        if(isset($_GET['load_editor']) && $member_e){
+            echo 'editor_load_e('.$member_e['e__id'].', 0);';
+        }
+        ?>
+
         $('.toggle_i_checkbox').change(function() {
             console.log('hi');
             //$(this).prop('checked')
