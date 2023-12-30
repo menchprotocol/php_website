@@ -4231,7 +4231,9 @@ main {
     }
 }
 
-
+.creator_headline{
+    margin: 1px 0;
+}
 .focus-cover .creator_headline {
     margin-bottom: 8px;
 }
