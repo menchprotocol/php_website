@@ -2072,8 +2072,9 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="bottom-wrapper">';
 
     $grant_access = $write_access_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
-    if ($x__id > 0 && !$is_app) {
-        $ui .= '<span '.( $grant_access ? ' onclick="editor_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.$e['x__message'].'</span>';
+
+    if ($grant_access && $x__id > 0 && !$is_app) {
+        $ui .= '<span '.( $write_access_e ? ' onclick="editor_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.$e['x__message'].'</span>';
     }
 
     //Source Handle
