@@ -4231,6 +4231,11 @@ main {
     }
 }
 
+
+.focus-cover .creator_headline {
+    margin-bottom: 8px;
+}
+
 .round-btn{
     display: inline-block;
     width: 65px;
@@ -4282,7 +4287,6 @@ main {
 
 .sub__handle {
     font-size: 0.89em;
-    margin: 3px 0;
 }
 
 .active_bars_0 { display: none !important; }
