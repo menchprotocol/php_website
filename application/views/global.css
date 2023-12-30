@@ -3753,6 +3753,7 @@ h4.main__title{
 .input-group-text,
 .btn-grey .fa-gif-wrap {
     border-color: #999999 !important;
+    border-radius: 0 !important;
 }
 .grey-background {
     background-color: transparent !important;
