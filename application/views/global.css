@@ -4234,7 +4234,7 @@ main {
    display: block;
 }
 .creator_headline{
-    padding: 3px;
+    padding: 3px 3px 3px 0;
     display: inline-block;
 }
 .focus-cover .creator_headline_frame {
