@@ -421,7 +421,7 @@ function toggle_pills(x__type){
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
-    $('.xtypetitle'+x__type).removeClass('hidden');
+    $('.xtypetitle_'+x__type).removeClass('hidden');
 
 
     if($('.thepill' + x__type+' .nav-link').hasClass('active')){
