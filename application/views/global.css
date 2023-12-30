@@ -4178,7 +4178,6 @@ main {
 }
 
 
-
 .halfbg .glossy-bg .list-group-item-action:hover,
 .halfbg .glossy-bg .list-group-item-action:hover .main__title{
     background: #FFFFFF !important;
@@ -4232,6 +4231,10 @@ main {
     }
 }
 
+
+.focus-cover .creator_headline {
+    margin-bottom: 8px;
+}
 
 .round-btn{
     display: inline-block;
