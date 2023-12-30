@@ -198,7 +198,7 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
 <style>
-    .creator_headline{
+    .creator_headline_frame{
         display: none;
     }
     .msg, .main__title, h2, div, i, a {

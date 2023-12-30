@@ -1539,6 +1539,8 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $ui .= '<div class="cover-text">';
 
     //Show Link User:
+    $ui .= '<div class="creator_headline_frame">';
+
     $link_user = 0;
     if($x__id && isset($i['x__creator'])){
         $link_user = $i['x__creator'];
@@ -1550,7 +1552,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         }
     }
 
-
     //Show Creator, if any, and if different than linker:
     foreach($CI->X_model->fetch(array(
         'x__type' => 4250,
@@ -1561,7 +1562,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span>'.$creator['e__title'].'<span class="grey mini-font">@'.$creator['e__handle'].'</span></a><span class="grey mini-font" title="Created '.date("Y-m-d H:i:s", strtotime($creator['x__time'])).'">'.view_time_difference($creator['x__time'], true).'</span></div>';
     }
 
-
+    $ui .= '</div>';
 
 
     //Idea Message (Remaining)

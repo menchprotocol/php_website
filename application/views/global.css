@@ -4230,11 +4230,14 @@ main {
         margin-bottom: 5px !important;
     }
 }
-
-.creator_headline{
-    margin: 1px 0;
+.creator_headline_frame{
+   display: block;
 }
-.focus-cover .creator_headline {
+.creator_headline{
+    padding: 3px;
+    display: inline-block;
+}
+.focus-cover .creator_headline_frame {
     margin-bottom: 8px;
 }
 

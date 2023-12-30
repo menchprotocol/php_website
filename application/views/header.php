@@ -133,7 +133,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo '<style> ';
 
     if(!$member_e){
-        echo ' .creator_headline{ display: none; } ';
+        echo ' .creator_headline_frame{ display: none; } ';
     }
 
     //Font Helps:
