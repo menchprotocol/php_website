@@ -4286,7 +4286,8 @@ main {
 }
 
 .sub__handle {
-    font-size: 0.75em;
+    font-size: 0.89em;
+    margin: 3px 0;
 }
 
 .active_bars_0 { display: none !important; }
