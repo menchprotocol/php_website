@@ -45,6 +45,8 @@ echo view_card_e(4251, $e, null);
 echo '</div>';
 
 
+$focus_menu = ( in_array($e['e__id'], $this->config->item('n___4527')) ? 'e___34649' : 'e___32596' );
+$e___focus = $this->config->item($focus_menu);
 
 $coins_count = array();
 $body_content = '';
@@ -85,15 +87,14 @@ foreach($this->config->item('e___41091') as $x__type => $m) {
 
 
     $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
-    echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'. view_number($coins_count[$x__type]) . '</span></a></li>';
+    echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" active x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'. view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">'. $e___focus[$x__type]['m__title'] . '&nbsp;&nbsp;</span></a></li>';
 }
 echo '</ul>';
 echo $body_content;
 
-$focus_menu = ( in_array($e['e__id'], $this->config->item('n___4527')) ? 'e___34649' : 'e___32596' );
 
 $focus_tab = 0;
-foreach($this->config->item($focus_menu) as $x__type => $m) {
+foreach($e___focus as $x__type => $m) {
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
         echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
@@ -101,7 +102,7 @@ foreach($this->config->item($focus_menu) as $x__type => $m) {
     }
 }
 if(!$focus_tab){
-    foreach($this->config->item($focus_menu) as $x__type => $m) {
+    foreach($e___focus as $x__type => $m) {
         $focus_tab = $x__type;
         echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.'); }); </script>';
         break;
