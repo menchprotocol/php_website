@@ -408,8 +408,6 @@ function sort_e_load(x__type) {
 
 function toggle_pills(x__type){
 
-    console.log(x__type+' PILL TOGGLED');
-
     focus_card = x__type;
     var x__down = 0;
     var x__right = 0;
@@ -420,6 +418,11 @@ function toggle_pills(x__type){
     } else if (focus_card==12274){
         x__down = fetch_int_val('#focus_id');
     }
+
+    //Toggle view
+    $('.xtypetitle').addClass('hidden');
+    $('.xtypetitle'+x__type).removeClass('hidden');
+
 
     if($('.thepill' + x__type+' .nav-link').hasClass('active')){
 
@@ -2088,6 +2091,7 @@ function x_set_text(this_grabr){
 function adjust_counter(x__type, adjustment_count){
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')) + adjustment_count;
     $('.xtypecounter'+x__type).text(current_total_count);
+
 }
 
 
