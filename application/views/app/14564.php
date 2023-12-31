@@ -103,7 +103,7 @@ if(isset($_GET['i__hashtag'])){
 
     } else {
 
-        if($userInfo) {
+        if(strlen($userInfo)) {
             //Log this error:
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
