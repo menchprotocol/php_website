@@ -952,7 +952,7 @@ function validate_i__message($str){
 }
 
 function view_i_links($i, $replace_links = true){
-    return ( $replace_links ? $i['i__cache'] : $i['i__cache'] ).view_list_e($i, 0, !$replace_links);
+    return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).view_list_e($i, 0, !$replace_links);
 }
 
 function view_sync_links($str, $return_array = false, $save_i__id = 0) {
