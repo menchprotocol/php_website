@@ -2303,22 +2303,6 @@ input.form-control {
     display: block;
 }
 
-.cover-btn{
-    font-size: 6.7em;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-}
-.coinType12274 .cover-btn{
-    color:#000000 !important;
-}
-.mini-cover .cover-btn{
-    font-size: 3.8em;
-    top:43%;
-}
-.focus-cover .cover-btn {
-    font-size: 8em;
-}
 
 
 
@@ -4275,6 +4259,24 @@ main {
 
 .sub__handle {
     font-size: 1em;
+}
+
+
+.cover-btn{
+    font-size: 6.7em;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+.coinType12274 .cover-btn{
+    color:#000000 !important;
+}
+.mini-cover .cover-btn{
+    font-size: 3.8em;
+    top:43% !important;
+}
+.focus-cover .cover-btn {
+    font-size: 8em;
 }
 
 .active_bars_0 { display: none !important; }
