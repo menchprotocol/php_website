@@ -47,7 +47,7 @@ function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 }
 
 function view_url($string){
-    return preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank"><u>$0<u></a>', $string);
+    return preg_replace('~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![\.,:])~i', '<a href="$0" target="_blank">$0</a>', $string);
 }
 
 function view_number($number)
@@ -128,7 +128,7 @@ function view_card_x($x, $has_x__reference = false)
             //TRANSACTION
             if(!$has_x__reference){
                 foreach($CI->X_model->fetch(array('x__id' => $x[$e___32088[$e__id]['m__message']])) as $ref_x){
-                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover']. '</span><div class="x-ref hidden x_message_'.$x['x__id'].'">'.view_card_x($ref_x, true).'</div><a class="x_message_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_message_'.$x['x__id'].'\').toggleClass(\'hidden\');"><u>View Referenced Transaction</u></a></div>';
+                    $ui .= '<div class="simple-line"><span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover']. '</span><div class="x-ref hidden x_message_'.$x['x__id'].'">'.view_card_x($ref_x, true).'</div><a class="x_message_'.$x['x__id'].'" href="javascript:void(0);" onclick="$(\'.x_message_'.$x['x__id'].'\').toggleClass(\'hidden\');">View Referenced Transaction</a></div>';
                 }
             } else {
                 //Simple Reference to avoid Loop:
@@ -997,10 +997,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4258 => '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video><!-- %s -->',
         4259 => '<audio controls src="%s"></audio><!-- %s -->',
         4260 => '<img src="%s" class="content-image" /><!-- %s -->',
-        4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate"><u>%s</u></span></spanaa>',
+        4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
         4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
-        31834 => '<spanaa href="/%s"><u>%s</u></spanaa>',
-        31835 => '<spanaa href="/@%s"><u>%s</u></spanaa>',
+        31834 => '<spanaa href="/%s">%s</spanaa>',
+        31835 => '<spanaa href="/@%s">%s</spanaa>',
     );
 
     $replace_from = array();
