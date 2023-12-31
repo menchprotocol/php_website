@@ -2506,6 +2506,9 @@ input.form-control {
 
 .cover-btn i {
     font-size: 1.2em !important;
+    margin-top: -26%;
+}
+.focus-cover .cover-btn i {
     margin-top: -24%;
 }
 .list-covers .card_cover {

@@ -1705,7 +1705,7 @@ function i__add(x__type, link_i__id) {
     //Remove results:
     $('.mini-cover.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
     i_is_adding = true;
-    var sort_i_grabr = ".card_cover";
+    var sort_i_grab = ".card_cover";
     var input_field = $('.new-list-'+x__type+' .add-input');
     var new_i__message = input_field.val();
 
@@ -1719,7 +1719,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(x__type, sort_i_grab, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
     $.post("/i/i__add", {
@@ -1740,7 +1740,7 @@ function i__add(x__type, link_i__id) {
             sort_i_load(x__type);
 
             //Add new
-            add_to_list(x__type, sort_i_grabr, data.new_i_html, 1);
+            add_to_list(x__type, sort_i_grab, data.new_i_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -1935,18 +1935,18 @@ function validURL(str) {
 }
 
 
-function add_to_list(x__type, sort_i_grabr, html_content, increment) {
+function add_to_list(x__type, sort_i_grab, html_content, increment) {
 
     adjust_counter(x__type, increment);
 
     //See if we previously have a list in place?
-    if ($("#list-in-" + x__type + " " + sort_i_grabr).length > 0) {
+    if ($("#list-in-" + x__type + " " + sort_i_grab).length > 0) {
         if(parseInt(js_e___6404[14686]['m__message']) && js_n___14686.includes(x__type)){
             //Upwards adds to end:
-            $("#list-in-" + x__type + " " + sort_i_grabr + ":last").after(html_content);
+            $("#list-in-" + x__type + " " + sort_i_grab + ":last").after(html_content);
         } else {
             //Downwards add to start"
-            $("#list-in-" + x__type + " " + sort_i_grabr + ":first").before(html_content);
+            $("#list-in-" + x__type + " " + sort_i_grab + ":first").before(html_content);
         }
     } else {
         //Raw list, add before input filed:
