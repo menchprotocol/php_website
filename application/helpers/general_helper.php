@@ -1285,8 +1285,8 @@ function validate_handle($str, $i__id = null, $e__id = null){
             //Is it active?
             if(!in_array($matched['e__access'], $CI->config->item('n___7358')) && $member_e){
                 //Since not active we can replace this:
-                $CI->I_model->update($matched['i__id'], array(
-                    'i__hashtag' => $matched['i__hashtag'].rand(100000,999999),
+                $CI->E_model->update($matched['e__id'], array(
+                    'e__handle' => $matched['e__handle'].rand(100000,999999),
                 ), true, $member_e['e__id']);
             } else {
                 return array(
