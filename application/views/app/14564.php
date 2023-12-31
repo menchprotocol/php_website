@@ -28,7 +28,7 @@ if(isset($_GET['i__hashtag'])){
         'domain' => 'mench.auth0.com',
         'client_id' => website_setting(14881),
         'client_secret' => website_setting(14882),
-        'redirect_uri' => 'https://'.get_server('SERVER_NAME').'/-14564',
+        'redirect_uri' => 'https://'.get_server('SERVER_NAME').'/SocialLoginCallback',
         'scope' => 'openid profile email',
     ]);
 
