@@ -2209,18 +2209,7 @@ input.form-control {
 
 
 
-.source-featured u,
-.source-featured a,
-.source-featured spanaa,
-.i_cache u,
-.i_cache a,
-.i_cache spanaa,
-.inner-content u,
-.inner-content a,
-.inner-content spanaa{
-    color: #007AFD !important;
-    text-decoration: none !important;
-}
+
 
 /* Cover Circle Override: */
 .cover-link {
@@ -4301,3 +4290,17 @@ main {
 .active_bars_6 td { width:16.67% !important; }
 .active_bars_7 td { width:14.29% !important; }
 .active_bars_8 td { width:12.50% !important; }
+
+
+.source-featured u,
+.source-featured a,
+.source-featured spanaa,
+.i_cache u,
+.i_cache a,
+.i_cache spanaa,
+.inner-content u,
+.inner-content a,
+.inner-content spanaa{
+    color: #007AFD !important;
+    text-decoration: none !important;
+}
