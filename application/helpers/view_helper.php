@@ -1538,6 +1538,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $ui .= '<div class="inner-content">';
     $ui .= '<div class="cover-text">';
 
+
     //Show Link User:
     $ui .= '<div class="creator_headline_frame">';
 
@@ -1569,7 +1570,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
 
     //Idea Message (Remaining)
-    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
