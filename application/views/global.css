@@ -4271,7 +4271,7 @@ main {
 .coinType12274 .cover-btn{
     color:#000000 !important;
 }
-.mini-cover .cover-btn{
+.card_cover.mini-cover .cover-btn{
     font-size: 3.8em;
     top:43% !important;
 }
