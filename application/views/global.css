@@ -2496,7 +2496,7 @@ input.form-control {
 
 
 .cover-btn i {
-    font-size: 1.15em !important;
+    font-size: 1.44em !important;
 }
 .list-covers .card_cover {
     text-align: center;
@@ -3587,11 +3587,7 @@ h4.main__title{
 }
 
 .cover-link.coinType12274 .cover-btn,
-.cover-link.coinType6287 .cover-btn{
-    top: 44% !important;
-}
-
-
+.cover-link.coinType6287 .cover-btn,
 .focus-cover .cover-link.coinType12274 .cover-btn {
     top: 10% !important;
 }
