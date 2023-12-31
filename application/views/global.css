@@ -2207,6 +2207,10 @@ input.form-control {
     vertical-align: middle;
 }
 
+.inner-content u {
+    color: rgb(29, 155, 240);
+}
+
 /* Cover Circle Override: */
 .cover-link {
     border:0;
