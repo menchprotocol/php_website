@@ -18,7 +18,7 @@ if($client_id && $client_secret){
         'domain' => 'mench.auth0.com',
         'client_id' => $client_id,
         'client_secret' => $client_secret,
-        'redirect_uri' => 'https://'.get_server('SERVER_NAME').'/SocialLoginCallback',
+        'redirect_uri' => 'https://'.get_server('SERVER_NAME').view_app_link(14564),
         'scope' => 'openid profile email',
     ]);
 
