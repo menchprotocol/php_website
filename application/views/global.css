@@ -2210,7 +2210,8 @@ input.form-control {
 .inner-content u,
 .inner-content a,
 .inner-content spanaa{
-    color: rgb(0, 152, 255);
+    color: rgb(0, 152, 255) !important;
+    text-decoration: none !important;
 }
 
 /* Cover Circle Override: */
