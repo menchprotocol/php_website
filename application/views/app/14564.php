@@ -54,7 +54,7 @@ if(isset($_GET['i__hashtag'])){
      * */
 
     $userInfo = $auth0->getUser();
-    $login_i__hashtag = intval($this->session->userdata('login_i__hashtag'));
+    $login_i__hashtag = $this->session->userdata('login_i__hashtag');
     $redirect_url = $this->session->userdata('redirect_url');
     $sign_is = array();
 
@@ -96,7 +96,7 @@ if(isset($_GET['i__hashtag'])){
 
         } else {
 
-            js_php_redirect(view_app_link(14564).'/'.$login_i__hashtag.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
+            js_php_redirect(view_app_link(14564).'?i__hashtag='.$login_i__hashtag.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
 
         }
 
