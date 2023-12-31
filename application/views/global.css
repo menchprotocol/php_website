@@ -2496,30 +2496,12 @@ input.form-control {
 
 
 .cover-btn i {
-    margin-top: -24%;
     font-size: 1.15em !important;
-}
-.focus-cover .cover-btn i {
-    margin-top: 0;
 }
 .list-covers .card_cover {
     text-align: center;
     padding:0 5px !important;
     margin-bottom: 10px !important;
-}
-.the_counter{
-    margin-top: -52px;
-    line-height: 128%;
-    font-size: 0.28em !important;
-}
-.the_counter .min-height{
-    min-height: 60px;
-}
-.the_counter b i{
-    font-size: 1em !important;
-}
-.the_counter .main__title, .the_counter.main__title{
-    color:#000000 !important;
 }
 textarea {
     resize: none;
@@ -2646,13 +2628,7 @@ h4.main__title{
 
     .vid-padding { padding:55px 0; }
 
-    .the_counter{
-        margin-top: -21px;
-        font-size: 0.21em !important;
-    }
-    .the_counter .min-height{
-        min-height: 34px;
-    }
+
     .mid-range { padding:0; }
 
     .coin-cover-left{
@@ -2745,10 +2721,6 @@ h4.main__title{
         font-size: 1.15em !important;
     }
 
-    .the_counter{
-        margin-top: -24px;
-        font-size: 0.18em !important;
-    }
     .col2nd { padding-left: 40px !important; padding-top: 8px; }
     h1{
         font-size: 2.9em;
@@ -3621,7 +3593,7 @@ h4.main__title{
 
 
 .focus-cover .cover-link.coinType12274 .cover-btn {
-    top: 34% !important;
+    top: 10% !important;
 }
 
 
