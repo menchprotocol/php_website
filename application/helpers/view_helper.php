@@ -1390,7 +1390,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_access_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31004 && $write_access_i){
+            } elseif($x__type_top_bar==31004 && $write_access_i && !in_array(31004, $CI->config->item('n___32145'))){
 
                 //Idea Access
                 $active_bars++;

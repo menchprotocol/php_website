@@ -102,7 +102,6 @@ class E extends CI_Controller
 
                 //IDEAS
                 $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
-                $e___31004 = $this->config->item('e___31004'); //Idea Status
                 $e___4737 = $this->config->item('e___4737'); //Idea Types
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
