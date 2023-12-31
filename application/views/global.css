@@ -2313,7 +2313,8 @@ input.form-control {
     color:#000000 !important;
 }
 .mini-cover .cover-btn{
-    font-size: 4.20em;
+    font-size: 3.8em;
+    top:43%;
 }
 .focus-cover .cover-btn {
     font-size: 8em;
