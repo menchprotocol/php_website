@@ -2207,7 +2207,9 @@ input.form-control {
     vertical-align: middle;
 }
 
-.inner-content u {
+.inner-content u,
+.inner-content a,
+.inner-content spanaa{
     color: rgb(29, 155, 240);
 }
 
