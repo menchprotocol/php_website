@@ -408,6 +408,8 @@ function sort_e_load(x__type) {
 
 function toggle_pills(x__type){
 
+    return false;
+
     focus_card = x__type;
     var x__down = 0;
     var x__right = 0;
