@@ -103,14 +103,16 @@ if(isset($_GET['i__hashtag'])){
 
     } else {
 
-        //Log this error:
-        $this->X_model->create(array(
-            'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'APP @14564 Failed to fetch data from server',
-            'x__metadata' => array(
-                'auth0_getUser' => $userInfo,
-            ),
-        ));
+        if($userInfo) {
+            //Log this error:
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'APP @14564 Failed to fetch data from server',
+                'x__metadata' => array(
+                    'auth0_getUser' => $userInfo,
+                ),
+            ));
+        }
 
         js_php_redirect(( $login_i__hashtag ? '/'.$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() ) ), 13);
 
