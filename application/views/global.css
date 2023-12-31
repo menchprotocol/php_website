@@ -2095,9 +2095,11 @@ input.form-control {
     padding: 0 0 0 0 !important;
     border-radius: 0 !important;
 }
-.demo_cover {
+.demo_cover,
+.demo_cover .cover-link {
     border-radius: 50% !important;
 }
+
 .card_cover.coin-12274,
 .card_cover.coin-6287{
     border-radius: 21px !important;
