@@ -2503,6 +2503,9 @@ input.form-control {
     font-size: 1.44em !important;
     margin-top: -32%;
 }
+.focus-cover .cover-btn i {
+    margin-top: -24%;
+}
 .list-covers .card_cover {
     text-align: center;
     padding:0 5px !important;
