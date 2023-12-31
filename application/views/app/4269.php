@@ -6,7 +6,7 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     ));
 }
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? '/' . $sign_i['i__hashtag'] : home_url()) );
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? '/' . $sign_i[0]['i__hashtag'] : home_url()) );
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
