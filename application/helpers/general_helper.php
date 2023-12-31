@@ -1219,6 +1219,7 @@ function valid_data_type($data_types, $data_value, $data_title){
 function validate_handle($str, $i__id = null, $e__id = null){
 
     $CI =& get_instance();
+    $member_e = superpower_unlocked();
 
     //Validate:
     if(($i__id && $e__id) || (!$i__id && !$e__id)){
@@ -1281,11 +1282,19 @@ function validate_handle($str, $i__id = null, $e__id = null){
             'e__id !=' => $e__id,
             'LOWER(e__handle)' => strtolower($str),
         ), 0) as $matched){
-            return array(
-                'status' => 0,
-                'db_duplicate' => 1,
-                'message' => 'Handle @'.$str.' is already assigned to another source.',
-            );
+            //Is it active?
+            if(!in_array($matched['e__access'], $this->config->item('n___7358')) && $member_e){
+                //Since not active we can replace this:
+                $this->I_model->update($matched['i__id'], array(
+                    'i__hashtag' => $matched['i__hashtag'].rand(100000,999999),
+                ), true, $member_e['e__id']);
+            } else {
+                return array(
+                    'status' => 0,
+                    'db_duplicate' => 1,
+                    'message' => 'Handle @'.$str.' is already assigned to another source.',
+                );
+            }
         }
     }
 
