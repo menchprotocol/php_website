@@ -1742,7 +1742,7 @@ function view_list_e_items($i, $x__creator, $x, $plain_no_html = false, $append_
         return '<div class="source-info"><span data-toggle="tooltip" data-placement="top" title="'.( $show_google_maps_link && count($append_m) ? $append_m['m__title'].( strlen($append_m['m__message']) ? ': '.$append_m['m__message'] : '' ) : '' ).'">'
             . ( count($append_m) ? '<span class="icon-block-xs">'.$append_m['m__cover'].'</span>' : '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>' )
             . '<span>'.( $show_google_maps_link && !$plain_no_html ? '<a href="https://www.google.com/maps/search/'.urlencode($x['e__title']).'" target="_blank"><span style="text-decoration:underline;">'.$x['e__title'].'</span> <i class="far fa-external-link"></i></a>' : $x['e__title'] ) . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
-            . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.( $show_google_maps_link && !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
+            . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
             . '</span></div>';
 
     }
