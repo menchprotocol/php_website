@@ -2500,7 +2500,7 @@ input.form-control {
     font-size: 1.15em !important;
 }
 .focus-cover .cover-btn i {
-    margin-top: -33%;
+    margin-top: 0;
 }
 .list-covers .card_cover {
     text-align: center;
@@ -3621,7 +3621,7 @@ h4.main__title{
 
 
 .focus-cover .cover-link.coinType12274 .cover-btn {
-    top: 53% !important;
+    top: 34% !important;
 }
 
 
