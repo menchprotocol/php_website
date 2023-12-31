@@ -1373,7 +1373,7 @@ function editor_save_i(){
         modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).val().trim();
     }
 
-    $.post("/i/save_i", modify_data, function (data) {
+    $.post("/i/editor_save_i", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -1519,11 +1519,12 @@ function editor_save_e(){
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
-        modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
+        if($('#modal31912 .save_dynamic_'+i).attr('d__id').length){
+            modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
+        }
     }
 
-
-    $.post("/e/save_e", modify_data, function (data) {
+    $.post("/e/editor_save_e", modify_data, function (data) {
 
         if (!data.status) {
 
