@@ -2095,6 +2095,9 @@ input.form-control {
     padding: 0 0 0 0 !important;
     border-radius: 0 !important;
 }
+.demo_cover {
+    border-radius: 50% !important;
+}
 .card_cover.coin-12274,
 .card_cover.coin-6287{
     border-radius: 21px !important;
@@ -3574,7 +3577,7 @@ h4.main__title{
 
 /* SHAPE: Rounded Square */
 .cover-btn{
-    top: 69%;
+    top: 46%;
 }
 
 .cover-link {

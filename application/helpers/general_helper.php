@@ -1216,6 +1216,17 @@ function valid_data_type($data_types, $data_value, $data_title){
 
 }
 
+function change_handle($old_handle){
+    $max_length = view_memory(6404,41985);
+    if(strlen($old_handle) < $max_length){
+        //We have some room to change:
+        return substr($old_handle.rand(100000,999999), 0, $max_length);
+    } else {
+        //No room to change, remove some words from the end:
+        return substr($old_handle, 0, ($max_length-6)).rand(100000,999999);
+    }
+}
+
 function validate_handle($str, $i__id = null, $e__id = null){
 
     $CI =& get_instance();
@@ -1264,18 +1275,27 @@ function validate_handle($str, $i__id = null, $e__id = null){
 
     }
 
-
     //Syntax good! Now let's check the DB for duplicates...
     if($i__id > 0){
         foreach($CI->I_model->fetch(array(
             'i__id !=' => $i__id,
             'LOWER(i__hashtag)' => strtolower($str),
         ), 0) as $matched){
-            return array(
-                'status' => 0,
-                'db_duplicate' => 1,
-                'message' => 'Hashtag #'.$str.' is already assigned to another idea.',
-            );
+            //Is it active?
+            if(!in_array($matched['i__access'], $CI->config->item('n___31871')) && $member_e){
+
+                //Since not active we can replace this:
+                $CI->I_model->update($matched['i__id'], array(
+                    'i__hashtag' => change_handle($matched['i__hashtag']),
+                ), true, $member_e['e__id']);
+
+            } else {
+                return array(
+                    'status' => 0,
+                    'db_duplicate' => 1,
+                    'message' => 'Hashtag #'.$str.' is already assigned to another idea.',
+                );
+            }
         }
     } elseif($e__id>0){
         foreach($CI->E_model->fetch(array(
@@ -1284,10 +1304,12 @@ function validate_handle($str, $i__id = null, $e__id = null){
         ), 0) as $matched){
             //Is it active?
             if(!in_array($matched['e__access'], $CI->config->item('n___7358')) && $member_e){
+
                 //Since not active we can replace this:
                 $CI->E_model->update($matched['e__id'], array(
-                    'e__handle' => $matched['e__handle'].rand(100000,999999),
+                    'e__handle' => change_handle($matched['e__handle']),
                 ), true, $member_e['e__id']);
+
             } else {
                 return array(
                     'status' => 0,
