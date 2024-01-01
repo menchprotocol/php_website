@@ -58,7 +58,7 @@ foreach($this->config->item('e___41091') as $x__type => $m) {
     $input_content = '';
     if($write_access_e){
 
-        if(in_array($x__type, $this->config->item('n___42261'))){
+        if(in_array($x__type, array(42259, 42255, 42256, 42257, 42258))){
 
             //IDEAS
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_'.$x__type.' list-adder">

@@ -75,7 +75,7 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
                            placeholder="'.$e___11035[31772]['m__title'].'">
                 </div></div></div><div class="algolia_pad_search dropdown_12273 row justify-content"></div></div>';
 
-        } elseif($x__type==12274){
+        } elseif(in_array($x__type, array(42259, 42255, 42256, 42257, 42258))){
 
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
