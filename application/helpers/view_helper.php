@@ -2220,63 +2220,6 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
     return $ui;
 }
 
-
-function view_toggle_dropdown($active_group, $pending_group, $i__id){
-
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $e___active = $CI->config->item('e___'.$active_group);
-    $e___pending = $CI->config->item('e___'.$pending_group);
-    $member_e = superpower_unlocked();
-
-    if(!$member_e || !$i__id){
-        return false;
-    }
-    
-    //Count total
-    $sub_counter = $CI->X_model->fetch(array(
-        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___'.$active_group)) . ')' => null,
-        'x__right' => $i__id,
-    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-    
-
-    $ui = '<div class="dropdown inline-block">';
-    //$ui .= '<button type="button" class="btn no-left-padding no-right-padding dropdown-lock" id="dropdownToggleMenuButton'.$active_group.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><span>' .$e___11035[$active_group]['m__cover'].'</span></button>';
-    $ui .= '<a class="controller-nav round-btn" href="javascript:void(0);" id="dropdownToggleMenuButton'.$active_group.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$e___11035[$active_group]['m__cover'].'</a><span class="nav-title main__title">'.view_number($sub_counter[0]['totals']).' '.$e___11035[$active_group]['m__title'].'</span>';
-    $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownToggleMenuButton'.$active_group.'">';
-
-    foreach($CI->config->item('e___'.$active_group) as $active_item_id => $active_m) {
-
-        //Find Pending Source:
-        $pending_item_ids = array_intersect($CI->config->item('n___'.$active_item_id), $CI->config->item('n___'.$pending_group));
-
-        if(count($pending_item_ids)!=1){
-            //We expect one match only:
-            continue;
-        }
-
-        //See if this user has this link type with this idea:
-        $is_linked = count($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => $active_item_id,
-            'x__right' => $i__id,
-            'x__up' => $member_e['e__id'],
-        )));
-
-        $superpowers_required = array_intersect($CI->config->item('n___10957'), $active_m['m__following']);
-        if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-            $ui .= '<a class="dropdown-item dropi_toggle_'.$active_item_id.' main__title optiond_'.$active_item_id.'" href="javascript:void();" current-selected="'.$active_item_id.'" onclick="update_toggle_dropdown('.$active_group.', '.$active_item_id.', '.$pending_item_ids[0].', '.$is_linked.')" title="'.$active_m['m__message'].'"><span class="icon-block">'.$active_m['m__cover'].'</span>'.$active_m['m__title'].'</a>';
-        }
-
-    }
-
-    $ui .= '</div>';
-    $ui .= '</div>';
-
-    return $ui;
-}
-
 function view_json($array)
 {
     if(!headers_sent()) {
