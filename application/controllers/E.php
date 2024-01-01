@@ -683,17 +683,6 @@ class E extends CI_Controller
                 }
             }
         }
-        if($member_e['e__id']==$_POST['e__id']){
-            //Also append animal icons for user cover selection:
-            foreach($this->config->item('e___12279') as $e__id => $m) {
-                $cover = one_two_explode('class="','"',$m['m__cover']);
-                array_push($return_covers, array(
-                    'cover_preview' => $cover,
-                    'cover_apply' => $cover,
-                    'new_title' => $cover.' ('.$m['m__title'].')',
-                ));
-            }
-        }
 
         $return_array = array(
             'status' => 1,
