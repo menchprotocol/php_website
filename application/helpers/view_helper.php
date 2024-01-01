@@ -484,28 +484,23 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
         );
 
-    } elseif($x__type==12273){
+    } elseif(in_array($x__type, $this->config->item('n___42261'))){
 
         //IDEAS
-
-        //Determine Sort:
-        $order_columns = array();
-        /*
-        foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
-            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
-        }
-        $order_columns['x__weight'] = 'ASC';
-        $order_columns['x__id'] = 'DESC';
-        */
-        $order_columns['x__time'] = 'DESC';
-
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__up' => $e__id,
         );
+
         $joins_objects = array('x__right');
+
+        $order_columns = array();
+        if($x__type==42256){
+            $order_columns['x__type = 34513 DESC'] = null;
+        }
+        $order_columns['x__time'] = 'DESC';
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
@@ -590,19 +585,19 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if($x__type==12274){
+    if(in_array($x__type, $this->config->item('n___42261'))){
 
         //SOURCES
         $joins_objects = array('x__up');
         $query_filters = array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'x__right' => $i__id,
         );
 
         $order_columns = array();
-        foreach($CI->config->item('e___13550') as $x__sort_id => $sort) {
-            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+        if($x__type==42256){
+            $order_columns['x__type = 34513 DESC'] = null;
         }
         $order_columns['x__id'] = 'DESC';
 
