@@ -25,7 +25,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 $this->X_model->update($x['x__id'], array(
                     'x__type' => 31022, //Skipped
                     'x__message' => 31022, //Skipped
-                ), $x['e__id'], 112233 /* Member Skipped Event */);
+                ), $x['e__id'], 42251 /* Member Skipped Event */);
 
                 //Notify and give option to go to starting point:
                 foreach($this->I_model->fetch(array(
@@ -60,7 +60,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
     foreach ($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //TODO Idea Source Links Excluding @Agree @Disagree [PLAIN LINKS? NEW Idea]
+        'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
         'x__up IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
         'i__type' => 30874, //Events
         'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE

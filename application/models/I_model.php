@@ -569,7 +569,7 @@ class I_model extends CI_Model
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__left' => $focus_id,
-                ), array(), 1)) ? 4228 : 4228 ), //TODO Insert Idea Drafting ID and Test Drafting link when top idea discovered
+                ), array(), 1)) ? 33344 : 4228 ), //Drafting vs Sequenced idea
                 ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
                 ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
                 'x__weight' => 0,
@@ -601,7 +601,7 @@ class I_model extends CI_Model
             //Fetch Complete References:
             $new_i = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 4983, //IDEA SOURCES
+                'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                 'x__up' => $focus_e[0]['e__id'],
                 'x__right' => $i_new['i__id'],
             ), array('x__right'));

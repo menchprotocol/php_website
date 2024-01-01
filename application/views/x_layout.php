@@ -7,7 +7,6 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 } else {
 
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$e___31127 = $this->config->item('e___31127'); //Action Buttons Pending
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 $is_single_click = in_array($focus_i['i__type'], $this->config->item('n___40680'));
@@ -838,31 +837,9 @@ if(!$top_i__hashtag){
 
         $control_btn = '';
 
-        if($x__creator && in_array($x__type, $this->config->item('n___12274')) && 0){
+        if($x__type==12274){
 
-            //TODO Remove later
-
-            //Sources
-            if(is_array($this->config->item('n___'.$x__type))){
-                foreach(array_intersect($this->config->item('n___'.$x__type), $this->config->item('n___31127')) as $pending_action_id) {
-
-                    //Is this action already taken?
-                    $action_xs = $this->X_model->fetch(array(
-                        'x__up' => $x__creator,
-                        'x__right' => $focus_i['i__id'],
-                        'x__type' => $x__type,
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    ));
-
-                    $control_btn = '<a class="round-btn btn_control_'.$x__type.'" href="javascript:void(0);" onclick="x_link_toggle('.$x__type.', '.$focus_i['i__id'].')" current_x_id="'.( count($action_xs) ? $action_xs[0]['x__id'] : '0' ).'"><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? '' : 'hidden' ).'">'.$m2['m__cover'].'</span><span class="controller-nav btn_toggle_'.$x__type.' '.( count($action_xs) ? 'hidden' : '' ).'">'.$e___31127[$pending_action_id]['m__cover'].'</span></a><span class="nav-title main__title">'.$m2['m__title'].'</span>';
-
-                    break;// Ignore if more than one...
-                }
-            }
-
-        } elseif($x__type==112233){
-
-            //TODO imeplement IDs
+            //Sources, show links to become a new source:
             $control_btn = view_toggle_dropdown(112233, 112255, $focus_i['i__id']);
 
         } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){

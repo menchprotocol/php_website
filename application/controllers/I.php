@@ -331,7 +331,7 @@ class I extends CI_Controller {
                 $d__value = '';
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 4983, //IDEA SOURCES
+                    'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                     'x__right' => $is[0]['i__id'],
                     'x__up' => $dynamic_e__id,
                 )) as $curr_val){
@@ -498,7 +498,7 @@ class I extends CI_Controller {
             //Fetch the current value:
             $values = $this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 4983, //IDEA SOURCES
+                'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                 'x__right' => $is[0]['i__id'],
                 'x__up' => $dynamic_e__id,
             ));

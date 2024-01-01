@@ -2,7 +2,7 @@
 
 $filters = array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type' => 4983, //References
+    'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
     'x__up' => 28199,
 );
 

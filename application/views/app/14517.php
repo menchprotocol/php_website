@@ -10,7 +10,6 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
     }
 }
 
-
 ?>
     <script>
         function complete_setup(){
@@ -29,7 +28,11 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
 <?php
 
 //Give them options to choose from:
-echo view_radio_e(14517, $member_e['e__id'], 0);
+foreach($this->config->item('e___14517') as $x__type => $m) {
+    if(in_array($x__type, $this->config->item('n___33331')) || in_array($x__type, $this->config->item('n___33332'))){
+        echo view_radio_e($x__type, $member_e['e__id']);
+    }
+}
 
 
 //CONTINUE:
