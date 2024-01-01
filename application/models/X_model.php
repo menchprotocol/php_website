@@ -920,10 +920,6 @@ class X_model extends CI_Model
                 $x__type = 4559;
             } elseif ($i['i__type'] == 30874) {
                 $x__type = 31810;
-            } elseif ($i['i__type'] == 31807) {
-                $x__type = 31808;
-            } elseif ($i['i__type'] == 33279) {
-                $x__type = 34438;
             }
         }
 

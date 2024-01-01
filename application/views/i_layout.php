@@ -32,7 +32,7 @@ if(intval(view_memory(6404,14686))){
 
     //Load Top:
     $counter_top = view_i_covers(11019, $focus_i['i__id'], 0, false);
-    if($write_access_i){
+    if($write_access_i && in_array(11019, $this->config->item('n___42262'))){
         echo '<div class="hideIfEmpty headline_body_11019" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_i ? '<div class="new-list-11019"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11019 list-adder ">
                     <div class="input-group border">
                         <input type="text"
@@ -59,11 +59,13 @@ $body_content = '';
 
 echo '<ul class="nav nav-tabs nav12273">';
 foreach($this->config->item('e___41092') as $x__type => $m) {
+
     $coins_count[$x__type] = view_i_covers($x__type, $focus_i['i__id'], 0, false);
     if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $this->config->item('n___12144'))){ continue; }
+    $can_add = $write_access_i && in_array($x__type, $this->config->item('n___42262'));
 
     $input_content = '';
-    if($write_access_i){
+    if($can_add){
 
         if(in_array($x__type, $this->config->item('n___11020'))){
 
@@ -91,9 +93,11 @@ foreach($this->config->item('e___41092') as $x__type => $m) {
 
     }
 
-    $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
+    if($can_add || $coins_count[$x__type]>0){
+        $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-    echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" x__type="'.$x__type.'" href="javascript:void(0);" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">'. $m['m__title'] . '&nbsp;</span></a></li>';
+        echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" x__type="'.$x__type.'" href="javascript:void(0);" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">'. $m['m__title'] . '&nbsp;</span></a></li>';
+    }
 
 }
 echo '</ul>';

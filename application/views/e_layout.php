@@ -25,15 +25,16 @@ if(intval(view_memory(6404,14686))){
     //Load Top:
     $counter_top = view_e_covers(11030, $e['e__id'], 0, false);
 
-    echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_e ? '<div class="new-list-11030"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11030 list-adder">
+    if($write_access_e && in_array(11019, $this->config->item('n___42262'))){
+        echo '<div class="hideIfEmpty headline_body_11030" read-counter="'.$counter_top.'"><div class="tab_content"></div>'.( $write_access_e ? '<div class="new-list-11030"><div class="col-md-8 col-sm-10 col-12 container-center"><div class="dropdown_11030 list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="'.$e___11035[31774]['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_11030"></div></div>' : '' ).'</div>';
-    echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
-
+        echo '<script> $(document).ready(function () { setTimeout(function () { load_tab(11030, true); }, 377); initiate_algolia(); load_search(12274, 11030); }); </script>';
+    }
 }
 
 
@@ -54,9 +55,10 @@ echo '<ul class="nav nav-tabs nav12274">';
 foreach($this->config->item('e___41091') as $x__type => $m) {
     $coins_count[$x__type] = view_e_covers($x__type, $e['e__id'], 0, false);
     if(!$coins_count[$x__type] && in_array($x__type, $this->config->item('n___12144'))){ continue; }
+    $can_add = $write_access_e && in_array($x__type, $this->config->item('n___42262'));
 
     $input_content = '';
-    if($write_access_e){
+    if($can_add){
 
         if(in_array($x__type, $this->config->item('n___42261'))){
 
@@ -84,9 +86,16 @@ foreach($this->config->item('e___41091') as $x__type => $m) {
 
     }
 
+    if($can_add || $coins_count[$x__type]>0){
 
-    $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
-    echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" x__type="'.$x__type.'" href="javascript:void(0);" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'. view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">'. $m['m__title'] . '&nbsp;</span></a></li>';
+        $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
+
+        echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" x__type="'.$x__type.'" href="javascript:void(0);" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'. view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">'. $m['m__title'] . '&nbsp;</span></a></li>';
+
+    }
+
+
+
 }
 echo '</ul>';
 echo $body_content;
