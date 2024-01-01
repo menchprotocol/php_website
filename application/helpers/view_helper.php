@@ -547,7 +547,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query = $CI->X_model->fetch($query_filters, $joins_objects, 1, 0, array(), 'COUNT(x__id) as totals');
         $count_query = $query[0]['totals'];
         $visual_counter = '<span class="mini-hidden adjust-left">'.view_number($count_query).'<span>';
-        $title_desc = number_format($count_query, 0).' '.$e___11035[$x__type]['m__title'];
+        $title_desc = number_format($count_query, 0).' HI'; //.$e___11035[$x__type]['m__title']
 
         if($append_card_icon){
 
@@ -555,7 +555,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
+            $card_icon = '<span class="icon-block-xxs">C</span>'; //'.$e___11035[$x__type]['m__cover'].'
 
             $ui = '<div class="dropdown inline-block">';
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_e_covers button_of_'.$e__id.'_'.$x__type.'" id="card_e_group_'.$x__type.'_'.$e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
