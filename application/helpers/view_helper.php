@@ -313,7 +313,7 @@ function view_body_e($x__type, $counter, $e__id){
     $ui = '';
 
 
-    if(in_array($x__type, $CI->config->item('n___11020'))){
+    if(in_array($x__type, $CI->config->item('n___42261'))){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
@@ -391,8 +391,9 @@ function view_body_i($x__type, $counter, $i__id){
         }
         $ui .= '</div>';
 
-    } elseif($x__type==12274){
+    } elseif(in_array($x__type, $CI->config->item('n___42261'))){
 
+        //Sources
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e_ref){
             $ui .= view_card_e($e_ref['x__type'], $e_ref, null);
