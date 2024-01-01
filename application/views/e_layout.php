@@ -52,7 +52,7 @@ $e___focus = $this->config->item($focus_menu);
 $coins_count = array();
 $body_content = '';
 echo '<ul class="nav nav-tabs nav12274">';
-foreach($this->config->item('e___41091') as $x__type => $m) {
+foreach($this->config->item('e___31916') as $x__type => $m) {
     $coins_count[$x__type] = view_e_covers($x__type, $e['e__id'], 0, false);
     if(!$coins_count[$x__type] && in_array($x__type, $this->config->item('n___12144'))){ continue; }
     $can_add = $write_access_e && in_array($x__type, $this->config->item('n___42262'));
