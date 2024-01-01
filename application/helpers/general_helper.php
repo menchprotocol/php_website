@@ -1165,46 +1165,46 @@ function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
 
 }
 
-function valid_data_type($data_types, $data_value, $data_title){
+function valid_data_type($data_type, $data_value, $data_title){
 
     $CI =& get_instance();
     $e___4592 = $CI->config->item('e___4592'); //Data types
 
-    if($data_types==4319 && !is_numeric($data_value)){
+    if($data_type==4319 && !is_numeric($data_value)){
         //Number:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
-    } elseif($data_types==4318 && !strtotime($data_value)){
+    } elseif($data_type==4318 && !strtotime($data_value)){
         //Time:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
-    } elseif($data_types==4255 && !strlen($data_value)){
+    } elseif($data_type==4255 && !strlen($data_value)){
         //Text:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
-    } elseif($data_types==32097 && !filter_var($data_value, FILTER_VALIDATE_EMAIL)){
+    } elseif($data_type==32097 && !filter_var($data_value, FILTER_VALIDATE_EMAIL)){
         //Email:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
-    } elseif($data_types==7657 && ($data_value<0 || $data_value>100)){
+    } elseif($data_type==7657 && ($data_value<0 || $data_value>100)){
         //Percentage:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'].' which is a number between 0 & 100.',
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'].' which is a number between 0 & 100.',
         );
-    } elseif($data_types==4256 && !filter_var($data_value, FILTER_VALIDATE_URL)){
+    } elseif($data_type==4256 && !filter_var($data_value, FILTER_VALIDATE_URL)){
         //URL:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_types]['m__title'],
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
     }
 

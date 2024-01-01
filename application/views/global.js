@@ -1279,6 +1279,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     $("#modal31911 .dynamic_item, #modal31911 .save_x__message").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
+    $("#modal31911 .dynamic_item").attr('placeholder', '').val('').attr('d__id','');
 
     //Load Instant Fields:
     if(link_i__id){
@@ -1426,6 +1427,7 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
     $("#modal31912 .dynamic_item, #modal31912 .save_x__message").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
+    $("#modal31912 .dynamic_item").attr('placeholder', '').val('').attr('d__id','');
 
     //Source resets:
     $('#search_cover').val('');

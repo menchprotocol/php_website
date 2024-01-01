@@ -820,7 +820,7 @@ class E extends CI_Controller
 
                     //Validate input if required or provided:
                     if ($is_required || strlen($_POST['save_dynamic_' . $input_pointer])) {
-                        $valid_data_type = valid_data_type($data_types, $_POST['save_dynamic_' . $input_pointer], $e___42179[$dynamic_e__id]['m__title']);
+                        $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_' . $input_pointer], $e___42179[$dynamic_e__id]['m__title']);
                         if (!$valid_data_type['status']) {
                             //We had an error:
                             return view_json($valid_data_type);

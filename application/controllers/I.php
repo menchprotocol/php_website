@@ -440,6 +440,15 @@ class I extends CI_Controller {
         }
 
 
+        //Organize dynamic inputs:
+        for ($p = 1; $p <= view_memory(6404,42206); $p++) {
+            $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
+            $dynamic_edit .= '<h3 class="main__title mini-font"></h3>';
+            $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" d__id="" value="">';
+            $dynamic_edit .= '</div>';
+        }
+
+
         //Validate Dynamic Inputs:
         $input_pointer = 0;
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
@@ -469,13 +478,15 @@ class I extends CI_Controller {
                 $data_type = $data_type_this;
                 break;
             }
-            $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
+
+
+            $is_required = in_array($dynamic_e__id , $this->config->item('n___42174')); //Required Settings
             if(!isset($_POST['save_dynamic_' . $input_pointer])){
                 $_POST['save_dynamic_' . $input_pointer] = '';
             }
             //Validate input if required or provided:
             if($is_required || strlen($_POST['save_dynamic_'.$input_pointer])){
-                $valid_data_type = valid_data_type($data_types, $_POST['save_dynamic_'.$input_pointer], $e___42179[$dynamic_e__id]['m__title']);
+                $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_'.$input_pointer], $e___42179[$dynamic_e__id]['m__title']);
                 if(!$valid_data_type['status']){
                     //We had an error:
                     return view_json($valid_data_type);
