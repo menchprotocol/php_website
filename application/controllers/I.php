@@ -199,7 +199,7 @@ class I extends CI_Controller {
 
             $ui = '';
             $listed_items = 0;
-            if(in_array($_POST['x__type'], $this->config->item('n___11028')) || $_POST['x__type']==6255){
+            if(in_array($_POST['x__type'], $this->config->item('n___42261')) || $_POST['x__type']==6255){
 
                 //SOURCES
                 $e___6177 = $this->config->item('e___6177'); //Source Types

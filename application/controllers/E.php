@@ -98,7 +98,7 @@ class E extends CI_Controller
                     }
                 }
 
-            } elseif($_POST['x__type']==12273 || $_POST['x__type']==6255){
+            } elseif(in_array($_POST['x__type'], $this->config->item('n___42261')) || $_POST['x__type']==6255){
 
                 //IDEAS
                 $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
