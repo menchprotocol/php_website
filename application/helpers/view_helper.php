@@ -484,7 +484,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
         );
 
-    } elseif(in_array($x__type, $CI->config->item('n___42261'))){
+    } elseif(in_array($x__type, array(42259, 42255, 42256, 42257, 42258))){
 
         //IDEAS
         $query_filters = array(
@@ -585,7 +585,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
 
-    if(in_array($x__type, $CI->config->item('n___42261'))){
+    if(in_array($x__type, array(42259, 42255, 42256, 42257, 42258))){
 
         //SOURCES
         $joins_objects = array('x__up');
