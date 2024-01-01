@@ -1564,6 +1564,7 @@ i, .btn .show-max {
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+.nav>.nav-item>.nav-link>.icon-block { width:30px !important; }
 #searchFrontForm .icon-block { width:30px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-xxs{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
