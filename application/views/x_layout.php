@@ -38,7 +38,7 @@ $top_i__id = ( count($top_i) ? $top_i['i__id'] : 0 );
 $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
 $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || count($this->X_model->fetch(array(
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
     'x__right' => $focus_i['i__id'],
     'x__up' => 28239, //Can Skip
 )));
@@ -114,7 +114,7 @@ if(isset($_GET['go2'])) {
     $already = 0;
     foreach ($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+        'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
         //'x__right' => $focus_i['i__id'],
         'x__up' => 26562, //Total Due
     ), array(), 0) as $ticket) {
@@ -391,25 +391,25 @@ if(isset($_GET['go2'])) {
 
                 $currency_types = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //Currency
                 ));
                 $total_dues = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 26562, //Total Due
                 ));
                 $cart_max = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 29651, //Cart Max Quantity
                 ));
                 $cart_min = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31008, //Cart Min Quantity
                 ));
@@ -435,7 +435,7 @@ if(isset($_GET['go2'])) {
 
                     $digest_fees = count($this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                        'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                         'x__right' => $focus_i['i__id'],
                         'x__up' => 30589, //Digest Fees
                     )));
@@ -449,7 +449,7 @@ if(isset($_GET['go2'])) {
                     $info_append .= '<div class="sub_note">';
                     if(!count($this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                        'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                         'x__right' => $focus_i['i__id'],
                         'x__up' => 30615, //Is Refundable
                     )))){
@@ -693,7 +693,7 @@ if(isset($_GET['go2'])) {
                 //Steps
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31813, //Steps
                 )) as $num_steps){
@@ -705,7 +705,7 @@ if(isset($_GET['go2'])) {
                 //Min Value
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31800, //Min Value
                 )) as $num_steps){
@@ -717,7 +717,7 @@ if(isset($_GET['go2'])) {
                 //Max Value
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31801, //Max Value
                 )) as $num_steps){
@@ -730,7 +730,7 @@ if(isset($_GET['go2'])) {
 
                 $input_type = (count($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 32442, //Select Time
                 ))) ? 'datetime-local'  : 'date' );

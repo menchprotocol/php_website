@@ -33,7 +33,7 @@ foreach($this->X_model->fetch(array(
 //Secondary Ideas:
 foreach($this->X_model->fetch(array(
     'x__up' => $website_id,
-    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
     'x__type !=' => 34513, //Pinned
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE

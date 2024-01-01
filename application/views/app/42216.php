@@ -75,7 +75,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             $time_starts = 0;
             foreach($this->X_model->fetch(array(
                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                 'x__right' => $i['i__id'],
                 'x__up' => 26556, //Time Starts
             )) as $time){
@@ -92,7 +92,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     //End time?
                     $time_ends = $this->X_model->fetch(array(
                         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                        'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                         'x__right' => $i['i__id'],
                         'x__up' => 26557, //Time Ends
                     ), array(), 1);
@@ -180,7 +180,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
     foreach ($this->X_model->fetch(array(
         'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+        'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
         'x__weight >' => time(), //Future event
         'x__up' => 26556, //Time Starts
         'i__type' => 30874, //Events
@@ -191,7 +191,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         $time_starts = 0;
         foreach ($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__right' => $i['i__id'],
             'x__up' => 26556, //Time Starts
         )) as $time) {
@@ -208,7 +208,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         $end_sending = 0;
         foreach ($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__right' => $i['i__id'],
             'x__up' => 26557, //Time Ends
         )) as $time) {
