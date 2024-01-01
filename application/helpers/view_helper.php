@@ -498,7 +498,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         $order_columns = array();
         if($x__type==42256){
-            $order_columns['x__type = 34513 DESC'] = null;
+            $order_columns['x__type = \'34513\' DESC'] = null;
         }
         $order_columns['x__time'] = 'DESC';
 
@@ -597,7 +597,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
         $order_columns = array();
         if($x__type==42256){
-            $order_columns['x__type = 34513 DESC'] = null;
+            $order_columns['x__type = \'34513\' DESC'] = null;
         }
         $order_columns['x__id'] = 'DESC';
 
