@@ -483,14 +483,10 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     } elseif(in_array($x__type, $CI->config->item('n___42276'))){
 
         //DOWN
-        $order_columns = array();
-        $order_columns['x__type'] = 'DESC';
-        $order_columns['x__weight'] = 'ASC';
-        $order_columns['e__title'] = 'ASC';
-
-        $joins_objects = array('x__down');
+        $order_columns = array('x__time' => 'DESC');
+        $joins_objects = array('x__up');
         $query_filters = array(
-            'x__up' => $e__id,
+            'x__down' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
@@ -562,9 +558,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         $limit = view_memory(6404,11064);
         $query = $CI->X_model->fetch($query_filters, $joins_objects, $limit, ($page_num-1)*$limit, $order_columns);
-        if(intval(view_memory(6404,14686)) && in_array($x__type, $CI->config->item('n___14686'))){
-            $query = array_reverse($query);
-        }
         return $query;
 
     } else {
