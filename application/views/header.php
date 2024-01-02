@@ -388,7 +388,9 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    if($member_e && $member_e['e__id']==1){
+                        echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    }
 
 
                     echo '</div>';
