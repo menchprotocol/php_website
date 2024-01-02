@@ -388,16 +388,16 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    if($member_e && $member_e['e__id']==1){
-                        echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
-                    }
+                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+
 
 
                     echo '</div>';
                     echo '</td>';
 
-                    echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
-
+                    if($member_e && $member_e['e__id']==1){
+                        echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
+                    }
 
                     //Always give option to instantly add idea:
                     echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
