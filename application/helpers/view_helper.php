@@ -971,6 +971,11 @@ function validate_i__message($str){
             'status' => 0,
             'message' => $error,
         );
+    } else {
+        return array(
+            'status' => 1,
+            'message' => 'All Good',
+        );
     }
 
 }

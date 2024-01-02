@@ -133,7 +133,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
-        } elseif (1 || !isset($_POST['x__type']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
+        } elseif (!isset($_POST['x__type']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variables',
