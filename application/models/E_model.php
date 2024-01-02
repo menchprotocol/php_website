@@ -538,6 +538,15 @@ class E_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
+        } elseif(in_array($x__type, $this->config->item('n___42276'))){
+            //Downwards:
+            $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
+            $joins_objects = array('x__down');
+            $query_filters = array(
+                'x__up' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            );
         } elseif($x__type==11030){
             //Upwards:
             $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');

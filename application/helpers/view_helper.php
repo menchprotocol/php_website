@@ -377,9 +377,18 @@ function view_body_i($x__type, $counter, $i__id){
     } elseif($x__type==12273 || $x__type==13542){
 
         //IDEAS
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
+        foreach($list_results as $next_i) {
+            $ui .= view_card_i($x__type, 0, $is[0], $next_i);
+        }
+        $ui .= '</div>';
+
+    } elseif(in_array($x__type, $CI->config->item('n___42265'))){
+
+        //IDEA Link Groups
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
         foreach($list_results as $next_i) {
-            $ui .= view_card_i(12273, 0, $is[0], $next_i);
+            $ui .= view_card_i($x__type, 0, $is[0], $next_i);
         }
         $ui .= '</div>';
 
@@ -467,6 +476,22 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
+        );
+
+    } elseif(in_array($x__type, $CI->config->item('n___42276'))){
+
+        //DOWN
+        $order_columns = array();
+        $order_columns['x__type'] = 'DESC';
+        $order_columns['x__weight'] = 'ASC';
+        $order_columns['e__title'] = 'ASC';
+
+        $joins_objects = array('x__down');
+        $query_filters = array(
+            'x__up' => $e__id,
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
         );
@@ -612,6 +637,18 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
+        );
+
+    } elseif(in_array($x__type, $CI->config->item('n___42265'))){
+
+        //IDEAS NEXT
+        $order_columns = array('x__weight' => 'ASC');
+        $joins_objects = array('x__right');
+        $query_filters = array(
+            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
+            'x__left' => $i__id,
         );
 
     } elseif($x__type==12273 || $x__type==13542){
@@ -1993,7 +2030,8 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                         $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
-                        if($e__id_dropdown==4997 && superpower_unlocked(12703)){
+
+                        if($e__id_dropdown==4997){
 
                             $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
@@ -2007,20 +2045,15 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Clone:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==10673 && $x__id > 0 && superpower_unlocked(13422)){
+                        } elseif($e__id_dropdown==10673 && $x__id > 0){
 
                             //UNLINK
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
 
-                        } elseif($e__id_dropdown==6178 && superpower_unlocked(13422)){
+                        } elseif($e__id_dropdown==6178 && $x__id > 0){
 
                             //Delete Permanently
                             $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__access'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
-
-                        } elseif($e__id_dropdown==33292){
-
-                            //Stats
-                            $action_buttons .= '<a href="'.view_app_link(33292).'?e__handle='.$e['e__handle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
 
@@ -2035,7 +2068,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         } elseif($e__id_dropdown=13670 && substr($CI->uri->segment(1), 0, 1)=='~') {
 
                             //Filter applies only when browsing an idea
-                            $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?focus__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="/~'.$CI->uri->segment(1). '?focus__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
 
