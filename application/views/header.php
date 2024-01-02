@@ -395,13 +395,6 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</td>';
 
-                    if($member_e && $member_e['e__id']==1){
-                        echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
-                    }
-
-                    //Always give option to instantly add idea:
-                    echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
-
 
                     if($i_view > 0){
                         $e___40904 = $this->config->item('e___40904'); //Idea Views
@@ -435,8 +428,10 @@ if(!$basic_header_footer){
                         echo '<td class="block-x icon_search"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
                     }
 
-                    if(intval(view_memory(6404,12678))){
+                    //TODO Make search available for all by removing this:
+                    if(intval(view_memory(6404,12678)) && $member_e && $member_e['e__id']==1){
                         echo '<td class="block-x icon_search '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }
 
                     //MENU
@@ -505,6 +500,11 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</div>';
                     echo '</td>';
+
+                    //Always give option to instantly add idea:
+                    if(superpower_unlocked(10939)){
+                        echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
+                    }
 
                     ?>
                 </tr>
