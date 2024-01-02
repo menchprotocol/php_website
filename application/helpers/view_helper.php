@@ -386,7 +386,7 @@ function view_body_i($x__type, $counter, $i__id){
     } elseif(in_array($x__type, $CI->config->item('n___42265'))){
 
         //IDEA Link Groups
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-12273">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $next_i) {
             $ui .= view_card_i($x__type, 0, $is[0], $next_i);
         }
