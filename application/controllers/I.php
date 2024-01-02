@@ -160,15 +160,13 @@ class I extends CI_Controller {
             }
         }
 
-        $x_i = array();
-
         if($_POST['link_i__id'] > 0){
             //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['link_i__id']),
                 'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
-            if(count($x_i)==0){
+            if(!count($x_i)){
                 //validate Idea:
                 return view_json(array(
                     'status' => 0,
