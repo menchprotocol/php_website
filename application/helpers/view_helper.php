@@ -495,9 +495,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     } elseif($x__type==11030){
 
         //UP
-        $order_columns = array();
-        $order_columns['x__type'] = 'DESC';
-        $order_columns['x__id'] = 'DESC';
+        $order_columns = array('x__time' => 'DESC');
         $joins_objects = array('x__up');
         $query_filters = array(
             'x__down' => $e__id,

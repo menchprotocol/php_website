@@ -551,7 +551,7 @@ class E_model extends CI_Model
 
         } elseif($x__type==11030){
             //Upwards:
-            $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
+            $order_columns = array('x__time' => 'DESC');
             $joins_objects = array('x__up');
             $query_filters = array(
                 'x__down' => $e__id,

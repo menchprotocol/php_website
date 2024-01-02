@@ -503,7 +503,8 @@ if(!$basic_header_footer){
 
                     //Always give option to instantly add idea:
                     if(superpower_unlocked(10939)){
-                        echo '<td class="block-x icon_search"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_e(0,0)" style="margin-left: 0;" title="'.$e___11035[14055]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
                     }
 
                     ?>
