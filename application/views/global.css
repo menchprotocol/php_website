@@ -4057,7 +4057,8 @@ main {
     overflow-y: visible;
 }
 .cover-content .payment_box{
-    padding-top: 1px; padding-left:24px;
+    padding-top: 3px;
+    padding-left:26px;
 }
 
 .sale_increment{

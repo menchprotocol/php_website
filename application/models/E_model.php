@@ -455,7 +455,6 @@ class E_model extends CI_Model
                     'x__up' => $creator,
                     'x__down' => $add_fields['e__id'],
                     'x__type' => 4251, //New Source Created
-                    'x__message' => $add_fields['e__title'],
                 ));
             }
 
