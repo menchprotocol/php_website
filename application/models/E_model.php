@@ -447,16 +447,18 @@ class E_model extends CI_Model
 
         if ($add_fields['e__id'] > 0) {
 
-            //Generate new references:
-
             //Log transaction new source:
-            $this->X_model->create(array(
-                'x__creator' => ($x__creator > 0 ? $x__creator : $add_fields['e__id']),
-                'x__up' => ($x__creator > 0 ? $x__creator : $add_fields['e__id']),
-                'x__down' => $add_fields['e__id'],
-                'x__type' => 4251, //New Source Created
-                'x__message' => $add_fields['e__title'],
-            ));
+            $creator = ($x__creator > 0 ? $x__creator : $add_fields['e__id']);
+            if($creator!=$add_fields['e__id']){
+                $this->X_model->create(array(
+                    'x__creator' => $creator,
+                    'x__up' => $creator,
+                    'x__down' => $add_fields['e__id'],
+                    'x__type' => 4251, //New Source Created
+                    'x__message' => $add_fields['e__title'],
+                ));
+            }
+
 
             //Log transaction new Idea hashtag:
             $this->X_model->create(array(
