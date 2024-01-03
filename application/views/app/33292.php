@@ -52,7 +52,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
             $link_group = '';
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
-                $link_group = '<span class="icon-block advanced-stats hidden" title="'.$e___42263[$found_link_group]['m__title'].'">'.$e___42263[$found_link_group]['m__cover'].'</span>';
+                $link_group = '<span class="icon-block-xxs advanced-stats hidden" title="'.$e___42263[$found_link_group]['m__title'].'">'.$e___42263[$found_link_group]['m__cover'].'</span>';
             }
 
             echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'">';
