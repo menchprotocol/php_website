@@ -381,7 +381,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <table style="width: 100%; margin-bottom: 21px;">
                                 <tr>
                                     <td style="width: 100%;">
-                                        <!-- SEARCH -->
+                                        <!-- COVER CODE -->
                                         <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
                                     </td>
                                     <td>
@@ -398,8 +398,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <emoji-picker></emoji-picker>
                             <script type="module">
+                                import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
                                 document.querySelector('emoji-picker').addEventListener('emoji-click', e => {
-                                    $('#previous_used_covers').val(e.detail.unicode);
+                                    insertText($('.save_e__cover'), e.detail.unicode)
                                 })
                             </script>
 
