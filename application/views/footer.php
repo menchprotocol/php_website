@@ -398,7 +398,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <input class="inputfile" type="file" name="file" id="coverUpload" />
                                         <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
                                     </td>
-                                </tr>
                                     <td>
                                         <!-- EMOJI TOGGLE -->
                                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
@@ -407,6 +406,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <!-- Font Awesome -->
                                         <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
                                     </td>
+                                </tr>
                             </table>
 
                             <div class="emoji-frame hidden">
