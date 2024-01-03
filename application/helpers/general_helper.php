@@ -82,19 +82,24 @@ function current_s__type(){
     $first_segment = $CI->uri->segment(1);
     $first_letter = substr($first_segment, 0, 1);
 
-    if(strlen($first_segment) && !array_key_exists($first_segment, $CI->config->item('handle___6287'))){
-
-        //DISCOVERY
-        return 6255;
-
-    } elseif($first_letter=='~'){
+    if($first_letter=='~'){
 
         //IDEATION
         return 12273;
 
+    } elseif($first_letter=='@'){
+
+        //IDEATION
+        return 12274;
+
+    } elseif(strlen($first_segment) && !array_key_exists($first_segment, $CI->config->item('handle___6287'))){
+
+        //DISCOVERY
+        return 6255;
+
     } else {
 
-        //Specific App or Source:
+        //Source/App:
         return 12274;
 
     }
