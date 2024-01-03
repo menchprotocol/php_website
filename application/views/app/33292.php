@@ -51,13 +51,13 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
 
             $link_group = '&nbsp;';
-            $link_title = '';
+            $link_title = false;
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
                 $link_group = $e___42263[$found_link_group]['m__cover'];
-                $link_title = "\n".'Link Group: '.$e___42263[$found_link_group]['m__title'];
+                $link_title = 'Link Group: '.$e___42263[$found_link_group]['m__title'];
             }
 
-            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].$link_title.'" data-toggle="tooltip" data-placement="top">';
+            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].( strlen($m3['m__message']) && $link_title ? ' | ' : '' ).$link_title.'" data-toggle="tooltip" data-placement="top">';
             echo '<td class="info-td"><span class="icon-block-xxs advanced-stats hidden">'.$link_group.'</span><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td>';
             echo '<td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td>';
             echo '</tr>';
