@@ -18,7 +18,7 @@ emoji-picker {
     width: 100%;
 }
 emoji-picker {
-    --num-columns: 5;
+    --num-columns: 3;
     --emoji-size: 3rem;
     --background: #FFFFFF;
 }
