@@ -281,6 +281,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <!-- Idea Message -->
                             <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
 
+                                <!--
                             <emoji-picker></emoji-picker>
                             <script type="module">
                                 import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
@@ -288,7 +289,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     insertText($('.save_i__message'), e.detail.unicode)
                                 });
                             </script>
-
+                                 -->
                             <?php
 
                             //UPLOAD
