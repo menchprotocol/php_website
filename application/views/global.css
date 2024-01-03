@@ -1565,14 +1565,7 @@ i, .btn .show-max {
 }
 .i_cache .icon-block-xxs{ width:18px !important; }
 
-.info-td{
-    text-align: right;
-    width: 33% !important;
-}
-.info-td>b{
-    min-width: 64px;
-    display: inline-block;
-}
+
 .icon-block-xs img{
     line-height: 100%;
     width: 21px !important;
@@ -2603,7 +2596,23 @@ h4.main__title{
     margin-bottom: 233px !important;
 }
 
+.info-td{
+    text-align: right;
+    width: 33% !important;
+}
+.info-td>b{
+    min-width: 64px;
+    display: inline-block;
+}
+
 @media (max-width:610px) {
+
+    .info-td{
+        width: 40% !important;
+    }
+    .info-td>b{
+        min-width: 30px;
+    }
 
     .sub_note{ font-size: 1em !important; }
 
