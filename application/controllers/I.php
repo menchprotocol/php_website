@@ -439,6 +439,7 @@ class I extends CI_Controller {
 
 
         //Organize dynamic inputs:
+        //TODO FIXXXXX
         for ($p = 1; $p <= view_memory(6404,42206); $p++) {
             $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
             $dynamic_edit .= '<h3 class="main__title mini-font"></h3>';

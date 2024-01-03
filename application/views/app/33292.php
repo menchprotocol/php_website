@@ -4,6 +4,7 @@ $e__handle = ( isset($_GET['e__handle']) ? $_GET['e__handle'] : null );
 $i__hashtag = ( !$e__handle && isset($_GET['i__hashtag']) ? $_GET['i__hashtag'] : null );
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___42225 = $this->config->item('e___42225'); //MENCH Points
+$e___42263 = $this->config->item('e___42263'); //Link Groups
 
 
 if($e__handle){
@@ -43,12 +44,23 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
-        if(in_array($e__id2, $this->config->item('n___42225'))){
-            echo '<tr class="advanced-stats hidden mobile-shrink mench-coins" title="'.$e___11035[42225]['m__title'].'"><td style="text-align: right;" width="21%">&nbsp;</td><td style="text-align: right;"><span class="mench-coins-col">'.$e___11035[42225]['m__cover'].'</span></td></tr>';
-        }
+        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins"><td style="text-align: right;" width="21%">&nbsp;</td><td style="text-align: right;">'.( in_array($e__id2, $this->config->item('n___42225')) ? '<span class="mench-coins-col" title="'.$e___11035[42225]['m__title'].'">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</td></tr>';
+
+
 
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
-            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'"><td style="text-align: right;" width="21%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td><td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td></tr>';
+
+            $link_group = '';
+            foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
+                $link_group = '<span title="'.$e___42263[$found_link_group]['m__title'].'">'.$e___42263[$found_link_group]['m__cover'].'</span>';
+            }
+
+            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'">';
+            echo '<td style="text-align: center;" width="30px" class="advanced-stats hidden">'.$link_group.'</td>';
+            echo '<td style="text-align: right;" width="21%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td>';
+            echo '<td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td>';
+            echo '</tr>';
+
         }
 
         echo '</table>';
