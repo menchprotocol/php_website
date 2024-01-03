@@ -14,6 +14,15 @@ body {
 }
 
 
+emoji-picker {
+    width: 100%;
+}
+emoji-picker {
+    --num-columns: 5;
+    --emoji-size: 4rem;
+    --background: #EFEFEF;
+}
+
 .table td, .table th {
     padding: 0;
 }
