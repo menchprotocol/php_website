@@ -385,7 +385,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
                                     </td>
                                     <td>
-                                        <!-- DELETE -->
+                                        <!-- EMOJI -->
                                         <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="update__cover('')"><i class="fas fa-trash-alt"></i></a>
                                     </td>
                                     <td>
@@ -395,6 +395,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                 </tr>
                             </table>
+
+                            <emoji-picker></emoji-picker>
 
                             <div class="dynamic_editing_radio"></div>
 
