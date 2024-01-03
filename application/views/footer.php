@@ -394,18 +394,24 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
                                     </td>
                                     <td>
-                                        <!-- EMOJI -->
-                                        <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="update__cover('')"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                    <td>
                                         <!-- UPLOAD -->
                                         <input class="inputfile" type="file" name="file" id="coverUpload" />
-                                        <label class="icon-block" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
+                                        <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
                                     </td>
                                 </tr>
+                                    <td>
+                                        <!-- EMOJI TOGGLE -->
+                                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
+                                    </td>
+                                    <td>
+                                        <!-- Font Awesome -->
+                                        <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+                                    </td>
                             </table>
 
-                            <emoji-picker></emoji-picker>
+                            <div class="emoji-frame hidden">
+                                <emoji-picker></emoji-picker>
+                            </div>
                             <script type="module">
                                 document.querySelector('emoji-picker').addEventListener('emoji-click', e => {
                                     $('.save_e__cover').val(e.detail.unicode);

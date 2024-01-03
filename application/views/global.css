@@ -1566,6 +1566,7 @@ i, .btn .show-max {
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-xxs{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-xxs i{ font-size: 1em !important; }
+.icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
 .icon-block-img img,
