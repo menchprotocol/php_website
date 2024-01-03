@@ -1567,11 +1567,11 @@ i, .btn .show-max {
 
 .info-td{
     text-align: right;
-    width: 21% !important;
+    width: 31% !important;
 }
 .info-td>b{
-    min-width: 50px;
-    background-color: #FF0000;
+    min-width: 64px;
+    display: inline-block;
 }
 .icon-block-xs img{
     line-height: 100%;
