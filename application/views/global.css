@@ -409,7 +409,11 @@ img.no-frame {
 .edit-off .content-image{
     max-height:250px;
 }
+.left_modal_content { padding-right: 13px; }
 
+input.main__title {
+    font-size: 2em;
+}
 
 .aa-dropdown-menu .aa-suggestion,
 .suggestion {

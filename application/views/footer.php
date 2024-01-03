@@ -268,9 +268,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
 
                     <div class="row">
-                        <div class="col-12 col-md-8">
-
-                            <div class="add_notes_form">
+                        <div class="col-12 col-md-7">
+                            <div class="add_notes_form left_modal_content">
                             <form class="box box4736" method="post" enctype="multipart/form-data">
 
                             <!-- Idea Hashtag -->
@@ -304,7 +303,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-5">
                             <div class="dynamic_editing_radio"></div>
                         </div>
                     </div>
@@ -341,26 +340,26 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="row">
                         <div class="col-12 col-md-7">
+                            <div class="left_modal_content">
+                                <!-- Source Handle -->
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">@</span>
+                                    <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
+                                </div>
 
-                            <!-- Source Handle -->
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">@</span>
-                                <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
+                                <!-- Source Title -->
+                                <input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" />
+
+
+                                <div id="upload_results" class="center"></div>
+                                <div class="doclear">&nbsp;</div>
+
+
+                                <!-- Link Message -->
+                                <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
+
+                                <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
                             </div>
-
-                            <!-- Source Title -->
-                            <input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" />
-
-
-                            <div id="upload_results" class="center"></div>
-                            <div class="doclear">&nbsp;</div>
-
-
-                            <!-- Link Message -->
-                            <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
-
-                            <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
-
                         </div>
                         <div class="col-12 col-md-5">
 
