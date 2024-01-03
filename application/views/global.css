@@ -420,7 +420,7 @@ img.no-frame {
     margin: 0;
     display: block;
     text-decoration: none;
-    /* background-color: #FFFFFF; */
+    background-color: transparent;
 }
 
 .list-adder .aa-dropdown-menu,
