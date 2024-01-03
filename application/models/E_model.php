@@ -462,8 +462,8 @@ class E_model extends CI_Model
             //Log transaction new Idea hashtag:
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
-                'x__right' => $add_fields['i__id'],
-                'x__message' => $add_fields['i__hashtag'],
+                'x__right' => $add_fields['e__id'],
+                'x__message' => $add_fields['e__handle'],
                 'x__type' => 42169, //Source Generated Handle
             ));
 
@@ -472,10 +472,8 @@ class E_model extends CI_Model
                 'e__id' => $add_fields['e__id'],
             ));
 
-            if($external_sync){
-                //Update Algolia:
-                update_algolia(12274, $add_fields['e__id']);
-            }
+            //Update Algolia:
+            update_algolia(12274, $add_fields['e__id']);
 
             return $es[0];
 
