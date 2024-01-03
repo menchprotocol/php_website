@@ -409,7 +409,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <script type="module">
                                 document.querySelector('emoji-picker').addEventListener('emoji-click', e => {
                                     $('.save_e__cover').val(e.detail.unicode);
-                                    update_cover_main($(this).val(), '.demo_cover');
+                                    update_cover_main(e.detail.unicode, '.demo_cover');
                                 });
                             </script>
 
