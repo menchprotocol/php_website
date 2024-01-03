@@ -19,8 +19,8 @@ emoji-picker {
 }
 emoji-picker {
     --num-columns: 5;
-    --emoji-size: 4rem;
-    --background: #EFEFEF;
+    --emoji-size: 3rem;
+    --background: #FFFFFF;
 }
 
 .table td, .table th {
