@@ -398,9 +398,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <emoji-picker></emoji-picker>
                             <script type="module">
-                                import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
                                 document.querySelector('emoji-picker').addEventListener('emoji-click', e => {
-                                    insertText($('#previous_used_covers'), e.detail.unicode)
+                                    $('#previous_used_covers').val(e.detail.unicode);
                                 })
                             </script>
 
