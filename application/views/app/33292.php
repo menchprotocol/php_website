@@ -44,7 +44,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
-        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins"><td style="text-align: right;" width="21%">&nbsp;</td><td style="text-align: right;">'.( in_array($e__id2, $this->config->item('n___42225')) ? '<span class="mench-coins-col" title="'.$e___11035[42225]['m__title'].'">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</td></tr>';
+        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins"><td class="info-td">&nbsp;</td><td style="text-align: right;">'.( in_array($e__id2, $this->config->item('n___42225')) ? '<span class="mench-coins-col" title="'.$e___11035[42225]['m__title'].'">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</td></tr>';
 
 
 
@@ -56,8 +56,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].'">';
-            echo '<td style="text-align: right;" width="21%"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td>';
-            echo '<td style="text-align: left;"><span class="icon-block-xxs advanced-stats hidden">'.$link_group.'</span><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td>';
+            echo '<td class="info-td"><span class="icon-block-xxs advanced-stats hidden">'.$link_group.'</span><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td>';
+            echo '<td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td>';
             echo '</tr>';
 
         }

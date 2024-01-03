@@ -1565,6 +1565,14 @@ i, .btn .show-max {
 }
 .i_cache .icon-block-xxs{ width:18px !important; }
 
+.info-td{
+    text-align: right;
+    width: 21% !important;
+}
+.info-td>b{
+    min-width: 50px;
+    background-color: #FF0000;
+}
 .icon-block-xs img{
     line-height: 100%;
     width: 21px !important;
