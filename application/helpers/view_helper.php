@@ -54,13 +54,13 @@ function view_number($number)
 {
 
     if(intval($number) < 1){
-        return '&nbsp;';
+        return null;
     }
 
     //Round & format numbers
 
     if ($number < 950) {
-        return intval($number).'&nbsp;';
+        return intval($number);
     }
 
     if ($number >= 950000000) {
@@ -95,7 +95,7 @@ function view_number($number)
         );
     }
 
-    return round(($number * $formatting['multiplier']), $formatting['decimals']) . $formatting['suffix'].'&nbsp;';
+    return round(($number * $formatting['multiplier']), $formatting['decimals']) . $formatting['suffix'];
 
 }
 
