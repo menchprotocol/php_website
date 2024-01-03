@@ -420,7 +420,7 @@ img.no-frame {
     margin: 0;
     display: block;
     text-decoration: none;
-    background-color: #FFFFFF;
+    /* background-color: #FFFFFF; */
 }
 
 .list-adder .aa-dropdown-menu,
@@ -1131,7 +1131,7 @@ a.headline {
     vertical-align: middle;
 }
 .modal{
-    z-index: 99999 !important;
+    z-index: 9999999 !important;
 }
 
 
@@ -2808,7 +2808,7 @@ h4.main__title{
 }
 
 .custom_ui_13884_13886.home_black_font{
-    background-color:#FFFFFF !important;
+    background-color: #FFFFFF !important;
 }
 
 .custom_ui_13884_13886 .btn-default i,
@@ -2960,7 +2960,7 @@ h4.main__title{
 .custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
 .custom_ui_13884_13885 textarea:not(.editing-mode),
 .custom_ui_13884_13885 .modal-content {
-    background-color:#FFFFFF; /* WAS WHITE */
+    background-color: #FFFFFF; /* WAS WHITE */
     color: #000000;
 }
 .custom_ui_13884_13885 .some-text{
@@ -3049,7 +3049,7 @@ h4.main__title{
 */
 .custom_ui_13884_13885 .doabsolute,
 .custom_ui_13884_13885 .black-background {
-    background-color:#FFFFFF !important;
+    background-color: #FFFFFF !important;
     color: #000000 !important;
 }
 .custom_ui_13884_13885 .nav-pills .nav-link.active {
@@ -4132,7 +4132,7 @@ main {
 
 .container ul.nav-tabs {
     border-bottom: 0px solid #999999 !important;
-    margin: 21px 0 2px;
+    margin: 21px 0 1px;
     font-size: 1.1em;
 }
 
