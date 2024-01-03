@@ -299,7 +299,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     $i_view = 33286;
     $quick_href = '/' . $_GET['i__hashtag'];
 
-} elseif(array_key_exists($first_segment, $this->config->item('handle___6287')) && superpower_unlocked(13422)) {
+} elseif(array_key_exists($first_segment, $this->config->item('handle___6287'))) {
 
     //Source Mode:
     if(array_key_exists($first_segment, $handle___40904) && isset($_GET['i__hashtag'])){
@@ -396,6 +396,7 @@ if(!$basic_header_footer){
                     echo '</td>';
 
 
+                    /*
                     if($i_view > 0){
                         $e___40904 = $this->config->item('e___40904'); //Idea Views
                         echo '<td class="block-menu">';
@@ -428,7 +429,9 @@ if(!$basic_header_footer){
                         echo '<td class="block-x icon_search"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
                     }
 
-                    //TODO Make search available for all by removing this:
+                    */
+
+                    //TODO Make search available for all by removing this later:
                     if(intval(view_memory(6404,12678)) && $member_e && $member_e['e__id']==1){
                         echo '<td class="block-x icon_search '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
                         echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
