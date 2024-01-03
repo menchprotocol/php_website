@@ -352,29 +352,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" />
 
 
-                            <!-- Source Cover -->
-                            <table style="width: 100%; margin-bottom: 21px;">
-                                <tr>
-                                    <td style="width: 100%;">
-                                        <!-- SEARCH -->
-                                        <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
-                                    </td>
-                                    <td>
-                                        <!-- DELETE -->
-                                        <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="update__cover('')"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                    <td>
-                                        <!-- UPLOAD -->
-                                        <input class="inputfile" type="file" name="file" id="coverUpload" />
-                                        <label class="icon-block" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
-                                    </td>
-                                </tr>
-                            </table>
-
                             <div id="upload_results" class="center"></div>
                             <div class="doclear">&nbsp;</div>
-                            <div id="previous_used_covers" class="icons_small"></div>
-                            <div class="doclear">&nbsp;</div>
+
 
                             <!-- Link Message -->
                             <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
@@ -394,6 +374,28 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </div>
                                 </form>
                             </div>
+
+                            <div id="previous_used_covers" class="icons_small"></div>
+                            <div class="doclear">&nbsp;</div>
+
+                            <!-- Source Cover -->
+                            <table style="width: 100%; margin-bottom: 21px;">
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <!-- SEARCH -->
+                                        <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
+                                    </td>
+                                    <td>
+                                        <!-- DELETE -->
+                                        <a class="icon-block" href="javascript:void(0);" title="Clear Cover" onclick="update__cover('')"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                    <td>
+                                        <!-- UPLOAD -->
+                                        <input class="inputfile" type="file" name="file" id="coverUpload" />
+                                        <label class="icon-block" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
+                                    </td>
+                                </tr>
+                            </table>
 
                             <div class="dynamic_editing_radio"></div>
 
