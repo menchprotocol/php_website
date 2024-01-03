@@ -289,9 +289,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             echo '<label class="hidden"></label>';
                             echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
 
-                            //GIF
-                            //echo '<a class="btn btn-compact inline-block" href="javascript:void(0);" onclick="image_api_search()" title="'.$e___11035[14073]['m__title'].'"><span class="icon-block">'.$e___11035[14073]['m__cover'].'</span></a>';
-
                             ?>
 
                             <!-- Link Message -->
@@ -356,12 +353,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                             <!-- Source Cover -->
-                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
                             <table style="width: 100%; margin-bottom: 21px;">
                                 <tr>
                                     <td style="width: 100%;">
                                         <!-- SEARCH -->
-                                        <input id="search_cover" type="text" style="padding-left: 0; padding-right: 0;" class="form-control text-edit border-dotted cover_query algolia_search" placeholder="Search Covers..." data-lpignore="true" />
+                                        <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
                                     </td>
                                     <td>
                                         <!-- DELETE -->
@@ -375,24 +371,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </tr>
                             </table>
 
-
                             <div id="upload_results" class="center"></div>
-                            <div id="img_results_emojis" class="icons_small"></div>
                             <div class="doclear">&nbsp;</div>
-                            <div id="return_covers" class="icons_small"></div>
-                            <div id="img_results_icons" class="icons_small"></div>
+                            <div id="previous_used_covers" class="icons_small"></div>
                             <div class="doclear">&nbsp;</div>
-                            <div id="img_results_local" class="icons_large"></div>
-                            <div id="img_results_tenor" class="icons_large"></div>
-                            <div id="img_results_unsplash" class="icons_large"></div>
-                            <div class="doclear">&nbsp;</div>
-
 
                             <!-- Link Message -->
                             <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
 
                             <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
-
 
                         </div>
                         <div class="col-12 col-md-5">
@@ -420,27 +407,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             </div>
         </div>
     </div>
-
-
-
-
-
-    <!-- GIF Modal -->
-    <div class="modal fade" id="modal14073" tabindex="-1" role="dialog" aria-labelledby="modal14073Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content slim_flat">
-                <div class="modal-header">
-                    <h5 class="modal-title main__title" id="modal14073Label"><?= $e___11035[14073]['m__cover'].' '.$e___11035[14073]['m__title'] ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control text-edit border main__title images_query" placeholder="Search GIFs..." onkeyup="images_search($('.images_query').val())" data-lpignore="true" />
-                    <div class="row new_images margin-top-down hideIfEmpty"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <?php
 

@@ -663,7 +663,7 @@ class E extends CI_Controller
 
 
         //Find Past Selected Icons for Source:
-        $return_covers = array();
+        $previous_used_covers = array();
         $unique_covers = array();
         foreach($this->X_model->fetch(array(
             'x__down' => $_POST['e__id'],
@@ -675,7 +675,7 @@ class E extends CI_Controller
                 $cover = ( substr_count($x__metadata['before'], 'class="') ? one_two_explode('class="','"',$x__metadata['before']) : $x__metadata['before'] );
                 if(strlen($cover) && !in_array($cover, $unique_covers)){
                     array_push($unique_covers, $cover);
-                    array_push($return_covers, array(
+                    array_push($previous_used_covers, array(
                         'cover_preview' => $cover,
                         'cover_apply' => $cover,
                         'new_title' => $x['x__time'],
@@ -688,7 +688,7 @@ class E extends CI_Controller
             'status' => 1,
             'return_inputs' => $return_inputs,
             'return_radios' => $return_radios,
-            'return_covers' => $return_covers, //Past covers for quick editing
+            'previous_used_covers' => $previous_used_covers, //Past covers for quick editing
         );
 
         //Log Modal View:

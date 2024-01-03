@@ -3,70 +3,6 @@
 var has_unsaved_changes = false; //Tracks source/idea modal edits
 
 
-// url Async requesting function
-function images_api_getasync(api_id, query, callback) {
-    // create the request object
-    var xmlHttp = new XMLHttpRequest();
-
-    // set the state change callback to capture when the response comes in
-    xmlHttp.onreadystatechange = function()
-    {
-        if (xmlHttp.readyState==4 && xmlHttp.status==200)
-    {
-        callback(xmlHttp.responseText);
-    }
-    }
-
-        // open as a GET call, pass in the url and set async = True
-        xmlHttp.open("GET", js_e___6404[api_id]['m__message'] + query, true);
-
-        // call send with no params as they were passed in on the url string
-        xmlHttp.send(null);
-
-        return;
-}
-
-
-
-function tenor_search_cover(responsetext) {
-    // parse the json response
-    var response_objects = JSON.parse(responsetext);
-    response_objects["results"].forEach(function(item) {
-        if(!($('#img_results_tenor').html().indexOf(item["media"][0]["nanogif"]["url"]) > -1)){
-            $("#img_results_tenor").append(image_cover(item["media"][0]["nanogif"]["url"], item["media"][0]["gif"]["url"], item["h1_title"].replace("'",'')));
-        }
-    });
-}
-function unsplash_search_cover(responsetext) {
-    var response_objects = JSON.parse(responsetext);
-    response_objects["results"].forEach(function(item) {
-        if(!($('#img_results_unsplash').html().indexOf(item["urls"]["thumb"]) > -1)){
-            var title = item["description"] + ' ' + item["alt_description"];
-            $("#img_results_unsplash").append(image_cover(item["urls"]["thumb"], item["urls"]["regular"], title.replace("'",'')));
-        }
-    });
-}
-
-function tenor_search_box(responsetext) {
-    // parse the json response
-    var response_objects = JSON.parse(responsetext);
-    response_objects["results"].forEach(function(item) {
-        if(!($('.new_images').html().indexOf(item["media"][0]["gif"]["url"]) > -1)) {
-            $(".new_images").append("<div class=\"gif-col col-xl-2 col-lg-3 col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add('" + item["media"][0]["gif"]["url"] + "','" + item["h1_title"].replace("'", '') + "')\"><img src='" + item["media"][0]["tinygif"]["url"] + "' alt='" + item["h1_title"].replace("'", '') + "' /></a></div>");
-        }
-    });
-}
-function unsplash_search_box(responsetext) {
-    // parse the json response
-    var response_objects = JSON.parse(responsetext);
-    response_objects["results"].forEach(function(item) {
-        if(!($('.new_images').html().indexOf(item["urls"]["thumb"]) > -1)) {
-            var title = item["description"] + ' ' + item["alt_description"];
-            $(".new_images").append("<div class=\"gif-col col-xl-2 col-lg-3 col-4\"><a href=\"javascript:void(0);\" onclick=\"images_add('" + item["urls"]["regular"] + "','" + title.replace("'", '') + "')\"><img src='" + item["urls"]["thumb"] + "' alt='" + title.replace("'", '') + "' /></a></div>");
-        }
-    });
-}
-
 
 //Full Story
 if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user other than Shervin
@@ -937,61 +873,6 @@ $(document).ready(function () {
 
         var icons_listed = [];
 
-        //COVER SEARCH
-        $('.cover_query').autocomplete({hint: false, autoselect: false, minLength: 1}, [{
-
-            source: function (q, cb) {
-
-                if(validURL(q)){
-                    //Must be an image URL:
-                    update__cover(q);
-                    return true;
-                }
-
-                $("#upload_results, #return_covers, #img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
-
-                //Tenor:
-                images_api_getasync(25986, q, tenor_search_cover);
-
-                //Unsplash:
-                images_api_getasync(18139, q, unsplash_search_cover);
-
-
-                icons_listed = [];
-                algolia_index.search(q, {
-                    filters: ' _tags:z_14988 OR _tags:z_14038 OR _tags:z_14986 OR _tags:z_20425 OR _tags:z_20426 OR _tags:z_20427 OR _tags:has_image '+ search_and_filter,
-                    hitsPerPage: js_e___6404[31113]['m__message'],
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    //Make sure not already returned:
-                    if(!icons_listed.includes(suggestion.s__cover)) {
-                        icons_listed.push(suggestion.s__cover);
-                        if(validURL(suggestion.s__cover)){
-                            $("#img_results_local").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
-                        } else if (suggestion.s__cover.includes("fa")) {
-                            $("#img_results_icons").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
-                        } else {
-                            $("#img_results_emojis").append(image_cover(suggestion.s__cover, suggestion.s__cover, suggestion.s__title));
-                        }
-                    }
-                    return false;
-                },
-                empty: function (data) {
-                    //Nothing found:
-                    return '<div class="main__title"><i class="fas fa-exclamation-circle"></i> Nothing Found</div>';
-                },
-            }
-        }]);
-
         //TOP SEARCH
         $("#top_search").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
             {
@@ -1421,7 +1302,7 @@ function editor_load_e(e__id, x__id){
 
     //Source resets:
     $('#search_cover').val('');
-    $("#upload_results, #return_covers, #img_results_icons, #img_results_emojis, #img_results_tenor, #img_results_unsplash, #img_results_local").html('');
+    $("#upload_results, #previous_used_covers").html('');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
@@ -1471,9 +1352,9 @@ function editor_load_e(e__id, x__id){
             $('[data-toggle="tooltip"]').tooltip();
 
             //Any Source suggestions to auto load?
-            if(data.return_covers.length){
-                data.return_covers.forEach(function(item) {
-                    $("#return_covers").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
+            if(data.previous_used_covers.length){
+                data.previous_used_covers.forEach(function(item) {
+                    $("#previous_used_covers").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
                 });
             }
 
@@ -1957,34 +1838,8 @@ jQuery.fn.extend({
 
 
 
-function image_api_search(){
-    x_create({
-        x__creator: js_pl_id,
-        x__type: 14576, //MODAL VIEWED
-        x__up: 14073,
-        x__right: fetch_int_val('#focus_id'),
-    });
-    $('#modal14073').modal('show');
-    $('.new_images').html('');
-    $('.images_query').val('');
-    setTimeout(function () {
-        $('.images_query').focus();
-    }, 610);
-}
 
 Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
-
-
-var current_q = '';
-function images_search(q){
-    if(q==current_q){
-        return false;
-    }
-    current_q = q;
-    $('.new_images').html('');
-    images_api_getasync(25986, q, tenor_search_box);
-    images_api_getasync(18139, q, unsplash_search_box);
-}
 
 function images_add(image_url, image_title){
     var current_value = $('.new_i__message').val();
