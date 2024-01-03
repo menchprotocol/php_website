@@ -4132,7 +4132,7 @@ main {
 
 .container ul.nav-tabs {
     border-bottom: 0px solid #999999 !important;
-    margin: 21px 0;
+    margin: 21px 0 2px;
     font-size: 1.1em;
 }
 
@@ -4153,7 +4153,7 @@ main {
 }
 .nav-tabs .nav-link {
     border:0 !important;
-    border-bottom:1px solid transparent !important;
+    border-bottom:2px solid transparent !important;
 }
 
 
