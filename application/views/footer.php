@@ -398,7 +398,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <input class="inputfile" type="file" name="file" id="coverUpload" />
                                         <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
                                     </td>
-                                    <td>
+                                    <td class="hidden">
                                         <!-- EMOJI -->
                                         <a class="icon-block-sm emoji-selector" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
                                     </td>
@@ -408,21 +408,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                 </tr>
                             </table>
-
-                            <script type="module">
-
-                                $(document).ready(function () {
-                                    new EmojiPicker({
-                                        trigger: [
-                                            {
-                                                selector: '.emoji-selector',
-                                                insertInto: '.save_e__cover'
-                                            },
-                                        ],
-                                    });
-                                });
-
-                            </script>
 
                             <div class="dynamic_editing_radio"></div>
 

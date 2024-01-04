@@ -578,86 +578,99 @@ class E extends CI_Controller
             )) as $e_template) {
 
                 //Load template:
-                foreach($this->config->item('e___'.$e_template['x__up']) as $dynamic_e__id => $m) {
+                if(is_array($this->config->item('e___'.$e_template['x__up']))){
 
-                    //Make sure it's a dynamic input field:
-                    if(!in_array($dynamic_e__id, $this->config->item('n___42179'))){
-                        continue;
-                    }
+                    foreach($this->config->item('e___'.$e_template['x__up']) as $dynamic_e__id => $m) {
 
-                    //Let's first determine the data type:
-                    $data_types = array_intersect($m['m__following'], $this->config->item('n___4592'));
-
-                    if(count($data_types)!=1){
-                        //This is strange, we are expecting 1 match only... report this:
-                        $this->X_model->create(array(
-                            'x__type' => 4246, //Platform Bug Reports
-                            'x__creator' => $member_e['e__id'],
-                            'x__up' => 31912, //Edit Source
-                            'x__down' => $dynamic_e__id,
-                            'x__reference' => $_POST['x__id'],
-                            'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
-                        ));
-                        continue; //Go to the next dynamic data type...
-
-                    } elseif ($input_pointer >= view_memory(6404, 42206)) {
-                        //Monitor if we ever reach the maximum:
-                        $this->X_model->create(array(
-                            'x__type' => 4246, //Platform Bug Reports
-                            'x__creator' => $member_e['e__id'],
-                            'x__up' => 42179, //Dynamic Input Fields
-                            'x__down' => $dynamic_e__id,
-                            'x__right' => $_POST['e__id'],
-                            'x__reference' => $_POST['x__id'],
-                            'x__metadata' => $_POST,
-                            'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion...',
-                        ));
-                    }
-
-                    //We found 1 match as expected:
-                    $input_pointer++;
-                    foreach($data_types as $data_type_this){
-                        $data_type = $data_type_this;
-                        break;
-                    }
-                    $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
-
-                    if(in_array($data_type, $this->config->item('n___42188'))){
-
-                        //Single or Multiple Choice:
-                        if(!in_array($dynamic_e__id, $return_unique_inputs)){
-                            array_push($return_unique_inputs, $dynamic_e__id);
-                            $return_radios .= view_radio_e($dynamic_e__id, $es[0]['e__id'], 0);
+                        //Make sure it's a dynamic input field:
+                        if(!in_array($dynamic_e__id, $this->config->item('n___42179'))){
+                            continue;
                         }
 
-                    } else {
+                        //Let's first determine the data type:
+                        $data_types = array_intersect($m['m__following'], $this->config->item('n___4592'));
 
-                        //Fetch the current value:
-                        $d__value = '';
-                        foreach($this->X_model->fetch(array(
-                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__down' => $es[0]['e__id'],
-                            'x__up' => $dynamic_e__id,
-                        )) as $curr_val){
-                            $d__value = $curr_val['x__message'];
-                            break;
-                        }
+                        if(count($data_types)!=1){
+                            //This is strange, we are expecting 1 match only... report this:
+                            $this->X_model->create(array(
+                                'x__type' => 4246, //Platform Bug Reports
+                                'x__creator' => $member_e['e__id'],
+                                'x__up' => 31912, //Edit Source
+                                'x__down' => $dynamic_e__id,
+                                'x__reference' => $_POST['x__id'],
+                                'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
+                            ));
+                            continue; //Go to the next dynamic data type...
 
-                        //Add to main array:
-                        $this_data_type = $this->config->item('e___'.$data_type);
-
-                        if(!in_array($dynamic_e__id, $return_unique_inputs)){
-                            array_push($return_unique_inputs, $dynamic_e__id);
-                            array_push($return_inputs, array(
-                                'd__id' => $dynamic_e__id,
-                                'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                                'd__value' => $d__value,
-                                'd__placeholder' => $this_data_type[$dynamic_e__id]['m__message'],
+                        } elseif ($input_pointer >= view_memory(6404, 42206)) {
+                            //Monitor if we ever reach the maximum:
+                            $this->X_model->create(array(
+                                'x__type' => 4246, //Platform Bug Reports
+                                'x__creator' => $member_e['e__id'],
+                                'x__up' => 42179, //Dynamic Input Fields
+                                'x__down' => $dynamic_e__id,
+                                'x__right' => $_POST['e__id'],
+                                'x__reference' => $_POST['x__id'],
+                                'x__metadata' => $_POST,
+                                'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion...',
                             ));
                         }
+
+                        //We found 1 match as expected:
+                        $input_pointer++;
+                        foreach($data_types as $data_type_this){
+                            $data_type = $data_type_this;
+                            break;
+                        }
+                        $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
+
+                        if(in_array($data_type, $this->config->item('n___42188'))){
+
+                            //Single or Multiple Choice:
+                            if(!in_array($dynamic_e__id, $return_unique_inputs)){
+                                array_push($return_unique_inputs, $dynamic_e__id);
+                                $return_radios .= view_radio_e($dynamic_e__id, $es[0]['e__id'], 0);
+                            }
+
+                        } else {
+
+                            //Fetch the current value:
+                            $d__value = '';
+                            foreach($this->X_model->fetch(array(
+                                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__down' => $es[0]['e__id'],
+                                'x__up' => $dynamic_e__id,
+                            )) as $curr_val){
+                                $d__value = $curr_val['x__message'];
+                                break;
+                            }
+
+                            //Add to main array:
+                            $this_data_type = $this->config->item('e___'.$data_type);
+
+                            if(!in_array($dynamic_e__id, $return_unique_inputs)){
+                                array_push($return_unique_inputs, $dynamic_e__id);
+                                array_push($return_inputs, array(
+                                    'd__id' => $dynamic_e__id,
+                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                                    'd__value' => $d__value,
+                                    'd__placeholder' => $this_data_type[$dynamic_e__id]['m__message'],
+                                ));
+                            }
+                        }
                     }
+
+                } else {
+
+                    //Report Error:
+                    $this->X_model->create(array(
+                        'x__type' => 4246, //Platform Bug Reports
+                        'x__message' => 'editor_load_e() ERROR: @'.$e_template['x__up'].' is NOT in memory cache',
+                    ));
+
                 }
+
             }
         }
 
