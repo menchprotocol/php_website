@@ -2046,7 +2046,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //UNLINK
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
 
-                        } elseif($e__id_dropdown==6178 && $x__id > 0){
+                        } elseif($e__id_dropdown==6178){
 
                             //Delete Permanently
                             $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__access'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
