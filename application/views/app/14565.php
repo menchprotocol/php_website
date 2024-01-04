@@ -202,7 +202,7 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
     .creator_headline_frame{
         display: none;
     }
-    .container_content .msg, .container_content .main__title {
+    .container_content .line {
         color: #FFFFFF !important;
     }
 </style>
