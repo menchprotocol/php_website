@@ -2772,6 +2772,7 @@ h4.main__title{
 .coin-12274.card_cover:hover .cover-content,
 .coin-6287.card_cover:hover .cover-content{
     background: #FFFFFF !important;
+    color: #000000 !important;
 }
 
 .standard-bg,
@@ -2782,7 +2783,7 @@ div.dropdown-item
     background-color: #EFEFEF;
     color: #000000;
 }
-#container_content .msg, #container_content .main__title, #container_content h2, #container_content div, #container_content i, #container_content a {
+.container_content .msg, .container_content .main__title, .container_content h2, .container_content div, .container_content i, .container_content a {
     color: #FFFFFF !important;
 }
 
