@@ -1120,17 +1120,6 @@ a.headline {
     width: calc(100% - 8px) !important;
 }
 
-.platform-navigation {
-    width: 100%;
-}
-
-.platform-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-hint{
-    width: 100%;
-}
-.platform-navigation td {
-    padding:0;
-    vertical-align: middle;
-}
 .modal{
     z-index: 9999999 !important;
 }
@@ -1141,31 +1130,11 @@ a.headline {
     margin:0;
     border: 1px solid #999999 !important;
 }
-.platform-navigation .block-x, .platform-navigation .block-menu {
-    width:34px;
-    margin: 0;
-    padding: 0;
-    line-height: 100% !important;
-    text-align: center;
-    padding-right: 5px;
-}
-
 .block-menu .dropdown i {
     padding-top: 2px;
 }
-.platform-navigation .block-sign-x{
-    width:144px;
-}
-.platform-navigation .block-x a {
-    display: block;
-    text-align: center;
-    margin-left:5px;
-    padding:0px 0px 0px 2px;
-}
 
-.platform-navigation .block-x .fas, .block-x .fal, .block-x .far, .block-x .fad{
-    font-size: 1.2em;
-}
+
 
 .coin-type {
     display: block;
@@ -1377,10 +1346,8 @@ label {
     font-size: 0.8em !important;
 }
 
-.platform-navigation .btn{
-    padding: 0 !important; /*3px 0 1px !important; */
 
-}
+
 
 .coin-cover .btn{
     padding:0px;
@@ -2783,9 +2750,6 @@ div.dropdown-item
     background-color: #EFEFEF;
     color: #000000;
 }
-.container_content .msg, .container_content .main__title {
-    color: #FFFFFF;
-}
 
 .modal-content,
 .mid-text-line span
@@ -2840,7 +2804,6 @@ textarea:not(.editing-mode),
 }
 
 a,
-.platform-navigation a,
 .form-control:not(.editing-mode),
 .form-control:disabled,
 .fa-gif-wrap,
@@ -3921,6 +3884,40 @@ main {
 
 .home_black_font h1 { color:#000000 !important; text-shadow: 1px 1px 3px #FFFFFF; }
 .home_white_font h1 { color:#FFFFFF !important; text-shadow: 1px 1px 3px #000000; }
+
+.platform-navigation .block-x, .platform-navigation .block-menu {
+    width:34px;
+    margin: 0;
+    padding: 0;
+    line-height: 100% !important;
+    text-align: center;
+    padding-right: 5px;
+}
+.platform-navigation .block-sign-x{
+    width:144px;
+}
+.platform-navigation .block-x a {
+    display: block;
+    text-align: center;
+    margin-left:5px;
+    padding:0px 0px 0px 2px;
+}
+
+.platform-navigation .block-x .fas, .block-x .fal, .block-x .far, .block-x .fad{
+    font-size: 1.2em;
+}
+
+.platform-navigation, .platform-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-hint{
+    width: 100%;
+}
+.platform-navigation td {
+    padding:0;
+    vertical-align: middle;
+}
+.platform-navigation .btn{
+    padding: 0 !important; /*3px 0 1px !important; */
+}
+
 
 .halfbg .halfbg,
 .halfbg .i_cache>span,

@@ -202,6 +202,9 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
     .creator_headline_frame{
         display: none;
     }
+    .container_content .msg, .container_content .main__title {
+        color: #FFFFFF !important;
+    }
 </style>
 <script>
     $(window).scroll(function() {
