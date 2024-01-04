@@ -416,7 +416,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         trigger: [
                                             {
                                                 selector: '.emoji-selector',
-                                                insertInto: ['.save_e__cover'] // '.selector' can be used without array
+                                                insertInto: '.save_e__cover'
                                             },
                                         ],
                                     });
