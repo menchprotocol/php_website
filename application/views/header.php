@@ -28,7 +28,7 @@ if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
 }
 
 //Generate Body Class String:
-$body_class = ' custom_ui_13884_13885 platform-'.$s__type; //Always append current coin
+$body_class = ' platform-'.$s__type; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     if($member_e){
         //Look at their session:
@@ -252,9 +252,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                 echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 0; } ';
                 echo ' .top-header-position.fixed-top { background: none !important; } ';
                 echo ' .i_cache>span u, .i_cache>span a { line-height: 100% !important; padding:0 !important; } ';
-
-                //Force Dark Mode:
-                $body_class = str_replace('custom_ui_13884_13885','custom_ui_13884_13886', $body_class);
 
             }
         }

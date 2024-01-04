@@ -1041,10 +1041,6 @@ a.headline {
     display: block;
 }
 
-.custom_ui_13884_13885.item-13885 .icon-block.change-results i {
-    color: #000 !important;
-}
-
 .full-text{
     width: 100%;
     height: 200px;
@@ -2426,14 +2422,6 @@ input.form-control {
     background-color: transparent;
 }
 
-.custom_ui_13884_13886 .white-border {
-    border:1px solid #999999 !important;
-    border-radius: 21px;
-}
-.custom_ui_13884_13885 .white-border {
-    border:1px solid #000000 !important;
-    border-radius: 21px;
-}
 
 .first_btn{
     padding-right: 13px !important;
@@ -2755,221 +2743,65 @@ h4.main__title{
 
 
 
-
-
-
-/* DARK */
-.custom_ui_13884_13886 hr {
-    border-top: 1px solid #999999;
-}
-
-.custom_ui_13884_13886 .modal-header .btn-close {
-    background-color: #CCCCCC;
-}
-
-
-.custom_ui_13884_13886 .light-bg,
-.custom_ui_13884_13886 .fixed-top{
-    background: rgba(16,16,16,0.89);
-}
-
-.custom_ui_13884_13886 .coin-12274 .cover-content,
-.custom_ui_13884_13886 .coin-12274.mini-cover .cover-content,
-.custom_ui_13884_13886 .coin-12274.not-allowed .cover-content,
-.custom_ui_13884_13886 .coin-12274.ready-only .cover-content,
-.custom_ui_13884_13886 .coin-6287 .cover-content,
-.custom_ui_13884_13886 .coin-6287.mini-cover .cover-content,
-.custom_ui_13884_13886 .coin-6287.not-allowed .cover-content,
-.custom_ui_13884_13886 .coin-6287.ready-only .cover-content
-{
-    background: rgba(16,16,16,0.80) !important;
-}
-.custom_ui_13884_13886 .search_bar,
-.custom_ui_13884_13886 .card_cover.contrast_bg:hover,
-.custom_ui_13884_13886 .coin-12274.card_cover:hover .cover-content,
-.custom_ui_13884_13886 .coin-6287.card_cover:hover .cover-content{
-    background: #000000 !important;
-}
-
-.custom_ui_13884_13886 body,
-.custom_ui_13884_13886 .table-striped tbody tr,
-.custom_ui_13884_13886 .x-list,
-.custom_ui_13884_13886 .accordion .card,
-.custom_ui_13884_13886 .btn-block,
-.custom_ui_13884_13886 textarea:not(.editing-mode),
-.custom_ui_13884_13886 .form-control:not(.editing-mode),
-.custom_ui_13884_13886 .form-control:disabled,
-.custom_ui_13884_13886 .edit-locked span,
-.custom_ui_13884_13886 .chat-title span,
-.custom_ui_13884_13886 div.dropdown-item,
-.custom_ui_13884_13886 .standard-bg{
-    background-color:#000000;
-    color: #FFFFFF;
-}
-.custom_ui_13884_13886,
-.custom_ui_13884_13886 .modal-content,
-.custom_ui_13884_13886 .mid-text-line span{
-    background-color:#101010 !important;
-    color: #FFFFFF;
-}
-
-.custom_ui_13884_13886.home_black_font{
-    background-color: #FFFFFF !important;
-}
-
-.custom_ui_13884_13886 .btn-default i,
-.custom_ui_13884_13886 .dropdown-menu,
-.custom_ui_13884_13886 .aa-dropdown-menu .aa-suggestion, .suggestion,
-.custom_ui_13884_13886 .algolia-autocomplete .aa-dropdown-menu{
-    background-color:#000000 !important;
-    color: #FFFFFF !important;
-}
-
-
-.custom_ui_13884_13886 .new-note:not(.editing-mode),
-.custom_ui_13884_13886 .some-text{
-    background-color:transparent !important;
-    color: #FFFFFF !important;
-}
-
-
-.custom_ui_13884_13886 .coin-12273 .cover-content .main__title,
-.custom_ui_13884_13886 .coin-12273 .cover-content a button,
-.custom_ui_13884_13886 .list-group-item,
-.custom_ui_13884_13886 .cover-content .main__title,
-.custom_ui_13884_13886 .cover-content,
-.custom_ui_13884_13886 .texttype__lg,
-.custom_ui_13884_13886 .nav-tabs .nav-link.active,
-.custom_ui_13884_13886 .coinType12273 i.zq12273,
-.custom_ui_13884_13886 .coinType6255 i.zq6255,
-.custom_ui_13884_13886 .btn-12273 i.zq12273,
-.custom_ui_13884_13886 .nav-title i,
-.custom_ui_13884_13886 .controller-nav,
-.custom_ui_13884_13886 .grey-background,
-.custom_ui_13884_13886 .grey-background i,
-.custom_ui_13884_13886 .card_reverse .black-background i{
-    color: #FFFFFF !important;
-}
-
-.custom_ui_13884_13886 .breadcrumb-item .btn,
-.custom_ui_13884_13886 .btn-close,
-.custom_ui_13884_13886 .cover-btn i,
-.custom_ui_13884_13886 .icon-block i,
-.custom_ui_13884_13886 .platform-navigation a,
-.custom_ui_13884_13886 .main__title,
-.custom_ui_13884_13886 a,
-.custom_ui_13884_13886 .close span,
-.custom_ui_13884_13886 .fa-gif-wrap,
-.custom_ui_13884_13886 .btn,
-.custom_ui_13884_13886 .btn:hover{
-    color: #FFFFFF;
-}
-
-.custom_ui_13884_13886 .btn-12274,
-.custom_ui_13884_13886 .btn.btn-12274,
-.custom_ui_13884_13886 .nav-tabs,
-.custom_ui_13884_13886 .dropdown-menu,
-.custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
-.custom_ui_13884_13886 .nav-tabs .nav-x.active,
-.custom_ui_13884_13886 .nav-tabs .nav-x:focus,
-.custom_ui_13884_13886 .nav-tabs .nav-x:hover,
-.custom_ui_13884_13886 .btn.btn-default,
-.custom_ui_13884_13886 .modal-content,
-.custom_ui_13884_13886 .fa-gif-wrap,
-.custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-link{
-    border-color: #999999 !important;
-}
-.custom_ui_13884_13886 .nav-tabs .nav-item.show .nav-x,
-.custom_ui_13884_13886 .nav-tabs .nav-x.active,
-.custom_ui_13884_13886 .nav-tabs .nav-x:focus,
-.custom_ui_13884_13886 .nav-tabs .nav-x:hover {
-    border-bottom-color: #000000 !important;
-}
-
-.custom_ui_13884_13886 .black-background {
-    border:1px solid #000000;
-}
-
-.custom_ui_13884_13886 .doborderless .black-background {
-    border:1px solid #000000 !important;
-}
-.custom_ui_13884_13886 .nav-tabs .nav-link.active,
-.custom_ui_13884_13886 .black-background i{
-    color: #FFFFFF;
-}
-
-
-.custom_ui_13884_13886 .doabsolute, .custom_ui_13884_13886 .black-background {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-}
-
-
 .nav-pills .nav-link.active {
     color: #000000 !important;
     background-color: #FFFFFF !important;
 }
-.custom_ui_13884_13886 .nav-counter {
-    color:#FFFFFF;
-}
-
-
-
-
 
 
 
 
 /* LIGHT WHITE */
 
-.custom_ui_13884_13885 .light-bg {
+.light-bg {
     background: rgba(239,239,239,0.89) !important;
 }
-.custom_ui_13884_13885 .fixed-top{
+.fixed-top{
     background: rgba(239,239,239,1.00) !important;
 }
 
-.custom_ui_13884_13885 .coin-12274 .cover-content,
-.custom_ui_13884_13885 .coin-12274.not-allowed .cover-content,
-.custom_ui_13884_13885 .coin-6287 .cover-content,
-.custom_ui_13884_13885 .coin-6287.not-allowed .cover-content{
+.coin-12274 .cover-content,
+.coin-12274.not-allowed .cover-content,
+.coin-6287 .cover-content,
+.coin-6287.not-allowed .cover-content{
     background: rgba(239,239,239,0.80) !important;
 }
 
-.custom_ui_13884_13885 .search_bar,
-.custom_ui_13884_13885 .card_cover.contrast_bg:hover,
-.custom_ui_13884_13885 .coin-12274.card_cover:hover .cover-content,
-.custom_ui_13884_13885 .coin-6287.card_cover:hover .cover-content{
+.search_bar,
+.card_cover.contrast_bg:hover,
+.coin-12274.card_cover:hover .cover-content,
+.coin-6287.card_cover:hover .cover-content{
     background: #FFFFFF !important;
 }
 
-.custom_ui_13884_13885 .standard-bg,
-.custom_ui_13884_13885 body,
-.custom_ui_13884_13885 .chat-title span,
-.custom_ui_13884_13885 div.dropdown-item
+.standard-bg,
+body,
+.chat-title span,
+div.dropdown-item
 {
     background-color: #FFFFFF;
     color: #000000;
 }
-.custom_ui_13884_13885,
-.custom_ui_13884_13885 .modal-content,
-.custom_ui_13884_13885 .mid-text-line span
+
+
+.modal-content,
+.mid-text-line span
 {
     background-color: #EFEFEF !important;
     color: #000000;
 }
-.custom_ui_13884_13885 .x-list,
-.custom_ui_13884_13885 .accordion .card,
-.custom_ui_13884_13885 .btn-block,
-.custom_ui_13884_13885 .dropdown-menu,
-.custom_ui_13884_13885 .algolia-autocomplete .aa-dropdown-menu,
-.custom_ui_13884_13885 .aa-dropdown-menu .aa-suggestion, .suggestion,
-.custom_ui_13884_13885 textarea:not(.editing-mode),
-.custom_ui_13884_13885 .modal-content {
+.x-list,
+.accordion .card,
+.btn-block,
+.dropdown-menu,
+.algolia-autocomplete .aa-dropdown-menu,
+.aa-dropdown-menu .aa-suggestion, .suggestion,
+textarea:not(.editing-mode),
+.modal-content {
     background-color: #FFFFFF; /* WAS WHITE */
     color: #000000;
 }
-.custom_ui_13884_13885 .some-text{
+.some-text{
     background-color:transparent !important;
     color: #000000;
 }
@@ -2977,92 +2809,92 @@ h4.main__title{
 
 .alert a,
 .alert i,
-.custom_ui_13884_13885 .coin-12273 .cover-content .main__title,
-.custom_ui_13884_13885 .coin-12273 .cover-content a button,
-.custom_ui_13884_13885 .list-group-item,
-.custom_ui_13884_13885 .cover-content .main__title,
-.custom_ui_13884_13885 .cover-content,
-.custom_ui_13884_13885 .texttype__lg,
-.custom_ui_13884_13885 .btn-default i,
-.custom_ui_13884_13885 .coinType12273 i.zq12273,
-.custom_ui_13884_13885 .coinType6255 i.zq6255,
-.custom_ui_13884_13885 .btn-12273 i.zq12273,
-.custom_ui_13884_13885 .new-note:not(.editing-mode),
-.custom_ui_13884_13885 .controller-nav,
-.custom_ui_13884_13885 .nav-title i,
-.custom_ui_13884_13885 .grey-background,
-.custom_ui_13884_13885 .grey-background i,
-.custom_ui_13884_13885 .card_reverse .black-background i{
+.coin-12273 .cover-content .main__title,
+.coin-12273 .cover-content a button,
+.list-group-item,
+.cover-content .main__title,
+.cover-content,
+.texttype__lg,
+.btn-default i,
+.coinType12273 i.zq12273,
+.coinType6255 i.zq6255,
+.btn-12273 i.zq12273,
+.new-note:not(.editing-mode),
+.controller-nav,
+.nav-title i,
+.grey-background,
+.grey-background i,
+.card_reverse .black-background i{
     color: #000000 !important;
 }
 
-.custom_ui_13884_13885 .breadcrumb-item .btn,
-.custom_ui_13884_13885 .btn-close,
-.custom_ui_13884_13885 .cover-btn i,
-.custom_ui_13884_13885 .black-background i,
-.custom_ui_13884_13885 .form-control:focus {
+.breadcrumb-item .btn,
+.btn-close,
+.cover-btn i,
+.black-background i,
+.form-control:focus {
     color: #000000;
 }
 
-.custom_ui_13884_13885 a,
-.custom_ui_13884_13885 .platform-navigation a,
-.custom_ui_13884_13885 .form-control:not(.editing-mode),
-.custom_ui_13884_13885 .form-control:disabled,
-.custom_ui_13884_13885 .fa-gif-wrap,
-.custom_ui_13884_13885 .btn,
-.custom_ui_13884_13885 .btn:hover{
+a,
+.platform-navigation a,
+.form-control:not(.editing-mode),
+.form-control:disabled,
+.fa-gif-wrap,
+.btn,
+.btn:hover{
     color: #000000;
 }
 
-.custom_ui_13884_13885 .black-background {
+.black-background {
     border:1px solid #999999;
 }
-.custom_ui_13884_13885 .doborderless .black-background {
+.doborderless .black-background {
     border:1px solid #999999 !important;
 }
 .btn-tiny{
     font-size: 0.69em !important;
 }
-.custom_ui_13884_13885 .btn-12274,
-.custom_ui_13884_13885 .btn.btn-12274,
-.custom_ui_13884_13885 .nav-tabs,
-.custom_ui_13884_13885 .dropdown-menu,
-.custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
-.custom_ui_13884_13885 .nav-tabs .nav-x.active,
-.custom_ui_13884_13885 .nav-tabs .nav-x:focus,
-.custom_ui_13884_13885 .nav-tabs .nav-x:hover,
-.custom_ui_13884_13885 .btn.btn-default,
-.custom_ui_13884_13885 .fa-gif-wrap
+.btn-12274,
+.btn.btn-12274,
+.nav-tabs,
+.dropdown-menu,
+.nav-tabs .nav-item.show .nav-x,
+.nav-tabs .nav-x.active,
+.nav-tabs .nav-x:focus,
+.nav-tabs .nav-x:hover,
+.btn.btn-default,
+.fa-gif-wrap
 {
     border-color: #999999 !important;
 }
 
-.custom_ui_13884_13885 .inner-content .texttype__lg,
-.custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-link{
+.inner-content .texttype__lg,
+.nav-tabs .nav-item.show .nav-link{
     border-color: #999999 !important;
 }
-.custom_ui_13884_13885 .nav-tabs .nav-item.show .nav-x,
-.custom_ui_13884_13885 .nav-tabs .nav-x.active,
-.custom_ui_13884_13885 .nav-tabs .nav-x:focus,
-.custom_ui_13884_13885 .nav-tabs .nav-x:hover {
+.nav-tabs .nav-item.show .nav-x,
+.nav-tabs .nav-x.active,
+.nav-tabs .nav-x:focus,
+.nav-tabs .nav-x:hover {
     border-bottom-color: #FFFFFF !important; /* WAS WHITE */
 }
 
 /*
-.custom_ui_13884_13885 .coinType12273,
-.custom_ui_13884_13885 .coinType12274,
-.custom_ui_13884_13885 .coinType6255,
+.coinType12273,
+.coinType12274,
+.coinType6255,
 */
-.custom_ui_13884_13885 .doabsolute,
-.custom_ui_13884_13885 .black-background {
+.doabsolute,
+.black-background {
     background-color: #FFFFFF !important;
     color: #000000 !important;
 }
-.custom_ui_13884_13885 .nav-pills .nav-link.active {
+.nav-pills .nav-link.active {
     background-color:#000000 !important;
     color: #FFFFFF !important;
 }
-.custom_ui_13884_13885 .nav-counter {
+.nav-counter {
     color:#000000;
 }
 
@@ -3791,15 +3623,6 @@ h4.main__title{
 }
 
 
-.custom_ui_13884_13885 .go-next {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-}
-
-.custom_ui_13884_13886 .go-next {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-}
 
 .alert * {
     color: #000000 !important;
@@ -3897,18 +3720,11 @@ h4.main__title{
 }
 
 
-.custom_ui_13884_13886 .btn-6255 {
-    color: #000000 !important;
-    background-color: #FFFFFF !important;
-}
-.custom_ui_13884_13886 .btn-6255 i {
-    color: #000000 !important;
-}
-.custom_ui_13884_13885 .btn-6255 {
+.btn-6255 {
     color: #FFFFFF !important;
     background-color: #000000 !important;
 }
-.custom_ui_13884_13885 .btn-6255 i {
+.btn-6255 i {
     color: #FFFFFF !important;
 }
 
@@ -3923,20 +3739,14 @@ h4.main__title{
 }
 
 
-.custom_ui_13884_13885 .glossy-bg .list-group-item {
+.glossy-bg .list-group-item {
     background-color: rgba(0, 0, 0, 0.69) !important;
     color: #000000 !important;
 }
-.custom_ui_13884_13885 .cover-link,
-.custom_ui_13884_13885 .coinType12273 {
+.cover-link,
+.coinType12273 {
     background-color: rgba(255, 255, 255, 0.69) !important;
     color: #000000 !important;
-}
-.custom_ui_13884_13886 .cover-link,
-.custom_ui_13884_13886 .coinType12273,
-.custom_ui_13884_13886 .glossy-bg .list-group-item {
-    background-color: rgba(0, 0, 0, 0.69) !important;
-    color: #FFFFFF !important;
 }
 
 hr {
