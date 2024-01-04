@@ -399,8 +399,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
                                     </td>
                                     <td>
-                                        <!-- EMOJI TOGGLE -->
-                                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
+                                        <!-- EMOJI -->
+                                        <a class="icon-block-sm emoji-selector" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
                                     </td>
                                     <td>
                                         <!-- Font Awesome -->
@@ -409,14 +409,19 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </tr>
                             </table>
 
-                            <div class="emoji-frame hidden">
-                                <emoji-picker></emoji-picker>
-                            </div>
                             <script type="module">
-                                document.querySelector('emoji-picker').addEventListener('emoji-click', e => {
-                                    $('.save_e__cover').val(e.detail.unicode);
-                                    update_cover_main(e.detail.unicode, '.demo_cover');
+
+                                $(document).ready(function () {
+                                    new EmojiPicker({
+                                        trigger: [
+                                            {
+                                                selector: '.emoji-selector',
+                                                insertInto: ['.save_e__cover'] // '.selector' can be used without array
+                                            },
+                                        ],
+                                    });
                                 });
+
                             </script>
 
                             <div class="dynamic_editing_radio"></div>

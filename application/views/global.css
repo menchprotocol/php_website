@@ -13,16 +13,6 @@ body {
     line-height: 128%;
 }
 
-
-emoji-picker {
-    width: 100%;
-}
-emoji-picker {
-    --num-columns: 3;
-    --emoji-size: 3rem;
-    --background: #FFFFFF;
-}
-
 .table td, .table th {
     padding: 0;
 }
