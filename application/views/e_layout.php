@@ -24,7 +24,7 @@ if(!$member_e['e__id'] && in_array($e['e__id'], $this->config->item('n___14870')
 
 //Focus Source:
 echo '<div class="main_item row justify-content">';
-echo view_card_e(4251, $e, null);
+echo view_card_e(42287, $e, null);
 echo '</div>';
 
 
