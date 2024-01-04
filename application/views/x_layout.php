@@ -63,6 +63,12 @@ if(isset($_GET['delete'])){
             ), array(), 0))){
             //Good to delete:
 
+            //Delete all transactions:
+            $links_removed = $this->E_model->remove($x['e__id'], $member_e['e__id'], 0);
+            $this->E_model->update($x['e__id'], array(
+                'e__access' => 6178,
+            ), true, $member_e['e__id']);
+
         } else {
             //Issues:
             echo '<div>Cannot delete <a href="/@'.$x['e__handle'].'">@'.$x['e__handle'].'</a>.</div>';
