@@ -2015,13 +2015,13 @@ function view_card_e($x__type, $e, $extra_class = null)
                     $focus_dropdown = 28792; //Source/Idea Dropdown
                 }
 
-                if(@$CI->config->item('e___'.$focus_dropdown)){
+                if(is_array($CI->config->item('e___'.$focus_dropdown))){
                     foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
                         //Skip if missing superpower:
                         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_dropdown['m__following']);
                         if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-                            continue;
+                            //continue;
                         }
 
                         $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
