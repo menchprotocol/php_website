@@ -1197,7 +1197,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
                     field_counter++;
                     $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
-                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).val(item["d__value"]);
+                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).val(item["d__value"]);
+
                 }
 
                 //Dynamic Radio fields (if any):
@@ -1344,7 +1345,7 @@ function editor_load_e(e__id, x__id){
                 field_counter++;
                 $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                 $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
-                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).val(item["d__value"]).attr('d__id',item["d__id"]);
+                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).val(item["d__value"]);
             }
 
             //Dynamic Radio fields (if any):

@@ -1011,6 +1011,16 @@ function get_server($var_name){
     return ( isset($_SERVER[$var_name]) ? $_SERVER[$var_name] : null );
 }
 
+function html_input_type($data_type){
+    $CI =& get_instance();
+    $e___42291 = $CI->config->item('e___42291'); //HTML Input Types
+    if(isset($e___42291[$data_type]['x__message']) && strlen($e___42291[$data_type]['x__message'])){
+        return $e___42291[$data_type]['x__message'];
+    } else {
+        //Default option:
+        return 'text';
+    }
+}
 
 function upload_to_cdn($file_url, $x__creator = 0, $x__metadata = null, $is_local = false, $page_title = null)
 {
