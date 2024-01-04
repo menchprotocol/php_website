@@ -545,6 +545,7 @@ input.main__title {
 .nav-link {
     display: block;
     padding:5px 0px;
+    color: #000000;
 }
 
 .modal-footer{
