@@ -46,6 +46,8 @@ $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || c
 
 if(isset($_GET['delete'])){
 
+    boost_power();
+
     foreach($this->X_model->fetch(array(
         'x__up' => $_GET['delete'],
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS

@@ -827,6 +827,10 @@ class E_model extends CI_Model
 
     function remove($e__id, $x__creator = 0, $migrate_s__id = 0){
 
+        if($e__id<1){
+            return 0;
+        }
+
         //Fetch all SOURCE LINKS:
         $x_adjusted = 0;
 
