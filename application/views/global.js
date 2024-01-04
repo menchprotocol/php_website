@@ -1839,16 +1839,6 @@ jQuery.fn.extend({
 
 
 
-
-Math.fmod = function (a,b) { return Number((a - (Math.floor(a / b) * b)).toPrecision(8)); };
-
-function images_add(image_url, image_title){
-    var current_value = $('.new_i__message').val();
-    $('#modal14073').modal('hide');
-    $('.new_i__message').val(( current_value.length ? current_value+"\n\n" : '' ) + image_url + '?e__title='+encodeURI(image_title));
-}
-
-
 function x_set_start_text(){
     $('.x_set_class_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);

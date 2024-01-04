@@ -44,6 +44,33 @@ $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || c
 )));
 
 
+if(isset($_GET['delete'])){
+
+    foreach($this->X_model->fetch(array(
+        'x__up' => $_GET['delete'],
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array('x__down'), 0) as $x) {
+
+        if(count($this->X_model->fetch(array(
+                'x__down' => $x['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ), array(), 0))<=2 && !count($this->X_model->fetch(array(
+                'x__up' => $x['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ), array(), 0))){
+            //Good to delete:
+
+        } else {
+            //Issues:
+            echo '<div>Cannot delete <a href="/@'.$x['e__handle'].'">@'.$x['e__handle'].'</a>.</div>';
+        }
+
+    }
+
+}
 
 /*
  *
