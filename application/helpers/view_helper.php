@@ -996,6 +996,20 @@ function idea_author($i__id){
     return ( $member_e ? $member_e['e__id'] : 14068 );
 }
 
+function idea_creation_time($i__id){
+    foreach($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+        'x__right' => $i__id,
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
+        return $x['x__time'];
+    }
+    //Now:
+    return date("Y-m-d H:i:s");
+}
+
+
+
 function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     /*
@@ -1266,6 +1280,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 }
 
                 $CI->X_model->create(array(
+                    'x__time' => idea_creation_time($save_i__id),
                     'x__type' => $x__type,
                     'x__creator' => $member_e['e__id'],
                     'x__message' => $x__message,
