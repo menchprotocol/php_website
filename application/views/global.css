@@ -3343,8 +3343,8 @@ a,
 }
 .last-right-col{
     float: right;
-    width: 55px;
-    text-align: right;
+    width: 65px;
+    text-align: left;
 }
 .last-right-col .mench-coins {
     margin-left: 5px;
