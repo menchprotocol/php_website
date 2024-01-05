@@ -44,7 +44,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
-        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins"><td class="info-td">&nbsp;</td><td style="text-align: right;">'.( in_array($e__id2, $this->config->item('n___42225')) ? '<span class="mench-coins-col" title="'.$e___11035[42225]['m__title'].'">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</td></tr>';
+        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins"><td style="text-align: right;">'.( in_array($e__id2, $this->config->item('n___42225')) ? '<span class="mench-coins-col" title="'.$e___11035[42225]['m__title'].'">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</td></tr>';
 
 
 
