@@ -1840,7 +1840,13 @@ function write_access_e($e__handle, $member_e = array()){
         //Member has Advance source editing superpower
         || superpower_unlocked(13422)
 
-
+        //If Source Follows this Member
+        || count($CI->X_model->fetch(array(
+            'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__up' => $member_e['e__id'],
+            'LOWER(e__handle)' => strtolower($e__handle),
+        ), array('x__down')))
 
     );
 
