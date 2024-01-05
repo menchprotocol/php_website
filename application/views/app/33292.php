@@ -53,9 +53,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
                 if(!$focus_link_group || $focus_link_group!=$found_link_group){
-                    echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-                    echo '<td class="info-td"><span class="icon-block-xxs">'.$e___42263[$found_link_group]['m__cover'].'</span></td>';
-                    echo '<td style="text-align: left; font-weight: bold;">'.$e___42263[$found_link_group]['m__title'].'</td>';
+                    echo '<tr class="mobile-shrink">';
+                    echo '<td class="info-td" colspan="2" style="text-align: left; font-weight: bold;"><span class="icon-block-xxs">'.$e___42263[$found_link_group]['m__cover'].'</span>'.$e___42263[$found_link_group]['m__title'].'</td>';
                     echo '</tr>';
                     $focus_link_group = $found_link_group;
                 }
