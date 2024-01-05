@@ -984,6 +984,18 @@ function view_i_links($i, $replace_links = true){
     return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).view_list_e($i, 0, !$replace_links);
 }
 
+function idea_author($i__id){
+    foreach($this->X_model->fetch(array(
+        'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+        'x__right' => $i__id,
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
+        return $x['x__up'];
+    }
+    $member_e = superpower_unlocked();
+    return ( $member_e ? $member_e['e__id'] : 14068 );
+}
+
 function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     /*
@@ -1037,7 +1049,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     $replace_from = array();
     $replace_to = array();
-
 
     //See what we can find:
     $i__cache = '<div class="i_cache">';
@@ -1250,7 +1261,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     }
                 } else {
                     $x__type = $db_type; //Message URLs
-                    $x__up = domain_source($db_val); //The Domain Source
+                    $x__up = idea_author($save_i__id);
                     $x__message = $db_val;
                 }
 
