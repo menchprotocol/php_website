@@ -2566,6 +2566,14 @@ h4.main__title{
     min-width: 64px;
     display: inline-block;
 }
+.last-right-col{
+    float: right;
+    width: 65px;
+    text-align: left;
+}
+.last-right-col .mench-coins {
+    margin-left: 5px;
+}
 
 @media (max-width:610px) {
 
@@ -2574,6 +2582,9 @@ h4.main__title{
     }
     .info-td>b{
         min-width: 48px;
+    }
+    .last-right-col{
+        width: 55px;
     }
 
     .sub_note{ font-size: 1em !important; }
@@ -3341,14 +3352,7 @@ a,
     color: #FC1B44 !important;
     font-style: italic;
 }
-.last-right-col{
-    float: right;
-    width: 65px;
-    text-align: left;
-}
-.last-right-col .mench-coins {
-    margin-left: 5px;
-}
+
 
 
 /* SHAPE: Rounded Square */
