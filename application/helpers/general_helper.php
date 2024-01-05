@@ -1014,11 +1014,11 @@ function get_server($var_name){
 function html_input_type($data_type){
     $CI =& get_instance();
     $e___42291 = $CI->config->item('e___42291'); //HTML Input Types
-    if(isset($e___42291[$data_type]['x__message'])){
-        return $e___42291[$data_type]['x__message'];
+    if(isset($e___42291[$data_type]['m__message']) && strlen($e___42291[$data_type]['m__message'])){
+        return $e___42291[$data_type]['m__message'];
     } else {
         //Default option:
-        return 'text'.$data_type.$e___42291[$data_type]['x__message'];
+        return 'text';
     }
 }
 
