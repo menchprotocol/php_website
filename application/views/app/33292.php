@@ -61,7 +61,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;"><span class="icon-block-xxs">&nbsp;</span><span class="icon-block-xxs">'.$m3['m__cover'].'</span><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b> '.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td>';
+            echo '<td style="text-align: left;"><span class="icon-block-xxs">&nbsp;</span><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].' <b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b> <span class="advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'">'.( isset($e___42225[$e__id3]['m__message']) ? 'x'.intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td>';
             echo '</tr>';
 
         }
