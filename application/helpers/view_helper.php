@@ -985,10 +985,11 @@ function view_i_links($i, $replace_links = true){
 }
 
 function idea_author($i__id){
-    foreach($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+    $CI =& get_instance();
+    foreach($CI->X_model->fetch(array(
+        'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
         'x__right' => $i__id,
-        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__up'];
     }
@@ -997,10 +998,11 @@ function idea_author($i__id){
 }
 
 function idea_creation_time($i__id){
-    foreach($this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+    $CI =& get_instance();
+    foreach($CI->X_model->fetch(array(
+        'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
         'x__right' => $i__id,
-        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__time'];
     }
