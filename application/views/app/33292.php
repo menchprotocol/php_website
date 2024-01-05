@@ -26,14 +26,14 @@ echo '<div class="center miscstats hideIfEmpty"></div>';
 
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
-    echo '<h3 class="center centerh advanced-stats hidden grey card_frame_'.$e__id1.'"><span class="icon-block">'.$m1['m__cover'].'</span><b class="card_count_'.$e__id1.'"><i class="far fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</h3>';
+    echo '<h3 class="center centerh advanced-stats hidden grey"><span class="icon-block">'.$m1['m__cover'].'</span><b class="card_count_'.$e__id1.'"><i class="far fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</h3>';
 
 
-    echo '<div class="row justify-content list-covers card_frame_'.$e__id1.'">';
+    echo '<div class="row justify-content list-covers">';
     
     foreach($this->config->item('e___'.$e__id1) as $e__id2 => $m2) {
 
-        echo '<div class="card_cover no-padding col-6 card_frame_'.$e__id2.( !in_array($e__id2, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
+        echo '<div class="card_cover no-padding col-6 '.( !in_array($e__id2, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
         echo '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id2.'" e__id="'.$e__id2.'">';
 
         echo '<div title="'.$m2['m__message'].'">';
@@ -48,17 +48,21 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 
 
+        $focus_link_group = 0;
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
 
-            $link_group = '&nbsp;';
-            $link_title = false;
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
-                $link_group = $e___42263[$found_link_group]['m__cover'];
-                $link_title = 'Link Group: '.$e___42263[$found_link_group]['m__title'];
+                if(!$focus_link_group || $focus_link_group!=$found_link_group){
+                    echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
+                    echo '<td class="info-td"><span class="icon-block-xxs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td>';
+                    echo '<td style="text-align: left;">'.$e___42263[$found_link_group]['m__title'].'</td>';
+                    echo '</tr>';
+                    $focus_link_group = $found_link_group;
+                }
             }
 
-            echo '<tr class="mobile-shrink card_frame_'.$e__id3.'" title="'.$m3['m__message'].( strlen($m3['m__message']) && $link_title ? ' | ' : '' ).$link_title.'" data-toggle="tooltip" data-placement="top">';
-            echo '<td class="info-td"><span class="icon-block-xxs advanced-stats hidden">'.$link_group.'</span><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td>';
+            echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
+            echo '<td class="info-td"><span class="icon-block-xxs advanced-stats hidden">&nbsp;</span><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></td>';
             echo '<td style="text-align: left;"><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="mench-coins-col advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'"> '.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']) : '' ).'</span></td>';
             echo '</tr>';
 
@@ -87,10 +91,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
             //Update stats numbers:
             data.return_array.forEach(function(item) {
-                if(!item.sub_counter){
-                    //TODO Maybe Hide this item?
-                    //$(".card_frame_"+item.sub_id).addClass('hidden');
-                } else if (item.sub_counter != $(".card_count_"+item.sub_id+":first").text()){
+                if (item.sub_counter != $(".card_count_"+item.sub_id+":first").text()){
                     $(".card_count_"+item.sub_id).removeClass('hidden').text(item.sub_counter).hide().fadeIn().hide().fadeIn();
                 }
             });

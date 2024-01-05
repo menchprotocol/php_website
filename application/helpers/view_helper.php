@@ -1249,7 +1249,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     }
                 } else {
                     $x__type = 42172; //Message URLs
-                    $x__up = $db_type;
+                    $x__up = $db_type; //The Domain Source
                     $x__message = $db_val;
                 }
 
