@@ -3341,12 +3341,12 @@ a,
     color: #FC1B44 !important;
     font-style: italic;
 }
-.mench-coins-col{
+.last-right-col{
     float: right;
-    width: 34px;
-    text-align: center;
+    width: 55px;
+    text-align: right;
 }
-.mench-coins-col .mench-coins {
+.last-right-col .mench-coins {
     margin-left: 5px;
 }
 

@@ -44,7 +44,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
-        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins"><td style="text-align: right;" colspan="2">'.( in_array($e__id2, $this->config->item('n___42225')) ? '<span class="mench-coins-col" title="'.$e___11035[42225]['m__title'].'">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</td></tr>';
+        echo '<tr class="advanced-stats hidden mobile-shrink mench-coins"><td style="text-align: right;" colspan="2">'.( in_array($e__id2, $this->config->item('n___42225')) ? '<span class="last-right-col" title="'.$e___11035[42225]['m__title'].'">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</td></tr>';
 
 
 
@@ -61,7 +61,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;"><span class="icon-block-xxs">&nbsp;</span><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].' <span class="advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'">'.( isset($e___42225[$e__id3]['m__message']) ? 'x'.intval($e___42225[$e__id3]['m__message']) : '' ).'</span><span class="mench-coins-col" title="'.$e___11035[42225]['m__title'].'"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span></td>';
+            echo '<td style="text-align: left;"><span class="icon-block-xxs">&nbsp;</span><span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].' <span class="advanced-stats hidden mench-coins" title="'.$e___11035[42225]['m__title'].'">'.( isset($e___42225[$e__id3]['m__message']) ? 'x'.intval($e___42225[$e__id3]['m__message']) : '' ).'</span><span class="last-right-col" title="'.$e___11035[42225]['m__title'].'"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span></td>';
             echo '</tr>';
 
         }
