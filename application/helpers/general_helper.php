@@ -1018,7 +1018,7 @@ function html_input_type($data_type){
         return $e___42291[$data_type]['x__message'];
     } else {
         //Default option:
-        return 'text';
+        return 'text'.$data_type;
     }
 }
 
