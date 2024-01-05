@@ -170,7 +170,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         if($remind_status<0 || $remind_status>0){
             //We are done with this reminder request:
             $this->X_model->update($i['x__id'], array(
-                'x__type' => ($remind_status>0 ? 32264 /* Agree */ : 31840 /* Disagree */),
+                'x__type' => ($remind_status>0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }
 
@@ -294,7 +294,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         if (!$end_sending || $end_sending < time()) {
             //Ready to be done:
             $this->X_model->update($i['x__id'], array(
-                'x__type' => ($total_sent > 0 ? 32264 /* Agree */ : 31840 /* Disagree */),
+                'x__type' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }
 

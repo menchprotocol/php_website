@@ -116,7 +116,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         if(!$end_sending || $end_sending<time()){
             //Ready to be done:
             $this->X_model->update($i['x__id'], array(
-                'x__type' => ( $total_sent > 0 ? 32264 /* Agree */ : 31840 /* Disagree */ ),
+                'x__type' => ( $total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */ ),
             ));
         }
 
