@@ -622,7 +622,7 @@ class E extends CI_Controller
                             $data_type = $data_type_this;
                             break;
                         }
-                        $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
+                        $is_required = in_array($dynamic_e__id , $this->config->item('n___42174')); //Required Settings
 
                         if(in_array($data_type, $this->config->item('n___42188'))){
 
@@ -825,7 +825,7 @@ class E extends CI_Controller
                         $data_type = $data_type_this;
                         break;
                     }
-                    $is_required = in_array($data_type, $this->config->item('n___42174')); //Required Settings
+                    $is_required = in_array($dynamic_e__id, $this->config->item('n___42174')); //Required Settings
                     if(!isset($_POST['save_dynamic_' . $input_pointer])){
                         $_POST['save_dynamic_' . $input_pointer] = '';
                     } else {

@@ -1198,7 +1198,6 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
                     $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
                     $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).val(item["d__value"]);
-
                 }
 
                 //Dynamic Radio fields (if any):

@@ -571,7 +571,7 @@ class X_model extends CI_Model
                     $data_type = $data_type_this;
                     break;
                 }
-                $is_required = in_array($data_type , $this->config->item('n___42174')); //Required Settings
+                $is_required = in_array($dynamic_e__id , $this->config->item('n___42174')); //Required Settings
                 
                 if(!$is_required){
                     //We are only interested in what is required...
