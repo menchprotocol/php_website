@@ -492,12 +492,9 @@ class E_model extends CI_Model
         }
     }
 
-    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('e__id' => 'DESC'), $select = '*', $group_by = null)
     {
 
-        if(!count($order_columns)){
-            $order_columns = sort__e();
-        }
         //Fetch the target sources:
         $this->db->select($select);
         $this->db->from('table__e');
