@@ -1575,7 +1575,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $ui .= '<div class="creator_headline_frame">';
 
     $link_user = 0;
-    if($x__id && isset($i['x__creator'])){
+    if(!$discovery_mode && $x__id && isset($i['x__creator'])){
         $link_user = $i['x__creator'];
         foreach($CI->E_model->fetch(array(
             'e__id' => $i['x__creator'],
