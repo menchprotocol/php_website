@@ -803,7 +803,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'e__access IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-           ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
+           ), array('x__down'), 0, 0, sort__e());
 
            foreach($CI->X_model->fetch(array(
                'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1005,6 +1005,13 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
+}
+
+function sort__e(){
+    return array(
+        'x__weight' => 'ASC', //Applies if sources have been manually sorted
+        'x__time' => 'DESC' //Always applies
+    );
 }
 
 function get_server($var_name){

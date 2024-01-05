@@ -11,7 +11,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
+), array('x__down'), 0, 0, sort__e()) as $app) {
 
     if(!in_array($app['e__id'], $this->config->item('n___6287')) || in_array($app['e__id'], $this->config->item('n___32141'))){ //Hidden Apps?
         continue;
@@ -36,7 +36,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC')) as $app) {
+), array('x__down'), 0, 0, sort__e()) as $app) {
 
     if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?
         continue;

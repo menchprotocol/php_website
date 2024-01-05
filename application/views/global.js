@@ -1245,6 +1245,9 @@ function editor_save_i(){
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31911 .save_dynamic_'+i).attr('d__id').length){
             modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31911 .save_dynamic_'+i).val().trim();
+        } else {
+            //Should be the end of variables:
+            break;
         }
     }
 
@@ -1397,6 +1400,9 @@ function editor_save_e(){
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31912 .save_dynamic_'+i).attr('d__id').length){
             modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
+        } else {
+            //Should be the end of variables:
+            break;
         }
     }
 

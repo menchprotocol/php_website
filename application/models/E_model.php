@@ -262,7 +262,7 @@ class E_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-        ), array('x__down'), 0, 0, array('x__weight' => 'ASC', 'e__title' => 'ASC'));
+        ), array('x__down'), 0, 0, sort__e());
 
         //Remove if not in the secondary group:
         foreach($all_results as $key => $primary_list){
@@ -492,9 +492,12 @@ class E_model extends CI_Model
         }
     }
 
-    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('e__title' => 'ASC'), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
     {
 
+        if(!count($order_columns)){
+            $order_columns = sort__e();
+        }
         //Fetch the target sources:
         $this->db->select($select);
         $this->db->from('table__e');
@@ -531,7 +534,7 @@ class E_model extends CI_Model
 
         if($x__type==12274 || $x__type==11029){
             //Downwards:
-            $order_columns = array('x__weight' => 'ASC', 'e__title' => 'ASC');
+            $order_columns = sort__e();
             $joins_objects = array('x__down');
             $query_filters = array(
                 'x__up' => $e__id,
