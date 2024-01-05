@@ -265,57 +265,43 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
-                    <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+                    <!-- Idea Hashtag -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">#</span>
+                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                    </div>
 
-                    <div class="row">
-                        <div class="col-12 col-md-7">
-                            <div class="add_notes_form left_modal_content">
-                            <form class="box box4736" method="post" enctype="multipart/form-data">
+                    <!-- Idea Message -->
+                    <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
 
-                            <!-- Idea Hashtag -->
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">#</span>
-                                <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
-                            </div>
+                    <?php
 
-                            <!-- Idea Message -->
-                            <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    //UPLOAD
+                    echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
+                    echo '<label class="hidden"></label>';
+                    echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
 
-                                <!--
-                            <emoji-picker></emoji-picker>
-                            <script type="module">
-                                import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
-                                document.querySelector('emoji-picker').addEventListener('emoji-click', e => {
-                                    insertText($('.save_i__message'), e.detail.unicode)
-                                });
-                            </script>
-                                 -->
-                            <?php
+                    ?>
 
-                            //UPLOAD
-                            echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
-                            echo '<label class="hidden"></label>';
-                            echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].' '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
-
-                            ?>
-
+                    <div class="add_notes_form left_modal_content">
+                        <form class="box box4736" method="post" enctype="multipart/form-data">
                             <!-- Link Message -->
                             <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>
+                        </form>
+                    </div>
 
 
-
-
+                    <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+                    <div class="row">
+                        <div class="col-12 col-md-7">
                             <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
-
-
-                            </form>
-                            </div>
-
                         </div>
                         <div class="col-12 col-md-5">
                             <div class="dynamic_editing_radio"></div>
                         </div>
                     </div>
+
+
                 </div>
 
                 <div class="modal-footer">
@@ -347,47 +333,45 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
 
+
+                    <!-- Source Handle -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
+                    </div>
+
+                    <!-- Source Title -->
+                    <input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" />
+
+
+                    <div id="upload_results" class="center"></div>
+                    <div class="doclear">&nbsp;</div>
+
+
+                    <!-- Link Message -->
+                    <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
+
+
+
                     <div class="row">
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
-                                <!-- Source Handle -->
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">@</span>
-                                    <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="Source Handle" maxlength="<?= view_memory(6404,41985) ?>">
+                                <!-- IMAGE PREVIEW -->
+                                <div class="coverUploader"> <!-- IMAGE DROP -->
+                                    <form class="box coverUpload" method="post" enctype="multipart/form-data">
+                                        <a name="preview_cover" style="height: 1px; display: none;">&nbsp;</a>
+                                        <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important;">
+                                            <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                            <!-- <div class="cover-content"><div class="inner-content"><span></span></div></div> -->
+                                        </div>
+                                    </form>
                                 </div>
-
-                                <!-- Source Title -->
-                                <input type="text" required placeholder="Source Title" class="form-control main__title unsaved_warning save_e__title" />
-
-
-                                <div id="upload_results" class="center"></div>
-                                <div class="doclear">&nbsp;</div>
-
-
-                                <!-- Link Message -->
-                                <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
-
-                                <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
                             </div>
                         </div>
                         <div class="col-12 col-md-5">
 
-                            <!-- IMAGE DROP -->
-                            <div class="coverUploader">
-                                <form class="box coverUpload" method="post" enctype="multipart/form-data">
-                                    <a name="preview_cover" style="height: 1px; display: none;">&nbsp;</a>
-                                    <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important;">
-                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                                        <!-- <div class="cover-content"><div class="inner-content"><span></span></div></div> -->
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div id="previous_used_covers" class="icons_small"></div>
-                            <div class="doclear">&nbsp;</div>
-
                             <!-- Source Cover -->
-                            <table style="width: 100%; margin-bottom: 21px;">
+                            <table style="width: 100%;">
                                 <tr>
                                     <td style="width: 100%;">
                                         <!-- COVER CODE -->
@@ -409,10 +393,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </tr>
                             </table>
 
-                            <div class="dynamic_editing_radio"></div>
+                            <div id="previous_used_covers" class="icons_small"></div>
 
                         </div>
                     </div>
+
+                    <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                    <div class="dynamic_editing_radio"></div>
+
                 </div>
 
                 <div class="modal-footer">

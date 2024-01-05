@@ -1196,10 +1196,8 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             'x__right' => $save_i__id,
         )) as $x){
 
-            $reference_type = ( $x['x__type']==42172 ? $x['x__up'] : $x['x__type'] );
-
             //Is this still valid?
-            if(!in_array($x['x__message'], $i__references[$reference_type])){
+            if(!in_array($x['x__message'], $i__references[$x['x__type']])){
 
                 //Not valid, must be removed:
                 $CI->X_model->update($x['x__id'], array(
@@ -1214,9 +1212,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 $sync_stats['old_links_kept']++;
 
                 //Remove from add new to DB list (Since we dont need to add this):
-                foreach($references_add_to_db[$reference_type] as $key=>$val){
+                foreach($references_add_to_db[$x['x__type']] as $key=>$val){
                     if($val==$x['x__message']){
-                        unset($references_add_to_db[$reference_type][$key]);
+                        unset($references_add_to_db[$x['x__type']][$key]);
                         break;
                     }
                 }
@@ -1248,8 +1246,8 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         $x__up = $target['e__id'];
                     }
                 } else {
-                    $x__type = 42172; //Message URLs
-                    $x__up = $db_type; //The Domain Source
+                    $x__type = $db_type; //Message URLs
+                    $x__up = domain_source($db_val); //The Domain Source
                     $x__message = $db_val;
                 }
 
