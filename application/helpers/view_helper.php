@@ -1002,6 +1002,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4258 => array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v'), //Video URL
         4259 => array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'), //Audio URL
         4260 => array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif'), //Image URL
+        42185 => array('pdf','doc','docx','odt','xls','xlsx','ods','ppt','pptx','txt'), //Document URL
     );
 
     //Display Images, Audio, Video & PDF Files:
@@ -1013,8 +1014,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4258 => array(), //Video URL
         4259 => array(), //Audio URL
         4260 => array(), //Image URL
+        42185 => array(), //Document URL
 
-        4257 => array(), //YouTUbe URL
+        4257 => array(), //YouTube URL
         4256 => array(), //Generic URL
 
         31834 => array(), //Idea Reference
@@ -1028,6 +1030,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4260 => '<img src="%s" class="content-image" /><!-- %s -->',
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
         4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting" style="margin-top:5px;"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
+        42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download Document</spanaa>',
         31834 => '<spanaa href="/%s">%s</spanaa>',
         31835 => '<spanaa href="/@%s">%s</spanaa>',
     );
