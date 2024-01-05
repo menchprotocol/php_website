@@ -1313,6 +1313,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
+    $focus_source = ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $member_e && $member_e['e__id'] ? $member_e['e__id'] : ( $x__id && isset($i['x__creator']) ? $i['x__creator'] : 0 ) ) );
     $link_creator = isset($i['x__creator']) && $i['x__creator']==$member_e['e__id'];
 
     if(!$focus_e){
@@ -1337,11 +1338,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     }
 
     $has_discovered = false;
-    if(!$cache_app && isset($member_e['e__id'])){
+
+    if(!$cache_app && $focus_source){
         $discoveries = $CI->X_model->fetch(array(
             'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__creator' => $member_e['e__id'],
+            'x__creator' => $focus_source,
             'x__left' => $i['i__id'],
         ));
         $has_discovered = count($discoveries);
@@ -1583,7 +1585,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     }
 
 
-    //Show Creator, if any, and if different than linker:
+    //Show Creator, if any, and if different from linker:
     foreach($CI->X_model->fetch(array(
         'x__type' => 4250,
         'x__up !=' => $link_user,
