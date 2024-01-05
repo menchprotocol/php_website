@@ -157,7 +157,7 @@ if(isset($_GET['go2'])) {
         //linked to any currency?
         if(count($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 4983, //IDEA SOURCES
+            'x__type' => 4983, //Co-Author
             'x__right' => $ticket['x__right'],
             'x__up IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //PUBLIC
         )))){
@@ -169,7 +169,7 @@ if(isset($_GET['go2'])) {
         $updated++;
         $this->X_model->create(array(
             'x__creator' => $member_e['e__id'],
-            'x__type' => 4983, //IDEA SOURCES
+            'x__type' => 4983, //Co-Author
             'x__up' => 26092,
             'x__right' => $ticket['x__right'],
         ));

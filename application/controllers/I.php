@@ -507,10 +507,10 @@ class I extends CI_Controller {
 
                 } elseif(!count($values)){
 
-                    //Create Link:
+                    //Create New Link:
                     $this->X_model->create(array(
                         'x__creator' => $member_e['e__id'],
-                        'x__type' => 4983, //IDEA SOURCES
+                        'x__type' => 4983, //Co-Author
                         'x__up' => $dynamic_e__id,
                         'x__right' => $is[0]['i__id'],
                         'x__message' => $_POST['save_dynamic_'.$input_pointer],

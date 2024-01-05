@@ -461,13 +461,22 @@ class E extends CI_Controller
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )));
 
-            //Add Reference:
-            $ur2 = $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 4983, //IDEA SOURCES
+
+            //Add Reference (If not already) since we are adding this source from an Idea:
+            if(!count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
                 'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
-            ));
+                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            )))){
+                $ur2 = $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__type' => 4983, //Co-Author
+                    'x__up' => $focus_e['e__id'],
+                    'x__right' => $fetch_o[0]['i__id'],
+                ));
+            }
+
 
         } else {
 
@@ -1098,12 +1107,21 @@ class E extends CI_Controller
                     'x__down' => $_POST['down_e__id'],
                 ));
             } elseif($_POST['right_i__id']){
-                $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
+
+                if(!count($this->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
                     'x__up' => $_POST['selected_e__id'],
-                    'x__type' => 4983, //IDEA SOURCES
                     'x__right' => $_POST['right_i__id'],
-                ));
+                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )))){
+                    $this->X_model->create(array(
+                        'x__creator' => $member_e['e__id'],
+                        'x__type' => 4983, //Co-Author
+                        'x__up' => $_POST['selected_e__id'],
+                        'x__right' => $_POST['right_i__id'],
+                    ));
+                }
+
             }
         }
 

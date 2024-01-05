@@ -526,13 +526,13 @@ class I_model extends CI_Model
 
         //Add if not added as the follower:
         if(!count($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___13550')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
             'x__up' => $x__creator,
             'x__right' => $i_new['i__id'],
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )))){
             $this->X_model->create(array(
-                'x__type' => 4983, //IDEA SOURCES
+                'x__type' => 4983, //Co-Author
                 'x__creator' => $x__creator,
                 'x__up' => $x__creator,
                 'x__right' => $i_new['i__id'],
@@ -546,9 +546,14 @@ class I_model extends CI_Model
             'x__type' => 41011, //PINNED FOLLOWER
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x_pinned) {
-            if(!in_array($x_pinned['x__up'], $e_appended)){
+            if(!in_array($x_pinned['x__up'], $e_appended) && !count($this->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+                    'x__up' => $x_pinned['x__up'],
+                    'x__right' => $i_new['i__id'],
+                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )))){
                 $this->X_model->create(array(
-                    'x__type' => 4983, //IDEA SOURCES
+                    'x__type' => 4983, //Co-Author
                     'x__creator' => $x__creator,
                     'x__up' => $x_pinned['x__up'],
                     'x__right' => $i_new['i__id'],
@@ -588,9 +593,14 @@ class I_model extends CI_Model
 
         } else {
 
-            if(!in_array($focus_e[0]['e__id'], $e_appended)){
+            if(!in_array($focus_e[0]['e__id'], $e_appended) && !count($this->X_model->fetch(array(
+                    'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+                    'x__up' => $focus_e[0]['e__id'],
+                    'x__right' => $i_new['i__id'],
+                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )))){
                 $this->X_model->create(array(
-                    'x__type' => 4983, //IDEA SOURCES
+                    'x__type' => 4983, //Co-Author
                     'x__creator' => $x__creator,
                     'x__up' => $focus_e[0]['e__id'],
                     'x__right' => $i_new['i__id'],
