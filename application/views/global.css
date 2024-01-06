@@ -86,6 +86,11 @@ body {
     height: 0;
     padding-bottom: 56.25%;
 }
+#list-in-42294 .ytframe{
+    margin: 0;
+    padding-bottom: 93.5%;
+    margin-bottom: -377px;
+}
 .ytframe iframe {
     position: absolute;
     top: 0;
@@ -2563,7 +2568,7 @@ h4.main__title{
     padding-bottom: 100%;
 }
 
-.square .i_cache {
+.square img {
     position: absolute;
     width: 100%;
     height: 100%;
