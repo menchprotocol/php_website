@@ -2695,12 +2695,6 @@ h4.main__title{
     }
     .content-image{ max-height:144px; }
 
-    .list-group-item:hover .inline-on-hover,
-    .card_cover:hover .inline-on-hover,
-
-    .form-control-thick { padding-left: 26px; }
-
-
     .media-content, .x__message img, .x__message video, .i_content img { max-width: 100%; }
     .content-image {
         max-height: 100%;
