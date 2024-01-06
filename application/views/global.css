@@ -3453,6 +3453,11 @@ a,
     justify-content: center !important;
 }
 
+#list-in-42294{
+    justify-content: left !important;
+}
+
+
 .content-image,
 .media-content{
     margin:0;
