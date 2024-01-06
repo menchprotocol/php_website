@@ -2593,14 +2593,11 @@ h4.main__title{
     margin-left: 5px;
 }
 .card_covers .btn {
-    padding: 7px;
+    padding: 3px;
 }
 
 @media (max-width:610px) {
 
-    .card_covers .btn {
-        padding: 3px;
-    }
     .info-td{
         width: 40% !important;
     }
