@@ -89,6 +89,7 @@ body {
 #list-in-42294 .ytframe{
     margin: 0;
     padding-bottom: 93.5%;
+    margin-bottom: -144px;
 }
 .ytframe iframe {
     position: absolute;
