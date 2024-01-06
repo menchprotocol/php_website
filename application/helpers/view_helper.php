@@ -1319,9 +1319,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
 }
 
-function view_media($media_url){
+function view_media($media_url, $link){
     $view_links = view_sync_links($media_url, true);
-    return '<div class="card_cover card_i_cover contrast_bg col-4 no-padding"><div class="square">'.$view_links['i__cache'].'</div></div>';
+    return '<div class="card_cover card_i_cover contrast_bg col-4 no-padding"><a href="'.$link.'" class="square">'.$view_links['i__cache'].'</a></div>';
 }
 
 function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $focus_e = false){
@@ -1335,7 +1335,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
 
     if($x__type==42294 && $x__id && filter_var($i['x__message'], FILTER_VALIDATE_URL)){
-        return view_media($i['x__message']);
+        return view_media($i['x__message'], '/~'.$i['i__hashtag']);
     }
 
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
@@ -1938,7 +1938,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
 
     if($x__type==42294 && $x__id && filter_var($e['x__message'], FILTER_VALIDATE_URL)){
-        return view_media($e['x__message']);
+        return view_media($e['x__message'], '/@'.$e['e__handle']);
     }
 
     $access_locked = in_array($e['e__access'], $CI->config->item('n___32145')); //Locked Dropdown
