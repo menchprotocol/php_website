@@ -317,7 +317,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_card_i(12273, 0, null, $i, $focus_e);
+            $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -333,7 +333,7 @@ function view_body_e($x__type, $counter, $e__id){
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
-            $ui .= view_card_i(6255, 0, null, $i, $focus_e);
+            $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
         }
         $ui .= '</div>';
 
@@ -405,7 +405,7 @@ function view_body_i($x__type, $counter, $i__id){
         //Sources
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e_ref){
-            $ui .= view_card_e($e_ref['x__type'], $e_ref, null);
+            $ui .= view_card_e($x__type, $e_ref, null);
         }
         $ui .= '</div>';
 
