@@ -23,8 +23,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                 //They have confirmed, remove:
                 $this->X_model->update($x['x__id'], array(
-                    'x__type' => 31022, //Skipped
-                    'x__message' => 31022, //Skipped
+                    'x__type' => 42333, //RSVP No
                 ), $x['e__id'], 42251 /* Member Skipped Event */);
 
                 //Notify and give option to go to starting point:
