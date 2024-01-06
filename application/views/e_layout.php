@@ -45,7 +45,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
         if(in_array($x__type, $this->config->item('n___42261'))){
 
             //ADD IDEAS
-            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-11 container-center"><div class="list-group"><div class="list-group-item dropdown_'.$x__type.' list-adder">
+            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_'.$x__type.' list-adder">
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
@@ -55,7 +55,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
         } elseif(in_array($x__type, $this->config->item('n___11028'))){
 
             //ADD SOURCES
-            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-11 container-center"><div class="dropdown_'.$x__type.' list-adder">
+            $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
