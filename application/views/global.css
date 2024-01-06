@@ -2554,6 +2554,27 @@ h4.main__title{
     margin:34px 0 8px 0;
 }
 
+
+.square {
+    position: relative;
+    margin: 5px;
+}
+
+.square::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
+
+.square img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+
 .slim_flat{
     margin-bottom: 233px !important;
 }
