@@ -1882,14 +1882,11 @@ i, .btn .show-max {
     z-index: 999;
 }
 
-.card_covers{
+.card_covers {
     width: 100%;
     height: 44px;
     text-align: center;
-    margin:0;
-}
-.card_covers .btn {
-    padding: 7px;
+    margin: 0;
 }
 
 
@@ -2595,9 +2592,15 @@ h4.main__title{
 .last-right-col .mench-coins {
     margin-left: 5px;
 }
+.card_covers .btn {
+    padding: 7px;
+}
 
 @media (max-width:610px) {
 
+    .card_covers .btn {
+        padding: 3px;
+    }
     .info-td{
         width: 40% !important;
     }
