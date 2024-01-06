@@ -2070,6 +2070,9 @@ input.form-control {
     padding:8px 0 !important;
     border-bottom: 1px solid #999999;
 }
+.focus-cover.coinface-12273{
+    border-bottom: 0px solid transparent;
+}
 .flip-content .card_cover.coin-6255{
     border-bottom: 0px solid;
 }
