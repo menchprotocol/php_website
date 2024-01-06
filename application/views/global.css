@@ -10,7 +10,7 @@ body {
     font-size: 1em;
     margin:60px 0 144px 0 !important;
     font-weight: 400;
-    line-height: 128%;
+    line-height: 111%;
 }
 
 
@@ -866,7 +866,7 @@ p.menu_header {
 }
 
 textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    line-height: 128%;
+    line-height: 111%;
 }
 
 
@@ -1521,14 +1521,14 @@ i, .btn .show-max {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 111% !important; }
 .nav>.nav-item>.nav-link>.icon-block { width:30px !important; }
 #searchFrontForm .icon-block { width:30px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
-.icon-block-xxs{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+.icon-block-xxs{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 111% !important; }
 .icon-block-xxs i{ font-size: 1em !important; }
-.icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
-.icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 128% !important; }
+.icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 111% !important; }
+.icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 111% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
 .icon-block-img img,
 .icon-block-lg img,
@@ -1872,7 +1872,7 @@ i, .btn .show-max {
 }
 .subtle-line{
     display: inline-block;
-    line-height: 128%;
+    line-height: 111%;
     padding: 5px 0;
 }
 .mini-font{
@@ -2158,7 +2158,7 @@ input.form-control {
 .mini-cover .cover-content .inner-content {
     margin: 0;
     padding: 0;
-    line-height: 128%;
+    line-height: 111%;
     font-size: 0.75em;
     display: block;
     border-radius: 0;
@@ -2351,7 +2351,7 @@ input.form-control {
     padding:144px 21px 21px;
     font-size: 2.5em;
     text-align: center;
-    line-height: 128%;
+    line-height: 111%;
 }
 .info_box_cover{
     padding:21px 0;
@@ -2380,7 +2380,7 @@ input.form-control {
     text-align: center;
     font-size: 1.15em;
     padding: 0 21px;
-    line-height: 128%;
+    line-height: 111%;
 }
 .info_box_message{
     text-align: center;
@@ -2475,7 +2475,7 @@ textarea {
 }
 .focus-cover .inner-content .main__title {
     font-size: 1.15em;
-    line-height: 128%;
+    line-height: 111%;
     padding: 13px !important;
 }
 
@@ -2513,7 +2513,7 @@ textarea {
 .message2{
     padding:5px 0 0 25px;
     font-size:0.70em;
-    line-height: 128%;
+    line-height: 111%;
     white-space: normal;
 }
 
@@ -2600,8 +2600,17 @@ h4.main__title{
 .card_covers .btn {
     padding: 3px;
 }
+.i_cache .first_line{
+    font-size: 2em;
+    padding-bottom: 8px;
+    line-height: 111%;
+}
 
 @media (max-width:610px) {
+
+    .i_cache .first_line{
+        font-size: 1.3em;
+    }
 
     .info-td{
         width: 40% !important;
@@ -3418,10 +3427,7 @@ a,
     width: 100%;
 }
 
-.i_cache .first_line{
-    font-size: 1.4em;
-    padding-bottom: 8px;
-}
+
 .remove_first_line .first_line{
     display: none;
 }
