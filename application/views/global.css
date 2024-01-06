@@ -2555,6 +2555,7 @@ h4.main__title{
 .square {
     position: relative;
     margin: 0.5px;
+    max-height: 189px;
 }
 
 .square::after {
