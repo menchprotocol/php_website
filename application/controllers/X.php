@@ -868,12 +868,12 @@ class X extends CI_Controller
 
         if(!count($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Tickets
             'x__creator' => $member_e['e__id'],
             'x__left' => $is[0]['i__id'],
         )))){
-            //Ticket Issued:
-            $this->X_model->mark_complete(26595, $member_e['e__id'], $_POST['top_i__id'], $is[0], array(
+            //Free Ticket:
+            $this->X_model->mark_complete(42332, $member_e['e__id'], $_POST['top_i__id'], $is[0], array(
                 'x__weight' => $_POST['paypal_quantity'],
             ));
         }
