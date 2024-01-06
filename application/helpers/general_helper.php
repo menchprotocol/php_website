@@ -1852,55 +1852,6 @@ function write_access_e($e__handle, $member_e = array()){
 
 }
 
-function domain_source($url){
-
-    $CI =& get_instance();
-
-    //Finds/creates a domain sources under @Website @1326
-    if(!filter_var($url, FILTER_VALIDATE_URL)){
-        return 42293; //Unknown Domain!
-    }
-
-    $parse = parse_url($url);
-    $member_e = superpower_unlocked();
-    $x__creator = ( $member_e ? $member_e['e__id'] : 14068 );
-
-    if(strlen($parse['host'])){
-
-        $domain_name = strtolower($parse['host']);
-        $domain_url = 'https://'.$domain_name;
-        foreach($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC
-            'x__up' => 1326, //@Website
-            'x__message' => $domain_url,
-        ), array('x__down')) as $e){
-            return intval($e['e__id']);
-        }
-
-        //Still here? Not found: Let's make one:
-        $added_e = $CI->E_model->verify_create($domain_name, $x__creator, 'far fa-browser');
-        if($added_e['status']){
-
-            //Link to website:
-            $CI->X_model->create(array(
-                'x__creator' => $x__creator,
-                'x__type' => 4230,
-                'x__up' => 1326,
-                'x__down' => $added_e['new_e']['e__id'],
-                'x__message' => $domain_url,
-            ));
-
-            return intval($added_e['new_e']['e__id']);
-
-        }
-    }
-
-    return 42293; //Unknown Domain!
-
-}
-
 function write_access_i($i__hashtag){
 
     $member_e = superpower_unlocked();
