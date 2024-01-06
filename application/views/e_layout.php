@@ -49,7 +49,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
-                           placeholder="'.$e___11035[14016]['m__title'].'">
+                           placeholder="+ Add '.$m['m__title'].'">
                 </div></div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         } elseif(in_array($x__type, $this->config->item('n___11028'))){
@@ -60,7 +60,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="'.$e___11035[31775]['m__title'].'">
+                               placeholder="+ Add '.$m['m__title'].'">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
@@ -73,7 +73,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-        echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" x__type="'.$x__type.'" href="javascript:void(0);" title="'.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'. view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+        echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link" x__type="'.$x__type.'" href="javascript:void(0);" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'. view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
 
     }
 
