@@ -1321,7 +1321,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
 function view_media($media_url, $link){
     $view_links = view_sync_links($media_url, true);
-    return '<div class="card_cover card_i_cover contrast_bg col-4 no-padding"><a href="'.$link.'"><div class="square">'.$view_links['i__cache'].'</div></a></div>';
+    return '<div class="card_cover card_i_cover contrast_bg col-sm-6 col-4 no-padding"><a href="'.$link.'"><div class="square">'.$view_links['i__cache'].'</div></a></div>';
 }
 
 function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $focus_e = false){
