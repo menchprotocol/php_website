@@ -86,6 +86,9 @@ body {
     height: 0;
     padding-bottom: 56.25%;
 }
+#list-in-42294 .ytframe{
+    padding-bottom: 75.5%;
+}
 .ytframe iframe {
     position: absolute;
     top: 0;
