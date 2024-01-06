@@ -228,7 +228,8 @@ li a {
 }
 
 .large-icon{
-    font-size: 5em;
+    font-size: 3em;
+    margin: 21px 0;
 }
 
 .form-control-thick{
