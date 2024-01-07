@@ -1348,7 +1348,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = $top_i__hashtag || in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
@@ -1949,7 +1948,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
-    $linkbar_visible = in_array($x__type, $CI->config->item('n___20410'));
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $is_cache = in_array($x__type, $CI->config->item('n___14599'));
     $is_app_store = in_array($e['e__id'], $CI->config->item('n___6287'));
