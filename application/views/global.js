@@ -1520,7 +1520,7 @@ function load_tab(x__type, auto_load){
             var $win = $(window);
             $win.scroll(function () {
                 //Download loading from bottom:
-                if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) <= 377) {
+                if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
                     view_load_page(x__type);
                 }
             });
