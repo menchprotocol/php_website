@@ -428,43 +428,40 @@ function e_copy(e__id){
 
 
 
-var busy_loading = [];
-var current_page = [];
+var busy_loading = false;
+var current_page = 0;
 function view_load_page(x__type) {
 
-    if(busy_loading[x__type] && parseInt(busy_loading[x__type])>0){
+    if(busy_loading){
         return false;
     }
-    busy_loading[x__type] = 1;
 
-    if(!current_page[x__type]){
-        current_page[x__type] = 1;
-    }
+    busy_loading = true;
 
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
-    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[x__type] );
+    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page );
     var e_list = '#list-in-'+x__type;
     var current_top_x__id = $( e_list + ' .card_cover ' ).first().attr('x__id');
     var top_element = $('.cover_x_'+current_top_x__id);
     var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More...</div>';
-    console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
+    console.log(x__type+' PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
 
     if(!has_more_to_load){
-        console.log('DONE LOADING: '+x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
+        console.log('DONE LOADING: '+x__type+' PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
         return false;
     } else {
-        console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
+        console.log(x__type+' PAGE #'+current_page+' TOP X__ID ID '+current_top_x__id);
     }
 
 
-    current_page[x__type]++; //Now we can increment current page
+    current_page++; //Now we can increment current page
 
     $(e_loader).insertAfter(e_list);
     $.post("/x/view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
         focus_id: fetch_int_val('#focus_id'),
         x__type: x__type,
-        current_page: current_page[x__type],
+        current_page: current_page,
     }, function (data) {
         $('.load-more').remove();
         if(data.length){
@@ -482,7 +479,7 @@ function view_load_page(x__type) {
             }
 
         }
-        busy_loading[x__type] = 0;
+        busy_loading = false;
     });
 
 

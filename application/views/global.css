@@ -3988,8 +3988,10 @@ main {
 .container ul.nav-tabs {
     border-bottom: 1px solid #000000 !important;
     margin: 21px 0 -1px;
-    padding-top: 3px;
     font-size: 1.1em;
+}
+.tab_content{
+    padding-top: 1px;
 }
 
 .nav-tabs > li {
