@@ -906,6 +906,15 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
         ), 0, 0, array(), 'COUNT(i__id) as totals');
         return intval($sub_counter[0]['totals']);
 
+    } elseif(in_array($x__type, $CI->config->item('n___42284'))){
+
+        //DISCOVERIES LINKS
+        $joined_by = array();
+        $query_filters = array(
+            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
+        );
+
     } elseif($x__type==6255){
 
         //DISCOVERIES

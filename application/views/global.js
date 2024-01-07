@@ -999,9 +999,9 @@ function update_cover_mini(cover_code, target_css){
 
 
 function load_search(focus_card, x__type){
-    if(js_n___11020.includes(x__type) || (focus_card==12274 && x__type==6255)){
+    if(js_n___11020.includes(x__type) || (focus_card==12274 && js_n___42284.includes(x__type))){
         i_load_search(x__type);
-    } else if(js_n___11028.includes(x__type) || (focus_card==12273 && x__type==6255)) {
+    } else if(js_n___11028.includes(x__type) || (focus_card==12273 && js_n___42284.includes(x__type))) {
         e_load_search(x__type);
     }
 }
@@ -1526,11 +1526,11 @@ function load_tab(x__type, auto_load){
             });
         });
 
-        if(js_n___11020.includes(x__type) || (focus_card==12274 && x__type==6255)){
+        if(js_n___11020.includes(x__type) || (focus_card==12274 && js_n___42284.includes(x__type))){
             setTimeout(function () {
                 sort_i_load(x__type);
             }, 2584);
-        } else if(js_n___11028.includes(x__type) || (focus_card==12273 && x__type==6255)) {
+        } else if(js_n___11028.includes(x__type) || (focus_card==12273 && js_n___42284.includes(x__type))) {
             setTimeout(function () {
                 sort_e_load(x__type);
             }, 2584);

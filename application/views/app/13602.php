@@ -25,6 +25,13 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
             'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
+    } elseif(in_array($x__type, $this->config->item('n___42284'))){
+
+        $unique = $this->X_model->fetch(array(
+            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null,
+        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+
     } elseif($x__type==6255){
 
         //DISCOVERY

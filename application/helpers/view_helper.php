@@ -392,7 +392,7 @@ function view_body_i($x__type, $counter, $i__id){
         }
         $ui .= '</div>';
 
-    } elseif($x__type==6255) {
+    } elseif($x__type==6255 || in_array($x__type, $CI->config->item('n___42284'))) {
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $item){

@@ -49,7 +49,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                 <div class="input-group border">
                     <input type="text"
                            class="form-control form-control-thick algolia_search dotransparent add-input"
-                           placeholder="+ Add '.$m['m__title'].'">
+                           placeholder="+ Add Idea">
                 </div></div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         } elseif(in_array($x__type, $this->config->item('n___11028'))){
@@ -60,7 +60,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_search dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="+ Add '.$m['m__title'].'">
+                               placeholder="+ Add Source">
                     </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
