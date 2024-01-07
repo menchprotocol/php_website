@@ -279,6 +279,7 @@ class X extends CI_Controller
         if(!isset($_POST['focus_card'])){
             die('Missing input. Refresh and try again.');
         }
+        $success = false;
 
         if($_POST['focus_card']==12274){
 
@@ -291,8 +292,10 @@ class X extends CI_Controller
             foreach(view_e_covers($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['x__type'], $this->config->item('n___11028'))) {
                     echo view_card_e($_POST['x__type'], $s);
+                    $success = true;
                 } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___11020'))) {
                     echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
+                    $success = true;
                 }
             }
 
@@ -307,10 +310,16 @@ class X extends CI_Controller
             foreach(view_i_covers($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['x__type'], $this->config->item('n___11020'))) {
                     echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
+                    $success = true;
                 } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___11028'))) {
                     echo view_card_e($_POST['x__type'], $s);
+                    $success = true;
                 }
             }
+        }
+
+        if(!$success){
+            die('Nothing more to load :)');
         }
 
     }
