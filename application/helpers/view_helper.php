@@ -1578,7 +1578,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 }
 
                 //Any items found?
-                if($action_buttons){
+                if($action_buttons && $focus_dropdown>0){
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
                     $active_bars++;
@@ -2060,9 +2060,11 @@ function view_card_e($x__type, $e, $extra_class = null)
                     $focus_dropdown = 32070; //Source>Discoveries Dropdown
                 } elseif($link_type_id==13550){ //Idea/Source Links
                     $focus_dropdown = 28792; //Source/Idea Dropdown
+                } else {
+                    $focus_dropdown = 0;
                 }
 
-                if(is_array($CI->config->item('e___'.$focus_dropdown))){
+                if($focus_dropdown>0 && is_array($CI->config->item('e___'.$focus_dropdown))){
                     foreach($CI->config->item('e___'.$focus_dropdown) as $e__id_dropdown => $m_dropdown) {
 
                         //Skip if missing superpower:
@@ -2123,7 +2125,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 }
 
                 //Any items found?
-                if($action_buttons){
+                if($action_buttons && $focus_dropdown>0){
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
                     $active_bars++;
