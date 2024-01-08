@@ -199,7 +199,7 @@ function load_editor(){
 
 function view_s__title(suggestion){
     var title = ( suggestion._highlightResult && suggestion._highlightResult.s__title.value ? suggestion._highlightResult.s__title.value : suggestion.s__title );
-    var max_limit = 144;
+    var max_limit = 89;
     return htmlentitiesjs( title.length>=max_limit ? title.substring(0,max_limit)+'...' : title );
 }
 
