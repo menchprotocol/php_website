@@ -135,8 +135,24 @@ h3{
     padding-bottom: 13px;
 }
 .modal-content h3 {
-    padding: 13px 0 0 0 !important;
-    margin: 0 !important;
+    margin: 13px 0 0 0 !important;
+    padding: 7px 0 0 0 !important;
+    background-color: #FFF;
+    border: 1px solid #999;
+    border-bottom: revert-layer;
+    color: #999;
+}
+.modal-content .form-control{
+    border-radius: 0;
+    margin:0;
+    border: 1px solid #999999 !important;
+    border-top: 0 !important;
+}
+.dynamic_editing_input input.form-control {
+    padding: 6px 1px 5px 34px;
+}
+.block-menu .dropdown i {
+    padding-top: 2px;
 }
 
 a {
@@ -1132,14 +1148,7 @@ a.headline {
 }
 
 
-.modal-content .form-control{
-    border-radius: 0;
-    margin:0;
-    border: 1px solid #999999 !important;
-}
-.block-menu .dropdown i {
-    padding-top: 2px;
-}
+
 
 
 
