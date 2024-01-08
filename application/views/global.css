@@ -3955,7 +3955,7 @@ main {
 .home_black_font .text-logo {
     color:#000000;
 }
-.home_black_font .text-logo {
+.home_black_font h1 {
     text-shadow: 1px 1px 3px #FFFFFF;
 }
 
@@ -3967,7 +3967,7 @@ main {
 .home_white_font .text-logo {
     color:#FFFFFF;
 }
-.home_white_font .text-logo {
+.home_white_font h1 {
     text-shadow: 1px 1px 3px #000000;
 }
 
