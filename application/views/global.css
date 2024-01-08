@@ -4022,7 +4022,7 @@ main {
     padding: 21px 8px 0;
 }
 
-.narrow-bar, .narrow-bar a, .narrow-bar a span {
+.narrow-bar, .narrow-bar a, .flip-content a span {
     color: #FFFFFF !important;
 }
 
