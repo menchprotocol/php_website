@@ -203,7 +203,11 @@ function view_s__title(suggestion){
 
 
 function view_s_js_line(suggestion){
-    return '<span class="icon-block">'+ view_cover_js(suggestion.s__cover) +'</span><span class="main__title">' + view_s__title(suggestion) + '</span><span class="grey">&nbsp;' + ( suggestion.s__type==12273 ? '/' : '@' ) + suggestion.s__handle + '</span>';
+    if(suggestion.s__type==12273){
+        return '<span class="grey">#' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
+    } else if(suggestion.s__type==12274){
+        return '<span class="icon-block">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">@' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
+    }
 }
 
 function view_s_js_cover(x__type, suggestion, action_id){
