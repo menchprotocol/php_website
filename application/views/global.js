@@ -579,7 +579,7 @@ function cover_upload(droppedFiles, uploadType) {
         return false;
     }
 
-    $('#upload_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
+    $('#drag_drop_image_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
 
     if (isAdvancedUpload) {
 
@@ -611,16 +611,16 @@ function cover_upload(droppedFiles, uploadType) {
             success: function (data) {
                 //Render new file:
                 if(data.status){
-                    $('#upload_results').html('');
+                    $('#drag_drop_image_results').html('');
                     update__cover(data.cdn_url);
                 } else {
                     //Show error:
-                    $('#upload_results').html(data.message);
+                    $('#drag_drop_image_results').html(data.message);
                 }
             },
             error: function (data) {
                 //Show Error:
-                $('#upload_results').html(data.responseText);
+                $('#drag_drop_image_results').html(data.responseText);
             }
         });
     } else {
@@ -1304,7 +1304,7 @@ function editor_load_e(e__id, x__id){
 
     //Source resets:
     $('#search_cover').val('');
-    $("#upload_results, #previous_used_covers").html('');
+    $("#drag_drop_image_results, #previous_used_covers").html('');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
