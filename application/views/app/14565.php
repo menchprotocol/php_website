@@ -163,36 +163,45 @@ if(strlen($secondary_i)){
 
 
 
+$social_ui = null;
+foreach($this->config->item('e___13890') as $e__id => $m){
+    foreach($this->X_model->fetch(array(
+        'x__up' => $e__id,
+        'x__down' => $website_id,
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array(), 0, 0) as $social_link){
+
+        //Determine link type:
+        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
+            //Make sure not the current website:
+
+            $social_link = $social_link['x__message'];
+        } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
+            $social_link = 'mailto:'.$email_domain;
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $domain_phone)) > 5){
+            //Phone
+            $social_link = 'tel:'.preg_replace("/[^0-9]/", "", $domain_phone);
+        } else {
+            //Unknown!
+            continue;
+        }
+
+        //Append to links:
+        $social_ui .= '<li><a href="'.$social_link.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
 
 
-//Social UI and contact us
-echo '<div class="narrow-bar slim_flat">';
-$social_ui = '';
-foreach($this->E_model->scissor_e($website_id, 14904) as $social_box) {
-    $social_ui .= '<li><a href="'.view_app_link(14904).'?e__handle='.$social_box['e__handle'].'" title="'.$social_box['e__title'].'" data-toggle="tooltip" data-placement="top">'.view_cover($social_box['e__cover'], true).'</a></li>';
+    }
 }
 if($social_ui){
+    echo '<div class="narrow-bar slim_flat">';
     echo '<div class="social-footer">';
     echo '<ul class="social-ul halfbg">';
     echo $social_ui;
-    if($domain_phone){
-        echo '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].'</a></li>';
-    }
-    if($email_domain){
-        echo '<li><a href="mailto:'.$email_domain.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].'</a></li>';
-    }
     echo '</ul>';
     echo '</div>';
-} else {
-    echo $contact_us;
+    echo '</div>';
 }
-echo '</div>';
-
-
-
-
-
-
 
 
 echo '<div class="bottom_spacer">&nbsp;</div>';

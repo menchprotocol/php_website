@@ -482,7 +482,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
                     //Break down amount & currency
                     $unit_currency = $e___26661[$currency_types[0]['x__up']]['m__message'];
                     $unit_price = doubleval($total_dues[0]['x__message']);
-                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)) + doubleval(website_setting(30612, $x__creator)))/100 ), 2, ".", "");
+                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)))/100 ), 2, ".", "");
 
                     //Append information to cart:
                     $info_append .= '<div class="sub_note">';
