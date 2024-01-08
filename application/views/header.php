@@ -205,12 +205,14 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                 echo 'background:'.$domain_background.' !important; ';
                 echo '}';
 
-            } elseif(substr($domain_background, 0, 2)=='//'){
+            } elseif(substr($domain_background, 0, 8)=='https://' && filter_var($domain_background, FILTER_VALIDATE_URL)){
 
                 //Video of photo?
                 if(substr($domain_background, -4)=='.mp4'){
+
                     //Is Video:
                     $bgVideo = '<video autoplay loop muted playsinline class="video_contain"><source src="'.$domain_background.'" type="video/mp4"></video>';
+
                 } else {
 
                     //Is Photo:
