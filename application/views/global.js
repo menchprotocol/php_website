@@ -741,7 +741,7 @@ function js_redirect(url, timer = 0){
 function load_card_clickers(){
 
     $(".card_click_e, .card_click_i").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click';
+    var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover';
 
     $( ".card_click_e" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
