@@ -1207,8 +1207,14 @@ function valid_data_type($data_type, $data_value, $data_title){
             'status' => 0,
             'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
+    } elseif($data_type==42181 && ( strlen(preg_replace('/[^0-9]/', '', $data_value))<10 || strlen(preg_replace('/[^0-9]/', '', $data_value))>14 )){
+        //Phone Number:
+        return array(
+            'status' => 0,
+            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'].' with 10-14 numbers including country code.',
+        );
     } elseif($data_type==4318 && !strtotime($data_value)){
-        //Time:
+        //Time:42181
         return array(
             'status' => 0,
             'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
