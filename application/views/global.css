@@ -4013,6 +4013,9 @@ main {
     max-width: 987px;
     margin: 0 auto;
     padding: 21px 8px 0;
+}
+
+.narrow-bar, .narrow-bar a {
     color: #FFFFFF !important;
 }
 
