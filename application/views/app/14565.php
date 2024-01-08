@@ -176,7 +176,7 @@ foreach($this->config->item('e___14036') as $e__id => $m){
         //Determine link type:
         if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
             //Make sure not the current website:
-            if(!substr_count($social_link['x__message'], $e___14870[$website_id]['x__message'])){
+            if(!substr_count($social_link['x__message'], $e___14870[$website_id]['m__message'])){
                 $social_link = $social_link['x__message'];
             }
         } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
