@@ -257,12 +257,7 @@ li a {
     border-radius: 0 !important;
 }
 
-.rounded-edges,
-.btn.btn-default,
-.btn-large,
-.btn-6255 {
-    border-radius: 21px !important;
-}
+
 
 a.btn, .btn.dropdown-toggle, label.btn {
     padding:10px;
@@ -4072,6 +4067,13 @@ main {
 }
 .dotransparent *, .btn-grey {
     background-color: transparent;
+}
+
+.rounded-edges,
+.btn.btn-default,
+.btn-large,
+.btn-6255 {
+    border-radius: 21px !important;
 }
 
 .card_frame{
