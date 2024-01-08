@@ -151,8 +151,14 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__up IN (' . join(',', $this->config->item('n___4318')) . ')' => null, //Authored
         ), array('x__up'), 0) as $target) {
+            if(strlen($target['x__message']) && !substr_count($target['x__message'], '2023')){
+                $target['x__message'] = '2023 '.$target['x__message'];
+            }
             if(strtotime($target['x__message'])>0){
                 echo '<div>@'.$target['e__handle'].' | '.$target['x__message'].' => '.date('Y-m-d\TH:i:sP', strtotime($target['x__message'])).'</div>';
+            } else {
+                echo '<div>@'.$target['e__handle'].' ERROR: '.$target['x__message'].'</div>';
+
             }
         }
         echo '<br /><br /><br /><br />';
