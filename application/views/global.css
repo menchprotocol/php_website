@@ -2694,7 +2694,7 @@ h4.main__title{
     }
 
     .hideifmini{
-        display: block;
+        display: none;
     }
 
     .message-center, .message-center .i_cache {
