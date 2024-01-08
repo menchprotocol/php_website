@@ -198,7 +198,7 @@ function load_editor(){
 
 
 function view_s__title(suggestion){
-    var title = suggestion._highlightResult && suggestion._highlightResult.s__title.value ? suggestion._highlightResult.s__title.value : suggestion.s__title;
+    var title = ( suggestion._highlightResult && suggestion._highlightResult.s__title.value ? suggestion._highlightResult.s__title.value : suggestion.s__title );
     var max_limit = 144;
     return htmlentitiesjs( title.length>=max_limit ? title.substring(0,max_limit)+'...' : title );
 }
@@ -208,7 +208,7 @@ function view_s_js_line(suggestion){
     if(suggestion.s__type==12273){
         return '<span class="grey">#' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     } else if(suggestion.s__type==12274){
-        return '<span class="icon-block">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">@' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
+        return '<span class="icon-block-xss">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">@' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     }
 }
 
