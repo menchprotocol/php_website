@@ -4028,11 +4028,11 @@ main {
 
 
 
-.home_black_font .top-header-position .platform-logo i,
-.home_black_font .top-header-position .menu-icon i,
-.home_black_font .top-header-position .block-x i,
-.home_black_font .top-header-position .text-logo {
-    color:#000000 !important;
+.top-header-position .platform-logo i,
+.top-header-position .menu-icon i,
+.top-header-position .block-x i,
+.top-header-position .text-logo {
+    color:#FFFFFF !important;
 }
 
 
