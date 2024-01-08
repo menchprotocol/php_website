@@ -1161,12 +1161,12 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     if(i__id){
         $('#modal31911 .save_i__id').val(i__id);
         $("#modal31911 .show_id").text('ID '+i__id);
-        $('#modal31911 .save_i__hashtag').val($('.ui_i__hashtag_'+i__id).text());
-        $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id).text()).focus();
+        $('#modal31911 .save_i__hashtag').val($('.ui_i__hashtag_'+i__id+':first').text());
+        $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id+':first').text()).focus();
     }
     if(x__id){
         $('#modal31911 .save_x__id').val(x__id);
-        $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
+        $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').text()).removeClass('hidden');
     }
 
     //Activate Modal:
