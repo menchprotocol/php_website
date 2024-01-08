@@ -2614,9 +2614,7 @@ h4.main__title{
     display: inline-block;
     text-align: right;
 }
-.last-right-col .mench-points {
-    margin-left: 5px;
-}
+
 .card_covers .btn {
     padding: 3px;
 }
@@ -2625,8 +2623,17 @@ h4.main__title{
     padding-bottom: 8px;
     line-height: 111%;
 }
+.mench-points {
+    color: #FC1B44 !important;
+    font-style: italic;
+    font-size: 0.89em;
+}
 
 @media (max-width:610px) {
+
+    .mench-points {
+        font-size: 0.75em;
+    }
 
     .i_cache .first_line{
         font-size: 1.3em;
@@ -2686,7 +2693,7 @@ h4.main__title{
         margin-top: 5px;
     }
 
-    .block-if-mini{
+    .hideifmini{
         display: block;
     }
 
@@ -3397,11 +3404,7 @@ a,
 
 
 
-.mench-points {
-    color: #FC1B44 !important;
-    font-style: italic;
-    font-size: 0.89em;
-}
+
 
 
 
