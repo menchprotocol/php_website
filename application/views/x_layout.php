@@ -141,6 +141,15 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
     }
 
 
+    if(isset($_GET['go3'])) {
+        foreach($this->I_model->fetch(array(
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__id' => 20895, //ACTIVE
+        ), 0) as $i_fix){
+            $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
+        }
+        echo 'donedone';
+    }
 
 
     if(isset($_GET['go2'])) {
