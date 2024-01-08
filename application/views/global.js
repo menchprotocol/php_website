@@ -1269,8 +1269,19 @@ function editor_save_i(){
 
         } else {
 
+            //Update Handle & Href links if needed:
+            if(modify_data['save_i__hashtag'] != $(".ui_i__hashtag_"+modify_data['save_i__id']).text()){
+                if(fetch_int_val('#focus_card')==12273 && modify_data['save_i__id']==fetch_int_val('#focus_id')){
+                    //Refresh page since focus item handle changed:
+                    js_redirect('/~'+modify_data['save_i__hashtag']);
+                } else {
+                    //Update Hashtag & Link:
+                    $(".ui_i__hashtag_"+modify_data['save_i__id']).text(modify_data['save_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+                    $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']).attr('href').replace($(".ui_i__hashtag_"+modify_data['save_i__id']).text(), modify_data['save_i__hashtag']));
+                }
+            }
+
             //Reset errors:
-            console.log('SUCCESS: '+data.message);
             $("#modal31911 .save_results").html('');
             has_unsaved_changes = false;
             $('#modal31911').modal('hide');
@@ -1278,16 +1289,7 @@ function editor_save_i(){
             //Update Idea Message:
             $('.ui_i__message_'+modify_data['save_i__id']).text(modify_data['save_i__message']);
 
-            //Update Hashtag & Link:
-            $(".ui_i__hashtag_"+modify_data['save_i__id']).text(modify_data['save_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
-
-            $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']).attr('href').replace($(".ui_i__hashtag_"+modify_data['save_i__id']).text(), modify_data['save_i__hashtag']));
-
-
-            $(".handle_href_i_"+modify_data['save_i__id']).attr('href',modify_data['save_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
-
-
-
+            //Update Cache:
             $('.ui_i__cache_'+modify_data['save_i__id']).html(( parseInt($('.ui_i__cache_'+modify_data['save_i__id']).attr('show_cache_links')) ? data.return_i__cache_links : data.return_i__cache ));
             console.log(data.message); //To check what happened...
 
@@ -1442,7 +1444,17 @@ function editor_save_e(){
 
         } else {
 
-            console.log('SUCCESS: '+data.message);
+            //Update Handle & Href links if needed:
+            if(modify_data['save_e__handle'] != $(".ui_e__handle_"+modify_data['save_e__id']).text()){
+                if(fetch_int_val('#focus_card')==12274 && modify_data['save_e__id']==fetch_int_val('#focus_id')){
+                    //Refresh page since focus item handle changed:
+                    js_redirect('/@'+modify_data['save_e__handle']);
+                } else {
+                    //Make adjustments to current page:
+                    $('.ui_e__handle_'+modify_data['save_e__id']).text(modify_data['save_e__handle']);
+                    $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']).attr('href').replace($(".ui_e__handle_"+modify_data['save_e__id']).text(), modify_data['save_e__handle']));
+                }
+            }
 
             //Reset errors:
             $("#modal31912 .save_results").html('');
@@ -1450,17 +1462,11 @@ function editor_save_e(){
             //Update Title:
             update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
 
-            //Update Handle & Href links:
-            $('.ui_e__handle_'+modify_data['save_e__id']).text(modify_data['save_e__handle']);
-            $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']).attr('href').replace($(".ui_e__handle_"+modify_data['save_e__id']).text(), modify_data['save_e__handle']));
-
             //Update Mini Icon:
             update_cover_mini(modify_data['save_e__cover'], '.mini_6197_'+modify_data['save_e__id']);
 
             //Update Main Icons:
             update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
-
-            console.log(data.message); //To check what happened...
 
             if( modify_data['save_x__id'] ){
                 $('.ui_x__message_'+ modify_data['save_x__id'] ).text(modify_data['save_x__message']);
