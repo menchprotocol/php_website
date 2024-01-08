@@ -61,7 +61,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;">'.$placeholder.'<span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].( in_array($e__id3, $this->config->item('n___32172')) ? '<span class="icon-block-xss">'.$e___11035[32172]['m__cover'].'</span>' : '' ).'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col mench-points ">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xxs hideifmini">'.$e___11035[42225]['m__cover'].'</span><span class="showifmini">x</span>' : '' ).'</span></td>';
+            echo '<td style="text-align: left;">'.$placeholder.'<span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col mench-points ">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xxs hideifmini">'.$e___11035[42225]['m__cover'].'</span><span class="showifmini">x</span>' : '' ).'</span></td>';
             echo '</tr>';
 
         }
