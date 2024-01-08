@@ -540,8 +540,8 @@ class I extends CI_Controller {
                 'x__left' => $is[0]['i__id'],
                 'x__type' => 31834, //Idea Reference
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            )) as $ref) {
-                $this->I_model->update($ref['x__right'], array(
+            ), array('x__right')) as $ref) {
+                $this->I_model->update($ref['i__id'], array(
                     'i__message' => preg_replace('/\b#'.$is[0]['i__hashtag'].'\b/', '@'.trim($_POST['save_i__hashtag']), $ref['i__message']),
                 ), false, $member_e['e__id']);
             }
