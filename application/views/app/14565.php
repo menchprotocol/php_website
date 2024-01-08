@@ -164,6 +164,7 @@ if(strlen($secondary_i)){
 
 
 $social_ui = null;
+$e___14870 = $this->config->item('e___14870'); //Website Partner
 foreach($this->config->item('e___14036') as $e__id => $m){
     foreach($this->X_model->fetch(array(
         'x__up' => $e__id,
@@ -175,8 +176,9 @@ foreach($this->config->item('e___14036') as $e__id => $m){
         //Determine link type:
         if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
             //Make sure not the current website:
-
-            $social_link = $social_link['x__message'];
+            if(!substr_count($social_link['x__message'], $e___14870[$website_id]['x__message'])){
+                $social_link = $social_link['x__message'];
+            }
         } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
             $social_link = 'mailto:'.$email_domain;
         } elseif(strlen(preg_replace("/[^0-9]/", "", $domain_phone)) > 5){
