@@ -3952,7 +3952,7 @@ main {
 .home_black_font .platform-logo i,
 .home_black_font .block-x i,
 .home_black_font .text-logo {
-    color:#000000 !important;
+    color:#000000;
 }
 .home_black_font .text-logo {
     text-shadow: 1px 1px 3px #FFFFFF;
@@ -3963,7 +3963,7 @@ main {
 .home_white_font .platform-logo i,
 .home_white_font .block-x i,
 .home_white_font .text-logo {
-    color:#FFFFFF !important;
+    color:#FFFFFF;
 }
 .home_white_font .text-logo {
     text-shadow: 1px 1px 3px #000000;
