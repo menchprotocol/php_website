@@ -164,7 +164,7 @@ if(strlen($secondary_i)){
 
 
 $social_ui = null;
-foreach($this->config->item('e___13890') as $e__id => $m){
+foreach($this->config->item('e___14036') as $e__id => $m){
     foreach($this->X_model->fetch(array(
         'x__up' => $e__id,
         'x__down' => $website_id,
