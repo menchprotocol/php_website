@@ -352,10 +352,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
 
 
-
-                    <div class="row">
-                        <div class="col-12 col-md-7">
-                            <div class="left_modal_content">
+                    <!-- Cover Photo Editor -->
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width:240px; text-align: left;">
                                 <!-- IMAGE PREVIEW -->
                                 <div class="coverUploader"> <!-- IMAGE DROP -->
                                     <form class="box coverUpload" method="post" enctype="multipart/form-data">
@@ -366,40 +366,48 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         </div>
                                     </form>
                                 </div>
+                            </td>
+                            <td style="width:100%;">
+                                <!-- Source Cover -->
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 100%;">
+                                            <!-- COVER CODE -->
+                                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
+                                        </td>
+                                        <td>
+                                            <!-- UPLOAD -->
+                                            <input class="inputfile" type="file" name="file" id="coverUpload" />
+                                            <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
+                                        </td>
+                                        <td class="hidden">
+                                            <!-- EMOJI -->
+                                            <a class="icon-block-sm emoji-selector" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
+                                        </td>
+                                        <td>
+                                            <!-- Font Awesome -->
+                                            <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div id="previous_used_covers" class="icons_small"></div>
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+                    <div class="row">
+                        <div class="col-12 col-md-7">
+                            <div class="left_modal_content">
+                                <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
                             </div>
                         </div>
                         <div class="col-12 col-md-5">
-
-                            <!-- Source Cover -->
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td style="width: 100%;">
-                                        <!-- COVER CODE -->
-                                        <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
-                                    </td>
-                                    <td>
-                                        <!-- UPLOAD -->
-                                        <input class="inputfile" type="file" name="file" id="coverUpload" />
-                                        <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
-                                    </td>
-                                    <td class="hidden">
-                                        <!-- EMOJI -->
-                                        <a class="icon-block-sm emoji-selector" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
-                                    </td>
-                                    <td>
-                                        <!-- Font Awesome -->
-                                        <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <div id="previous_used_covers" class="icons_small"></div>
-
+                            <div class="dynamic_editing_radio"></div>
                         </div>
                     </div>
 
-                    <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
-                    <div class="dynamic_editing_radio"></div>
 
                 </div>
 

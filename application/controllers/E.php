@@ -666,7 +666,7 @@ class E extends CI_Controller
                                     'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
                                     'd__value' => $d__value,
                                     'd__type' => html_input_type($data_type),
-                                    'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'] ),
+                                    'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
                                 ));
                             }
                         }
