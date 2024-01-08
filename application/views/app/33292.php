@@ -28,7 +28,6 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
     echo '<h3 class="center centerh advanced-stats hidden grey main__title"><div class="large-icon">'.$m1['m__cover'].'</div><b class="card_count_'.$e__id1.'"><i class="far fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</h3>';
 
-
     echo '<div class="row justify-content list-covers">';
     
     foreach($this->config->item('e___'.$e__id1) as $e__id2 => $m2) {
@@ -61,8 +60,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                 }
             }
 
-            echo '<tr class="mobile-shrink" title="'.$m3['m__message'].( isset($e___42225[$e__id3]['m__message']) ? ( strlen($m3['m__message']) ? ' | ' : '' ) . intval($e___42225[$e__id3]['m__message']).' '.$e___11035[42225]['m__title'].' awarded per link.' : '' ).'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;">'.$placeholder.'<span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col" title="'.$e___11035[42225]['m__title'].'"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span></td>';
+            echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
+            echo '<td style="text-align: left;">'.$placeholder.'<span class="icon-block-xxs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="last-right-col mench-points " title="'.$e___11035[42225]['m__title'].'">'.( isset($e___42225[$e__id3]['m__message']) ? intval($e___42225[$e__id3]['m__message']).$e___11035[42225]['m__cover'] : '' ).'</span></td>';
             echo '</tr>';
 
         }

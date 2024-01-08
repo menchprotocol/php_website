@@ -2609,7 +2609,7 @@ h4.main__title{
     width: 89px;
     text-align: left;
 }
-.last-right-col .mench-coins {
+.last-right-col .mench-points {
     margin-left: 5px;
 }
 .card_covers .btn {
@@ -3392,7 +3392,7 @@ a,
 
 
 
-.mench-coins {
+.mench-points {
     color: #FC1B44 !important;
     font-style: italic;
 }

@@ -363,11 +363,11 @@ function toggle_pills(x__type){
 
     if($('.thepill' + x__type+' .nav-link').hasClass('active')){
 
-        var action_id = 26008; //Close
+        //var action_id = 26008; //Close
 
         //Hide all elements
-        $('.nav-link').removeClass('active');
-        $('.headlinebody').addClass('hidden');
+        //$('.nav-link').removeClass('active');
+        //$('.headlinebody').addClass('hidden');
 
     } else {
 
@@ -385,16 +385,19 @@ function toggle_pills(x__type){
             $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
             load_tab(x__type, false);
         }
+
+        //Log Transaction:
+        x_create({
+            x__creator: js_pl_id,
+            x__type: action_id,
+            x__up: x__type,
+            x__down: x__down,
+            x__right: x__right,
+        });
+
     }
 
-    //Log Transaction:
-    x_create({
-        x__creator: js_pl_id,
-        x__type: action_id,
-        x__up: x__type,
-        x__down: x__down,
-        x__right: x__right,
-    });
+
 }
 
 
