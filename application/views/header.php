@@ -860,7 +860,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" onclick="editor_save_i()" class="btn btn-default">SAVE</button>
+                    <button type="button" onclick="editor_save_i()" class="btn btn-default editor_save_i">SAVE</button>
                 </div>
 
             </div>
@@ -963,7 +963,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" onclick="editor_save_e()" class="btn btn-default">SAVE</button>
+                    <button type="button" onclick="editor_save_e()" class="editor_save_e btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>

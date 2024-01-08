@@ -1235,9 +1235,10 @@ function editor_save_i(){
 
     if(i_saving){
         return false;
-    } else {
-        i_saving = true;
     }
+
+    i_saving = true;
+    $(".editor_save_i").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     var modify_data = {
         save_i__id:         $('#modal31911 .save_i__id').val(),
@@ -1261,6 +1262,7 @@ function editor_save_i(){
 
         //Load Images:
         i_saving = false;
+        $(".editor_save_i").html('SAVE');
 
         if (!data.status) {
 
@@ -1416,6 +1418,7 @@ function editor_save_e(){
     }
 
     e_saving = true;
+    $(".editor_save_e").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     var modify_data = {
         save_e__id:         $('#modal31912 .save_e__id').val(),
@@ -1439,6 +1442,7 @@ function editor_save_e(){
     $.post("/e/editor_save_e", modify_data, function (data) {
 
         e_saving = false;
+        $(".editor_save_e").html('SAVE');
 
         if (!data.status) {
 
