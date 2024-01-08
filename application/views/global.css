@@ -2611,7 +2611,7 @@ h4.main__title{
 }
 .second-right-col{
     float: right;
-    width: 55px;
+    display: inline-block;
     text-align: right;
 }
 .last-right-col .mench-points {
