@@ -793,32 +793,26 @@ class E extends CI_Controller
             }
 
             $input_parts = explode('____', $_POST['save_dynamic_' . $p], 2);
-
             $dynamic_e__id = $input_parts[0];
             $dynamic_value = $input_parts[1];
 
 
-            //Let's first determine the data type:
-            foreach(array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592')) as $data_type_this){
-                $data_type = $data_type_this;
-                break;
-            }
-
-
             //Required fields must have an input:
-            if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($_POST['save_dynamic_' . $p])){
+            if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($dynamic_value)){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Source Not Active',
                 ));
             }
 
-            //Validate input if required or provided:
-            if (strlen($_POST['save_dynamic_' . $p])) {
-                $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_' . $p], $e___42179[$dynamic_e__id]['m__title']);
-                if (!$valid_data_type['status']) {
-                    //We had an error:
-                    return view_json($valid_data_type);
+            //Validate input based on its data type, if provided:
+            if (strlen($dynamic_value)) {
+                foreach(array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592')) as $data_type_this){
+                    $valid_data_type = valid_data_type($data_type_this, $dynamic_value, $e___42179[$dynamic_e__id]['m__title']);
+                    if (!$valid_data_type['status']) {
+                        //We had an error:
+                        return view_json($valid_data_type);
+                    }
                 }
             }
 
@@ -832,7 +826,7 @@ class E extends CI_Controller
             ));
 
             //Update if needed:
-            if (count($values) && !strlen($_POST['save_dynamic_' . $p])) {
+            if (count($values) && !strlen($dynamic_value)) {
 
                 //Remove Link:
                 $this->X_model->update($values[0]['x__id'], array(
@@ -847,16 +841,16 @@ class E extends CI_Controller
                     'x__type' => 4230,
                     'x__up' => $dynamic_e__id,
                     'x__down' => $es[0]['e__id'],
-                    'x__message' => $_POST['save_dynamic_' . $p],
-                    'x__weight' => number_x__weight($_POST['save_dynamic_' . $p]),
+                    'x__message' => $dynamic_value,
+                    'x__weight' => number_x__weight($dynamic_value),
                 ));
 
-            } elseif ($values[0]['x__message'] != $_POST['save_dynamic_' . $p]) {
+            } elseif ($values[0]['x__message'] != $dynamic_value) {
 
                 //Update Link:
                 $this->X_model->update($values[0]['x__id'], array(
-                    'x__message' => $_POST['save_dynamic_' . $p],
-                    'x__weight' => number_x__weight($_POST['save_dynamic_' . $p]),
+                    'x__message' => $dynamic_value,
+                    'x__weight' => number_x__weight($dynamic_value),
                 ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
             }
