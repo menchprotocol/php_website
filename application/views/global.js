@@ -1291,10 +1291,9 @@ function editor_save_i(){
 
             //Update Cache:
             $('.ui_i__cache_'+modify_data['save_i__id']).html(( parseInt($('.ui_i__cache_'+modify_data['save_i__id']).attr('show_cache_links')) ? data.return_i__cache_links : data.return_i__cache ));
-            console.log(data.message); //To check what happened...
 
-            if(x__id){
-                $('.ui_x__message_'+x__id).text(modify_data['save_x__message']);
+            if(modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
+                $('.ui_x__message_'+modify_data['save_x__id']).text(modify_data['save_x__message']);
             }
 
             //Tooltips:
@@ -1472,7 +1471,7 @@ function editor_save_e(){
             //Update Main Icons:
             update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
 
-            if( modify_data['save_x__id'] ){
+            if( modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
                 $('.ui_x__message_'+ modify_data['save_x__id'] ).text(modify_data['save_x__message']);
             }
 
