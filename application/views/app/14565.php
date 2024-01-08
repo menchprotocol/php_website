@@ -174,23 +174,21 @@ foreach($this->config->item('e___14036') as $e__id => $m){
     ), array(), 0, 0) as $social_link){
 
         //Determine link type:
-        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
-            //Make sure not the current website:
-            if(!substr_count($social_link['x__message'], $e___14870[$website_id]['m__message'])){
-                $social_link = $social_link['x__message'];
-            }
+        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL) && !substr_count($social_link['x__message'], $e___14870[$website_id]['m__message'])){
+            //We made sure not the current website:
+            $social_url = $social_link['x__message'];
         } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
-            $social_link = 'mailto:'.$email_domain;
+            $social_url = 'mailto:'.$email_domain;
         } elseif(strlen(preg_replace("/[^0-9]/", "", $domain_phone)) > 5){
             //Phone
-            $social_link = 'tel:'.preg_replace("/[^0-9]/", "", $domain_phone);
+            $social_url = 'tel:'.preg_replace("/[^0-9]/", "", $domain_phone);
         } else {
             //Unknown!
             continue;
         }
 
         //Append to links:
-        $social_ui .= '<li><a href="'.$social_link.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
+        $social_ui .= '<li><a href="'.$social_url.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
 
 
     }
