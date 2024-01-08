@@ -178,10 +178,10 @@ foreach($this->config->item('e___14036') as $e__id => $m){
             //We made sure not the current website:
             $social_url = $social_link['x__message'];
         } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
-            $social_url = 'mailto:'.$email_domain;
-        } elseif(strlen(preg_replace("/[^0-9]/", "", $domain_phone)) > 5){
+            $social_url = 'mailto:'.$social_link['x__message'];
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
             //Phone
-            $social_url = 'tel:'.preg_replace("/[^0-9]/", "", $domain_phone);
+            $social_url = 'tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']);
         } else {
             //Unknown!
             continue;
