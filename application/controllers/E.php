@@ -794,7 +794,7 @@ class E extends CI_Controller
 
             $input_parts = explode('____', $_POST['save_dynamic_' . $p], 2);
             $dynamic_e__id = $input_parts[0];
-            $dynamic_value = $input_parts[1];
+            $dynamic_value = trim($input_parts[1]);
 
 
             //Required fields must have an input:
@@ -826,12 +826,14 @@ class E extends CI_Controller
             ));
 
             //Update if needed:
-            if (count($values) && !strlen($dynamic_value)) {
+            if (!strlen($dynamic_value)) {
 
-                //Remove Link:
-                $this->X_model->update($values[0]['x__id'], array(
-                    'x__access' => 6173, //Transaction Removed
-                ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+                //Remove Link if we have one:
+                if(count($values)){
+                    $this->X_model->update($values[0]['x__id'], array(
+                        'x__access' => 6173, //Transaction Removed
+                    ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+                }
 
             } elseif (!count($values)) {
 

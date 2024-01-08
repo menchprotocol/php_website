@@ -1314,7 +1314,7 @@ function editor_load_e(e__id, x__id){
     } else if($('.text__6197_'+e__id+':first').val().length){
         source_title = $('.text__6197_'+e__id+':first').val();
     }
-    console.log('WOW:'+source_title);
+
     $('#modal31912 .save_e__id').val(e__id);
     $('#modal31912 .save_x__id').val(x__id);
     $("#modal31912 .show_id").text('ID '+e__id);
