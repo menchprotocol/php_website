@@ -1165,6 +1165,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
         $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id).text()).focus();
     }
     if(x__id){
+        var focus_card = fetch_int_val('#focus_card');
+        var focus_id = fetch_int_val('#focus_id');
         $('#modal31911 .save_x__id').val(x__id);
         $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
     }
@@ -1180,6 +1182,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     }, 377);
 
     if(i__id){
+
         //Load dynamic data:
         $.post("/i/editor_load_i", {
             i__id: i__id,
@@ -1198,6 +1201,11 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
                     $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
                     $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
+
+                    if(x__id && focus_card==12274 && focus_id>0 && parseInt(item["d__id"])==focus_id){
+                        //Hide message textarea since this is already loaded in the dynamic inputs:
+                        $("#modal31911 .save_x__message").val('IGNORE!'); //addClass('hidden').
+                    }
                 }
 
                 //Dynamic Radio fields (if any):
