@@ -2407,6 +2407,11 @@ input.form-control {
     background-color: transparent;
 }
 
+.form-group {
+    border: 1px solid #999;
+    border-radius: 21px;
+}
+
 
 .first_btn{
     padding-right: 13px !important;
