@@ -152,15 +152,18 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
             'x__up IN (' . join(',', $this->config->item('n___4318')) . ')' => null, //Authored
         ), array('x__up'), 0) as $target) {
 
+            $target['x__message'] = strtolower($target['x__message']);
+
             foreach(array('mon','tue','wed','thu','fri','sat','sun') as $day){
                 $target['x__message'] = str_replace($day.'.','',$target['x__message']);
+                $target['x__message'] = str_replace($day.' ','',$target['x__message']);
                 $target['x__message'] = str_replace($day,'',$target['x__message']);
             }
+            $target['x__message'] = trim($target['x__message']);
 
             if(strlen($target['x__message']) && !substr_count($target['x__message'], '2023')){
                 $target['x__message'] = $target['x__message'].' 2023';
             }
-            $target['x__message'] = strtolower($target['x__message']);
             $target['x__message'] = str_replace('p ','pm ',$target['x__message']);
             $target['x__message'] = str_replace('a ','am ',$target['x__message']);
 
