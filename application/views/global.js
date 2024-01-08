@@ -1381,9 +1381,9 @@ function editor_save_e(){
 
     if(e_saving){
         return false;
-    } else {
-        e_saving = true;
     }
+
+    e_saving = true;
 
     var modify_data = {
         save_e__id:         $('#modal31912 .save_e__id').val(),
@@ -1405,6 +1405,8 @@ function editor_save_e(){
     }
 
     $.post("/e/editor_save_e", modify_data, function (data) {
+
+        e_saving = false;
 
         if (!data.status) {
 
@@ -1439,7 +1441,6 @@ function editor_save_e(){
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
 
-            e_saving = false;
             has_unsaved_changes = false;
             $('#modal31912').modal('hide');
 
