@@ -154,6 +154,13 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
             if(strlen($target['x__message']) && !substr_count($target['x__message'], '2023')){
                 $target['x__message'] = $target['x__message'].' 2023';
             }
+            $target['x__message'] = strtolower($target['x__message']);
+            $target['x__message'] = str_replace('p ','pm ',$target['x__message']);
+            $target['x__message'] = str_replace('a ','am ',$target['x__message']);
+            foreach(array('mon','tue','wed','thu','fri','sat','sun') as $day){
+                $target['x__message'] = str_replace($day.'.','',$target['x__message']);
+                $target['x__message'] = str_replace($day,'',$target['x__message']);
+            }
             if(strtotime($target['x__message'])>0){
                 echo '<div>@'.$target['e__handle'].' | '.$target['x__message'].' => '.date('Y-m-d\TH:i:sP', strtotime($target['x__message'])).'</div>';
             } else {
