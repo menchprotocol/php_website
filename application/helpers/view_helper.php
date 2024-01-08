@@ -1022,7 +1022,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
      * Audio URL:      https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
      * Video URL:      https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
      * Image URL:      https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
-     * File URL:       https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
+     * Document URL:   https://s3foundation.s3-us-west-2.amazonaws.com/611695da5d0d199e2d95dd2eabe484cf.zip
      *
      * */
 
@@ -1109,13 +1109,13 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 }
 
-            } elseif (view_valid_handle_i($word)) {
+            } elseif (view_valid_handle_i($word, true)) {
 
                 $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
-            } elseif (view_valid_handle_e(( substr_count($word, '|')==2 ? '@'.one_two_explode('@','|',$word) : $word ))) {
+            } elseif (view_valid_handle_e($word, ture)) {
 
                 if(substr_count($word, '|')==2 && is_numeric(one_two_explode('@','|',$word))){
 
