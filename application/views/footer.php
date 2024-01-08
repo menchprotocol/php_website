@@ -4,6 +4,14 @@
 <?php
 
 $member_e = superpower_unlocked();
+
+if($member_e){
+    //For profile editing only:
+    echo '<div class="hidden">';
+    echo view_card_e(42287, $member_e, null);
+    echo '</div>';
+}
+
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $e___11035 = $this->config->item('e___11035'); //NAVIGATION
