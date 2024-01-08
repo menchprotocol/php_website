@@ -631,7 +631,7 @@ class E extends CI_Controller
                             $data_type = $data_type_this;
                             break;
                         }
-                        $is_required = in_array($dynamic_e__id , $this->config->item('n___42174')); //Required Settings
+                        $is_required = in_array($dynamic_e__id, $this->config->item('n___42174')); //Required Settings
 
                         if(in_array($data_type, $this->config->item('n___42188'))){
 
@@ -808,7 +808,7 @@ class E extends CI_Controller
             //Validate input if required or provided:
             if (in_array($dynamic_e__id, $this->config->item('n___42174')) /* Is Required? */ || strlen($_POST['save_dynamic_' . $p])) {
                 $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_' . $p], $e___42179[$dynamic_e__id]['m__title']);
-                if (!$valid_data_type['status']) {
+                if (strlen($_POST['save_dynamic_'.$p]) && !$valid_data_type['status']) {
                     //We had an error:
                     return view_json($valid_data_type);
                 }
