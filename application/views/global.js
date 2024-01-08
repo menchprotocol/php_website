@@ -130,8 +130,6 @@ function load_editor(){
 
         $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
 
-            console.log('Yoooo');
-            console.log(suggestion);
             $(this).val('@' + suggestion.s__handle);
 
         }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
@@ -2017,6 +2015,30 @@ function activate_handle_search(obj) {
                 replace: function (suggestion) {
                     set_autosize(obj);
                     return ' #' + suggestion.s__handle + ' ';
+                }
+            },
+            {
+                match: /(^|\s)!#(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    algolia_index.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12273' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    set_autosize(obj);
+                    return ' !#' + suggestion.s__handle + ' ';
                 }
             },
         ]);
