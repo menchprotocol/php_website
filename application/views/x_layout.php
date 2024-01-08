@@ -140,51 +140,26 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
     }
 
-    /*
-     *
-     * //TODO Remove at the end
+
+
 
     if(isset($_GET['go2'])) {
 
         boost_power();
-
-
-        $updated = 0;
-        $already = 0;
         foreach ($this->X_model->fetch(array(
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+            'x__up IN (' . join(',', $this->config->item('n___4318')) . ')' => null, //Authored
             //'x__right' => $focus_i['i__id'],
             'x__up' => 26562, //Total Due
-        ), array(), 0) as $ticket) {
-
-            //linked to any currency?
-            if(count($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 4983, //Co-Author
-                'x__right' => $ticket['x__right'],
-                'x__up IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //PUBLIC
-            )))){
-                //Already linked to currency:
-                $already++;
-              continue;
+        ), array('x__up'), 0) as $target) {
+            if(strtotime($target['x__message'])>0){
+                echo '<div>@'.$target['e__handle'].' | '.$target['x__message'].' => '.date('Y-m-d\TH:i:sP', strtotime($target['x__message'])).'</div>';
             }
-
-            $updated++;
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
-                'x__type' => 4983, //Co-Author
-                'x__up' => 26092,
-                'x__right' => $ticket['x__right'],
-            ));
-
         }
-
-        echo 'Currency updated for ' . $updated . ' ideas & '.$already.' already.';
         echo '<br /><br /><br /><br />';
 
     }
-    */
 
 
 

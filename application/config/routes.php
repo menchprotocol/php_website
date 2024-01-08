@@ -80,7 +80,7 @@ $route['icons'] = "app/load/7267";
 $route['SourceDuplicates'] = "app/load/7268";
 $route['SourceOrphaned'] = "app/load/7269";
 
-$route['-([0-9]+)'] = "app/load/$1"; //Old way
+
 $route['@([a-zA-Z0-9]+)'] = "e/e_layout/$1"; //Source
 $route['~([a-zA-Z0-9]+)'] = "i/i_layout/$1"; //Ideate
 $route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)'] = "x/x_layout/$1/$2"; //Discovery Sequence
