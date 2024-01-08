@@ -150,8 +150,6 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
             'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__up IN (' . join(',', $this->config->item('n___4318')) . ')' => null, //Authored
-            //'x__right' => $focus_i['i__id'],
-            'x__up' => 26562, //Total Due
         ), array('x__up'), 0) as $target) {
             if(strtotime($target['x__message'])>0){
                 echo '<div>@'.$target['e__handle'].' | '.$target['x__message'].' => '.date('Y-m-d\TH:i:sP', strtotime($target['x__message'])).'</div>';
