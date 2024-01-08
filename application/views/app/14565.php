@@ -205,6 +205,9 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
     .container_content .line {
         color: #FFFFFF !important;
     }
+    .card_cover.contrast_bg:hover {
+        background: #000000 !important;
+    }
 </style>
 <script>
     $(window).scroll(function() {

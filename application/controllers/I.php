@@ -445,91 +445,91 @@ class I extends CI_Controller {
 
         //Process dynamic inputs if any:
         for ($p = 1; $p <= view_memory(6404,42206); $p++) {
-            if(isset($_POST['save_dynamic_' . $p])){
-                $input_parts = explode('____', $_POST['save_dynamic_' . $p], 2);
-                $dynamic_e__id = $input_parts[0];
-                $dynamic_value = $input_parts[1];
 
-                //Let's first determine the data type:
-                $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
+            if(!isset($_POST['save_dynamic_' . $p])){
+                break; //Nothing more to process
+            }
 
-                if(count($data_types)!=1){
-                    //This is strange, we are expecting 1 match only... report this:
-                    $this->X_model->create(array(
-                        'x__type' => 4246, //Platform Bug Reports
-                        'x__creator' => $member_e['e__id'],
-                        'x__up' => 42179, //Dynamic Input Fields
-                        'x__down' => $dynamic_e__id,
-                        'x__right' => $_POST['save_i__id'],
-                        'x__reference' => $_POST['save_x__id'],
-                        'x__message' => 'Found '.count($data_types).' Data Types (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
-                    ));
-                    continue; //Go to the next dynamic data type...
+            $input_parts = explode('____', $_POST['save_dynamic_' . $p], 2);
+
+            $dynamic_e__id = $input_parts[0];
+            $dynamic_value = $input_parts[1];
+
+            //Let's first determine the data type:
+            $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
+
+            if(count($data_types)!=1){
+                //This is strange, we are expecting 1 match only... report this:
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__creator' => $member_e['e__id'],
+                    'x__up' => 42179, //Dynamic Input Fields
+                    'x__down' => $dynamic_e__id,
+                    'x__right' => $_POST['save_i__id'],
+                    'x__reference' => $_POST['save_x__id'],
+                    'x__message' => 'Found '.count($data_types).' Data Types (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
+                ));
+                continue; //Go to the next dynamic data type...
+            }
+
+            //We found 1 match as expected:
+            foreach($data_types as $data_type_this){
+                $data_type = $data_type_this;
+                break;
+            }
+
+
+            $is_required = in_array($dynamic_e__id , $this->config->item('n___42174')); //Required Settings
+
+            //Validate input if required or provided:
+            if($is_required || strlen($_POST['save_dynamic_'.$p])){
+                $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_'.$p], $e___42179[$dynamic_e__id]['m__title']);
+                if(!$valid_data_type['status']){
+                    //We had an error:
+                    return view_json($valid_data_type);
                 }
+            }
 
-                //We found 1 match as expected:
-                foreach($data_types as $data_type_this){
-                    $data_type = $data_type_this;
-                    break;
-                }
+            //Yes value is valid!
 
+            //Fetch the current value:
+            $values = $this->X_model->fetch(array(
+                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+                'x__right' => $is[0]['i__id'],
+                'x__up' => $dynamic_e__id,
+            ));
 
-                $is_required = in_array($dynamic_e__id , $this->config->item('n___42174')); //Required Settings
-                if(!isset($_POST['save_dynamic_' . $input_pointer])){
-                    $_POST['save_dynamic_' . $input_pointer] = '';
-                }
-                //Validate input if required or provided:
-                if($is_required || strlen($_POST['save_dynamic_'.$input_pointer])){
-                    $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_'.$input_pointer], $e___42179[$dynamic_e__id]['m__title']);
-                    if(!$valid_data_type['status']){
-                        //We had an error:
-                        return view_json($valid_data_type);
-                    }
-                }
+            //Update if needed:
+            if(count($values) && !strlen($_POST['save_dynamic_'.$p] )){
 
-                //Yes value is valid!
+                //Remove Link:
+                $this->X_model->update($values[0]['x__id'], array(
+                    'x__access' => 6173, //Transaction Removed
+                ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
 
-                //Fetch the current value:
-                $values = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                    'x__right' => $is[0]['i__id'],
+            } elseif(!count($values)){
+
+                //Create New Link:
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__type' => 4983, //Co-Author
                     'x__up' => $dynamic_e__id,
+                    'x__right' => $is[0]['i__id'],
+                    'x__message' => $_POST['save_dynamic_'.$p],
+                    'x__weight' => number_x__weight($_POST['save_dynamic_' . $p]),
                 ));
 
-                //Update if needed:
-                if(count($values) && !strlen($_POST['save_dynamic_'.$input_pointer] )){
+            } elseif($values[0]['x__message']!=$_POST['save_dynamic_'.$p]){
 
-                    //Remove Link:
-                    $this->X_model->update($values[0]['x__id'], array(
-                        'x__access' => 6173, //Transaction Removed
-                    ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
-
-                } elseif(!count($values)){
-
-                    //Create New Link:
-                    $this->X_model->create(array(
-                        'x__creator' => $member_e['e__id'],
-                        'x__type' => 4983, //Co-Author
-                        'x__up' => $dynamic_e__id,
-                        'x__right' => $is[0]['i__id'],
-                        'x__message' => $_POST['save_dynamic_'.$input_pointer],
-                        'x__weight' => number_x__weight($_POST['save_dynamic_' . $input_pointer]),
-                    ));
-
-                } elseif($values[0]['x__message']!=$_POST['save_dynamic_'.$input_pointer]){
-
-                    //Update Link:
-                    $this->X_model->update($values[0]['x__id'], array(
-                        'x__message' => $_POST['save_dynamic_'.$input_pointer],
-                        'x__weight' => number_x__weight($_POST['save_dynamic_' . $input_pointer]),
-                    ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
-
-                }
+                //Update Link:
+                $this->X_model->update($values[0]['x__id'], array(
+                    'x__message' => $_POST['save_dynamic_'.$p],
+                    'x__weight' => number_x__weight($_POST['save_dynamic_' . $p]),
+                ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
             }
         }
-
 
 
 
