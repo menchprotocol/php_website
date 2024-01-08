@@ -309,32 +309,26 @@ class I extends CI_Controller {
 
             } else {
 
+                $this_data_type = $this->config->item('e___'.$data_type);
+                $e___4592 = $this->config->item('e___4592'); //Data types
+
                 //Fetch the current value:
-                $d__value = '';
                 foreach($this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                     'x__right' => $is[0]['i__id'],
                     'x__up' => $dynamic_e__id,
                 )) as $curr_val){
-                    $d__value = $curr_val['x__message'];
-                    break;
+                    array_push($return_inputs, array(
+                        'd__id' => $dynamic_e__id,
+                        'd_x__id' => $curr_val['x__id'],
+                        'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                        'd__value' => $curr_val['x__message'],
+                        'd__type' => html_input_type($data_type),
+                        'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
+                    ));
                 }
-
-                //Add to main array:
-                $this_data_type = $this->config->item('e___'.$data_type);
-                $e___4592 = $this->config->item('e___4592'); //Data types
-
-                array_push($return_inputs, array(
-                    'd__id' => $dynamic_e__id,
-                    'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                    'd__value' => $d__value,
-                    'd__type' => html_input_type($data_type),
-                    'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
-                ));
-
             }
-
         }
 
         $return_array = array(
@@ -434,9 +428,10 @@ class I extends CI_Controller {
                 break; //Nothing more to process
             }
 
-            $input_parts = explode('____', $_POST['save_dynamic_' . $p], 2);
-            $dynamic_e__id = $input_parts[0];
-            $dynamic_value = trim($input_parts[1]);
+            $input_parts = explode('____', $_POST['save_dynamic_' . $p], 3);
+            $dynamic_x__id = $input_parts[0];
+            $dynamic_e__id = $input_parts[1];
+            $dynamic_value = trim($input_parts[2]);
 
 
             //Required fields must have an input:
@@ -458,15 +453,21 @@ class I extends CI_Controller {
                 }
             }
 
-            //Yes value is valid!
 
             //Fetch the current value:
-            $values = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                'x__right' => $is[0]['i__id'],
-                'x__up' => $dynamic_e__id,
-            ));
+            if($dynamic_x__id){
+                $values = $this->X_model->fetch(array(
+                    'x__id' => $dynamic_x__id,
+                ));
+            } else {
+                $values = $this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+                    'x__right' => $is[0]['i__id'],
+                    'x__up' => $dynamic_e__id,
+                ));
+            }
+
 
             //Update if needed:
             if(!strlen($dynamic_value)){

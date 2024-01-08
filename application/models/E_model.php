@@ -742,7 +742,7 @@ class E_model extends CI_Model
 
         //First delete existing following/follower transactions for this drop down:
         $previously_assigned = ($set_e_down_id < 1);
-        $updated_x__id = 0;
+        $x_update_id = 0;
         foreach($this->X_model->fetch(array(
             'x__down' => $x__creator,
             'x__up IN (' . join(',', $followers) . ')' => null, //Current followers
@@ -753,7 +753,7 @@ class E_model extends CI_Model
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
-                $updated_x__id = $x['x__id'];
+                $x_update_id = $x['x__id'];
 
                 //Do not log update transaction here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
@@ -772,7 +772,7 @@ class E_model extends CI_Model
                 'x__down' => $x__creator,
                 'x__up' => $set_e_down_id,
                 'x__type' => 4230,
-                'x__reference' => $updated_x__id,
+                'x__reference' => $x_update_id,
             ));
         }
 

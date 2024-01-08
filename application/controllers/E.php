@@ -651,6 +651,7 @@ class E extends CI_Controller
                             )) as $curr_val){
                                 array_push($return_inputs, array(
                                     'd__id' => $dynamic_e__id,
+                                    'd_x__id' => $curr_val['x__id'],
                                     'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
                                     'd__value' => $curr_val['x__message'],
                                     'd__type' => html_input_type($data_type),
@@ -782,9 +783,10 @@ class E extends CI_Controller
                 break; //Nothing more to process
             }
 
-            $input_parts = explode('____', $_POST['save_dynamic_' . $p], 2);
-            $dynamic_e__id = $input_parts[0];
-            $dynamic_value = trim($input_parts[1]);
+            $input_parts = explode('____', $_POST['save_dynamic_' . $p], 3);
+            $dynamic_x__id = $input_parts[0];
+            $dynamic_e__id = $input_parts[1];
+            $dynamic_value = trim($input_parts[2]);
 
 
             //Required fields must have an input:
@@ -808,12 +810,19 @@ class E extends CI_Controller
 
 
             //Fetch the current value:
-            $values = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__up' => $dynamic_e__id,
-                'x__down' => $es[0]['e__id'],
-            ));
+            if($dynamic_x__id){
+                $values = $this->X_model->fetch(array(
+                    'x__id' => $dynamic_x__id,
+                ));
+            } else {
+                $values = $this->X_model->fetch(array(
+                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__up' => $dynamic_e__id,
+                    'x__down' => $es[0]['e__id'],
+                ));
+            }
+
 
             //Update if needed:
             if (!strlen($dynamic_value)) {

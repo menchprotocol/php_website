@@ -1151,7 +1151,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     $("#modal31911 .dynamic_item, #modal31911 .save_x__message").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
-    $("#modal31911 .dynamic_item").attr('placeholder', '').val('').attr('d__id','');
+    $("#modal31911 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
 
     //Load Instant Fields:
     if(link_i__id){
@@ -1197,7 +1197,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
                     field_counter++;
                     $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
-                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).val(item["d__value"]);
+                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
                 }
 
                 //Dynamic Radio fields (if any):
@@ -1244,7 +1244,7 @@ function editor_save_i(){
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31911 .save_dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31911 .save_dynamic_'+i).val().trim();
+            modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).attr('d_x__id').trim() + '____' + $('#modal31911 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31911 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;
@@ -1303,7 +1303,7 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
     $("#modal31912 .dynamic_item, #modal31912 .save_x__message").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
-    $("#modal31912 .dynamic_item").attr('placeholder', '').val('').attr('d__id','');
+    $("#modal31912 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
 
     //Source resets:
     $('#search_cover').val('');
@@ -1354,7 +1354,7 @@ function editor_load_e(e__id, x__id){
                 field_counter++;
                 $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                 $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
-                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).val(item["d__value"]);
+                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
             }
 
             //Dynamic Radio fields (if any):
@@ -1406,7 +1406,7 @@ function editor_save_e(){
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31912 .save_dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
+            modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).attr('d_x__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;
