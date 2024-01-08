@@ -937,7 +937,7 @@ class E extends CI_Controller
 
 
         //Do we have a link reference message that need to be saved?
-        if($_POST['save_x__id']>0){
+        if($_POST['save_x__id']>0 && $_POST['save_x__message']!='IGNORE_INPUT'){
 
             //Fetch transaction:
             foreach($this->X_model->fetch(array(
@@ -947,12 +947,10 @@ class E extends CI_Controller
                 $es[0] = array_merge($es[0], $this_x);
 
                 if($this_x['x__message'] != trim($_POST['save_x__message'])){
-
                     $this->X_model->update($this_x['x__id'], array(
                         'x__message' => trim($_POST['save_x__message']),
                         'x__weight' => number_x__weight(trim($_POST['save_x__message'])),
                     ), $member_e['e__id'], 42171);
-
                 }
             }
         }

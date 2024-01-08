@@ -557,7 +557,7 @@ class I extends CI_Controller {
 
 
         //Do we have a link reference message that need to be saved?
-        if($_POST['save_x__id']>0){
+        if($_POST['save_x__id']>0 && $_POST['save_x__message']!='IGNORE_INPUT'){
             //Fetch transaction:
             foreach($this->X_model->fetch(array(
                 'x__id' => $_POST['save_x__id'],
