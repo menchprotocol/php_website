@@ -565,6 +565,7 @@ class E extends CI_Controller
         }
 
         //Fetch dynamic data based on idea type:
+        $scanned_templates = array();
         $return_inputs = array();
         $return_radios = '';
         $input_pointer = 0;
@@ -576,6 +577,11 @@ class E extends CI_Controller
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array('x__up')) as $e_group) {
+
+            if(in_array($e_group['e__id'], $scanned_templates)){
+                continue;
+            }
+            array_push($scanned_templates, $e_group['e__id']);
 
             //Find template for this group:
             foreach($this->X_model->fetch(array(
@@ -827,7 +833,7 @@ class E extends CI_Controller
 
 
             //Fetch the current value:
-            if($d_x__id){
+            if($d_x__id > 0){
                 $values = $this->X_model->fetch(array(
                     'x__id' => $d_x__id,
                 ));

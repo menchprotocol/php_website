@@ -472,7 +472,7 @@ class I extends CI_Controller {
 
 
             //Fetch the current value:
-            if($d_x__id){
+            if($d_x__id > 0){
                 $values = $this->X_model->fetch(array(
                     'x__id' => $d_x__id,
                 ));
