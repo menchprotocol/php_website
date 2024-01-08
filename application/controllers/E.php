@@ -802,7 +802,7 @@ class E extends CI_Controller
             if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($dynamic_value)){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Source Not Active',
+                    'message' => 'Missing Required Field: '.$e___42179[$dynamic_e__id]['m__title'],
                 ));
             }
 

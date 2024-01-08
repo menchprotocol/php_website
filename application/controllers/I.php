@@ -443,7 +443,7 @@ class I extends CI_Controller {
             if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($dynamic_value)){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Source Not Active',
+                    'message' => 'Required Not Active',
                 ));
             }
 
