@@ -2609,6 +2609,11 @@ h4.main__title{
     width: 89px;
     text-align: left;
 }
+.second-right-col{
+    float: right;
+    width: 55px;
+    text-align: right;
+}
 .last-right-col .mench-points {
     margin-left: 5px;
 }
