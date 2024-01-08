@@ -1259,6 +1259,9 @@ function editor_save_i(){
 
     $.post("/i/editor_save_i", modify_data, function (data) {
 
+        //Load Images:
+        i_saving = false;
+
         if (!data.status) {
 
             //Show Errors:
@@ -1294,9 +1297,6 @@ function editor_save_i(){
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
-
-            //Load Images:
-            i_saving = false;
 
         }
     });
