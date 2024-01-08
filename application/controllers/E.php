@@ -566,7 +566,6 @@ class E extends CI_Controller
 
         //Fetch dynamic data based on idea type:
         $return_inputs = array();
-        $return_unique_inputs = array();
         $return_radios = '';
         $input_pointer = 0;
 
@@ -636,39 +635,29 @@ class E extends CI_Controller
                         if(in_array($data_type, $this->config->item('n___42188'))){
 
                             //Single or Multiple Choice:
-                            if(!in_array($dynamic_e__id, $return_unique_inputs)){
-                                array_push($return_unique_inputs, $dynamic_e__id);
-                                $return_radios .= view_radio_e($dynamic_e__id, $es[0]['e__id'], 0);
-                            }
+                            $return_radios .= view_radio_e($dynamic_e__id, $es[0]['e__id'], 0);
 
                         } else {
 
-                            //Fetch the current value:
-                            $d__value = '';
+                            $this_data_type = $this->config->item('e___'.$data_type);
+                            $e___4592 = $this->config->item('e___4592'); //Data types
+
+                            //Fetch the current value(s):
                             foreach($this->X_model->fetch(array(
                                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                 'x__down' => $es[0]['e__id'],
                                 'x__up' => $dynamic_e__id,
                             )) as $curr_val){
-                                $d__value = $curr_val['x__message'];
-                                break;
-                            }
-
-                            //Add to main array:
-                            $this_data_type = $this->config->item('e___'.$data_type);
-                            $e___4592 = $this->config->item('e___4592'); //Data types
-
-                            if(!in_array($dynamic_e__id, $return_unique_inputs)){
-                                array_push($return_unique_inputs, $dynamic_e__id);
                                 array_push($return_inputs, array(
                                     'd__id' => $dynamic_e__id,
                                     'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                                    'd__value' => $d__value,
+                                    'd__value' => $curr_val['x__message'],
                                     'd__type' => html_input_type($data_type),
                                     'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
                                 ));
                             }
+
                         }
                     }
 
