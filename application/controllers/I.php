@@ -323,13 +323,14 @@ class I extends CI_Controller {
 
                 //Add to main array:
                 $this_data_type = $this->config->item('e___'.$data_type);
+                $e___4592 = $this->config->item('e___4592'); //Data types
 
                 array_push($return_inputs, array(
                     'd__id' => $dynamic_e__id,
                     'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
                     'd__value' => $d__value,
                     'd__type' => html_input_type($data_type),
-                    'd__placeholder' => $this_data_type[$dynamic_e__id]['m__message'],
+                    'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'] ),
                 ));
 
             }
