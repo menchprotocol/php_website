@@ -2670,7 +2670,7 @@ h4.main__title{
 
 
     .vid-padding { padding:55px 0; }
-    .icon-block-mobile { width: 21px; }
+    .icon-block-mobile { width: 21px !important; }
 
     .mid-range { padding:0; }
 
