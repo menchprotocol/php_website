@@ -50,7 +50,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             $placeholder = '';
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
                 if ($found_link_group > 0){
-                    $placeholder = '<span class="icon-block-xxs">&nbsp;</span>';
+                    $placeholder = '<span class="icon-block-xxs icon-block-mobile">&nbsp;</span>';
                     if(!$focus_link_group || $focus_link_group!=$found_link_group){
                         echo '<tr class="mobile-shrink">';
                         echo '<td style="text-align: left;" colspan="2"><span class="icon-block-xxs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b></td>';
