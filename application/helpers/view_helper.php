@@ -1370,8 +1370,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         } else {
             $href = '/'.$i['i__hashtag'];
         }
-    } elseif(strlen($e___13369[$x__type]['m__message'])){
-        $href = $e___13369[$x__type]['m__message'].$i['i__id'];
     } else {
         $href = '/~'.$i['i__hashtag'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
     }
@@ -1638,7 +1636,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
 
     //Idea Message (Remaining)
-    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
@@ -1649,9 +1647,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Raw Data:
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . ' hidden">'.$i['i__message'].'</div>';
-    if($focus_card){
-        $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
-    }
+    $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode || !$focus_card ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
 
 
 
@@ -2166,7 +2162,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="coinType12274 card_access_'.$e['e__access'].( !$write_access_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['e__id'].' coinType12274 card_access_'.$e['e__access'].( !$write_access_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn ui_e__cover_'.$e['e__id'].'" raw_cover="'.$e['e__cover'].'">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
 
@@ -2188,7 +2184,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     } else {
         //Static:
         $ui .= '<input type="hidden" class="text__6197_'.$e['e__id'].'" value="'.$e['e__title'].'">';
-        $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
+        $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="handle_href_e_'.$e['e__id'].' main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
     }
 
 

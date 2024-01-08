@@ -1275,8 +1275,15 @@ function editor_save_i(){
             //Update Idea Message:
             $('.ui_i__message_'+modify_data['save_i__id']).text(modify_data['save_i__message']);
 
-            //Update Hashtag:
+            //Update Hashtag & Link:
             $(".ui_i__hashtag_"+modify_data['save_i__id']).text(modify_data['save_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+
+            $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']).attr('href').replace($(".ui_i__hashtag_"+modify_data['save_i__id']).text(), modify_data['save_i__hashtag']));
+
+
+            $(".handle_href_i_"+modify_data['save_i__id']).attr('href',modify_data['save_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+
+
 
             $('.ui_i__cache_'+modify_data['save_i__id']).html(( parseInt($('.ui_i__cache_'+modify_data['save_i__id']).attr('show_cache_links')) ? data.return_i__cache_links : data.return_i__cache ));
             console.log(data.message); //To check what happened...
@@ -1443,8 +1450,9 @@ function editor_save_e(){
             //Update Title:
             update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
 
-            //Update Handle:
+            //Update Handle & Href links:
             $('.ui_e__handle_'+modify_data['save_e__id']).text(modify_data['save_e__handle']);
+            $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']).attr('href').replace($(".ui_e__handle_"+modify_data['save_e__id']).text(), modify_data['save_e__handle']));
 
             //Update Mini Icon:
             update_cover_mini(modify_data['save_e__cover'], '.mini_6197_'+modify_data['save_e__id']);
