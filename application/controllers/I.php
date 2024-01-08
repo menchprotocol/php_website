@@ -273,7 +273,6 @@ class I extends CI_Controller {
         //Fetch dynamic data based on idea type:
         $return_inputs = array();
         $return_radios = '';
-        $input_pointer = 0;
 
 
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
@@ -294,24 +293,9 @@ class I extends CI_Controller {
                     'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong...',
                 ));
                 continue; //Go to the next dynamic data type...
-            } elseif($input_pointer >= view_memory(6404,42206)){
-
-                //Monitor if we ever reach the maximum:
-                $this->X_model->create(array(
-                    'x__type' => 4246, //Platform Bug Reports
-                    'x__creator' => $member_e['e__id'],
-                    'x__up' => 42179, //Dynamic Input Fields
-                    'x__down' => $dynamic_e__id,
-                    'x__right' => $_POST['i__id'],
-                    'x__reference' => $_POST['x__id'],
-                    'x__metadata' => $_POST,
-                    'x__message' => 'Dynamic Fields Reach their maximum limit of '.view_memory(6404,42206).'  which may require field expansion...',
-                ));
-
             }
 
             //We found 1 match as expected:
-            $input_pointer++;
             foreach($data_types as $data_type_this){
                 $data_type = $data_type_this;
                 break;
@@ -440,7 +424,6 @@ class I extends CI_Controller {
 
 
         //Validate Dynamic Inputs:
-        $input_pointer = 0;
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
 
         //Process dynamic inputs if any:
@@ -456,24 +439,7 @@ class I extends CI_Controller {
             $dynamic_value = $input_parts[1];
 
             //Let's first determine the data type:
-            $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
-
-            if(count($data_types)!=1){
-                //This is strange, we are expecting 1 match only... report this:
-                $this->X_model->create(array(
-                    'x__type' => 4246, //Platform Bug Reports
-                    'x__creator' => $member_e['e__id'],
-                    'x__up' => 42179, //Dynamic Input Fields
-                    'x__down' => $dynamic_e__id,
-                    'x__right' => $_POST['save_i__id'],
-                    'x__reference' => $_POST['save_x__id'],
-                    'x__message' => 'Found '.count($data_types).' Data Types (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
-                ));
-                continue; //Go to the next dynamic data type...
-            }
-
-            //We found 1 match as expected:
-            foreach($data_types as $data_type_this){
+            foreach(array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592')) as $data_type_this){
                 $data_type = $data_type_this;
                 break;
             }

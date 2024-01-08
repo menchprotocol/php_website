@@ -1258,6 +1258,7 @@ function editor_save_i(){
         } else {
 
             //Reset errors:
+            console.log('SUCCESS: '+data.message);
             $("#modal31911 .save_results").html('');
             has_unsaved_changes = false;
             $('#modal31911').modal('hide');
@@ -1411,6 +1412,8 @@ function editor_save_e(){
             $("#modal31912 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Error:<br />'+data.message);
 
         } else {
+
+            console.log('SUCCESS: '+data.message);
 
             //Reset errors:
             $("#modal31912 .save_results").html('');
