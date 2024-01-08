@@ -442,7 +442,7 @@ class I extends CI_Controller {
             }
 
             $input_parts = explode('____', $_POST['save_dynamic_' . $p], 3);
-            $dynamic_x__id = $input_parts[0];
+            $d_x__id = $input_parts[0];
             $dynamic_e__id = $input_parts[1];
             $dynamic_value = trim($input_parts[2]);
 
@@ -468,11 +468,13 @@ class I extends CI_Controller {
 
 
             //Fetch the current value:
-            if($dynamic_x__id){
+            if($d_x__id){
                 $values = $this->X_model->fetch(array(
-                    'x__id' => $dynamic_x__id,
+                    'x__id' => $d_x__id,
                 ));
-            } else {
+            }
+
+            if(!$d_x__id || !count($values)){
                 $values = $this->X_model->fetch(array(
                     'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
