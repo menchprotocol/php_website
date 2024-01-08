@@ -4028,13 +4028,18 @@ main {
 
 
 
+.home_black_font .platform-logo i,
+.home_black_font .menu-icon i,
+.home_black_font .block-x i,
+.home_black_font .text-logo {
+    color:#FFFFFF !important;
+}
 .home_black_font .top-header-position .platform-logo i,
 .home_black_font .top-header-position .menu-icon i,
 .home_black_font .top-header-position .block-x i,
 .home_black_font .top-header-position .text-logo {
     color:#000000 !important;
 }
-
 
 
 .halfbg .glossy-bg .list-group-item-action:hover,
