@@ -1308,12 +1308,18 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
-    console.log('WOW:'+$('.text__6197_'+e__id+':first').val());
+    var source_title = '';
+    if($('.text__6197_'+e__id+':first').text().length){
+        source_title = $('.text__6197_'+e__id+':first').text();
+    } else if($('.text__6197_'+e__id+':first').val().length){
+        source_title = $('.text__6197_'+e__id+':first').val();
+    }
+    console.log('WOW:'+source_title);
     $('#modal31912 .save_e__id').val(e__id);
     $('#modal31912 .save_x__id').val(x__id);
     $("#modal31912 .show_id").text('ID '+e__id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
-    $('#modal31912 .save_e__title').val($('.text__6197_'+e__id+':first').val());
+    $('#modal31912 .save_e__title').val(source_title);
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
     $('#modal31912 .save_e__cover').val(current_cover).focus();
     update_cover_main(current_cover, '.demo_cover');
