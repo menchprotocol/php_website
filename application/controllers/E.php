@@ -644,21 +644,25 @@ class E extends CI_Controller
 
                             //Fetch the current value(s):
                             $counted = 0;
+                            $unique_values = array();
                             foreach($this->X_model->fetch(array(
                                 'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                 'x__down' => $es[0]['e__id'],
                                 'x__up' => $dynamic_e__id,
                             )) as $curr_val){
-                                $counted++;
-                                array_push($return_inputs, array(
-                                    'd__id' => $dynamic_e__id,
-                                    'd_x__id' => $curr_val['x__id'],
-                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                                    'd__value' => $curr_val['x__message'],
-                                    'd__type' => html_input_type($data_type),
-                                    'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
-                                ));
+                                if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
+                                    array_push($unique_values, $curr_val['x__message']);
+                                    $counted++;
+                                    array_push($return_inputs, array(
+                                        'd__id' => $dynamic_e__id,
+                                        'd_x__id' => $curr_val['x__id'],
+                                        'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                                        'd__value' => $curr_val['x__message'],
+                                        'd__type' => html_input_type($data_type),
+                                        'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
+                                    ));
+                                }
                             }
 
                             if(!$counted){
