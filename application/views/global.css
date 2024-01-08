@@ -3948,8 +3948,23 @@ main {
 }
 
 
-.home_black_font h1 { color:#000000 !important; text-shadow: 1px 1px 3px #FFFFFF; }
-.home_white_font h1 { color:#FFFFFF !important; text-shadow: 1px 1px 3px #000000; }
+.home_black_font h1,
+.home_black_font .text-logo {
+    color:#000000 !important;
+}
+.home_black_font .text-logo {
+    text-shadow: 1px 1px 3px #FFFFFF;
+}
+
+
+.home_white_font h1,
+.home_white_font .text-logo {
+    color:#FFFFFF !important;
+}
+.home_white_font .text-logo {
+    text-shadow: 1px 1px 3px #000000;
+}
+
 
 .platform-navigation .block-x, .platform-navigation .block-menu {
     width:34px;
