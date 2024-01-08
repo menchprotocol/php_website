@@ -1115,7 +1115,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
 
-            } elseif (view_valid_handle_e($word, ture)) {
+            } elseif (view_valid_handle_e($word, true)) {
 
                 if(substr_count($word, '|')==2 && is_numeric(one_two_explode('@','|',$word))){
 
