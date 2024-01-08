@@ -444,11 +444,18 @@ class I extends CI_Controller {
                 break;
             }
 
+            //Required fields must have an input:
+            if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($_POST['save_dynamic_' . $p])){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Source Not Active',
+                ));
+            }
 
             //Validate input if required or provided:
-            if(in_array($dynamic_e__id, $this->config->item('n___42174')) /* Is Required? */ || strlen($_POST['save_dynamic_'.$p])){
-                $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_'.$p], $e___42179[$dynamic_e__id]['m__title']);
-                if(strlen($_POST['save_dynamic_'.$p]) && !$valid_data_type['status']){
+            if (strlen($_POST['save_dynamic_' . $p])) {
+                $valid_data_type = valid_data_type($data_type, $_POST['save_dynamic_' . $p], $e___42179[$dynamic_e__id]['m__title']);
+                if (!$valid_data_type['status']) {
                     //We had an error:
                     return view_json($valid_data_type);
                 }
