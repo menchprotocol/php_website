@@ -1447,7 +1447,7 @@ function editor_save_e(){
             //Update Handle & Href links if needed:
             var old_handle = $(".ui_e__handle_"+modify_data['save_e__id']).text();
             var new_handle = modify_data['save_e__handle'];
-            console(old_handle+' chaned to: '+new_handle);
+            console.log(old_handle+' chaned to: '+new_handle);
 
             if(old_handle!=new_handle){
                 if(fetch_int_val('#focus_card')==12274 && modify_data['save_e__id']==fetch_int_val('#focus_id')){
