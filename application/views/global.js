@@ -1269,15 +1269,19 @@ function editor_save_i(){
 
         } else {
 
+
             //Update Handle & Href links if needed:
-            if(modify_data['save_i__hashtag'] != $(".ui_i__hashtag_"+modify_data['save_i__id']).text()){
+            var old_handle = $(".ui_i__hashtag_"+modify_data['save_i__id']+':first').text();
+            var new_handle = modify_data['save_i__hashtag'];
+            //Update Handle & Href links if needed:
+            if(new_handle != old_handle){
                 if(fetch_int_val('#focus_card')==12273 && modify_data['save_i__id']==fetch_int_val('#focus_id')){
                     //Refresh page since focus item handle changed:
-                    js_redirect('/~'+modify_data['save_i__hashtag']);
+                    js_redirect('/~'+new_handle);
                 } else {
                     //Update Hashtag & Link:
-                    $(".ui_i__hashtag_"+modify_data['save_i__id']).text(modify_data['save_i__hashtag']).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
-                    $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']).attr('href').replace($(".ui_i__hashtag_"+modify_data['save_i__id']).text(), modify_data['save_i__hashtag']));
+                    $(".ui_i__hashtag_"+modify_data['save_i__id']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
+                    $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']+':first').attr('href').replace(old_handle, new_handle));
                 }
             }
 
@@ -1444,10 +1448,8 @@ function editor_save_e(){
         } else {
 
             //Update Handle & Href links if needed:
-            var old_handle = $(".ui_e__handle_"+modify_data['save_e__id']).text();
+            var old_handle = $(".ui_e__handle_"+modify_data['save_e__id']+':first').text();
             var new_handle = modify_data['save_e__handle'];
-            console.log(old_handle+' chaned to: '+new_handle);
-
             if(old_handle!=new_handle){
                 if(fetch_int_val('#focus_card')==12274 && modify_data['save_e__id']==fetch_int_val('#focus_id')){
                     //Refresh page since focus item handle changed:
@@ -1455,7 +1457,7 @@ function editor_save_e(){
                 } else {
                     //Make adjustments to current page:
                     $('.ui_e__handle_'+modify_data['save_e__id']).text(new_handle);
-                    $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']).attr('href').replace(old_handle, new_handle));
+                    $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']+':first').attr('href').replace(old_handle, new_handle));
                 }
             }
 
