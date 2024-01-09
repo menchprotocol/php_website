@@ -356,6 +356,8 @@ function view_google_tag($google_analytics_code){
 
 function view_body_i($x__type, $counter, $i__id){
 
+    return 'Hi';
+
     $CI =& get_instance();
     $list_results = view_i_covers($x__type, $i__id, 1);
     $ui = '';
