@@ -1,3 +1,7 @@
+
+MENCH
+Platform Routes
+Copy/Paste the following code in routes.php
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
@@ -6,6 +10,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] = "app/index"; //Redirects to default app
 $route['404_override'] = 'app/load'; //Page not found
 
+$route['InteractionType'] = "app/load/4593";
 $route['reminder'] = "app/load/42216";
 $route['routes'] = "app/load/42006";
 $route['ServerTime'] = "app/load/41286";
@@ -80,3 +85,4 @@ $route['@([a-zA-Z0-9]+)'] = "e/e_layout/$1"; //Source
 $route['~([a-zA-Z0-9]+)'] = "i/i_layout/$1"; //Ideate
 $route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)'] = "x/x_layout/$1/$2"; //Discovery Sequence
 $route['([a-zA-Z0-9]+)'] = "x/x_layout/0/$1/0"; //Discovery Single
+
