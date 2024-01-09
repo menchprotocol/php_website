@@ -356,8 +356,6 @@ function view_google_tag($google_analytics_code){
 
 function view_body_i($x__type, $counter, $i__id){
 
-    return 'Hi';
-
     $CI =& get_instance();
     $list_results = view_i_covers($x__type, $i__id, 1);
     $ui = '';
@@ -1292,6 +1290,8 @@ function view_media($media_url, $link){
 }
 
 function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $focus_e = false){
+
+    return 'Hi';
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
