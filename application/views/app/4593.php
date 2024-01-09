@@ -14,8 +14,8 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     $total_count++;
 
     $table_body .= '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-    $table_body .= '<td style="text-align: left;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
-    $table_body .= '<td style="text-align: left;">'.$m['m__cover'].'</td>';
+    $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
+    $table_body .= '<td style="text-align: left; width: 34px;">'.$m['m__cover'].'</td>';
     $table_body .= '<td style="text-align: left;"><a href="/@'.$x__type.'"><u>'.$m['m__title'].'</u></a></td>';
 
     //List all statuses:
@@ -26,7 +26,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
             'x__privacy' => $x__type1,
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-        $table_body .= '<td style="text-align: left;">'.str_pad($list_e_count[0]['totals'], 9, '0', STR_PAD_LEFT).'</td>';
+        $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($list_e_count[0]['totals'], 9, '0', STR_PAD_LEFT).'</td>';
         if(!isset($total_access[$m1['m__handle']])){
             $total_access[$m1['m__handle']] = 0;
         }
@@ -35,13 +35,13 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     }
 
     $total_interactions += $interactions_this;
-    $table_body .= '<td style="text-align: left;">'.str_pad($interactions_this, 9, '0', STR_PAD_LEFT).'</td>';
+    $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($interactions_this, 9, '0', STR_PAD_LEFT).'</td>';
 
     //Points Total
     $points = $this->X_model->fetch(array(
         'x__type' => $x__type,
     ), array(), 0, 0, array(), 'SUM(x__points) as totals');
-    $table_body .= '<td style="text-align: left;">'.str_pad($points[0]['totals'], 9, '0', STR_PAD_LEFT).'</td>';
+    $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($points[0]['totals'], 9, '0', STR_PAD_LEFT).'</td>';
     $total_points += $points[0]['totals'];
 
     $table_body .= '</tr>';
@@ -69,20 +69,22 @@ echo '<th style="text-align: left;" id="th_points">'.$e___11035[42225]['m__cover
 
 echo '</tr>';
 
+
 echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
 echo '<th style="text-align: left;">&nbsp;</th>';
+echo '<th style="text-align: left;">&nbsp;</th>'; //Icon
 echo '<th style="text-align: left;"><b>TOTALS</b></th>';
 
 //List all statuses:
 foreach($this->config->item('e___6186') as $x__type1 => $m1) {
-    echo '<th style="text-align: left;">'.str_pad($total_access[$m1['m__handle']], 9, '0', STR_PAD_LEFT).'</th>';
+    echo '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_access[$m1['m__handle']], 9, '0', STR_PAD_LEFT).'</th>';
 }
 
-echo '<th style="text-align: left;">'.str_pad($total_interactions, 9, '0', STR_PAD_LEFT).'</th>';
+echo '<th style="text-align: left;  font-family: monospace, monospace;">'.str_pad($total_interactions, 9, '0', STR_PAD_LEFT).'</th>';
 
 //Points Total
-echo '<th style="text-align: left;">'.str_pad($total_points, 9, '0', STR_PAD_LEFT).'</th>';
+echo '<th style="text-align: left;  font-family: monospace, monospace;">'.str_pad($total_points, 9, '0', STR_PAD_LEFT).'</th>';
 
 echo '</tr>';
 
