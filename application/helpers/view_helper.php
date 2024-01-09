@@ -936,12 +936,9 @@ function view_i_title($i, $string_only = false){
 
 function view_valid_handle_e($string, $check_db = false){
     $CI =& get_instance();
-    $val = ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->E_model->fetch(array(
+    return ( substr($string, 0, 1)=='@' && ctype_alnum(substr($string, 1)) && (!$check_db || count($CI->E_model->fetch(array(
             'LOWER(e__handle)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false );
-
-    //echo '<div>['.$string.' was '.$val.']</div>';
-    return $val;
 }
 
 function view_valid_handle_i($string, $check_db = false){
@@ -987,8 +984,8 @@ function validate_i__message($str){
 
 }
 
-function view_i_links($i, $replace_links = true){
-    $show_extra_list = ( substr_count($i['i__cache'], 'show_more_line') ? '' : view_list_e($i, 0, !$replace_links) );
+function view_i_links($i, $replace_links = true, $is_focus = false){
+    $show_extra_list = ( !$is_focus && substr_count($i['i__cache'], 'show_more_line') ? '' : view_list_e($i, 0, !$replace_links) );
     return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).$show_extra_list;
 }
 
@@ -1604,7 +1601,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
 
     //Idea Message (Remaining)
-    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card, $focus_card).( $focus_card ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
