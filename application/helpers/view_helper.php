@@ -1236,7 +1236,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     }
     if($save_i__id && $word_count>=$word_limit){
         //Add show more button:
-        $i__cache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);" onclick="show_more('.$save_i__id.')">Show more</spanaa></div>';
+        $i__cache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
     }
     $i__cache .= '</div>';
 
