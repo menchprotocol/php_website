@@ -534,7 +534,6 @@ class I extends CI_Controller {
                 ));
             }
 
-
             //Update Handles everywhere they are referenced:
             foreach ($this->X_model->fetch(array(
                 'x__left' => $is[0]['i__id'],
