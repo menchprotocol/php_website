@@ -87,3 +87,6 @@ echo '<td style="text-align: left;">'.number_format($total_interactions, 0).'</t
 echo '<td style="text-align: left;">'.number_format($total_points, 0).'</td>';
 
 echo '</tr>';
+
+echo '</table>';
+
