@@ -1427,7 +1427,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                 //Idea Access
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_see || !in_array($i['i__access'], $CI->config->item('n___31871')) || in_array($i['i__access'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__access'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
