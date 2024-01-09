@@ -1123,7 +1123,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 }
 
-                $word_count += ( in_array($reference_type, $this->config->item('n___42294')) ? $media_words  : $link_words );
+                $word_count += ( in_array($reference_type, $CI->config->item('n___42294')) ? $media_words  : $link_words );
 
             } elseif (view_valid_handle_i($word, true)) {
 
