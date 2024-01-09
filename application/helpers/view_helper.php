@@ -988,7 +988,8 @@ function validate_i__message($str){
 }
 
 function view_i_links($i, $replace_links = true){
-    return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).view_list_e($i, 0, !$replace_links);
+    $show_extra_list = ( substr_count($i['i__cache'], 'show_more_line') ? '' : view_list_e($i, 0, !$replace_links) );
+    return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).$show_extra_list;
 }
 
 function idea_author($i__id){
@@ -1235,7 +1236,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     }
     if($save_i__id && $word_count>=$word_limit){
         //Add show more button:
-        $i__cache .= '<div class="line"><spanaa href="javascript:void(0);" onclick="show_more('.$save_i__id.')">Show more</spanaa></div>';
+        $i__cache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);" onclick="show_more('.$save_i__id.')">Show more</spanaa></div>';
     }
     $i__cache .= '</div>';
 
