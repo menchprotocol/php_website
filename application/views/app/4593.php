@@ -33,7 +33,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
             'x__privacy' => $x__type1,
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-        $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($list_e_count[0]['totals'], $pad_length, '0', STR_PAD_LEFT).'</td>';
+        $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($list_e_count[0]['totals'], $pad_length, '0', STR_PAD_LEFT).'</td>';
         if(!isset($total_access[$m1['m__handle']])){
             $total_access[$m1['m__handle']] = 0;
         }
@@ -42,8 +42,8 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     }
 
     $total_interactions += $interactions_this;
-    $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';
-    $table_body .= '<th style="text-align: left;">'.str_pad(number_format(($interactions_this/$total_count[0]['totals']), 3), 6, '0', STR_PAD_LEFT).'%</th>';
+    $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';
+    $table_body .= '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad(number_format(($interactions_this/$total_count[0]['totals']), 3), 6, '0', STR_PAD_LEFT).'%</th>';
 
     //Points Total
     $points = $this->X_model->fetch(array(
