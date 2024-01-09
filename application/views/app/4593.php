@@ -5,25 +5,23 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $table_sortable = array('#th_primary','#th_count','#th_total','#th_points');
 
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" id="sortable_table">';
-echo '<thead>';
 echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
-echo '<td style="text-align: left;" id="th_count">#</td>';
-echo '<td style="text-align: left;" id="th_primary">Interaction Type</td>';
+echo '<th style="text-align: left;" id="th_count">#</th>';
+echo '<th style="text-align: left;" id="th_primary">Interaction Type</th>';
 
 //List all statuses:
 foreach($this->config->item('e___6186') as $x__type1 => $m1) {
     array_push($table_sortable, '#th_e_'.$x__type1);
-    echo '<td style="text-align: left;" id="th_e_'.$x__type1.'">'.$m1['m__cover'].' '.$m1['m__title'].'</td>';
+    echo '<th style="text-align: left;" id="th_e_'.$x__type1.'">'.$m1['m__cover'].' '.$m1['m__title'].'</th>';
 }
 
-echo '<td style="text-align: left;" id="th_total">Total Interactions</td>';
+echo '<th style="text-align: left;" id="th_total">Total Interactions</th>';
 
 //Points Total
-echo '<td style="text-align: left;" id="th_points">'.$e___11035[42225]['m__cover'].' '.$e___11035[42225]['m__title'].'</td>';
+echo '<th style="text-align: left;" id="th_points">'.$e___11035[42225]['m__cover'].' '.$e___11035[42225]['m__title'].'</th>';
 
 echo '</tr>';
-echo '</thead>';
 
 
 $total_count = 0;
@@ -74,24 +72,22 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
 }
 
 
-echo '<tfoot>';
 echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
-echo '<td style="text-align: left;">&nbsp;</td>';
-echo '<td style="text-align: left;"><b>TOTALS</b></td>';
+echo '<th style="text-align: left;">&nbsp;</th>';
+echo '<th style="text-align: left;"><b>TOTALS</b></th>';
 
 //List all statuses:
 foreach($this->config->item('e___6186') as $x__type1 => $m1) {
-    echo '<td style="text-align: left;">'.number_format($total_access[$m1['m__handle']], 0).'</td>';
+    echo '<th style="text-align: left;">'.number_format($total_access[$m1['m__handle']], 0).'</th>';
 }
 
-echo '<td style="text-align: left;">'.number_format($total_interactions, 0).'</td>';
+echo '<th style="text-align: left;">'.number_format($total_interactions, 0).'</th>';
 
 //Points Total
-echo '<td style="text-align: left;">'.number_format($total_points, 0).'</td>';
+echo '<th style="text-align: left;">'.number_format($total_points, 0).'</th>';
 
 echo '</tr>';
-echo '</tfoot>';
 
 echo '</table>';
 
