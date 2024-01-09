@@ -1076,7 +1076,12 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     $replace_to = array();
 
     //See what we can find:
-    $i__cache = '<div class="i_cache">';
+    $word_count = 0;
+    $word_limit = 34;
+    $link_words = 8; //The number of words a link is counted as...
+    $media_words = 13; //The number of words a media file is counted as...
+
+    $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
     foreach(explode("\n", $str) as $line_index => $line) {
 
         $single_media_line = false;
@@ -1118,17 +1123,21 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 }
 
+                $word_count += ( in_array($reference_type, $this->config->item('n___42294')) ? $media_words  : $link_words );
+
             } elseif (view_valid_handle_i($word, true)) {
 
                 $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $word_count++;
 
             } elseif (view_valid_handle_reverse_i($word, true)) {
 
                 $reference_type = 42337;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 2), $word);
+                $word_count++;
 
             } elseif (view_valid_handle_e($word, true)) {
 
@@ -1205,11 +1214,13 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $word_count++;
 
             } else {
 
                 //This word is not referencing anything!
                 $i__cache_line .= $word;
+                $word_count++;
 
             }
 
@@ -1217,10 +1228,14 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
         }
 
-        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( count($lines)<=1 && $reference_type_last>0 ? 'media_line' : '').'">';
+        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( count($lines)<=1 && $reference_type_last>0 ? 'media_line' : '').( $save_i__id && $word_count>=$word_limit ? ' hidden ' : '' ).'">';
         $i__cache .= $i__cache_line;
         $i__cache .= '</div>';
 
+    }
+    if($save_i__id && $word_count>=$word_limit){
+        //Add show more button:
+        $i__cache .= '<div class="line show_more"><a href="javascript:void(0);">Show more</a></div>';
     }
     $i__cache .= '</div>';
 
