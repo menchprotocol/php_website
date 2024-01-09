@@ -1077,7 +1077,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     //See what we can find:
     $word_count = 0;
-    $word_limit = 34;
+    $word_limit = 55;
     $link_words = 8; //The number of words a link is counted as...
     $media_words = 13; //The number of words a media file is counted as...
 
@@ -1235,7 +1235,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     }
     if($save_i__id && $word_count>=$word_limit){
         //Add show more button:
-        $i__cache .= '<div class="line show_more"><a href="javascript:void(0);">Show more</a></div>';
+        $i__cache .= '<div class="line"><spanaa href="javascript:void(0);" onclick="show_more('.$save_i__id.')">Show more</spanaa></div>';
     }
     $i__cache .= '</div>';
 
