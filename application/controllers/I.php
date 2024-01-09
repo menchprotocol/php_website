@@ -540,9 +540,7 @@ class I extends CI_Controller {
                 'x__type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__right')) as $ref) {
-                $this->I_model->update($ref['i__id'], array(
-                    'i__message' => preg_replace('/\b#'.$is[0]['i__hashtag'].'\b/', '#'.trim($_POST['save_i__hashtag']), $ref['i__message']),
-                ), false, $member_e['e__id']);
+                view_sync_links(preg_replace('/\b#'.$is[0]['i__hashtag'].'\b/', '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
 
             //Save hashtag since changed:
