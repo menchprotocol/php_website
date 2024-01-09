@@ -17,7 +17,7 @@ foreach($this->E_model->fetch() as $en) {
         'x__up IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__down' => $en['e__id'],
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 1));
     $is_x = count($this->X_model->fetch(array(
         'x__creator' => $en['e__id'],

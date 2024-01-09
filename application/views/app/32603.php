@@ -9,7 +9,7 @@ if(isset($_GET['i__hashtag'])){
     foreach($this->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
         'i__type' => 32603, //Sign Agreement
-        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     )) as $i_sign){
 
         $found_i = true;
@@ -34,14 +34,14 @@ if(isset($_GET['i__hashtag'])){
 
                 //See if we can find this user with their email:
                 $map_users = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__up' => 3288, //Email
                     'LOWER(x__message)' => $email.'',
                 ), array('x__down'));
                 if(!count($map_users)){
                     $map_users = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__up' => 4783, //Phone
                         'x__message' => $phone.'',

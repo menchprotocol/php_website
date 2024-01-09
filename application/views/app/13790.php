@@ -40,7 +40,7 @@ foreach($list_settings['query_string'] as $x){
             'x__left' => $i2['i__id'],
             'x__creator' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1);
 
         if(count($discoveries)){
@@ -66,7 +66,7 @@ foreach($list_settings['query_string'] as $x){
                     'x__down' => $x['e__id'],
                     'x__up IN (' . join(',', $i2['must_follow']) . ')' => null,
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ))))){
             if(!isset($count_totals['i'][$i2['i__id']])){
                 $count_totals['i'][$i2['i__id']] = 0;
@@ -94,11 +94,11 @@ foreach($list_settings['query_string'] as $x){
             'x__up IN (' . join(',', $this->config->item('n___37707')) . ')' => null, //SOURCE LINKS
             'x__down' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )));
 
         $fetch_data = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => $e['e__id'],
@@ -131,7 +131,7 @@ foreach($list_settings['query_string'] as $x){
             }
 
             $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__down' => $e['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__up IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
@@ -155,12 +155,12 @@ echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
 foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
-    echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__access']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__handle'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
+    echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xxs">'.$e___6177[$e['e__privacy']]['m__cover'].'</span></div><a class="icon-block-xxs" href="/@'.$e['e__handle'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
 }
 foreach($list_settings['column_i'] as $i2){
 
     $max_available = $this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
         'x__right' => $i2['i__id'],
         'x__up' => 26189,

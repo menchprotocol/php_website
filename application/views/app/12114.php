@@ -44,8 +44,8 @@ if($is_u_request && !isset($_GET['email_trigger'])){
     $subscriber_filters = array(
         'x__up' => 12114,
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     );
 
     //Should we limit the scope?

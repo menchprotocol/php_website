@@ -6,7 +6,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     //This is a request to cancel, do so and redirect:
     if(view_e__hash($_GET['e__handle'])==$_GET['e__hash']){
         foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__id' => $_GET['x__id'],
             'LOWER(e__handle)' => strtolower($_GET['e__handle']),
@@ -58,11 +58,11 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     $i_scanned = array();
 
     foreach ($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
         'x__up IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
         'i__type' => 30874, //Events
-        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), array('x__right'), 0) as $i) {
 
         //Make sure not handled this idea with a different reminder:
@@ -73,7 +73,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             //Fetch Start time for this idea:
             $time_starts = 0;
             foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                 'x__right' => $i['i__id'],
                 'x__up' => 26556, //Time Starts
@@ -90,7 +90,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                     //End time?
                     $time_ends = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                         'x__right' => $i['i__id'],
                         'x__up' => 26557, //Time Ends
@@ -99,7 +99,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     //Navigation?
                     $must_follow = array();
                     foreach($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 32235, //Navigation
                         'x__right' => $i['i__id'],
                     )) as $follow){
@@ -112,7 +112,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                     //The time is here! Send event reminders to those who successfully discovered this:
                     foreach($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'x__left' => $i['i__id'],
                     ), array('x__creator'), 0) as $x){
@@ -122,7 +122,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                                 'x__down' => $x['e__id'],
                                 'x__up IN (' . join(',', $must_follow) . ')' => null,
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             )))){
                             //User does not have all navigation items, skip for now:
                             continue;
@@ -178,18 +178,18 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     }
 
     foreach ($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
         'x__weight >' => time(), //Future event
         'x__up' => 26556, //Time Starts
         'i__type' => 30874, //Events
-        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), array('x__right'), 0) as $i) {
 
         //Determine if it's time to send this message:
         $time_starts = 0;
         foreach ($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__right' => $i['i__id'],
             'x__up' => 26556, //Time Starts
@@ -206,7 +206,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         //Does it have an end time?
         $end_sending = 0;
         foreach ($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__right' => $i['i__id'],
             'x__up' => 26557, //Time Ends
@@ -217,8 +217,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
 
         $children = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
@@ -226,7 +226,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
         $top_i__hashtag = '';
         foreach ($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 32426, //PINNED IDEA
             '(x__right = ' . $i['i__id'] . ' OR x__left = ' . $i['i__id'] . ')' => null,
             'x__left >' => 0,
@@ -261,7 +261,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 'x__left' => $i['i__id'],
                 'x__creator' => $x['e__id'],
                 'x__type' => 29399, //Idea Email
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))) {
 
                 //Append children as options:
@@ -269,7 +269,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 foreach ($children as $down_or) {
 
                     $discoveries = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x['e__id'],
                         'x__left' => $down_or['i__id'],

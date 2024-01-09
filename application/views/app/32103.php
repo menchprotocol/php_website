@@ -9,7 +9,7 @@ if(isset($_GET['i__hashtag'])){
         echo '<h2>' . view_i_title($i) . '</h2>';
 
         $preg_query = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__right' => $i['i__id'],
             'x__up' => 32103,
@@ -19,7 +19,7 @@ if(isset($_GET['i__hashtag'])){
         //See apply to sources:
         $apply_to = array();
         foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 7545, //Following Add
             'x__right' => $i['i__id'],
         ), array('x__up')) as $x_tag){
@@ -45,7 +45,7 @@ if(isset($_GET['i__hashtag'])){
                     foreach($this->X_model->fetch(array(
                         'x__up' => $e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array('x__down'), 0) as $x) {
 
                         $responses++;
@@ -68,7 +68,7 @@ if(isset($_GET['i__hashtag'])){
                                             'x__up' => $apply_e__id,
                                             'x__down' => $x['x__creator'],
                                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                         ), array(), 0) as $follow_appended) {
                                             $links_updated++;
                                             $this->X_model->update($follow_appended['x__id'], array(
@@ -86,7 +86,7 @@ if(isset($_GET['i__hashtag'])){
                                 if(isset($_GET['update'])){
 
                                     $this->X_model->update($x['x__id'], array(
-                                        'x__access' => 6173,
+                                        'x__privacy' => 6173,
                                     ));
 
                                     //Also update follower link?
@@ -95,11 +95,11 @@ if(isset($_GET['i__hashtag'])){
                                             'x__up' => $apply_e__id,
                                             'x__down' => $x['x__creator'],
                                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                         ), array(), 0) as $follow_appended) {
                                             $links_removed++;
                                             $this->X_model->update($follow_appended['x__id'], array(
-                                                'x__access' => 6173,
+                                                'x__privacy' => 6173,
                                             ));
                                         }
                                     }
@@ -125,7 +125,7 @@ if(isset($_GET['i__hashtag'])){
             echo '<p>Applying against ['.$preg_query[0]['x__message'].'] results in:</p>';
 
             foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'LENGTH(x__message)>0' => null,
                 'x__left' => $i['i__id'],
@@ -150,7 +150,7 @@ if(isset($_GET['i__hashtag'])){
                                     'x__up' => $apply_e__id,
                                     'x__down' => $x['x__creator'],
                                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 ), array(), 0) as $follow_appended) {
                                     $links_updated++;
                                     $this->X_model->update($follow_appended['x__id'], array(
@@ -167,7 +167,7 @@ if(isset($_GET['i__hashtag'])){
                         if(isset($_GET['update'])){
 
                             $this->X_model->update($x['x__id'], array(
-                                'x__access' => 6173,
+                                'x__privacy' => 6173,
                             ));
 
                             //Also update follower link?
@@ -176,11 +176,11 @@ if(isset($_GET['i__hashtag'])){
                                     'x__up' => $apply_e__id,
                                     'x__down' => $x['x__creator'],
                                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 ), array(), 0) as $follow_appended) {
                                     $links_removed++;
                                     $this->X_model->update($follow_appended['x__id'], array(
-                                        'x__access' => 6173,
+                                        'x__privacy' => 6173,
                                     ));
                                 }
                             }

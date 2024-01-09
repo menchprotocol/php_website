@@ -3,7 +3,7 @@
 //IDEA LIST INVALID TITLES
 
 $active_i = $this->I_model->fetch(array(
-    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ));
 
 //Give an overview:

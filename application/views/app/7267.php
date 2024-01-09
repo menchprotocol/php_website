@@ -47,7 +47,7 @@ echo '<input type="submit" class="btn btn-12273" value="Search">';
 if($icon_keyword){
 
     $matching_results = $this->E_model->fetch(array(
-        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'LOWER(e__cover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 
@@ -79,7 +79,7 @@ if($icon_keyword){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__access'], true, 'right').' <span class="icon-block">'.view_cover($en['e__cover']).'</span><a href="/@'.$en['e__handle'].'">'.$en['e__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__privacy'], true, 'right').' <span class="icon-block">'.view_cover($en['e__cover']).'</span><a href="/@'.$en['e__handle'].'">'.$en['e__title'].'</a></td>';
             echo '</tr>';
 
         }

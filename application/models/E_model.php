@@ -22,13 +22,13 @@ class E_model extends CI_Model
 
         //Remove from Anonymous:
         foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up IN (' . join(',', $this->config->item('n___32540')) . ')' => null, //Unsubscribers
             'x__down' => $e__id,
         )) as $unsubscriber_x){
             $this->X_model->update($unsubscriber_x['x__id'], array(
-                'x__access' => 6173,
+                'x__privacy' => 6173,
             ), $e__id, 10673 /* IDEA NOTES Unpublished */);
         }
 
@@ -70,10 +70,10 @@ class E_model extends CI_Model
             'x__up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
             'x__down' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $unsubscribe){
             $resubscribed += $this->X_model->update($unsubscribe['x__id'], array(
-                'x__access' => 6173, //Transaction Removed
+                'x__privacy' => 6173, //Transaction Removed
             ), $e['e__id'], 31064 /* Login Resubscribe */);
         }
         if($resubscribed > 0){
@@ -118,7 +118,7 @@ class E_model extends CI_Model
             'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
             'x__down' => 6404, //Platform Default
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x) {
             array_push($platform_theme, intval($x['x__up']));
         }
@@ -129,7 +129,7 @@ class E_model extends CI_Model
             'x__up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
             'x__down' => website_setting(0), //Website ID
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x) {
             array_push($website_theme, intval($x['x__up']));
         }
@@ -140,8 +140,8 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__down' => $e['e__id'], //This follower source
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0) as $e_up){
 
             //Push to followings IDs:
@@ -212,11 +212,11 @@ class E_model extends CI_Model
             'x__up IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
             'x__down' => $e['e__id'], //This follower source
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $unsubscribed){
             $unsubscribed_time = $unsubscribed['x__time'];
             $this->X_model->update($unsubscribed['x__id'], array(
-                'x__access' => 6173,
+                'x__privacy' => 6173,
             ), $e['e__id'], 31064); //Resubscribe
         }
         if($unsubscribed_time){
@@ -239,7 +239,7 @@ class E_model extends CI_Model
     function regular_add_e($x__up, $x__down, $x__message = null) {
         //Add if link not already there:
         if(!count($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => $x__up,
             'x__down' => $x__down,
@@ -260,8 +260,8 @@ class E_model extends CI_Model
         $all_results = $this->X_model->fetch(array(
             'x__up' => $x__up,
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         ), array('x__down'), 0, 0, sort__e());
 
         //Remove if not in the secondary group:
@@ -270,7 +270,7 @@ class E_model extends CI_Model
                 'x__up' => $sub_id,
                 'x__down' => $primary_list['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC/OWNER
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC/OWNER
             ), array(), 0))){
                 unset($all_results[$key]);
             }
@@ -286,8 +286,8 @@ class E_model extends CI_Model
         $all_results = $this->X_model->fetch(array(
             'x__up' => $x__up,
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
         //Remove if not in the secondary group:
@@ -296,7 +296,7 @@ class E_model extends CI_Model
                 'x__up' => $sub_id,
                 'x__right' => $primary_list['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 unset($all_results[$key]);
             }
@@ -430,8 +430,8 @@ class E_model extends CI_Model
             return false;
         }
 
-        if (!isset($add_fields['e__access']) || intval($add_fields['e__access']) < 1) {
-            $add_fields['e__access'] = 6181; //PUBLIC SOURCE
+        if (!isset($add_fields['e__privacy']) || intval($add_fields['e__privacy']) < 1) {
+            $add_fields['e__privacy'] = 6181; //PUBLIC SOURCE
         }
 
         //Generate Handle:
@@ -536,7 +536,7 @@ class E_model extends CI_Model
             $query_filters = array(
                 'x__up' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
         } elseif(in_array($x__type, $this->config->item('n___42276'))){
 
@@ -546,7 +546,7 @@ class E_model extends CI_Model
             $query_filters = array(
                 'x__down' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
 
         } elseif($x__type==11030){
@@ -556,7 +556,7 @@ class E_model extends CI_Model
             $query_filters = array(
                 'x__down' => $e__id,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
         }
 
@@ -569,7 +569,7 @@ class E_model extends CI_Model
                     'x__up IN (' . join(',', $include_any_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 //Must include all sources, skip:
                 $qualified_e = false;
@@ -578,7 +578,7 @@ class E_model extends CI_Model
                     'x__up IN (' . join(',', $exclude_all_e) . ')' => null,
                     'x__down' => $e_down['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 //Must exclude all sources, skip:
                 $qualified_e = false;
@@ -658,7 +658,7 @@ class E_model extends CI_Model
                     $x__type = 10646; //Source Title Update
                     $x__message = update_description($before_data[0][$key], $value);
 
-                } elseif($key=='e__access') {
+                } elseif($key=='e__privacy') {
 
                     if(in_array($value, $this->config->item('n___7358') /* ACTIVE */)){
                         $x__type = 10654; //Source Status Updated
@@ -746,7 +746,7 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__down' => $x__creator,
             'x__up IN (' . join(',', $followers) . ')' => null, //Current followers
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), view_memory(6404,11064)) as $x) {
 
             if (!$previously_assigned && $x['x__up']==$set_e_down_id) {
@@ -757,7 +757,7 @@ class E_model extends CI_Model
 
                 //Do not log update transaction here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
-                    'x__access' => 6173, //Transaction Deleted
+                    'x__privacy' => 6173, //Transaction Deleted
                 ), $x__creator, 6224 /* Member Account Updated */);
             }
 
@@ -789,14 +789,14 @@ class E_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__down' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__up'), 0, 0, array('x__up' => 'ASC', 'x__id' => 'ASC')) as $x) {
 
             //Does this match any in the list so far?
             $duplicate_found = false;
             foreach($current_up as $up){
-                if($up['x__up']==$x['x__up'] && $up['x__type']==$x['x__type'] && $up['x__access']==$x['x__access'] && $up['x__message']==$x['x__message']){
+                if($up['x__up']==$x['x__up'] && $up['x__type']==$x['x__type'] && $up['x__privacy']==$x['x__privacy'] && $up['x__message']==$x['x__message']){
                     $duplicate_found = true;
                     break;
                 }
@@ -806,14 +806,14 @@ class E_model extends CI_Model
                 //Remove it:
                 $duplicates_removed++;
                 $this->X_model->update($x['x__id'], array(
-                    'x__access' => 6173,
+                    'x__privacy' => 6173,
                 ), $x['x__creator'], 29331); //Duplicate Link Removed
             } else {
                 //Add it to main list:
                 array_push($current_up, array(
                     'x__up' => $x['x__up'],
                     'x__type' => $x['x__type'],
-                    'x__access' => $x['x__access'],
+                    'x__privacy' => $x['x__privacy'],
                     'x__message' => $x['x__message'],
                 ));
             }
@@ -839,7 +839,7 @@ class E_model extends CI_Model
             //Validate this migration ID:
             $es = $this->E_model->fetch(array(
                 'e__id' => $migrate_s__id,
-                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
             if(count($es)){
@@ -853,7 +853,7 @@ class E_model extends CI_Model
                     $update_filter = array();
                     $filters = array(
                         'x__id !=' => $x['x__id'],
-                        'x__access' => $x['x__access'],
+                        'x__privacy' => $x['x__privacy'],
                         'x__type' => $x['x__type'],
                         'x__reference' => $x['x__reference'],
                         //'LOWER(x__message)' => strtolower($x['x__message']),
@@ -878,7 +878,7 @@ class E_model extends CI_Model
 
                         //There is a duplicate of this, no point to migrate! Just Remove:
                         $this->X_model->update($x['x__id'], array(
-                            'x__access' => 6173,
+                            'x__privacy' => 6173,
                         ), $x__creator, 31784 /* Source Link Migrated */);
 
                     } else {
@@ -922,13 +922,13 @@ class E_model extends CI_Model
 
             //REMOVE TRANSACTIONS
             foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type !=' => 10673, //Member Transaction Unpublished
                 '(x__down = ' . $e__id . ' OR x__up = ' . $e__id . ' OR x__creator = ' . $e__id . ')' => null,
             ), array(), 0) as $adjust_tr){
                 //Delete this transaction:
                 $x_adjusted += $this->X_model->update($adjust_tr['x__id'], array(
-                    'x__access' => 6173, //Transaction Deleted
+                    'x__privacy' => 6173, //Transaction Deleted
                 ), $x__creator, 10673 /* Member Transaction Unpublished */);
             }
 
@@ -1018,8 +1018,8 @@ class E_model extends CI_Model
         $followers = $this->X_model->fetch(array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__down'), 0);
 
 
@@ -1057,8 +1057,8 @@ class E_model extends CI_Model
                     foreach($this->X_model->fetch(array(
                         'x__up' => $e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                     ), array('x__down'), 0, 0) as $e__up){
 
                         //Add if not added as the follower:
@@ -1066,7 +1066,7 @@ class E_model extends CI_Model
                             'x__up' => $e__up['e__id'],
                             'x__down' => $x['e__id'],
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
 
                             //Must be added:
@@ -1095,7 +1095,7 @@ class E_model extends CI_Model
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__down' => $x['e__id'], //This follower source
                         'x__up' => $e['e__id'],
-                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     ));
 
                     if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0) || ($action_e__id==12928 && view_e_covers(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_e_covers(12273, $x['e__id'],0, false))){
@@ -1120,7 +1120,7 @@ class E_model extends CI_Model
                         if($action_e__id==13441){
                             //Since we're migrating we should remove from here:
                             $this->X_model->update($x['x__id'], array(
-                                'x__access' => 6173, //Transaction Deleted
+                                'x__privacy' => 6173, //Transaction Deleted
                             ), $x__creator, 10673 /* Member Transaction Unpublished  */);
                         }
 
@@ -1131,7 +1131,7 @@ class E_model extends CI_Model
                             //Following Member Removal
                             foreach($down_up_e as $delete_tr){
                                 $this->X_model->update($delete_tr['x__id'], array(
-                                    'x__access' => 6173, //Transaction Deleted
+                                    'x__privacy' => 6173, //Transaction Deleted
                                 ), $x__creator, 10673 /* Member Transaction Unpublished  */);
                                 $applied_success++;
                             }
@@ -1204,7 +1204,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id==5003 && ($action_command1=='*' || $x['e__access']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
+            } elseif ($action_e__id==5003 && ($action_command1=='*' || $x['e__privacy']==$action_command1) && in_array($action_command2, $this->config->item('n___6177'))) {
 
                 //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
@@ -1213,15 +1213,15 @@ class E_model extends CI_Model
 
                 //Update Matching Member Status:
                 $this->E_model->update($x['e__id'], array(
-                    'e__access' => $action_command2,
+                    'e__privacy' => $action_command2,
                 ), true, $x__creator);
 
                 $applied_success++;
 
-            } elseif ($action_e__id==5865 && ($action_command1=='*' || $x['x__access']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Transaction Status */)) { //Update Matching Transaction Status
+            } elseif ($action_e__id==5865 && ($action_command1=='*' || $x['x__privacy']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Transaction Status */)) { //Update Matching Transaction Status
 
                 $this->X_model->update($x['x__id'], array(
-                    'x__access' => $action_command2,
+                    'x__privacy' => $action_command2,
                 ), $x__creator, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
 
                 $applied_success++;

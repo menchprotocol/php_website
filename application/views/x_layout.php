@@ -1,6 +1,6 @@
 <?php
 
-if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_access_i($focus_i['i__hashtag'])){
+if(!in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !write_privacy_i($focus_i['i__hashtag'])){
 
     echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> This is not active.</div>';
 
@@ -13,8 +13,8 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
     //NEXT IDEAS
     $is_next = $this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
         'x__left' => $focus_i['i__id'],
     ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
@@ -36,7 +36,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
         $top_i__hashtag = ( count($top_i) && $x__creator ? $top_i['i__hashtag'] : null );
     $top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
     $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || count($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
         'x__right' => $focus_i['i__id'],
         'x__up' => 28239, //Can Skip
@@ -50,24 +50,24 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
         foreach($this->X_model->fetch(array(
             'x__up' => $_GET['delete'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array('x__down'), 0) as $x) {
 
             if(count($this->X_model->fetch(array(
                     'x__down' => $x['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0))<=2 && !count($this->X_model->fetch(array(
                     'x__up' => $x['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0))){
                 //Good to delete:
 
                 //Delete all transactions:
                 $links_removed = $this->E_model->remove($x['e__id'], $member_e['e__id'], 0);
                 $this->E_model->update($x['e__id'], array(
-                    'e__access' => 6178,
+                    'e__privacy' => 6178,
                 ), true, $member_e['e__id']);
 
             } else {
@@ -98,7 +98,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
         $edited = 0;
         $edited_sources = 0;
         foreach($this->I_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), 0) as $i_fix){
 
             $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
@@ -143,7 +143,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
     if(isset($_GET['go3'])) {
         foreach($this->I_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'i__id' => 20895, //ACTIVE
         ), 0) as $i_fix){
             $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
@@ -156,7 +156,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
         boost_power();
         foreach ($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__up IN (' . join(',', $this->config->item('n___4318')) . ')' => null, //Authored
         ), array('x__up'), 0) as $target) {
@@ -211,15 +211,15 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
                 //Does this have a follower list?
                 $query_subset = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $followings_i['i__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 foreach($query_subset as $key=>$value){
                     $i_is_available = i_is_available($value['i__id'], false);
                     if(!$i_is_available['status'] || !count($this->X_model->fetch(array(
-                            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                             'x__creator' => $x__creator,
                             'x__left' => $value['i__id'],
@@ -314,7 +314,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
                 //Mark this as skipped since there is nothing to choose from:
                 if (!count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__creator' => $x__creator,
                     'x__left' => $focus_i['i__id'],
@@ -327,14 +327,14 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
                 //First fetch answers based on correct order:
                 foreach ($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
                     'x__left' => $focus_i['i__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
                     //See if this answer was selected:
                     if (count($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
                         'x__left' => $focus_i['i__id'],
                         'x__right' => $x['i__id'],
@@ -360,7 +360,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
                     //Has this been previously selected?
                     $previously_selected = count($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
                         'x__left' => $focus_i['i__id'],
                         'x__right' => $next_i['i__id'],
@@ -430,25 +430,25 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
                 $paypal_email =  website_setting(30882);
 
                 $currency_types = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //Currency
                 ));
                 $total_dues = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 26562, //Total Due
                 ));
                 $cart_max = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 29651, //Cart Max Quantity
                 ));
                 $cart_min = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31008, //Cart Min Quantity
@@ -474,7 +474,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
                     $e___26661 = $this->config->item('e___26661'); //Currency
 
                     $digest_fees = count($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                         'x__right' => $focus_i['i__id'],
                         'x__up' => 30589, //Digest Fees
@@ -488,7 +488,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
                     //Append information to cart:
                     $info_append .= '<div class="sub_note">';
                     if(!count($this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                         'x__right' => $focus_i['i__id'],
                         'x__up' => 30615, //Is Refundable
@@ -688,7 +688,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
         if($x__creator){
             //Does this have any append sources?
             foreach($this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Following Add
                 'x__right' => $focus_i['i__id'],
             )) as $append_e){
@@ -697,7 +697,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
                     'x__up' => $append_e['x__up'],
                     'x__down' => $x__creator,
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0, 0) as $up_appended) {
                     if(strlen($up_appended['x__message'])){
                         $previous_response = $up_appended['x__message'];
@@ -732,7 +732,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
                 //Steps
                 foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31813, //Steps
@@ -744,7 +744,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
                 //Min Value
                 foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31800, //Min Value
@@ -756,7 +756,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
 
                 //Max Value
                 foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 31801, //Max Value
@@ -769,7 +769,7 @@ if(!in_array($focus_i['i__access'], $this->config->item('n___31871')) && !write_
             } elseif($focus_i['i__type']==30350){
 
                 $input_type = (count($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
                     'x__right' => $focus_i['i__id'],
                     'x__up' => 32442, //Select Time
@@ -891,7 +891,7 @@ if(!$top_i__hashtag){
 
             //Count total
             $sub_counter = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__right' => $focus_i['i__id'],
             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');

@@ -22,7 +22,7 @@ if(superpower_unlocked()) {
 
     $es = $this->E_model->fetch(array(
         'e__id' => $cookie_parts[0],
-        'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+        'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ));
 
     if(count($es) && $cookie_parts[2]==view_e__hash($cookie_parts[0].$cookie_parts[1])){
@@ -43,7 +43,7 @@ if(superpower_unlocked()) {
 
     $es = $this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-        'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+        'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ));
 
     if(count($es)){

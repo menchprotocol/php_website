@@ -40,7 +40,7 @@ if(isset($_POST['import_e']) && strlen($_POST['import_e'])>0){
         //Now check email to make sure not a duplicate member:
         $email_e__id = 0;
         foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__message' => $email_address,
             'x__up' => 3288, //Email

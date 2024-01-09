@@ -11,8 +11,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
         //IDEAS
         $unique = $this->X_model->fetch(array(
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -20,15 +20,15 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
         //SOURCE
         $unique = $this->X_model->fetch(array(
-            'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif(in_array($x__type, $this->config->item('n___42284'))){
 
         $unique = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -36,7 +36,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
         //DISCOVERY
         $unique = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -64,8 +64,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
             //IDEAS
             $query = $this->X_model->fetch(array(
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
@@ -75,8 +75,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
             //SOURCE
             $query = $this->X_model->fetch(array(
-                'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
@@ -86,7 +86,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
             //DISCOVERY
             $query = $this->X_model->fetch(array(
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,

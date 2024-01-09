@@ -17,7 +17,7 @@ if(isset($_POST['payment_status'])){
     //Seems like a valid Paypal IPN Call:
     $next_is = $this->I_model->fetch(array(
         'i__id' => $i__id,
-        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ));
 
     if ($top_i__id > 0 && $i__id > 0 && $x__creator > 0 && count($next_is)) {

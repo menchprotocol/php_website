@@ -5,8 +5,8 @@ $longest_time = 0;
 $longest_id = 0;
 $cron_jobs = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     'x__up' => 7274,
 ), array('x__down'), view_memory(6404,11064), 0, array('x__weight' => 'ASC'));
 foreach($cron_jobs as $cron_job){

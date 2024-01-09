@@ -55,7 +55,7 @@ class I extends CI_Controller {
 
         $member_e = superpower_unlocked(10939); //Idea Pen?
         if(!$member_e){
-            if(in_array($is[0]['i__access'], $this->config->item('n___31871'))){
+            if(in_array($is[0]['i__privacy'], $this->config->item('n___31871'))){
                 return redirect_message('/'.$i__hashtag);
             } else {
                 return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__hashtag . ' is not published yet.</div>');
@@ -70,7 +70,7 @@ class I extends CI_Controller {
             )) as $e_append){
                 $completed = 0;
                 foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__left' => $is[0]['i__id'],
                 ), array(), 0) as $x){
@@ -79,7 +79,7 @@ class I extends CI_Controller {
                         'x__down' => $x['x__creator'],
                         'x__message' => $x['x__message'],
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
                         //Add source link:
                         $completed++;
@@ -164,7 +164,7 @@ class I extends CI_Controller {
             //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['link_i__id']),
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
             if(!count($x_i)){
                 //validate Idea:
@@ -205,7 +205,7 @@ class I extends CI_Controller {
                 $current_e__handle = view_valid_handle_e($_POST['first_segment']);
                 foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $e_e) {
                     if(isset($e_e['e__id'])){
-                        $ui .= view_card('/@'.$e_e['e__handle'], $current_e__handle && $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__access'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
+                        $ui .= view_card('/@'.$e_e['e__handle'], $current_e__handle && $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__privacy'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
                         $listed_items++;
                     }
                 }
@@ -245,7 +245,7 @@ class I extends CI_Controller {
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         $member_e = superpower_unlocked();
         if (!$member_e) {
@@ -263,7 +263,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Idea is no longer active',
             ));
-        } elseif (!write_access_i($is[0]['i__hashtag'])) {
+        } elseif (!write_privacy_i($is[0]['i__hashtag'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are missing permission to edit this idea',
@@ -316,7 +316,7 @@ class I extends CI_Controller {
                 $counted = 0;
                 $unique_values = array();
                 foreach($this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                     'x__right' => $is[0]['i__id'],
                     'x__up' => $dynamic_e__id,
@@ -415,7 +415,7 @@ class I extends CI_Controller {
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['save_i__id'],
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)){
             return view_json(array(
@@ -480,7 +480,7 @@ class I extends CI_Controller {
 
             if(!$d_x__id || !count($values)){
                 $values = $this->X_model->fetch(array(
-                    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                     'x__right' => $is[0]['i__id'],
                     'x__up' => $dynamic_e__id,
@@ -494,7 +494,7 @@ class I extends CI_Controller {
                 //Remove Link if we have one:
                 if(count($values)){
                     $this->X_model->update($values[0]['x__id'], array(
-                        'x__access' => 6173, //Transaction Removed
+                        'x__privacy' => 6173, //Transaction Removed
                     ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
                 }
 
@@ -539,7 +539,7 @@ class I extends CI_Controller {
             foreach ($this->X_model->fetch(array(
                 'x__left' => $is[0]['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
-                'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__right')) as $ref) {
                 $attemp_update++;
                 view_sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);

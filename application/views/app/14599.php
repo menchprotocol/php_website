@@ -14,7 +14,7 @@ foreach($this->config->item('e___14599') as $app_e__id => $cache_apps){
     $latest_cache = $this->X_model->fetch(array(
         'x__type' => 14599, //Cache App
         'x__up' => $app_e__id,
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 1, 0, array('x__time' => 'DESC'));
 
     echo '<div class="col-8 main__title"><span class="icon-block">'.$cache_apps['m__cover'].'</span>'.$cache_apps['m__title'].'</div>';

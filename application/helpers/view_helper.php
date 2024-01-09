@@ -271,23 +271,23 @@ function view_cache($following, $e__id, $micro_status = true, $data_placement = 
 
 
 
-function view_card($href, $is_current, $x__type, $o__access, $o__type, $o__title, $x__message = null){
+function view_card($href, $is_current, $x__type, $o__privacy, $o__type, $o__title, $x__message = null){
     $CI =& get_instance();
     $e___4593 = $CI->config->item('e___4593');
     $e___6177 = $CI->config->item('e___6177');
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item main__title '.( $is_current ? ' active ' : '' ).'">'.
         ( in_array($x__type, $CI->config->item('n___32172')) ? '<span class="icon-block-xxs">'.$e___4593[$x__type]['m__cover'].'</span>' : '' ).
-        ( in_array($o__access, $CI->config->item('n___32172')) ? '<span class="icon-block-xxs">'.$e___6177[$o__access]['m__cover'].'</span>' : '' ).
+        ( in_array($o__privacy, $CI->config->item('n___32172')) ? '<span class="icon-block-xxs">'.$e___6177[$o__privacy]['m__cover'].'</span>' : '' ).
         ( strlen($o__type) ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
         $o__title.
         ( strlen($x__message) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).
         '</a>';
 }
 
-function view_more($href, $is_current, $x__type, $o__access, $o__type, $o__title, $x__message = null){
+function view_more($href, $is_current, $x__type, $o__privacy, $o__type, $o__title, $x__message = null){
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item main__title '.( $is_current ? ' active ' : '' ).'">'.
         ( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).
-        ( $o__access ? '<span class="icon-block-xxs">'.$o__access.'</span>' : '' ).
+        ( $o__privacy ? '<span class="icon-block-xxs">'.$o__privacy.'</span>' : '' ).
         ( strlen($o__type) ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
         $o__title.
         ( strlen($x__message) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).
@@ -315,6 +315,7 @@ function view_body_e($x__type, $counter, $e__id){
 
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
+        //Ideas:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
             $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
@@ -323,6 +324,7 @@ function view_body_e($x__type, $counter, $e__id){
 
     } elseif(in_array($x__type, $CI->config->item('n___11028'))){
 
+        //Sources:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $e) {
             $ui .= view_card_e($x__type, $e, null);
@@ -331,6 +333,7 @@ function view_body_e($x__type, $counter, $e__id){
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
+        //Discoveries:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
         foreach ($list_results as $i) {
             $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
@@ -424,7 +427,7 @@ function view_sign($i, $previous_response = null){
 
     if($member_e){
         $u_names = $CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__down' => $member_e['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__up' => 30198, //Full Legal Name
@@ -462,7 +465,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $privacy_access = ( superpower_unlocked(12703) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
+    $privacy_privacy = ( superpower_unlocked(12703) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
 
     if($x__type==12274 || $x__type==11029){
 
@@ -476,8 +479,8 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__up' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___42276'))){
@@ -488,8 +491,8 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__down' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
     } elseif($x__type==11030){
@@ -500,17 +503,17 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__down' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'e__access IN (' . join(',', $CI->config->item($privacy_access)) . ')' => null,
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___42261'))){
 
         //IDEAS
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
-            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__up' => $e__id,
         );
 
@@ -540,8 +543,8 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__creator' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERY GROUP
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
         );
 
     } else {
@@ -607,7 +610,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         //SOURCES
         $joins_objects = array('x__up');
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'x__right' => $i__id,
         );
@@ -624,8 +627,8 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__id' => 'DESC');
         $joins_objects = array('x__left');
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         );
@@ -636,8 +639,8 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__weight' => 'ASC');
         $joins_objects = array('x__right');
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'x__left' => $i__id,
         );
@@ -648,8 +651,8 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__weight' => 'ASC');
         $joins_objects = array('x__right');
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__access IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         );
@@ -660,7 +663,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__id' => 'DESC');
         $joins_objects = array('x__creator');
         $query_filters = array(
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
             'x__left' => $i__id,
         );
@@ -768,7 +771,7 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
             'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
             'x__down' => $down_e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $sel){
             array_push($already_selected, $sel['x__up']);
         }
@@ -791,7 +794,7 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
             'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
             'x__right' => $right_i__id,
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $sel){
             array_push($already_selected, $sel['x__up']);
         }
@@ -994,7 +997,7 @@ function idea_author($i__id){
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
         'x__right' => $i__id,
-        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__up'];
     }
@@ -1007,7 +1010,7 @@ function idea_creation_time($i__id){
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
         'x__right' => $i__id,
-        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__time'];
     }
@@ -1179,7 +1182,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         $references_add_to_db = $i__references;
         $member_e = superpower_unlocked();
         foreach($CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4736')) . ')' => null, //Idea Message Links 3x
             'x__right' => $save_i__id,
         )) as $x){
@@ -1189,7 +1192,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 //Not valid, must be removed:
                 $CI->X_model->update($x['x__id'], array(
-                    'x__access' => 6173, //Transaction Removed
+                    'x__privacy' => 6173, //Transaction Removed
                 ), $member_e['e__id'], 10673 /* Member Transaction Unpublished */);
 
                 $sync_stats['old_links_removed']++;
@@ -1291,8 +1294,6 @@ function view_media($media_url, $link){
 
 function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $focus_e = false){
 
-    return 'Hi';
-
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
     if(!in_array($x__type, $CI->config->item('n___13369'))){
@@ -1307,10 +1308,10 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
-    $access_locked = in_array($i['i__access'], $CI->config->item('n___32145')); //Locked Dropdown
+    $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
 
     $member_e = superpower_unlocked();
-    $write_access_i = ( $cache_app || $access_locked ? false : write_access_i($i['i__hashtag']) );
+    $write_privacy_i = ( $cache_app || $access_locked ? false : write_privacy_i($i['i__hashtag']) );
     $user_input = $focus_e;
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
@@ -1329,7 +1330,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__hashtag && $focus_e && $discovery_mode;
 
     $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
-    $has_sortable = !$focus_card && $write_access_i && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = !$focus_card && $write_privacy_i && in_array($x__type, $CI->config->item('n___4603'));
 
     if($discovery_mode || $cache_app) {
         if($link_creator && $top_i__hashtag){
@@ -1345,7 +1346,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     if(!$cache_app && $focus_source){
         $discoveries = $CI->X_model->fetch(array(
-            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $focus_source,
             'x__left' => $i['i__id'],
@@ -1373,7 +1374,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $write_access_i, false, $i['i__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $write_privacy_i, false, $i['i__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1397,7 +1398,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             //Determine hover state:
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $link_type_ui && (!$discovery_mode || $write_access_i)){
+            if($x__type_top_bar==31770 && $link_type_ui && (!$discovery_mode || $write_privacy_i)){
 
                 //Links
                 $active_bars++;
@@ -1409,7 +1410,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).'">' . view_time_difference($i['x__time'], true) . '</div></td>';
 
-            } elseif($x__type_top_bar==41037 && $write_access_i && !$focus_card){
+            } elseif($x__type_top_bar==41037 && $write_privacy_i && !$focus_card){
 
                 //Selector
                 $active_bars++;
@@ -1422,18 +1423,18 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Type
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_access_i, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_privacy_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31004 && (!in_array($i['i__access'], $CI->config->item('n___31871')) || ($write_access_i && !in_array(31004, $CI->config->item('n___32145'))))){
+            } elseif($x__type_top_bar==31004 && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
 
                 //Idea Access
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__access'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(31004, $i['i__access'], null, $write_access_i, false, $i['i__id']);
+                $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= view_dropdown(31004, $i['i__privacy'], null, $write_privacy_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31911 && $write_access_i){
+            } elseif($x__type_top_bar==31911 && $write_privacy_i){
 
                 //Idea Edit
                 $active_bars++;
@@ -1441,7 +1442,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==13909 && $write_access_i && $has_sortable){
+            } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
 
                 //Sort Idea
                 $active_bars++;
@@ -1475,7 +1476,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                         $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
-                        if($e__id_dropdown==12589 && $write_access_i){
+                        if($e__id_dropdown==12589 && $write_privacy_i){
 
                             //Mass Apply
                             $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1485,7 +1486,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Discover Idea
                             $action_buttons .= '<a href="/'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==33286 && $discovery_mode && $write_access_i){
+                        } elseif($e__id_dropdown==33286 && $discovery_mode && $write_privacy_i){
 
                             //Ideation Mode
                             $action_buttons .= '<a href="/~'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1495,12 +1496,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="sort_alphabetical()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $write_access_i){
+                        } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $write_privacy_i){
 
                             //Unlink
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$x__id.', '.$x__type.',\''.$i['i__hashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==30873 && $write_access_i){
+                        } elseif($e__id_dropdown==30873 && $write_privacy_i){
 
                             //Clone Idea Tree:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 1)" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -1510,20 +1511,20 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Stats
                             $action_buttons .= '<a href="'.view_app_link(33292).'?i__hashtag='.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==29771 && $write_access_i){
+                        } elseif($e__id_dropdown==29771 && $write_privacy_i){
 
                             //Clone Single Idea:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_copy('.$i['i__id'].', 0)" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==28636 && $write_access_i && $x__id){
+                        } elseif($e__id_dropdown==28636 && $write_privacy_i && $x__id){
 
                             //Transaction Details
                             $action_buttons .= '<a href="'.view_app_link(4341).'?x__id='.$x__id.'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==6182 && $write_access_i){
+                        } elseif($e__id_dropdown==6182 && $write_privacy_i){
 
                             //Delete Permanently
-                            $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__access'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__privacy'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(28727)){
 
@@ -1582,7 +1583,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $link_user = $i['x__creator'];
         foreach($CI->E_model->fetch(array(
             'e__id' => $i['x__creator'],
-            'e__access IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+            'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         )) as $creator){
             $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font">@'.$creator['e__handle'].'</span></a><span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' PST">'.view_time_difference($i['x__time'], true).'</span></div>';
         }
@@ -1594,7 +1595,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__type' => 4250,
         'x__up !=' => $link_user,
         'x__right' => $i['i__id'],
-        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__up')) as $creator){
         $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font">@'.$creator['e__handle'].'</span></a><span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
     }
@@ -1607,7 +1608,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Link Message, if Any:
     if($x__id){
-        $ui .= '<div class="space-content"><div '.( ($write_access_i || $link_creator) ? ' onclick="editor_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div></div>';
+        $ui .= '<div class="space-content"><div '.( ($write_privacy_i || $link_creator) ? ' onclick="editor_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div></div>';
     }
 
 
@@ -1719,8 +1720,8 @@ function view_list_e($i, $x__creator = 0, $plain_no_html = false){
 
     //Query Relevant Sources:
     foreach($CI->X_model->fetch(array(
-        '( x__type IN (' . join(',', $CI->config->item('n___41975')) . ') OR ( x__type IN (' . join(',', $CI->config->item('n___33602')) . ') AND e__access IN (' . join(',', $CI->config->item('n___41981')) . ')))' => null, //FEATURED ACCESS -OR- DISCOVERY FEATURED LINKS
-        'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        '( x__type IN (' . join(',', $CI->config->item('n___41975')) . ') OR ( x__type IN (' . join(',', $CI->config->item('n___33602')) . ') AND e__privacy IN (' . join(',', $CI->config->item('n___41981')) . ')))' => null, //FEATURED ACCESS -OR- DISCOVERY FEATURED LINKS
+        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__right' => $i['i__id'],
         'x__up !=' => website_setting(0),
     ), array('x__up'), 0, 0, $order_columns) as $x){
@@ -1749,7 +1750,7 @@ function view_list_e_items($i, $x__creator, $x, $plain_no_html = false, $append_
             'x__up' => $x['e__id'],
             'x__down' => $x__creator,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__access IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         ));
     }
 
@@ -1764,7 +1765,7 @@ function view_list_e_items($i, $x__creator, $x, $plain_no_html = false, $append_
         $x['x__message'] = ( strlen($x['x__message']) ? $messages.( $plain_no_html ? $x['x__message'] : nl2br($x['x__message']) ) : $messages );
     }
 
-    $show_google_maps_link = ( $x['x__type']==41949 && in_array($x['e__access'], $CI->config->item('n___41981')));
+    $show_google_maps_link = ( $x['x__type']==41949 && in_array($x['e__privacy'], $CI->config->item('n___41981')));
 
     if(0 && $plain_no_html){
         return
@@ -1904,10 +1905,10 @@ function view_card_e($x__type, $e, $extra_class = null)
         return view_media($e['x__message'], '/@'.$e['e__handle']);
     }
 
-    $access_locked = in_array($e['e__access'], $CI->config->item('n___32145')); //Locked Dropdown
-    $access_public = in_array($e['e__access'], $CI->config->item('n___33240'));
+    $access_locked = in_array($e['e__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
+    $access_public = in_array($e['e__privacy'], $CI->config->item('n___33240'));
 
-    $write_access_e = ( $access_locked ? false :  write_access_e($e['e__handle']) );
+    $write_privacy_e = ( $access_locked ? false :  write_privacy_e($e['e__handle']) );
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
@@ -1923,18 +1924,18 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $href = ( $is_app ? '/'.$e['e__handle'] : '/@'.$e['e__handle'] );
     $focus_e__handle = ( view_valid_handle_e($CI->uri->segment(1)) ? substr($CI->uri->segment(1), 1) : false );
-    $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $write_access_e));
+    $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $write_privacy_e));
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
     $show_custom_image = !$has_valid_url && $e['e__cover'];
     $e_is_e = $focus_e__handle && $e['e__handle']==$focus_e__handle;
 
 
     //Is Lock/Private?
-    $has_hard_lock = in_array($e['e__access'], $CI->config->item('n___30956')) && !superpower_unlocked(12701) && (!$member_e || !$e_is_e);
-    $has_soft_lock = !superpower_unlocked(12701) && ($has_hard_lock || (!in_array($e['e__access'], $CI->config->item('n___7357')) && !$write_access_e));
+    $has_hard_lock = in_array($e['e__privacy'], $CI->config->item('n___30956')) && !superpower_unlocked(12701) && (!$member_e || !$e_is_e);
+    $has_soft_lock = !superpower_unlocked(12701) && ($has_hard_lock || (!in_array($e['e__privacy'], $CI->config->item('n___7357')) && !$write_privacy_e));
     $has_any_lock = $is_cache || (!superpower_unlocked(12701) && ($has_soft_lock || $has_hard_lock));
     $has_sortable = !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && superpower_unlocked(13422) && $x__id > 0;
-    $show_text_editor = $write_access_e && !$has_any_lock && !$is_cache;
+    $show_text_editor = $write_privacy_e && !$has_any_lock && !$is_cache;
 
     //Source UI
     $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-6 col-8 ' : ' edge-cover card_click_e col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
@@ -1949,7 +1950,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($e['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $e['x__type'], null, $write_access_e, false, $e['e__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $e['x__type'], null, $write_privacy_e, false, $e['e__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1974,12 +1975,12 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==6177 && ($write_access_e || $access_locked || $always_see || in_array($e['e__access'], $CI->config->item('n___32172')))){
+            } elseif($x__type_top_bar==6177 && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__access'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(6177, $e['e__access'], null, $write_access_e, false, $e['e__id']);
+                $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= view_dropdown(6177, $e['e__privacy'], null, $write_privacy_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==4362 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
@@ -1988,7 +1989,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).'">' . view_time_difference($e['x__time'], true) . '</div></td>';
 
-            } elseif($x__type_top_bar==41037 && $write_access_e && !$focus_card){
+            } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
 
                 //Selector
                 $active_bars++;
@@ -1996,7 +1997,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= '<input class="form-check-input" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'" aria-label="...">';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31912 && $write_access_e){
+            } elseif($x__type_top_bar==31912 && $write_privacy_e){
 
                 //Edit Source
                 $active_bars++;
@@ -2054,15 +2055,15 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Clone:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==10673 && $x__id > 0 && $write_access_e){
+                        } elseif($e__id_dropdown==10673 && $x__id > 0 && $write_privacy_e){
 
                             //UNLINK
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
 
-                        } elseif($e__id_dropdown==6178 && $write_access_e){
+                        } elseif($e__id_dropdown==6178 && $write_privacy_e){
 
                             //Delete Permanently
-                            $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__access'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__privacy'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
 
@@ -2114,10 +2115,10 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $ui .= '<div class="bottom-wrapper">';
 
-    $grant_access = $write_access_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
+    $grant_privacy = $write_privacy_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
 
-    if ($grant_access && $x__id > 0 && !$is_app) {
-        $ui .= '<span '.( $write_access_e ? ' onclick="editor_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.htmlentities($e['x__message']).'</span>';
+    if ($grant_privacy && $x__id > 0 && !$is_app) {
+        $ui .= '<span '.( $write_privacy_e ? ' onclick="editor_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.htmlentities($e['x__message']).'</span>';
     }
 
     //Source Handle
@@ -2130,7 +2131,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['e__id'].' coinType12274 card_access_'.$e['e__access'].( !$write_access_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['e__id'].' coinType12274 card_privacy_'.$e['e__privacy'].( !$write_privacy_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn ui_e__cover_'.$e['e__id'].'" raw_cover="'.$e['e__cover'].'">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
 
@@ -2147,7 +2148,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     if($show_text_editor && !$is_cache && !$is_app){
         //Editable:
-        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $write_access_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
+        $ui .= view_input(6197, $e['e__title'], $e['e__id'], $write_privacy_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
         $ui .= '<div class="hidden text__6197_'.$e['e__id'].'">'.$e['e__title'].'</div>';
     } else {
         //Static:
@@ -2182,15 +2183,15 @@ function view_card_e($x__type, $e, $extra_class = null)
 }
 
 
-function view_input($cache_e__id, $current_value, $s__id, $write_access_i, $tabindex = 0, $extra_large = false){
+function view_input($cache_e__id, $current_value, $s__id, $write_privacy_i, $tabindex = 0, $extra_large = false){
 
     $CI =& get_instance();
     $e___12112 = $CI->config->item('e___12112');
     $current_value = htmlentities($current_value);
-    $name = 'input'.substr(md5($cache_e__id.$current_value.$s__id.$write_access_i.$tabindex), 0, 8);
+    $name = 'input'.substr(md5($cache_e__id.$current_value.$s__id.$write_privacy_i.$tabindex), 0, 8);
 
     //Define element attributes:
-    $attributes = ( $write_access_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control 
+    $attributes = ( $write_privacy_i ? '' : 'disabled' ).' spellcheck="false" tabindex="'.$tabindex.'" old-value="'.$current_value.'" id="input_'.$cache_e__id.'_'.$s__id.'" class="form-control 
      inline-block editing-mode x_set_class_text text__'.$cache_e__id.'_'.$s__id.( $extra_large?' texttype__lg ' : ' texttype__sm ').' text_e_'.$cache_e__id.'" cache_e__id="'.$cache_e__id.'" s__id="'.$s__id.'" ';
 
     //Also Append Counter to the end?
@@ -2204,14 +2205,14 @@ function view_input($cache_e__id, $current_value, $s__id, $write_access_i, $tabi
 
     }
 
-    return '<span class="span__'.$cache_e__id.' '.( !$write_access_i ? ' edit-locked ' : '' ).'">'.$focus_element.'</span>';
+    return '<span class="span__'.$cache_e__id.' '.( !$write_privacy_i ? ' edit-locked ' : '' ).'">'.$focus_element.'</span>';
 
 }
 
 
 
 
-function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_access_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_privacy_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -2221,17 +2222,17 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
     }
 
     //Make sure it's not locked:
-    $write_access_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $write_access_i : false );
+    $write_privacy_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $write_privacy_i : false );
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $write_access_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" '.( !$show_full_name ? ' title="'.$e___this[$selected_e__id]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).' >';
+    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" '.( !$show_full_name ? ' title="'.$e___this[$selected_e__id]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).' >';
 
     $ui .= '<span>' .$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
 
     $ui .= '</button>';
 
-    if($write_access_i){
+    if($write_privacy_i){
         $ui .= '<div class="dropdown-menu btn-'.$btn_class.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
 
         foreach($e___this as $e__id => $m) {

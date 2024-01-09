@@ -19,7 +19,7 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 $primary_i = array();
 $secondary_i_list = array();
 foreach($this->X_model->fetch(array(
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 34513, //Pinned
     'x__up' => $website_id,
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $this_i){
@@ -36,8 +36,8 @@ foreach($this->X_model->fetch(array(
     'x__up' => $website_id,
     'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
     'x__type !=' => 34513, //Pinned
-    'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__weight' => 'DESC')) as $this_i){
     array_push($secondary_i_list, $this_i);
 }
@@ -106,8 +106,8 @@ foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
     foreach($this->X_model->fetch(array(
         'x__up' => $e_item['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__access IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC
     ), array('x__down'), 0, 0, array('x__weight' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
@@ -170,7 +170,7 @@ foreach($this->config->item('e___14036') as $e__id => $m){
         'x__up' => $e__id,
         'x__down' => $website_id,
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0) as $social_link){
 
         //Determine link type:

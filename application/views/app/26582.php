@@ -3,7 +3,7 @@
 if(!$is_u_request || isset($_GET['cron'])){
 
     foreach($this->X_model->fetch(array(
-        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 33600, //Drafting Link
         'x__up' => 26582,
     ), array('x__right'), 0) as $i){
@@ -11,7 +11,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Determine if it's time to send this message:
         $time_starts = 0;
         foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__right' => $i['i__id'],
             'x__up' => 26556, //Time Starts
@@ -28,7 +28,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         //Does it have an end time?
         $end_sending = 0;
         foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
             'x__right' => $i['i__id'],
             'x__up' => 26557, //Time Ends
@@ -41,8 +41,8 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 
         $children = $this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
@@ -50,7 +50,7 @@ if(!$is_u_request || isset($_GET['cron'])){
 
         $top_i__hashtag = '';
         foreach($this->X_model->fetch(array(
-            'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 32426, //PINNED IDEA
             '(x__right = '.$i['i__id'].' OR x__left = '.$i['i__id'].')' => null,
             'x__left >' => 0,
@@ -84,7 +84,7 @@ if(!$is_u_request || isset($_GET['cron'])){
                 'x__left' => $i['i__id'],
                 'x__creator' => $x['e__id'],
                 'x__type' => 29399, //Idea Email
-                'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
 
                 //Append children as options:
@@ -92,7 +92,7 @@ if(!$is_u_request || isset($_GET['cron'])){
                 foreach($children as $down_or){
 
                     $discoveries = $this->X_model->fetch(array(
-                        'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x['e__id'],
                         'x__left' => $down_or['i__id'],

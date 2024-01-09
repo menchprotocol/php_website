@@ -124,7 +124,7 @@ class App extends CI_Controller
                         'x__left' => $x__left,
                         'x__down' => $x__down,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-                        'x__access IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                         $ui = $latest_cache['x__message'];
                         $cache_x__id = $latest_cache['x__id'];

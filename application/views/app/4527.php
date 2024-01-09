@@ -26,17 +26,17 @@ if($memory_detected){
 //CONFIG VARS
 foreach($this->X_model->fetch(array(
     'x__up' => 4527,
-    'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+    'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-    'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+    'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its followers:
     $down__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
-        'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
     ), array('x__down'), 0, 0, sort__e());
 
 
@@ -59,9 +59,9 @@ foreach($this->X_model->fetch(array(
         $down_up_ids = array(); //To be populated soon
         foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
-            'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-            'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+            'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
         ), array('x__up'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
@@ -83,16 +83,16 @@ foreach($this->X_model->fetch(array(
 $memory_text .= "\n"."\n";
 foreach($this->X_model->fetch(array(
     'x__up' => 42043, //Handle Cache
-    'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+    'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
 ), array('x__down'), 0) as $handle){
 
     $memory_text .= '$config[\'handle___'.$handle['e__id'].'\'] = array('."\n";
     foreach($this->X_model->fetch(array(
         'x__up' => $handle['e__id'],
-        'x__access IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'e__access IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
     ), array('x__down'), 0) as $app){
         $memory_text .= '     \''.$app['e__handle'].'\' => '.$app['e__id'].','."\n";
     }

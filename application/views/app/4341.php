@@ -9,12 +9,12 @@ $any_i_e_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( is
 $followings_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 ? ' OR x__reference = '.$_GET['x__reference'].' ' : false );
 
 
-if(isset($_GET['x__access']) && strlen($_GET['x__access']) > 0){
-    if (substr_count($_GET['x__access'], ',') > 0) {
+if(isset($_GET['x__privacy']) && strlen($_GET['x__privacy']) > 0){
+    if (substr_count($_GET['x__privacy'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__access IN (' . $_GET['x__access'] . '))'] = null;
+        $query_filters['( x__privacy IN (' . $_GET['x__privacy'] . '))'] = null;
     } else {
-        $query_filters['x__access'] = intval($_GET['x__access']);
+        $query_filters['x__privacy'] = intval($_GET['x__privacy']);
     }
 }
 
@@ -134,7 +134,7 @@ if(isset($_GET['end_range']) && is_valid_date($_GET['end_range'])){
 //Fetch unique transaction types recorded so far:
 $ini_filter = array();
 foreach($query_filters as $key => $value){
-    if(!includes_any($key, array('i__type', 'e__access'))){
+    if(!includes_any($key, array('i__type', 'e__privacy'))){
         $ini_filter[$key] = $value;
     }
 }
@@ -269,7 +269,7 @@ echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" nam
 
 echo '<td><span class="mini-header">PARENT TRANSACTION:</span><input type="text" name="x__reference" value="' . ((isset($_GET['x__reference'])) ? $_GET['x__reference'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__access" value="' . ((isset($_GET['x__access'])) ? $_GET['x__access'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__privacy" value="' . ((isset($_GET['x__privacy'])) ? $_GET['x__privacy'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 
@@ -368,7 +368,7 @@ echo '</div>';
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
-echo '<div class="filter-statuses e_access_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__access" value="' . ((isset($_GET['e__access'])) ? $_GET['e__access'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses e_privacy_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__privacy" value="' . ((isset($_GET['e__privacy'])) ? $_GET['e__privacy'] : '') . '" class="form-control border"></div>';
 
 echo '</td>';
 

@@ -6,7 +6,7 @@ $new_order = ( $this->session->userdata('session_page_count') + 1 );
 $this->session->set_userdata('session_page_count', $new_order);
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___26005 = $this->config->item('e___26005');
-$write_access_i = write_access_i($focus_i['i__hashtag']);
+$write_privacy_i = write_privacy_i($focus_i['i__hashtag']);
 $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
@@ -20,7 +20,7 @@ if(isset($_GET['focus__e']) && superpower_unlocked(14005)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['focus__e']),
-        'e__access IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ));
     if(count($e_filters)){
         echo view__focus__e($e_filters[0]);
@@ -43,7 +43,7 @@ foreach($this->config->item('e___31890') as $x__type => $m) {
 
     $coins_count[$x__type] = view_i_covers($x__type, $focus_i['i__id'], 0, false);
     if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $this->config->item('n___12144'))){ continue; }
-    $can_add = $write_access_i && in_array($x__type, $this->config->item('n___42262'));
+    $can_add = $write_privacy_i && in_array($x__type, $this->config->item('n___42262'));
 
     $input_content = '';
     if($can_add){

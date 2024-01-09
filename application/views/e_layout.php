@@ -5,7 +5,7 @@ $limit = view_memory(6404,11064);
 $new_order = ( $this->session->userdata('session_page_count') + 1 );
 $this->session->set_userdata('session_page_count', $new_order);
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-$write_access_e = write_access_e($e['e__handle']);
+$write_privacy_e = write_privacy_e($e['e__handle']);
 $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4994, //Member Viewed Source
