@@ -28,14 +28,13 @@ $total_count = 0;
 $total_access = array();
 $total_interactions = 0;
 $total_points = 0;
-$thousand_separator = '';
 foreach($this->config->item('e___4593') as $x__type => $m) {
 
     $total_count++;
 
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
-    echo '<td style="text-align: left;">'.$total_count.'</td>';
+    echo '<td style="text-align: left;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     echo '<td style="text-align: left;"><a href="/@'.$x__type.'">'.$m['m__cover'].' '.$m['m__title'].'</a></td>';
 
     //List all statuses:
@@ -47,7 +46,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
             'x__privacy' => $x__type1,
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-        echo '<td style="text-align: left;">'.number_format($list_e_count[0]['totals'], 0, '', $thousand_separator).'</td>';
+        echo '<td style="text-align: left;">'.str_pad($list_e_count[0]['totals'], 9, '0', STR_PAD_LEFT).'</td>';
         if($list_e_count[0]['totals'] > 0){
             if(!isset($total_access[$m1['m__handle']])){
                 $total_access[$m1['m__handle']] = 0;
@@ -57,14 +56,14 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
         }
     }
 
-    echo '<td style="text-align: left;">'.number_format($interactions_this, 0, '', $thousand_separator).'</td>';
+    echo '<td style="text-align: left;">'.str_pad($interactions_this, 9, '0', STR_PAD_LEFT).'</td>';
     $total_interactions += $interactions_this;
 
     //Points Total
     $points = $this->X_model->fetch(array(
         'x__type' => $x__type,
     ), array(), 0, 0, array(), 'SUM(x__points) as totals');
-    echo '<td style="text-align: left;">'.number_format($points[0]['totals'], 0, '', $thousand_separator).'</td>';
+    echo '<td style="text-align: left;">'.str_pad($points[0]['totals'], 9, '0', STR_PAD_LEFT).'</td>';
     $total_points += $points[0]['totals'];
 
     echo '</tr>';
