@@ -1279,9 +1279,11 @@ function editor_save_i(){
             //Update Handle & Href links if needed:
             var old_handle = $(".ui_i__hashtag_"+modify_data['save_i__id']+':first').text();
             var new_handle = modify_data['save_i__hashtag'];
+            var on_focus_idea = fetch_int_val('#focus_card')==12273 && modify_data['save_i__id']==fetch_int_val('#focus_id');
+
             //Update Handle & Href links if needed:
             if(new_handle != old_handle){
-                if(fetch_int_val('#focus_card')==12273 && modify_data['save_i__id']==fetch_int_val('#focus_id')){
+                if(on_focus_idea){
                     //Refresh page since focus item handle changed:
                     js_redirect('/~'+new_handle);
                 } else {
@@ -1301,6 +1303,10 @@ function editor_save_i(){
 
             //Update Cache:
             $('.ui_i__cache_'+modify_data['save_i__id']).html(( parseInt($('.ui_i__cache_'+modify_data['save_i__id']).attr('show_cache_links')) ? data.return_i__cache_links : data.return_i__cache ));
+            //Show more if on focus idea:
+            if(on_focus_idea){
+                show_more(modify_data['save_i__id']);
+            }
 
             if(modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
                 $('.ui_x__message_'+modify_data['save_x__id']).text(modify_data['save_x__message']);
