@@ -65,7 +65,7 @@ $route['SourceIdeaSyncPrivacy'] = "app/load/12732";
 $route['IdeaInvalidTitles'] = "app/load/12731";
 $route['SourceSearchReplace'] = "app/load/12730";
 $route['InteractionMetadataView'] = "app/load/12722";
-$route['memorymemory'] = "app/load/4527";
+$route['memory'] = "app/load/4527";
 $route['MySessionVariables'] = "app/load/12710";
 $route['phpInfo'] = "app/load/12709";
 $route['IdeaSearchReplace'] = "app/load/7259";
@@ -74,6 +74,7 @@ $route['IdeaDuplicates'] = "app/load/7261";
 $route['icons'] = "app/load/7267";
 $route['SourceDuplicates'] = "app/load/7268";
 $route['SourceOrphaned'] = "app/load/7269";
+
 
 $route['@([a-zA-Z0-9]+)'] = "e/e_layout/$1"; //Source
 $route['~([a-zA-Z0-9]+)'] = "i/i_layout/$1"; //Ideate
