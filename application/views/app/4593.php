@@ -21,24 +21,21 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     //List all statuses:
     $interactions_this = 0;
     foreach($this->config->item('e___6186') as $x__type1 => $m1) {
-
         $list_e_count = $this->X_model->fetch(array(
             'x__type' => $x__type,
             'x__privacy' => $x__type1,
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         $table_body .= '<td style="text-align: left;">'.str_pad($list_e_count[0]['totals'], 9, '0', STR_PAD_LEFT).'</td>';
-        if($list_e_count[0]['totals'] > 0){
-            if(!isset($total_access[$m1['m__handle']])){
-                $total_access[$m1['m__handle']] = 0;
-            }
-            $total_access[$m1['m__handle']] += $list_e_count[0]['totals'];
-            $interactions_this += $list_e_count[0]['totals'];
+        if(!isset($total_access[$m1['m__handle']])){
+            $total_access[$m1['m__handle']] = 0;
         }
+        $total_access[$m1['m__handle']] += $list_e_count[0]['totals'];
+        $interactions_this += $list_e_count[0]['totals'];
     }
 
-    $table_body .= '<td style="text-align: left;">'.str_pad($interactions_this, 9, '0', STR_PAD_LEFT).'</td>';
     $total_interactions += $interactions_this;
+    $table_body .= '<td style="text-align: left;">'.str_pad($interactions_this, 9, '0', STR_PAD_LEFT).'</td>';
 
     //Points Total
     $points = $this->X_model->fetch(array(
