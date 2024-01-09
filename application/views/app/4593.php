@@ -44,7 +44,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
         $list_e_count = $this->X_model->fetch(array(
             'x__type' => $x__type,
             'x__privacy' => $x__type1,
-        ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
+        ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         echo '<td style="text-align: left;">'.$list_e_count[0]['totals'].'</td>';
         if($list_e_count[0]['totals'] > 0){
@@ -62,7 +62,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     //Points Total
     $points = $this->X_model->fetch(array(
         'x__type' => $x__type,
-    ), array(), 0, 0, array(), 'SUM(e__id) as totals');
+    ), array(), 0, 0, array(), 'SUM(x__points) as totals');
     echo '<td style="text-align: left;">'.number_format($points[0]['totals'], 0).'</td>';
     $total_points += $points[0]['totals'];
 
