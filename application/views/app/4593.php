@@ -16,7 +16,8 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     $table_body .= '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width: 34px;">'.$m['m__cover'].'</td>';
-    $table_body .= '<td style="text-align: left;"><a href="/@'.$x__type.'"><u>'.$m['m__title'].'</u></a></td>';
+    $table_body .= '<td style="text-align: left;"><a href="/@'.$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
+    $table_body .= '<td style="text-align: left;">'.$x__type.'</td>';
 
     //List all statuses:
     $interactions_this = 0;
@@ -55,6 +56,7 @@ echo '<tr class="panel-title down-border" style="font-weight:bold !important;">'
 echo '<th style="text-align: left;" id="th_count">#</th>';
 echo '<th style="text-align: left;" id="th_count">&nbsp;</th>'; //Icon
 echo '<th style="text-align: left;" id="th_primary">Interaction Type</th>';
+echo '<th style="text-align: left;" id="th_count">&nbsp;</th>'; //ID
 
 //List all statuses:
 foreach($this->config->item('e___6186') as $x__type1 => $m1) {
@@ -75,6 +77,7 @@ echo '<tr class="panel-title down-border" style="font-weight:bold !important;">'
 echo '<th style="text-align: left;">&nbsp;</th>';
 echo '<th style="text-align: left;">&nbsp;</th>'; //Icon
 echo '<th style="text-align: left;"><b>TOTALS</b></th>';
+echo '<th style="text-align: left;" id="th_count">&nbsp;</th>'; //ID
 
 //List all statuses:
 foreach($this->config->item('e___6186') as $x__type1 => $m1) {
