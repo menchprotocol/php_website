@@ -902,7 +902,7 @@ class E extends CI_Controller
                 'x__type' => 31835, //Source Mention
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__right')) as $ref) {
-                view_sync_links(preg_replace('/\b@'.$es[0]['e__handle'].'\b/', '@'.trim($_POST['save_e__handle']), $ref['i__message']), true, $ref['i__id']);
+                view_sync_links(str_replace('@'.$es[0]['e__handle'], '@'.trim($_POST['save_e__handle']), $ref['i__message']), true, $ref['i__id']);
             }
             $es[0]['e__handle'] = trim($_POST['save_e__handle']);
 
