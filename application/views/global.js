@@ -2053,7 +2053,7 @@ function activate_handle_search(obj) {
 
 function show_more(i__id){
     $('.cache_frame_'+i__id+' .line').removeClass('hidden');
-    $('.show_more_line').addClass('hidden');
+    $('.cache_frame_'+i__id+' .show_more_line').addClass('hidden');
 }
 
 function set_autosize(theobject){

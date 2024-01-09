@@ -1130,91 +1130,21 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
-                $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } elseif (view_valid_handle_reverse_i($word, true)) {
 
                 $reference_type = 42337;
                 array_push($i__references[$reference_type], $word);
-                $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 2), $word);
+                $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
                 $word_count++;
 
-            } elseif (view_valid_handle_e($word, true)) {
-
-                if(substr_count($word, '|')==2 && is_numeric(one_two_explode('@','|',$word))){
-
-                    //We need to find a YouTUbe URL and replace:
-                    $split_parts = explode('|',substr($word, 1),3);
-                    if(is_numeric($split_parts[0]) && strlen($split_parts[1]) && strlen($split_parts[2])){
-                        foreach($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__down' => $split_parts[0],
-                            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        ), array(), 0) as $top_source){
-
-                            $video_id = extract_youtube_id($top_source['x__message']);
-                            if(strlen($video_id)){
-
-                                $start_explode = explode(':',$split_parts[1]);
-                                $end_explode = explode(':',$split_parts[2]);
-
-                                array_push($replace_from, $word);
-                                array_push($replace_to, 'https://www.youtube.com/embed/'.$video_id.'?start='.( count($start_explode)==3 ? (($start_explode[0] * 3600)+($start_explode[1] * 60)+($start_explode[2])) : ( count($start_explode)==2 ? ($start_explode[0] * 60)+($start_explode[1]) : $start_explode[0] ) ).'&end='.( count($end_explode)==3 ? (($end_explode[0] * 3600)+($end_explode[1] * 60)+($end_explode[2])) : ( count($end_explode)==2 ? ($end_explode[0] * 60)+($end_explode[1]) : $end_explode[0] ) ));
-                                break;
-                            }
-                        }
-                    }
-
-                } elseif(is_numeric(substr($word, 1))) {
-
-                    $total_parents = 0;
-                    $valid_urls = array();
-                    foreach($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__down' => substr($word, 1),
-                        'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    ), array(), 0) as $top_source){
-                        $total_parents++;
-                        if(filter_var($top_source['x__message'], FILTER_VALIDATE_URL)){
-                            array_push($valid_urls, $top_source['x__message']);
-                        }
-                    }
-
-                    if(count($valid_urls)==1 && $total_parents<=2 && !count($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__up' => substr($word, 1),
-                            'x__access IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        ), array(), 0))){
-
-                        foreach($valid_urls as $valid_url){
-                            //Replace the entire source:
-                            array_push($replace_from, $word);
-                            array_push($replace_to, $valid_url);
-                        }
-
-                    } else {
-
-                        $done = false;
-                        foreach ($CI->E_model->fetch(array(
-                            'e__id' => substr($word, 1),
-                        )) as $e_redirect){
-                            $done = true;
-                            //Replace the entire source:
-                            array_push($replace_from, $word);
-                            array_push($replace_to, '@'.$e_redirect['e__handle']);
-                        }
-                        if(!$done){
-                            echo '<div>ERROR: '.$word.'</div>';
-                        }
-
-                    }
-
-                }
+            } elseif (view_valid_handle_e($word)) {
 
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
-                $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+                $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
 
             } else {
