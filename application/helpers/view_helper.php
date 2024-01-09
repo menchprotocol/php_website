@@ -940,7 +940,7 @@ function view_valid_handle_e($string, $check_db = false){
             'LOWER(e__handle)' => strtolower(substr($string, 1)),
         )))) ? substr($string, 1) : false );
 
-    echo '<div>['.$string.' was '.$val.']</div>';
+    //echo '<div>['.$string.' was '.$val.']</div>';
     return $val;
 }
 
