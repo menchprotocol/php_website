@@ -1126,9 +1126,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 $word_count += ( in_array($reference_type, $CI->config->item('n___42294')) ? $media_words  : $link_words );
 
-            } elseif (view_valid_handle_i($word, true)) {
+            } elseif (view_valid_handle_e($word, true)) {
 
-                $reference_type = 31834;
+                $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
@@ -1140,9 +1140,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
                 $word_count++;
 
-            } elseif (view_valid_handle_e($word)) {
+            } elseif (view_valid_handle_i($word, true)) {
 
-                $reference_type = 31835;
+                $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
                 $word_count++;
