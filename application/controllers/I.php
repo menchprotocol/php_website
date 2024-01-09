@@ -524,6 +524,7 @@ class I extends CI_Controller {
 
 
         //Validate Idea Hashtag & save if needed:
+        $attemp_update = 0;
         if($is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
 
             $validate_handle = validate_handle($_POST['save_i__hashtag'], $is[0]['i__id'], null);
@@ -540,6 +541,7 @@ class I extends CI_Controller {
                 'x__type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
                 'x__access IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__right')) as $ref) {
+                $attemp_update++;
                 view_sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
 
@@ -585,7 +587,7 @@ class I extends CI_Controller {
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
             'return_i__cache_links' => view_i_links($is[0]),
-            'message' => $view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
+            'message' => $attemp_update.' Attempt Updated | '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 
     }
