@@ -1,7 +1,3 @@
-
-MENCH
-Platform Routes
-Copy/Paste the following code in routes.php
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
