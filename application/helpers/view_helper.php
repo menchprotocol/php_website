@@ -947,8 +947,15 @@ function view_valid_handle_e($string, $check_db = false){
 function view_valid_handle_i($string, $check_db = false){
     $CI =& get_instance();
     return ( substr($string, 0, 1)=='#' && ctype_alnum(substr($string, 1)) && ( !$check_db || count($CI->I_model->fetch(array(
-        'LOWER(i__hashtag)' => strtolower(substr($string, 1)),
-    )))) ? substr($string, 1) : false );
+            'LOWER(i__hashtag)' => strtolower(substr($string, 1)),
+        )))) ? substr($string, 1) : false );
+}
+
+function view_valid_handle_reverse_i($string, $check_db = false){
+    $CI =& get_instance();
+    return ( substr($string, 0, 2)=='!#' && ctype_alnum(substr($string, 2)) && ( !$check_db || count($CI->I_model->fetch(array(
+            'LOWER(i__hashtag)' => strtolower(substr($string, 2)),
+        )))) ? substr($string, 2) : false );
 }
 
 
@@ -1048,6 +1055,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4256 => array(), //Generic URL
 
         31834 => array(), //Idea Reference
+        42337 => array(), //Idea Contradiction
         31835 => array(), //Source Mention
     );
 
@@ -1060,6 +1068,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
         42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download</spanaa>',
         31834 => '<spanaa href="/%s">%s</spanaa>',
+        42337 => '<spanaa href="/%s">%s</spanaa>',
         31835 => '<spanaa href="/@%s">%s</spanaa>',
     );
 
@@ -1114,6 +1123,12 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 1), $word);
+
+            } elseif (view_valid_handle_reverse_i($word, true)) {
+
+                $reference_type = 42337;
+                array_push($i__references[$reference_type], $word);
+                $i__cache_line .=  @sprintf($ui_template[$reference_type], substr($word, 2), $word);
 
             } elseif (view_valid_handle_e($word, true)) {
 
@@ -1264,6 +1279,13 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     $x__type = 31834;
                     foreach($CI->I_model->fetch(array(
                         'LOWER(i__hashtag)' => strtolower(substr($db_val, 1)),
+                    )) as $target){
+                        $x__left = $target['i__id'];
+                    }
+                } elseif($db_type==42337){
+                    $x__type = 42337;
+                    foreach($CI->I_model->fetch(array(
+                        'LOWER(i__hashtag)' => strtolower(substr($db_val, 2)),
                     )) as $target){
                         $x__left = $target['i__id'];
                     }
