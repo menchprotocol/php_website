@@ -5,6 +5,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $table_sortable = array('#th_primary','#th_count','#th_total','#th_points');
 
 echo '<table class="table table-sm table-striped stats-table mini-stats-table" id="sortable_table">';
+echo '<thead>';
 echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
 echo '<td style="text-align: left;" id="th_count">#</td>';
@@ -22,12 +23,14 @@ echo '<td style="text-align: left;" id="th_total">Total Interactions</td>';
 echo '<td style="text-align: left;" id="th_points">'.$e___11035[42225]['m__cover'].' '.$e___11035[42225]['m__title'].'</td>';
 
 echo '</tr>';
+echo '</thead>';
 
 
 $total_count = 0;
 $total_access = array();
 $total_interactions = 0;
 $total_points = 0;
+$thousand_separator = '';
 foreach($this->config->item('e___4593') as $x__type => $m) {
 
     $total_count++;
@@ -46,7 +49,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
             'x__privacy' => $x__type1,
         ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-        echo '<td style="text-align: left;">'.number_format($list_e_count[0]['totals'], 0).'</td>';
+        echo '<td style="text-align: left;">'.number_format($list_e_count[0]['totals'], 0, '', $thousand_separator).'</td>';
         if($list_e_count[0]['totals'] > 0){
             if(!isset($total_access[$m1['m__handle']])){
                 $total_access[$m1['m__handle']] = 0;
@@ -56,14 +59,14 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
         }
     }
 
-    echo '<td style="text-align: left;">'.number_format($interactions_this, 0).'</td>';
+    echo '<td style="text-align: left;">'.number_format($interactions_this, 0, '', $thousand_separator).'</td>';
     $total_interactions += $interactions_this;
 
     //Points Total
     $points = $this->X_model->fetch(array(
         'x__type' => $x__type,
     ), array(), 0, 0, array(), 'SUM(x__points) as totals');
-    echo '<td style="text-align: left;">'.number_format($points[0]['totals'], 0).'</td>';
+    echo '<td style="text-align: left;">'.number_format($points[0]['totals'], 0, '', $thousand_separator).'</td>';
     $total_points += $points[0]['totals'];
 
     echo '</tr>';
@@ -71,6 +74,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
 }
 
 
+echo '<tfoot>';
 echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
 echo '<td style="text-align: left;">&nbsp;</td>';
@@ -87,6 +91,7 @@ echo '<td style="text-align: left;">'.number_format($total_interactions, 0).'</t
 echo '<td style="text-align: left;">'.number_format($total_points, 0).'</td>';
 
 echo '</tr>';
+echo '</tfoot>';
 
 echo '</table>';
 
