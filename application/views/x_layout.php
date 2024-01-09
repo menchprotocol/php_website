@@ -982,6 +982,8 @@ if($top_i__hashtag){
 
     $(document).ready(function () {
 
+        show_more(<?= $focus_i['i__id'] ?>);
+
         //Auto next a single answer:
         if(!can_skip && js_n___7712.includes(parseInt($('.list-answers').attr('i__type')))){
             //It is, see if it has only 1 option:

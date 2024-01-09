@@ -112,6 +112,9 @@ if(!$focus_tab){
 <script>
 
     $(document).ready(function () {
+
+        show_more(<?= $focus_i['i__id'] ?>);
+
         //Look for power editor updates:
         $('.x_set_class_text').keypress(function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
