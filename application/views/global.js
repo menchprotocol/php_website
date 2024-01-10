@@ -436,7 +436,7 @@ function e_copy(e__id){
 
 
 var busy_loading = false;
-var current_page = 1;
+var current_page = 0;
 function view_load_page(x__type) {
 
     if(busy_loading){
@@ -444,7 +444,6 @@ function view_load_page(x__type) {
     }
 
     busy_loading = true;
-    current_page++; //Now we can increment current page
 
     var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
     var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page );
@@ -462,7 +461,7 @@ function view_load_page(x__type) {
     }
 
 
-
+    current_page++; //Now we can increment current page
     $(e_loader).insertAfter(e_list);
     $.post("/x/view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
@@ -472,19 +471,10 @@ function view_load_page(x__type) {
     }, function (data) {
         $('.load-more').remove();
         if(data.length){
-
             $(e_list).append(data);
             x_set_start_text();
             load_card_clickers();
             $('[data-toggle="tooltip"]').tooltip();
-
-            if(current_page<=1){
-                window.scrollTo({
-                    top: (top_element.offset().top - 59),
-                    behavior: 'instant',
-                });
-            }
-
         }
         busy_loading = false;
     });
