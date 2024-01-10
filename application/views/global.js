@@ -436,7 +436,7 @@ function e_copy(e__id){
 
 
 var busy_loading = false;
-var current_page = 0;
+var current_page = 1;
 function view_load_page(x__type) {
 
     if(busy_loading){
