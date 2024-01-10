@@ -447,12 +447,6 @@ function view_load_page(x__type) {
     var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[x__type] );
 
     console.log('Attempt to load '+x__type+' with page '+current_page[x__type]+' with current total count '+current_total_count+' and '+( has_more_to_load ? 'has_more_to_load' : 'NO MORE'));
-    if(busy_loading){
-        console.log('BUSY loading');
-        return false;
-    }
-
-    busy_loading = true;
 
 
     var e_list = '#list-in-'+x__type;
@@ -462,11 +456,17 @@ function view_load_page(x__type) {
     console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
 
     if(!has_more_to_load){
-        console.log('DONE LOADING: '+x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
         return false;
     } else {
         console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
     }
+
+
+    if(busy_loading){
+        console.log('BUSY loading');
+        return false;
+    }
+    busy_loading = true;
 
 
     current_page[x__type]++; //Now we can increment current page
