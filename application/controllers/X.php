@@ -293,7 +293,7 @@ class X extends CI_Controller
                 if (in_array($_POST['x__type'], $this->config->item('n___11028'))) {
                     echo view_card_e($_POST['x__type'], $s);
                     $success = true;
-                } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___11020'))) {
+                } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___42284')) || in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___11020'))) {
                     echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                     $success = true;
                 }
@@ -311,7 +311,7 @@ class X extends CI_Controller
                 if (in_array($_POST['x__type'], $this->config->item('n___11020'))) {
                     echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
                     $success = true;
-                } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___11028'))) {
+                } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___42284')) || in_array($_POST['x__type'], $this->config->item('n___11028'))) {
                     echo view_card_e($_POST['x__type'], $s);
                     $success = true;
                 }
