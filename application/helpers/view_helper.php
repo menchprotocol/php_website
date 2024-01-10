@@ -334,7 +334,7 @@ function view_body_e($x__type, $counter, $e__id){
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
         //Discoveries:
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-' . $x__type . '">';
+        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach ($list_results as $i) {
             $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
         }

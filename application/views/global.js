@@ -448,21 +448,10 @@ function view_load_page(x__type) {
 
     console.log('Attempt to load '+x__type+' with page '+current_page[x__type]+' with current total count '+current_total_count+' and '+( has_more_to_load ? 'has_more_to_load' : 'NO MORE'));
 
-
-    var e_list = '#list-in-'+x__type;
-    var current_top_x__id = $( e_list + ' .card_cover ' ).first().attr('x__id');
-    var top_element = $('.cover_x_'+current_top_x__id);
-    var e_loader = '<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More...</div>';
-    console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
-
     if(!has_more_to_load){
+        console.log('No more to load');
         return false;
-    } else {
-        console.log(x__type+' PAGE #'+current_page[x__type]+' TOP X__ID ID '+current_top_x__id);
-    }
-
-
-    if(busy_loading){
+    } else if(busy_loading){
         console.log('BUSY loading');
         return false;
     }
@@ -470,7 +459,7 @@ function view_load_page(x__type) {
 
 
     current_page[x__type]++; //Now we can increment current page
-    $(e_loader).insertAfter(e_list);
+    $('<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More...</div>').insertAfter('#list-in-'+x__type);
     $.post("/x/view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
         focus_id: fetch_int_val('#focus_id'),
@@ -479,7 +468,7 @@ function view_load_page(x__type) {
     }, function (data) {
         $('.load-more').remove();
         if(data.length){
-            $(e_list).append(data);
+            $('#list-in-'+x__type).append(data);
             x_set_start_text();
             load_card_clickers();
             $('[data-toggle="tooltip"]').tooltip();
@@ -1962,9 +1951,7 @@ function x_set_text(this_grabr){
 
 
 function adjust_counter(x__type, adjustment_count){
-    var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')) + adjustment_count;
-    $('.xtypecounter'+x__type).text(current_total_count);
-
+    $('.xtypecounter'+x__type).text((parseInt($('.headline_body_' + x__type).attr('read-counter')) + adjustment_count));
 }
 
 
