@@ -1368,6 +1368,7 @@ function editor_load_e(e__id, x__id){
 
             //Dynamic Input Fields:
             for (var i=0, item; item = data.return_inputs[i]; i++) {
+
                 field_counter++;
                 $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                 $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
@@ -1376,6 +1377,8 @@ function editor_load_e(e__id, x__id){
                 if(x__id && ( (fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')) || item["d__id"]==e__id )){
                     //Hide message textarea since this is already loaded in the dynamic inputs:
                     $("#modal31911 .save_x__message").addClass('hidden').val('IGNORE_INPUT');
+                } else {
+                    console.log('DD'+i+': '+fetch_int_val('#focus_card')+' / '+fetch_int_val('#focus_id')+' / '+item["d__id"]+' / '+e__id);
                 }
             }
 
