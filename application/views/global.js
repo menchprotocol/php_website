@@ -443,7 +443,10 @@ function view_load_page(x__type) {
         current_page[x__type] = 1;
     }
 
-    console.log('Attempt to load '+x__type+' with page '+current_page[x__type]);
+    var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
+    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[x__type] );
+
+    console.log('Attempt to load '+x__type+' with page '+current_page[x__type]+' with current total count '+current_total_count+' and '+( has_more_to_load ? 'has_more_to_load' : 'NO MORE'));
     if(busy_loading){
         console.log('BUSY loading');
         return false;
@@ -451,8 +454,7 @@ function view_load_page(x__type) {
 
     busy_loading = true;
 
-    var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
-    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[x__type] );
+
     var e_list = '#list-in-'+x__type;
     var current_top_x__id = $( e_list + ' .card_cover ' ).first().attr('x__id');
     var top_element = $('.cover_x_'+current_top_x__id);
