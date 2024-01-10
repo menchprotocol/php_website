@@ -435,49 +435,6 @@ function e_copy(e__id){
 
 
 
-var busy_loading = false;
-var current_page = [];
-function view_load_page(x__type) {
-
-    if(current_page[x__type] == undefined){
-        current_page[x__type] = 1;
-    }
-
-    var current_total_count = parseInt($('.headline_body_' + x__type).attr('read-counter')); //Total of that item
-    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[x__type] );
-
-    console.log('Attempt to load '+x__type+' with page '+current_page[x__type]+' with current total count '+current_total_count+' and '+( has_more_to_load ? 'has_more_to_load' : 'NO MORE'));
-
-    if(!has_more_to_load){
-        console.log('No more to load');
-        return false;
-    } else if(busy_loading){
-        console.log('BUSY loading');
-        return false;
-    }
-    busy_loading = true;
-
-
-    current_page[x__type]++; //Now we can increment current page
-    $('<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More...</div>').insertAfter('#list-in-'+x__type);
-    $.post("/x/view_load_page", {
-        focus_card: fetch_int_val('#focus_card'),
-        focus_id: fetch_int_val('#focus_id'),
-        x__type: x__type,
-        current_page: current_page[x__type],
-    }, function (data) {
-        $('.load-more').remove();
-        if(data.length){
-            $('#list-in-'+x__type).append(data);
-            x_set_start_text();
-            load_card_clickers();
-            $('[data-toggle="tooltip"]').tooltip();
-        }
-        busy_loading = false;
-    });
-
-
-}
 
 
 
@@ -1508,7 +1465,7 @@ function editor_save_e(){
 
 
 
-
+var focus_x__type = 0;
 function load_tab(x__type, auto_load){
 
     var focus_card = fetch_int_val('#focus_card');
@@ -1545,6 +1502,9 @@ function load_tab(x__type, auto_load){
 
     }
 
+    //Set focus tab:
+    focus_x__type = x__type;
+
     //Give some extra loding time so the content loads on page:
     setTimeout(function () {
 
@@ -1566,7 +1526,7 @@ function load_tab(x__type, auto_load){
             $win.scroll(function () {
                 //Download loading from bottom:
                 if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                    view_load_page(x__type);
+                    view_load_page();
                 }
             });
         });
@@ -1584,10 +1544,58 @@ function load_tab(x__type, auto_load){
         load_covers();
 
     }, 2584);
+}
 
+
+
+var busy_loading = false;
+var current_page = [];
+function view_load_page() {
+
+    if(!focus_x__type){
+        return false;
+    }
+
+    if(current_page[focus_x__type] == undefined){
+        current_page[focus_x__type] = 1;
+    }
+
+    var current_total_count = parseInt($('.headline_body_' + focus_x__type).attr('read-counter')); //Total of that item
+    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[focus_x__type] );
+
+    console.log('Attempt to load '+focus_x__type+' with page '+current_page[focus_x__type]+' with current total count '+current_total_count+' and '+( has_more_to_load ? 'has_more_to_load' : 'NO MORE'));
+
+    if(!has_more_to_load){
+        console.log('No more to load');
+        return false;
+    } else if(busy_loading){
+        console.log('BUSY loading');
+        return false;
+    }
+    busy_loading = true;
+
+
+    current_page[focus_x__type]++; //Now we can increment current page
+    $('<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More...</div>').insertAfter('#list-in-'+focus_x__type);
+    $.post("/x/view_load_page", {
+        focus_card: fetch_int_val('#focus_card'),
+        focus_id: fetch_int_val('#focus_id'),
+        x__type: focus_x__type,
+        current_page: current_page[focus_x__type],
+    }, function (data) {
+        $('.load-more').remove();
+        if(data.length){
+            $('#list-in-'+focus_x__type).append(data);
+            x_set_start_text();
+            load_card_clickers();
+            $('[data-toggle="tooltip"]').tooltip();
+        }
+        busy_loading = false;
+    });
 
 
 }
+
 
 
 var i_is_adding = false;
