@@ -1376,6 +1376,7 @@ function editor_load_e(e__id, x__id){
 
                 if(x__id && ( (fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')) || item["d__id"]==e__id )){
                     //Hide message textarea since this is already loaded in the dynamic inputs:
+                    console.log('DD'+i+' YESSSS: '+fetch_int_val('#focus_card')+' / '+fetch_int_val('#focus_id')+' / '+item["d__id"]+' / '+e__id);
                     $("#modal31911 .save_x__message").addClass('hidden').val('IGNORE_INPUT');
                 } else {
                     console.log('DD'+i+': '+fetch_int_val('#focus_card')+' / '+fetch_int_val('#focus_id')+' / '+item["d__id"]+' / '+e__id);
