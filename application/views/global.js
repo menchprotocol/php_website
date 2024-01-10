@@ -436,7 +436,7 @@ function e_copy(e__id){
 
 
 var busy_loading = false;
-var current_page = 0;
+var current_page = 1;
 function view_load_page(x__type) {
 
     if(busy_loading){
@@ -461,7 +461,6 @@ function view_load_page(x__type) {
     }
 
 
-    current_page++; //Now we can increment current page
     $(e_loader).insertAfter(e_list);
     $.post("/x/view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
@@ -471,6 +470,7 @@ function view_load_page(x__type) {
     }, function (data) {
         $('.load-more').remove();
         if(data.length){
+            current_page++; //Now we can increment current page
             $(e_list).append(data);
             x_set_start_text();
             load_card_clickers();
