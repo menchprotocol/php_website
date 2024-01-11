@@ -991,7 +991,7 @@ class E_model extends CI_Model
                 'message' => 'Unknown mass action',
             );
 
-        } elseif(in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441, 26149)) && !view_valid_handle_e($action_command1)){
+        } elseif(in_array($action_e__id, array(5981, 5982, 11956, 13441)) && !view_valid_handle_e($action_command1)){
 
             return array(
                 'status' => 0,
@@ -1045,45 +1045,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-
-            } elseif (in_array($action_e__id, array(26149)) && view_valid_handle_e($action_command1)) {
-
-                //Go through all followings of this source:
-                foreach($this->E_model->fetch(array(
-                    'LOWER(e__handle)' => strtolower(view_valid_handle_e($action_command1)),
-                )) as $e){
-
-                    //Go through all followings and add the ones missing:
-                    foreach($this->X_model->fetch(array(
-                        'x__up' => $e['e__id'],
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                    ), array('x__down'), 0, 0) as $e__up){
-
-                        //Add if not added as the follower:
-                        if(!count($this->X_model->fetch(array(
-                            'x__up' => $e__up['e__id'],
-                            'x__down' => $x['e__id'],
-                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        )))){
-
-                            //Must be added:
-                            $this->X_model->create(array(
-                                'x__creator' => $x__creator,
-                                'x__up' => $e__up['e__id'],
-                                'x__down' => $x['e__id'],
-                                'x__type' => 4230,
-                                'x__message' => $e__up['x__message'],
-                            ));
-
-                            $applied_success++;
-                        }
-                    }
-                }
-
-            } elseif (in_array($action_e__id, array(5981, 5982, 12928, 12930, 11956, 13441)) && view_valid_handle_e($action_command1)) { //Add/Delete/Migrate followings source
+            } elseif (in_array($action_e__id, array(5981, 5982, 11956, 13441)) && view_valid_handle_e($action_command1)) { //Add/Delete/Migrate followings source
 
                 //What member searched for:
                 foreach($this->E_model->fetch(array(
@@ -1098,7 +1060,7 @@ class E_model extends CI_Model
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     ));
 
-                    if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0) || ($action_e__id==12928 && view_e_covers(12273, $x['e__id'],0, false) > 0) || ($action_e__id==12930 && !view_e_covers(12273, $x['e__id'],0, false))){
+                    if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0)){
 
                         $add_fields = array(
                             'x__creator' => $x__creator,

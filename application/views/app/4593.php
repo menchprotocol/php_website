@@ -21,7 +21,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
 
     $table_body .= '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
-    $table_body .= '<td style="text-align: left; width:21px;">'.$m['m__cover'].'</td>';
+    $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
     $table_body .= '<td style="text-align: left;"><a href="/@'.$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
     $table_body .= '<td style="text-align: left;">'.$x__type.'</td>';
 
@@ -43,7 +43,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
 
     $total_interactions += $interactions_this;
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($interactions_this, $pad_length, '0', STR_PAD_LEFT).'</td>';
-    $table_body .= '<th style="text-align: left; font-family: monospace, monospace;" title="'.$interactions_this.' / '.$totals_count[0]['totals'].'">'.str_pad(number_format(($interactions_this/$totals_count[0]['totals']*100), 3), 6, '0', STR_PAD_LEFT).'%</th>';
+    $table_body .= '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad(number_format(($interactions_this/$totals_count[0]['totals']*100), 3), 6, '0', STR_PAD_LEFT).'%</th>';
 
     //Points Total
     $points = $this->X_model->fetch(array(
@@ -93,7 +93,7 @@ foreach($this->config->item('e___6186') as $x__type1 => $m1) {
 }
 
 echo '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_interactions, $pad_length, '0', STR_PAD_LEFT).'</th>';
-echo '<th style="text-align: left; font-family: monospace, monospace;" title="'.$total_interactions.' / '.$totals_count[0]['totals'].'">'.number_format(($total_interactions/$totals_count[0]['totals']*100), 2).'%</th>';
+echo '<th style="text-align: left; font-family: monospace, monospace;">'.number_format(($total_interactions/$totals_count[0]['totals']*100), 2).'%</th>';
 
 //Points Total
 echo '<th style="text-align: left;  font-family: monospace, monospace;">'.str_pad($total_points, $pad_length, '0', STR_PAD_LEFT).'</th>';

@@ -616,7 +616,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" placeholder="Replace" class="form-control border '.$is_upper.'">';
 
 
-                                } elseif(in_array($action_e__id, array(5981, 12928, 12930, 5982, 13441, 26149))){
+                                } elseif(in_array($action_e__id, array(5981, 5982, 13441))){
 
                                     //Member search box:
 
