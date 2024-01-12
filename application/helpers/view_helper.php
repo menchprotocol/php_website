@@ -523,6 +523,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         if($x__type==42256){
             $order_columns['x__type = \'34513\' DESC'] = null;
         }
+        $order_columns['x__weight'] = 'ASC';
         $order_columns['x__time'] = 'DESC';
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
@@ -619,7 +620,8 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         if($x__type==42256){
             $order_columns['x__type = \'34513\' DESC'] = null;
         }
-        $order_columns['x__id'] = 'DESC';
+        $order_columns['x__weight'] = 'ASC';
+        $order_columns['x__time'] = 'DESC';
 
     } elseif($x__type==11019) {
 
