@@ -621,14 +621,6 @@ class X_model extends CI_Model
     function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true)
     {
 
-        if($e__id!=1){
-            //TODO Remove
-            return array(
-                'status' => 0,
-                'message' => 'System is down for now',
-            );
-        }
-
         $sms_subscriber = false;
         $bypass_notifications = in_array($template_id, $this->config->item('n___31779'));
 

@@ -430,7 +430,7 @@ if(!$basic_header_footer){
 
                     */
 
-                    //TODO Make search available for all by removing this later:
+
                     if(intval(view_memory(6404,12678)) && $member_e && $member_e['e__id']==1){
                         echo '<td class="block-x icon_search '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
                         echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
@@ -818,7 +818,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Idea Hashtag -->
-                    <div class="input-group mb-3">
+                    <div class="input-group mb-3 hash_group">
                         <span class="input-group-text">#</span>
                         <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
                     </div>

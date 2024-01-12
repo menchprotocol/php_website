@@ -19,10 +19,13 @@ class I_model extends CI_Model
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('i__message', 'i__type'), $x__creator)) {
+        if (detect_missing_columns($add_fields, array('i__message'), $x__creator)) {
             return false;
-        } elseif(!in_array($add_fields['i__type'], $this->config->item('n___4737'))){
-            return false;
+        }
+
+        if(!in_array($add_fields['i__type'], $this->config->item('n___4737'))){
+            //Statement is the default idea type:
+            $add_fields['i__type'] = 6677;
         }
 
         //Auto generate a Hashtag:

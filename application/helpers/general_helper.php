@@ -1906,16 +1906,6 @@ function boost_power()
     ini_set('max_execution_time', 0);
 }
 
-function e_currently_sorted($e__id){
-    $CI =& get_instance();
-    return count( $CI->X_model->fetch(array(
-        'x__weight >' => 0, //Sorted
-        'x__up' => $e__id,
-        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array(), 1) );
-}
-
 function public_app($e){
     $CI =& get_instance();
     return in_array($e['e__privacy'], $CI->config->item('n___7357')) && !in_array($e['e__id'], $CI->config->item('n___32141'));

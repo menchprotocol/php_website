@@ -390,14 +390,14 @@ class I extends CI_Controller {
                 'message' => 'Missing Idea message',
             ));
 
-        } elseif(!isset($_POST['save_i__hashtag']) || !strlen($_POST['save_i__hashtag'])){
+        } elseif(!isset($_POST['save_i__hashtag'])){
 
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Idea hashtag',
             ));
 
-        } elseif(!isset($_POST['save_i__id']) || !intval($_POST['save_i__id'])){
+        } elseif(!isset($_POST['save_i__id'])){
 
             return view_json(array(
                 'status' => 0,
@@ -413,16 +413,22 @@ class I extends CI_Controller {
 
         }
 
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['save_i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-        if(!count($is)){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Idea Not Active',
+        $is_new_idea = !strlen($_POST['save_i__hashtag']) && !intval($_POST['save_i__id']);
+
+        if(!$is_new_idea){
+            $is = $this->I_model->fetch(array(
+                'i__id' => $_POST['save_i__id'],
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
+            if(!count($is)){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Idea Not Active',
+                ));
+            }
         }
+
+
 
 
         //Validate Idea Message:
@@ -439,85 +445,87 @@ class I extends CI_Controller {
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
 
         //Process dynamic inputs if any:
-        for ($p = 1; $p <= view_memory(6404,42206); $p++) {
+        if(!$is_new_idea){
+            for ($p = 1; $p <= view_memory(6404,42206); $p++) {
 
-            if(!isset($_POST['save_dynamic_' . $p])){
-                break; //Nothing more to process
-            }
+                if(!isset($_POST['save_dynamic_' . $p])){
+                    break; //Nothing more to process
+                }
 
-            $input_parts = explode('____', $_POST['save_dynamic_' . $p], 3);
-            $d_x__id = $input_parts[0];
-            $dynamic_e__id = $input_parts[1];
-            $dynamic_value = trim($input_parts[2]);
+                $input_parts = explode('____', $_POST['save_dynamic_' . $p], 3);
+                $d_x__id = $input_parts[0];
+                $dynamic_e__id = $input_parts[1];
+                $dynamic_value = trim($input_parts[2]);
 
 
-            //Required fields must have an input:
-            if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($dynamic_value)){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Missing Required Field: '.$e___42179[$dynamic_e__id]['m__title'],
-                ));
-            }
+                //Required fields must have an input:
+                if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($dynamic_value)){
+                    return view_json(array(
+                        'status' => 0,
+                        'message' => 'Missing Required Field: '.$e___42179[$dynamic_e__id]['m__title'],
+                    ));
+                }
 
-            //Validate input based on its data type, if provided:
-            if (strlen($dynamic_value)) {
-                foreach(array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592')) as $data_type_this){
-                    $valid_data_type = valid_data_type($data_type_this, $dynamic_value, $e___42179[$dynamic_e__id]['m__title']);
-                    if (!$valid_data_type['status']) {
-                        //We had an error:
-                        return view_json($valid_data_type);
+                //Validate input based on its data type, if provided:
+                if (strlen($dynamic_value)) {
+                    foreach(array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592')) as $data_type_this){
+                        $valid_data_type = valid_data_type($data_type_this, $dynamic_value, $e___42179[$dynamic_e__id]['m__title']);
+                        if (!$valid_data_type['status']) {
+                            //We had an error:
+                            return view_json($valid_data_type);
+                        }
                     }
                 }
-            }
 
 
-            //Fetch the current value:
-            if($d_x__id > 0){
-                $values = $this->X_model->fetch(array(
-                    'x__id' => $d_x__id,
-                ));
-            }
-
-            if(!$d_x__id || !count($values)){
-                $values = $this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                    'x__right' => $is[0]['i__id'],
-                    'x__up' => $dynamic_e__id,
-                ));
-            }
-
-
-            //Update if needed:
-            if(!strlen($dynamic_value)){
-
-                //Remove Link if we have one:
-                if(count($values)){
-                    $this->X_model->update($values[0]['x__id'], array(
-                        'x__privacy' => 6173, //Transaction Removed
-                    ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+                //Fetch the current value:
+                if($d_x__id > 0){
+                    $values = $this->X_model->fetch(array(
+                        'x__id' => $d_x__id,
+                    ));
                 }
 
-            } elseif(!count($values)){
+                if(!$d_x__id || !count($values)){
+                    $values = $this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+                        'x__right' => $is[0]['i__id'],
+                        'x__up' => $dynamic_e__id,
+                    ));
+                }
 
-                //Create New Link:
-                $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
-                    'x__type' => 4983, //Co-Author
-                    'x__up' => $dynamic_e__id,
-                    'x__right' => $is[0]['i__id'],
-                    'x__message' => $dynamic_value,
-                    'x__weight' => number_x__weight($dynamic_value),
-                ));
 
-            } elseif($values[0]['x__message']!=$dynamic_value){
+                //Update if needed:
+                if(!strlen($dynamic_value)){
 
-                //Update Link:
-                $this->X_model->update($values[0]['x__id'], array(
-                    'x__message' => $dynamic_value,
-                    'x__weight' => number_x__weight($dynamic_value),
-                ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
+                    //Remove Link if we have one:
+                    if(count($values)){
+                        $this->X_model->update($values[0]['x__id'], array(
+                            'x__privacy' => 6173, //Transaction Removed
+                        ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+                    }
 
+                } elseif(!count($values)){
+
+                    //Create New Link:
+                    $this->X_model->create(array(
+                        'x__creator' => $member_e['e__id'],
+                        'x__type' => 4983, //Co-Author
+                        'x__up' => $dynamic_e__id,
+                        'x__right' => $is[0]['i__id'],
+                        'x__message' => $dynamic_value,
+                        'x__weight' => number_x__weight($dynamic_value),
+                    ));
+
+                } elseif($values[0]['x__message']!=$dynamic_value){
+
+                    //Update Link:
+                    $this->X_model->update($values[0]['x__id'], array(
+                        'x__message' => $dynamic_value,
+                        'x__weight' => number_x__weight($dynamic_value),
+                    ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
+
+                }
             }
         }
 
@@ -525,7 +533,7 @@ class I extends CI_Controller {
 
         //Validate Idea Hashtag & save if needed:
         $attemp_update = 0;
-        if($is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
+        if(!$is_new_idea && $is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
 
             $validate_handle = validate_handle($_POST['save_i__hashtag'], $is[0]['i__id'], null);
             if(!$validate_handle['status']){
@@ -550,6 +558,13 @@ class I extends CI_Controller {
             $this->I_model->update($is[0]['i__id'], array(
                 'i__hashtag' => $is[0]['i__hashtag'],
             ), true, $member_e['e__id']);
+
+        } elseif($is_new_idea){
+
+            //Create a new hashtag based on the message:
+            $is[0] = $this->I_model->create(array(
+                'i__message' => $_POST['save_i__message'],
+            ), $member_e['e__id']);
 
         }
 
