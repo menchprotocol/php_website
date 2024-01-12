@@ -708,6 +708,12 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $(document).keypress("a",function(e) {
+        if(e.ctrlKey){
+            editor_load_i(0,0);
+        }
+    });
+
     $('.card_click_x').click(function(e) {
         js_redirect('/'+$(this).attr('i__hashtag'));
     });
