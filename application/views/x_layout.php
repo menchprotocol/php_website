@@ -395,7 +395,7 @@ if(!in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !write
                 $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
 
                 //Referesh soon so we can check if completed or not
-                js_php_redirect('/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 2584);
+                js_php_redirect('/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
 
             } elseif(count($x_completes)){
 
