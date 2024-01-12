@@ -54,23 +54,23 @@ foreach($this->config->item('e___31890') as $x__type => $m) {
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                 <div class="input-group border">
                     <input type="text"
-                           class="form-control form-control-thick add-input algolia_search dotransparent"
+                           class="form-control form-control-thick add-input algolia_finder dotransparent"
                            placeholder="+ Add Idea">
-                </div></div></div><div class="algolia_pad_search dropdown_'.$x__type.' row justify-content"></div></div>';
+                </div></div></div><div class="algolia_pad_finder dropdown_'.$x__type.' row justify-content"></div></div>';
 
         } elseif(in_array($x__type, $this->config->item('n___42261'))){
 
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               class="form-control form-control-thick algolia_finder dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="+ Add Source">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
+                    </div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
 
-        $body_content .= '<script> $(document).ready(function () { load_search(12273, '.$x__type.'); }); </script>';
+        $body_content .= '<script> $(document).ready(function () { load_finder(12273, '.$x__type.'); }); </script>';
 
     }
 

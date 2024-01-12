@@ -762,10 +762,10 @@ class X_model extends CI_Model
             }
 
             //Keep looking:
-            $top_search = $this->X_model->find_previous($e__id, $top_i__hashtag, $i_previous['i__id'], $loop_breaker_ids);
-            if(count($top_search)){
-                array_push($top_search, $i_previous);
-                return $top_search;
+            $top_finder = $this->X_model->find_previous($e__id, $top_i__hashtag, $i_previous['i__id'], $loop_breaker_ids);
+            if(count($top_finder)){
+                array_push($top_finder, $i_previous);
+                return $top_finder;
             }
         }
 

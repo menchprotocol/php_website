@@ -128,7 +128,7 @@ function load_editor(){
 
     if(parseInt(js_e___6404[12678]['m__message'])){
 
-        $('.e_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+        $('.e_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('@' + suggestion.s__handle);
 
@@ -160,7 +160,7 @@ function load_editor(){
 
         }]);
 
-        $('.i_text_search').on('autocomplete:selected', function (event, suggestion, dataset) {
+        $('.i_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
             $(this).val('#' + suggestion.s__handle);
 
@@ -579,7 +579,7 @@ function cover_upload(droppedFiles, uploadType) {
 
 
 function initiate_algolia(){
-    $(".algolia_search").focus(function () {
+    $(".algolia_finder").focus(function () {
         if(!algolia_index && parseInt(js_e___6404[12678]['m__message'])){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
@@ -631,10 +631,10 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
 
 //Main navigation
 var search_on = false;
-function toggle_search(){
+function toggle_finder(){
 
     $('.left_nav').addClass('hidden');
-    $('.icon_search').toggleClass('hidden');
+    $('.icon_finder').toggleClass('hidden');
 
     if(search_on){
 
@@ -642,7 +642,7 @@ function toggle_search(){
         search_on = false; //Reverse
         $('.max_width').removeClass('search_bar');
         $('.top_nav, .container_content').removeClass('hidden');
-        $('.nav_search, #container_search').addClass('hidden');
+        $('.nav_finder, #container_finder').addClass('hidden');
 
     } else {
 
@@ -650,13 +650,13 @@ function toggle_search(){
         search_on = true; //Reverse
         $('.max_width').addClass('search_bar');
         $('.top_nav, .container_content').addClass('hidden');
-        $('.nav_search, #container_search').removeClass('hidden');
-        $("#container_search .row").html(''); //Reset results view
-        $('#top_search').focus();
+        $('.nav_finder, #container_finder').removeClass('hidden');
+        $("#container_finder .row").html(''); //Reset results view
+        $('#top_finder').focus();
 
         setTimeout(function () {
             //One more time to make sure it also works in mobile:
-            $('#top_search').focus();
+            $('#top_finder').focus();
         }, 55);
 
 
@@ -711,10 +711,15 @@ $(document).ready(function () {
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {
-            if(String.fromCharCode(e.which).toLowerCase() === 'a'){
+            if(String.fromCharCode(e.which).toLowerCase() === 'i'){
+                //Add Idea
                 editor_load_i(0,0);
             } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
-                //Trigger search if enabled:
+                //Add Source:
+                editor_load_e(0,0);
+            } else if(String.fromCharCode(e.which).toLowerCase() === 'f' && parseInt(js_e___6404[12678]['m__message'])){
+                //Finder:
+                toggle_finder();
             }
         }
     });
@@ -753,16 +758,16 @@ $(document).ready(function () {
     //Lookout for textinput updates
     x_set_start_text();
 
-    $('#top_search').keyup(function() {
+    $('#top_finder').keyup(function() {
         if(!$(this).val().length){
-            $("#container_search .row").html(''); //Reset results view
+            $("#container_finder .row").html(''); //Reset results view
         }
     });
 
     //For the S shortcut to load search:
-    $("#top_search").focus(function() {
+    $("#top_finder").focus(function() {
         if(!search_on){
-            toggle_search();
+            toggle_finder();
         }
     });
 
@@ -806,7 +811,7 @@ $(document).ready(function () {
         if (e.keyCode === 27) { //ESC
 
             if(search_on){
-                toggle_search();
+                toggle_finder();
             }
 
         }
@@ -831,21 +836,21 @@ $(document).ready(function () {
         var icons_listed = [];
 
         //TOP SEARCH
-        $("#top_search").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
+        $("#top_finder").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
             {
                 source: function (q, cb) {
 
                     icons_listed = [];
 
                     //Members can filter search with first word:
-                    var search_only_e = $("#top_search").val().charAt(0)=='@';
-                    var search_only_in = $("#top_search").val().charAt(0)=='#';
-                    var search_only_app = $("#top_search").val().charAt(0)=='-';
-                    $("#container_search .row").html(''); //Reset results view
+                    var search_only_e = $("#top_finder").val().charAt(0)=='@';
+                    var search_only_in = $("#top_finder").val().charAt(0)=='#';
+                    var search_only_app = $("#top_finder").val().charAt(0)=='-';
+                    $("#container_finder .row").html(''); //Reset results view
 
 
                     //Do not search if specific command ONLY:
-                    if (( search_only_in || search_only_e || search_only_app ) && !isNaN($("#top_search").val().substr(1)) ) {
+                    if (( search_only_in || search_only_e || search_only_app ) && !isNaN($("#top_finder").val().substr(1)) ) {
 
                         cb([]);
                         return;
@@ -871,7 +876,7 @@ $(document).ready(function () {
                                 if(search_filters.length>0){
                                     search_filters += ' AND ';
                                 }
-                                search_filters += ' ( _tags:publicly_searchable OR _tags:z_' + js_pl_id + ' ) ';
+                                search_filters += ' ( _tags:public_index OR _tags:z_' + js_pl_id + ' ) ';
                             }
 
                         } else {
@@ -880,7 +885,7 @@ $(document).ready(function () {
                             if(search_filters.length>0){
                                 search_filters += ' AND ';
                             }
-                            search_filters += ' _tags:publicly_searchable ';
+                            search_filters += ' _tags:public_index ';
 
                         }
 
@@ -903,12 +908,12 @@ $(document).ready(function () {
                         var item_key = suggestion.s__type+'_'+suggestion.s__id;
                         if(!icons_listed.includes(item_key)) {
                             icons_listed.push(item_key);
-                            $("#container_search .row").append(view_s_js_cover(26011, suggestion, 0));
+                            $("#container_finder .row").append(view_s_js_cover(26011, suggestion, 0));
                         }
                         return false;
                     },
                     empty: function (data) {
-                        $("#container_search .row").html('<div class="main__title margin-top-down-half"><span class="icon-block"><i class="fal fa-exclamation-circle"></i></span>No results found</div>');
+                        $("#container_finder .row").html('<div class="main__title margin-top-down-half"><span class="icon-block"><i class="fal fa-exclamation-circle"></i></span>No results found</div>');
                     },
                 }
             }
@@ -957,18 +962,18 @@ function update_cover_mini(cover_code, target_css){
 
 
 
-function load_search(focus_card, x__type){
+function load_finder(focus_card, x__type){
     if(js_n___11020.includes(x__type) || (focus_card==12274 && js_n___42284.includes(x__type))){
-        i_load_search(x__type);
+        i_load_finder(x__type);
     } else if(js_n___11028.includes(x__type) || (focus_card==12273 && js_n___42284.includes(x__type))) {
-        e_load_search(x__type);
+        e_load_finder(x__type);
     }
 }
 
 
-function i_load_search(x__type) {
+function i_load_finder(x__type) {
 
-    console.log(x__type + " i_load_search()");
+    console.log(x__type + " i_load_finder()");
 
     $('.new-list-'+x__type+' .add-input').keypress(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -988,13 +993,13 @@ function i_load_search(x__type) {
 
         //Clear if no input:
         if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+            $('.new-list-'+x__type+' .algolia_pad_finder').html('');
         }
 
     }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
         source: function (q, cb) {
 
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+            $('.new-list-'+x__type+' .algolia_pad_finder').html('');
 
             algolia_index.search(q, {
 
@@ -1012,11 +1017,11 @@ function i_load_search(x__type) {
         },
         templates: {
             suggestion: function (suggestion) {
-                $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26012, suggestion, x__type));
+                $('.new-list-'+x__type+' .algolia_pad_finder').append(view_s_js_cover(26012, suggestion, x__type));
             },
             header: function (data) {
                 if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover contrast_bg mini-cover coin-12273 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
+                    $('.new-list-'+x__type+' .algolia_pad_finder').prepend('<div class="card_cover contrast_bg mini-cover coin-12273 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
@@ -1026,9 +1031,9 @@ function i_load_search(x__type) {
     }]);
 }
 
-function e_load_search(x__type) {
+function e_load_finder(x__type) {
 
-    console.log(x__type + " e_load_search()");
+    console.log(x__type + " e_load_finder()");
 
     //Load Search:
     var icons_listed = [];
@@ -1049,7 +1054,7 @@ function e_load_search(x__type) {
 
         //Clear if no input:
         if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+            $('.new-list-'+x__type+' .algolia_pad_finder').html('');
         }
         icons_listed = [];
 
@@ -1057,7 +1062,7 @@ function e_load_search(x__type) {
 
         source: function (q, cb) {
 
-            $('.new-list-'+x__type+' .algolia_pad_search').html('');
+            $('.new-list-'+x__type+' .algolia_pad_finder').html('');
 
             algolia_index.search(q, {
                 filters: 's__type=12274' + search_and_filter,
@@ -1075,12 +1080,12 @@ function e_load_search(x__type) {
                 var item_key = suggestion.s__type+'_'+suggestion.s__id;
                 if(!icons_listed.includes(item_key)) {
                     icons_listed.push(item_key);
-                    $('.new-list-'+x__type+' .algolia_pad_search').append(view_s_js_cover(26013, suggestion, x__type));
+                    $('.new-list-'+x__type+' .algolia_pad_finder').append(view_s_js_cover(26013, suggestion, x__type));
                 }
             },
             header: function (data) {
                 if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_search').prepend('<div class="card_cover contrast_bg mini-cover coin-12274 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background-obs cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
+                    $('.new-list-'+x__type+' .algolia_pad_finder').prepend('<div class="card_cover contrast_bg mini-cover coin-12274 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="black-background-obs cover-link coinType12274"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
                 }
             },
             empty: function (data) {
@@ -1134,7 +1139,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     //Activate Modal:
     $('#modal31911').modal('show');
 
-    activate_handle_search($('#modal31911 .save_i__message'));
+    activate_handle_finder($('#modal31911 .save_i__message'));
 
     setTimeout(function () {
         //Adjust sizes:
@@ -1988,7 +1993,7 @@ function adjust_counter(x__type, adjustment_count){
 
 
 
-function activate_handle_search(obj) {
+function activate_handle_finder(obj) {
     if(parseInt(js_e___6404[12678]['m__message'])){
         obj.textcomplete([
             {

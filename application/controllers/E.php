@@ -1427,7 +1427,7 @@ class E extends CI_Controller
     }
 
 
-    function contact_search(){
+    function verify_contact(){
 
         //Cleanup input email:
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION

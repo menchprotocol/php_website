@@ -2134,7 +2134,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
                     //Featured?
                     if(in_array($x['e__id'], $CI->config->item('n___41804'))){
-                        array_push($export_row['_tags'], 'publicly_searchable');
+                        array_push($export_row['_tags'], 'public_index');
                     }
 
                     //Authored?
@@ -2167,7 +2167,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                     array_push($export_row['_tags'], 'has_image');
                 }
                 if(in_array($s['e__privacy'], $CI->config->item('n___7357'))){
-                    array_push($export_row['_tags'], 'publicly_searchable');
+                    array_push($export_row['_tags'], 'public_index');
                 }
 
                 //Fetch Following:
@@ -2210,7 +2210,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 array_push($export_row['_tags'], 'is_app');
 
                 if(public_app($s)){
-                    array_push($export_row['_tags'], 'publicly_searchable');
+                    array_push($export_row['_tags'], 'public_index');
                 }
 
                 //Fetch Following:

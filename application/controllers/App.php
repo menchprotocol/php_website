@@ -290,15 +290,15 @@ class App extends CI_Controller
 
                 $message .= view_card_x($x);
 
-                if($member_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_search'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_search'])>0){
+                if($member_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_find'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_find'])>0){
 
-                    $new_content = str_replace($_POST['x__message_search'],trim($_POST['x__message_replace']),$x['x__message']);
+                    $new_content = str_replace($_POST['x__message_find'],trim($_POST['x__message_replace']),$x['x__message']);
 
                     $this->X_model->update($x['x__id'], array(
                         'x__message' => $new_content,
                     ), $member_e['e__id'], 12360, update_description($x['x__message'], $new_content));
 
-                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_search'].'] with ['.trim($_POST['x__message_replace']).']</div>';
+                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_find'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 
                 }
 

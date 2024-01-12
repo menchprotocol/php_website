@@ -165,7 +165,7 @@ if(superpower_unlocked()) {
                 //Watch for action keys:
                 if (e.keyCode==13) {
                     if(step_count==2){
-                        contact_search();
+                        verify_contact();
                     } else if(step_count==3){
                         contact_auth();
                     }
@@ -188,15 +188,15 @@ if(superpower_unlocked()) {
         }
 
 
-        var contact_searching = false;
-        function contact_search(){
+        var verifying_contact = false;
+        function verify_contact(){
 
-            if(contact_searching){
+            if(verifying_contact){
                 return false;
             }
 
             //Lock fields:
-            contact_searching = true;
+            verifying_contact = true;
             var account_email_phone = $('#account_email_phone').val();
             $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
             $('#account_email_phone').prop('disabled', true);
@@ -204,7 +204,7 @@ if(superpower_unlocked()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/e/contact_search", {
+            $.post("/e/verify_contact", {
 
                 account_email_phone: account_email_phone,
                 sign_i__id: sign_i__id,
@@ -212,7 +212,7 @@ if(superpower_unlocked()) {
             }, function (data) {
 
                 //Release field lock:
-                contact_searching = false;
+                verifying_contact = false;
                 $('#email_check_next').html(go_next_icon);
                 $('#account_email_phone').prop('disabled', false);
 
@@ -327,7 +327,7 @@ if(superpower_unlocked()) {
                 <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
 
                 <span id="step2buttons" class="<?= isset($_GET['account_email_phone']) ? '' : ' hidden ' ?>" >
-                    <a href="javascript:void(0)" onclick="contact_search()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="verify_contact()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                     </span>
 
 

@@ -48,9 +48,9 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-12 container-center"><div class="list-group"><div class="list-group-item dropdown_'.$x__type.' list-adder">
                 <div class="input-group border">
                     <input type="text"
-                           class="form-control form-control-thick algolia_search dotransparent add-input"
+                           class="form-control form-control-thick algolia_finder dotransparent add-input"
                            placeholder="+ Add Idea">
-                </div></div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
+                </div></div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>';
 
         } elseif(in_array($x__type, $this->config->item('n___11028'))){
 
@@ -58,14 +58,14 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
             $input_content .= '<div class="new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
-                               class="form-control form-control-thick algolia_search dotransparent add-input"
+                               class="form-control form-control-thick algolia_finder dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="+ Add Source">
-                    </div></div></div><div class="algolia_pad_search row justify-content dropdown_'.$x__type.'"></div></div>';
+                    </div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
 
-        $body_content .= '<script> $(document).ready(function () { load_search(12274, '.$x__type.'); }); </script>';
+        $body_content .= '<script> $(document).ready(function () { load_finder(12274, '.$x__type.'); }); </script>';
 
     }
 

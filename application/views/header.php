@@ -101,7 +101,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
     echo ' var website_id = "' . $website_id . '"; ';
     echo ' var js_session_superpowers_unlocked = ' . json_encode(($member_e ? $this->session->userdata('session_superpowers_unlocked') : array())) . ';';
-    echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:publicly_searchable \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
+    echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:public_index \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORY
     foreach($this->config->item('e___11054') as $x__type => $m){
@@ -154,7 +154,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             .custom_ui_14506_'.$e__id.' .first_line,
             .custom_ui_14506_'.$e__id.' .headline,
             .custom_ui_14506_'.$e__id.' .btn,
-            .custom_ui_14506_'.$e__id.' .algolia_pad_search,
+            .custom_ui_14506_'.$e__id.' .algolia_pad_finder,
             .custom_ui_14506_'.$e__id.' .progress-title,
             .custom_ui_14506_'.$e__id.' .mid-text-line span,
             .custom_ui_14506_'.$e__id.' .previous_answer,
@@ -387,7 +387,7 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_search hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_search" type="search" id="top_search" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_finder" type="search" id="top_finder" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
 
 
@@ -425,15 +425,15 @@ if(!$basic_header_footer){
                     }
 
                     if($quick_id > 0){
-                        echo '<td class="block-x icon_search"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
                     }
 
                     */
 
 
                     if(intval(view_memory(6404,12678)) && $member_e && $member_e['e__id']==1){
-                        echo '<td class="block-x icon_search '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
-                        echo '<td class="block-x icon_search hidden"><a href="javascript:void(0);" onclick="toggle_search()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder hidden"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }
 
                     //MENU
@@ -520,7 +520,7 @@ if(!$basic_header_footer){
 
 
 
-echo '<div id="container_search" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
+echo '<div id="container_finder" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
 echo '<div class="container container_content">';
 
 //Any message we need to show here?
@@ -621,7 +621,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Member search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" placeholder="Search Source" />';
@@ -630,10 +630,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 } elseif($action_e__id==11956){
 
                                     //IF HAS THIS
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
 
                                     //ADD THIS
-                                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_search e_text_search border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
 
 
                                 } elseif($action_e__id==5003){
@@ -747,7 +747,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Source search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_finder e_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -757,7 +757,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Source search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_search e_text_search border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_finder e_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -765,7 +765,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 } elseif(in_array($action_e__id, array(12611,12612,27240,28801))){
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_search i_text_search border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_finder i_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -824,7 +824,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
                     <!-- Idea Message -->
-                    <textarea class="form-control note-textarea algolia_search new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___11035[4736]['m__title'] ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
 
                     <?php
 

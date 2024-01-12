@@ -112,8 +112,8 @@ if(isset($_GET['any_x__id']) && strlen($_GET['any_x__id']) > 0){
     }
 }
 
-if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0){
-    $query_filters['LOWER(x__message) LIKE'] = '%'.$_GET['x__message_search'].'%';
+if(isset($_GET['x__message_find']) && strlen($_GET['x__message_find']) > 0){
+    $query_filters['LOWER(x__message) LIKE'] = '%'.$_GET['x__message_find'].'%';
 }
 
 
@@ -163,7 +163,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
     var x_filters = '<?= serialize(count($query_filters) > 0 ? $query_filters : array()) ?>';
     var x_joined_by = '<?= serialize(count($joined_by) > 0 ? $joined_by : array()) ?>';
-    var x__message_search = '<?= ( isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0 ? $_GET['x__message_search'] : '' ) ?>';
+    var x__message_find = '<?= ( isset($_GET['x__message_find']) && strlen($_GET['x__message_find']) > 0 ? $_GET['x__message_find'] : '' ) ?>';
     var x__message_replace = '<?= ( isset($_GET['x__message_replace']) && strlen($_GET['x__message_replace']) > 0 ? $_GET['x__message_replace'] : '' ) ?>';
 
     $(document).ready(function () {
@@ -183,7 +183,7 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         $.post("/app/app_4341", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
-            x__message_search:x__message_search,
+            x__message_find:x__message_find,
             x__message_replace:x__message_replace,
             page_num: page_num,
         }, function (data) {
@@ -284,10 +284,10 @@ echo '<table class="table table-sm maxout"><tr>';
 //Search
 echo '<td><div>';
 echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
-echo '<input type="text" name="x__message_search" value="' . ((isset($_GET['x__message_search'])) ? $_GET['x__message_search'] : '') . '" class="form-control border">';
+echo '<input type="text" name="x__message_find" value="' . ((isset($_GET['x__message_find'])) ? $_GET['x__message_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if(isset($_GET['x__message_search']) && strlen($_GET['x__message_search']) > 0 && superpower_unlocked(14005)){
+if(isset($_GET['x__message_find']) && strlen($_GET['x__message_find']) > 0 && superpower_unlocked(14005)){
     //Give Option to Replace:
     echo '<td><div>';
     echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
