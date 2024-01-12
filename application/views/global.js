@@ -1562,11 +1562,11 @@ function load_tab(x__type, auto_load){
             });
         });
 
-        if(js_n___11020.includes(x__type) || (focus_card==12274 && js_n___42284.includes(x__type))){
+        if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
             setTimeout(function () {
                 sort_i_load(x__type);
             }, 2584);
-        } else if(js_n___11028.includes(x__type) || (focus_card==12273 && js_n___42284.includes(x__type))) {
+        } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
             setTimeout(function () {
                 sort_e_load(x__type);
             }, 2584);
