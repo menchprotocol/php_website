@@ -23,7 +23,7 @@ class I_model extends CI_Model
             return false;
         }
 
-        if(!in_array($add_fields['i__type'], $this->config->item('n___4737'))){
+        if(!isset($add_fields['i__type']) || !in_array($add_fields['i__type'], $this->config->item('n___4737'))){
             //Statement is the default idea type:
             $add_fields['i__type'] = 6677;
         }
