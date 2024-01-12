@@ -1145,7 +1145,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     setTimeout(function () {
         //Focus on writing a message:
         $('#modal31911 .save_i__message').focus();
-    }, 377);
+    }, 610);
 
 
 
