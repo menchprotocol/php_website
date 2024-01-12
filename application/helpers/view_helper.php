@@ -1444,7 +1444,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable && !in_array($i['x__type'], $this->config->item('n___42348'))){
+            } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable && !in_array($i['x__type'], $CI->config->item('n___42348'))){
 
                 //Sort Idea
                 $active_bars++;
@@ -2007,7 +2007,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="editor_load_e('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==13006 && $has_sortable && !in_array($e['x__type'], $this->config->item('n___42348'))){
+            } elseif($x__type_top_bar==13006 && $has_sortable && !in_array($e['x__type'], $CI->config->item('n___42348'))){
 
                 //Sort Source
                 $active_bars++;
