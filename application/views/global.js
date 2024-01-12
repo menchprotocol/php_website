@@ -329,7 +329,7 @@ function sort_e_load(x__type) {
 
         //Show sort icon:
         console.log('Completed Loading Sorting for @'+x__type)
-        $('.sort_e_grab').removeClass('hidden');
+        $('.sort_e_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
@@ -2114,7 +2114,7 @@ function sort_i_load(x__type){
             return false;
         }
 
-        $('.sort_td_grab').removeClass('hidden');
+        $('.sort_i_frame').removeClass('hidden');
         console.log(x__type+' sorting load success');
         sorting_loaded.push(x__type);
 

@@ -1448,7 +1448,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                 //Sort Idea
                 $active_bars++;
-                $top_bar_ui .= '<td class="sort_td_grab hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<td class="sort_i_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
@@ -2007,12 +2007,12 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="editor_load_e('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==13006 && $has_sortable){
+            } elseif($x__type_top_bar==13006 && $has_sortable && in_array($e['x__type'], $this->config->item('n___42348'))){
 
                 //Sort Source
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab hidden">'.$m_top_bar['m__cover'].'</span>';
+                $top_bar_ui .= '<td class="sort_e_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
