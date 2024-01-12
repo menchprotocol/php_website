@@ -1221,6 +1221,10 @@ function editor_save_i(){
 
         } else {
 
+            if(data.redirect_idea){
+                //Redirect to new idea:
+                return js_redirect(data.redirect_idea);
+            }
 
             //Update Handle & Href links if needed:
             var old_handle = $(".ui_i__hashtag_"+modify_data['save_i__id']+':first').text();

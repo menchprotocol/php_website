@@ -602,6 +602,7 @@ class I extends CI_Controller {
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
             'return_i__cache_links' => view_i_links($is[0]),
+            'redirect_idea' => ( $is_new_idea ? '/~'.$is[0]['i__hashtag'] : null ),
             'message' => $attemp_update.' Attempt Updated | '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 
