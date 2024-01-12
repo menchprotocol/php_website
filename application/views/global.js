@@ -333,8 +333,8 @@ function sort_e_load(x__type) {
 
         var sort = Sortable.create(theobject, {
             animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: ".coinface-12274", // Specifies which items inside the element should be sortable
-            handle: ".sort_e_grab", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
+            handle: "#list-in-"+x__type+" .sort_e_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
                 sort_e_save(x__type);
             }
