@@ -708,9 +708,14 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-    $(document).keypress("a",function(e) {
-        if(e.ctrlKey){
-            editor_load_i(0,0);
+    $(document).on('keydown', function ( e ) {
+        // You may replace `c` with whatever key you want
+        if (e.metaKey || e.ctrlKey) {
+            if(String.fromCharCode(e.which).toLowerCase() === 'a'){
+                editor_load_i(0,0);
+            } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
+                //Trigger search if enabled:
+            }
         }
     });
 
