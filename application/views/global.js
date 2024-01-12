@@ -1137,13 +1137,17 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     activate_handle_search($('#modal31911 .save_i__message'));
 
     setTimeout(function () {
-        //Focus on writing a message:
-        $('#modal31911 .save_i__message').focus();
-
         //Adjust sizes:
         set_autosize($('#modal31911 .save_i__message'));
         set_autosize($('#modal31911 .save_x__message'));
+    }, 233);
+
+    setTimeout(function () {
+        //Focus on writing a message:
+        $('#modal31911 .save_i__message').focus();
     }, 377);
+
+
 
     if(i__id){
 
