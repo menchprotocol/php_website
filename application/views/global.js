@@ -710,7 +710,7 @@ $(document).ready(function () {
 
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
-        if (e.metaKey || e.ctrlKey) {
+        if (e.ctrlKey) {
             if(String.fromCharCode(e.which).toLowerCase() === 'a'){
                 editor_load_i(0,0);
             } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
