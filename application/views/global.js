@@ -2114,7 +2114,7 @@ function sort_i_load(x__type){
             return false;
         }
 
-        $('.sort_i_grab').removeClass('hidden');
+        $('.sort_td_grab').removeClass('hidden');
         console.log(x__type+' sorting load success');
         sorting_loaded.push(x__type);
 
