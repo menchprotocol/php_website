@@ -2090,7 +2090,6 @@ var sorting_loaded = []; // more efficient than new Array()
 
 function sort_i_load(x__type){
 
-    $('.sort_i_grab').addClass('hidden');
     if(!js_n___4603.includes(x__type)){
         console.log(x__type+' is not sortable');
         return false;
