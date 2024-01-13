@@ -242,7 +242,7 @@ function view_s_js_cover(x__type, suggestion, action_id){
 
 }
 function view_s_mini_js(s__cover,s__title){
-    return '<span class="block-icon" title="'+s__title+'">'+ view_cover_js(s__cover) +'</span>';
+    return '<span class="block-cover" title="'+s__title+'">'+ view_cover_js(s__cover) +'</span>';
 }
 
 
@@ -1475,11 +1475,14 @@ function editor_save_e(){
 
             //Update Title:
             update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
+            
+            //Update Raw Cover:
+            $('.ui_e__cover_'+modify_data['save_e__id']+':first').attr('raw_cover', modify_data['save_e__cover']);
 
-            //Update Mini Icon:
+            //Update Mini Cover:
             update_cover_mini(modify_data['save_e__cover'], '.mini_6197_'+modify_data['save_e__id']);
 
-            //Update Main Icons:
+            //Update Main Cover:
             update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
 
             if( modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){

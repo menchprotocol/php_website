@@ -61,7 +61,7 @@ echo '<table class="table table-sm table-striped stats-table mini-stats-table" i
 echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
 echo '<th style="text-align: left;" id="th_count">#</th>';
-echo '<th style="text-align: left;">&nbsp;</th>'; //Icon
+echo '<th style="text-align: left;">&nbsp;</th>'; //Cover
 echo '<th style="text-align: left;" id="th_primary">Interaction Type</th>';
 echo '<th style="text-align: left;">ID</th>'; //ID
 
@@ -83,7 +83,7 @@ echo '</tr>';
 echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
 
 echo '<th style="text-align: left;">&nbsp;</th>';
-echo '<th style="text-align: left;">&nbsp;</th>'; //Icon
+echo '<th style="text-align: left;">&nbsp;</th>'; //Cover
 echo '<th style="text-align: left;"><b>TOTALS</b></th>';
 echo '<th style="text-align: left;" id="th_count">&nbsp;</th>'; //ID
 

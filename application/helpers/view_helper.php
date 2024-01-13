@@ -17,7 +17,7 @@ function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 
     $valid_url = ( filter_var($cover_code, FILTER_VALIDATE_URL) || substr($cover_code, 0, 2)=='//' );
 
-    //A simple function to display the Member Icon OR the default icon if not available:
+    //A simple function to display the Member Cover OR the default icon if not available:
     if($valid_url && $noicon_default){
 
         return $icon_prefix.'<div class="img" style="background-image:url(\''.$cover_code.'\');"></div>';
@@ -40,7 +40,7 @@ function view_cover($cover_code, $noicon_default = null, $icon_prefix = '')
 
     } else {
 
-        //Standard Icon if none:
+        //Standard Cover if none:
         return null;
 
     }

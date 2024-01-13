@@ -699,12 +699,12 @@ class E extends CI_Controller
         }
 
 
-        //Find Past Selected Icons for Source:
+        //Find Past Selected Covers for Source:
         $previous_used_covers = array();
         $unique_covers = array();
         foreach($this->X_model->fetch(array(
             'x__down' => $_POST['e__id'],
-            'x__type' => 10653, //Source Icon Update
+            'x__type' => 10653, //Source Cover Update
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
             $x__metadata = unserialize($x['x__metadata']);

@@ -21,7 +21,7 @@ $is_emoji = false;
 if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
     $padding_hack = 1; //For URL
 } elseif(string_is_icon($domain_logo)){
-    $padding_hack = 2; //For Icon (4 before)
+    $padding_hack = 2; //For Cover (4 before)
 } else {
     $padding_hack = 2; //For Emoji
     $is_emoji = true;
@@ -67,7 +67,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     if($is_emoji){
         echo '<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>'.$domain_logo.'</text></svg>">';
     } else {
-        echo '<link rel="mask-icon" href="'.$logo.'" color="#000000">';
+        echo '<link rel="mask-cover" href="'.$logo.'" color="#000000">';
     }
 
     if(isset($_SERVER['SERVER_NAME'])){
@@ -401,7 +401,7 @@ if(!$basic_header_footer){
                         echo '<td class="block-menu">';
                         echo '<div class="dropdown inline-block">';
                         echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                        echo '<span class="e_cover e_cover_mini menu-icon">' . $e___40904[$i_view]['m__cover'] .'</span>';
+                        echo '<span class="e_cover e_cover_mini menu-cover">' . $e___40904[$i_view]['m__cover'] .'</span>';
                         echo '</button>';
                         echo '<div class="dropdown-menu">';
                         foreach($e___40904 as $x__type => $m) {
@@ -442,7 +442,7 @@ if(!$basic_header_footer){
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="e_cover e_cover_mini menu-icon">' . ( $member_e && strlen($member_e['e__cover']) ? view_cover($member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $member_e && strlen($member_e['e__cover']) ? view_cover($member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
@@ -819,6 +819,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="idea_reply hideIfEmpty"></div>
 
+
+                    <div class="message_controllers">
+                    <?php
+                    //UPLOAD
+                    echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
+                    echo '<label class="hidden"></label>';
+                    echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span>'.$e___11035[13572]['m__title'].'</label>';
+                    ?>
+                    </div>
+
+
                     <!-- Idea Message -->
                     <div class="dynamic_editing_input">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
@@ -831,16 +842,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
-
-
-                    <?php
-
-                    //UPLOAD
-                    echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
-                    echo '<label class="hidden"></label>';
-                    echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span>'.$e___11035[13572]['m__title'].'</label>';
-
-                    ?>
 
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
@@ -937,7 +938,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <tr>
                                         <td style="width: 100%;">
                                             <!-- COVER CODE -->
-                                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Icon Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
+                                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
                                         </td>
                                         <td>
                                             <!-- UPLOAD -->
@@ -950,7 +951,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         </td>
                                         <td>
                                             <!-- Font Awesome -->
-                                            <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+                                            <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-covers"></i></a>
                                         </td>
                                     </tr>
                                 </table>

@@ -670,7 +670,7 @@ class E_model extends CI_Model
 
                 } elseif($key=='e__cover') {
 
-                    $x__type = 10653; //Member Updated Icon
+                    $x__type = 10653; //Member Updated Cover
                     $x__message = view_db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
@@ -1116,7 +1116,7 @@ class E_model extends CI_Model
                     }
                 }
 
-            } elseif ($action_e__id==5943) { //Member Mass Update Member Icon
+            } elseif ($action_e__id==5943) { //Member Mass Update Member Cover
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
@@ -1124,7 +1124,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id==12318 && !strlen($x['e__cover'])) { //Member Mass Update Member Icon
+            } elseif ($action_e__id==12318 && !strlen($x['e__cover'])) { //Member Mass Update Member Cover
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
@@ -1140,7 +1140,7 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id==10625 && substr_count($x['e__cover'], $action_command1) > 0) { //Replace Member Matching Icon
+            } elseif ($action_e__id==10625 && substr_count($x['e__cover'], $action_command1) > 0) { //Replace Member Matching Cover
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),

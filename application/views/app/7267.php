@@ -19,13 +19,13 @@ if(isset($_GET['search_for'])){
     } elseif(!strlen($es[0]['e__cover'])) {
         return view_json(array(
             'status' => 0,
-            'message' => 'Source Missing Icon'
+            'message' => 'Source Missing Cover'
         ));
     }
 
     if(string_is_icon($es[0]['e__cover'])){
 
-        //Exclude Icon settings:
+        //Exclude Cover settings:
         $icon_keyword = 'fa-'.one_two_explode('fa-',' ',$es[0]['e__cover']);
 
     } else {
