@@ -708,6 +708,12 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $('.sort_i_grab').on('dragstart', function (event) {
+        $('.edge-cover .line:not(.first_line)').addClass('hidden');
+    }).on('dragend', function (event) {
+        $('.edge-cover .line:not(.first_line)').removeClass('hidden');
+    });
+
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {
