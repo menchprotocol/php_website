@@ -539,6 +539,7 @@ class I extends CI_Controller {
 
 
         //Validate Idea Hashtag & save if needed:
+        $redirect_idea = null;
         $attemp_update = 0;
         if(!$is_new_idea && $is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
 
@@ -581,9 +582,13 @@ class I extends CI_Controller {
                     'x__right' => $is[0]['i__id'],
                     'x__type' => 30901, //Reply
                 ));
+            } else {
+                //Brand new idea without reply, go there:
+                $redirect_idea = '/~'.$is[0]['i__hashtag'];
             }
 
         }
+
 
 
         //Do we have a link reference message that need to be saved?
@@ -619,7 +624,7 @@ class I extends CI_Controller {
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
             'return_i__cache_links' => view_i_links($is[0]),
-            'redirect_idea' => ( $is_new_idea ? '/~'.$is[0]['i__hashtag'] : null ),
+            'redirect_idea' => $redirect_idea,
             'message' => $attemp_update.' Attempt Updated | '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 
