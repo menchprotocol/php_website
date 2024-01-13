@@ -448,6 +448,17 @@ input.main__title {
     text-decoration: none;
     background-color: transparent;
 }
+
+.i_footer_note{
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
+    border:1px solid #CCCCCC;
+    padding: 13px;
+    background-color: #EFEFEF;
+}
 .idea_reply{
     padding-bottom: 13px;
     border-bottom: 1px solid #999999;

@@ -1259,8 +1259,12 @@ function editor_save_i(){
         } else {
 
             if(data.redirect_idea){
-                //Redirect to new idea:
-                return js_redirect(data.redirect_idea);
+                //Give option to open the post:
+                $(".i_footer_note").removeClass('hidden');
+                $(".i_footer_note a").attr('href', data.redirect_idea);
+                setTimeout(function () {
+                    $(".i_footer_note").addClass('hidden');
+                }, 6765);
             }
 
             //Update Handle & Href links if needed:
