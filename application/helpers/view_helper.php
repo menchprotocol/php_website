@@ -452,7 +452,7 @@ function view_sign($i, $previous_response = null){
 </div><br />';
 
     return $message_ui;
-    
+
 }
 
 function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true){
@@ -1449,6 +1449,11 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i(0,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
+                $active_bars++;
+                $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= view_dropdown(42260, 0, null, $member_e, false, $i['i__id']);
+                $top_bar_ui .= '</div></td>';
+
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
 
                 //Sort Idea
@@ -2223,23 +2228,44 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
+    $member_e = superpower_unlocked();
+    $e___4527 = $CI->config->item('e___4527');
 
-    if(!$selected_e__id || !isset($e___this[$selected_e__id])){
+    if($selected_e__id && !isset($e___this[$selected_e__id])){
+
         return false;
+
+    } elseif(!$selected_e__id && $write_privacy_i && $member_e){
+
+        //See if this user has any of these options:
+        foreach($CI->X_model->fetch(array(
+            'x__up IN (' . join(',', $CI->config->item('n___'.$cache_e__id)) . ')' => null, //SOURCE LINKS
+            'x__down' => $member_e['e__id'],
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        )) as $x) {
+            //Supports one for now...
+            $selected_e__id = $x['x__up'];
+            break;
+        }
+
     }
+
+    $show_thumbnail = ( isset($e___this[$selected_e__id]['m__cover']) ? $e___this[$selected_e__id] : $e___4527[$cache_e__id] );
 
     //Make sure it's not locked:
     $write_privacy_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $write_privacy_i : false );
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" '.( !$show_full_name ? ' title="'.$e___this[$selected_e__id]['m__title'].'" data-toggle="tooltip" data-placement="top" ' : '' ) ).' >';
+    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" ' ).'>';
 
-    $ui .= '<span>' .$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' );
+    $ui .= '<span>' .$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'] : '' );
 
     $ui .= '</button>';
 
     if($write_privacy_i){
+
         $ui .= '<div class="dropdown-menu btn-'.$btn_class.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
 
         foreach($e___this as $e__id => $m) {
