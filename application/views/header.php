@@ -824,7 +824,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
                     <!-- Idea Message -->
-                    <div>
+                    <div class="dynamic_editing_input">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="Write..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
@@ -839,7 +839,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     ?>
 
-                    <div class="add_notes_form left_modal_content">
+                    <div class="add_notes_form left_modal_content dynamic_editing_input">
                         <form class="box box4736" method="post" enctype="multipart/form-data">
                             <!-- Link Message -->
                             <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>

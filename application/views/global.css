@@ -148,7 +148,8 @@ h3{
     border: 1px solid #999999 !important;
     border-top: 0 !important;
 }
-.dynamic_editing_input input.form-control {
+.dynamic_editing_input input.form-control,
+.dynamic_editing_input textarea.form-control{
     padding: 8px 1px 8px 26px;
 }
 .block-menu .dropdown i {
