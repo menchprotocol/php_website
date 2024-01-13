@@ -1118,6 +1118,10 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     if(link_i__id){
         $("#modal31911 .show_id").text('Link to '+link_i__id);
         $('#modal31911 .link_i__id').val(i__id);
+        i__id = 0;
+        x__id = 0;
+        //Load into UI:
+
     }
     if(i__id){
         //Editig an existing idea:
