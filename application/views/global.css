@@ -2407,10 +2407,6 @@ input.form-control {
 }
 
 
-.form-group, .form-control:focus {
-    background-color: transparent;
-}
-
 .form-group {
     border: 1px solid #999;
     border-radius: 21px;
