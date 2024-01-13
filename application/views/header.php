@@ -842,7 +842,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Link Message -->
                     <div class="dynamic_editing_input add_notes_form save_x__frame">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
-                        <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                        <textarea class="form-control border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                     </div>
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
@@ -901,9 +901,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Link Message -->
-                    <div class="dynamic_editing_input add_notes_form save_x__frame">
+                    <div class="dynamic_editing_input add_notes_form save_x__frame hidden">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
-                        <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                        <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                     </div>
 
 

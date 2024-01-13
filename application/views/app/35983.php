@@ -58,7 +58,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 //SHow Form:
 echo '<form method="POST" action="">';
 
-echo '<textarea class="form-control text-edit border no-padding" style="height:200px;" name="list_emails" data-lpignore="true" placeholder="Paste Emails (One per line)...">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
+echo '<textarea class="form-control border no-padding" style="height:200px;" name="list_emails" data-lpignore="true" placeholder="Paste Emails (One per line)...">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
 
 
 echo '<input type="number" class="form-control white-border border maxout" name="import_e__id" value="'.( isset($_POST['import_e__id']) ? $_POST['import_e__id'] : '' ).'" placeholder="Import Source ID"><br />';
