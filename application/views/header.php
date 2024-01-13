@@ -818,9 +818,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Idea Hashtag -->
-                    <div class="input-group mb-3 hash_group">
-                        <span class="input-group-text">#</span>
-                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                    <div class="dynamic_editing_input">
+                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'];  ?></h3>
+                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>' ?>" maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
                     <!-- Idea Message -->
@@ -839,24 +839,24 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     ?>
 
-                    <div class="add_notes_form left_modal_content dynamic_editing_input">
-                        <form class="box box4736" method="post" enctype="multipart/form-data">
-                            <!-- Link Message -->
-                            <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Idea Link Message"></textarea>
-                        </form>
+                    <!-- Link Message -->
+                    <div class="dynamic_editing_input add_notes_form">
+                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
+                        <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Write..."></textarea>
                     </div>
 
-
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+
                     <div class="row">
                         <div class="col-12 col-md-7">
-                            <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                            <div class="left_modal_content">
+                                <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                            </div>
                         </div>
                         <div class="col-12 col-md-5">
                             <div class="dynamic_editing_radio"></div>
                         </div>
                     </div>
-
 
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
