@@ -818,7 +818,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Idea Hashtag -->
-                    <div class="dynamic_editing_input">
+                    <div class="dynamic_editing_input hash_group">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
@@ -840,7 +840,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     ?>
 
                     <!-- Link Message -->
-                    <div class="dynamic_editing_input add_notes_form">
+                    <div class="dynamic_editing_input add_notes_form save_x__frame">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
                         <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                     </div>
@@ -901,8 +901,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Link Message -->
-                    <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="Source Link Message"></textarea>
-
+                    <div class="dynamic_editing_input add_notes_form save_x__frame">
+                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
+                        <textarea class="form-control text-edit border hidden unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                    </div>
 
 
                     <!-- Cover Photo Editor -->

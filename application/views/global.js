@@ -1109,7 +1109,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     has_unsaved_changes = false;
     $("#modal31911 .unsaved_warning").val('');
     $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio').html('');
-    $("#modal31911 .dynamic_item, #modal31911 .save_x__message").addClass('hidden');
+    $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
     $("#modal31911 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
@@ -1137,7 +1137,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
 
     if(x__id){
         $('#modal31911 .save_x__id').val(x__id);
-        $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').text()).removeClass('hidden');
+        $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').text());
+        $('#modal31911 .save_x__frame').removeClass('hidden');
     }
 
     //Activate Modal:
@@ -1181,7 +1182,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
 
                     if(x__id && fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        $("#modal31911 .save_x__message").addClass('hidden').val('IGNORE_INPUT');
+                        $("#modal31911 .save_x__message").val('IGNORE_INPUT');
+                        $("#modal31911 .save_x__frame").addClass('hidden');
                     }
                 }
 
@@ -1310,7 +1312,7 @@ function editor_load_e(e__id, x__id){
     $("#modal31912 .unsaved_warning").val('');
 
     $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
-    $("#modal31912 .dynamic_item, #modal31912 .save_x__message").addClass('hidden');
+    $("#modal31912 .dynamic_item, #modal31912 .save_x__frame").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
 
@@ -1337,7 +1339,8 @@ function editor_load_e(e__id, x__id){
     update_cover_main(current_cover, '.demo_cover');
 
     if(x__id){
-        $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).text()).removeClass('hidden');
+        $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).text());
+        $('#modal31912 .save_x__frame').removeClass('hidden');
         setTimeout(function () {
             set_autosize($('#modal31912 .save_x__message'));
         }, 377);
@@ -1368,7 +1371,8 @@ function editor_load_e(e__id, x__id){
 
                 if(x__id && ( (fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')) || item["d__id"]==e__id )){
                     //Hide message textarea since this is already loaded in the dynamic inputs:
-                    $("#modal31912 .save_x__message").addClass('hidden').val('IGNORE_INPUT');
+                    $("#modal31912 .save_x__message").val('IGNORE_INPUT');
+                    $("#modal31912 .save_x__frame").addClass('hidden');
                 }
             }
 
