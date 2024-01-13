@@ -821,12 +821,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <div class="message_controllers">
+
                     <?php
                     //UPLOAD
                     echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
                     echo '<label class="hidden"></label>';
-                    echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span>'.$e___11035[13572]['m__title'].'</label>';
+                    echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].': '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
                     ?>
+
                     </div>
 
 
