@@ -1116,14 +1116,13 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
 
     //Load Instant Fields:
     if(link_i__id){
-        $("#modal31911 .show_id").text('Link ID '+link_i__id);
-        $('#modal31911 .link_i__id').val(i__id);
 
         i__id = 0;
         x__id = 0;
 
-        //Load into UI:
-        $("#modal31911 .idea_reply").html($('.ui_i__cache_'+i__id).html());
+        $("#modal31911 .show_id").text('Link ID '+link_i__id);
+        $('#modal31911 .link_i__id').val(link_i__id);
+        $("#modal31911 .idea_reply").html($('.ui_i__cache_'+link_i__id).html());
 
     }
     if(i__id){
