@@ -453,13 +453,18 @@ input.main__title {
     z-index: 99999999;
     position: fixed;
     left: 50%;
-    bottom: 20px;
+    bottom: 21px;
     transform: translate(-50%, -50%);
     margin: 0 auto;
     border:1px solid #CCCCCC;
-    padding: 13px;
-    background-color: #EFEFEF;
+    padding: 21px;
+    background-color: #faeea3;
     border-radius: 21px;
+    font-size: 1.3em;
+}
+.i_footer_note a{
+    font-weight: bold;
+    text-decoration: underline;
 }
 .idea_reply{
     padding-bottom: 13px;

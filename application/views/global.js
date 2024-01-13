@@ -1263,7 +1263,7 @@ function editor_save_i(){
                 $(".i_footer_note").removeClass('hidden');
                 $(".i_footer_note a").attr('href', data.redirect_idea);
                 setTimeout(function () {
-                    //$(".i_footer_note").addClass('hidden');
+                    $(".i_footer_note").addClass('hidden');
                 }, 6765);
             }
 
