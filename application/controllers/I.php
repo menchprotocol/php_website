@@ -404,6 +404,13 @@ class I extends CI_Controller {
                 'message' => 'Missing Idea ID',
             ));
 
+        } elseif(!isset($_POST['link_i__id'])){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Idea Link ID',
+            ));
+
         } elseif(!isset($_POST['save_x__id']) || !isset($_POST['save_x__message'])){
 
             return view_json(array(
@@ -565,6 +572,16 @@ class I extends CI_Controller {
             $is[0] = $this->I_model->create(array(
                 'i__message' => $_POST['save_i__message'],
             ), $member_e['e__id']);
+
+            //Also have to add as a comment to another idea?
+            if(intval($_POST['link_i__id'])>0){
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__left' => $_POST['link_i__id'],
+                    'x__right' => $is[0]['i__id'],
+                    'x__type' => 30901, //Reply
+                ));
+            }
 
         }
 

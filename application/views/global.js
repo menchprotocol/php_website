@@ -1116,15 +1116,14 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
 
     //Load Instant Fields:
     if(link_i__id){
-
         i__id = 0;
         x__id = 0;
-
         $("#modal31911 .show_id").text('Link ID '+link_i__id);
         $('#modal31911 .link_i__id').val(link_i__id);
         $("#modal31911 .idea_reply").html($('.ui_i__cache_'+link_i__id).html());
-
+        $("#modal31911 .idea_reply .show_more_line").addClass('hidden');
     }
+
     if(i__id){
         //Editig an existing idea:
         $('#modal31911 .save_i__id').val(i__id);
@@ -1230,6 +1229,7 @@ function editor_save_i(){
     var modify_data = {
         save_i__id:         $('#modal31911 .save_i__id').val(),
         save_x__id:         $('#modal31911 .save_x__id').val(),
+        link_i__id:         $('#modal31911 .link_i__id').val(),
         save_x__message:    $('#modal31911 .save_x__message').val().trim(),
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
