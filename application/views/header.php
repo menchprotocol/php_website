@@ -816,17 +816,19 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" class="save_x__id" value="0" />
                     <input type="hidden" class="link_i__id" value="0" />
 
-
-                    <!-- Idea Hashtag -->
-                    <div class="dynamic_editing_input hash_group">
-                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
-                    </div>
+                    <div class="idea_reply hideIfEmpty"></div>
 
                     <!-- Idea Message -->
                     <div class="dynamic_editing_input">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    </div>
+
+
+                    <!-- Idea Hashtag -->
+                    <div class="dynamic_editing_input hash_group">
+                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
+                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
 

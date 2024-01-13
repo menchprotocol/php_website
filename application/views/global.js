@@ -1108,7 +1108,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
     //Reset Fields:
     has_unsaved_changes = false;
     $("#modal31911 .unsaved_warning").val('');
-    $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio').html('');
+    $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio, #modal31911 .idea_reply').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
@@ -1116,11 +1116,14 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
 
     //Load Instant Fields:
     if(link_i__id){
-        $("#modal31911 .show_id").text('Link to '+link_i__id);
+        $("#modal31911 .show_id").text('Link ID '+link_i__id);
         $('#modal31911 .link_i__id').val(i__id);
+
         i__id = 0;
         x__id = 0;
+
         //Load into UI:
+        $("#modal31911 .idea_reply").html($('.ui_i__cache_'+modify_data['save_i__id']).html());
 
     }
     if(i__id){
