@@ -819,8 +819,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Idea Hashtag -->
                     <div class="dynamic_editing_input">
-                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'];  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>' ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
+                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___11035[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
                     <!-- Idea Message -->
