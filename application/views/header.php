@@ -842,21 +842,26 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     ?>
 
-                    <!-- Link Message -->
-                    <div class="dynamic_editing_input save_x__frame hidden">
-                        <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
-                        <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
-                    </div>
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
 
                     <div class="row">
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
+
+                                <!-- Link Message -->
+                                <div class="dynamic_editing_input save_x__frame hidden">
+                                    <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
+                                    <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                                </div>
+
+                                <!-- Dynamic Inputs -->
                                 <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+
                             </div>
                         </div>
                         <div class="col-12 col-md-5">
+                            <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>
                         </div>
                     </div>
