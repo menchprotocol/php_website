@@ -450,6 +450,7 @@ input.main__title {
 }
 
 .i_footer_note{
+    z-index: 99999999;
     position: fixed;
     left: 50%;
     bottom: 20px;
@@ -458,6 +459,7 @@ input.main__title {
     border:1px solid #CCCCCC;
     padding: 13px;
     background-color: #EFEFEF;
+    border-radius: 21px;
 }
 .idea_reply{
     padding-bottom: 13px;
