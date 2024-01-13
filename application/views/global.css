@@ -1709,7 +1709,7 @@ i, .btn .show-max {
 }
 
 
-.i-left, .x_input, .add_notes_form, .note-textarea.edit-on, .i-info, .cover-title, .width-icon-block, .block-one {
+.i-left, .x_input, .note-textarea.edit-on, .i-info, .cover-title, .width-icon-block, .block-one {
     width:100% !important;
 }
 .cover-title {
@@ -3658,11 +3658,6 @@ a,
 }
 
 
-
-
-.add_notes_form i{
-    color: #999999 !important;
-}
 
 
 
