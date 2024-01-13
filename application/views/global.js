@@ -1137,8 +1137,12 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
 
     if(x__id){
         $('#modal31911 .save_x__id').val(x__id);
-        $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').text());
-        $('#modal31911 .save_x__frame').removeClass('hidden');
+
+        //Idea<>Idea links do not have an interaction message...
+        if(fetch_int_val('#focus_card')!=12273 || $('.ui_x__message_'+x__id+':first').text().length>0){
+            $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').text());
+            $('#modal31911 .save_x__frame').removeClass('hidden');
+        }
     }
 
     //Activate Modal:
