@@ -1449,7 +1449,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Sort Idea
                 $active_bars++;
                 $top_bar_ui .= '<td class="sort_i_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab sort_grab">'.$m_top_bar['m__cover'].'</span>';
+                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
@@ -2012,7 +2012,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Sort Source
                 $active_bars++;
                 $top_bar_ui .= '<td class="sort_e_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab sort_grab">'.$m_top_bar['m__cover'].'</span>';
+                $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
