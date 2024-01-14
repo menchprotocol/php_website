@@ -472,11 +472,6 @@ input.main__title {
     font-weight: bold;
     text-decoration: underline;
 }
-.idea_reply{
-    padding-bottom: 13px;
-    border-bottom: 1px solid #999999;
-    margin-bottom: 13px;
-}
 
 .list-adder .aa-dropdown-menu,
 .fixed-top .aa-dropdown-menu{
