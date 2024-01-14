@@ -817,7 +817,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" class="save_x__id" value="0" />
                     <input type="hidden" class="link_i__id" value="0" />
 
-                    <div class="idea_reply hideIfEmpty"></div>
+                    <div class="idea_reply cover-text hideIfEmpty"></div>
                     <div class="doclear">&nbsp;</div>
 
 
