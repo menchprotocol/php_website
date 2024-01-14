@@ -16,7 +16,7 @@ if(strlen($e__handle)){
 
 } else {
 
-    js_php_redirect(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), 13);
+    echo 'No valid user handle to load notifications.';
 
 }
 
