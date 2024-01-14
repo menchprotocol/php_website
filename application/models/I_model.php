@@ -460,7 +460,7 @@ class I_model extends CI_Model
                 if (count($this->X_model->fetch(array(
                         'x__left' => ( $is_upwards ? $link_i[0]['i__id'] : $focus_i[0]['i__id'] ),
                         'x__right' => ( $is_upwards ? $focus_i[0]['i__id'] : $link_i[0]['i__id'] ),
-                        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     ))) > 0) {
                     return array(
@@ -665,7 +665,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //Must See Idea Links
+            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__left' => $i['i__id'],
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
 
@@ -821,7 +821,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
             'x__right' => $i__id,
         ), array('x__left')) as $prev_i){
 
@@ -897,7 +897,7 @@ class I_model extends CI_Model
         $is_next = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__left' => $i__id,
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
@@ -975,7 +975,7 @@ class I_model extends CI_Model
 
                         $is_previous = $this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+                            'x__type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
                             'x__left' => $i['i__id'],
                             'x__right' => $next_i['i__id'],
                         ), array(), 0);

@@ -15,7 +15,7 @@ if(!in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !write
     $is_next = $this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
         'x__left' => $focus_i['i__id'],
     ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
@@ -213,7 +213,7 @@ if(!in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !write
                 $query_subset = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
                     'x__left' => $followings_i['i__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 foreach($query_subset as $key=>$value){
@@ -329,7 +329,7 @@ if(!in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !write
                 foreach ($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
                     'x__left' => $focus_i['i__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
                     //See if this answer was selected:

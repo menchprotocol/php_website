@@ -2111,7 +2111,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 foreach ($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
                     'x__left' => $s['i__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['i__message'] . ' ';
@@ -2119,7 +2119,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 foreach ($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $CI->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+                    'x__type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
                     'x__right' => $s['i__id'],
                 ), array('x__left'), 0, 0, array('x__weight' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['i__message'] . ' ';

@@ -15,7 +15,7 @@ foreach($this->I_model->fetch(array(
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS TWO-WAY
+        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $down_or){
 

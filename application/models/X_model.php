@@ -737,13 +737,13 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
             'x__right' => $focus_i__id,
         ), array('x__left')) as $i_previous) {
 
             //Validate Selection:
             $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___7712'));
-            $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___12840'));
+            $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___42268')); //Active Sequence UP
             $is_selected = count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
@@ -793,7 +793,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
             'x__right' => $focus_i__id,
         ), array('x__left')) as $prev_i){
 
@@ -834,7 +834,7 @@ class X_model extends CI_Model
 
         foreach ($this->X_model->fetch(array(
             'x__left' => $i['i__id'],
-            'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i) {
@@ -848,7 +848,7 @@ class X_model extends CI_Model
             }
 
             //Validate Selection:
-            $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___12840'));
+            $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___42267')); //Active Sequence Down
             $is_selected = count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
