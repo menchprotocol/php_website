@@ -838,18 +838,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
 
-                    <!-- Idea Hashtag -->
-                    <div class="dynamic_editing_input hash_group">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
-                    </div>
-
-
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
 
                     <div class="row">
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
+
+                                <!-- Idea Hashtag -->
+                                <div class="dynamic_editing_input hash_group">
+                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title']. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
+                                    <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
+                                </div>
 
                                 <!-- Link Message -->
                                 <div class="dynamic_editing_input save_x__frame hidden">
@@ -863,13 +862,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
                         </div>
                         <div class="col-12 col-md-5">
+
                             <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>
+
                         </div>
                     </div>
 
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
-
 
                 </div>
 
@@ -899,13 +899,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" class="save_e__id" value="0" />
                     <input type="hidden" class="save_x__id" value="0" />
 
-
-
                     <!-- Cover Photo Editor -->
                     <div id="drag_drop_image_results" class="center"></div>
                     <table style="width: 100%;">
                         <tr>
-                            <td style="width:144px; text-align: left;">
+                            <td style="width:233px; text-align: left;">
                                 <!-- IMAGE PREVIEW -->
                                 <div class="coverUploader"> <!-- IMAGE DROP -->
                                     <form class="box coverUpload" method="post" enctype="multipart/form-data">
