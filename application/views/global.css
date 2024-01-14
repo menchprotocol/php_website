@@ -2440,6 +2440,9 @@ input.form-control {
     border: 1px solid #999999;
     border-radius: 21px;
 }
+.form-group>.form-control {
+    border-radius: 21px !important;
+}
 
 
 .first_btn{
