@@ -321,7 +321,7 @@ function i_spots_remaining($i__id){
     $spots_remaining = -1; //No limits
     $max_available = $CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___42256')) . ')' => null, //Authored
+        'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
         'x__right' => $i__id,
         'x__up' => 26189,
     ), array(), 1);

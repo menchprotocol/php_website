@@ -194,7 +194,7 @@ class X extends CI_Controller
             //Is startable?
             if(!count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__right' => $is[0]['i__id'],
                 'x__up' => 4235,
             )))){
@@ -410,7 +410,7 @@ class X extends CI_Controller
         //Has the user discovered this?
         $is_startable = count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__right' => $focus_is[0]['i__id'],
             'x__up' => 4235,
         )));
@@ -945,7 +945,7 @@ class X extends CI_Controller
         //Any Preg Remove?
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__right' => $_POST['i__id'],
             'x__up' => 32103, //Preg Remove
         )) as $preg_query){
@@ -969,7 +969,7 @@ class X extends CI_Controller
         if(!strlen($_POST['x_write'])){
             if(count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__right' => $_POST['i__id'],
                 'x__up' => 28239, //Can Skip
             )))){
@@ -1000,13 +1000,13 @@ class X extends CI_Controller
 
             $time_starts = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__right' => $_POST['i__id'],
                 'x__up' => 42203, //Time Equal or Greater Than
             ), array(), 1);
             $time_ends = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__right' => $_POST['i__id'],
                 'x__up' => 26557, //Time Ends
             ), array(), 1);
@@ -1034,13 +1034,13 @@ class X extends CI_Controller
 
             $min_value = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__right' => $_POST['i__id'],
                 'x__up' => 31800, //Min Value
             ), array(), 1);
             $max_value = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__right' => $_POST['i__id'],
                 'x__up' => 31801, //Max Value
             ), array(), 1);
@@ -1129,7 +1129,7 @@ class X extends CI_Controller
         //Any Preg Match?
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__right' => $_POST['i__id'],
             'x__up' => 26611, //Preg Match
         )) as $preg_query){
@@ -1138,7 +1138,7 @@ class X extends CI_Controller
                 //Do we have a custom message:
                 $preg_query_message = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Authored
+                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                     'x__right' => $_POST['i__id'],
                     'x__up' => 30998, //Preg Match Error
                 ));
