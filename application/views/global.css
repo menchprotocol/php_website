@@ -142,8 +142,7 @@ h3{
     margin: 13px 0 0 0 !important;
     padding: 7px 0 0 0 !important;
     background-color: #FFF;
-    border: 1px solid #999;
-    border-bottom: revert-layer;
+    border: 0;
     color: #999;
 }
 .modal-content h3 i {
@@ -152,7 +151,7 @@ h3{
 .modal-content .form-control{
     border-radius: 0;
     margin:0;
-    border: 1px solid #999999 !important;
+    border: 0 !important;
     border-top: 0 !important;
 }
 .dynamic_editing_input input.form-control,
@@ -2438,7 +2437,7 @@ input.form-control {
 
 
 .form-group {
-    border: 1px solid #999;
+    border: 1px solid #999999;
     border-radius: 21px;
 }
 
