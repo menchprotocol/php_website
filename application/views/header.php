@@ -910,7 +910,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Source Handle -->
                     <div class="dynamic_editing_input hash_group">
                         <h3 class="main__title mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32338]['m__cover'].'</span>'.$e___11035[32338]['m__title']. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="...">
+                        <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
                     </div>
 
 
