@@ -663,7 +663,7 @@ class E extends CI_Controller
                                     array_push($return_inputs, array(
                                         'd__id' => $dynamic_e__id,
                                         'd_x__id' => $curr_val['x__id'],
-                                        'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                                        'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
                                         'd__value' => $curr_val['x__message'],
                                         'd__type' => html_input_type($data_type),
                                         'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
@@ -675,7 +675,7 @@ class E extends CI_Controller
                                 array_push($return_inputs, array(
                                     'd__id' => $dynamic_e__id,
                                     'd_x__id' => 0,
-                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
                                     'd__value' => '',
                                     'd__type' => html_input_type($data_type),
                                     'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
