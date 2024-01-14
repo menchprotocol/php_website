@@ -1064,12 +1064,12 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
 
     $ui_template = array(
-        4258 => '<video width="100%" class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video><!-- %s -->',
+        4258 => '<video class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video><!-- %s -->',
         4259 => '<audio controls src="%s"></audio><!-- %s -->',
         4260 => '<img src="%s" class="content-image" /><!-- %s -->',
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
         4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
-        42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download</spanaa>',
+        42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download</spanaa><!-- %s -->',
         31834 => '<spanaa href="/%s">%s</spanaa>',
         42337 => '<spanaa href="/%s">%s</spanaa>',
         31835 => '<spanaa href="/@%s">%s</spanaa>',
