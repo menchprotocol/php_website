@@ -900,32 +900,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <input type="hidden" class="save_x__id" value="0" />
 
 
-                    <!-- Source Title -->
-                    <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6197]['m__cover'].'</span>'.$e___11035[6197]['m__title']. ( in_array(6197, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_e__title main__title" placeholder="...">
-                    </div>
-
-
-                    <!-- Source Handle -->
-                    <div class="dynamic_editing_input hash_group">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32338]['m__cover'].'</span>'.$e___11035[32338]['m__title']. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
-                    </div>
-
-
-                    <!-- Link Message -->
-                    <div class="dynamic_editing_input save_x__frame hidden">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
-                        <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
-                    </div>
-
 
                     <!-- Cover Photo Editor -->
                     <div id="drag_drop_image_results" class="center"></div>
                     <table style="width: 100%;">
                         <tr>
-                            <td style="width:240px; text-align: left;">
+                            <td style="width:144px; text-align: left;">
                                 <!-- IMAGE PREVIEW -->
                                 <div class="coverUploader"> <!-- IMAGE DROP -->
                                     <form class="box coverUpload" method="post" enctype="multipart/form-data">
@@ -966,15 +946,42 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </table>
 
 
+                    <!-- Source Title -->
+                    <div class="dynamic_editing_input">
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6197]['m__cover'].'</span>'.$e___11035[6197]['m__title']. ( in_array(6197, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+                        <input type="text" class="form-control unsaved_warning save_e__title main__title" placeholder="...">
+                    </div>
+
+
+
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
                     <div class="row">
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
+
+                                <!-- Source Handle -->
+                                <div class="dynamic_editing_input hash_group">
+                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32338]['m__cover'].'</span>'.$e___11035[32338]['m__title']. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+                                    <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
+                                </div>
+
+
+                                <!-- Link Message -->
+                                <div class="dynamic_editing_input save_x__frame hidden">
+                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'];  ?></h3>
+                                    <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                                </div>
+
+                                <!-- Dynamic Inputs -->
                                 <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+
                             </div>
                         </div>
                         <div class="col-12 col-md-5">
+
+                            <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>
+
                         </div>
                     </div>
 
