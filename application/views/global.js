@@ -1332,7 +1332,8 @@ function editor_load_e(e__id, x__id){
 
     //Source resets:
     $('#search_cover').val('');
-    $("#drag_drop_image_results, #previous_used_covers").html('');
+    $("#drag_drop_image_results, .previous_used_covers").html('');
+    $(".previous_used_covers_frame").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
@@ -1394,8 +1395,9 @@ function editor_load_e(e__id, x__id){
 
             //Any Source suggestions to auto load?
             if(data.previous_used_covers.length){
+                $(".previous_used_covers_frame").removeClass('hidden');
                 data.previous_used_covers.forEach(function(item) {
-                    $("#previous_used_covers").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
+                    $(".previous_used_covers").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
                 });
             }
 

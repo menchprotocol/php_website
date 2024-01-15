@@ -949,7 +949,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                     <!-- Font Awesome -->
                                     <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+
+                                    <!-- History -->
+                                    <a class="icon-block-sm previous_used_covers_frame hidden" href="javascript:void(0);" onclick="$('.previous_used_covers').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+
                                 </div>
+
                                 <div class="dynamic_editing_input">
                                     <!-- SOURCE COVER -->
                                     <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
@@ -957,7 +962,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <input type="text" class="form-control unsaved_warning save_e__cover" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
                                 </div>
 
-                                <div id="previous_used_covers" class="icons_small"></div>
+                                <div class="icons_small previous_used_covers hidden"></div>
 
                             </div>
                         </div>
