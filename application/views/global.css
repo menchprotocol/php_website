@@ -1180,6 +1180,9 @@ a.headline {
 .modal{
     z-index: 999999 !important;
 }
+.tooltip {
+    z-index: 9999999 !important;
+}
 
 
 
