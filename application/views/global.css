@@ -2168,6 +2168,19 @@ input.form-control {
     vertical-align: middle;
     overflow-y: auto;
 }
+.source-social{
+    display: block;
+    text-align: center;
+}
+.source-social ul li {
+    list-style: none;
+}
+.source-social ul li a {
+    padding: 13px;
+}
+.source-social ul li i {
+    font-size: 2.1em !important;
+}
 
 .modal-body input.form-control {
     background-color: #FFFFFF;
