@@ -248,9 +248,8 @@ if(!$breadcrum_content){
     foreach($this->X_model->fetch(array(
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        //'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
-        'x__type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-        'x__right' => $focus_i['i__type'],
+        'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
+        'x__right' => $focus_i['i__id'],
     ), array('x__left')) as $prev_i){
         $count++;
         $breadcrum_content .= '<li class="breadcrumb-item">';
