@@ -1184,7 +1184,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
                     field_counter++;
                     $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
-                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
+                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type_name"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
 
                     if(x__id && fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
@@ -1380,7 +1380,7 @@ function editor_load_e(e__id, x__id){
                 $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                 $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
 
-                if(item["d__type"]==4255){
+                if(item["d__type_id"]==4255){
 
                     //Textarea:
                     $("#modal31912 .dynamic_"+field_counter+" input").replaceWith('<textarea class="form-control unsaved_warning save_dynamic_'+field_counter+'" placeholder="'+item["d__placeholder"]+'" d__id="'+item["d__id"]+'" d_x__id="'+item["d_x__id"]+'">'+item["d__value"]+'</textarea>');
@@ -1389,7 +1389,7 @@ function editor_load_e(e__id, x__id){
                     }, 377);
 
                 } else {
-                    $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
+                    $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type_name"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
                 }
 
                 if(x__id && ( (fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')) || item["d__id"]==e__id )){
