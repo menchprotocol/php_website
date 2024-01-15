@@ -2173,7 +2173,7 @@ input.form-control {
     text-align: center;
 }
 .source-social ul {
-    padding: 0;
+    padding: 5px 0 0;
     margin: 0;
 }
 .source-social ul li {
@@ -2181,10 +2181,10 @@ input.form-control {
     display: inline-block;
 }
 .source-social ul li a {
-    padding: 13px;
+    padding: 8px;
 }
 .source-social ul li i {
-    font-size: 2.1em !important;
+    font-size: 1.5em !important;
 }
 
 .modal-body input.form-control {
