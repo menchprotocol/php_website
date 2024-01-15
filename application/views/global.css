@@ -136,7 +136,8 @@ h3{
 }
 .message_controllers{
     float: right;
-    margin: 5px 0 -18px 0;
+    margin: 21px 0 -4px 0;
+    /* margin: 5px 0 -18px 0; */
 }
 .modal-content h3 {
     margin: 13px 0 0 0 !important;
@@ -1725,6 +1726,9 @@ i, .btn .show-max {
     margin-bottom: 5px;
     width: 100%;
     padding-top: 0 !important;
+}
+.coverUploader{
+    margin-top: 13px;
 }
 
 
