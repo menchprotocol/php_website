@@ -823,15 +823,22 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="message_controllers_i">
 
+                        <!-- Reference Source -->
+                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at fa-spin"></i></a>
+
+                        <!-- Reference Idea -->
+                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag fa-spin"></i></a>
+
+                        <!-- EMOJI -->
+                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
+
                         <?php
                         //UPLOAD
                         echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
                         echo '<label class="hidden"></label>';
-                        echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" title="'.$e___11035[13572]['m__title'].': '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
+                        echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13572]['m__title'].': '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
                         ?>
 
-                        <!-- EMOJI -->
-                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
                     </div>
 
 
@@ -938,7 +945,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
 
                                     <!-- EMOJI -->
-                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
+                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
 
                                     <!-- Font Awesome -->
                                     <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
