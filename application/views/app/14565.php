@@ -52,7 +52,7 @@ if(!count($primary_i)){
 
 
 
-echo ' <script> $(document).ready(function () { $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
+echo ' <script> $(document).ready(function () { show_more('.$primary_i['i__id'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
 
 
 
@@ -61,8 +61,6 @@ echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377p
 
 //Did we find any?
 $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_i_links($primary_i) . '</div>';
-
-
 
 
 
