@@ -31,7 +31,6 @@ echo '</div>';
 
 
 $social_ui = null;
-$e___14870 = $this->config->item('e___14870'); //Website Partner
 foreach($this->config->item('e___14036') as $e__id => $m){
     foreach($this->X_model->fetch(array(
         'x__up' => $e__id,
@@ -41,7 +40,7 @@ foreach($this->config->item('e___14036') as $e__id => $m){
     ), array(), 0, 0) as $social_link){
 
         //Determine link type:
-        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL) && !substr_count($social_link['x__message'], $e___14870[$website_id]['m__message'])){
+        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
             //We made sure not the current website:
             $social_url = $social_link['x__message'];
         } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
