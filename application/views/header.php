@@ -821,7 +821,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="doclear">&nbsp;</div>
 
 
-                    <div class="message_controllers">
+                    <div class="message_controllers_i">
                     <?php
                     //UPLOAD
                     echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
@@ -928,7 +928,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </div>
 
 
-                                <div class="message_controllers">
+                                <div class="message_controllers_e">
                                     <!-- UPLOAD -->
                                     <input class="inputfile" type="file" name="file" id="coverUpload" />
                                     <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
