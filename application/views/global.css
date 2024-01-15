@@ -4069,7 +4069,11 @@ main {
     padding: 21px 8px 0;
 }
 
-.narrow-bar, .narrow-bar a, .flip-content a span {
+.narrow-bar,
+.narrow-bar a,
+.flip-content a span,
+.flip-content .main__title
+{
     color: #FFFFFF !important;
 }
 
