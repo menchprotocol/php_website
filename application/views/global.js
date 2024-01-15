@@ -1386,7 +1386,7 @@ function editor_load_e(e__id, x__id){
                     $("#modal31912 .dynamic_"+field_counter+" input").replaceWith('<textarea class="form-control unsaved_warning save_dynamic_'+field_counter+'" placeholder="'+item["d__placeholder"]+'" d__id="'+item["d__id"]+'" d_x__id="'+item["d_x__id"]+'">'+item["d__value"]+'</textarea>');
                     setTimeout(function () {
                         set_autosize($("#modal31912 .dynamic_"+field_counter+" textarea"));
-                    }, 377);
+                    }, 610);
 
                 } else {
                     $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type_name"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
