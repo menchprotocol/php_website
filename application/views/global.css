@@ -2171,6 +2171,8 @@ input.form-control {
 
 .modal-body input.form-control {
     background-color: #FFFFFF;
+    font-weight: bold;
+    font-size: 1.1em;
 }
 .mini-cover .inner-content {
     text-align: center !important;
