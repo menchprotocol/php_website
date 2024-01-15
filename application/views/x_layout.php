@@ -242,7 +242,9 @@ if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
 }
 
 if(!$breadcrum_content){
+
     //See if any visible top ideas:
+    $count = 0;
     foreach($this->X_model->fetch(array(
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -250,10 +252,15 @@ if(!$breadcrum_content){
         'x__type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
         'x__right' => $focus_i['i__type'],
     ), array('x__left')) as $prev_i){
+        $count++;
         $breadcrum_content .= '<li class="breadcrumb-item">';
         $breadcrum_content .= '<a href="/'.$prev_i['i__hashtag'].'"><u>'.view_i_title($prev_i).'</u></a>';
         $breadcrum_content .= '</li>';
     }
+
+    $breadcrum_content .= '<li class="breadcrumb-item">';
+    $breadcrum_content .= '<a href="/start"><u>Start '.$count.'</u></a>';
+    $breadcrum_content .= '</li>';
 }
 
 if($breadcrum_content){
