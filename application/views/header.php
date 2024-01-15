@@ -916,29 +916,29 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </div>
                             </td>
                             <td style="width:100%;">
-                                <!-- Source Cover -->
-                                <table style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 100%;">
-                                            <!-- COVER CODE -->
-                                            <input type="text" value="" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code" class="form-control border-dotted unsaved_warning save_e__cover" style="margin-top: 5px;">
-                                        </td>
-                                        <td>
-                                            <!-- UPLOAD -->
-                                            <input class="inputfile" type="file" name="file" id="coverUpload" />
-                                            <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
-                                        </td>
-                                        <td class="hidden">
-                                            <!-- EMOJI -->
-                                            <a class="icon-block-sm emoji-selector" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
-                                        </td>
-                                        <td>
-                                            <!-- Font Awesome -->
-                                            <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-covers"></i></a>
-                                        </td>
-                                    </tr>
-                                </table>
+
+                                <div class="message_controllers">
+                                    <!-- UPLOAD -->
+                                    <input class="inputfile" type="file" name="file" id="coverUpload" />
+                                    <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
+
+                                    <!-- EMOJI -->
+                                    <a class="icon-block-sm emoji-selector" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector"><i class="fas fa-face-smile"></i></a>
+
+                                    <!-- Font Awesome -->
+                                    <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-covers"></i></a>
+                                </div>
+
+                                <div class="dynamic_editing_input">
+
+                                    <!-- SOURCE COVER -->
+                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+
+                                    <input type="text" class="form-control unsaved_warning save_e__cover" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
+                                </div>
+
                                 <div id="previous_used_covers" class="icons_small"></div>
+
                             </td>
                         </tr>
                     </table>
@@ -949,7 +949,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6197]['m__cover'].'</span>'.$e___11035[6197]['m__title'].': '. ( in_array(6197, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
                         <input type="text" class="form-control unsaved_warning save_e__title main__title" placeholder="...">
                     </div>
-
 
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>

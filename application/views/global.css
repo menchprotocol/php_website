@@ -1726,11 +1726,6 @@ i, .btn .show-max {
     width: 100%;
     padding-top: 0 !important;
 }
-.border-dotted {
-    margin-bottom: 0;
-    border-bottom: 1px dotted #999999 !important;
-    border-radius: 21px !important;
-}
 
 
 .i-left, .x_input, .note-textarea.edit-on, .i-info, .cover-title, .width-cover-block, .block-one {
