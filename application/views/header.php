@@ -505,7 +505,7 @@ if(!$basic_header_footer){
 
                     //Always give option to instantly add idea:
                     if(superpower_unlocked(10939)){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31772]['m__title'].'">'.$e___11035[31772]['m__cover'].'</a></td>'; //TODO fix icon reference
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31911]['m__title'].'">'.$e___11035[31911]['m__cover'].'</a></td>'; //TODO fix icon reference
                     }
 
                     ?>
@@ -807,7 +807,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-content slim_flat">
 
                 <div class="modal-header">
-                    <h5 class="modal-title main__title hidden" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?> <span class="grey show_id" title="Idea ID"></span></h5>
+                    <h5 class="modal-title main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?> <span class="grey show_id" title="Idea ID"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -890,7 +890,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-content slim_flat">
 
                 <div class="modal-header">
-                    <h5 class="modal-title main__title hidden" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?> <span class="grey show_id"></span></h5>
+                    <h5 class="modal-title main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?> <span class="grey show_id"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
