@@ -2610,6 +2610,9 @@ h4.main__title{
     content: ">";
     padding-right: 8px;
 }
+.breadcrumb-flat+.breadcrumb-flat::before {
+    content: "&";
+}
 .breadcrumb-item {
     margin: 3px 0;
 }
