@@ -2181,10 +2181,10 @@ input.form-control {
     display: inline-block;
 }
 .source-social ul li a {
-    padding: 8px;
+    padding: 5px;
 }
 .source-social ul li i {
-    font-size: 1.5em !important;
+    font-size: 1.44em !important;
 }
 
 .modal-body input.form-control {
