@@ -28,6 +28,50 @@ echo view_card_e(42287, $e, null);
 echo '</div>';
 
 
+
+
+$social_ui = null;
+$e___14870 = $this->config->item('e___14870'); //Website Partner
+foreach($this->config->item('e___14036') as $e__id => $m){
+    foreach($this->X_model->fetch(array(
+        'x__up' => $e__id,
+        'x__down' => $e['e__id'],
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array(), 0, 0) as $social_link){
+
+        //Determine link type:
+        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL) && !substr_count($social_link['x__message'], $e___14870[$website_id]['m__message'])){
+            //We made sure not the current website:
+            $social_url = $social_link['x__message'];
+        } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
+            $social_url = 'mailto:'.$social_link['x__message'];
+        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
+            //Phone
+            $social_url = 'tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']);
+        } else {
+            //Unknown!
+            continue;
+        }
+
+        //Append to links:
+        $social_ui .= '<li><a href="'.$social_url.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
+
+
+    }
+}
+if($social_ui){
+    echo '<div class="narrow-bar slim_flat">';
+    echo '<div class="social-footer">';
+    echo '<ul class="social-ul halfbg">';
+    echo $social_ui;
+    echo '</ul>';
+    echo '</div>';
+    echo '</div>';
+}
+
+
+
 $focus_menu = ( in_array($e['e__id'], $this->config->item('n___4527')) ? 'e___34649' : 'e___32596' );
 $e___focus = $this->config->item($focus_menu);
 
