@@ -1379,24 +1379,14 @@ function editor_load_e(e__id, x__id){
                 field_counter++;
                 $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
                 $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
-
-                if(item["d__type_id"]==4255){
-
-                    //Textarea:
-                    $("#modal31912 .dynamic_"+field_counter+" input").replaceWith('<textarea class="form-control unsaved_warning save_dynamic_'+field_counter+'" placeholder="'+item["d__placeholder"]+'" d__id="'+item["d__id"]+'" d_x__id="'+item["d_x__id"]+'">'+item["d__value"]+'</textarea>');
-                    setTimeout(function () {
-                        set_autosize($("#modal31912 .dynamic_"+field_counter+" textarea"));
-                    }, 610);
-
-                } else {
-                    $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type_name"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
-                }
+                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type_name"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
 
                 if(x__id && ( (fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')) || item["d__id"]==e__id )){
                     //Hide message textarea since this is already loaded in the dynamic inputs:
                     $("#modal31912 .save_x__message").val('IGNORE_INPUT');
                     $("#modal31912 .save_x__frame").addClass('hidden');
                 }
+
             }
 
             //Dynamic Radio fields (if any):
