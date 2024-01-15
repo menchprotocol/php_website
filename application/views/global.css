@@ -180,9 +180,12 @@ li a {
 }
 
 .social-footer li a {
-    padding: 2px;
-    margin: 2px;
+    padding: 13px;
+    margin: 0;
     display: inline-block;
+}
+.social-footer li a:hover{
+    background-color: #000000;
 }
 .social-footer li a i {
     font-size: 1.6em !important;
@@ -1191,7 +1194,7 @@ a.headline {
 .social-ul{
     display: inline-block;
     margin: 0;
-    padding: 10px;
+    padding: 0;
 }
 
 
@@ -1696,7 +1699,7 @@ i, .btn .show-max {
 .social-footer li{
     display: inline-block;
     font-size: 1.15em;
-    margin: 0 10px;
+    margin: 0;
 }
 .texttype__sm {
     width:34px;
@@ -2744,7 +2747,6 @@ h4.main__title{
 
     .social-footer li{
         font-size: 1em;
-        margin: 0 5px;
     }
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 40px; }
