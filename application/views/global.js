@@ -1317,6 +1317,9 @@ function editor_save_i(){
 
 function editor_load_e(e__id, x__id){
 
+    //Activate Modal:
+    $('#modal31912').modal('show');
+
     //Reset Fields:
     has_unsaved_changes = false;
 
@@ -1356,9 +1359,6 @@ function editor_load_e(e__id, x__id){
             set_autosize($('#modal31912 .save_x__message'));
         }, 377);
     }
-
-    //Activate Modal:
-    $('#modal31912').modal('show');
 
 
     $.post("/e/editor_load_e", {
