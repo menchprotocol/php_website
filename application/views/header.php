@@ -951,7 +951,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
 
                                     <!-- History -->
-                                    <a class="icon-block-sm previous_used_covers_frame hidden" href="javascript:void(0);" onclick="$('.previous_used_covers').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+                                    <a class="icon-block-sm previous_used_covers_frame" href="javascript:void(0);" onclick="$('.previous_used_covers').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
 
                                 </div>
 
