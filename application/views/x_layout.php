@@ -242,8 +242,9 @@ if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
 
     }
 
-} else {
+}
 
+if(!$breadcrum_content){
     //See if any visible top ideas:
     foreach($this->X_model->fetch(array(
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -255,7 +256,6 @@ if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
         $breadcrum_content .= '<a href="/'.$prev_i['i__hashtag'].'"><u>'.view_i_title($prev_i).'</u></a>';
         $breadcrum_content .= '</li>';
     }
-
 }
 
 if($breadcrum_content){
