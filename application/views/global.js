@@ -683,7 +683,7 @@ $(document).ready(function () {
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
         clientAllowedFormats: ['image'],
-        uploadPreset: 'upload_file_e_cover'
+        uploadPreset: 'upload_file_i_message'
 
         }, (error, result) => {
             if (!error && result && result.event === "success") {
