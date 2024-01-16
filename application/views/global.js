@@ -670,8 +670,11 @@ $(document).ready(function () {
     var upload_file_e_cover = cloudinary.createUploadWidget({
             cloudName: 'dw2sn7ftu',
             max_files: 1,
-            sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
-            allowed_formats: ['png'],
+            show_powered_by:false,
+        theme:'minimal',
+        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
+        defaultSource:'local',
+        clientAllowedFormats: ['png'],
             uploadPreset: 'upload_file_e_cover'
         }, (error, result) => {
             if (!error && result && result.event === "success") {
