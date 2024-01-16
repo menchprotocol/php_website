@@ -699,9 +699,8 @@ $(document).ready(function () {
 
         cloudName: 'dw2sn7ftu',
         showPoweredBy: false,
-        multiple: false,
-        max_files: 1,
-        cropping:true,
+        multiple: true,
+        max_files: 2,
         theme: 'minimal',
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
