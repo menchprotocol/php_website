@@ -1572,16 +1572,11 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $domain_email = website_setting(28614, $e__id, $x__website);
     $email_domain = '"'.$domain_name.'" <'.( strlen($domain_email) ? $domain_email : 'support@mench.com' ).'>';
 
-    //die('Domain email is missing! ('.join(' & ',$to_emails).') ('.$subject.') ('.$email_body.') ('.$domain_name.') ('.$domain_email.') '.$email_domain);
-
     if(!strlen($domain_email)){
-        //TODO activate late
-        /*
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
         ));
-        */
     }
 
     $name = 'New User';
@@ -1611,7 +1606,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     //Email has no word limit to add header & footer:
     $e___6287 = $CI->config->item('e___6287'); //APP
     $email_message = view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750)."\n\n";
-    $email_message .= str_replace('e__id',$e__id,$email_body)."\n\n";
+    $email_message .= $email_body."\n\n";
     $email_message .= view_shuffle_message(12691)."\n";
     $email_message .= get_domain('m__title', $e__id, $x__website);
     if($e__id > 0 && !in_array($template_id, $CI->config->item('n___31779'))){
@@ -1650,7 +1645,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             'Body' => array(
                 'Text' => array(
                     // Data is required
-                    'Data' => strip_tags($email_message),
+                    'Data' => strip_tags(str_replace("\n","\n\n",$email_message)),
                     'Charset' => 'UTF-8',
                 ),
                 'Html' => array(
