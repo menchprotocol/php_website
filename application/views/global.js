@@ -310,6 +310,8 @@ function toggle_headline(x__type){
 
 function sort_e_load(x__type) {
 
+    console.log('Tring to load Source Search for @'+x__type)
+
     var sort_item_count = parseInt($('.headline_body_' + x__type).attr('read-counter'));
 
     if(!js_n___13911.includes(x__type)){
@@ -362,15 +364,7 @@ function toggle_pills(x__type){
     $('.xtypetitle_'+x__type).removeClass('hidden');
 
 
-    if($('.thepill' + x__type+' .nav-link').hasClass('active')){
-
-        //var action_id = 26008; //Close
-
-        //Hide all elements
-        //$('.nav-link').removeClass('active');
-        //$('.headlinebody').addClass('hidden');
-
-    } else {
+    if(!$('.thepill' + x__type+' .nav-link').hasClass('active')){
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
@@ -384,7 +378,7 @@ function toggle_pills(x__type){
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type + ' .tab_content').html().length ){
             $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
-            load_tab(x__type, false);
+            load_tab(x__type);
         }
 
         //Log Transaction:
@@ -1495,7 +1489,7 @@ function editor_save_e(){
 
 
 var focus_x__type = 0;
-function load_tab(x__type, auto_load){
+function load_tab(x__type){
 
     var focus_card = fetch_int_val('#focus_card');
     console.log('Tab loading... from @'+focus_card+' for @'+x__type);
