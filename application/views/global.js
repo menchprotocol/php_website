@@ -674,7 +674,7 @@ $(document).ready(function () {
         theme:'minimal',
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
         defaultSource:'local',
-        clientAllowedFormats: ['png','jpeg','heic'],
+        clientAllowedFormats: ['image'],
             uploadPreset: 'upload_file_e_cover'
         }, (error, result) => {
             if (!error && result && result.event === "success") {
