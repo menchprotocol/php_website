@@ -440,7 +440,6 @@ img.no-frame {
 .edit-off .content-image{
     max-height:250px;
 }
-.left_modal_content { padding-right: 13px; }
 
 input.main__title {
     font-size: 2em;
@@ -2626,9 +2625,11 @@ h4.main__title{
 .showifmini{
     display: none;
 }
+.left_modal_content { padding-right: 13px; }
 
 @media (max-width:610px) {
 
+    .left_modal_content { padding-right: 0; }
     .mench-points {
         padding-right: 2px;
     }

@@ -951,7 +951,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </div>
 
                                 <div id="source_cover_upload"></div>
-                                <div class="icons_small cover_history_content hidden"></div>
+                                <div class="icons_small cover_history_content hidden section_subframe"></div>
 
                             </div>
                         </div>

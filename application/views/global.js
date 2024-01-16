@@ -1371,6 +1371,7 @@ function editor_load_e(e__id, x__id){
                 data.cover_history_content.forEach(function(item) {
                     $(".cover_history_content").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
                 });
+                $(".cover_history_content").append('<div class="doclear">&nbsp;</div>');
             }
 
         } else {
