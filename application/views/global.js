@@ -670,7 +670,7 @@ $(document).ready(function () {
 
         cropping: true,
         croppingAspectRatio: 1.0,
-        showSkipCropButton: true,
+        showSkipCropButton: false,
         croppingShowBackButton: false,
         autoMinimize: true,
 
@@ -684,8 +684,7 @@ $(document).ready(function () {
 
         }, (error, result) => {
             if (!error && result && result.event === "success" && result.info.secure_url) {
-                console.log(result.info);
-                update__cover(result.info.secure_url);
+                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
             }
         }
     );
