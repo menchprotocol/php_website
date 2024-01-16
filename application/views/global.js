@@ -680,7 +680,8 @@ $(document).ready(function () {
         uploadPreset: 'upload_file_e_cover'
 
         }, (error, result) => {
-            if (!error && result && result.status === "success") {
+            console.log(result);
+            if (!error && result && result.event === "success") {
                 console.log('Done! Here is the image info: ', result.info);
             }
         }
