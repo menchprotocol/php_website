@@ -720,7 +720,9 @@ $(document).ready(function () {
         js_redirect('/'+$(this).attr('i__hashtag'));
     });
 
-    load_covers();
+    setTimeout(function () {
+        load_covers();
+    }, 987);
 
     //Lookout for textinput updates
     x_set_start_text();
@@ -1666,14 +1668,16 @@ function i__add(x__type, link_i__id) {
 
         if (data.status) {
 
-            sort_i_load(x__type);
+            setTimeout(function () {
+                sort_i_load(x__type);
+                load_covers();
+            }, 987);
 
             //Add new
             add_to_list(x__type, sort_i_grab, data.new_i_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
-            load_covers();
             set_autosize($('.texttype__lg'));
 
             //Hide Coin:
@@ -1768,8 +1772,10 @@ function e__add(x__type, e_existing_id) {
                 //Allow inline editing if enabled:
                 x_set_start_text();
 
-                sort_e_load(x__type);
-                load_covers();
+                setTimeout(function () {
+                    sort_e_load(x__type);
+                    load_covers();
+                }, 987);
 
                 //Hide Coin:
                 $('.mini-cover.coin-12274.coin-id-'+e_existing_id).fadeOut();
