@@ -673,7 +673,7 @@ $(document).ready(function () {
         showPoweredBy: false,
         multiple: false,
         cropping: true,
-        autoMinimize: true,
+        autoMinimize: false,
         showAdvancedOptions: true,
         showSkipCropButton: false,
         croppingShowBackButton: false,
