@@ -123,6 +123,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js"></script>
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
@@ -847,6 +848,22 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
+
+
+                    <script type="text/javascript">
+                        var myWidget = cloudinary.createUploadWidget({
+                                cloudName: 'dw2sn7ftu',
+                                uploadPreset: 'ml_default'}, (error, result) => {
+                                if (!error && result && result.event === "success") {
+                                    console.log('Done! Here is the image info: ', result.info);
+                                }
+                            }
+                        )
+                        $('.file_label_4736').click(function (e) {
+                            console.log('hiiii');
+                            myWidget.open();
+                        });
+                    </script>
 
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
