@@ -670,9 +670,10 @@ $(document).ready(function () {
 
         cropping: true,
         croppingAspectRatio: 1.0,
-        //showSkipCropButton: false,
-        //croppingShowBackButton: true,
-        //autoMinimize: true,
+        showSkipCropButton: false,
+        croppingShowBackButton: false,
+        autoMinimize: true,
+
         //inlineContainer: '#source_cover_upload',
         //tags: '@1',
 
