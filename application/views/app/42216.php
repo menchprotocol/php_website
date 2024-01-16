@@ -260,7 +260,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             if (!count($this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
                 'x__creator' => $x['e__id'],
-                'x__type' => 29399, //Idea Email
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))) {
 
