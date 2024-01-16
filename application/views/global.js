@@ -669,7 +669,7 @@ $(document).ready(function () {
 
     var upload_file_e_cover = cloudinary.createUploadWidget({
 
-        cloudName: 'dw2sn7ftu',
+        cloudName: 'menchcloud',
         showPoweredBy: false,
         multiple: false,
         cropping: true,
@@ -697,7 +697,7 @@ $(document).ready(function () {
 
     var upload_file_i_message = cloudinary.createUploadWidget({
 
-        cloudName: 'dw2sn7ftu',
+        cloudName: 'menchcloud',
         showPoweredBy: false,
         multiple: true,
         max_files: 2,
