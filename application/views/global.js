@@ -670,7 +670,7 @@ $(document).ready(function () {
 
         cropping: true,
         croppingAspectRatio: 1.0,
-        showSkipCropButton: false,
+        showSkipCropButton: true,
         croppingShowBackButton: false,
         autoMinimize: true,
 
