@@ -1668,11 +1668,6 @@ function i__add(x__type, link_i__id) {
 
         if (data.status) {
 
-            setTimeout(function () {
-                sort_i_load(x__type);
-                load_covers();
-            }, 987);
-
             //Add new
             add_to_list(x__type, sort_i_grab, data.new_i_html, 1);
 
@@ -1682,6 +1677,11 @@ function i__add(x__type, link_i__id) {
 
             //Hide Coin:
             $('.mini-cover.coin-12273.coin-id-'+link_i__id).fadeOut();
+
+            setTimeout(function () {
+                sort_i_load(x__type);
+                load_covers();
+            }, 987);
 
         } else {
             //Show errors:
@@ -2074,6 +2074,7 @@ var sorting_loaded = []; // more efficient than new Array()
 
 function sort_i_load(x__type){
 
+    console.log(x__type+' sort_i_load ATTEMPT');
     if(!js_n___4603.includes(x__type)){
         console.log(x__type+' is not sortable');
         return false;
