@@ -675,15 +675,16 @@ $(document).ready(function () {
         //cropping: true,
         //showSkipCropButton: false,
         //croppingShowBackButton: true,
-        autoMinimize: true,
+        //autoMinimize: true,
         //inlineContainer: '#source_cover_upload',
-        croppingAspectRatio: 1.0,
-        tags: '@1',
+        //croppingAspectRatio: 1.0,
+        //tags: '@1',
         theme: 'minimal',
+
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
         clientAllowedFormats: ['image'],
-        uploadPreset: 'upload_file_i_message'
+        uploadPreset: 'upload_file_e_cover'
 
         }, (error, result) => {
             if (!error && result && result.event === "success") {
@@ -702,6 +703,7 @@ $(document).ready(function () {
         multiple: true,
         max_files: 2,
         theme: 'minimal',
+
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
         clientAllowedFormats: ['image', 'video'],
