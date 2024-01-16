@@ -510,7 +510,7 @@ function update__cover(new_cover){
     has_unsaved_changes = true;
 }
 function image_cover(cover_preview, cover_apply, new_title){
-    return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
+    return '<a href="javascript:void(0);" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
 }
 
 

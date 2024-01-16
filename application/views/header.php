@@ -936,7 +936,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
 
                                     <!-- Font Awesome -->
-                                    <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
 
                                     <!-- History -->
                                     <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
@@ -947,18 +947,21 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <!-- SOURCE COVER -->
                                     <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
 
-                                    <input type="text" class="form-control unsaved_warning save_e__cover" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
+                                    <input type="text" class="form-control unsaved_warning save_e__cover hide" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
                                 </div>
 
                                 <div id="source_cover_upload"></div>
+                                <div class="icons_small font_awesome hidden section_subframe">
+
+                                    <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
+                                </div>
                                 <div class="icons_small cover_history_content hidden section_subframe"></div>
 
                             </div>
                         </div>
 
                         <div class="col-12 col-md-5">
-                            <a name="preview_cover" style="height: 1px; display: none;">&nbsp;</a>
-                            <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important;">
+                            <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important; margin-top: 10px;">
                                 <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
                             </div>
                         </div>

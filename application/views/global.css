@@ -2628,7 +2628,7 @@ h4.main__title{
 .left_modal_content { padding-right: 13px; }
 .section_subframe{
     background-color: #FFFFFF;
-    padding: 13px 0;
+    padding: 5px 0 0;
 }
 
 @media (max-width:610px) {
