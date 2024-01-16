@@ -824,46 +824,25 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="message_controllers_i">
 
+                        <!-- Upload -->
+                        <a class="icon-block-sm upload_file_i_message" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+
+                        <!-- EMOJI -->
+                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
+
                         <!-- Reference Source -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
 
                         <!-- Reference Idea -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
 
-                        <!-- EMOJI -->
-                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
-
-                        <?php
-                        //UPLOAD
-                        echo '<input class="inputfile hidden" type="file" name="file" id="fileIdeaType4736" />';
-                        echo '<label class="hidden"></label>';
-                        echo '<label class="btn inline-block btn-compact file_label_4736" for="fileIdeaType4736" data-toggle="tooltip" data-placement="top" title="'.$e___11035[13572]['m__title'].': '.$e___11035[13572]['m__message'].'"><span class="icon-block">'.$e___11035[13572]['m__cover'].'</span></label>';
-                        ?>
-
                     </div>
-
 
                     <!-- Idea Message -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
-
-
-                    <script type="text/javascript">
-                        var myWidget = cloudinary.createUploadWidget({
-                                cloudName: 'dw2sn7ftu',
-                                uploadPreset: 'ml_default'}, (error, result) => {
-                                if (!error && result && result.event === "success") {
-                                    console.log('Done! Here is the image info: ', result.info);
-                                }
-                            }
-                        )
-                        $('.file_label_4736').click(function (e) {
-                            console.log('hiiii');
-                            myWidget.open();
-                        });
-                    </script>
 
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
@@ -957,9 +936,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                                 <div class="message_controllers_e">
-                                    <!-- UPLOAD -->
-                                    <input class="inputfile" type="file" name="file" id="coverUpload" />
-                                    <label class="icon-block-sm" for="coverUpload"><?= $e___11035[25990]['m__cover'] ?></label>
+
+                                    <!-- Upload -->
+                                    <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[25990]['m__title'] ?>"><?= $e___11035[25990]['m__cover'] ?></a>
 
                                     <!-- EMOJI -->
                                     <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>

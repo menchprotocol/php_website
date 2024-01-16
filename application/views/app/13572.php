@@ -1,14 +1,3 @@
-<?php
-
-if(isset($_POST)){
-    echo 'POST FOUND';
-    print_r($_POST);
-    print_r($_GET);
-    print_r($_REQUEST);
-}
-
-?>
-
 
 <form enctype="multipart/form-data">
     <input name="file" type="file" />

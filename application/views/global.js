@@ -724,6 +724,31 @@ $(document).ready(function () {
         }
     });
 
+    var upload_file_e_cover = cloudinary.createUploadWidget({
+            cloudName: 'dw2sn7ftu',
+            uploadPreset: 'upload_file_e_cover'}, (error, result) => {
+            if (!error && result && result.event === "success") {
+                console.log('Done! Here is the image info: ', result.info);
+            }
+        }
+    );
+    $('.upload_file_e_cover').click(function (e) {
+        upload_file_e_cover.open();
+    });
+
+    var upload_file_i_message = cloudinary.createUploadWidget({
+            cloudName: 'dw2sn7ftu',
+            uploadPreset: 'upload_file_i_message'}, (error, result) => {
+            if (!error && result && result.event === "success") {
+                console.log('Done! Here is the image info: ', result.info);
+            }
+        }
+    );
+    $('.upload_file_i_message').click(function (e) {
+        upload_file_i_message.open();
+    });
+
+
     $('.card_click_x').click(function(e) {
         js_redirect('/'+$(this).attr('i__hashtag'));
     });
