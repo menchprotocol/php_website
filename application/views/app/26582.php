@@ -79,6 +79,7 @@ if(!$is_u_request || isset($_GET['cron'])){
         }
 
         foreach($list_settings['query_string'] as $x) {
+
             //Send to all of them IF NOT DISCOVERED
             if(!count($this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
@@ -90,17 +91,9 @@ if(!$is_u_request || isset($_GET['cron'])){
                 //Append children as options:
                 $plain_message = '';
                 foreach($children as $down_or){
-
-                    $discoveries = $this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__creator' => $x['e__id'],
-                        'x__left' => $down_or['i__id'],
-                    ));
                     //Has this user discovered this idea or no?
                     $plain_message .= view_i_title($down_or, true).":\n";
-                    $plain_message .= 'https://'.get_domain('m__message', $x['e__id'], $i['x__website']).$top_i__hashtag.'/'.$down_or['i__hashtag'].( !count($discoveries) ? '?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']) : '' )."\n\n";
-
+                    $plain_message .= 'https://'.get_domain('m__message', $x['e__id'], $i['x__website']).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle'])."\n\n";
                 }
 
                 $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message."\n\n".trim($plain_message), array(
