@@ -684,6 +684,7 @@ $(document).ready(function () {
 
         }, (error, result) => {
             if (!error && result && result.event === "success" && result.info.secure_url) {
+                console.log(result.info);
                 update__cover(result.info.secure_url);
             }
         }
