@@ -674,7 +674,6 @@ $(document).ready(function () {
         multiple: false,
         cropping: true,
         autoMinimize: false,
-        showAdvancedOptions: true,
         showSkipCropButton: false,
         croppingShowBackButton: false,
         //inlineContainer: '#source_cover_upload',
@@ -685,7 +684,7 @@ $(document).ready(function () {
         theme: 'minimal',
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
-        resourceType: ['image'],
+        clientAllowedFormats: ['image'],
         uploadPreset: 'upload_file_e_cover'
 
         }, (error, result) => {
