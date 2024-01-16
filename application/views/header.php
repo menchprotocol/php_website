@@ -939,7 +939,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <a class="icon-block-sm" href="https://fontawesome.com/search" target="_blank" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
 
                                     <!-- History -->
-                                    <a class="icon-block-sm previous_used_covers_frame" href="javascript:void(0);" onclick="$('.previous_used_covers').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+                                    <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
 
                                 </div>
 
@@ -950,7 +950,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <input type="text" class="form-control unsaved_warning save_e__cover" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
                                 </div>
 
-                                <div class="icons_small previous_used_covers hidden"></div>
+                                <div class="icons_small cover_history_content hidden"></div>
 
                             </div>
                         </div>

@@ -1280,8 +1280,8 @@ function editor_load_e(e__id, x__id){
 
     //Source resets:
     $('#search_cover').val('');
-    $("#drag_drop_image_results, .previous_used_covers").html('');
-    $(".previous_used_covers_frame").addClass('hidden');
+    $("#drag_drop_image_results, .cover_history_content").html('');
+    $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
@@ -1343,10 +1343,10 @@ function editor_load_e(e__id, x__id){
             $('[data-toggle="tooltip"]').tooltip();
 
             //Any Source suggestions to auto load?
-            if(data.previous_used_covers.length){
-                $(".previous_used_covers_frame").removeClass('hidden');
-                data.previous_used_covers.forEach(function(item) {
-                    $(".previous_used_covers").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
+            if(data.cover_history_content.length){
+                $(".cover_history_button").removeClass('hidden');
+                data.cover_history_content.forEach(function(item) {
+                    $(".cover_history_content").append(image_cover(item.cover_preview, item.cover_apply, item.new_title));
                 });
             }
 
