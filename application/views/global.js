@@ -310,7 +310,7 @@ function toggle_headline(x__type){
 
 function sort_e_load(x__type) {
 
-    console.log('Tring to load Source Search for @'+x__type)
+    console.log('Tring to load Source Sort for @'+x__type);
 
     var sort_item_count = parseInt($('.headline_body_' + x__type).attr('read-counter'));
 
@@ -929,9 +929,9 @@ function update_cover_mini(cover_code, target_css){
 
 
 function load_finder(focus_card, x__type){
-    if(js_n___11020.includes(x__type) || (focus_card==12274 && js_n___42284.includes(x__type))){
+    if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
         i_load_finder(x__type);
-    } else if(js_n___11028.includes(x__type) || (focus_card==12273 && js_n___42284.includes(x__type))) {
+    } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
         e_load_finder(x__type);
     }
 }
