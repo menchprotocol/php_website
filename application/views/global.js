@@ -671,6 +671,7 @@ $(document).ready(function () {
             cloudName: 'dw2sn7ftu',
             max_files: 1,
             sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
+            clientAllowedFormats: ['image'],
             uploadPreset: 'upload_file_e_cover'
         }, (error, result) => {
             if (!error && result && result.event === "success") {
@@ -685,7 +686,8 @@ $(document).ready(function () {
     var upload_file_i_message = cloudinary.createUploadWidget({
             cloudName: 'dw2sn7ftu',
             sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
-            uploadPreset: 'upload_file_i_message'
+            clientAllowedFormats: ['image', 'video'],
+        uploadPreset: 'upload_file_i_message'
         }, (error, result) => {
             if (!error && result && result.event === "success") {
                 console.log('Done! Here is the image info: ', result.info);
