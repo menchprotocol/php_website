@@ -520,63 +520,6 @@ function image_cover(cover_preview, cover_apply, new_title){
 }
 
 
-function cover_upload(droppedFiles, uploadType) {
-
-    //Prevent multiple concurrent uploads:
-    if ($('.coverUpload').hasClass('dynamic_saving')) {
-        return false;
-    }
-
-    $('#drag_drop_image_results').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
-
-    if (isAdvancedUpload) {
-
-        var ajaxData = new FormData($('.coverUpload').get(0));
-        if (droppedFiles) {
-            $.each(droppedFiles, function (i, file) {
-                var thename = $('.coverUpload').find('input[type="file"]').attr('name');
-                if (typeof thename==typeof undefined || thename==false) {
-                    var thename = 'drop';
-                }
-                ajaxData.append(uploadType, file);
-            });
-        }
-
-        ajaxData.append('upload_type', uploadType);
-        ajaxData.append('save_e__id', $('#modal31912 .save_e__id').val());
-
-        $.ajax({
-            url: '/x/cover_upload',
-            type: $('.coverUpload').attr('method'),
-            data: ajaxData,
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            complete: function () {
-                $('.coverUpload').removeClass('dynamic_saving');
-            },
-            success: function (data) {
-                //Render new file:
-                if(data.status){
-                    $('#drag_drop_image_results').html('');
-                    update__cover(data.cdn_url);
-                } else {
-                    //Show error:
-                    $('#drag_drop_image_results').html(data.message);
-                }
-            },
-            error: function (data) {
-                //Show Error:
-                $('#drag_drop_image_results').html(data.responseText);
-            }
-        });
-    } else {
-        // ajax for legacy browsers
-    }
-
-}
-
 
 function initiate_algolia(){
     $(".algolia_finder").focus(function () {
@@ -726,6 +669,7 @@ $(document).ready(function () {
 
     var upload_file_e_cover = cloudinary.createUploadWidget({
             cloudName: 'dw2sn7ftu',
+            max_files: 1,
             uploadPreset: 'upload_file_e_cover'}, (error, result) => {
             if (!error && result && result.event === "success") {
                 console.log('Done! Here is the image info: ', result.info);
@@ -753,32 +697,7 @@ $(document).ready(function () {
         js_redirect('/'+$(this).attr('i__hashtag'));
     });
 
-    //Watchout for file uplods:
-    $('.coverUpload').find('input[type="file"]').change(function () {
-        cover_upload(droppedFiles, 'file');
-    });
-
     load_covers();
-
-    //Should we auto start?
-    if (isAdvancedUpload) {
-        var droppedFiles = false;
-        $('.coverUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        })
-            .on('dragover dragenter', function () {
-                $('.coverUploader').addClass('dynamic_saving');
-            })
-            .on('dragleave dragend drop', function () {
-                $('.coverUploader').removeClass('dynamic_saving');
-            })
-            .on('drop', function (e) {
-                droppedFiles = e.originalEvent.dataTransfer.files;
-                e.preventDefault();
-                cover_upload(droppedFiles, 'drop');
-            });
-    }
 
     //Lookout for textinput updates
     x_set_start_text();
@@ -1706,7 +1625,6 @@ function i__add(x__type, link_i__id) {
     }
 
     //Set processing status:
-    input_field.addClass('dynamic_saving');
     add_to_list(x__type, sort_i_grab, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
@@ -1720,7 +1638,6 @@ function i__add(x__type, link_i__id) {
 
         //Delete loader:
         $("#tempLoader").remove();
-        input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
         i_is_adding = false;
 
         if (data.status) {
@@ -1872,12 +1789,6 @@ function e_delete(x__id, x__type) {
 
 
 
-//For the drag and drop file uploader:
-var isAdvancedUpload = function () {
-    var div = document.createElement('div');
-    return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
-}();
-
 function x_link_toggle(x__type, i__id){
 
     $('.btn_toggle_'+x__type).toggleClass('hidden');
@@ -2006,8 +1917,6 @@ function x_set_text(this_grabr){
 
     //Grey background to indicate saving...
     var target_element = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
-    $(target_element).addClass('dynamic_saving').prop("disabled", true);
-
     $.post("/x/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
@@ -2024,11 +1933,6 @@ function x_set_text(this_grabr){
             update_text_name(modify_data['cache_e__id'], modify_data['s__id'], modify_data['new_i__message']);
 
         }
-
-        setTimeout(function () {
-            //Restore background:
-            $(target_element).removeClass('dynamic_saving').prop("disabled", false);
-        }, 233);
 
     });
 }

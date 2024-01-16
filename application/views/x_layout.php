@@ -799,31 +799,17 @@ if($top_i__hashtag) {
     } elseif ($focus_i['i__type']==7637) {
 
         //FILE UPLOAD
-        echo '<div class="userUploader">';
-        echo '<form class="box boxUpload" method="post" enctype="multipart/form-data">';
-
-        echo '<input class="inputfile" type="file" name="file" id="fileType' . $focus_i['i__type'] . '" />';
-
         if (count($x_completes)) {
-
             echo '<div class="file_save_result greybg">';
-            echo view_headline(13977, null, $e___11035[13977], view_sync_links($x_completes[0]['x__message']), true);
+            echo view_sync_links($x_completes[0]['x__message']);
             echo '</div>';
-
         } else {
-
             //for when added:
             echo '<div class="file_save_result center"></div>';
-
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" for="fileType' . $focus_i['i__type'] . '" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
-
-
-        echo '<div class="doclear">&nbsp;</div>';
-        echo '</form>';
-        echo '</div>';
+        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
     }
 
@@ -1002,36 +988,6 @@ if($top_i__hashtag){
 
         set_autosize($('#x_write'));
 
-        //Watchout for file uplods:
-        $('.boxUpload .inputfile').on('change', function () {
-            console.log('file uploading');
-            console.log($(this));
-            console.log($(this).prop('files'));
-            x_upload($(this).prop('files'), 'file');
-        });
-
-        //Should we auto start?
-        if (isAdvancedUpload) {
-
-            var droppedFiles = false;
-
-            $('.boxUpload').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            })
-                .on('dragover dragenter', function () {
-                    $('.userUploader').addClass('dynamic_saving');
-                })
-                .on('dragleave dragend drop', function () {
-                    $('.userUploader').removeClass('dynamic_saving');
-                })
-                .on('drop', function (e) {
-                    droppedFiles = e.originalEvent.dataTransfer.files;
-                    e.preventDefault();
-                    x_upload(droppedFiles, 'drop');
-                });
-        }
-
     });
 
 
@@ -1138,57 +1094,17 @@ if($top_i__hashtag){
         }
     }
 
-    function x_upload(droppedFiles, uploadType) {
+    function x_upload() {
 
-        //Prevent multiple concurrent uploads:
-        if ($('.boxUpload').hasClass('dynamic_saving')) {
-            return false;
-        }
+        $.post("/x/x_upload", {
+            i__id:         fetch_int_val('#focus_id'),
+            top_i__id:     $('#top_i__id').val()
+        }, function (data) {
+            if(data.status){
 
-        $('.file_save_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
-
-        if (isAdvancedUpload) {
-
-            var ajaxData = new FormData($('.boxUpload').get(0));
-            if (droppedFiles) {
-                $.each(droppedFiles, function (i, file) {
-                    var thename = $('.boxUpload').find('input[type="file"]').attr('name');
-                    if (typeof thename==typeof undefined || thename==false) {
-                        var thename = 'drop';
-                    }
-                    ajaxData.append(uploadType, file);
-                });
             }
-
-            ajaxData.append('upload_type', uploadType);
-            ajaxData.append('i__id', fetch_int_val('#focus_id'));
-            ajaxData.append('top_i__id', $('#top_i__id').val());
-
-            $.ajax({
-                url: '/x/x_upload',
-                type: $('.boxUpload').attr('method'),
-                data: ajaxData,
-                dataType: 'json',
-                cache: false,
-                contentType: false,
-                processData: false,
-                complete: function () {
-                    $('.boxUpload').removeClass('dynamic_saving');
-                },
-                success: function (data) {
-                    //Render new file:
-                    $('.file_save_result').html(data.message);
-                    $('.go_next_upload').removeClass('hidden');
-
-                },
-                error: function (data) {
-                    //Show Error:
-                    $('.file_save_result').html(data.responseText);
-                }
-            });
-        } else {
-            // ajax for legacy browsers
-        }
+        });
+        $('.file_save_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
 
     }
 

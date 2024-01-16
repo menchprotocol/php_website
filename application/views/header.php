@@ -133,10 +133,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     //Load Fonts Dynamically
     echo '<style> ';
 
-    if(!$member_e){
-        echo ' .creator_headline_frame{ display: none; } ';
-    }
-
     //Font Helps:
     $e___29711 = $this->config->item('e___29711'); //Google Font Family
     $e___29763 = $this->config->item('e___29763'); //CSS Font Family
@@ -156,14 +152,10 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             .custom_ui_14506_'.$e__id.' .headline,
             .custom_ui_14506_'.$e__id.' .btn,
             .custom_ui_14506_'.$e__id.' .algolia_pad_finder,
-            .custom_ui_14506_'.$e__id.' .progress-title,
             .custom_ui_14506_'.$e__id.' .mid-text-line span,
-            .custom_ui_14506_'.$e__id.' .previous_answer,
-            .custom_ui_14506_'.$e__id.' .nav-x,
             .custom_ui_14506_'.$e__id.' .texttype__lg,
             .custom_ui_14506_'.$e__id.' .texttype__lg::placeholder,
-            .custom_ui_14506_'.$e__id.' .alert a,
-            .custom_ui_14506_'.$e__id.' .pull-middle {
+            .custom_ui_14506_'.$e__id.' .alert a {
                 font-family:'.$e___29763[$e__id]['m__message'].' !important;
             }
             ';
@@ -938,7 +930,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <div class="message_controllers_e">
 
                                     <!-- Upload -->
-                                    <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[25990]['m__title'] ?>"><?= $e___11035[25990]['m__cover'] ?></a>
+                                    <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
 
                                     <!-- EMOJI -->
                                     <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
@@ -964,14 +956,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
 
                         <div class="col-12 col-md-5">
-                            <!-- IMAGE PREVIEW -->
-                            <div class="coverUploader"> <!-- IMAGE DROP -->
-                                <form class="box coverUpload" method="post" enctype="multipart/form-data">
-                                    <a name="preview_cover" style="height: 1px; display: none;">&nbsp;</a>
-                                    <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important;">
-                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                                    </div>
-                                </form>
+                            <a name="preview_cover" style="height: 1px; display: none;">&nbsp;</a>
+                            <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important;">
+                                <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
                             </div>
                         </div>
                     </div>

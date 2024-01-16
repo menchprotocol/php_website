@@ -147,25 +147,7 @@ if(!$focus_tab){
 <script>
 
     $(document).ready(function () {
-
-        $('.toggle_i_checkbox').change(function() {
-            console.log('hi');
-            //$(this).prop('checked')
-        });
-        $('.toggle_e_checkbox').change(function() {
-            console.log('bye');
-            //$(this).prop('checked')
-        });
-
         set_autosize($('.text__6197_'+fetch_int_val('#focus_id')));
     });
-
-    //Define file upload variables:
-    var upload_control = $(".inputfile");
-    var $input = $('.drag-box').find('input[type="file"]'),
-        $label = $('.drag-box').find('label'),
-        showFiles = function (files) {
-            $label.text(files.length > 1 ? ($input.attr('data-multiple-caption') || '').replace('{count}', files.length) : files[0].name);
-        };
 
 </script>

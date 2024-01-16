@@ -582,27 +582,6 @@ class X extends CI_Controller
                 'message' => 'Missing Top IDEA',
             ));
 
-        } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Unknown upload type.',
-            ));
-
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Unknown error (2) while trying to save file.',
-            ));
-
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'File is larger than the maximum allowed file size of ' . view_memory(6404,13572) . ' MB.',
-            ));
-
         }
 
         //Validate Idea:
@@ -615,26 +594,6 @@ class X extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Idea ID',
             ));
-        }
-
-
-        //Attempt to save file locally:
-        $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
-        $temp_local = "application/cache/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
-        move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
-
-
-        //Attempt to store in Cloud on Amazon S3:
-        if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
-            $mime = $_FILES[$_POST['upload_type']]['type'];
-        } else {
-            $mime = mime_content_type($temp_local);
-        }
-
-        $cdn_status = upload_to_cdn($temp_local, $member_e['e__id'], $_FILES[$_POST['upload_type']], true, view_i_title($is[0]).' BY '.$member_e['e__title']);
-        if (!$cdn_status['status']) {
-            //Oops something went wrong:
-            return view_json($cdn_status);
         }
 
 
@@ -659,92 +618,11 @@ class X extends CI_Controller
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         return view_json(array(
             'status' => 1,
-            'message' => view_headline(13977, null, $e___11035[13977], $cdn_status['cdn_url'], true),
+            'message' => $cdn_status['cdn_url'],
         ));
 
     }
 
-
-
-    function cover_upload()
-    {
-
-        //Authenticate Member:
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-
-        } elseif (!isset($_POST['save_e__id'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing source ID',
-            ));
-
-        } elseif (!isset($_POST['upload_type']) || !in_array($_POST['upload_type'], array('file', 'drop'))) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Unknown upload type.',
-            ));
-
-        } elseif (!isset($_FILES[$_POST['upload_type']]['tmp_name']) || strlen($_FILES[$_POST['upload_type']]['tmp_name'])==0 || intval($_FILES[$_POST['upload_type']]['size'])==0) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Unknown error 2 while trying to save file.',
-            ));
-
-        } elseif ($_FILES[$_POST['upload_type']]['size'] > (view_memory(6404,13572) * 1024 * 1024)) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'File is larger than the maximum allowed file size of ' . view_memory(6404,13572) . ' MB.',
-            ));
-
-        }
-
-        //Attempt to save file locally:
-        $file_parts = explode('.', $_FILES[$_POST['upload_type']]["name"]);
-        $temp_local = "application/cache/" . md5($file_parts[0] . $_FILES[$_POST['upload_type']]["type"] . $_FILES[$_POST['upload_type']]["size"]) . '.' . $file_parts[(count($file_parts) - 1)];
-        move_uploaded_file($_FILES[$_POST['upload_type']]['tmp_name'], $temp_local);
-
-
-        //Attempt to store in Cloud on Amazon S3:
-        if (isset($_FILES[$_POST['upload_type']]['type']) && strlen($_FILES[$_POST['upload_type']]['type']) > 0) {
-            $mime = $_FILES[$_POST['upload_type']]['type'];
-        } else {
-            $mime = mime_content_type($temp_local);
-        }
-
-
-        //Upload to CDN and return:
-        $cdn_status = upload_to_cdn($temp_local, 0 /* To NOT create a Source from URL */, $_FILES[$_POST['upload_type']], true);
-        if (!$cdn_status['status']) {
-            //Oops something went wrong:
-            return view_json($cdn_status);
-        } else {
-
-            //Log Success:
-            $invite_x = $this->X_model->create(array(
-                'x__type' => 25990,
-                'x__creator' => $member_e['e__id'],
-                'x__down' => $_POST['save_e__id'],
-                'x__message' => $cdn_status['cdn_url'],
-            ));
-
-            //Return CDN URL:
-            return view_json(array(
-                'status' => 1,
-                'cdn_url' => $cdn_status['cdn_url'],
-            ));
-
-        }
-    }
 
     function read_only_complete(){
 
