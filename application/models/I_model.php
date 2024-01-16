@@ -712,7 +712,7 @@ class I_model extends CI_Model
         }
 
         $i_new = $this->I_model->create(array(
-            'i__message' => ( $clone_title ? $clone_title : "Copy Of ".$this_i[0] ),
+            'i__message' => ( $clone_title ? $clone_title : "Copy Of ".$this_i[0]['i__message'] ),
             'i__type' => $this_i[0]['i__type'],
         ), $x__creator);
 
