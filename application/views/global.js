@@ -668,14 +668,17 @@ $(document).ready(function () {
     });
 
     var upload_file_e_cover = cloudinary.createUploadWidget({
-            cloudName: 'dw2sn7ftu',
-            max_files: 1,
-            show_powered_by:false,
-        theme:'minimal',
-        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
-        defaultSource:'local',
+
+        cloudName: 'dw2sn7ftu',
+        show_powered_by: false,
+        multiple: false,
+        cropping: true,
+        theme: 'minimal',
+        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
+        defaultSource: 'local',
         clientAllowedFormats: ['image'],
-            uploadPreset: 'upload_file_e_cover'
+        uploadPreset: 'upload_file_e_cover'
+
         }, (error, result) => {
             if (!error && result && result.event === "success") {
                 console.log('Done! Here is the image info: ', result.info);
@@ -687,10 +690,18 @@ $(document).ready(function () {
     });
 
     var upload_file_i_message = cloudinary.createUploadWidget({
-            cloudName: 'dw2sn7ftu',
-            sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
-            clientAllowedFormats: ['image', 'video'],
+
+        cloudName: 'dw2sn7ftu',
+        show_powered_by: false,
+        multiple: false,
+        max_files: 1,
+        cropping:true,
+        theme: 'minimal',
+        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
+        defaultSource: 'local',
+        clientAllowedFormats: ['image', 'video'],
         uploadPreset: 'upload_file_i_message'
+
         }, (error, result) => {
             if (!error && result && result.event === "success") {
                 console.log('Done! Here is the image info: ', result.info);
