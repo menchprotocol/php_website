@@ -674,12 +674,12 @@ $(document).ready(function () {
         multiple: false,
         theme: 'minimal',
 
-        //cropping: true,
+        cropping: true,
+        croppingAspectRatio: 1.0,
         //showSkipCropButton: false,
         //croppingShowBackButton: true,
         //autoMinimize: true,
         //inlineContainer: '#source_cover_upload',
-        //croppingAspectRatio: 1.0,
         //tags: '@1',
 
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
