@@ -680,7 +680,7 @@ $(document).ready(function () {
         croppingDefaultSelectionRatio: 1.0,
         croppingCoordinatesMode: 'face',
         tags: '@1',
-        theme: 'purple',
+        theme: 'minimal',
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
         resourceType: ['image'],
