@@ -814,7 +814,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="doclear">&nbsp;</div>
 
 
-                    <div class="message_controllers_i">
+                    <div class="message_controllers">
 
                         <!-- Upload -->
                         <a class="icon-block-sm upload_file_i_message" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
@@ -927,7 +927,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </div>
 
 
-                                <div class="message_controllers_e">
+                                <div class="message_controllers">
 
                                     <!-- Upload -->
                                     <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>

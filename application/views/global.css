@@ -134,11 +134,7 @@ h3{
     font-weight: bold;
     padding-bottom: 13px;
 }
-.message_controllers_i{
-    float: right;
-    margin: 5px 0 -18px 0;
-}
-.message_controllers_e{
+.message_controllers{
     float: right;
     margin: 21px 0 -5px 0;
 }
