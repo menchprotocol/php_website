@@ -675,6 +675,8 @@ $(document).ready(function () {
         cropping: true,
         autoMinimize: true,
         showAdvancedOptions: true,
+        showSkipCropButton: false,
+        croppingShowBackButton: false,
         //inlineContainer: '#source_cover_upload',
         croppingAspectRatio: 1.0,
         croppingDefaultSelectionRatio: 1.0,
