@@ -672,6 +672,8 @@ $(document).ready(function () {
         cloudName: 'menchcloud',
         showPoweredBy: false,
         multiple: false,
+        theme: 'minimal',
+
         //cropping: true,
         //showSkipCropButton: false,
         //croppingShowBackButton: true,
@@ -679,7 +681,6 @@ $(document).ready(function () {
         //inlineContainer: '#source_cover_upload',
         //croppingAspectRatio: 1.0,
         //tags: '@1',
-        theme: 'minimal',
 
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
@@ -687,8 +688,9 @@ $(document).ready(function () {
         uploadPreset: 'upload_file_e_cover'
 
         }, (error, result) => {
-            if (!error && result && result.event === "success") {
-                console.log('Done! Here is the image info: ', result.info);
+            if (!error && result && result.event === "success" && result.info.secure_url) {
+                $('#modal31912 .save_e__cover').val(result.info.secure_url).focus();
+                update_cover_main(result.info.secure_url, '.demo_cover');
             }
         }
     );
