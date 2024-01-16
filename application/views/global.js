@@ -2070,8 +2070,6 @@ function set_autosize(theobject){
 
 
 
-var sorting_loaded = []; // more efficient than new Array()
-
 function sort_i_load(x__type){
 
     console.log(x__type+' sort_i_load ATTEMPT');
@@ -2089,11 +2087,6 @@ function sort_i_load(x__type){
             return false;
         }
 
-        if(sorting_loaded.indexOf(x__type) >= 0){
-            console.log(x__type+' already loaded');
-            return false;
-        }
-
         //Make sure beow minimum sorting requirement:
         if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(fetch_int_val('#page_limit'))){
             return false;
@@ -2101,7 +2094,6 @@ function sort_i_load(x__type){
 
         $('.sort_i_frame').removeClass('hidden');
         console.log(x__type+' sorting load success');
-        sorting_loaded.push(x__type);
 
         //Load sorter:
         var sort = Sortable.create(theobject, {
