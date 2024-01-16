@@ -513,7 +513,6 @@ function x_create(add_fields){
 function update__cover(new_cover){
     $('#modal31912 .save_e__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
-    has_unsaved_changes = true;
 }
 function image_cover(cover_preview, cover_apply, new_title){
     return '<a href="#preview_cover" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
@@ -689,8 +688,7 @@ $(document).ready(function () {
 
         }, (error, result) => {
             if (!error && result && result.event === "success" && result.info.secure_url) {
-                $('#modal31912 .save_e__cover').val(result.info.secure_url).focus();
-                update_cover_main(result.info.secure_url, '.demo_cover');
+                update__cover(result.info.secure_url);
             }
         }
     );
