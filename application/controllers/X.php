@@ -390,6 +390,8 @@ class X extends CI_Controller
             //Validate Hash:
             if($_GET['e__hash'] == view_e__hash($_GET['e__time'].$focus_es[0]['e__handle'])){
 
+
+                $this->X_model->read_only_complete($focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
                 $this->X_model->mark_complete(29393, $focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
 
                 //Inform user of changes:
