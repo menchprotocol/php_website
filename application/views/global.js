@@ -670,7 +670,9 @@ $(document).ready(function () {
     var upload_file_e_cover = cloudinary.createUploadWidget({
             cloudName: 'dw2sn7ftu',
             max_files: 1,
-            uploadPreset: 'upload_file_e_cover'}, (error, result) => {
+            sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
+            uploadPreset: 'upload_file_e_cover'
+        }, (error, result) => {
             if (!error && result && result.event === "success") {
                 console.log('Done! Here is the image info: ', result.info);
             }
@@ -682,8 +684,9 @@ $(document).ready(function () {
 
     var upload_file_i_message = cloudinary.createUploadWidget({
             cloudName: 'dw2sn7ftu',
-            max_files: 2,
-            uploadPreset: 'upload_file_i_message'}, (error, result) => {
+            sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
+            uploadPreset: 'upload_file_i_message'
+        }, (error, result) => {
             if (!error && result && result.event === "success") {
                 console.log('Done! Here is the image info: ', result.info);
             }
