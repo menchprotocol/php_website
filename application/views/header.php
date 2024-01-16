@@ -950,6 +950,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <input type="text" class="form-control unsaved_warning save_e__cover" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
                                 </div>
 
+                                <div id="source_cover_upload"></div>
                                 <div class="icons_small cover_history_content hidden"></div>
 
                             </div>

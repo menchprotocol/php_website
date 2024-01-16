@@ -670,13 +670,20 @@ $(document).ready(function () {
     var upload_file_e_cover = cloudinary.createUploadWidget({
 
         cloudName: 'dw2sn7ftu',
-        show_powered_by: false,
+        showPoweredBy: false,
         multiple: false,
         cropping: true,
-        theme: 'minimal',
+        autoMinimize: true,
+        showAdvancedOptions: true,
+        inlineContainer: '#source_cover_upload',
+        croppingAspectRatio: 1.0,
+        croppingDefaultSelectionRatio: 1.0,
+        croppingCoordinatesMode: 'face',
+        tags: '@1',
+        theme: 'purple',
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
-        clientAllowedFormats: ['image'],
+        resourceType: ['image'],
         uploadPreset: 'upload_file_e_cover'
 
         }, (error, result) => {
@@ -693,7 +700,7 @@ $(document).ready(function () {
     var upload_file_i_message = cloudinary.createUploadWidget({
 
         cloudName: 'dw2sn7ftu',
-        show_powered_by: false,
+        showPoweredBy: false,
         multiple: false,
         max_files: 1,
         cropping:true,
