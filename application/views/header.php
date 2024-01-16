@@ -952,7 +952,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 <div id="source_cover_upload"></div>
                                 <div class="icons_small font_awesome hidden section_subframe">
-
                                     <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
                                 </div>
                                 <div class="icons_small cover_history_content hidden section_subframe"></div>

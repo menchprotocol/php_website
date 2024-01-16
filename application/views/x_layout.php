@@ -415,7 +415,7 @@ if($top_i__hashtag) {
                         'e__id' => $x_complete['x__creator'],
                     )) as $e){
                         $ticket_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
-                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__hash='.view_e__hash($e['e__handle'])).'</div>';
+                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$e['e__handle'])).'</div>';
                     }
                 }
 
@@ -577,7 +577,7 @@ if($top_i__hashtag) {
 
                                 } elseif(!count($ticket_checked_in)) {
 
-                                            $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/'.$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__hash='.view_e__hash($x[0]['e__handle']);
+                                            $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/'.$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x[0]['e__handle']);
 
 
                                     //Give option for manual checkin:

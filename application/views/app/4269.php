@@ -39,7 +39,7 @@ if(superpower_unlocked()) {
 
     js_php_redirect($next_url, 13);
 
-} elseif(isset($_GET['e__handle']) && isset($_GET['e__hash']) && view_e__hash($_GET['e__handle'])==$_GET['e__hash']){
+} elseif(isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && view_e__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
 
     $es = $this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),

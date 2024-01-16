@@ -383,12 +383,12 @@ class X extends CI_Controller
 
         //Log Link Click discovery if authenticated:
         if(
-            isset($_GET['e__hash'])
+            isset($_GET['e__hash']) && isset($_GET['e__time'])
             && count($focus_es) //We have a user
         ){
 
             //Validate Hash:
-            if($_GET['e__hash'] == view_e__hash($focus_es[0]['e__handle'])){
+            if($_GET['e__hash'] == view_e__hash($_GET['e__time'].$focus_es[0]['e__handle'])){
 
                 $this->X_model->mark_complete(29393, $focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
 
