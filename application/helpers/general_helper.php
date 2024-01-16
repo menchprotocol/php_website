@@ -132,8 +132,11 @@ function current_link(){
     return 'https://' .get_server('SERVER_NAME') . get_server('REQUEST_URI');
 }
 
-function string_is_icon($icon_code){
-    return !filter_var($icon_code, FILTER_VALIDATE_URL) && substr_count($icon_code,'fa');
+function string_is_icon($string){
+    return substr_count($string,'fa-');
+}
+function string_is_emoji($string){
+    return preg_match('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', $string);
 }
 
 

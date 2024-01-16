@@ -712,7 +712,7 @@ class E extends CI_Controller
             $x__metadata = unserialize($x['x__metadata']);
             if(strlen($x__metadata['before'])){
                 $cover = ( substr_count($x__metadata['before'], 'class="') ? one_two_explode('class="','"',$x__metadata['before']) : $x__metadata['before'] );
-                if(strlen($cover) && !in_array($cover, $unique_covers)){
+                if((filter_var($cover, FILTER_VALIDATE_URL) || string_is_icon($cover) || string_is_emoji($cover)) && !in_array($cover, $unique_covers)){
                     array_push($unique_covers, $cover);
                     array_push($cover_history_content, array(
                         'cover_preview' => $cover,
