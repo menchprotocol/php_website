@@ -671,7 +671,7 @@ $(document).ready(function () {
             cloudName: 'dw2sn7ftu',
             max_files: 1,
             sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'],
-            clientAllowedFormats: ['image'],
+            allowed_formats: ['png'],
             uploadPreset: 'upload_file_e_cover'
         }, (error, result) => {
             if (!error && result && result.event === "success") {
