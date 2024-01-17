@@ -909,63 +909,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div id="drag_drop_image_results" class="center"></div>
 
 
-                    <div class="row">
-                        <div class="col-12 col-md-7">
-                            <div class="left_modal_content">
-
-                                <!-- Source Handle -->
-                                <div class="dynamic_editing_input hash_group">
-                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32338]['m__cover'].'</span>'.$e___11035[32338]['m__title'].': '. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
-                                    <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
-                                </div>
-
-
-                                <!-- Link Message -->
-                                <div class="dynamic_editing_input save_x__frame hidden">
-                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                                    <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
-                                </div>
-
-
-                                <div class="message_controllers">
-
-                                    <!-- Upload -->
-                                    <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
-
-                                    <!-- EMOJI -->
-                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
-
-                                    <!-- Font Awesome -->
-                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
-
-                                    <!-- History -->
-                                    <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
-
-                                </div>
-
-                                <div class="dynamic_editing_input">
-                                    <!-- SOURCE COVER -->
-                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
-
-                                    <input type="text" class="form-control unsaved_warning save_e__cover hide" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
-                                </div>
-
-                                <div id="source_cover_upload"></div>
-                                <div class="icons_small font_awesome hidden section_subframe">
-                                    <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
-                                </div>
-                                <div class="icons_small cover_history_content hidden section_subframe"></div>
-
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-5">
-                            <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important; margin-top: 10px;">
-                                <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                            </div>
-                        </div>
-                    </div>
-
 
 
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
@@ -973,8 +916,59 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
 
-                                <!-- Dynamic Inputs -->
-                                <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                                <div class="left_modal_content">
+
+                                    <!-- Source Handle -->
+                                    <div class="dynamic_editing_input hash_group">
+                                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32338]['m__cover'].'</span>'.$e___11035[32338]['m__title'].': '. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+                                        <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
+                                    </div>
+
+
+                                    <!-- Link Message -->
+                                    <div class="dynamic_editing_input save_x__frame hidden">
+                                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                                        <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                                    </div>
+
+
+                                    <div class="message_controllers">
+
+                                        <!-- Upload -->
+                                        <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+
+                                        <!-- EMOJI -->
+                                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
+
+                                        <!-- Font Awesome -->
+                                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+
+                                        <!-- History -->
+                                        <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+
+                                    </div>
+
+                                    <div class="dynamic_editing_input">
+                                        <!-- SOURCE COVER -->
+                                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+
+                                        <input type="text" class="form-control unsaved_warning save_e__cover hide" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
+                                    </div>
+
+                                    <div id="source_cover_upload"></div>
+                                    <div class="icons_small font_awesome hidden section_subframe">
+                                        <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
+                                    </div>
+                                    <div class="icons_small cover_history_content hidden section_subframe"></div>
+
+                                    <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important; margin-top: 10px;">
+                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                    </div>
+
+                                    <!-- Dynamic Inputs -->
+                                    <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+
+                                </div>
 
                             </div>
                         </div>
