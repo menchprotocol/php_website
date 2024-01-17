@@ -2773,17 +2773,16 @@ h4.main__title{
     .cover-btn.fa_not_found {
         font-size: 8.9em;
     }
-    .focus-cover .cover-btn{
-        font-size: 8em;
-    }
-    .focus-cover .cover-btn.fa_not_found{
-        font-size: 13em;
-    }
 
 }
 
 
-
+.focus-cover .cover-btn {
+    font-size: 8em;
+}
+.focus-cover .cover-btn.fa_not_found {
+    font-size: 13em;
+}
 
 
 
@@ -4172,9 +4171,7 @@ main {
     font-size: 4.20em;
     top:37% !important;
 }
-.focus-cover .cover-btn {
-    font-size: 8em;
-}
+
 
 .active_bars_0 { display: none !important; }
 .active_bars_1 td { width:100.0% !important; }
