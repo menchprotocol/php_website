@@ -92,8 +92,8 @@ if(!$is_u_request || isset($_GET['cron'])){
                 $plain_message = '';
                 foreach($children as $down_or){
                     //Has this user discovered this idea or no?
-                    $plain_message .= view_i_title($down_or, true).":\n";
-                    $plain_message .= 'https://'.get_domain('m__message', $x['e__id'], $i['x__website']).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle'])."\n\n";
+                    $plain_message .= '<div class="line ">'.view_i_title($down_or, true).'</div>'.":\n";
+                    $plain_message .= '<div class="line ">'.'https://'.get_domain('m__message', $x['e__id'], $i['x__website']).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']).'</div>'."\n\n";
                 }
 
                 $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message."\n\n".trim($plain_message), array(
