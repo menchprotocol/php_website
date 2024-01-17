@@ -1300,39 +1300,39 @@ class X_model extends CI_Model
         );
 
         //Now let's check possible expansions:
-        foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-            'x__creator' => $e__id, //Belongs to this Member
-            'x__left IN (' . join(',', $recursive_down_ids['recursive_i_ids'] ) . ')' => null,
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('x__right')) as $expansion_in) {
+        if(count($recursive_down_ids['recursive_i_ids'])){
+            foreach($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
+                'x__creator' => $e__id, //Belongs to this Member
+                'x__left IN (' . join(',', $recursive_down_ids['recursive_i_ids'] ) . ')' => null,
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            ), array('x__right')) as $expansion_in) {
 
-            //Fetch recursive:
-            $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
+                //Fetch recursive:
+                $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
 
-            //Addup completion stats for this:
-            $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
-            $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
+                //Addup completion stats for this:
+                $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
+                $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
 
-            if($tree_progress['list_total'] && count($tree_progress['list_total'])){
-                foreach($tree_progress['list_total'] as $tree_id){
-                    if(!in_array($tree_id, $metadata_this['list_total'])){
-                        array_push($metadata_this['list_total'], $tree_id);
+                if($tree_progress['list_total'] && count($tree_progress['list_total'])){
+                    foreach($tree_progress['list_total'] as $tree_id){
+                        if(!in_array($tree_id, $metadata_this['list_total'])){
+                            array_push($metadata_this['list_total'], $tree_id);
+                        }
+                    }
+                }
+
+                if($tree_progress['list_discovered'] && count($tree_progress['list_discovered'])){
+                    foreach($tree_progress['list_discovered'] as $tree_id){
+                        if(!in_array($tree_id, $metadata_this['list_discovered'])){
+                            array_push($metadata_this['list_discovered'], $tree_id);
+                        }
                     }
                 }
             }
-
-            if($tree_progress['list_discovered'] && count($tree_progress['list_discovered'])){
-                foreach($tree_progress['list_discovered'] as $tree_id){
-                    if(!in_array($tree_id, $metadata_this['list_discovered'])){
-                        array_push($metadata_this['list_discovered'], $tree_id);
-                    }
-                }
-            }
-
         }
-
 
         if($current_level==1){
 

@@ -1132,7 +1132,7 @@ class X extends CI_Controller
                                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(strlen($_POST['i__hashtag'])){
+                        } elseif(strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->I_model->fetch(array(
@@ -1161,7 +1161,7 @@ class X extends CI_Controller
                                 'e__privacy' => $x__type3,
                             ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(strlen($_POST['i__hashtag'])){
+                        } elseif(strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->X_model->fetch(array(
@@ -1189,7 +1189,7 @@ class X extends CI_Controller
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(strlen($_POST['i__hashtag'])){
+                        } elseif(strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
