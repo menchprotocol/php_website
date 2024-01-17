@@ -952,7 +952,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <!-- SOURCE COVER -->
                                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
 
-                                        <input type="text" class="form-control unsaved_warning save_e__cover hide" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
+                                        <input type="text" class="form-control unsaved_warning save_e__cover hidden" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
                                     </div>
 
                                     <div id="source_cover_upload"></div>

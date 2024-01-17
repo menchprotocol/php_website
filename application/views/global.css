@@ -2036,7 +2036,7 @@ input.form-control {
 .demo_cover{
     width:144px !important;
     margin:0 auto !important;
-    margin: 10px 0;
+    padding: 8px 0  13px !important;
 }
 .section_demo{
     background-color: #FFFFFF;
