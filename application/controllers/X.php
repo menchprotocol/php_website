@@ -395,7 +395,7 @@ class X extends CI_Controller
                 $this->X_model->mark_complete(29393, $focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
 
                 //Inform user of changes:
-                $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>You have discovered this idea</div>';
+                $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Idea has been discovered</div>';
 
                 //If not logged in, log them in:
                 if(!$member_e){
