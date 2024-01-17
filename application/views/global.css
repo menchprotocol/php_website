@@ -2776,6 +2776,9 @@ h4.main__title{
     .focus-cover .cover-btn{
         font-size: 8em;
     }
+    .focus-cover .cover-btn.fa_not_found{
+        font-size: 13em;
+    }
 
 }
 
@@ -3433,7 +3436,7 @@ a,
 }
 
 .cover-link.coinType12274 .cover-btn.fa_not_found {
-    top:50% !important;
+    top: 51% !important;
 }
 
 
