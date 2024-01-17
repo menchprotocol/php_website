@@ -909,7 +909,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="row">
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
-                                <div class="message_controllers">
+                                <div class="message_controllers source_controller">
 
                                     <!-- Upload -->
                                     <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
