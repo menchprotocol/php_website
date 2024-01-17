@@ -480,6 +480,9 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
     if(count($fetch_13865)){
         //Let's see if they meet any of these PREREQUISITES:
         $meets_inc1_prereq = false;
+        $x__up = 0;
+        $excludes_message = 'Unknown Error @13865';
+
         if($x__creator > 0){
             foreach($fetch_13865 as $e_pre){
                 if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
@@ -489,12 +492,14 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
                         'x__down' => $x__creator,
                     )))){
                     $meets_inc1_prereq = true;
+                    $x__up = ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 );
+                    $excludes_message = "You cannot discover this idea because you are missing a requirement, ".$double_check;
                     break;
                 }
             }
         }
         if(!$meets_inc1_prereq && $x__creator > 0){
-            return access_blocked($log_tnx, "You cannot discover this idea because you are missing a requirement, ".$double_check,$x__creator, $i__id, 13865, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 13865, $x__up);
         }
     }
 
@@ -509,6 +514,10 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         //There are some requirements, Let's see if they meet all of them:
         $missing_es = '';
         $meets_inc2_prereq = 0;
+
+        $x__up = 0;
+        $excludes_message = 'Unknown Error @27984';
+
         if($x__creator > 0){
             foreach($fetch_27984 as $e_pre){
                 if($x__creator && (( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
@@ -522,11 +531,14 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
                     //Missing:
                     $missing_es .= ( strlen($missing_es) ? ' & ' : '' ).$e_pre['e__title'];
                 }
+
+                $x__up = ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 );
+                $excludes_message = "You cannot discover this idea because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check;
             }
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, "You cannot discover this idea because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check,$x__creator, $i__id, 27984, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 27984, $x__up);
         }
     }
 
@@ -539,7 +551,9 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
     ), array('x__up'), 0);
     if(count($fetch_26600)){
         //Let's see if they meet any of these PREREQUISITES:
+        $x__up = 0;
         $excludes_all = false;
+        $excludes_message = 'Unknown Error @26600';
         if($x__creator > 0){
             foreach($fetch_26600 as $e_pre){
                 if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
@@ -550,6 +564,8 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
                     )))){
                     //Found an exclusion, so skip this:
                     $excludes_all = false;
+                    $excludes_message = "You cannot discover this idea because you belong to [".$e_pre['e__title']."]";
+                    $x__up =  ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 );
                     break;
                 } else {
                     $excludes_all = true;
@@ -558,7 +574,7 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
         }
 
         if(!$excludes_all){
-            return access_blocked($log_tnx, "You cannot discover this idea because you belong to [".$e_pre['e__title']."]",$x__creator, $i__id, 26600, ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 ));
+            return access_blocked($log_tnx, $excludes_message, $x__creator, $i__id, 26600, $x__up);
         }
     }
 
