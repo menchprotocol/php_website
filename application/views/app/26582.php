@@ -75,8 +75,9 @@ if(!$is_u_request || isset($_GET['cron'])){
 
         //Email HTML Transformations:
         $content_message = str_replace('>Show more<','><', view_i_links($i, true, true)); //Hide the show more content if any
-        $content_message = str_replace('<img ','<img style="width:100%; max-width:420px;" ');
-        $content_message = str_replace('<div class="line ','<div style="font-size:16px; padding-bottom:8px;" class="line');
+        $content_message = str_replace('<img ','<img style="width:100%; max-width:420px;" ', $content_message);
+        $content_message = str_replace('<div class="line ','<div style="font-size:16px; padding-bottom:8px;" class="line', $content_message);
+        $content_message = str_replace("\n",'<div style="padding:5px 0;">&nbsp;</div>', $content_message);
 
         if(!(substr($subject_line, 0, 1)=='#' && !substr_count($subject_line, ' '))){
             //Let's remove the first line since it's used in the title:
