@@ -4159,6 +4159,9 @@ main {
     width: 100%;
     text-align: center;
 }
+.cover-btn.fa_not_found{
+    font-size: 8.9em;
+}
 .coinType12274 .cover-btn{
     color:#000000 !important;
 }
