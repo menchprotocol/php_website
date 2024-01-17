@@ -1602,6 +1602,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $ReplyToAddresses = array($email_domain);
 
     if($e__id > 0){
+
         $es = $CI->E_model->fetch(array(
             'e__id' => $e__id,
         ));
@@ -1630,7 +1631,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message .= $email_body."\n";
     $email_message .= '<div class="line">'.view_shuffle_message(12691).'</div>';
     $email_message .= '<div class="line">'.get_domain('m__title', $e__id, $x__website).'</div>';
-    if($e__id > 0 && !in_array($template_id, $CI->config->item('n___31779'))){
+    if($e__id > 0 && count($es) && !in_array($template_id, $CI->config->item('n___31779'))){
         //User specific notifications:
         $email_message .= '<div class="line"><a href="'.$base_domain.view_app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$es[0]['e__handle']).'" style="font-size:10px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
@@ -1643,8 +1644,8 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message = str_replace('<img ','<img style="'.$general_style.'" ', $email_message);
     $email_message = str_replace('<div class="line','<div style="'.$general_style.'" class="line', $email_message);
     $email_message = str_replace("\n",'<div style="padding:5px 0 8px;">&nbsp;</div>', $email_message);
-    $email_message = preg_replace('/(?:^|\s)#(\w+)/','<a href="'.$base_domain.'/$1">$1</a>', $email_message);
-    $email_message = preg_replace('/(?:^|\s)@(\w+)/','<a href="'.$base_domain.'/@$1">$1</a>', $email_message);
+    $email_message = preg_replace('/#+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/$1" target="_blank">$1</a>', $email_message);
+    $email_message = preg_replace('/@+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/@$0" target="_blank">$0</a>', $email_message);
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
