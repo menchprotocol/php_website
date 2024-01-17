@@ -26,7 +26,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'messagCloe' => view_unauthorized_message(10939),
             ));
-        } elseif (intval($_POST['i__id']) < 1) {
+        } elseif (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Following Source',

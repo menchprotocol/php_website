@@ -95,6 +95,10 @@ class X extends CI_Controller
     function mass_apply_preview()
     {
 
+        if(!isset($_POST['apply_id']) || !isset($_POST['s__id'])){
+            die('Missing core data');
+        }
+
         //Log Modal View
         $member_e = superpower_unlocked();
         $this->X_model->create(array(
@@ -717,6 +721,13 @@ class X extends CI_Controller
 
     function x_free_ticket(){
 
+        if (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        }
+
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
@@ -728,11 +739,6 @@ class X extends CI_Controller
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea ID.',
             ));
         } elseif (!isset($_POST['top_i__id'])) {
             return view_json(array(
@@ -1122,7 +1128,7 @@ class X extends CI_Controller
 
                     if($x__type2==12273){
 
-                        if(strlen($_POST['e__handle'])){
+                        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1132,7 +1138,7 @@ class X extends CI_Controller
                                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
+                        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->I_model->fetch(array(
@@ -1152,7 +1158,7 @@ class X extends CI_Controller
 
                     } elseif($x__type2==12274){
 
-                        if(strlen($_POST['e__handle'])){
+                        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1161,7 +1167,7 @@ class X extends CI_Controller
                                 'e__privacy' => $x__type3,
                             ), array('x__down'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
+                        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->X_model->fetch(array(
@@ -1181,7 +1187,7 @@ class X extends CI_Controller
 
                     } else {
 
-                        if(strlen($_POST['e__handle'])){
+                        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
@@ -1189,7 +1195,7 @@ class X extends CI_Controller
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
+                        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
@@ -1241,6 +1247,13 @@ class X extends CI_Controller
 
     function update_dropdown(){
 
+        if(!isset($_POST['focus_id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_e__id']) || !isset($_POST['migrate_s__id']) || !isset($_POST['x__id'])){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing core data',
+            ));
+        }
+
         if(is_array($_POST['o__id'])){
             $mass_result = array();
             foreach($_POST['o__id'] as $o__id){
@@ -1256,7 +1269,13 @@ class X extends CI_Controller
 
 
     function x_select(){
+
+        if(!isset($_POST['top_i__id']) || !isset($_POST['focus_id'])){
+            die('missing core data');
+        }
+
         return view_json($this->X_model->x_select($_POST['top_i__id'], $_POST['focus_id'], ( !isset($_POST['selection_i__id']) || !count($_POST['selection_i__id']) ? array() : $_POST['selection_i__id'] )));
+
     }
 
 

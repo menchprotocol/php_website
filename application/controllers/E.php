@@ -536,6 +536,7 @@ class E extends CI_Controller
     {
 
         $member_e = superpower_unlocked();
+        $e___11035 = $this->config->item('e___11035');
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
@@ -656,7 +657,7 @@ class E extends CI_Controller
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                 'x__down' => $es[0]['e__id'],
                                 'x__up' => $dynamic_e__id,
-                            )) as $curr_val){
+                            ), array('x__up')) as $curr_val){
                                 if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
                                     array_push($unique_values, $curr_val['x__message']);
                                     $counted++;
@@ -664,6 +665,7 @@ class E extends CI_Controller
                                         'd__id' => $dynamic_e__id,
                                         'd_x__id' => $curr_val['x__id'],
                                         'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                                        'd__icons' => ( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span class="grey" title="Private Information" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>' : '' ),
                                         'd__value' => $curr_val['x__message'],
                                         'd__type_name' => html_input_type($data_type),
                                         'd__type_id' => $data_type,
@@ -1431,6 +1433,13 @@ class E extends CI_Controller
 
     function verify_contact(){
 
+        if(!isset($_POST['account_email_phone'])){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'missing account details',
+            ));
+        }
+
         //Cleanup input email:
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
         $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
@@ -1440,7 +1449,7 @@ class E extends CI_Controller
         }
         $possible_phone = !$valid_email && strlen($_POST['account_email_phone'])>=10;
 
-        if (!isset($_POST['account_email_phone']) || (!$valid_email && !$possible_phone)) {
+        if (!$valid_email && !$possible_phone) {
             return view_json(array(
                 'status' => 0,
                 'message' => '['.$_POST['account_email_phone'].'] is an Invalid Email Address or Phone Number',

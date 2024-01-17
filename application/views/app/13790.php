@@ -170,7 +170,7 @@ foreach($list_settings['column_i'] as $i2){
 
     array_push($table_sortable, '#th_i_'.$i2['i__id']);
 
-    echo '<th id="th_i_'.$i2['i__id'].'"><div></div><a class="icon-block-xxs" href="/~'.$i2['i__hashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? 'isgreen'  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : view_i_title($i2, true) ).'</span></th>';
+    echo '<th id="th_i_'.$i2['i__id'].'"><div></div><a class="icon-block-xxs" href="/~'.$i2['i__hashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : view_i_title($i2, true) ).'</span></th>';
 
 }
 echo '</tr>';

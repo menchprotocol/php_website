@@ -331,9 +331,6 @@ img.no-frame {
     background-color: #b2defd;
     border-color: #b2defd;
 }
-.isgreen{
-    color:#009900 !important;
-}
 .isgold{
     color:#FFC500 !important;
 }
@@ -2641,9 +2638,14 @@ h4.main__title{
     padding: 5px 0 0;
 }
 
+@media (max-width:768px) {
+    .left_modal_content {
+        padding-right: 0;
+    }
+}
+
 @media (max-width:610px) {
 
-    .left_modal_content { padding-right: 0; }
     .mench-points {
         padding-right: 2px;
     }
@@ -4173,6 +4175,9 @@ main {
     position: absolute;
     width: 100%;
     text-align: center;
+}
+.section_demo .cover-btn{
+    font-size: 5.5em;
 }
 .cover-btn.fa_not_found{
     font-size: 8.9em;
