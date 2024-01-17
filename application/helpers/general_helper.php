@@ -1645,7 +1645,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message = str_replace('<div class="line','<div style="'.$general_style.'" class="line', $email_message);
     $email_message = str_replace("\n",'<div style="padding:5px 0 8px;">&nbsp;</div>', $email_message);
     $email_message = preg_replace('/#+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/$1" target="_blank">$1</a>', $email_message);
-    $email_message = preg_replace('/@+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/@$0" target="_blank">$0</a>', $email_message);
+    $email_message = preg_replace('/@+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/@$1" target="_blank">$1</a>', $email_message);
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
