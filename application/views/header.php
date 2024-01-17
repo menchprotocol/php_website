@@ -836,9 +836,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
 
-
-                    <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
-
                     <div class="row">
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
@@ -861,6 +858,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                                 <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                             </div>
+
+                            <!-- Dynamic Loader -->
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
 
                             <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>
@@ -905,13 +905,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
 
-                    <!-- Cover Photo Editor -->
-                    <div id="drag_drop_image_results" class="center"></div>
 
-
-
-
-                    <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
                     <div class="row">
                         <div class="col-12 col-md-7">
                             <div class="left_modal_content">
@@ -962,6 +956,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 <!-- Dynamic Inputs -->
                                 <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+
+
                             </div>
                         </div>
                         <div class="col-12 col-md-5">
@@ -971,6 +967,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32338]['m__cover'].'</span>'.$e___11035[32338]['m__title'].': '. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
                                 <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
                             </div>
+
+                            <!-- Dynamic Loader -->
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
 
                             <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>

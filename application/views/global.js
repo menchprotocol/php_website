@@ -1301,7 +1301,7 @@ function editor_load_e(e__id, x__id){
 
     //Source resets:
     $('#search_cover').val('');
-    $("#drag_drop_image_results, .cover_history_content").html('');
+    $(".cover_history_content").html('');
     $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
