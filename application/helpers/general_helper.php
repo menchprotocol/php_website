@@ -1624,9 +1624,9 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
     //Email has no word limit to add header & footer:
     $e___6287 = $CI->config->item('e___6287'); //APP
-    $email_message = '<div class="line ">'.view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750).'</div>'."\n\n";
-    $email_message .= $email_body."\n\n";
-    $email_message .= '<div class="line ">'.view_shuffle_message(12691).'</div>'."\n";
+    $email_message = '<div class="line ">'.view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750).'</div>';
+    $email_message .= $email_body;
+    $email_message .= '<div class="line ">'.view_shuffle_message(12691).'</div>';
     $email_message .= '<div class="line ">'.get_domain('m__title', $e__id, $x__website).'</div>';
     if($e__id > 0 && !in_array($template_id, $CI->config->item('n___31779'))){
         //User specific notifications:
@@ -1634,7 +1634,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     }
 
 
-    $general_style = 'width:100%; max-width:610px; font-size:16px; margin-bottom:13px; line-height:113%;';
+    $general_style = 'width:100%; max-width:610px; font-size:16px; margin-bottom:13px; line-height:121%;';
 
     //Email HTML Transformations:
     $email_message = str_replace('>Show more<','><', $email_message); //Hide the show more content if any
