@@ -72,7 +72,12 @@ if(!$is_u_request || isset($_GET['cron'])){
         $total_sent = 0;
         $list_settings = list_settings($i['i__hashtag']);
         $subject_line = view_i_title($i, true);
-        $content_message = str_replace('>Show more<','><',view_i_links($i)); //Hide the show more content if any
+
+        //Email HTML Transformations:
+        $content_message = str_replace('>Show more<','><', view_i_links($i, true, true)); //Hide the show more content if any
+        $content_message = str_replace('<img ','<img style="width:100%; max-width:420px;" ');
+        $content_message = str_replace('<div class="line ','<div style="font-size:16px; padding-bottom:8px;" class="line');
+
         if(!(substr($subject_line, 0, 1)=='#' && !substr_count($subject_line, ' '))){
             //Let's remove the first line since it's used in the title:
             $content_message = delete_all_between('<div class="line first_line">','</div>', $content_message);

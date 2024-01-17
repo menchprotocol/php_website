@@ -1028,7 +1028,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
      *
      * Examples:
      *
-     * YouTube URL:    https://www.youtube.com/watch?v=-dVwv4wPA88
      * Audio URL:      https://s3foundation.s3-us-west-2.amazonaws.com/672b41ff20fece4b3e7ae2cf4b58389f.mp3
      * Video URL:      https://s3foundation.s3-us-west-2.amazonaws.com/8c5a1cc4e8558f422a4003d126502db9.mp4
      * Image URL:      https://s3foundation.s3-us-west-2.amazonaws.com/d673c17d7164817025a000416da3be3f.png
@@ -1054,7 +1053,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4260 => array(), //Image URL
         42185 => array(), //Document URL
 
-        4257 => array(), //YouTube URL
         4256 => array(), //Generic URL
 
         31834 => array(), //Idea Reference
@@ -1068,7 +1066,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4259 => '<audio controls src="%s"></audio><!-- %s -->',
         4260 => '<img src="%s" class="content-image" /><!-- %s -->',
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
-        4257 => '<div class="media-content ignore-click"><div class="ytframe video-sorting"><iframe src="//www.youtube.com/embed/%s?wmode=opaque&theme=light&color=white&keyboard=1&autohide=2&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&start=&end=" allowfullscreen class="yt-video"></iframe></div><div class="doclear">&nbsp;</div></div><!-- %s -->',
         42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download</spanaa><!-- %s -->',
         31834 => '<spanaa href="/%s">%s</spanaa>',
         42337 => '<spanaa href="/%s">%s</spanaa>',
@@ -1082,7 +1079,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     $word_count = 0;
     $word_limit = 89;
     $link_words = 13; //The number of words a link is counted as...
-    $media_words = 21; //The number of words a media file is counted as...
+    $media_words = 21; //The number of words a photo/video file is counted as...
 
     $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
     foreach(explode("\n", $str) as $line_index => $line) {
@@ -1099,33 +1096,18 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
-                //Valid YouTube ID?
-                if (!substr_count($word, '&list=') && ((substr_count($word, 'youtube.com/watch')==1) || substr_count($word, 'youtu.be/')==1)) {
-                    $video_id = extract_youtube_id($word);
-                    if(strlen($video_id)){
-                        $reference_type = 4257; //YouTube URL
-                        array_push($i__references[$reference_type], $word);
-                        $i__cache_line .=  @sprintf($ui_template[$reference_type], $video_id, $video_id);
+                //Determine URL type:
+                $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
+                $fileInfo = pathinfo($word);
+                foreach($extension_detect as $extension_type => $extension_ids) {
+                    if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
+                        $reference_type = $extension_type;
+                        break;
                     }
                 }
 
-                if(!$reference_type){
-
-                    //Determine URL type:
-                    $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
-                    $fileInfo = pathinfo($word);
-                    foreach($extension_detect as $extension_type => $extension_ids) {
-                        if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
-                            $reference_type = $extension_type;
-                            break;
-                        }
-                    }
-
-                    array_push($i__references[$reference_type], $word);
-                    $i__cache_line .=  @sprintf($ui_template[$reference_type], $word, $word);
-
-                }
-
+                array_push($i__references[$reference_type], $word);
+                $i__cache_line .=  @sprintf($ui_template[$reference_type], $word, $word);
                 $word_count += ( in_array($reference_type, $CI->config->item('n___42294')) ? $media_words  : $link_words );
 
             } elseif (view_valid_handle_e($word, true)) {

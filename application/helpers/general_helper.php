@@ -1570,15 +1570,17 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $CI =& get_instance();
     $domain_name = get_domain('m__title', $e__id, $x__website);
     $domain_email = website_setting(28614, $e__id, $x__website);
-    $email_domain = '"'.$domain_name.'" <'.( strlen($domain_email) ? $domain_email : 'support@mench.com' ).'>';
 
     if(!strlen($domain_email)){
+        $domain_name = 'MENCH';
+        $domain_name = 'support@mench.com';
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
         ));
     }
 
+    $email_domain = '"'.$domain_name.'" <'.$domain_email.'>';
     $name = 'New User';
     $ReplyToAddresses = array($email_domain);
 
@@ -2350,40 +2352,5 @@ function one_two_explode($one, $two, $str)
     } else {
         $temp = explode($two, $str, 2);
         return trim($temp[0]);
-    }
-}
-
-
-
-function extract_youtube_id($url)
-{
-
-    //Attemp to extract YouTube ID from URL:
-    $video_id = null;
-
-    if (substr_count($url, 'youtube.com/embed/')==1) {
-
-        //We might have start and end here too!
-        $video_id = trim(one_two_explode('youtube.com/embed/', '?', $url));
-
-    } elseif (substr_count($url, 'youtube.com/watch?v=')==1) {
-
-        $video_id = trim(one_two_explode('youtube.com/watch?v=', '&', $url));
-
-    } elseif (substr_count($url, 'youtube.com/watch')==1 && substr_count($url, '&v=')==1) {
-
-        $video_id = trim(one_two_explode('&v=', '&', $url));
-
-    } elseif (substr_count($url, 'youtu.be/')==1) {
-
-        $video_id = trim(one_two_explode('youtu.be/', '?', $url));
-
-    }
-
-    //This should be 11 characters!
-    if (strlen($video_id)==11) {
-        return $video_id;
-    } else {
-        return false;
     }
 }
