@@ -1627,8 +1627,8 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $e___6287 = $CI->config->item('e___6287'); //APP
     $base_domain = 'https://'.get_domain('m__message', $e__id, $x__website);
 
-    $email_message = '<div class="line">'.view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750).'</div>'."\n";
-    $email_message .= $email_body;
+    $email_message = '<div class="line">'.view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750).'</div>';
+    $email_message .= $email_body."\n";
     $email_message .= '<div class="line">'.view_shuffle_message(12691).'</div>';
     $email_message .= '<div class="line">'.get_domain('m__title', $e__id, $x__website).'</div>';
     if($e__id > 0 && count($es) && !in_array($template_id, $CI->config->item('n___31779'))){
@@ -1637,13 +1637,13 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     }
 
 
-    $general_style = 'width:100%; max-width:610px; font-size:16px; margin-bottom:13px; line-height:134%;';
+    $general_style = 'width:100%; max-width:610px; font-size:16px; margin-bottom:8px; line-height:134%;';
 
     //Email HTML Transformations:
     $email_message = str_replace('>Show more<','><', $email_message); //Hide the show more content if any
     $email_message = str_replace('<img ','<img style="'.$general_style.'" ', $email_message);
     $email_message = str_replace('<div class="line','<div style="'.$general_style.'" class="line', $email_message);
-    $email_message = str_replace("\n",'<div style="padding:5px 0 8px;">&nbsp;</div>', $email_message);
+    $email_message = str_replace("\n",'<div style="padding:5px 0 0;">&nbsp;</div>', $email_message);
     $email_message = str_replace('href="/','href="'.$base_domain.'/', $email_message);
     //$email_message = preg_replace('/#+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/$1" target="_blank">@$1</a>', $email_message);
     //$email_message = preg_replace('/@+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/@$1" target="_blank">#$1</a>', $email_message);
