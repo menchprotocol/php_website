@@ -679,10 +679,7 @@ class X_model extends CI_Model
         if($sms_subscriber && $twilio_account_sid && $twilio_auth_token && $twilio_from_number){
 
             //Yes, generate message
-            $sms_message = $subject.( preg_match("/[a-z]/i", substr(strtolower($subject), -1)) ? ': ' : ' ' ).strip_tags($plain_message);
-            if(count($stats['email_addresses']) && strlen($sms_message)>view_memory(6404,27891)){
-                $sms_message  = 'We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (it may end-up in Spam)';
-            }
+            $sms_message  = 'Update: We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']);
 
             //Breakup into smaller SMS friendly messages
             $sms_message = str_replace("\n"," ",$sms_message);
