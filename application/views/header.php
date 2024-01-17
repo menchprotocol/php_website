@@ -961,9 +961,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </div>
                                     <div class="icons_small cover_history_content hidden section_subframe"></div>
 
-                                    <div class="card_cover demo_cover" style="width:233px !important; margin:0 auto !important; margin-top: 10px;">
-                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+
+                                    <div class="section_demo">
+                                        <div class="card_cover demo_cover">
+                                            <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                        </div>
                                     </div>
+
+
 
                                     <!-- Dynamic Inputs -->
                                     <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
