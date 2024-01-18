@@ -764,6 +764,8 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     $count = 0;
     $already_selected = array();
+
+
     $ui = '<div class="list-group list-radio-select radio-'.$focus_id.'">';
 
     if($down_e__id > 0){
@@ -2122,7 +2124,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Coin Cover
     $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['e__id'].' coinType12274 card_privacy_'.$e['e__privacy'].( !$write_privacy_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
-    $ui .= '<div class="cover-btn '.( substr_count($e['e__cover'], 'fa-')>0 ? 'fa_found' : 'fa_not_found' ).' ui_e__cover_'.$e['e__id'].'" raw_cover="'.$e['e__cover'].'">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
+    $ui .= '<div class="cover-btn ui_e__cover_'.$e['e__id'].'" raw_cover="'.$e['e__cover'].'">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
     $ui .= ( !$focus_card ? '</a>' : '</div>' );
 
     $ui .= '</div>';

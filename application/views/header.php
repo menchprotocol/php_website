@@ -911,8 +911,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="left_modal_content">
                                 <div class="message_controllers source_controller">
 
-                                    <!-- Upload -->
-                                    <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+                                    <!-- Upload Cover -->
+                                    <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
 
                                     <!-- EMOJI -->
                                     <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
@@ -922,6 +922,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                     <!-- History -->
                                     <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+
+                                    <!-- Delete -->
+                                    <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="update__cover(\'\')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
 
                                 </div>
 

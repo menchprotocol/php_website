@@ -2034,7 +2034,7 @@ input.form-control {
 .demo_cover{
     width:144px !important;
     margin:0 auto !important;
-    padding: 8px 0  13px !important;
+    padding: 0 0 8px !important;
 }
 .section_demo{
     background-color: #FFFFFF;
@@ -2466,8 +2466,8 @@ input.form-control {
 
 
 .cover-btn i {
-    font-size: 1.34em !important;
-    margin-top: -29%;
+    font-size: 1.21em !important;
+    margin-top: -26%;
 }
 .focus-cover .cover-btn i {
     font-size: 1.55em !important;
@@ -2793,18 +2793,12 @@ h4.main__title{
     .cover-btn{
         font-size: 8em;
     }
-    .cover-btn.fa_not_found {
-        font-size: 8.9em;
-    }
 
 }
 
 
 .focus-cover .cover-btn {
     font-size: 8.9em;
-}
-.focus-cover .cover-btn.fa_not_found {
-    font-size: 13em;
 }
 
 
@@ -3458,10 +3452,6 @@ a,
 
 .focus-cover .cover-link.coinType12274 .cover-btn {
     top: 41% !important;
-}
-
-.cover-link.coinType12274 .cover-btn.fa_not_found {
-    top: 51% !important;
 }
 
 
@@ -4184,9 +4174,6 @@ main {
 }
 .section_demo .cover-btn{
     font-size: 4.55em;
-}
-.cover-btn.fa_not_found{
-    font-size: 8.9em;
 }
 .coinType12274 .cover-btn{
     color:#000000 !important;

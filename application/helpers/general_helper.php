@@ -1096,14 +1096,14 @@ function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
     } else {
 
         //Create new suggestion from string:
-        $str = preg_replace("/[^A-Za-z0-9 ]/", "", $str);
+        $str = preg_replace("/[^A-Za-z0-9]/", "", $str);
         if(strlen($str)>$max_allowed_length){
             //Shorten and remove the last word:
             $word_arr = explode(' ', substr($str, 0, $max_allowed_length));
             unset($word_arr[count($word_arr)-1]);
             $str = join(' ',$word_arr);
         }
-        $suggestion = preg_replace(view_memory(32103,41985), '', $str);
+        $suggestion = preg_replace("/[^A-Za-z0-9]/", '', $str);
 
     }
 
