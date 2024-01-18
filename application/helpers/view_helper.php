@@ -2150,6 +2150,58 @@ function view_card_e($x__type, $e, $extra_class = null)
     //Source Handle
     $ui .= '<div class="sub__handle grey center-block" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
+
+
+    //Source Location:
+    $e___32292 = $CI->config->item('e___32292'); //Idea Types
+    foreach($CI->X_model->fetch(array(
+        'x__type' => 42335,
+        'x__down' => $e['e__id'],
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+    ), array('x__up')) as $located){
+        $ui .= '<div class="center-frame"><a href="/@'.$located['e__handle'].'"><span class="icon-block icon-block-img">'.$e___32292[42335]['m__cover'].'</span>'.$located['e__title'].'</a></div>';
+    }
+
+
+    //Source Social Links
+    $social_ui = null;
+    foreach($this->config->item('e___14036') as $e__id => $m){
+        foreach($this->X_model->fetch(array(
+            'x__up' => $e__id,
+            'x__down' => $e['e__id'],
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0) as $social_link){
+
+            //Determine link type:
+            if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
+                //We made sure not the current website:
+                $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
+            } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
+                $social_url = 'href="mailto:'.$social_link['x__message'].'"';
+            } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
+                //Phone
+                $social_url = 'href="tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']).'"';
+            } else {
+                //Unknown!
+                continue;
+            }
+
+            //Append to links:
+            $social_ui .= '<li><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
+
+        }
+    }
+    if($social_ui){
+        $ui .= '<div class="source-social">';
+        $ui .= '<ul>';
+        $ui .= $social_ui;
+        $ui .= '</ul>';
+        $ui .= '</div>';
+    }
+
+
+
     $ui .= '</div>';
     $ui .= '</div>';
 

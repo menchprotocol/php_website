@@ -28,47 +28,6 @@ echo view_card_e(42287, $e, null);
 echo '</div>';
 
 
-
-
-$social_ui = null;
-foreach($this->config->item('e___14036') as $e__id => $m){
-    foreach($this->X_model->fetch(array(
-        'x__up' => $e__id,
-        'x__down' => $e['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array(), 0, 0) as $social_link){
-
-        //Determine link type:
-        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
-            //We made sure not the current website:
-            $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
-        } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
-            $social_url = 'href="mailto:'.$social_link['x__message'].'"';
-        } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
-            //Phone
-            $social_url = 'href="tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']).'"';
-        } else {
-            //Unknown!
-            continue;
-        }
-
-        //Append to links:
-        $social_ui .= '<li><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
-
-
-    }
-}
-if($social_ui){
-    echo '<div class="source-social">';
-    echo '<ul>';
-    echo $social_ui;
-    echo '</ul>';
-    echo '</div>';
-}
-
-
-
 $focus_menu = ( in_array($e['e__id'], $this->config->item('n___4527')) ? 'e___34649' : 'e___32596' );
 $e___focus = $this->config->item($focus_menu);
 
