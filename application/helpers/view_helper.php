@@ -1134,7 +1134,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             } else {
 
                 //This word is not referencing anything!
-                $i__cache_line .= $word;
+                $i__cache_line .= htmlentities($word);
                 $word_count++;
 
             }
@@ -1144,7 +1144,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         }
 
         $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( count($lines)<=1 && $reference_type_last>0 ? 'media_line' : '').( $save_i__id && $word_count>=$word_limit ? ' hidden ' : '' ).'">';
-        $i__cache .= htmlentities($i__cache_line);
+        $i__cache .= $i__cache_line;
         $i__cache .= '</div>';
 
     }
