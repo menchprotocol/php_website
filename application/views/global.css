@@ -2057,6 +2057,7 @@ input.form-control {
 }
 .flip-content .card_cover.coin-6255{
     border-bottom: 0px solid;
+    margin-bottom: 5px !important;
 }
 .flip-content .card_cover.contrast_bg:hover {
     background: #000000 !important;
