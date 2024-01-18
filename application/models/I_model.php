@@ -373,7 +373,7 @@ class I_model extends CI_Model
          * */
 
         //Valid Idea Addition?
-        if(!in_array($focus_card, $this->config->item('n___12761')) || (!in_array($x__type, $this->config->item('n___11020')) && in_array($x__type, $this->config->item('n___42261'))) || $focus_id < 1){
+        if(!in_array($focus_card, $this->config->item('n___12761')) || (!in_array($x__type, $this->config->item('n___11020')) && !in_array($x__type, $this->config->item('n___42261'))) || $focus_id < 1){
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'create_or_link(): Invalid Data',
