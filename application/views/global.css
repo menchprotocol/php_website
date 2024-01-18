@@ -3474,11 +3474,6 @@ a,
     padding-bottom: 5px;
 }
 
-.media_line {
-    display: inline-block;
-    width: 100%;
-}
-
 
 .remove_first_line .first_line{
     display: none;
