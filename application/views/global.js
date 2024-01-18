@@ -700,6 +700,7 @@ $(document).ready(function () {
         max_files: 2,
         theme: 'minimal',
         maxFileSize: 8000000000, //8GB
+        maxChunkSize: 100000000, //100MB
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
         //clientAllowedFormats: ['image', 'video'],
