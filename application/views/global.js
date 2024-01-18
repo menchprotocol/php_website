@@ -2230,7 +2230,7 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     new_e__id = parseInt(new_e__id);
     if(current_selected==new_e__id){
         //Nothing changed:
-        console.log('ERROR: NOTHING CHANGED');
+        console.log('ERROR: current_selected @'+current_selected+' same as new_e__id @'+new_e__id);
         return false;
     }
 
