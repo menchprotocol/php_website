@@ -1227,12 +1227,12 @@ function validate_handle($str, $i__id = null, $e__id = null){
             'message' => 'Hashtag Missing',
         );
 
-    } elseif (!preg_match(view_memory(26611,41985), $str)) {
+    } elseif (!ctype_alnum($str)) {
 
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => view_memory(30998,41985),
+            'message' => 'Can only contain alphanumneric numbers and letters',
         );
 
     } elseif (strlen($str) > view_memory(6404,41985)) {
@@ -1248,7 +1248,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 1,
-            'message' => 'Hashtag #'.$str.' already in use by App @'.$str,
+            'message' => 'Handle '.$str.' already being used by an App with the same name!',
         );
 
     }
@@ -1645,8 +1645,6 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message = str_replace('<div class="line','<div style="'.$general_style.'" class="line', $email_message);
     $email_message = str_replace("\n",'<div style="padding:5px 0 0;">&nbsp;</div>', $email_message);
     $email_message = str_replace('href="/','href="'.$base_domain.'/', $email_message);
-    //$email_message = preg_replace('/#+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/$1" target="_blank">@$1</a>', $email_message);
-    //$email_message = preg_replace('/@+([a-zA-Z0-9_]+)/','<a href="'.$base_domain.'/@$1" target="_blank">#$1</a>', $email_message);
 
     //Loadup amazon SES:
     require_once('application/libraries/aws/aws-autoloader.php');
