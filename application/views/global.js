@@ -699,7 +699,7 @@ $(document).ready(function () {
         multiple: true,
         max_files: 2,
         theme: 'minimal',
-        maxFileSize: 13000000000,
+        maxFileSize: 8000000000, //8GB
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
         clientAllowedFormats: ['image', 'video'],
