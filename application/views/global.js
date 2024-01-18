@@ -702,7 +702,7 @@ $(document).ready(function () {
         maxFileSize: 8000000000, //8GB
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
-        clientAllowedFormats: ['image', 'video'],
+        //clientAllowedFormats: ['image', 'video'],
         uploadPreset: 'upload_file_i_message'
 
         }, (error, result) => {
