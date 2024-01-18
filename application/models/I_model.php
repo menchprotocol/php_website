@@ -373,7 +373,7 @@ class I_model extends CI_Model
          * */
 
         //Valid Idea Addition?
-        if(!in_array($focus_card, $this->config->item('n___12761')) || !in_array($x__type, $this->config->item('n___11020')) || $focus_id < 1){
+        if(!in_array($focus_card, $this->config->item('n___12761')) || (!in_array($x__type, $this->config->item('n___11020')) && in_array($x__type, $this->config->item('n___42261'))) || $focus_id < 1){
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'create_or_link(): Invalid Data',
@@ -394,7 +394,8 @@ class I_model extends CI_Model
 
         $is_upwards = in_array($x__type, $this->config->item('n___14686'));
         $focus_is_i = $focus_card==12273;
-        $adding_an_i = in_array($x__type, $this->config->item('n___11020'));
+        $focus_is_e = $focus_card==12274;
+        $adding_an_i = ($focus_is_i && in_array($x__type, $this->config->item('n___11020'))) || ($focus_is_e && in_array($x__type, $this->config->item('n___42261')));
         //Validate Original idea
         if($focus_is_i){
 
