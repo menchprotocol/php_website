@@ -2121,7 +2121,7 @@ input.form-control {
     display: inline-block;
 }
 .source-social ul li a {
-    padding: 8px;
+    padding: 8px 5px;
 }
 .source-social ul li i {
     font-size: 1.34em !important;
@@ -2131,7 +2131,7 @@ input.form-control {
     padding: 5px 0;
 }
 .edge-cover .source-social ul li a {
-    padding: 5px;
+    padding: 5px 3px;
 }
 .edge-cover .source-social ul li i {
     font-size: 1em !important;
