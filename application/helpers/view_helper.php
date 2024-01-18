@@ -2148,7 +2148,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     //Source Handle
-    $ui .= '<div class="sub__handle grey show-on-hover center-block light-bg" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="sub__handle grey center-block" style="margin-top: -8px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     $ui .= '</div>';
     $ui .= '</div>';
