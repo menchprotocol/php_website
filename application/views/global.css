@@ -2130,6 +2130,15 @@ input.form-control {
     font-size: 1.34em !important;
 }
 
+.edge-cover .source-social ul {
+    padding: 5px 0;
+}
+.edge-cover .source-social ul li a {
+    padding: 5px;
+}
+.edge-cover .source-social ul li i {
+    font-size: 1em !important;
+}
 .modal-body input.form-control {
     background-color: #FFFFFF;
     font-weight: bold;
