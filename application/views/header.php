@@ -924,7 +924,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
 
                                     <!-- Delete -->
-                                    <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="update__cover(\'\')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
+                                    <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="update__cover('')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
 
                                 </div>
 
