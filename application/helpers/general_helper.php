@@ -1235,6 +1235,14 @@ function validate_handle($str, $i__id = null, $e__id = null){
             'message' => 'Can only contain alphanumneric numbers and letters',
         );
 
+    } elseif (!preg_match('/[a-zA-Z]/', $str)) {
+
+        return array(
+            'status' => 0,
+            'db_duplicate' => 0,
+            'message' => 'Must contain at-least one letter between A-Z',
+        );
+
     } elseif (strlen($str) > view_memory(6404,41985)) {
 
         return array(
