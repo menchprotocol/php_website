@@ -50,7 +50,17 @@ class I extends CI_Controller {
             'LOWER(i__hashtag)' => strtolower($i__hashtag),
         ));
         if ( count($is) < 1) {
-            return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__hashtag . ' Not Found</div>');
+
+            //See if we can find via ID?
+            if(is_numeric($i__hashtag)){
+                $is = $this->I_model->fetch(array(
+                    'i__id' => $i__hashtag,
+                ));
+            }
+
+            if ( count($is) < 1) {
+                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__hashtag . ' Not Found</div>');
+            }
         }
 
         $member_e = superpower_unlocked(10939); //Idea Pen?
