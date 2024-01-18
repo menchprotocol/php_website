@@ -2159,7 +2159,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         'x__down' => $e['e__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__up')) as $located){
-        $ui .= '<div class="center-frame center grey" style="padding: 5px 0;"><a href="/@'.$located['e__handle'].'"><span class="icon-block-xs">'.$e___32292[42335]['m__cover'].'</span>'.$located['e__title'].'</a></div>';
+        $ui .= '<div class="center-frame center grey" style="padding: 5px 0;"><a href="/@'.$located['e__handle'].'"><span class="icon-block-xxs">'.$e___32292[42335]['m__cover'].'</span>'.$located['e__title'].'</a></div>';
     }
 
 
