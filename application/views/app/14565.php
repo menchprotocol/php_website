@@ -194,7 +194,7 @@ foreach($this->config->item('e___14036') as $e__id => $m){
 if($social_ui){
     echo '<div class="narrow-bar slim_flat">';
     echo '<div class="social-footer">';
-    echo '<ul class="social-ul halfbg">';
+    echo '<ul class="social-ul">';
     echo $social_ui;
     echo '</ul>';
     echo '</div>';

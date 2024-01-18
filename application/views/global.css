@@ -1651,7 +1651,8 @@ i, .btn .show-max {
 .social-footer li{
     display: inline-block;
     font-size: 1.15em;
-    margin: 0;
+    margin: 0 3px 0 0;
+    background: rgba(0, 0, 0, 0.69) !important;
 }
 .texttype__sm {
     width:34px;
