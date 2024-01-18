@@ -2165,12 +2165,12 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Social Links
     $social_ui = null;
-    foreach($this->config->item('e___14036') as $e__id => $m){
-        foreach($this->X_model->fetch(array(
+    foreach($CI->config->item('e___14036') as $e__id => $m){
+        foreach($CI->X_model->fetch(array(
             'x__up' => $e__id,
             'x__down' => $e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0) as $social_link){
 
             //Determine link type:
