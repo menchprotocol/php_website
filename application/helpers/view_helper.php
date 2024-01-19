@@ -1093,6 +1093,8 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
     $line_count = 0;
+    $hidden_started = false;
+
     foreach(explode("\n", $str) as $line_index => $line) {
 
         if(strlen($line)){
@@ -1145,6 +1147,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             } else {
 
                 //This word is not referencing anything!
+                if($line_count<2 && $word_count>=$word_limit && !$hidden_started){
+                    $i__cache_line .= ' ...</div><div class="line hidden">';
+                    $hidden_started = true;
+                }
                 $i__cache_line .= htmlentities($word);
                 $word_count++;
 
