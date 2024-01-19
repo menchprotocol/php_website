@@ -761,6 +761,20 @@ class X_model extends CI_Model
 
         foreach($list_of_e__id as $x) {
 
+            if(!isset($x['e__id'])){
+                //Invalid input for sending:
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__message' => 'send_i_dm() Invalid user row',
+                    'x__metadata' => array(
+                        '$i' => $i,
+                        '$list_of_e__id' => $list_of_e__id,
+                        '$x' => $x,
+                    ),
+                ));
+                continue;
+            }
+
             //Send to all of them IF NOT DISCOVERED
             if(!$ensure_undiscovered || !count($this->X_model->fetch(array(
                 'x__left' => $i['i__id'],
