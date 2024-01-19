@@ -1578,7 +1578,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
             'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
             'x__creator' => $e__id,
             'x__message' => $single_message,
-            'x__left' => $template_i__id,
+            'x__right' => $template_i__id,
             'x__metadata' => array(
                 'post' => $post,
                 'response' => $y,
@@ -1712,7 +1712,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         //Let's log a system email as the last resort way to record this transaction:
         $CI->X_model->create(array_merge($x_data, array(
             'x__type' => 29399,
-            'x__left' => $template_i__id,
+            'x__right' => $template_i__id,
             'x__creator' => $e__id,
             'x__message' => $subject."\n\n".$email_message,
             'x__metadata' => array(
