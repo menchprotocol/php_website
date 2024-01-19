@@ -143,7 +143,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                         //Send message:
                         $send_dm = $this->X_model->send_dm($x['e__id'], $subject, $plain_message, array(
                             'x__left' => $i['i__id'],
-                        ), 0, $user_website);
+                        ), $i['i__id'], $user_website);
 
                         $total_sent += ( $send_dm['status'] ? 1 : 0 );
 
@@ -283,7 +283,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message . "\n\n" . trim($plain_message), array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $i['i__id'],
-                ), 0, $i['x__website'], true);
+                ), $i['i__id'], $i['x__website'], true);
                 $total_sent += ($send_dm['status'] ? 1 : 0);
 
             }

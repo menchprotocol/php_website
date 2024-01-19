@@ -618,11 +618,16 @@ class X_model extends CI_Model
         );
 
     }
-    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true)
+    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true)
     {
 
         $sms_subscriber = false;
-        $bypass_notifications = in_array($template_id, $this->config->item('n___31779'));
+        $bypass_notifications = count($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Writes
+            'x__up' => 31779, //Mandatory Emails
+            'x__right' => $template_i__id,
+        )));
 
         if(!$bypass_notifications){
             $notification_levels = $this->X_model->fetch(array(
@@ -667,7 +672,7 @@ class X_model extends CI_Model
 
         if(count($stats['email_addresses']) > 0){
             //Send email:
-            send_email($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_id, $x__website, $log_tr);
+            send_email($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr);
         }
 
 
@@ -694,7 +699,7 @@ class X_model extends CI_Model
 
                 foreach(explode('|||',wordwrap($sms_message, view_memory(6404,27891), "|||")) as $single_message){
 
-                    $sms_sent = send_sms($e_data['x__message'], $single_message, $e__id, $x_data, $template_id, $x__website, $log_tr);
+                    $sms_sent = send_sms($e_data['x__message'], $single_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr);
 
                     if(!$sms_sent){
                         //bad number, remove it:
@@ -794,7 +799,7 @@ class X_model extends CI_Model
                 $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$plain_message, array(
                     'x__right' => $x__right,
                     'x__left' => $i['i__id'],
-                ), 0, $x__website, true);
+                ), $i['i__id'], $x__website, true);
 
                 $total_sent += ( $send_dm['status'] ? 1 : 0 );
 

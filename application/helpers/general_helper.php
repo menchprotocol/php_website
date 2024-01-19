@@ -1523,7 +1523,7 @@ function e_link_message($x__up, $e__id, $message_text){
     return $return;
     
 }
-function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true){
+function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true){
 
     $CI =& get_instance();
     $twilio_account_sid = website_setting(30859);
@@ -1541,7 +1541,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
                 'x__metadata' => array(
                     '$to_phone' => $to_phone,
                     '$single_message' => $single_message,
-                    '$template_id' => $template_id,
+                    '$template_i__id' => $template_i__id,
                     '$x_data' => $x_data,
                 ),
             ));
@@ -1578,7 +1578,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
             'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
             'x__creator' => $e__id,
             'x__message' => $single_message,
-            'x__down' => $template_id,
+            'x__left' => $template_i__id,
             'x__metadata' => array(
                 'post' => $post,
                 'response' => $y,
@@ -1590,7 +1590,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
 
 }
 
-function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_id = 0, $x__website = 0, $log_tr = true){
+function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true){
 
     $CI =& get_instance();
     $domain_name = get_domain('m__title', $e__id, $x__website);
@@ -1639,7 +1639,14 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message .= "\n".$email_body."\n";
     $email_message .= '<div class="line">'.view_shuffle_message(12691).'</div>';
     $email_message .= '<div class="line">'.get_domain('m__title', $e__id, $x__website).'</div>';
-    if($e__id > 0 && count($es) && !in_array($template_id, $CI->config->item('n___31779'))){
+
+
+    if($e__id > 0 && count($es) && (!$template_i__id || !count($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Writes
+            'x__up' => 31779, //Mandatory Emails
+            'x__right' => $template_i__id,
+        ))))){
         //User specific notifications:
         $email_message .= '<div class="line"><a href="'.$base_domain.view_app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$es[0]['e__handle']).'" style="font-size:13px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
@@ -1705,7 +1712,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         //Let's log a system email as the last resort way to record this transaction:
         $CI->X_model->create(array_merge($x_data, array(
             'x__type' => 29399,
-            'x__down' => $template_id,
+            'x__left' => $template_i__id,
             'x__creator' => $e__id,
             'x__message' => $subject."\n\n".$email_message,
             'x__metadata' => array(
