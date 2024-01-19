@@ -668,7 +668,6 @@ class E extends CI_Controller
                                         'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ),
                                         'd__value' => $curr_val['x__message'],
                                         'd__type_name' => html_input_type($data_type),
-                                        'd__type_id' => $data_type,
                                         'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
                                     ));
                                 }
@@ -681,7 +680,6 @@ class E extends CI_Controller
                                     'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
                                     'd__value' => '',
                                     'd__type_name' => html_input_type($data_type),
-                                    'd__type_id' => $data_type,
                                     'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : 'Enter '.$e___4592[$data_type]['m__title'].'...' ),
                                 ));
                             }
