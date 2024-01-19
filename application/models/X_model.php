@@ -788,10 +788,10 @@ class X_model extends CI_Model
                 foreach($children as $down_or){
                     //Has this user discovered this idea or no?
                     $plain_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
-                    $plain_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']).'</div>'."\n";
+                    $plain_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']).'</div>';
                 }
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message."\n".trim($plain_message), array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$plain_message, array(
                     'x__right' => $x__right,
                     'x__left' => $i['i__id'],
                 ), 0, $x__website, true);
