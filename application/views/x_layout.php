@@ -951,10 +951,9 @@ if($top_i__hashtag){
     echo '</div>';
 }
 
-
-?>
-
-<!-- Example split danger button -->
+/*
+ *
+ * <!-- Example split danger button -->
 <div class="btn-group">
     <button type="button" class="btn btn-danger">FOLLOW</button>
     <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
@@ -968,6 +967,10 @@ if($top_i__hashtag){
         <li><a class="dropdown-item" href="#">Separated link</a></li>
     </ul>
 </div>
+*/
+?>
+
+
 
 <style> .headline_6255, .headline_13980 { display: none !important; } </style>
 <script>
