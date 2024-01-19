@@ -1636,7 +1636,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $base_domain = 'https://'.get_domain('m__message', $e__id, $x__website);
 
     $email_message = '<div class="line">'.view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750).'</div>';
-    $email_message .= $email_body;
+    $email_message .= $email_body."\n";
     $email_message .= '<div class="line">'.view_shuffle_message(12691).'</div>';
     $email_message .= '<div class="line">'.get_domain('m__title', $e__id, $x__website).'</div>';
     if($e__id > 0 && count($es) && !in_array($template_id, $CI->config->item('n___31779'))){
@@ -1651,7 +1651,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message = str_replace('>Show more<','><', $email_message); //Hide the show more content if any
     $email_message = str_replace('<img ','<img style="'.$general_style.'" ', $email_message);
     $email_message = str_replace('<div class="line','<div style="'.$general_style.'" class="line', $email_message);
-    $email_message = str_replace("\n",'<div style="padding:5px 0 0;">&nbsp;</div>', $email_message);
+    $email_message = str_replace("\n",'<div style="padding:3px 0 0; line-height:100%;">&nbsp;</div>', $email_message);
     $email_message = str_replace('href="/','href="'.$base_domain.'/', $email_message);
 
     //Loadup amazon SES:
