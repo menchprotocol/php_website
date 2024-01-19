@@ -1153,7 +1153,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
                 //Dynamic Input Fields:
                 for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
 
-                    if(!data.return_inputs[i].length){
+                    if(data.return_inputs[i] == undefined){
                         data.return_inputs[i]["d__id"] = 0;
                         data.return_inputs[i]["d_x__id"] = 0;
                         data.return_inputs[i]["d__title"] = '';
@@ -1357,7 +1357,7 @@ function editor_load_e(e__id, x__id){
             //Dynamic Input Fields:
             for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
 
-                if(!data.return_inputs[i].length){
+                if(data.return_inputs[i] == undefined){
                     data.return_inputs[i]["d__id"] = 0;
                     data.return_inputs[i]["d_x__id"] = 0;
                     data.return_inputs[i]["d__title"] = '';
