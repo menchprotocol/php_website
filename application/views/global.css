@@ -1228,8 +1228,8 @@ a.headline {
 }
 
 .url_truncate {
-    max-width: calc(100% - 0px);
-    overflow: hidden;
+    max-width: 100%;
+    overflow: visible;
     display: inline-block;
 }
 

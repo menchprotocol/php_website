@@ -1753,7 +1753,7 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
         $server_name = get_server('SERVER_NAME');
         if(strlen($server_name)){
             foreach($CI->config->item('e___14870') as $x__type => $m) {
-                if ($server_name==$m['m__message']){
+                if (substr_count($m['m__message'], $server_name)==1){
                     $e_id = $x__type;
                     break;
                 }

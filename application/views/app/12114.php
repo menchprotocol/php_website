@@ -11,7 +11,7 @@ $x__time_start = date("Y-m-d H:i:s", $x__time_start_timestamp);
 $x__time_end = date("Y-m-d H:i:s", $x__time_end_timestamp);
 
 //Email Body
-$plain_message = 'Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':'."\n";
+$plain_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':</div>';
 
 foreach($this->config->item('e___14874') as $x__type => $m) {
 
@@ -21,11 +21,11 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $plain_message .= "\n".$m['m__title'].' <span title="$unique='.$unique.' && $this_week='.$this_week.'">'.$growth.'</span>';
+    $plain_message .= '<div class="line">'.$m['m__title'].' <span title="$unique='.$unique.' && $this_week='.$this_week.'">'.$growth.'</span></div>';
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___13776'))){
-        $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp);
+        $subject = '<div class="line">'.$m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp).'</div>';
     }
 
 }

@@ -398,10 +398,22 @@ class E_model extends CI_Model
         } else {
 
             //Send Welcome Email if any:
-            if($phone_number || $email){
-                $e___14929 = $this->config->item('e___14929'); //Welcome Email Templates
-                if(isset($e___14929[$x__website]['m__message']) && strlen($e___14929[$x__website]['m__message'])){
-                    $this->X_model->send_dm($added_e['new_e']['e__id'], 'Welcome to '.$e___14929[$x__website]['m__title'], $e___14929[$x__website]['m__message']);
+            if($email){
+                foreach($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 33600, //Draft
+                    'x__up' => 14929, //Website Welcome Email Templates
+                ), array('x__right'), 0) as $i){
+                    if(count($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type' => 33600, //Draft
+                        'x__up' => $x__website, //for Current website
+                        'x__right' => $i['i__id'], //Is this the template?
+                    )))){
+                        //Found the email template to send:
+                        $total_sent = $this->X_model->send_i_dm(array('e__id'=>$added_e['new_e']['e__id']), $i);
+                        break; //Just the first template match
+                    }
                 }
             }
 

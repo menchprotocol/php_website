@@ -1016,9 +1016,25 @@ class E extends CI_Controller
         if($_POST['down_e__id'] > 0){
 
             //Dispatch Any Emails Necessary:
-            foreach($this->E_model->scissor_e(31065, $_POST['selected_e__id']) as $e_item) {
-                $this->X_model->send_dm($member_e['e__id'], $e_item['e__title'], $e_item['x__message'], array(), $e_item['e__id']);
+            if(isset($_POST['selected_e__id']) && intval($_POST['selected_e__id'])>0){
+                foreach($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 33600, //Draft
+                    'x__up' => $_POST['selected_e__id'],
+                ), array('x__right'), 0) as $i){
+                    if(count($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type' => 33600, //Draft
+                        'x__up' => 31065, //Choice Update Email Templates
+                        'x__right' => $i['i__id'], //Is this the template?
+                    )))){
+                        //Found the email template to send:
+                        $total_sent = $this->X_model->send_i_dm($member_e, $i, 0, false);
+                        break; //Just the first template match
+                    }
+                }
             }
+
 
             if($_POST['focus_id']==28904){
 
@@ -1496,7 +1512,7 @@ class E extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].' for '.get_domain('m__title');
+        $plain_message = '<div class="line">'.$passcode.' is your '.$e___11035[32078]['m__title'].' for your '.get_domain('m__title').' account.</div>';
 
         if($valid_email) {
 
