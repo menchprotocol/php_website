@@ -1641,9 +1641,9 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     $email_message .= '<div class="line">'.get_domain('m__title', $e__id, $x__website).'</div>';
 
 
-    if($e__id > 0 && count($es) && (!$template_i__id || !count($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Writes
+    if($e__id > 0 && count($es) && (!$template_i__id || !count($CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___42256')) . ')' => null, //Writes
             'x__up' => 31779, //Mandatory Emails
             'x__right' => $template_i__id,
         ))))){
