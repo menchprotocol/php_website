@@ -201,15 +201,16 @@ if($social_ui){
     echo '</div>';
 }
 
-
 echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
+
 <style>
     .container_content .line {
         color: #FFFFFF !important;
     }
 </style>
+
 <script>
     $(window).scroll(function() {
         if($(window).scrollTop()  > 110) {
