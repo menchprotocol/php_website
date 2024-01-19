@@ -1527,6 +1527,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                         } elseif($e__id_dropdown==6182 && $write_privacy_i){
 
                             //Delete Permanently
+                            $action_buttons .= '<li class="dropdown-item"><hr class="dropdown-divider"></li>';
                             $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__privacy'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(28727)){
@@ -2066,6 +2067,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         } elseif($e__id_dropdown==6178 && $write_privacy_e){
 
                             //Delete Permanently
+                            $action_buttons .= '<li class="dropdown-item"><hr class="dropdown-divider"></li>';
                             $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__privacy'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
