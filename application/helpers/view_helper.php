@@ -1140,7 +1140,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             }
         }
 
-        $i__cache .= '<div class="line '.(!$line_index ? ' first_line ' : '').( $save_i__id && $word_count>=$word_limit ? ' hidden ' : '' ).'" >';
+        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( $save_i__id && $word_count>=$word_limit ? ' hidden ' : '' ).'">';
         $i__cache .= $i__cache_line;
         $i__cache .= '</div>';
 
