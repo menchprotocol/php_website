@@ -722,7 +722,7 @@ class X_model extends CI_Model
 
 
 
-    function send_i_dm($list_of_e__id, $i, $x__right = 0, $ensure_undiscovered = true){
+    function send_i_dm($list_of_e__id, $i, $x__right = 0, $x__website = 0, $ensure_undiscovered = true){
 
         $top_i__hashtag = '';
         foreach($this->X_model->fetch(array(
@@ -751,7 +751,7 @@ class X_model extends CI_Model
         ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
 
         $total_sent = 0;
-        $x__website = ( isset($i['x__website']) ? $i['x__website'] : 0 );
+        $x__website = ( $x__website>0 ? $x__website : ( isset($i['x__website']) ? $i['x__website'] : 0 ) );
         $subject_line = view_i_title($i, true);
         $content_message = view_i_links($i, true, false); //Hide the show more content if any
         if(!(substr($subject_line, 0, 1)=='#' && !substr_count($subject_line, ' '))){
