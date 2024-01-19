@@ -206,14 +206,6 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 
 ?>
 <style>
-    <?php
-    if(!$member_e){
-        echo ' .creator_headline_frame{ display: none; } ';
-    }
-    ?>
-    .creator_headline_frame{
-        display: none;
-    }
     .container_content .line {
         color: #FFFFFF !important;
     }
