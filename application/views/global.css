@@ -10,7 +10,7 @@ body {
     font-size: 1em;
     margin:60px 0 144px 0 !important;
     font-weight: 400;
-    line-height: 121%;
+    line-height: 134%;
 }
 
 
@@ -243,7 +243,7 @@ li a {
 }
 
 .regtext, .i_cache{
-    line-height: 121%;
+    line-height: 134%;
 }
 
 
@@ -897,7 +897,7 @@ p.menu_header {
 }
 
 textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    line-height: 121%;
+    line-height: 134%;
 }
 
 
@@ -1582,7 +1582,7 @@ i, .btn .show-max {
     padding:0 13px 0 0;
     font-size: 1.3em !important;
     font-weight: bold;
-    line-height: 121%;
+    line-height: 134%;
 }
 .platform-logo{
     line-height: 130%;
@@ -1845,7 +1845,7 @@ i, .btn .show-max {
 }
 .subtle-line{
     display: inline-block;
-    line-height: 121%;
+    line-height: 134%;
     padding: 5px 0;
 }
 .mini-font{
@@ -2002,7 +2002,7 @@ input.form-control {
 
 
 .cover-text {
-    line-height: 121%;
+    line-height: 134%;
     text-align: left;
 }
 
@@ -2101,7 +2101,7 @@ input.form-control {
 .cover-content .inner-content {
     margin:0;
     padding: 5px 0 0;
-    line-height: 121%;
+    line-height: 134%;
     font-size: 1em;
     display: block;
     vertical-align: middle;
@@ -2173,7 +2173,7 @@ input.form-control {
 .mini-cover .cover-content .inner-content {
     margin: 0;
     padding: 0;
-    line-height: 121%;
+    line-height: 134%;
     font-size: 0.75em;
     display: block;
     border-radius: 0;
@@ -2366,7 +2366,7 @@ input.form-control {
     padding:144px 21px 21px;
     font-size: 2.5em;
     text-align: center;
-    line-height: 121%;
+    line-height: 134%;
 }
 .info_box_cover{
     padding:21px 0;
@@ -2395,7 +2395,7 @@ input.form-control {
     text-align: center;
     font-size: 1.15em;
     padding: 0 21px;
-    line-height: 121%;
+    line-height: 134%;
 }
 .info_box_message{
     text-align: center;
@@ -2487,14 +2487,14 @@ textarea {
     font-size: 1.4em;
     width: 100%;
     margin: 0;
-    line-height: 121%;
+    line-height: 134%;
 }
 .focus-cover .inner-content textarea {
-    line-height: 121%;
+    line-height: 134%;
 }
 .focus-cover .inner-content .main__title {
     font-size: 1.15em;
-    line-height: 121%;
+    line-height: 134%;
     padding: 13px !important;
 }
 
@@ -2533,7 +2533,7 @@ textarea {
 .message2{
     padding:5px 0 0 25px;
     font-size:0.70em;
-    line-height: 121%;
+    line-height: 134%;
     white-space: normal;
 }
 
@@ -2562,7 +2562,7 @@ h4.main__title{
     content: "&";
 }
 .breadcrumb-item {
-    margin: 3px 0;
+    margin: 5px 0;
 }
 
 .breadcrumb-item .breadcrumb-item a {
@@ -2629,7 +2629,7 @@ h4.main__title{
 .i_cache .first_line{
     font-size: 2.4em;
     padding-bottom: 8px;
-    line-height: 121%;
+    line-height: 134%;
     margin-bottom: 13px;
 }
 .mench-points {

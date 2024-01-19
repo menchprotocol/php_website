@@ -256,7 +256,7 @@ if(!$breadcrum_content){
 }
 
 if($breadcrum_content){
-    echo '<nav aria-label="breadcrumb"><ol class="breadcrumb">';
+    echo '<nav aria-label="breadcrumb" style="background-color: #FFFFFF;"><ol class="breadcrumb">';
     echo $breadcrum_content;
     echo '</ol></nav>';
 }

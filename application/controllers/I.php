@@ -52,15 +52,16 @@ class I extends CI_Controller {
         if ( count($is) < 1) {
 
             //See if we can find via ID?
-            if(is_numeric($i__hashtag)){
-                $is = $this->I_model->fetch(array(
+            if(0 && is_numeric($i__hashtag)){
+                foreach($this->I_model->fetch(array(
                     'i__id' => $i__hashtag,
-                ));
+                )) as $go){
+                    return redirect_message('/'.$go['i__hashtag']);
+                }
             }
 
-            if ( count($is) < 1) {
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__hashtag . ' Not Found</div>');
-            }
+            return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__hashtag . ' Not Found</div>');
+
         }
 
         $member_e = superpower_unlocked(10939); //Idea Pen?
