@@ -88,7 +88,7 @@ class E extends CI_Controller
 
                 //SOURCES
                 $current_e__handle = view_valid_handle_e($_POST['first_segment']);
-                $e___6177 = $this->config->item('e___6177'); //Source Status
+                $e___6177 = $this->config->item('e___6177'); //Source Privacy
                 $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
                 foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $e_e) {
@@ -648,6 +648,7 @@ class E extends CI_Controller
 
                             $this_data_type = $this->config->item('e___'.$data_type);
                             $e___4592 = $this->config->item('e___4592'); //Data types
+                            $e___6177 = $this->config->item('e___6177'); //Source Privacy
 
                             //Fetch the current value(s):
                             $counted = 0;
@@ -664,8 +665,7 @@ class E extends CI_Controller
                                     array_push($return_inputs, array(
                                         'd__id' => $dynamic_e__id,
                                         'd_x__id' => $curr_val['x__id'],
-                                        'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                                        'd__icons' => ( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span class="grey" title="Private Information" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>' : '' ),
+                                        'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ),
                                         'd__value' => $curr_val['x__message'],
                                         'd__type_name' => html_input_type($data_type),
                                         'd__type_id' => $data_type,

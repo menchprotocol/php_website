@@ -636,7 +636,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Statuses</option>';
-                                    foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
+                                    foreach($this->config->item('e___6177') /* Source Privacy */ as $x__type3 => $m3){
                                         $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
@@ -644,7 +644,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status...</option>';
-                                    foreach($this->config->item('e___6177') /* Source Status */ as $x__type3 => $m3){
+                                    foreach($this->config->item('e___6177') /* Source Privacy */ as $x__type3 => $m3){
                                         $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';

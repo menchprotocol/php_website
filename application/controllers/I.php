@@ -321,6 +321,7 @@ class I extends CI_Controller {
 
                 $this_data_type = $this->config->item('e___'.$data_type);
                 $e___4592 = $this->config->item('e___4592'); //Data types
+                $e___6177 = $this->config->item('e___6177'); //Source Privacy
 
                 //Fetch the current value:
                 $counted = 0;
@@ -330,14 +331,14 @@ class I extends CI_Controller {
                     'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                     'x__right' => $is[0]['i__id'],
                     'x__up' => $dynamic_e__id,
-                )) as $curr_val){
+                ), array('x__up')) as $curr_val){
                     if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
                         $counted++;
                         array_push($unique_values, $curr_val['x__message']);
                         array_push($return_inputs, array(
                             'd__id' => $dynamic_e__id,
                             'd_x__id' => $curr_val['x__id'],
-                            'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                            'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ),
                             'd__value' => $curr_val['x__message'],
                             'd__type_name' => html_input_type($data_type),
                             'd__type_id' => $data_type,

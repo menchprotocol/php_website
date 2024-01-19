@@ -1151,13 +1151,13 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
                 var field_counter = 0;
 
                 //Dynamic Input Fields:
-                for (var i=0, item; item = data.return_inputs[i]; i++) {
+                for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
                     field_counter++;
-                    $("#modal31911 .dynamic_"+field_counter+" h3").html(item["d__title"]);
+                    $("#modal31911 .dynamic_"+field_counter+" h3").html(data.return_inputs[i]["d__title"]);
                     $("#modal31911 .dynamic_"+field_counter).removeClass('hidden');
-                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type_name"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
+                    $("#modal31911 .dynamic_"+field_counter+" input").attr('placeholder',data.return_inputs[i]["d__placeholder"]).attr('type',data.return_inputs[i]["d__type_name"]).attr('d__id',data.return_inputs[i]["d__id"]).attr('d_x__id',data.return_inputs[i]["d_x__id"]).val(data.return_inputs[i]["d__value"]);
 
-                    if(x__id && fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')){
+                    if(x__id && fetch_int_val('#focus_card')==12274 && data.return_inputs[i]["d__id"]==fetch_int_val('#focus_id')){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         $("#modal31911 .save_x__message").val('IGNORE_INPUT');
                         $("#modal31911 .save_x__frame").addClass('hidden');
@@ -1345,14 +1345,12 @@ function editor_load_e(e__id, x__id){
             var field_counter = 0;
 
             //Dynamic Input Fields:
-            for (var i=0, item; item = data.return_inputs[i]; i++) {
+            for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
+                $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[i]["d__title"]);
+                $("#modal31912 .dynamic_"+i).removeClass('hidden');
+                $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[i]["d__placeholder"]).attr('type',data.return_inputs[i]["d__type_name"]).attr('d__id',data.return_inputs[i]["d__id"]).attr('d_x__id',data.return_inputs[i]["d_x__id"]).val(data.return_inputs[i]["d__value"]);
 
-                field_counter++;
-                $("#modal31912 .dynamic_"+field_counter+" h3").html(item["d__title"]);
-                $("#modal31912 .dynamic_"+field_counter).removeClass('hidden');
-                $("#modal31912 .dynamic_"+field_counter+" input").attr('placeholder',item["d__placeholder"]).attr('type',item["d__type_name"]).attr('d__id',item["d__id"]).attr('d_x__id',item["d_x__id"]).val(item["d__value"]);
-
-                if(x__id && ( (fetch_int_val('#focus_card')==12274 && item["d__id"]==fetch_int_val('#focus_id')) || item["d__id"]==e__id )){
+                if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[i]["d__id"]==e__id )){
                     //Hide message textarea since this is already loaded in the dynamic inputs:
                     $("#modal31912 .save_x__message").val('IGNORE_INPUT');
                     $("#modal31912 .save_x__frame").addClass('hidden');

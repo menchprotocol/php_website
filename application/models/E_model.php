@@ -673,11 +673,11 @@ class E_model extends CI_Model
                 } elseif($key=='e__privacy') {
 
                     if(in_array($value, $this->config->item('n___7358') /* ACTIVE */)){
-                        $x__type = 10654; //Source Status Updated
+                        $x__type = 10654; //Source Privacy Updated
                     } else {
                         $x__type = 6178; //Source Deleted
                     }
-                    $e___6177 = $this->config->item('e___6177'); //Source Status
+                    $e___6177 = $this->config->item('e___6177'); //Source Privacy
                     $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
 
                 } elseif($key=='e__cover') {

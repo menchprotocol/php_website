@@ -79,7 +79,7 @@ if($icon_keyword){
 
             echo '<tr class="panel-title down-border">';
             echo '<td style="text-align: left;">'.($count+1).'</td>';
-            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Status */, $en['e__privacy'], true, 'right').' <span class="icon-block">'.view_cover($en['e__cover']).'</span><a href="/@'.$en['e__handle'].'">'.$en['e__title'].'</a></td>';
+            echo '<td style="text-align: left;">'.view_cache(6177 /* Source Privacy */, $en['e__privacy'], true, 'right').' <span class="icon-block">'.view_cover($en['e__cover']).'</span><a href="/@'.$en['e__handle'].'">'.$en['e__title'].'</a></td>';
             echo '</tr>';
 
         }

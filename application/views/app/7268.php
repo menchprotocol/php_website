@@ -43,7 +43,7 @@ if(isset($_GET['e__handle'])){
     if(count($duplicates) > 0){
 
         $prev_title = null;
-        $e___6177 = $this->config->item('e___6177'); //Source Status
+        $e___6177 = $this->config->item('e___6177'); //Source Privacy
 
         foreach($duplicates as $en) {
 

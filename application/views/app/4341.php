@@ -364,11 +364,11 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
 echo '</div>';
 
-//Optional IDEA/SOURCE status filter ONLY IF DISCOVERY Type = Create New IDEA/SOURCE
+//Optional IDEA/Source Privacy filter ONLY IF DISCOVERY Type = Create New IDEA/SOURCE
 
 echo '<div class="filter-statuses filter-in-status hidden"><span class="mini-header">IDEA Type(es)</span><input type="text" name="i__type" value="' . ((isset($_GET['i__type'])) ? $_GET['i__type'] : '') . '" class="form-control border"></div>';
 
-echo '<div class="filter-statuses e_privacy_filter hidden"><span class="mini-header">SOURCE Status(es)</span><input type="text" name="e__privacy" value="' . ((isset($_GET['e__privacy'])) ? $_GET['e__privacy'] : '') . '" class="form-control border"></div>';
+echo '<div class="filter-statuses e_privacy_filter hidden"><span class="mini-header">Source Privacy(es)</span><input type="text" name="e__privacy" value="' . ((isset($_GET['e__privacy'])) ? $_GET['e__privacy'] : '') . '" class="form-control border"></div>';
 
 echo '</td>';
 
