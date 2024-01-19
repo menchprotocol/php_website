@@ -1147,11 +1147,11 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             } else {
 
                 //This word is not referencing anything!
-                if($line_count<2 && $word_count>=$word_limit && !$hidden_started){
+                $i__cache_line .= htmlentities($word);
+                if($word_count>=$word_limit && !$hidden_started){
                     $i__cache_line .= ' ...</div><div class="line hidden">';
                     $hidden_started = true;
                 }
-                $i__cache_line .= htmlentities($word);
                 $word_count++;
 
             }
