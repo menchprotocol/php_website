@@ -229,8 +229,16 @@ function view_app_link($app_id){
 
 function view_memory($following, $follower, $filed = 'm__message'){
     $CI =& get_instance();
-    $memory_tree = $CI->config->item('e___'.$following);
-    return $memory_tree[$follower][$filed];
+    $memory_tree = @$CI->config->item('e___'.$following);
+    if(is_array($memory_tree) && count($memory_tree) && isset($memory_tree[$follower][$filed])){
+        return $memory_tree[$follower][$filed];
+    } else {
+        return null;
+        $CI->X_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__message' => 'view_memory() Failed to load ['.$filed.'] @'.$following.' for @'.$follower,
+        ));
+    }
 }
 
 
