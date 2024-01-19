@@ -1512,12 +1512,12 @@ class E extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $plain_message = '<div class="line">'.$passcode.' is your '.$e___11035[32078]['m__title'].' for your '.get_domain('m__title').' account.</div>';
+        $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].' for your '.get_domain('m__title').' account.';
 
         if($valid_email) {
 
             //Email:
-            send_email(array($_POST['account_email_phone']), $plain_message, $plain_message.'.', $x__creator, array(), 0, 0, false);
+            send_email(array($_POST['account_email_phone']), $plain_message, '<div class="line">'.$plain_message.'</div>', $x__creator, array(), 0, 0, false);
 
 
             //Log new key:
