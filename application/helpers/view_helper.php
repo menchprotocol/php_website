@@ -1095,11 +1095,12 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     $line_count = 0;
     foreach(explode("\n", $str) as $line_index => $line) {
 
-        $line_count++;
+        if(strlen($line)){
+            $line_count++;
+        }
         $i__cache_line = '';
-        $lines = explode(' ', $line);
 
-        foreach($lines as $word_index => $word) { //'/\s+/'
+        foreach(explode(' ', $line) as $word_index => $word) {
 
             $reference_type = 0;
             $i__cache_line .= ( $word_index>0 ? ' ' : '' );
