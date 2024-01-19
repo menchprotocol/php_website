@@ -931,21 +931,21 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-5">
 
                             <!-- SOURCE COVER -->
-                            <div class="message_controllers source_controller">
+                            <div class="message_controllers">
                                 <!-- Upload Cover -->
-                                <a class="icon-block-sm upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
+                                <a class="icon-block-xs upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
 
                                 <!-- EMOJI -->
-                                <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
+                                <a class="icon-block-xs" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
 
                                 <!-- Font Awesome -->
-                                <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+                                <a class="icon-block-xs" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
 
                                 <!-- History -->
-                                <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+                                <a class="icon-block-xs cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
 
                                 <!-- Delete -->
-                                <a class="icon-block-sm" href="javascript:void(0);" onclick="update__cover('')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
+                                <a class="icon-block-xs" href="javascript:void(0);" onclick="update__cover('')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
                             </div>
                             <div class="dynamic_editing_input">
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
