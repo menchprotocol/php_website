@@ -1092,8 +1092,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     $media_words = 21; //The number of words a photo/video file is counted as...
 
     $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
+    $line_count = 0;
     foreach(explode("\n", $str) as $line_index => $line) {
 
+        $line_count++;
         $i__cache_line = '';
         $lines = explode(' ', $line);
 
@@ -1148,14 +1150,14 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             }
         }
 
-        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( $save_i__id && $word_count>=$word_limit ? ' hidden ' : '' ).'">';
+        $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').( $save_i__id && $word_count>=$word_limit && $line_count>1 ? ' hidden ' : '' ).'">';
         $i__cache .= $i__cache_line;
         $i__cache .= '</div>';
 
     }
 
 
-    if($save_i__id && $word_count>=$word_limit){
+    if($save_i__id && $word_count>=$word_limit && $line_count>1){
         //Add show more button:
         $i__cache .= '<div class="line show_more_line"><spanaa href="javascript:void(0);">Show more</spanaa></div>';
     }
