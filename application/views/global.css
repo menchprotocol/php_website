@@ -1234,12 +1234,6 @@ a.headline {
     display: inline-block;
 }
 
-.url_truncate {
-    max-width: 100%;
-    overflow: visible;
-    display: inline-block;
-}
-
 
 .list-group-item .form-group {
     background-color: inherit;
@@ -4168,7 +4162,7 @@ main {
     background-color: #FFFFFF !important;
 }
 
-.sub__handle {
+.sub__handle, .url_truncate {
     font-size: 1em;
     max-width: 98%;
     overflow: hidden;
