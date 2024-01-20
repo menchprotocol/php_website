@@ -2218,8 +2218,8 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Find any links?
     foreach($CI->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__up NOT IN (' . join(',', $social_listed) . ')' => null, //Already listed!
         'x__down' => $e['e__id'],
         'LENGTH(x__message)>0' => null,
