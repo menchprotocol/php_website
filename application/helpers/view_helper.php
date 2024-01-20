@@ -314,7 +314,7 @@ function view_body_e($x__type, $counter, $e__id){
     $member_e = superpower_unlocked();
 
     //Check Permission:
-    if(in_array($x__type, $this->config->item('n___PrivateContent')) && !write_privacy_e(null, $e__id)){
+    if(in_array($x__type, $CI->config->item('n___42376')) && !write_privacy_e(null, $e__id)){
         return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private Content</div>';
     }
 
