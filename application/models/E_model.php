@@ -541,18 +541,9 @@ class E_model extends CI_Model
         $flat_items = array();
         $s__level++;
 
-        if($x__type==12274 || $x__type==11029){
-            //Downwards:
-            $order_columns = sort__e();
-            $joins_objects = array('x__down');
-            $query_filters = array(
-                'x__up' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            );
-        } elseif(in_array($x__type, $this->config->item('n___42276'))){
+        if(in_array($x__type, $this->config->item('n___42276'))){
 
-            //Downwards:
+            //Up Source Link Groups:
             $order_columns = array('x__time' => 'DESC');
             $joins_objects = array('x__up');
             $query_filters = array(
@@ -561,15 +552,17 @@ class E_model extends CI_Model
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
 
-        } elseif($x__type==11030){
-            //Upwards:
+        } elseif(in_array($x__type, $this->config->item('n___42377'))){
+
+            //Down Source Link Groups:
             $order_columns = array('x__time' => 'DESC');
-            $joins_objects = array('x__up');
+            $joins_objects = array('x__down');
             $query_filters = array(
-                'x__down' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__up' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
+
         }
 
 

@@ -385,15 +385,6 @@ function view_body_i($x__type, $counter, $i__id){
         }
         $ui .= '</div>';
 
-    } elseif($x__type==12273 || $x__type==13542){
-
-        //IDEAS
-        $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
-        foreach($list_results as $next_i) {
-            $ui .= view_card_i($x__type, 0, $is[0], $next_i);
-        }
-        $ui .= '</div>';
-
     } elseif(in_array($x__type, $CI->config->item('n___42265'))){
 
         //IDEA Link Groups
@@ -403,7 +394,7 @@ function view_body_i($x__type, $counter, $i__id){
         }
         $ui .= '</div>';
 
-    } elseif($x__type==6255 || in_array($x__type, $CI->config->item('n___42284'))) {
+    } elseif(in_array($x__type, $CI->config->item('n___42284'))) {
 
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $item){
@@ -475,43 +466,27 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     $first_segment = $CI->uri->segment(1);
     $privacy_privacy = ( superpower_unlocked(12703) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
 
-    if($x__type==12274 || $x__type==11029){
+    if(in_array($x__type, $CI->config->item('n___42377'))){
 
-        //DOWN
-        $order_columns = array();
-        $order_columns['x__type'] = 'DESC';
-        $order_columns['x__weight'] = 'ASC';
-        $order_columns['e__title'] = 'ASC';
-
+        //Down Source Link Groups:
+        $order_columns = array('x__time' => 'DESC');
         $joins_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___42276'))){
 
-        //DOWN
+        //Up Source Link Groups:
         $order_columns = array('x__time' => 'DESC');
         $joins_objects = array('x__up');
         $query_filters = array(
             'x__down' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
-        );
-
-    } elseif($x__type==11030){
-
-        //UP
-        $order_columns = array('x__time' => 'DESC');
-        $joins_objects = array('x__up');
-        $query_filters = array(
-            'x__down' => $e__id,
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
@@ -652,18 +627,6 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
-            'x__left' => $i__id,
-        );
-
-    } elseif($x__type==12273 || $x__type==13542){
-
-        //IDEAS NEXT
-        $order_columns = array('x__weight' => 'ASC');
-        $joins_objects = array('x__right');
-        $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
             'x__left' => $i__id,
         );
 
