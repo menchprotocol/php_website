@@ -4170,6 +4170,11 @@ main {
 
 .sub__handle {
     font-size: 1em;
+    max-width: 89%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
 }
 
 
