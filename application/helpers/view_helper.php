@@ -2217,13 +2217,17 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     //Find any links?
-    foreach($CI->X_model->fetch(array(
+    $filters = array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__up NOT IN (' . join(',', $social_listed) . ')' => null, //Already listed!
         'x__down' => $e['e__id'],
         'LENGTH(x__message)>0' => null,
-    ), array('x__up'), 0, 0) as $social_link){
+    );
+    if(count($social_listed)){
+        $filters['x__up NOT IN (' . join(',', $social_listed) . ')'] = null;
+    }
+
+    foreach($CI->X_model->fetch($filters, array('x__up'), 0, 0) as $social_link){
 
         //Determine link type:
         if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
