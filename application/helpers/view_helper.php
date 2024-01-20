@@ -315,7 +315,7 @@ function view_body_e($x__type, $counter, $e__id){
 
     //Check Permission:
     if(in_array($x__type, $CI->config->item('n___42376')) && !write_privacy_e(null, $e__id)){
-        return '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
+        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
     }
 
     $list_results = view_e_covers($x__type, $e__id, 1);
@@ -379,7 +379,7 @@ function view_body_i($x__type, $counter, $i__id){
 
 
     if(in_array($x__type, $CI->config->item('n___42376')) && !write_privacy_i(null, $i__id)){
-        return '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
+        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
     }
 
     $list_results = view_i_covers($x__type, $i__id, 1);

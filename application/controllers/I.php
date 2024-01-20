@@ -208,7 +208,7 @@ class I extends CI_Controller {
 
             if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !write_privacy_i(null, $_POST['i__id'])){
 
-                echo '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
 
             } else {
 
