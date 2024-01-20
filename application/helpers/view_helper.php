@@ -2185,6 +2185,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Social Links
     $social_ui = null;
+    $social_listed = array();
     foreach($CI->config->item('e___14036') as $e__id => $m){
         foreach($CI->X_model->fetch(array(
             'x__up' => $e__id,
@@ -2207,11 +2208,37 @@ function view_card_e($x__type, $e, $extra_class = null)
                 continue;
             }
 
+            array_push($social_listed, $e__id);
+
             //Append to links:
             $social_ui .= '<li><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
 
         }
     }
+
+    //Find any links?
+    foreach($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__up NOT IN (' . join(',', $social_listed) . ')' => null, //Already listed!
+        'x__down' => $e['e__id'],
+        'LENGTH(x__message)>0' => null,
+    ), array('x__up'), 0, 0) as $social_link){
+
+        //Determine link type:
+        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
+            //We made sure not the current website:
+            $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
+        } else {
+            //Unknown!
+            continue;
+        }
+
+        //Append to links:
+        $social_ui .= '<li><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$social_link['e__title'].'">'.view_cover($social_link['e__cover']).'</a></li>';
+
+    }
+
     if($social_ui){
         $ui .= '<div class="source-social">';
         $ui .= '<ul>';
