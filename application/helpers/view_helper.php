@@ -2171,7 +2171,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="sub__handle grey center-block" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
 
-
     //Source Location:
     $e___32292 = $CI->config->item('e___32292'); //Idea Types
     foreach($CI->X_model->fetch(array(
@@ -2181,6 +2180,24 @@ function view_card_e($x__type, $e, $extra_class = null)
     ), array('x__up')) as $located){
         $ui .= '<div class="center-frame center grey" style="padding: 5px 0;"><a href="/@'.$located['e__handle'].'"><span class="icon-block-xxs">'.$e___32292[42335]['m__cover'].'</span>'.$located['e__title'].'</a></div>';
     }
+
+
+    //Source Follow/Action Links
+    $ui .= '<div class="btn-group">
+  <button type="button" class="btn btn-danger">Follow</button>
+  <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="far fa-angle-down"></i>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Action</a></li>
+    <li><a class="dropdown-item" href="#">Another action</a></li>
+    <li><a class="dropdown-item" href="#">Something else here</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#">Separated link</a></li>
+  </ul>
+</div>';
+
+
 
 
     //Source Social Links
