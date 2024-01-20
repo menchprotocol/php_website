@@ -949,10 +949,15 @@ h4 .halfbg {
     border-radius: 0;
     padding:0;
     z-index: 9999999 !important;
+    width: 100%;
+    max-width: 377px;
 }
 
 .dropdown-menu a {
     padding-right: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
