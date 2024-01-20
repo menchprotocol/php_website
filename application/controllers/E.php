@@ -82,52 +82,56 @@ class E extends CI_Controller
         } else {
 
             if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !write_privacy_e(null, $_POST['e__id'])){
-                return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private Content</div>';
-            }
 
-            $ui = '';
-            $listed_items = 0;
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private Content</div>';
 
-            if(in_array($_POST['x__type'], $this->config->item('n___11028'))){
+            } else {
 
-                //SOURCES
-                $current_e__handle = view_valid_handle_e($_POST['first_segment']);
-                $e___6177 = $this->config->item('e___6177'); //Source Privacy
-                $e___4593 = $this->config->item('e___4593'); //Transaction Types
+                $ui = '';
+                $listed_items = 0;
 
-                foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $e_e) {
-                    if(isset($e_e['e__id'])){
-                        $ui .= view_card('/@'.$e_e['e__handle'], $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__privacy'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
-                        $listed_items++;
+                if(in_array($_POST['x__type'], $this->config->item('n___11028'))){
+
+                    //SOURCES
+                    $current_e__handle = view_valid_handle_e($_POST['first_segment']);
+                    $e___6177 = $this->config->item('e___6177'); //Source Privacy
+                    $e___4593 = $this->config->item('e___4593'); //Transaction Types
+
+                    foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $e_e) {
+                        if(isset($e_e['e__id'])){
+                            $ui .= view_card('/@'.$e_e['e__handle'], $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__privacy'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
+                            $listed_items++;
+                        }
+                    }
+
+                } elseif(in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___42284'))){
+
+                    //IDEAS
+                    $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
+                    $e___4737 = $this->config->item('e___4737'); //Idea Types
+                    $e___4593 = $this->config->item('e___4593'); //Transaction Types
+
+                    foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
+                        if(isset($next_i['i__id'])){
+                            $ui .= view_card('/~'.$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
+                            $listed_items++;
+                        }
+                    }
+
+                }
+
+                if($listed_items < $_POST['counter']){
+                    //We have more to show:
+                    foreach($this->E_model->fetch(array(
+                        'e__id' => $_POST['e__id'],
+                    )) as $e_this){
+                        $ui .= view_more('/@'.$e_this['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
                     }
                 }
 
-            } elseif(in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___42284'))){
-
-                //IDEAS
-                $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
-                $e___4737 = $this->config->item('e___4737'); //Idea Types
-                $e___4593 = $this->config->item('e___4593'); //Transaction Types
-
-                foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
-                    if(isset($next_i['i__id'])){
-                        $ui .= view_card('/~'.$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
-                        $listed_items++;
-                    }
-                }
+                echo $ui;
 
             }
-
-            if($listed_items < $_POST['counter']){
-                //We have more to show:
-                foreach($this->E_model->fetch(array(
-                    'e__id' => $_POST['e__id'],
-                )) as $e_this){
-                    $ui .= view_more('/@'.$e_this['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
-                }
-            }
-
-            echo $ui;
         }
     }
 
