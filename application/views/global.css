@@ -949,8 +949,8 @@ h4 .halfbg {
     border-radius: 0;
     padding:0;
     z-index: 9999999 !important;
-    width: 100%;
-    max-width: 377px;
+    max-width: 100%;
+    position: fixed !important;
 }
 
 .dropdown-menu a {
