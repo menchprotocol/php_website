@@ -391,8 +391,9 @@ function view_body_i($x__type, $counter, $i__id){
         return false;
     }
 
-    if($x__type==11019){
+    if(in_array($x__type, $CI->config->item('n___42380'))){
 
+        //IDEA Link Groups Previous
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $previous_i) {
             $ui .= view_card_i(11019, 0, null, $previous_i);
@@ -401,7 +402,7 @@ function view_body_i($x__type, $counter, $i__id){
 
     } elseif(in_array($x__type, $CI->config->item('n___42265'))){
 
-        //IDEA Link Groups
+        //IDEA Link Groups Next
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $next_i) {
             $ui .= view_card_i($x__type, 0, $is[0], $next_i);
@@ -620,21 +621,21 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns['x__weight'] = 'ASC';
         $order_columns['x__time'] = 'DESC';
 
-    } elseif($x__type==11019) {
+    } elseif(in_array($x__type, $CI->config->item('n___42380'))){
 
-        //IDEAS PREVIOUS
+        //IDEA Link Groups Previous
         $order_columns = array('x__id' => 'DESC');
         $joins_objects = array('x__left');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___4486')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //IDEA LINKS
             'x__right' => $i__id,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___42265'))){
 
-        //IDEAS NEXT
+        //IDEA Link Groups Next
         $order_columns = array('x__weight' => 'ASC');
         $joins_objects = array('x__right');
         $query_filters = array(
