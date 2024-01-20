@@ -4019,10 +4019,15 @@ main {
 
 .narrow-bar,
 .narrow-bar a,
+.flip-content a,
 .flip-content a span,
 .flip-content .main__title
 {
     color: #FFFFFF !important;
+}
+
+.flip-content a span.grey{
+    color: #999999 !important;
 }
 
 
