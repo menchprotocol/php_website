@@ -120,7 +120,7 @@ class X_model extends CI_Model
 
         //See if this transaction type has any followers that are essentially subscribed to it:
         $tr_watchers = $this->E_model->fetch_recursive(12274, $add_fields['x__type'], $this->config->item('n___30820'), array(), 1);
-        if(count($tr_watchers)){
+        if(is_array($tr_watchers) && count($tr_watchers)){
 
             //yes, start drafting email to be sent to them...
             $u_name = 'Unknown';
