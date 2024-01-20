@@ -2160,6 +2160,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Source Follow/Action Links
+    /*
     $ui .= '<div class="btn-group">
   <button type="button" class="btn">Follow</button>
   <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="true">
@@ -2171,7 +2172,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     <li><a class="dropdown-item" href="#">Something else here</a></li>
   </ul>
 </div>';
-
+    */
 
 
 
