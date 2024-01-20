@@ -1837,24 +1837,31 @@ function write_privacy_e($e__handle, $e__id = 0){
 
 }
 
-function write_privacy_i($i__hashtag){
+function write_privacy_i($i__hashtag, $i__id = 0){
 
     $member_e = superpower_unlocked();
-    if(!$member_e || !strlen($i__hashtag)){
+    if(!$member_e || (!strlen($i__hashtag) && !intval($i__id))){
         return false;
     }
 
     //Ways a member can modify an idea:
     $CI =& get_instance();
+    $filters = array( //IDEA SOURCE
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+        'x__up' => $member_e['e__id'],
+    );
+
+    if(strlen($i__hashtag)){
+        $filters['LOWER(i__hashtag)'] = strtolower($i__hashtag);
+    } elseif(intval($i__id)){
+        $filters['i__id'] = $i__id;
+    }
+
     return (
         superpower_unlocked(12700) || //WALKIE TALKIE
         (
-            count($CI->X_model->fetch(array( //IDEA SOURCE
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-                'LOWER(i__hashtag)' => strtolower($i__hashtag),
-                'x__up' => $member_e['e__id'],
-            ), array('x__right')))
+            count($CI->X_model->fetch($filters, array('x__right')))
         )
     );
 

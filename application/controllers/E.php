@@ -81,6 +81,10 @@ class E extends CI_Controller
 
         } else {
 
+            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !write_privacy_e(null, $_POST['e__id'])){
+                return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private Content</div>';
+            }
+
             $ui = '';
             $listed_items = 0;
 

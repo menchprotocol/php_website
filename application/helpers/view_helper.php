@@ -376,6 +376,12 @@ function view_google_tag($google_analytics_code){
 function view_body_i($x__type, $counter, $i__id){
 
     $CI =& get_instance();
+
+
+    if(in_array($x__type, $CI->config->item('n___42376')) && !write_privacy_i(null, $i__id)){
+        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private Content</div>';
+    }
+
     $list_results = view_i_covers($x__type, $i__id, 1);
     $ui = '';
     $is = $CI->I_model->fetch(array(
