@@ -483,7 +483,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     if(in_array($x__type, $CI->config->item('n___42377'))){
 
         //Down Source Link Groups:
-        $order_columns = array('x__time' => 'DESC');
+        $order_columns = array('x__weight' => 'ASC', 'x__time' => 'DESC');
         $joins_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
