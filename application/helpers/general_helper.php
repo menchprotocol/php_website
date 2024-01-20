@@ -1800,34 +1800,38 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function write_privacy_e($e__handle, $member_e = array()){
+function write_privacy_e($e__handle, $e__id = 0){
 
-    if(!$member_e){
-        //Fetch from session:
-        $member_e = superpower_unlocked();
-    }
 
-    if(!$member_e || !strlen($e__handle)){
+    $member_e = superpower_unlocked();
+    if(!$member_e || (!strlen($e__handle) && !intval($e__id))){
+        //No input
         return false;
     }
 
     //Ways a Member can modify a source:
     $CI =& get_instance();
+    $filters = array(
+        'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__up' => $member_e['e__id'],
+    );
+    if(strlen($e__handle)){
+        $filters['LOWER(e__handle)'] = strtolower($e__handle);
+    } elseif(intval($e__id)){
+        $filters['e__id'] = $e__id;
+    }
+
     return (
 
-        //Member is the source
-        $e__handle==$member_e['e__handle']
-
         //Member has Advance source editing superpower
-        || superpower_unlocked(13422)
+        superpower_unlocked(13422)
+
+        //Member is the source
+        || ($member_e && ($e__handle==$member_e['e__handle'] || $e__id==$member_e['e__id']))
 
         //If Source Follows this Member
-        || count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__up' => $member_e['e__id'],
-            'LOWER(e__handle)' => strtolower($e__handle),
-        ), array('x__down')))
+        || count($CI->X_model->fetch($filters, array('x__down')))
 
     );
 

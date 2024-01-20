@@ -307,9 +307,17 @@ function view_more($href, $is_current, $x__type, $o__privacy, $o__type, $o__titl
 
 function view_body_e($x__type, $counter, $e__id){
 
+
+
     $CI =& get_instance();
     $limit = view_memory(6404,11064);
     $member_e = superpower_unlocked();
+
+    //Check Permission:
+    if(in_array($x__type, $this->config->item('n___PrivateContent')) && !write_privacy_e(null, $e__id)){
+        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private Content</div>';
+    }
+
     $list_results = view_e_covers($x__type, $e__id, 1);
     $focus_e = ($e__id==$member_e['e__id'] ? $member_e : false);
     $es = $CI->E_model->fetch(array(

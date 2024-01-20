@@ -535,7 +535,7 @@ class E_model extends CI_Model
 
         if(!in_array($x__type, $this->config->item('n___11028'))){
             //Invalid direction:
-            return false;
+            //return false;
         }
 
         $flat_items = array();
@@ -562,6 +562,10 @@ class E_model extends CI_Model
                 'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
+
+        } else {
+
+            return false;
 
         }
 
