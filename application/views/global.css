@@ -581,6 +581,7 @@ input.main__title {
     padding: 0;
     white-space: nowrap;
     overflow-x: auto;
+    overflow-y: hidden;
 }
 .nav-item {
     margin: 0;
