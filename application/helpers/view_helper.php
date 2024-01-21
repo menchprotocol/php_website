@@ -512,7 +512,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $joins_objects = array('x__down');
         $query_filters = array(
             'x__up' => $e__id,
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
