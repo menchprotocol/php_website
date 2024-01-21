@@ -1333,7 +1333,8 @@ function editor_load_e(e__id, x__id){
             autoMinimize: true,
 
             //inlineContainer: '#source_cover_upload',
-            tags: 'upload_file_e_cover,js_pl_id_'+js_pl_id+',e__id_'+e__id+',x__id_'+x__id,
+            tags: [ 'upload_file_e_cover', 'js_pl_id_'+js_pl_id, 'e__id_'+e__id, 'x__id_'+x__id],
+            //tags: 'upload_file_e_cover,js_pl_id_'+js_pl_id+',e__id_'+e__id+',x__id_'+x__id,
 
             sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
             defaultSource: 'local',
