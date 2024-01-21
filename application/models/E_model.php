@@ -533,11 +533,6 @@ class E_model extends CI_Model
 
     function fetch_recursive($x__type, $e__id, $include_any_e = array(), $exclude_all_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
 
-        if(!in_array($x__type, $this->config->item('n___11028'))){
-            //Invalid direction:
-            //return false;
-        }
-
         $flat_items = array();
         $s__level++;
 
