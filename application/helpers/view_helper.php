@@ -2151,12 +2151,16 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Location:
     $e___32292 = $CI->config->item('e___32292'); //Idea Types
+    $locations = null;
     foreach($CI->X_model->fetch(array(
         'x__type' => 42335,
         'x__down' => $e['e__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__up')) as $located){
-        $ui .= '<div class="center-frame center grey" style="padding: 5px 0;"><a href="/@'.$located['e__handle'].'"><span class="icon-block-xxs">'.$e___32292[42335]['m__cover'].'</span>'.$located['e__title'].'</a></div>';
+        $locations .= '<a href="/@'.$located['e__handle'].'"><span class="icon-block-xs">'.$e___32292[42335]['m__cover'].'</span>'.$located['e__title'].'</a>';
+    }
+    if($locations){
+        $ui .= '<div class="center-frame center grey" style="padding: 5px 0;">'.$locations.'</div>';
     }
 
 
@@ -2238,7 +2242,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
     */
 
-    
+
     if($social_ui){
         $ui .= '<div class="source-social">';
         $ui .= '<ul>';
