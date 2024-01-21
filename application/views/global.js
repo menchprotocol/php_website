@@ -623,6 +623,11 @@ function js_redirect(url, timer = 0){
     return false;
 }
 
+function add_media(result_info){
+
+}
+
+
 function load_card_clickers(){
 
     $(".card_click_e, .card_click_i").unbind();
@@ -661,47 +666,18 @@ $(document).ready(function () {
         }
     });
 
-    var upload_file_e_cover = cloudinary.createUploadWidget({
 
-        cloudName: 'menchcloud',
-        showPoweredBy: false,
-        multiple: false,
-        theme: 'minimal',
-
-        cropping: true,
-        croppingAspectRatio: 1.0,
-        showSkipCropButton: false,
-        croppingShowBackButton: false,
-        autoMinimize: true,
-
-        //inlineContainer: '#source_cover_upload',
-        //tags: '@1',
-
-        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
-        defaultSource: 'local',
-        clientAllowedFormats: ['image'],
-        uploadPreset: 'upload_file_e_cover'
-
-        }, (error, result) => {
-            if (!error && result && result.event === "success" && result.info.secure_url) {
-                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
-            }
-        }
-    );
-    $('.upload_file_e_cover').click(function (e) {
-        upload_file_e_cover.open();
-    });
 
     var upload_file_i_message = cloudinary.createUploadWidget({
 
         cloudName: 'menchcloud',
         showPoweredBy: false,
         multiple: true,
-        max_files: 2,
+        max_files: 34,
         theme: 'minimal',
-        maxFileSize: 8000000000, //8GB
-        maxVideoFileSize: 8000000000, //8GB
-        maxChunkSize:  50000000, //50MB
+        maxFileSize: 2000000000, //2GB
+        maxVideoFileSize: 2000000000, //2GB
+        maxChunkSize:  100000000, //100MB
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
         //clientAllowedFormats: ['image', 'video'],
@@ -709,7 +685,7 @@ $(document).ready(function () {
 
         }, (error, result) => {
             if (!error && result && result.event === "success") {
-                console.log('Done! Here is the image info: ', result.info);
+                add_media(result.info);
             }
         }
     );
@@ -1341,6 +1317,48 @@ function editor_load_e(e__id, x__id){
             set_autosize($('#modal31912 .save_x__message'));
         }, 377);
     }
+
+    //Initiate CLoudiary for cover:
+    var upload_file_e_cover = cloudinary.createUploadWidget({
+
+            cloudName: 'menchcloud',
+            showPoweredBy: false,
+            multiple: false,
+            theme: 'minimal',
+
+            cropping: true,
+            croppingAspectRatio: 1.0,
+            showSkipCropButton: false,
+            croppingShowBackButton: false,
+            autoMinimize: true,
+
+            //inlineContainer: '#source_cover_upload',
+            tags: 'upload_file_e_cover js_pl_id_'+js_pl_id+' e__id_'+e__id+' x__id_'+x__id,
+
+            sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
+            defaultSource: 'local',
+            clientAllowedFormats: ['image'],
+            uploadPreset: 'upload_file_e_cover'
+
+        }, (error, result) => {
+            if (!error && result && result.event === "success" && result.info.secure_url) {
+                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+            }
+        }
+    );
+    $('.upload_file_e_cover').click(function (e) {
+        upload_file_e_cover.open();
+    });
+
+    $('#modal31912').on('hidden.bs.modal', function () {
+        console.log("Trying to destroy widget");
+        upload_file_e_cover.destroy({ removeThumbnails: true })
+            .then(() => {
+                console.log("Widget was destroyed");
+            });
+    });
+
+
 
 
     $.post("/e/editor_load_e", {
