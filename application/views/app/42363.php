@@ -80,6 +80,16 @@ if(!$is_good && isset($_POST) && count($_POST)){
         ),
     ));
     echo 'Invalid inputs';
+} elseif(!$is_good && isset($_GET) && count($_GET)){
+    $this->X_model->create(array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__message' => 'Invalid item number',
+        'x__metadata' => array(
+            'new_x' => $new_x,
+            'GET' => $_GET,
+        ),
+    ));
+    echo 'Invalid inputs';
 }
 
 
