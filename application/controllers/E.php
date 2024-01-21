@@ -249,7 +249,12 @@ class E extends CI_Controller
         } elseif (intval($_POST['e__id']) < 1) {
             return view_json(array(
                 'status' => 0,
-                'message' => 'Invalid Following Source',
+                'message' => 'Invalid Source',
+            ));
+        } elseif (!strlen($_POST['copy_source_title'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source Title',
             ));
         }
 
@@ -269,7 +274,7 @@ class E extends CI_Controller
 
 
         //Create:
-        $added_e = $this->E_model->verify_create($fetch_o[0]['e__title']." Copy", $member_e['e__id'], $fetch_o[0]['e__cover']);
+        $added_e = $this->E_model->verify_create($_POST['copy_source_title'], $member_e['e__id'], $fetch_o[0]['e__cover']);
         if(!$added_e['status']){
             //We had an error, return it:
             return view_json($added_e);
