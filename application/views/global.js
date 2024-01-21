@@ -1040,9 +1040,6 @@ function e_load_finder(x__type) {
 
 
 
-
-
-
 function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
     //Reset Fields:
@@ -1301,54 +1298,56 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     } else if(allow_imgaes){
         clientAllowedFormats.push('image');
     }
+
     if(force_file_extension){
-        var str_array = force_file_extension.split(',');
-
+        var file_extension_array = force_file_extension.split(',');
+        for(var i = 0; i < file_extension_array.length; i++) {
+            // Trim the excess whitespace.
+            file_extension_array[i] = file_extension_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+            // add to main array:
+            clientAllowedFormats.push(file_extension_array[i]);
+        }
     }
 
 
 
-    for(var i = 0; i < str_array.length; i++) {
-        // Trim the excess whitespace.
-        str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
-        // Add additional code here, such as:
-        alert(str_array[i]);
-    }
+    var widget_setting = {
 
+        multiple: ( max_file>1 ),
+        max_files: max_file,
+        maxFileSize: max_size * 1000000,
+        maxVideoFileSize: max_size * 1000000,
+        maxChunkSize: ( max_size > 100 ? 100 : max_size ) * 1000000,
 
-    a.split(".")(){
+        clientAllowedFormats: clientAllowedFormats,
+        cropping: ( enable_crop ? true : false ),
+        showSkipCropButton: ( force_crop ? false : true ),
+        croppingShowBackButton: ( force_crop ? false : true ),
+        croppingAspectRatio: crop_ratio,
 
-    }
+        inlineContainer: loading_inline_container,
+        uploadPreset: 'uploader_'+uploader_id,
 
-    var widget = cloudinary.createUploadWidget({
+        //Fixed variables:
+        cloudName: 'menchcloud',
+        showPoweredBy: false,
+        autoMinimize: true,
+        theme: 'minimal',
+        tags: global_tags.concat(uploader_tags),
+        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
+        defaultSource: 'local',
+    };
 
-            multiple: ( max_file>1 ),
-            max_files: max_file,
-            maxFileSize: max_size * 1000000,
-            maxVideoFileSize: max_size * 1000000,
-            maxChunkSize: ( max_size > 100 ? 100 : max_size ) * 1000000,
+    console.log(widget_setting);
 
-            clientAllowedFormats: clientAllowedFormats,
-            cropping: ( enable_crop ? true : false ),
-            showSkipCropButton: ( force_crop ? false : true ),
-            croppingShowBackButton: ( force_crop ? false : true ),
-            croppingAspectRatio: crop_ratio,
-
-            inlineContainer: loading_inline_container,
-            uploadPreset: 'uploader_'+uploader_id,
-
-            //Fixed variables:
-            cloudName: 'menchcloud',
-            showPoweredBy: false,
-            autoMinimize: true,
-            theme: 'minimal',
-            tags: global_tags.concat(uploader_tags),
-            sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
-            defaultSource: 'local',
-
-        }, (error, result) => {
+    var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
             if (!error && result && result.event === "success" && result.info.secure_url) {
-                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+                if(uploader_id==123){
+                    //Source Cover:
+                    update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+                } else if(uploader_id==123){
+                    //Idea
+                }
             }
         }
     );
