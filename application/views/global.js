@@ -1273,39 +1273,33 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         return false;
     }
 
-    //Fetch global settings:
 
+    //Fetch global defaults:
+    var default_max_file_size_mb = parseInt(js_e___6404[42383]['m__message']);
+    var default_max_file_count = parseInt(js_e___6404[42382]['m__message']);
 
     var global_tags = ['uploader_'+uploader_id, 'u__id_'+js_pl_id];
     var allow_videos = js_e___42390[uploader_id]!==undefined;
     var allow_imgaes = js_e___42389[uploader_id]!==undefined;
 
-
-
-
     //Initiate CLoudiary for cover:
-    var max_size = parseInt(js_e___42383[uploader_id]['m__message']);
-    var max_file = parseInt(js_e___42382[uploader_id]['m__message']);
-    var enable_crop = js_e___42386[uploader_id]!==undefined;
-    var force_crop = js_e___42387[uploader_id]!==undefined;
+    var max_file_size_mb = parseFloat( js_e___42383[uploader_id]!==undefined && parseInt(js_e___42383[uploader_id]['m__message'])>0 && parseInt(js_e___42383[uploader_id]['m__message'])<default_max_file_size_mb ? parseInt(js_e___42383[uploader_id]['m__message']) : default_max_file_size_mb );
+    var max_file_count = parseFloat( js_e___42382[uploader_id]!==undefined && parseInt(js_e___42382[uploader_id]['m__message'])>0 && parseInt(js_e___42382[uploader_id]['m__message'])<default_max_file_count ? parseInt(js_e___42382[uploader_id]['m__message']) : default_max_file_count );
+
+    var enable_crop = ( js_e___42386[uploader_id]!==undefined );
+    var force_crop = ( js_e___42387[uploader_id]!==undefined );
     var crop_ratio = ( js_e___42388[uploader_id]!==undefined && js_e___42388[uploader_id]['m__message'].length ? js_e___42388[uploader_id]['m__message'] : null );
     var force_file_extension = ( js_e___33800[uploader_id]!==undefined && js_e___33800[uploader_id]['m__message'].length ? js_e___33800[uploader_id]['m__message'] : null );
     var clientAllowedFormats = [];
-
-
     if(allow_videos){
         clientAllowedFormats.push('video');
     } else if(allow_imgaes){
         clientAllowedFormats.push('image');
     }
-
     if(force_file_extension){
         var file_extension_array = force_file_extension.split(',');
         for(var i = 0; i < file_extension_array.length; i++) {
-            // Trim the excess whitespace.
-            file_extension_array[i] = file_extension_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
-            // add to main array:
-            clientAllowedFormats.push(file_extension_array[i]);
+            clientAllowedFormats.push(file_extension_array[i].replace(/^\s*/, "").replace(/\s*$/, ""));
         }
     }
 
@@ -1313,11 +1307,11 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
     var widget_setting = {
 
-        multiple: ( max_file>1 ),
-        max_files: max_file,
-        maxFileSize: max_size * 1000000,
-        maxVideoFileSize: max_size * 1000000,
-        maxChunkSize: ( max_size > 100 ? 100 : max_size ) * 1000000,
+        multiple: ( max_file_count>1 ),
+        max_files: max_file_count,
+        maxFileSize: ( max_file_size_mb * 1000000 ),
+        maxVideoFileSize: ( max_file_size_mb * 1000000 ),
+        maxChunkSize: ( max_file_size_mb > 100 ? 100 : max_file_size_mb ) * 1000000,
 
         clientAllowedFormats: clientAllowedFormats,
         cropping: ( enable_crop ? true : false ),
@@ -1338,15 +1332,17 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         defaultSource: 'local',
     };
 
-    console.log(widget_setting);
+    console.log(widget_setting); //TODO Remove later... for debugging now
 
     var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
             if (!error && result && result.event === "success" && result.info.secure_url) {
-                if(uploader_id==123){
-                    //Source Cover:
+                if(uploader_id==42359){
+                    //Source Cover Uploader:
                     update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
-                } else if(uploader_id==123){
-                    //Idea
+                } else if(uploader_id==13572){
+                    //Idea Uploader
+                } else if(uploader_id==12117){
+                    //Discovery Uploader
                 }
             }
         }
