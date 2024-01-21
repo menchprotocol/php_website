@@ -61,17 +61,17 @@ if(isset($_POST['payment_status'])){
 
 
 if(!$is_good){
-
     $this->X_model->create(array(
         'x__type' => 4246, //Platform Bug Reports
         'x__message' => 'Invalid uploader',
         'x__metadata' => array(
-            'url' => (empty($_SERVER['HTTPS']) ? 'http' : 'https').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
+            'url' => (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
             'new_x' => $new_x,
             'post' => $_POST,
             'get' => $_GET,
             'req' => $_REQUEST,
-),
+            'inputs' => file_get_contents('php://input'),
+        ),
     ));
     echo 'Invalid inputs';
 
