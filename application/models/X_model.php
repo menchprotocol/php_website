@@ -176,7 +176,7 @@ class X_model extends CI_Model
             //Send to all Watchers:
             foreach($tr_watchers as $tr_watcher) {
                 //Do not inform the member who just took the action:
-                if($tr_watcher['e__id']!=$add_fields['x__creator']){
+                if($tr_watcher['e__id']!=$add_fields['x__creator'] || 1){
                     $this->X_model->send_dm($tr_watcher['e__id'], $subject, $plain_message, array(
                         'x__reference' => $add_fields['x__id'], //Save transaction
                         'x__right' => $add_fields['x__right'],
