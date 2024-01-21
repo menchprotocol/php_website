@@ -667,33 +667,6 @@ $(document).ready(function () {
     });
 
 
-
-    var upload_file_i_message = cloudinary.createUploadWidget({
-
-        cloudName: 'menchcloud',
-        showPoweredBy: false,
-        multiple: true,
-        max_files: 34,
-        theme: 'minimal',
-        maxFileSize: 2000000000, //2GB
-        maxVideoFileSize: 2000000000, //2GB
-        maxChunkSize:  100000000, //100MB
-        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
-        defaultSource: 'local',
-        //clientAllowedFormats: ['image', 'video'],
-        uploadPreset: 'upload_file_i_message'
-
-        }, (error, result) => {
-            if (!error && result && result.event === "success") {
-                add_media(result.info);
-            }
-        }
-    );
-    $('.upload_file_i_message').click(function (e) {
-        upload_file_i_message.open();
-    });
-
-
     $('.card_click_x').click(function(e) {
         js_redirect('/'+$(this).attr('i__hashtag'));
     });
@@ -1050,7 +1023,7 @@ function e_load_finder(x__type) {
 
 
 
-function editor_load_i(i__id, x__id, link_i__id = 0){
+function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1110,6 +1083,37 @@ function editor_load_i(i__id, x__id, link_i__id = 0){
         $('#modal31911 .save_i__message').focus();
     }, 610);
 
+
+
+    var uploader_13572 = cloudinary.createUploadWidget({
+            cloudName: 'menchcloud',
+            showPoweredBy: false,
+            theme: 'minimal',
+            multiple: true,
+            max_files: 34,
+            maxFileSize: 2000000000, //2GB
+            maxVideoFileSize: 2000000000, //2GB
+            maxChunkSize:  100000000, //100MB
+            sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
+            defaultSource: 'local',
+            tags: ['uploader_13572', 'u__id_'+js_pl_id, 'i__id_'+i__id, 'link_i__id_'+link_i__id, 'quote_i__id_'+quote_i__id, 'x__id_'+x__id], //Upload Source Cover
+            //clientAllowedFormats: ['image', 'video'],
+            uploadPreset: 'uploader_13572'
+        }, (error, result) => {
+            if (!error && result && result.event === "success") {
+                add_media(result.info);
+            }
+        }
+    );
+    $('.uploader_13572').click(function (e) {
+        uploader_13572.open();
+    });
+    $('#modal31911').on('hidden.bs.modal', function () {
+        uploader_13572.destroy({ removeThumbnails: true })
+            .then(() => {
+                console.log("Widget was destroyed");
+            });
+    });
 
 
     if(i__id){
@@ -1319,7 +1323,7 @@ function editor_load_e(e__id, x__id){
     }
 
     //Initiate CLoudiary for cover:
-    var upload_file_e_cover = cloudinary.createUploadWidget({
+    var uploader_42359 = cloudinary.createUploadWidget({
 
             cloudName: 'menchcloud',
             showPoweredBy: false,
@@ -1333,12 +1337,12 @@ function editor_load_e(e__id, x__id){
             autoMinimize: true,
 
             //inlineContainer: '#source_cover_upload',
-            tags: ['input@42359', 'u__id@'+js_pl_id, 'e__id@'+e__id, 'x__id_'+x__id], //Upload Source Cover
+            tags: ['uploader_42359', 'u__id_'+js_pl_id, 'e__id_'+e__id, 'x__id_'+x__id], //Upload Source Cover
 
             sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
             defaultSource: 'local',
             clientAllowedFormats: ['image'],
-            uploadPreset: 'upload_file_e_cover'
+            uploadPreset: 'uploader_42359'
 
         }, (error, result) => {
             if (!error && result && result.event === "success" && result.info.secure_url) {
@@ -1346,13 +1350,11 @@ function editor_load_e(e__id, x__id){
             }
         }
     );
-    $('.upload_file_e_cover').click(function (e) {
-        upload_file_e_cover.open();
+    $('.uploader_42359').click(function (e) {
+        uploader_42359.open();
     });
-
     $('#modal31912').on('hidden.bs.modal', function () {
-        console.log("Trying to destroy widget");
-        upload_file_e_cover.destroy({ removeThumbnails: true })
+        uploader_42359.destroy({ removeThumbnails: true })
             .then(() => {
                 console.log("Widget was destroyed");
             });

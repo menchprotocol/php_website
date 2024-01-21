@@ -817,7 +817,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="message_controllers">
 
                         <!-- Upload -->
-                        <a class="icon-block-sm upload_file_i_message" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+                        <a class="icon-block-sm uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
 
                         <!-- EMOJI -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
@@ -933,7 +933,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <!-- SOURCE COVER -->
                             <div class="message_controllers">
                                 <!-- Upload Cover -->
-                                <a class="icon-block-xs upload_file_e_cover" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
+                                <a class="icon-block-xs uploader_42359" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
 
                                 <!-- EMOJI -->
                                 <a class="icon-block-xs" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>

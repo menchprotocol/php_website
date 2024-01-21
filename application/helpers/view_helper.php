@@ -505,6 +505,18 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
+    } elseif(in_array($x__type, $CI->config->item('n___11028'))){
+
+        //Source Tree
+        $order_columns = array('x__weight' => 'ASC', 'x__time' => 'DESC');
+        $joins_objects = array('x__down');
+        $query_filters = array(
+            'x__up' => $e__id,
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
+        );
+
     } elseif(in_array($x__type, $CI->config->item('n___42261'))){
 
         //IDEAS
