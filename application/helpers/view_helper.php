@@ -2211,6 +2211,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     //Find any links?
+    /*
     $filters = array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -2220,7 +2221,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     if(count($social_listed)){
         $filters['x__up NOT IN (' . join(',', $social_listed) . ')'] = null;
     }
-
     foreach($CI->X_model->fetch($filters, array('x__up'), 0, 0) as $social_link){
 
         //Determine link type:
@@ -2236,7 +2236,9 @@ function view_card_e($x__type, $e, $extra_class = null)
         $social_ui .= '<li><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$social_link['e__title'].'">'.view_cover($social_link['e__cover']).'</a></li>';
 
     }
+    */
 
+    
     if($social_ui){
         $ui .= '<div class="source-social">';
         $ui .= '<ul>';
