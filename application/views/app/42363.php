@@ -67,10 +67,7 @@ if(!$is_good){
         'x__metadata' => array(
             'url' => (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
             'new_x' => $new_x,
-            'post' => $_POST,
-            'get' => $_GET,
-            'req' => $_REQUEST,
-            'inputs' => file_get_contents('php://input'),
+            'inputs' => json_decode(file_get_contents('php://input')),
         ),
     ));
     echo 'Invalid inputs';

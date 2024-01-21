@@ -1,12 +1,12 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   
-#RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-#RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
-#RewriteCond %{HTTPS} !on
-#RewriteCond %{HTTP_HOST} !^localhost$ [NC]
-#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+RewriteCond %{HTTPS} !on
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 
 
