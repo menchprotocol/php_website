@@ -1406,13 +1406,15 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
+    var current_privacy = $('.s__12274_'+e__id+':first').attr('e__privacy');
+
     $('#modal31912 .save_e__cover').val(current_cover).focus();
     update_cover_main(current_cover, '.demo_cover');
 
     //Load Source Status:
     $('.dropmenu_6177_0_0').attr('o__id',e__id);
     $('.dropmenu_6177_0_0').attr('x__id',x__id);
-    $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'++'</span>'+);
+    //$('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'++'</span>'+);
 
     if(x__id){
         $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).text());
