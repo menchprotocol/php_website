@@ -1059,9 +1059,9 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     var current_idea_type = $('.s__12273_'+i__id+':first').attr('i__type');
     $('.dropmenu_4737').attr('o__id',i__id);
     $('.dropmenu_4737').attr('x__id',x__id);
-    $('#dropdownMenuButton4737_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___4737[current_privacy]['m__cover']+'</span>'+js_e___4737[current_privacy]['m__title']);
+    $('#dropdownMenuButton4737_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___4737[current_idea_type]['m__cover']+'</span>'+js_e___4737[current_idea_type]['m__title']);
     $('.dropd_4737_0_0 .dropdown-item').removeClass('hidden');
-    $('.dropd_4737_0_0 .optiond_'+current_privacy+'_0_0').addClass('hidden');
+    $('.dropd_4737_0_0 .optiond_'+current_idea_type+'_0_0').addClass('hidden');
 
     //Load Instant Fields:
     if(link_i__id){
