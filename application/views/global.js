@@ -1414,7 +1414,7 @@ function editor_load_e(e__id, x__id){
     //Load Source Status:
     $('.dropmenu_6177_0_0').attr('o__id',e__id);
     $('.dropmenu_6177_0_0').attr('x__id',x__id);
-    //$('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'++'</span>'+);
+    $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___6177[current_privacy]['m__cover']+'</span>'+js_e___6177[current_privacy]['m__title']);
 
     if(x__id){
         $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).text());
