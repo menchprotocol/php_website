@@ -872,7 +872,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="left_modal_content">
 
                                 <!-- Dynamic Inputs -->
-                                <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                                <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
                             </div>
                         </div>
@@ -973,19 +973,21 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
                                 <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
                                 <input type="text" class="form-control unsaved_warning save_e__cover " data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
-                            </div>
-
-                            <!-- Cover Settings/Selectors -->
-                            <div class="icons_small font_awesome hidden section_subframe">
-                                <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
-                            </div>
-                            <div class="icons_small cover_history_content hidden section_subframe"></div>
-                            <!-- Cover Demo -->
-                            <div class="section_demo">
-                                <div class="card_cover demo_cover">
-                                    <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                <div>
+                                    <!-- Cover Settings/Selectors -->
+                                    <div class="icons_small font_awesome hidden section_subframe">
+                                        <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
+                                    </div>
+                                    <div class="icons_small cover_history_content hidden section_subframe"></div>
+                                    <!-- Cover Demo -->
+                                    <div class="section_demo">
+                                        <div class="card_cover demo_cover">
+                                            <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -996,7 +998,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="left_modal_content">
 
                                 <!-- Dynamic Inputs -->
-                                <div class="dynamic_editing_input"><?= $dynamic_edit ?></div>
+                                <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
 
                             </div>
