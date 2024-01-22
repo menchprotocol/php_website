@@ -1370,7 +1370,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], null, $write_privacy_i, false, $i['i__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $i['x__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1379,7 +1379,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         }
         if(!$link_type_ui){
             $link_type_ui .= '<td><div class="show-on-hover">';
-            $link_type_ui .= view_dropdown(4593, $i['x__type'], null, false, false, $i['i__id'], $x__id);
+            $link_type_ui .= view_dropdown(4593, $i['x__type'], false, false, $i['i__id'], $x__id);
             $link_type_ui .= '</div></td>';
         }
     }
@@ -1419,7 +1419,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Type
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(4737, $i['i__type'], null, $write_privacy_i, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(4737, $i['i__type'], $write_privacy_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31004 && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
@@ -1427,7 +1427,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Access
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(31004, $i['i__privacy'], null, $write_privacy_i, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i){
@@ -1445,7 +1445,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(42260, 0, null, $member_e, false, $i['i__id']);
+                $top_bar_ui .= view_dropdown(42260, 0, $member_e, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
@@ -1531,7 +1531,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                             //Delete Permanently
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" current-selected="'.$i['i__privacy'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" this_id="'.$i['i__privacy'].'" onclick="update_dropdown(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(28727)){
 
@@ -1957,7 +1957,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__id' => $x__id,
                 ), array('x__creator')) as $linker){
                     $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($e['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                    $link_type_ui .= view_dropdown($x__type1, $e['x__type'], null, $write_privacy_e, false, $e['e__id'], $x__id);
+                    $link_type_ui .= view_dropdown($x__type1, $e['x__type'], $write_privacy_e, false, $e['e__id'], $x__id);
                     $link_type_ui .= '</div></td>';
                 }
                 $link_type_id = $x__type1;
@@ -1987,7 +1987,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Source Privacy
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_dropdown(6177, $e['e__privacy'], null, $write_privacy_e, false, $e['e__id']);
+                $top_bar_ui .= view_dropdown(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==4362 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
@@ -2071,7 +2071,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                             //Delete Permanently
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" current-selected="'.$e['e__privacy'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" this_id="'.$e['e__privacy'].'" onclick="update_dropdown(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
 
@@ -2323,7 +2323,7 @@ function view_input($cache_e__id, $current_value, $s__id, $write_privacy_i, $tab
 
 
 
-function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_privacy_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_dropdown($cache_e__id, $selected_e__id, $write_privacy_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -2358,7 +2358,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" ' ).'>';
+    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
     $ui .= '<span>'.'<span class="icon-block-xs">'.$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '</span>' );
 
@@ -2366,7 +2366,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
 
     if($write_privacy_i){
 
-        $ui .= '<div class="dropdown-menu btn-'.$btn_class.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'">';
+        $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'">';
 
         foreach($e___this as $e__id => $m) {
 
@@ -2376,7 +2376,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" current-selected="'.$e__id.'" onclick="update_dropdown('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')" title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+                $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_dropdown('.$cache_e__id.', '.$e__id.', 0, 0, '.intval($show_full_name).')" title="'.$m['m__message'].'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
             }
 
         }

@@ -2311,7 +2311,7 @@ function isNormalInteger(str) {
 }
 
 
-function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
+function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_name = false){
 
     /*
     *
@@ -2325,15 +2325,21 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
     *
     * */
 
+
+    if($('.dropdownMenuButton'+element_id).length){
+        if(!o__id){
+            //Attempt to fetch this:
+            o__id = $('.dropdownMenuButton'+element_id).attr('o__id');
+        }
+        if(!x__id){
+            //Attempt to fetch this:
+            x__id = $('.dropdownMenuButton'+element_id).attr('x__id');
+        }
+    }
+
     console.log('Attempt to update dropdown @'+element_id+' to @'+new_e__id);
 
-    var current_selected = parseInt($('.dropi_'+element_id+'_'+o__id+'_'+x__id+'.active:last').attr('current-selected'));
     new_e__id = parseInt(new_e__id);
-    if(current_selected==new_e__id){
-        //Nothing changed:
-        console.log('ERROR: current_selected @'+current_selected+' same as new_e__id @'+new_e__id);
-        return false;
-    }
 
 
     //Deleting Anything?
@@ -2403,12 +2409,10 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
                 setTimeout(function () {
                     //Restore background:
                     $( data.delete_element ).fadeOut();
-
                     setTimeout(function () {
                         //Restore background:
                         $( data.delete_element ).remove();
                     }, 55);
-
                 }, 377);
 
             }
@@ -2419,10 +2423,6 @@ function update_dropdown(element_id, new_e__id, o__id, x__id, show_full_name){
             }
 
         } else {
-
-            //Reset to default:
-            var current_class = $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn span').attr('class');
-            $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="'+current_class+'">'+data_object[current_selected]['m__cover']+'</span>' + ( show_full_name ? data_object[current_selected]['m__title'] : '' ));
 
             //Show error:
             alert(data.message);

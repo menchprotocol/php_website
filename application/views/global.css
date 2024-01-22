@@ -160,7 +160,7 @@ h3{
 }
 .dynamic_selector{
     background-color: #ffffff;
-    padding: 3px 0 8px;
+    padding: 3px 0 8px 26px;
 }
 .block-menu .dropdown i {
     padding-top: 2px;
@@ -4193,9 +4193,6 @@ main {
     position: absolute;
     width: 100%;
     text-align: center;
-}
-.section_demo .cover-btn{
-    font-size: 4.55em;
 }
 .coinType12274 .cover-btn{
     color:#000000 !important;

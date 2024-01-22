@@ -866,7 +866,7 @@ if(!$top_i__hashtag){
         if($x__type==42260){
 
             //Sources, show links to become a new source:
-            $control_btn = view_dropdown(42260, 0, null, true, false, $focus_i['i__id']);
+            $control_btn = view_dropdown(42260, 0, true, false, $focus_i['i__id']);
 
         } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
 
