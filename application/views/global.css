@@ -1869,6 +1869,7 @@ i, .btn .show-max {
 }
 .mini-font{
     line-height: 100%;
+    font-size:1em;
 }
 .cover-progress{
     width: 100%;
