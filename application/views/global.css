@@ -160,7 +160,7 @@ h3{
 }
 .dynamic_selector{
     background-color: #ffffff;
-    padding: 3px 0 8px 26px;
+    padding: 3px 0 5px 26px;
 }
 .block-menu .dropdown i {
     padding-top: 2px;
@@ -215,7 +215,7 @@ li a {
 .itemsetting.active .main__title {
     color: #000000;
 }
-.avatar-item.active i, .btn-group a.active i, .itemsetting.active i, .itemsetting:hover i{
+.avatar-item.active i, .btn-group a.active i {
     color: #000 !important;
 }
 
