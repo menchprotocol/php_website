@@ -1290,7 +1290,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
     var enable_crop = ( js_e___42386[uploader_id]!==undefined );
     var force_crop = ( js_e___42387[uploader_id]!==undefined );
-    var crop_ratio = ( js_e___42388[uploader_id]!==undefined && js_e___42388[uploader_id]['m__message'].length ? js_e___42388[uploader_id]['m__message'] : null );
     var force_file_extension = ( js_e___33800[uploader_id]!==undefined && js_e___33800[uploader_id]['m__message'].length ? js_e___33800[uploader_id]['m__message'] : null );
     var clientAllowedFormats = [];
     if(allow_videos){
@@ -1311,13 +1310,24 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         max_files: max_file_count,
         maxFileSize: ( max_file_size_mb * 1000000 ),
         maxVideoFileSize: ( max_file_size_mb * 1000000 ),
+        maxImageFileSize: ( max_file_size_mb * 1000000 ),
+        maxRawFileSize: ( max_file_size_mb * 1000000 ),
+        thumbnails: null,
         maxChunkSize: ( max_file_size_mb > 100 ? 100 : max_file_size_mb ) * 1000000,
 
         clientAllowedFormats: clientAllowedFormats,
         cropping: ( enable_crop ? true : false ),
         showSkipCropButton: ( force_crop ? false : true ),
         croppingShowBackButton: ( force_crop ? false : true ),
-        croppingAspectRatio: crop_ratio,
+        croppingAspectRatio: ( js_e___42388[uploader_id]!==undefined && js_e___42388[uploader_id]['m__message'].length ? js_e___42388[uploader_id]['m__message'] : null ),
+
+        minImageWidth: ( js_e___42407[uploader_id]!==undefined && parseInt(js_e___42407[uploader_id]['m__message'])>0 ? parseInt(js_e___42407[uploader_id]['m__message']) : null ),
+        maxImageWidth: ( js_e___42408[uploader_id]!==undefined && parseInt(js_e___42408[uploader_id]['m__message'])>0 ? parseInt(js_e___42408[uploader_id]['m__message']) : null ),
+        minImageHeight: ( js_e___42409[uploader_id]!==undefined && parseInt(js_e___42409[uploader_id]['m__message'])>0 ? parseInt(js_e___42409[uploader_id]['m__message']) : null ),
+        maxImageHeight: ( js_e___42410[uploader_id]!==undefined && parseInt(js_e___42410[uploader_id]['m__message'])>0 ? parseInt(js_e___42410[uploader_id]['m__message']) : null ),
+
+        validateMaxWidthHeight: ( js_e___42411[uploader_id]!==undefined ),
+        croppingValidateDimensions: ( js_e___42412[uploader_id]!==undefined ),
 
         inlineContainer: loading_inline_container,
         uploadPreset: 'uploader_'+uploader_id,
