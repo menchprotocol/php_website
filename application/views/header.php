@@ -843,7 +843,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="left_modal_content">
 
                                 <!-- Idea Type -->
-                                <div class="dynamic_editing_input hash_group">
+                                <div class="dynamic_editing_input">
                                     <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4737]['m__cover'].'</span>'.$e___11035[4737]['m__title'].':';  ?></h3>
                                     <div class="dynamic_selector"><?= view_dropdown(4737, 0, true, true); ?></div>
                                 </div>
@@ -931,13 +931,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="left_modal_content">
 
                                 <!-- Source Handle -->
-                                <div class="dynamic_editing_input hash_group">
+                                <div class="dynamic_editing_input">
                                     <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32338]['m__cover'].'</span>'.$e___11035[32338]['m__title'].': '. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
                                     <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
                                 </div>
 
                                 <!-- Source Privacy -->
-                                <div class="dynamic_editing_input hash_group">
+                                <div class="dynamic_editing_input">
                                     <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6177]['m__cover'].'</span>'.$e___11035[6177]['m__title'].':';  ?></h3>
                                     <div class="dynamic_selector"><?= view_dropdown(6177, 0, true, true); ?></div>
                                 </div>
