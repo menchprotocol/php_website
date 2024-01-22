@@ -2351,8 +2351,6 @@ function view_dropdown($cache_e__id, $selected_e__id, $write_privacy_i = true, $
     */
     }
 
-    $show_thumbnail = ( isset($e___this[$selected_e__id]['m__cover']) ? $e___this[$selected_e__id] : $e___4527[$cache_e__id] );
-
     //Make sure it's not locked:
     $write_privacy_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $write_privacy_i : false );
 
@@ -2360,7 +2358,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $write_privacy_i = true, $
 
     $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
-    $ui .= '<span class="current_content">'.'<span class="icon-block-xs">'.$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '</span>' );
+    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-xs">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i>' : '' ) : '' ).'</span>';
 
     $ui .= '</button>';
 
