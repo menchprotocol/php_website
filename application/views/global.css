@@ -1781,6 +1781,12 @@ i, .btn .show-max {
 .grey-line {
     border:1px solid #999999 !important;
 }
+.grey-header{
+    background-color: #999 !important;
+}
+.grey-header, .grey-header i{
+    color: #000 !important;
+}
 .list-radio-select .list-group-item {
     color:#999999 !important;
 }
