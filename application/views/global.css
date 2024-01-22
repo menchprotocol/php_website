@@ -102,7 +102,7 @@ body {
 .list-group-item {
     border: 0;
     border-radius: 0 !important;
-    padding:10px 5px 8px 26px;
+    padding:10px 5px 8px;
     margin: 0;
     background-color: transparent;
 }
@@ -1305,7 +1305,7 @@ label {
 .itemsetting{
     color: #000000;
     text-decoration: none;
-    padding: 6px 0 5px !important;
+    padding: 6px 0 5px 26px !important;
     margin-bottom: 0 !important;
 }
 .itemsetting.active{
