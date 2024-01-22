@@ -1057,13 +1057,12 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
     //Load Idea Type:
     var current_idea_type = $('.s__12273_'+i__id+':first').attr('i__type');
+    current_idea_type = ( current_idea_type > 0 ? current_idea_type : 6677 ); //Default idea type for new ideas
     $('.dropmenu_4737').attr('o__id',i__id);
     $('.dropmenu_4737').attr('x__id',x__id);
     $('.dropd_4737_0_0 .dropdown-item').removeClass('hidden');
-    if(current_idea_type > 0){
-        $('#dropdownMenuButton4737_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___4737[current_idea_type]['m__cover']+'</span>'+js_e___4737[current_idea_type]['m__title']);
-        $('.dropd_4737_0_0 .optiond_'+current_idea_type+'_0_0').addClass('hidden');
-    }
+    $('#dropdownMenuButton4737_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___4737[current_idea_type]['m__cover']+'</span>'+js_e___4737[current_idea_type]['m__title']);
+    $('.dropd_4737_0_0 .optiond_'+current_idea_type+'_0_0').addClass('hidden');
 
     //Load Instant Fields:
     if(link_i__id){
