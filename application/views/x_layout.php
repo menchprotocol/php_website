@@ -3,7 +3,6 @@
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
-$is_single_click = in_array($focus_i['i__type'], $this->config->item('n___40680'));
 
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(

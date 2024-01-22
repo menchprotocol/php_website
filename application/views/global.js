@@ -1330,10 +1330,10 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         croppingValidateDimensions: ( js_e___42412[uploader_id]!==undefined ),
 
         inlineContainer: loading_inline_container,
-        uploadPreset: 'uploader_'+uploader_id,
 
         //Fixed variables:
         cloudName: 'menchcloud',
+        uploadPreset: 'mench_uploader',
         showPoweredBy: false,
         autoMinimize: true,
         theme: 'minimal',

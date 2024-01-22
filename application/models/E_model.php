@@ -539,7 +539,7 @@ class E_model extends CI_Model
         if(in_array($x__type, $this->config->item('n___42276'))){
 
             //Up Source Link Groups:
-            $order_columns = array('x__time' => 'DESC');
+            $order_columns = array('x__type = \'34513\' DESC' => null, 'x__weight' => 'ASC', 'x__time' => 'DESC');
             $joins_objects = array('x__up');
             $query_filters = array(
                 'x__down' => $e__id,
@@ -550,7 +550,7 @@ class E_model extends CI_Model
         } elseif(in_array($x__type, $this->config->item('n___42377'))){
 
             //Down Source Link Groups:
-            $order_columns = array('x__weight' => 'ASC', 'x__time' => 'DESC');
+            $order_columns = array('x__type = \'34513\' DESC' => null, 'x__weight' => 'ASC', 'x__time' => 'DESC');
             $joins_objects = array('x__down');
             $query_filters = array(
                 'x__up' => $e__id,

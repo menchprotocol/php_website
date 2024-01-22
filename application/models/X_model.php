@@ -997,11 +997,17 @@ class X_model extends CI_Model
                 $x__type = 4559;
             } elseif ($i['i__type'] == 30874) {
                 $x__type = 31810;
+            } elseif ($i['i__type'] == 42392) {
+                $x__type = 42402;
+            } elseif ($i['i__type'] == 42399) {
+                $x__type = 42400;
+            } elseif ($i['i__type'] == 42394) {
+                $x__type = 42397;
             }
         }
 
         if($x__type > 0){
-            return $this->X_model->mark_complete($x__type, ( $x__creator ? $x__creator : $member_e['e__id'] ), $top_i__id, $i, $x_data);
+            return $this->X_model->mark_complete($x__type, $x__creator, $top_i__id, $i, $x_data);
         } else {
             return false;
         }
