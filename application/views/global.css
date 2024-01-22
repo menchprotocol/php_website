@@ -140,12 +140,13 @@ h3{
 }
 .modal-content h3 {
     padding: 8px 0 0 !important;
-    background-color: #FFF;
+    background-color: #EFEFEF;
     border: 0;
-    color: #999;
+    color: #000000;
+    margin-bottom: 0;
 }
 .modal-content h3 i {
-    color: #999;
+    color: #000000;
 }
 .modal-content .form-control{
     border-radius: 0;
