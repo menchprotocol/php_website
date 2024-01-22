@@ -842,10 +842,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-6">
                             <div class="left_modal_content">
 
-                                <!-- Link Message -->
-                                <div class="dynamic_editing_input save_x__frame hidden">
-                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                                    <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                                <!-- Idea Type -->
+                                <div class="dynamic_editing_input hash_group">
+                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4737]['m__cover'].'</span>'.$e___11035[4737]['m__title'].':';  ?></h3>
+                                    <div class="dynamic_selector"><?= view_dropdown(4737, 0, true, true); ?></div>
                                 </div>
 
                             </div>
@@ -856,6 +856,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="dynamic_editing_input hash_group">
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                                 <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
+                            </div>
+
+                            <!-- Link Message -->
+                            <div class="dynamic_editing_input save_x__frame hidden">
+                                <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                                <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                             </div>
 
                         </div>

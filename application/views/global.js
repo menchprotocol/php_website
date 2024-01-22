@@ -650,7 +650,7 @@ function add_media(result_info){
 
 function load_card_clickers(){
 
-    $(".card_click_e, .card_click_i").unbind();
+    $(".card_click_e, .card_click_i, .card_click_x").unbind();
     var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover';
 
     $( ".card_click_e" ).click(function(e) {
@@ -662,6 +662,12 @@ function load_card_clickers(){
     $('.card_click_i').click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
             js_redirect('/~'+$(this).attr('i__hashtag'));
+        }
+    });
+
+    $('.card_click_x').click(function(e) {
+        if($(e.target).closest(ignore_clicks).length < 1){
+            js_redirect('/'+$(this).attr('i__hashtag'));
         }
     });
 
@@ -687,9 +693,7 @@ $(document).ready(function () {
     });
 
 
-    $('.card_click_x').click(function(e) {
-        js_redirect('/'+$(this).attr('i__hashtag'));
-    });
+    load_card_clickers();
 
     setTimeout(function () {
         load_covers();
@@ -1051,6 +1055,14 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
     $("#modal31911 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
 
+    //Load Idea Type:
+    var current_idea_type = $('.s__12273_'+i__id+':first').attr('i__type');
+    $('.dropmenu_4737').attr('o__id',i__id);
+    $('.dropmenu_4737').attr('x__id',x__id);
+    $('#dropdownMenuButton4737_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___4737[current_privacy]['m__cover']+'</span>'+js_e___4737[current_privacy]['m__title']);
+    $('.dropd_4737_0_0 .dropdown-item').removeClass('hidden');
+    $('.dropd_4737_0_0 .optiond_'+current_privacy+'_0_0').addClass('hidden');
+
     //Load Instant Fields:
     if(link_i__id){
         i__id = 0;
@@ -1406,12 +1418,12 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
-    var current_privacy = $('.s__12274_'+e__id+':first').attr('e__privacy');
 
     $('#modal31912 .save_e__cover').val(current_cover).focus();
     update_cover_main(current_cover, '.demo_cover');
 
-    //Load Source Status:
+    //Load Source Privacy:
+    var current_privacy = $('.s__12274_'+e__id+':first').attr('e__privacy');
     $('.dropmenu_6177').attr('o__id',e__id);
     $('.dropmenu_6177').attr('x__id',x__id);
     $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___6177[current_privacy]['m__cover']+'</span>'+js_e___6177[current_privacy]['m__title']);
