@@ -1246,6 +1246,7 @@ function editor_save_i(){
                     js_redirect('/~'+new_handle);
                 } else {
                     //Update Hashtag & Link:
+                    $('.s__12273_'+modify_data['save_i__id']).attr('i__hashtag', new_handle);
                     $(".ui_i__hashtag_"+modify_data['save_i__id']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
                     $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']+':first').attr('href').replace(old_handle, new_handle));
                 }
@@ -1565,6 +1566,7 @@ function editor_save_e(){
                     js_redirect('/@'+new_handle);
                 } else {
                     //Make adjustments to current page:
+                    $('.s__12274_'+modify_data['save_e__id']).attr('e__handle', new_handle);
                     $('.ui_e__handle_'+modify_data['save_e__id']).text(new_handle);
                     $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']+':first').attr('href').replace(old_handle, new_handle));
                 }
@@ -2420,8 +2422,11 @@ function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_
             $('.dropd_'+element_id+'_'+o__id+'_'+x__id).attr('selected-val' , new_e__id);
 
             if(element_id==6177){
-                //Update source access:
-                $('.s__12274_'+o__id+' .cover-link').removeClass('card_privacy_'+selected_e__id).addClass('card_privacy_'+new_e__id);
+                //Source access:
+                $('.s__12274_'+o__id).attr('e__privacy', new_e__id);
+            } else if(element_id==4737){
+                //Idea Type:
+                $('.s__12273_'+o__id).attr('i__type', new_e__id);
             }
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
