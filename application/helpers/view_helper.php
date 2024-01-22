@@ -2364,7 +2364,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $write_privacy_i = true, $
 
     if($write_privacy_i){
 
-        $ui .= '<div class="dropdown-menu dropmenu_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'">';
+        $ui .= '<div class="dropdown-menu dropmenu_'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'">';
 
         foreach($e___this as $e__id => $m) {
 

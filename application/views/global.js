@@ -1412,8 +1412,8 @@ function editor_load_e(e__id, x__id){
     update_cover_main(current_cover, '.demo_cover');
 
     //Load Source Status:
-    $('.dropmenu_6177_0_0').attr('o__id',e__id);
-    $('.dropmenu_6177_0_0').attr('x__id',x__id);
+    $('.dropmenu_6177').attr('o__id',e__id);
+    $('.dropmenu_6177').attr('x__id',x__id);
     $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___6177[current_privacy]['m__cover']+'</span>'+js_e___6177[current_privacy]['m__title']);
     $('.dropd_6177_0_0 .dropdown-item').removeClass('hidden');
     $('.dropd_6177_0_0 .optiond_'+current_privacy+'_0_0').addClass('hidden');
