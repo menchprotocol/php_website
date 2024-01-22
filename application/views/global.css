@@ -1786,11 +1786,15 @@ i, .btn .show-max {
     border:1px solid #999999 !important;
     margin-bottom: 8px;
 }
+.list-group.grey-line{
+    border-top: 0 !important;
+}
 .grey-header{
-    background-color: #999 !important;
+    background-color: #EFEFEF !important;
     color: #000 !important;
     padding: 5px 3px;
     margin: 0;
+    border-bottom: 0 !important;
 }
 .grey-header, .grey-header i{
     color: #000 !important;

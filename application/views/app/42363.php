@@ -72,7 +72,6 @@ if(!$is_good){
             'new_x' => $new_x,
             'input' => $arr,
             'inputs1' => $arr->notification_type,
-            'inputs1' => $arr->notification_type,
             'inputs2' => $arr['notification_type'],
         ),
     ));
