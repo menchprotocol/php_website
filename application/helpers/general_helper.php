@@ -917,6 +917,9 @@ function list_settings($i__hashtag, $fetch_contact = false){
 function count_link_groups($x__type, $x__time_start = null, $x__time_end = null){
 
     $CI =& get_instance();
+    if(!is_array($CI->config->item('n___'.$x__type))){
+        return 0;
+    }
     $query_filters = array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
