@@ -727,6 +727,7 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
     $CI =& get_instance();
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
+    $focus_select = in_array($focus_id, $CI->config->item( $single_select ? 'e___33331' : 'e___33332'));
 
     if(!is_array($CI->config->item('n___'.$focus_id)) || !count($CI->config->item('n___'.$focus_id))){
         //Main item must be in memory:
@@ -764,7 +765,9 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
     $already_selected = array();
 
 
-    $ui = '<div class="list-group list-radio-select radio-'.$focus_id.'">';
+    $ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
+    $ui .= '<h3 class="mini-font"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':</h3>';
+    $ui .= '<div class="list-group list-radio-select radio-'.$focus_id.'">';
 
     if($down_e__id > 0){
 
@@ -809,6 +812,7 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
         $count++;
     }
 
+    $ui .= '</div>';
     $ui .= '</div>';
 
     return $ui;

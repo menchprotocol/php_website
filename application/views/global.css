@@ -1782,7 +1782,6 @@ i, .btn .show-max {
 .list-radio-select .list-group-item.active, .list-radio-select .list-group-item:hover {
     color:#000000 !important;
     background-color: #FFFFFF;
-    border-radius: 21px !important;
 }
 
 .top-cover{
