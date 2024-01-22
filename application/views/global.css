@@ -136,10 +136,10 @@ h3{
 }
 .message_controllers{
     float: right;
-    margin: 21px 0 -5px 0;
+    margin: 23px 0 -8px 0;
 }
 .modal-content h3 {
-    padding: 8px 0 !important;
+    padding: 8px 0 0 !important;
     background-color: #FFF;
     border: 0;
     color: #999;
@@ -161,11 +161,11 @@ h3{
 }
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
-    padding: 0 5px 8px 26px !important;
+    padding: 5px 5px 5px 26px !important;
 }
 .dynamic_selector{
     background-color: #ffffff;
-    padding: 3px 0 5px 26px;
+    padding: 5px 0 5px 26px;
 }
 .block-menu .dropdown i {
     padding-top: 2px;
