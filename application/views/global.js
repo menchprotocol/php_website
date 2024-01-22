@@ -2354,21 +2354,14 @@ function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_
     * */
 
 
-    if($('.dropmenu_'+element_id).length){
-        if(!o__id){
-            //Attempt to fetch this:
-            o__id = $('.dropmenu_'+element_id).attr('o__id');
-        }
-        if(!x__id){
-            //Attempt to fetch this:
-            x__id = $('.dropmenu_'+element_id).attr('x__id');
-        }
+    if($('.dropmenu_'+element_id).length && !o__id){
+        o__id = $('.dropmenu_'+element_id+':first').attr('o__id');
+        x__id = $('.dropmenu_'+element_id+':first').attr('x__id');
     }
 
     console.log('Attempt to update dropdown @'+element_id+' to @'+new_e__id);
 
     new_e__id = parseInt(new_e__id);
-
 
     //Deleting Anything?
     var migrate_s__id = 0;
@@ -2400,7 +2393,7 @@ function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_
         alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
         return false;
     }
-    $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">'+ ( show_full_name ? 'SAVING...' : '' ) +'</b>');
+    $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/x/update_dropdown", {
         focus_id:fetch_int_val('#focus_id'),
@@ -2448,7 +2441,7 @@ function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_
 
             }
 
-            if( data.trigger_i_save_modal ){
+            if( data.auto_open_i_editor_modal ){
                 //We need to show idea modal:
                 editor_load_i(o__id, $('.s__12273_'+o__id).attr('x__id'));
             }

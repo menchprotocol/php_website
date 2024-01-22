@@ -411,7 +411,7 @@ class X_model extends CI_Model
 
 
         //See if anything is being deleted:
-        $trigger_i_save_modal = 0;
+        $auto_open_i_editor_modal = 0;
         $deletion_redirect = null;
         $delete_element = null;
         $links_removed = -1;
@@ -602,7 +602,7 @@ class X_model extends CI_Model
 
                 if(!$already_responded){
                     //We are missing a required response, auto open modal:
-                    $trigger_i_save_modal = 1;
+                    $auto_open_i_editor_modal = 1;
                 }
 
             }
@@ -614,7 +614,7 @@ class X_model extends CI_Model
             'message' => 'Delete status ['.$status.'] with '.$links_removed.' Links removed',
             'deletion_redirect' => $deletion_redirect,
             'delete_element' => $delete_element,
-            'trigger_i_save_modal' => $trigger_i_save_modal,
+            'auto_open_i_editor_modal' => $auto_open_i_editor_modal,
         );
 
     }
