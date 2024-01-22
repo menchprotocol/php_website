@@ -1409,6 +1409,11 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_e__cover').val(current_cover).focus();
     update_cover_main(current_cover, '.demo_cover');
 
+    //Load Source Status:
+    $('.dropmenu_6177_0_0').attr('o__id',e__id);
+    $('.dropmenu_6177_0_0').attr('x__id',x__id);
+    $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'++'</span>'+);
+
     if(x__id){
         $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).text());
         $('#modal31912 .save_x__frame').removeClass('hidden');
@@ -2326,14 +2331,14 @@ function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_
     * */
 
 
-    if($('.dropdownMenuButton'+element_id).length){
+    if($('.dropmenu_'+element_id).length){
         if(!o__id){
             //Attempt to fetch this:
-            o__id = $('.dropdownMenuButton'+element_id).attr('o__id');
+            o__id = $('.dropmenu_'+element_id).attr('o__id');
         }
         if(!x__id){
             //Attempt to fetch this:
-            x__id = $('.dropdownMenuButton'+element_id).attr('x__id');
+            x__id = $('.dropmenu_'+element_id).attr('x__id');
         }
     }
 

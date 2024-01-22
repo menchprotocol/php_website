@@ -1784,9 +1784,13 @@ i, .btn .show-max {
 }
 .grey-line {
     border:1px solid #999999 !important;
+    margin-bottom: 8px;
 }
 .grey-header{
     background-color: #999 !important;
+    color: #000 !important;
+    padding: 5px 3px;
+    margin: 0;
 }
 .grey-header, .grey-header i{
     color: #000 !important;

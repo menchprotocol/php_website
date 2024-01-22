@@ -1945,7 +1945,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $show_text_editor = $write_privacy_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-6 col-sm-8 col-10 ' : ' edge-cover card_click_e col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" e__privacy="' . $e['e__privacy'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" x__privacy="'.$e['x__privacy'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-6 col-sm-8 col-10 ' : ' edge-cover card_click_e col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     //Source Link Groups
     $link_type_id = 0;
@@ -2358,15 +2358,15 @@ function view_dropdown($cache_e__id, $selected_e__id, $write_privacy_i = true, $
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
+    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
-    $ui .= '<span>'.'<span class="icon-block-xs">'.$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '</span>' );
+    $ui .= '<span class="current_content">'.'<span class="icon-block-xs">'.$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '</span>' );
 
     $ui .= '</button>';
 
     if($write_privacy_i){
 
-        $ui .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'">';
+        $ui .= '<div class="dropdown-menu dropmenu_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'">';
 
         foreach($e___this as $e__id => $m) {
 
