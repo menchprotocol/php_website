@@ -1778,8 +1778,8 @@ i, .btn .show-max {
 .list-radio-select {
     border-radius: 0;
 }
-.left-line {
-    border-left:1px solid #999999;
+.grey-line {
+    border:1px solid #999999 !important;
 }
 .list-radio-select .list-group-item {
     color:#999999 !important;

@@ -766,8 +766,8 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
 
 
     $ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
-    $ui .= '<h3 class="mini-font left-line"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':</h3>';
-    $ui .= '<div class="list-group list-radio-select left-line radio-'.$focus_id.'">';
+    $ui .= '<h3 class="mini-font grey-line" style="border-bottom: 0 !important;"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':</h3>';
+    $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'" style="border-top: 0 !important;">';
 
     if($down_e__id > 0){
 
