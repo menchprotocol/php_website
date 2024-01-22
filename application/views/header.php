@@ -837,7 +837,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
                     <div class="row">
-                        <div class="col-12 col-md-7">
+                        <div class="col-12 col-md-6">
                             <div class="left_modal_content">
 
                                 <!-- Link Message -->
@@ -851,7 +851,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-5">
+                        <div class="col-12 col-md-6">
 
                             <!-- Idea Hashtag -->
                             <div class="dynamic_editing_input hash_group">
@@ -907,7 +907,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <div class="row">
-                        <div class="col-12 col-md-7">
+                        <div class="col-12 col-md-6">
                             <div class="left_modal_content">
 
                                 <!-- Source Handle -->
@@ -928,7 +928,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-5">
+                        <div class="col-12 col-md-6">
 
                             <!-- SOURCE COVER -->
                             <div class="message_controllers">
