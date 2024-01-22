@@ -1118,25 +1118,27 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
             if (data.status) {
 
                 //Dynamic Input Fields:
-                for(let i=0;i<js_e___6404[42206]['m__message'];i++) {
+                for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
 
-                    if(data.return_inputs[i] == undefined){
-                        data.return_inputs[i] = [];
-                        data.return_inputs[i]["d__id"] = 0;
-                        data.return_inputs[i]["d_x__id"] = 0;
-                        data.return_inputs[i]["d__title"] = '';
-                        data.return_inputs[i]["d__value"] = '';
-                        data.return_inputs[i]["d__type_name"] = '';
-                        data.return_inputs[i]["d__placeholder"] = '';
+                    var index_i = i-1;
+
+                    if(data.return_inputs[index_i] == undefined){
+                        data.return_inputs[index_i] = [];
+                        data.return_inputs[index_i]["d__id"] = 0;
+                        data.return_inputs[index_i]["d_x__id"] = 0;
+                        data.return_inputs[index_i]["d__title"] = '';
+                        data.return_inputs[index_i]["d__value"] = '';
+                        data.return_inputs[index_i]["d__type_name"] = '';
+                        data.return_inputs[index_i]["d__placeholder"] = '';
                         $("#modal31911 .dynamic_"+i).addClass('hidden');
                     } else {
                         $("#modal31911 .dynamic_"+i).removeClass('hidden');
                     }
 
-                    $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[i]["d__title"]);
-                    $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[i]["d__placeholder"]).attr('type',data.return_inputs[i]["d__type_name"]).attr('d__id',data.return_inputs[i]["d__id"]).attr('d_x__id',data.return_inputs[i]["d_x__id"]).val(data.return_inputs[i]["d__value"]);
+                    $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__title"]);
+                    $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
 
-                    if(x__id && fetch_int_val('#focus_card')==12274 && data.return_inputs[i]["d__id"]==fetch_int_val('#focus_id')){
+                    if(x__id && fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         $("#modal31911 .save_x__message").val('IGNORE_INPUT');
                         $("#modal31911 .save_x__frame").addClass('hidden');
@@ -1421,23 +1423,25 @@ function editor_load_e(e__id, x__id){
             //Dynamic Input Fields:
             for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
 
-                if(data.return_inputs[i] == undefined){
-                    data.return_inputs[i] = [];
-                    data.return_inputs[i]["d__id"] = 0;
-                    data.return_inputs[i]["d_x__id"] = 0;
-                    data.return_inputs[i]["d__title"] = '';
-                    data.return_inputs[i]["d__value"] = '';
-                    data.return_inputs[i]["d__type_name"] = '';
-                    data.return_inputs[i]["d__placeholder"] = '';
+                var index_i = i-1;
+
+                if(data.return_inputs[index_i] == undefined){
+                    data.return_inputs[index_i] = [];
+                    data.return_inputs[index_i]["d__id"] = 0;
+                    data.return_inputs[index_i]["d_x__id"] = 0;
+                    data.return_inputs[index_i]["d__title"] = '';
+                    data.return_inputs[index_i]["d__value"] = '';
+                    data.return_inputs[index_i]["d__type_name"] = '';
+                    data.return_inputs[index_i]["d__placeholder"] = '';
                     $("#modal31912 .dynamic_"+i).addClass('hidden');
                 } else {
                     $("#modal31912 .dynamic_"+i).removeClass('hidden');
                 }
 
-                $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[i]["d__title"]);
-                $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[i]["d__placeholder"]).attr('type',data.return_inputs[i]["d__type_name"]).attr('d__id',data.return_inputs[i]["d__id"]).attr('d_x__id',data.return_inputs[i]["d_x__id"]).val(data.return_inputs[i]["d__value"]);
+                $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__title"]);
+                $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
 
-                if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[i]["d__id"]==e__id )){
+                if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[index_i]["d__id"]==e__id )){
                     //Hide message textarea since this is already loaded in the dynamic inputs:
                     $("#modal31912 .save_x__message").val('IGNORE_INPUT');
                     $("#modal31912 .save_x__frame").addClass('hidden');
