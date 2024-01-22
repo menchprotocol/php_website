@@ -933,7 +933,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <!-- Source Privacy -->
                                 <div class="dynamic_editing_input hash_group">
                                     <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6177]['m__cover'].'</span>'.$e___11035[6177]['m__title'].':';  ?></h3>
-                                    <div class="dynamic_selector"><?= view_dropdown(6177, 6181, null, true, true); ?></div>
+                                    <div class="dynamic_selector"><?= view_dropdown(6177, 0, null, true, true); ?></div>
                                 </div>
 
                                 <!-- Link Message -->

@@ -2334,6 +2334,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
 
         return false;
 
+        /*
     } elseif(!$selected_e__id && $write_privacy_i && $member_e){
 
         //See if this user has any of these options:
@@ -2347,7 +2348,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
             $selected_e__id = $x['x__up'];
             break;
         }
-
+    */
     }
 
     $show_thumbnail = ( isset($e___this[$selected_e__id]['m__cover']) ? $e___this[$selected_e__id] : $e___4527[$cache_e__id] );
@@ -2359,7 +2360,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
 
     $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" ' ).'>';
 
-    $ui .= '<span class="icon-block-xs">' .$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'].'<span class="icon-block"><i class="fal fa-chevron-square-down"></i></span>' : '' );
+    $ui .= '<span>'.'<span class="icon-block-xs">'.$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '</span>' );
 
     $ui .= '</button>';
 
