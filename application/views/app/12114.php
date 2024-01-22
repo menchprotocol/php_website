@@ -24,7 +24,7 @@ foreach($this->config->item('e___42263') as $x__type => $m) {
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $html_message .= '<div class="line"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].' <span title="$unique='.$unique.' && $this_week='.$this_week.'">'.$growth.'</span></div>';
+    $html_message .= '<div class="line"><span class="icon-block">'.$m['m__cover'].'</span>'.$growth.' to '.view_number($unique).' '.$m['m__title'].'</div>';
 
     //Primary Coin?
     if(in_array($x__type, $this->config->item('n___6404'))){
