@@ -1118,7 +1118,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
             if (data.status) {
 
                 //Dynamic Input Fields:
-                for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
+                for(let i=0;i<js_e___6404[42206]['m__message'];i++) {
 
                     if(data.return_inputs[i] == undefined){
                         data.return_inputs[i] = [];
@@ -1275,16 +1275,16 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
 
     //Fetch global defaults:
-    var default_max_file_size_mb = parseInt(js_e___6404[42383]['m__message']);
-    var default_max_file_count = parseInt(js_e___6404[42382]['m__message']);
+    var default_max_file_size_mb = parseFloat(js_e___6404[42383]['m__message']);
+    var default_max_file_count = parseFloat(js_e___6404[42382]['m__message']);
 
     var global_tags = ['uploader_'+uploader_id, 'u__id_'+js_pl_id];
     var allow_videos = js_e___42390[uploader_id]!==undefined;
     var allow_imgaes = js_e___42389[uploader_id]!==undefined;
 
     //Initiate CLoudiary for cover:
-    var max_file_size_mb = parseFloat( js_e___42383[uploader_id]!==undefined && parseInt(js_e___42383[uploader_id]['m__message'])>0 && parseInt(js_e___42383[uploader_id]['m__message'])<default_max_file_size_mb ? parseInt(js_e___42383[uploader_id]['m__message']) : default_max_file_size_mb );
-    var max_file_count = parseFloat( js_e___42382[uploader_id]!==undefined && parseInt(js_e___42382[uploader_id]['m__message'])>0 && parseInt(js_e___42382[uploader_id]['m__message'])<default_max_file_count ? parseInt(js_e___42382[uploader_id]['m__message']) : default_max_file_count );
+    var max_file_size_mb = ( js_e___42383[uploader_id]!==undefined && parseFloat(js_e___42383[uploader_id]['m__message'])>0 && parseFloat(js_e___42383[uploader_id]['m__message'])<default_max_file_size_mb ? parseFloat(js_e___42383[uploader_id]['m__message']) : default_max_file_size_mb );
+    var max_file_count = ( js_e___42382[uploader_id]!==undefined && parseFloat(js_e___42382[uploader_id]['m__message'])>0 && parseFloat(js_e___42382[uploader_id]['m__message'])<default_max_file_count ? parseFloat(js_e___42382[uploader_id]['m__message']) : default_max_file_count );
 
     var enable_crop = ( js_e___42386[uploader_id]!==undefined );
     var force_crop = ( js_e___42387[uploader_id]!==undefined );
@@ -1302,8 +1302,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             clientAllowedFormats.push(file_extension_array[i].replace(/^\s*/, "").replace(/\s*$/, ""));
         }
     }
-
-
 
     var widget_setting = {
 
@@ -1333,7 +1331,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     };
 
     console.log(widget_setting); //TODO Remove later... for debugging now
-
     var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
             if (!error && result && result.event === "success" && result.info.secure_url) {
                 if(uploader_id==42359){

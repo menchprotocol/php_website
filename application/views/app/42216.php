@@ -25,6 +25,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 $this->X_model->update($x['x__id'], array(
                     'x__type' => 42333, //RSVP No
                 ), $x['e__id'], 42251 /* Member Skipped Event */);
+                //TODO Copy th is elsewhere
 
                 //Notify and give option to go to starting point:
                 foreach($this->I_model->fetch(array(
