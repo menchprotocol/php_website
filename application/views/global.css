@@ -139,10 +139,10 @@ h3{
     margin: 23px 0 -8px 0;
 }
 .modal-content h3 {
-    padding: 8px 0 0 !important;
+    padding: 8px 0 !important;
     background-color: #EFEFEF;
-    border: 0;
     color: #000000;
+    margin-bottom: 0;
 }
 .modal-content h3 i {
     color: #000000;
@@ -156,7 +156,7 @@ h3{
 
 
 .dynamic_item, .dynamic_editing_input{
-    border:1px solid #999;
+    border:0;
     margin: 13px 0 0 0 !important;
 }
 .dynamic_item input.form-control,

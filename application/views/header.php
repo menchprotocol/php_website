@@ -969,7 +969,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <!-- Delete -->
                                 <a class="icon-block-sm" href="javascript:void(0);" onclick="update__cover('')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
                             </div>
-                            <div class="dynamic_editing_input" style="margin: 13px 0 8px !important;">
+                            <div class="dynamic_editing_input">
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
                                 <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
                                 <input type="text" class="form-control unsaved_warning save_e__cover " data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
