@@ -646,8 +646,6 @@ class E_model extends CI_Model
                     continue;
                 }
 
-                //FYI: Unlike Ideas, we cannot log following/follower source relations since the follower source slot is previously taken...
-
                 if($x__type){
 
                     $x__message = update_description($before_data[0][$key], $value);
@@ -664,11 +662,7 @@ class E_model extends CI_Model
 
                 } elseif($key=='e__privacy') {
 
-                    if(in_array($value, $this->config->item('n___7358') /* ACTIVE */)){
-                        $x__type = 10654; //Source Privacy Updated
-                    } else {
-                        $x__type = 6178; //Source Deleted
-                    }
+                    $x__type = 10654; //Source Privacy Updated
                     $e___6177 = $this->config->item('e___6177'); //Source Privacy
                     $x__message = view_db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
 
