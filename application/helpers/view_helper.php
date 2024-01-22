@@ -2359,7 +2359,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $btn_class = null, $write_
 
     $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).' btn-'.$btn_class.'" id="dropdownMenuButton'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked '.$btn_class.'" ' ).'>';
 
-    $ui .= '<span class="icon-block-xs">' .$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'] : '' );
+    $ui .= '<span class="icon-block-xs">' .$show_thumbnail['m__cover'].'</span>'.( $show_full_name ?  $show_thumbnail['m__title'].'<span class="icon-block"><i class="fal fa-chevron-square-down"></i></span>' : '' );
 
     $ui .= '</button>';
 
