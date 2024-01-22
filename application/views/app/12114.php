@@ -11,21 +11,24 @@ $x__time_start = date("Y-m-d H:i:s", $x__time_start_timestamp);
 $x__time_end = date("Y-m-d H:i:s", $x__time_end_timestamp);
 
 //Email Body
-$plain_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':</div>';
+$html_message = '<div class="line">Here is what happened in the last '.$last_x_days.' day'.view__s($last_x_days).':</div>';
 
-foreach($this->config->item('e___14874') as $x__type => $m) {
+foreach($this->config->item('e___42263') as $x__type => $m) {
 
-    $unique = count_interactions($x__type, null, $x__time_end);
-    $this_week = count_interactions($x__type, $x__time_start, $x__time_end);
+    $unique = count_link_groups($x__type, null, $x__time_end);
+    $this_week = count_link_groups($x__type, $x__time_start, $x__time_end);
+    if(!$unique){
+        continue;
+    }
     $growth = format_percentage(($unique / ( $unique - $this_week ) * 100) - 100);
     $growth = ( $growth >= 0 ? '+' : '-' ).$growth.'%';
 
     //Add to UI:
-    $plain_message .= '<div class="line">'.$m['m__title'].' <span title="$unique='.$unique.' && $this_week='.$this_week.'">'.$growth.'</span></div>';
+    $html_message .= '<div class="line">'.$m['m__title'].' <span title="$unique='.$unique.' && $this_week='.$this_week.'">'.$growth.'</span></div>';
 
     //Primary Coin?
-    if(in_array($x__type, $this->config->item('n___13776'))){
-        $subject = '<div class="line">'.$m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp).'</div>';
+    if(in_array($x__type, $this->config->item('n___6404'))){
+        $subject = $m['m__title'].' '.$growth.' for the Week of '.date("M jS", $x__time_start_timestamp);
     }
 
 }
@@ -35,7 +38,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 if($is_u_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
-    echo nl2br($plain_message);
+    echo $html_message;
     echo '<div style="padding: 21px 0;"><a href="'.view_app_link(12114).'?email_trigger=1">Email Me This Report</a></div>';
 
 } else {
@@ -58,7 +61,7 @@ if($is_u_request && !isset($_GET['email_trigger'])){
     //Send email to all subscribers:
     foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_u){
 
-        $this->X_model->send_dm($subscribed_u['e__id'], $subject, $plain_message);
+        $this->X_model->send_dm($subscribed_u['e__id'], $subject, $html_message);
         $email_recipients++;
 
     }

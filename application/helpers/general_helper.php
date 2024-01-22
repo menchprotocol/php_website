@@ -914,72 +914,13 @@ function list_settings($i__hashtag, $fetch_contact = false){
 }
 
 
-function count_interactions($x__type, $x__time_start = null, $x__time_end = null){
+function count_link_groups($x__type, $x__time_start = null, $x__time_end = null){
 
     $CI =& get_instance();
-
-    //We need to count this:
-    if($x__type==12274){
-
-        //SOURCES
-        $sub_counter = $CI->E_model->fetch(array(
-            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), 0, 0, array(), 'COUNT(e__id) as totals');
-        return intval($sub_counter[0]['totals']);
-
-    } elseif($x__type==12273){
-
-        //IDEAS
-        $sub_counter = $CI->I_model->fetch(array(
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), 0, 0, array(), 'COUNT(i__id) as totals');
-        return intval($sub_counter[0]['totals']);
-
-    } elseif(in_array($x__type, $CI->config->item('n___42284'))){
-
-        //DISCOVERIES LINKS
-        $joined_by = array();
-        $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
-        );
-
-    } elseif($x__type==6255){
-
-        //DISCOVERIES
-        $joined_by = array();
-        $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        );
-
-    } elseif($x__type==4341){
-
-        //Ledger Transactions
-        $joined_by = array();
-        $query_filters = array();
-
-    } elseif(in_array($x__type, $CI->config->item('n___31770'))){
-
-        //Platform Links
-        $joined_by = array();
-        $query_filters = array(
-            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //All these link types
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        );
-
-    } else {
-
-        //App Store
-        $joined_by = array('x__down');
-        $query_filters = array(
-            'x__up' => $x__type,
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        );
-
-    }
+    $query_filters = array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
+    );
 
     if(strtotime($x__time_start) > 0){
         $query_filters['x__time >='] = $x__time_start;
@@ -989,7 +930,7 @@ function count_interactions($x__type, $x__time_start = null, $x__time_end = null
     }
 
     //Fetch Results:
-    $query = $CI->X_model->fetch($query_filters, $joined_by, 1, 0, array(), 'COUNT(x__id) as totals');
+    $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
     return intval($query[0]['totals']);
 
 }

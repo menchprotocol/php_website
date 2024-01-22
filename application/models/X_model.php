@@ -140,7 +140,7 @@ class X_model extends CI_Model
             $subject = 'Notification: '  . $u_name . ' ' . $e___4593[$add_fields['x__type']]['m__title'];
 
             //Compose email body, start with transaction content:
-            $plain_message = ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '') . "\n";
+            $html_message = ( strlen($add_fields['x__message']) > 0 ? $add_fields['x__message'] : '') . "\n";
 
             $e___32088 = $this->config->item('e___32088'); //Platform Variables
 
@@ -151,33 +151,33 @@ class X_model extends CI_Model
 
                     //IDEA
                     foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                        $plain_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__hashtag']."\n\n";
+                        $html_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__hashtag']."\n\n";
                     }
 
                 } elseif (in_array(6160 , $m['m__following'])) {
 
                     //SOURCE
                     foreach($this->E_model->fetch(array( 'e__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_e){
-                        $plain_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').'/@' . $this_e['e__handle'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').'/@' . $this_e['e__handle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367 , $m['m__following'])) {
 
                     //DISCOVERY
-                    $plain_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').view_app_link(12722).'?x__id=' . $add_fields[$e___32088[$e__id]['m__message']]."\n\n";
+                    $html_message .= $m['m__title'] . ':'."\n".$this->config->item('base_url').view_app_link(12722).'?x__id=' . $add_fields[$e___32088[$e__id]['m__message']]."\n\n";
 
                 }
 
             }
 
             //Finally append DISCOVERY ID:
-            $plain_message .= 'TRANSACTION: #'.$add_fields['x__id']."\n".$this->config->item('base_url').view_app_link(12722).'?x__id=' . $add_fields['x__id']."\n\n";
+            $html_message .= 'TRANSACTION: #'.$add_fields['x__id']."\n".$this->config->item('base_url').view_app_link(12722).'?x__id=' . $add_fields['x__id']."\n\n";
 
             //Send to all Watchers:
             foreach($tr_watchers as $tr_watcher) {
                 //Do not inform the member who just took the action:
                 if($tr_watcher['e__id']!=$add_fields['x__creator'] || 1){
-                    $this->X_model->send_dm($tr_watcher['e__id'], $subject, $plain_message, array(
+                    $this->X_model->send_dm($tr_watcher['e__id'], $subject, $html_message, array(
                         'x__reference' => $add_fields['x__id'], //Save transaction
                         'x__right' => $add_fields['x__right'],
                         'x__left' => $add_fields['x__left'],
@@ -618,7 +618,7 @@ class X_model extends CI_Model
         );
 
     }
-    function send_dm($e__id, $subject, $plain_message, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true)
+    function send_dm($e__id, $subject, $html_message, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true)
     {
 
         $sms_subscriber = false;
@@ -672,7 +672,7 @@ class X_model extends CI_Model
 
         if(count($stats['email_addresses']) > 0){
             //Send email:
-            send_email($stats['email_addresses'], $subject, $plain_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr);
+            send_email($stats['email_addresses'], $subject, $html_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr);
         }
 
 
@@ -789,14 +789,14 @@ class X_model extends CI_Model
             )))){
 
                 //Append children as options:
-                $plain_message = '';
+                $html_message = '';
                 foreach($children as $down_or){
                     //Has this user discovered this idea or no?
-                    $plain_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
-                    $plain_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']).'</div>';
+                    $html_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
+                    $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']).'</div>';
                 }
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$plain_message, array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$html_message, array(
                     'x__right' => $x__right,
                     'x__left' => $i['i__id'],
                 ), $i['i__id'], $x__website, true);

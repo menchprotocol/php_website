@@ -1523,12 +1523,12 @@ class E extends CI_Controller
         $session_data['session_key'] = $session_key;
         $this->session->set_userdata($session_data);
 
-        $plain_message = $passcode.' is your '.$e___11035[32078]['m__title'].' for your '.get_domain('m__title').' account.';
+        $html_message = $passcode.' is your '.$e___11035[32078]['m__title'].' for your '.get_domain('m__title').' account.';
 
         if($valid_email) {
 
             //Email:
-            send_email(array($_POST['account_email_phone']), $plain_message, '<div class="line">'.$plain_message.'</div>', $x__creator, array(), 0, 0, false);
+            send_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $x__creator, array(), 0, 0, false);
 
 
             //Log new key:
@@ -1546,7 +1546,7 @@ class E extends CI_Controller
         } elseif($possible_phone) {
 
             //SMS:
-            send_sms($_POST['account_email_phone'], $plain_message, 0, array(), 0, 0, false);
+            send_sms($_POST['account_email_phone'], $html_message, 0, array(), 0, 0, false);
 
             //Log new key:
             $this->X_model->create(array(

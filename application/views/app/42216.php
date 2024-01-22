@@ -131,7 +131,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                         $user_website = user_website($x['e__id']);
                         $subject = 'Reminder: '.$title.' Starts in '.view_time_difference($time_starts);
-                        $plain_message = 'This is a friendly reminder about an upcoming event you signed up for:'.
+                        $html_message = 'This is a friendly reminder about an upcoming event you signed up for:'.
                             "\n".
                             "\n".$i['i__message'].
                             "\n".'Start Time: '.date("D M j G:i:s T", $time_starts).
@@ -142,7 +142,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                             "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view_app_link(42216).'?x__id='.$x['x__id'].'&e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']);
 
                         //Send message:
-                        $send_dm = $this->X_model->send_dm($x['e__id'], $subject, $plain_message, array(
+                        $send_dm = $this->X_model->send_dm($x['e__id'], $subject, $html_message, array(
                             'x__left' => $i['i__id'],
                         ), $i['i__id'], $user_website);
 
@@ -266,7 +266,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             )))) {
 
                 //Append children as options:
-                $plain_message = '';
+                $html_message = '';
                 foreach ($children as $down_or) {
 
                     $discoveries = $this->X_model->fetch(array(
@@ -276,12 +276,12 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                         'x__left' => $down_or['i__id'],
                     ));
                     //Has this user discovered this idea or no?
-                    $plain_message .= view_i_title($down_or, true) . ":\n";
-                    $plain_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . $top_i__hashtag . '/' . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view_e__hash(time().$x['e__handle']) : '') . "\n\n";
+                    $html_message .= view_i_title($down_or, true) . ":\n";
+                    $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . $top_i__hashtag . '/' . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view_e__hash(time().$x['e__handle']) : '') . "\n\n";
 
                 }
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message . "\n\n" . trim($plain_message), array(
+                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message . "\n" . trim($html_message), array(
                     'x__right' => $list_settings['list_config'][32426],
                     'x__left' => $i['i__id'],
                 ), $i['i__id'], $i['x__website'], true);
