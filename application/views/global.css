@@ -155,7 +155,7 @@ h3{
 }
 
 
-.dynamic_editing_input{
+.dynamic_item, .dynamic_editing_input{
     border:1px solid #999;
     margin: 13px 0 0 0 !important;
 }
