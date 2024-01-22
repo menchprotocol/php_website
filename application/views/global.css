@@ -158,6 +158,10 @@ h3{
 .dynamic_editing_input textarea.form-control{
     padding: 0 5px 8px 26px !important;
 }
+.dynamic_selector{
+    background-color: #ffffff;
+    padding: 3px;
+}
 .block-menu .dropdown i {
     padding-top: 2px;
 }
