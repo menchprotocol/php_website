@@ -727,7 +727,7 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
     $CI =& get_instance();
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
-    $focus_select = in_array($focus_id, $CI->config->item( $single_select ? 'e___33331' : 'e___33332'));
+    $focus_select = $CI->config->item( $single_select ? 'e___33331' : 'e___33332');
 
     if(!is_array($CI->config->item('n___'.$focus_id)) || !count($CI->config->item('n___'.$focus_id))){
         //Main item must be in memory:
