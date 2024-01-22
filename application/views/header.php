@@ -930,6 +930,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
                                 </div>
 
+                                <!-- Source Privacy -->
+                                <div class="dynamic_editing_input hash_group">
+                                    <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6177]['m__cover'].'</span>'.$e___11035[6177]['m__title'].':';  ?></h3>
+                                    <?= view_dropdown(6177, 6181, null, true, true); ?>
+                                </div>
+
                                 <!-- Link Message -->
                                 <div class="dynamic_editing_input save_x__frame hidden">
                                     <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
