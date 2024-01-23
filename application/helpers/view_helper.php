@@ -1759,8 +1759,7 @@ function view_list_e($i, $x__creator = 0, $plain_no_html = false){
         $x['x__message'] = data_type_format($x['x__up'], $x['x__message']);
 
         $relevant_e .= '<div class="source-info">'
-        . '<span class="icon-block-xs">'. $e___42421[$x['x__up']]['m__cover'] . '</span>' . $e___42421[$x['x__up']]['m__title']
-        . '<span>' . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+        . '<span class="icon-block-xs">'. $e___42421[$x['x__up']]['m__cover'] . '</span>' . $e___42421[$x['x__up']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
         . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
         . '</div>';
 
