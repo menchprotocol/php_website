@@ -1897,7 +1897,6 @@ i, .btn .show-max {
     margin-bottom: -5px;
     white-space: nowrap;
     text-overflow: clip;
-    padding-right: 5px;
 }
 .cover-progress{
     width: 100%;
@@ -2058,7 +2057,7 @@ input.form-control {
     display: inline-block;
 }
 .mini-padded {
-    padding: 0 3px;
+    padding: 0 5px 0 0;
 }
 .headline {
     padding: 5px 0 8px;
