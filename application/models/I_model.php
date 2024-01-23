@@ -28,8 +28,10 @@ class I_model extends CI_Model
             $add_fields['i__type'] = 6677;
         }
 
-        //Auto generate a Hashtag:
-        $add_fields['i__hashtag'] = generate_handle(12273, view_i_title($add_fields, true));
+        //Auto generate a Hashtag if needed:
+        if(!isset($add_fields['i__hashtag'])){
+            $add_fields['i__hashtag'] = random_string(13);
+        }
 
         //Lets now add:
         $this->db->insert('table__i', $add_fields);

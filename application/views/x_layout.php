@@ -35,7 +35,6 @@ $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || c
     'x__up' => 28239, //Can Skip
 )));
 
-echo random_string(rand(8,21));
 
 if(isset($_GET['delete'])){
 
