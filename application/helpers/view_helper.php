@@ -996,8 +996,9 @@ function validate_i__message($str){
 
 }
 
+
 function view_i_links($i, $replace_links = true){
-    return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] );
+    return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).view_list_e($i, 0, !$replace_links);
 }
 
 function idea_author($i__id){
@@ -1291,13 +1292,15 @@ function view_media($media_url, $link){
 }
 
 
+
 function view_location($x__type, $location){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    $show_map_link = in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font">'.$location['e__title'].'</span></a>'.( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
-
+    $show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
+    $show_map_link = !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xxs grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 }
+
 
 function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $focus_e = false){
 
@@ -1632,7 +1635,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
 
     //Idea Message (Remaining)
-    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card).( $focus_card ? '</div>' : '</a>' );
+    $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card, $focus_card).( $focus_card ? '</div>' : '</a>' );
 
     //Link Message, if Any:
     if($x__id){
@@ -1644,7 +1647,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //Raw Data:
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . '
      hidden">'.$i['i__message'].'</div>';
-    $ui .= '<div class="url_truncate space-content grey '.( $discovery_mode || !$focus_card ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
+    $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode || !$focus_card ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
 
 
 
@@ -1732,6 +1735,66 @@ function view_random_title(){
     return random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 }
 
+function view_list_e($i, $x__creator = 0, $plain_no_html = false){
+
+    $CI =& get_instance();
+    $relevant_e = '';
+
+    //Define Order:
+    $e___42421 = $CI->config->item('e___42421');
+    $order_columns = array();
+    foreach($e___42421 as $x__sort_id => $sort) {
+        $order_columns['x__up = \''.$x__sort_id.'\' DESC'] = null;
+    }
+
+    //Query Relevant Sources:
+    foreach($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Writer Links Active
+        'x__right' => $i['i__id'],
+        'x__up IN (' . join(',', $CI->config->item('n___42421')) . ')' => null, //Featured Inputs
+    ), array('x__up'), 0, 0, $order_columns) as $x){
+        $relevant_e .= view_list_e_items($i, $x__creator, $x, $plain_no_html);
+    }
+
+    return ( strlen($relevant_e) ? ( $plain_no_html ? $relevant_e : '<div class="source-featured">'.$relevant_e.'</div>' ) : false );
+
+}
+
+function view_list_e_items($i, $x__creator, $x, $plain_no_html = false){
+
+    //Must have Public/Guest Access
+    $CI =& get_instance();
+
+    //See if this member also follows this featured source?
+    $member_follows = array();
+    if($x__creator>0){
+        $member_follows = $CI->X_model->fetch(array(
+            'x__up' => $x['e__id'],
+            'x__down' => $x__creator,
+            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+        ));
+    }
+
+    $messages = '';
+    foreach($member_follows as $member_follow){
+        if(strlen($member_follow['x__message'])){
+            $messages .= ( $plain_no_html ? $member_follow['x__message']."\n\n" : '<h2 style="padding:0 0 8px;">' . $member_follow['x__message'] . '</h2>' );
+        }
+    }
+
+    if(strlen($messages)){
+        $x['x__message'] = ( strlen($x['x__message']) ? $messages.( $plain_no_html ? $x['x__message'] : nl2br($x['x__message']) ) : $messages );
+    }
+
+    return '<div class="source-info">'
+        . '<span class="icon-block-xs">'. view_cover($x['e__cover'], true) . '</span>'
+        . '<span>' . ( strlen($x['x__message']) ? ':' : '' ) .'</span>'
+        . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
+        . '</div>';
+
+}
 
 function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
 
