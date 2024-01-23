@@ -2524,13 +2524,22 @@ function activate_popups(){
         console.log('FOUND HOVER: '+$(this).attr('href'));
 
         $(this).attr('title','<p><b>WOW</b> this is <u>cool</u></b>');
+
         setTimeout(function () {
             $('body').popover({
-                selector: "[data-bs-toggle='tooltip']"
+                selector: '[data-toggle="tooltip"]'
             });
             //Restore background:
             $('[data-toggle="tooltip"]').tooltip();
-        }, 55);
+        }, 311);
+
+        setTimeout(function () {
+            $('body').popover({
+                selector: '[data-toggle="tooltip"]'
+            });
+            //Restore background:
+            $('[data-toggle="tooltip"]').tooltip();
+        }, 987);
     });
 
 }
