@@ -997,8 +997,10 @@ function validate_i__message($str){
 }
 
 
-function view_i_links($i, $replace_links = true){
-    return ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).view_list_e($i, 0, !$replace_links);
+function view_i_links($i, $replace_links = true, $focus_card = false){
+    return
+        ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
+        ( !$focus_card && substr_count($i['i__cache'], 'show_more_line') ? '' : view_list_e($i, 0, !$replace_links) );
 }
 
 function idea_author($i__id){
@@ -1298,7 +1300,7 @@ function view_location($x__type, $location){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
     $show_map_link = !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="icon-block-xxs grey">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font mini-frame">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xxs grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==42335 ? 'icon-block' : 'icon-block-xxs' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font mini-frame">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xxs grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 }
 
 
