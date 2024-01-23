@@ -1610,6 +1610,18 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font">@'.$creator['e__handle'].'</span></a><span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
     }
 
+    //Idea Location:
+    $e___13550 = $CI->config->item('e___13550'); //Idea/Source Links
+    $locations = null;
+    foreach($CI->X_model->fetch(array(
+        'x__type' => 41949, //Locate
+        'x__right' => $i['i__id'],
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+    ), array('x__up')) as $located){
+        $ui .= '<div class="creator_headline"><a href="/@'.$located['e__handle'].'"><span class="icon-block">'.$e___13550[41949]['m__cover'].'</span><b>'.$located['e__title'].'</b></a></div>';
+    }
+
     $ui .= '</div>';
 
 
@@ -2169,7 +2181,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Source Location:
-    $e___32292 = $CI->config->item('e___32292'); //Idea Types
+    $e___32292 = $CI->config->item('e___32292'); //Source Links
     $locations = null;
     foreach($CI->X_model->fetch(array(
         'x__type' => 42335,
