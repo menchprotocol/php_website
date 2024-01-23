@@ -144,6 +144,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         if(isset($e___29711[$e__id]) && isset($e___29763[$e__id])){
             array_push($google_fonts, $e___29711[$e__id]['m__message']);
             echo '
+            .custom_ui_14506_'.$e__id.'.list-group-item.active,
             .custom_ui_14506_'.$e__id.'.main__title.itemsetting,
             .custom_ui_14506_'.$e__id.' h1,
             .custom_ui_14506_'.$e__id.' h2,
