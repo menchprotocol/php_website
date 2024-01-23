@@ -1790,7 +1790,7 @@ i, .btn .show-max {
 
 .list-radio-select {
     border-radius: 0;
-    width: 100px;
+    width: 100%;
 }
 .list-radio-select .list-group-item {
     color:#999999 !important;
