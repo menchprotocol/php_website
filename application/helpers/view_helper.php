@@ -1000,7 +1000,7 @@ function validate_i__message($str){
 function view_i_links($i, $replace_links = true, $focus_card = false){
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
-        ( !$focus_card && substr_count($i['i__cache'], 'show_more_line') ? '' : view_list_e($i, !$replace_links) );
+        ( $focus_card || !substr_count($i['i__cache'], 'show_more_line') ? view_list_e($i, !$replace_links) : '' );
 }
 
 function idea_author($i__id){

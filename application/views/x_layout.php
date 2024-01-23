@@ -301,7 +301,7 @@ if($top_completed || $is_or_7712){
 echo '<div class="light-bg large-frame">';
 
 //Idea message:
-echo view_i_links($focus_i);
+echo view_i_links($focus_i, true, true);
 
 
 $x_selects = array();
