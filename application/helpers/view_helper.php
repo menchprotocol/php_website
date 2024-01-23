@@ -807,7 +807,7 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
     }
 
 
-    $exclude_fonts = ( in_array($focus_id, $this->config->item('n___42417')) ? 'exclude_fonts' : '' );
+    $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
         $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].'</a>';
         $count++;
