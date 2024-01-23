@@ -1421,7 +1421,6 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_x__id').val(x__id);
     $("#modal31912 .show_id").text('ID '+e__id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
-    set_autosize($('#modal31912 .save_e__title'));
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
@@ -1446,6 +1445,10 @@ function editor_load_e(e__id, x__id){
             set_autosize($('#modal31912 .save_x__message'));
         }, 377);
     }
+    setTimeout(function () {
+        set_autosize($('#modal31912 .save_e__title'));
+    }, 377);
+
 
     //Initiate Source Cover Uploader:
     load_cloudinary(42359, ['e__id_'+e__id], '.uploader_42359', '#modal31912');
