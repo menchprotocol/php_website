@@ -1157,8 +1157,10 @@ function data_type_validate($data_type, $data_value, $data_title){
 function data_type_format($data_type, $data_value){
 
     $CI =& get_instance();
+
     if(in_array($data_type, $CI->config->item('n___4318')) && strtotime($data_value)>0){
-        return date("D jS M Y g:i A", strtotime($data_value));
+        //Format Time:
+        return date(view_memory(6404,4318), strtotime($data_value));
     }
 
     //No special formatting needed:
