@@ -136,7 +136,7 @@ class X extends CI_Controller
                 $is_next = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                     'x__left' => $_POST['s__id'],
                 ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
                 $counter = count($is_next);
@@ -489,7 +489,7 @@ class X extends CI_Controller
 
 
 
-    function sort_alphabetical()
+    function reset_sorting()
     {
 
         //Authenticate Member:
@@ -518,7 +518,7 @@ class X extends CI_Controller
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                 'x__left' => $_POST['focus_id'],
             ), array('x__right'), 0, 0, array('i__message' => 'ASC')) as $x) {
                 $order++;

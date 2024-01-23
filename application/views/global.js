@@ -2515,7 +2515,7 @@ function sort_e_save(x__type) {
     }
 }
 
-function sort_alphabetical(){
+function reset_sorting(){
     var r = confirm("Reset sorting alphabetically?");
     if (r==true) {
 
@@ -2525,7 +2525,7 @@ function sort_alphabetical(){
 
 
         //Update via call:
-        $.post("/x/sort_alphabetical", {
+        $.post("/x/reset_sorting", {
             focus_card: focus_card,
             focus_id: focus_id
         }, function (data) {

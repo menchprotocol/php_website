@@ -504,7 +504,7 @@ class X_model extends CI_Model
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                        'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
                         'x__right' => $o__id,
                     ), array('x__left'), 1) as $previous_i) {
                         $deletion_redirect = '/~'.$previous_i['i__hashtag'];
@@ -515,7 +515,7 @@ class X_model extends CI_Model
                         foreach($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                            'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+                            'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
                             'x__right' => $o__id,
                         ), array('x__left'), 1) as $previous_i) {
                             $deletion_redirect = '/~'.$previous_i['i__hashtag'];

@@ -36,11 +36,11 @@ foreach($is as $in){
         'node_status' => $in['i__type'],
     ));
 
-    //Fetch followers:
+    //Fetch Next Ideas:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___4486')) . ')' => null, //IDEA LINKS
+        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
         'x__left' => $in['i__id'],
     ), array('x__right'), 0, 0) as $next_i){
 

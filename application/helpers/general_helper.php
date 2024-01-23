@@ -193,6 +193,11 @@ function filter_cache_group($search_e__id, $cache_e__id){
     return false;
 }
 
+function random_string($length){
+    $bytes = random_bytes($length);
+    return bin2hex($bytes);
+}
+
 function update_description($before_string, $after_string){
     return 'Updated from ['.$before_string.'] to ['.$after_string.']';
 }

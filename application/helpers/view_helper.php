@@ -1503,7 +1503,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                         } elseif($e__id_dropdown==13007){
 
                             //Reset Alphabetic order
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="sort_alphabetical()" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $write_privacy_i){
 
@@ -2079,7 +2079,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         } elseif($e__id_dropdown==13007){
 
                             //Reset Alphabetic order
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="sort_alphabetical()" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==6415){
 
