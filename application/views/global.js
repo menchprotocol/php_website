@@ -1042,7 +1042,7 @@ function e_load_finder(x__type) {
 
 
 function activate_radio_lines(){
-    $('.list-radio-select .list-group-item').mouseover( function() {
+    $('.list-radio-select a.list-group-item').mouseover( function() {
         if( this.offsetWidth > this.parentNode.offsetWidth ) {
             $(this).animate({'left': '-'+(this.offsetWidth)+'px'}, 5000, function(){this.style.left='0px';});
         }
