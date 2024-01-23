@@ -2680,6 +2680,11 @@ h4.main__title{
     line-height: 134%;
     margin-bottom: 13px;
 }
+.edge-cover .i_cache .first_line{
+    margin-bottom: 0;
+    padding-bottom: 3px;
+
+}
 .mench-points {
     color: #FC1B44 !important;
     font-style: italic;
@@ -4147,6 +4152,7 @@ main {
 .creator_headline{
     display: inline-block;
     line-height: 134%;
+    padding: 2px 0;
 }
 .focus-cover .creator_frame {
     margin-bottom: 8px;
