@@ -1295,7 +1295,7 @@ function view_location($x__type, $location){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $show_map_link = in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline grey"><a href="/@'.$location['e__handle'].'"><span class="icon-block-xxs grey">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font">'.$location['e__title'].'</span></a>'.( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font">'.$location['e__title'].'</span></a>'.( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 
 }
 
@@ -2052,7 +2052,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Handle
     $ui .= '<div class="center-block">';
-    $ui .= '<div class="grey creator_headline" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="grey creator_headline mini-font" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
     foreach($CI->X_model->fetch(array(
