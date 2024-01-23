@@ -1791,21 +1791,7 @@ i, .btn .show-max {
 .list-radio-select {
     border-radius: 0;
     width: 100%;
-    border: 1px solid red;
-    padding: 3px;
-    height: 1em;
-    overflow: hidden;
-    position: relative;
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
-.list-radio-select .list-group-item {
-    color:#999999 !important;
-    position: absolute;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .grey-header{
     background-color: #EFEFEF !important;
     color: #000 !important;
@@ -1815,7 +1801,15 @@ i, .btn .show-max {
 .grey-header, .grey-header i{
     color: #000 !important;
 }
+.list-radio-select .list-group-item {
+    color:#999999 !important;
+    overflow: hidden;
+}
 
+.list-radio-select .list-group-item .itemsetting {
+    white-space: nowrap;
+    position: relative;
+}
 
 .list-radio-select .list-group-item.active, .list-radio-select .list-group-item:hover {
     color:#000000 !important;

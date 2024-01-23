@@ -1042,25 +1042,14 @@ function e_load_finder(x__type) {
 
 
 function activate_radio_lines(){
-    var true_width = (function() {
-        var $tempobj = $('.list-radio-select').clone().contents()
-            .wrap('<div class="list-group-item"/>').parent().appendTo('body').css({
-                'left': '-1000px'
-            });
-        var result = $tempobj.width();
-        $tempobj.remove();
-        return result;
-    })();
-
-    $('.list-radio-select').one('mouseenter', function() {
-        var shift_distance = true_width - $(this).width();
-        var time_normalized = parseInt(shift_distance / 100, 10) * 1000;
-        $(this).contents().wrap('<div class="list-group-item">').parent().animate({
-            left: -shift_distance,
-            right: 0
-        }, time_normalized, 'linear');
-    });
-
+    $('.list-radio-select .list-group-item').mouseover( function() {
+        if( this.offsetWidth > this.parentNode.offsetWidth ) {
+            $(this).animate({'left': '-'+(this.offsetWidth)+'px'}, 5000, function(){this.style.left='0px';});
+        }
+    } ).mouseout( function() {
+        $(this).stop();
+        this.style.left = '0px';
+    } );
 }
 
 
