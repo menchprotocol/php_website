@@ -451,11 +451,9 @@ img.no-frame {
     max-height:250px;
 }
 
-input.main__title {
-    font-size: 2em;
-}
+input.main__title,
 textarea.main__title {
-    font-size: 3em;
+    font-size: 2em;
 }
 
 .aa-dropdown-menu .aa-suggestion,
