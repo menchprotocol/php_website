@@ -1158,7 +1158,7 @@ function data_type_format($data_type, $data_value){
 
     $CI =& get_instance();
     if(in_array($data_type, $CI->config->item('n___4318')) && strtotime($data_value)>0){
-        return date("D M j G:i:s T Y", strtotime($data_value));
+        return date("D M jS Y G:i A", strtotime($data_value));
     }
 
     //No special formatting needed:
