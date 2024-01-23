@@ -2048,6 +2048,9 @@ input.form-control {
     font-weight: bold !important;
     display: inline-block;
 }
+.mini-padded {
+    padding: 5px 3px;
+}
 .headline {
     padding: 5px 0 8px;
 }

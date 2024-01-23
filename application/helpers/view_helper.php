@@ -1606,7 +1606,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             'e__id' => $i['x__creator'],
             'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         )) as $creator){
-            $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font">@'.$creator['e__handle'].'</span></a><span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' PST">'.view_time_difference($i['x__time'], true).'</span></div>';
+            $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' PST">'.view_time_difference($i['x__time'], true).'</span></div>';
         }
     }
 
@@ -1618,7 +1618,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__right' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__up')) as $creator){
-        $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font">@'.$creator['e__handle'].'</span></a><span class="grey mini-font" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
+        $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
     }
 
     //Idea Location:
