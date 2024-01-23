@@ -2528,7 +2528,9 @@ function activate_popups(){
         // disable selector checkbox, put a tooltip on it, and show the buttons panel
         $(this).tooltip();
         // add a new button that triggers (or doesn't) a popover, with the appropriate message
-        $(this).append('<p><a class="btn btn-lg btn-danger" rel="popover" data-title="Dynamic" data-content="This button was added dynamically by JavaScript" data-placement="top">Hi '+$(this).attr('href')+'</a></p>');
+        //$(this).append('<p><a class="btn btn-lg btn-danger" rel="popover" data-title="Dynamic" data-content="This button was added dynamically by JavaScript" data-placement="top">Hi '+$(this).attr('href')+'</a></p>');
+        $('<p><a class="btn btn-lg btn-danger" rel="popover" data-title="Dynamic" data-content="This button was added dynamically by JavaScript" data-placement="top">Hi '+$(this).attr('href')+'</a></p>').appendTo($(this));
+
     });
 
 }
