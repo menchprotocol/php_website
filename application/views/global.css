@@ -99,6 +99,8 @@ body {
     height: 100%;
     border-radius: 0 !important;
 }
+
+
 .list-group-item {
     border: 0;
     border-radius: 0 !important;
@@ -1788,6 +1790,7 @@ i, .btn .show-max {
 
 .list-radio-select {
     border-radius: 0;
+    width: 100%;
 }
 .grey-header{
     background-color: #EFEFEF !important;
@@ -1800,6 +1803,9 @@ i, .btn .show-max {
 }
 .list-radio-select .list-group-item {
     color:#999999 !important;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
 }
 
 .list-radio-select .list-group-item.active, .list-radio-select .list-group-item:hover {
