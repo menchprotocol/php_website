@@ -1089,7 +1089,7 @@ function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
 
 }
 
-function valid_data_type($data_type, $data_value, $data_title){
+function data_type_validate($data_type, $data_value, $data_title){
 
     $CI =& get_instance();
     $e___4592 = $CI->config->item('e___4592'); //Data types
@@ -1134,7 +1134,7 @@ function valid_data_type($data_type, $data_value, $data_title){
         //Single Choice of Multi Choice source types should not be validated here...
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'valid_data_type() was asked to validate choice options for ['.$data_value.'] ['.$data_title.']',
+            'x__message' => 'data_type_validate() was asked to validate choice options for ['.$data_value.'] ['.$data_title.']',
         ));
 
     } elseif(in_array($data_type, $CI->config->item('n___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)){
@@ -1150,6 +1150,18 @@ function valid_data_type($data_type, $data_value, $data_title){
         'status' => 1,
         'message' => 'Good',
     );
+
+}
+
+
+function data_type_format($data_type, $data_value){
+
+    if($data_type==4318 && strtotime($data_value)>0){
+        return date("D M j G:i:s T Y", strtotime($data_value));
+    }
+
+    //No special formatting needed:
+    return $data_value;
 
 }
 

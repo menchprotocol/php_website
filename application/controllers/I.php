@@ -502,10 +502,10 @@ class I extends CI_Controller {
                 //Validate input based on its data type, if provided:
                 if (strlen($dynamic_value)) {
                     foreach(array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592')) as $data_type_this){
-                        $valid_data_type = valid_data_type($data_type_this, $dynamic_value, $e___42179[$dynamic_e__id]['m__title']);
-                        if (!$valid_data_type['status']) {
+                        $data_type_validate = data_type_validate($data_type_this, $dynamic_value, $e___42179[$dynamic_e__id]['m__title']);
+                        if (!$data_type_validate['status']) {
                             //We had an error:
-                            return view_json($valid_data_type);
+                            return view_json($data_type_validate);
                         }
                     }
                 }
