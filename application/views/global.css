@@ -1788,10 +1788,12 @@ i, .btn .show-max {
 .list-group-item.active {
     color:#000000;
     z-index: 0;
+}
+
+.itemsetting.active {
     font-size: 1.1em;
     font-weight: bold;
 }
-
 
 .list-radio-select {
     border-radius: 0;
