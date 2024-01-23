@@ -3508,6 +3508,11 @@ a,
 }
 
 .i_cache .line{
+    min-height: 21px;
+    padding-bottom: 3px;
+}
+
+.focus-cover .i_cache .line{
     min-height: 34px;
     padding-bottom: 5px;
 }
