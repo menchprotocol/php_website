@@ -1891,13 +1891,13 @@ i, .btn .show-max {
     font-size:0.89em;
 }
 .mini-frame{
-    max-width: 55%;
+    max-width: 233px;
     overflow: hidden;
     line-height: 144%;
     margin-bottom: -5px;
     white-space: nowrap;
     text-overflow: clip;
-    padding-right: 3px;
+    padding-right: 5px;
 }
 .cover-progress{
     width: 100%;
