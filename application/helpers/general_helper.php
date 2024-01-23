@@ -195,11 +195,12 @@ function filter_cache_group($search_e__id, $cache_e__id){
 
 function random_string($length_of_string){
     $characters = '123456789abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ';
-    $randstring = '';
+    $charactersLength = strlen($characters);
+    $randomString = '';
     for ($i = 0; $i < $length_of_string; $i++) {
-        $randstring = $characters[rand(0, strlen($characters))];
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
     }
-    return $randstring;
+    return $randomString;
 }
 
 function update_description($before_string, $after_string){
@@ -617,15 +618,6 @@ function i_is_available($i__id, $log_tnx, $check_inventory = true){
 
 }
 
-function generateRandomString($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[random_int(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
 
 function redirect_message($url, $message = null, $log_error = false)
 {

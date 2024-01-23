@@ -1522,7 +1522,7 @@ class E extends CI_Controller
 
         //Send Sign In Key
         $passcode = rand(1000,9999);
-        $session_key = generateRandomString(55);
+        $session_key = random_string(55);
 
         //Append to session:
         $session_data = $this->session->all_userdata();
