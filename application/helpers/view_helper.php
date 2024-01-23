@@ -2219,7 +2219,11 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $social_url = 'href="mailto:'.$social_link['x__message'].'"';
             } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
                 //Phone
-                $social_url = 'href="tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']).'"';
+                if($e__id==13815){
+                    $social_url = 'href="https://wa.me/'.preg_replace("/[^0-9]/", "", $social_link['x__message']).'"';
+                } else {
+                    $social_url = 'href="tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']).'"';
+                }
             } else {
                 //Unknown!
                 continue;

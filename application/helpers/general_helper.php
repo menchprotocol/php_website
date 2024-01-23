@@ -1091,7 +1091,6 @@ function valid_data_type($data_type, $data_value, $data_title){
             'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'].' with 10-14 numbers including country code.',
         );
     } elseif($data_type==4318 && !strtotime($data_value)){
-        //Time:42181
         return array(
             'status' => 0,
             'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],

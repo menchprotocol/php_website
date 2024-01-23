@@ -179,15 +179,18 @@ foreach($this->config->item('e___14036') as $e__id => $m){
             $social_url = 'mailto:'.$social_link['x__message'];
         } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
             //Phone
-            $social_url = 'tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']);
+            if($e__id==13815){
+                $social_url = 'https://wa.me/'.preg_replace("/[^0-9]/", "", $social_link['x__message']);
+            } else {
+                $social_url = 'tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']);
+            }
         } else {
             //Unknown!
             continue;
         }
 
-        //Append to links:
+        //Append to link:
         $social_ui .= '<li><a href="'.$social_url.'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
-
 
     }
 }
