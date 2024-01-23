@@ -1445,9 +1445,6 @@ function editor_load_e(e__id, x__id){
             set_autosize($('#modal31912 .save_x__message'));
         }, 377);
     }
-    setTimeout(function () {
-        set_autosize($('#modal31912 .save_e__title'));
-    }, 144);
 
 
     //Initiate Source Cover Uploader:
@@ -1504,11 +1501,11 @@ function editor_load_e(e__id, x__id){
                 $(".cover_history_content").append('<div class="doclear">&nbsp;</div>');
             }
 
-
+            set_autosize($('#modal31912 .save_e__title'));
             setTimeout(function () {
                 $('#modal31912 .save_e__title').focus();
                 $('[data-toggle="tooltip"]').tooltip();
-            }, 611);
+            }, 610);
 
         } else {
 
