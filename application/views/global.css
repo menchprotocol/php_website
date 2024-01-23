@@ -1893,7 +1893,7 @@ i, .btn .show-max {
 .mini-frame{
     max-width: 233px;
     overflow: hidden;
-    line-height: 144%;
+    line-height: 134%;
     margin-bottom: -5px;
     white-space: nowrap;
     text-overflow: clip;
@@ -4146,6 +4146,7 @@ main {
 }
 .creator_headline{
     display: inline-block;
+    line-height: 134%;
 }
 .focus-cover .creator_frame {
     margin-bottom: 8px;
