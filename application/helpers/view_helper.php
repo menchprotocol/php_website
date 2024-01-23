@@ -1597,7 +1597,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
 
     //Show Link User:
-    $ui .= '<div class="creator_headline_frame creator_headline_frame_'.$i['i__id'].'">';
+    $ui .= '<div class="creator_frame creator_frame_'.$i['i__id'].'">';
 
     $link_user = 0;
     if(!$discovery_mode && $x__id && isset($i['x__creator'])){

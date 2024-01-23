@@ -4141,14 +4141,13 @@ main {
         margin-bottom: 5px !important;
     }
 }
-.creator_headline_frame{
+.creator_frame{
    display: block;
 }
 .creator_headline{
-    padding: 3px 3px 3px 0;
     display: inline-block;
 }
-.focus-cover .creator_headline_frame {
+.focus-cover .creator_frame {
     margin-bottom: 8px;
 }
 
