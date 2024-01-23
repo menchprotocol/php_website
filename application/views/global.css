@@ -1795,10 +1795,8 @@ i, .btn .show-max {
 .list-radio-select .list-group-item {
     color:#999999 !important;
     overflow: hidden;
-}
-.list-radio-select .list-group-item .itemsetting {
     white-space: nowrap;
-    position: relative;
+    text-overflow: ellipsis ellipsis;
 }
 
 .grey-header{

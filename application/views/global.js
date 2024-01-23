@@ -1041,17 +1041,6 @@ function e_load_finder(x__type) {
 }
 
 
-function activate_radio_lines(){
-    $('.list-radio-select .list-group-item').mouseover( function() {
-        if( this.offsetWidth > this.parentNode.offsetWidth ) {
-            $(this).animate({'left': '-'+(this.offsetWidth)+'px'}, 5000, function(){this.style.left='0px';});
-        }
-    } ).mouseout( function() {
-        $(this).stop();
-        this.style.left = '0px';
-    } );
-}
-
 
 function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
@@ -1171,8 +1160,6 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                 $("#modal31911 .dynamic_editing_radio").html(data.return_radios);
 
                 setTimeout(function () {
-
-                    activate_radio_lines();
 
                     $('[data-toggle="tooltip"]').tooltip();
 
@@ -1515,8 +1502,6 @@ function editor_load_e(e__id, x__id){
 
 
             setTimeout(function () {
-
-                activate_radio_lines();
 
                 $('[data-toggle="tooltip"]').tooltip();
 
