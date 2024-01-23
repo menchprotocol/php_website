@@ -1421,10 +1421,11 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_x__id').val(x__id);
     $("#modal31912 .show_id").text('ID '+e__id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
+    set_autosize($('#modal31912 .save_e__title'));
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
-    $('#modal31912 .save_e__cover').val(current_cover).focus();
+    $('#modal31912 .save_e__cover').val(current_cover);
     update_cover_main(current_cover, '.demo_cover');
 
     //Load Source Privacy:
@@ -1503,7 +1504,9 @@ function editor_load_e(e__id, x__id){
 
             setTimeout(function () {
 
+                $('#modal31912 .save_e__title').focus();
                 $('[data-toggle="tooltip"]').tooltip();
+
 
             }, 377);
 

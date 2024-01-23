@@ -921,9 +921,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Source Title -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6197]['m__cover'].'</span>'.$e___11035[6197]['m__title'].': '. ( in_array(6197, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_e__title main__title" placeholder="...">
+                        <textarea class="form-control unsaved_warning save_e__title main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
-
 
 
                     <div class="row">
