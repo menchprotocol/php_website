@@ -56,6 +56,6 @@ if(!$is_u_request || isset($_GET['cron'])){
 
 } else {
 
-    echo 'Nothing to see here...';
+    echo 'Nothing to see here';
 
 }

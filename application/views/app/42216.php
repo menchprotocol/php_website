@@ -39,7 +39,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 //Inform the user and give them option to confirm removal:
                 echo '<p>You can submit this form if you wish to cancel your attendance:</p>';
                 echo '<form action="" method="GET">';
-                echo '<textarea class="form-control border no-padding" name="x__message" data-lpignore="true" placeholder="Optional Note...">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
+                echo '<textarea class="form-control border no-padding" name="x__message" data-lpignore="true" placeholder="Optional Note">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
                 echo '<input type="submit" name="submit" class="btn btn-6255" value="Cancel Event Attendance" />';
                 echo '</form>';
 
@@ -153,7 +153,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     $remind_status = ( $total_sent>0 ? 1 : -1 );
 
                 } else {
-                    //Reminder time has not yet come, do nothing and wait until it arrives...
+                    //Reminder time has not yet come, do nothing and wait until it arrives
                 }
 
             } else {
@@ -302,6 +302,6 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
 } else {
 
-    echo 'Nothing to see here...';
+    echo 'Nothing to see here';
 
 }

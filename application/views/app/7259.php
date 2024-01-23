@@ -151,7 +151,7 @@ echo '</form>';
                 counter++;
                 icons_listed.push(parseInt($( this ).attr( "i_id" )));
             });
-            console.log(counter + " to be deleted...");
+            console.log(counter + " to be deleted");
 
             $.post("/x/update_dropdown", {
                 focus_id:0,

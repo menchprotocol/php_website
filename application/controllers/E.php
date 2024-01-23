@@ -619,16 +619,16 @@ class E extends CI_Controller
                         $data_types = array_intersect($m['m__following'], $this->config->item('n___4592'));
 
                         if(count($data_types)!=1){
-                            //This is strange, we are expecting 1 match only... report this:
+                            //This is strange, we are expecting 1 match only report this:
                             $this->X_model->create(array(
                                 'x__type' => 4246, //Platform Bug Reports
                                 'x__creator' => $member_e['e__id'],
                                 'x__up' => 31912, //Edit Source
                                 'x__down' => $dynamic_e__id,
                                 'x__reference' => $_POST['x__id'],
-                                'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong...',
+                                'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong',
                             ));
-                            continue; //Go to the next dynamic data type...
+                            continue; //Go to the next dynamic data type
 
                         } elseif ($input_pointer >= view_memory(6404, 42206)) {
                             //Monitor if we ever reach the maximum:
@@ -640,7 +640,7 @@ class E extends CI_Controller
                                 'x__right' => $_POST['e__id'],
                                 'x__reference' => $_POST['x__id'],
                                 'x__metadata' => $_POST,
-                                'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion...',
+                                'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion',
                             ));
                         }
 
@@ -1073,7 +1073,7 @@ class E extends CI_Controller
 
         if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
 
-            //Since this is not a multi-select we want to delete all existing options...
+            //Since this is not a multi-select we want to delete all existing options
 
             //Fetch all possible answers based on followings source:
             $query_filters = array(
@@ -1506,7 +1506,7 @@ class E extends CI_Controller
         }
 
 
-        //Search for email/phone to see if it exists...
+        //Search for email/phone to see if it exists
         $x__creator = 0;
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

@@ -77,7 +77,7 @@ if(superpower_unlocked()) {
         'x__left' => ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ),
     );
 
-    $current_sign_i_attempt = array(); //Will try to find this...
+    $current_sign_i_attempt = array(); //Will try to find this
     $current_sign_i_attempts = $this->session->userdata('sign_i_attempts');
     if(is_array($current_sign_i_attempts) && count($current_sign_i_attempts) > 0){
         //See if any of the current sign-in attempts match this:

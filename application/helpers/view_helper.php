@@ -1087,8 +1087,8 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     //See what we can find:
     $word_count = 0;
     $word_limit = 89;
-    $link_words = 13; //The number of words a link is counted as...
-    $media_words = 21; //The number of words a photo/video file is counted as...
+    $link_words = 13; //The number of words a link is counted as
+    $media_words = 21; //The number of words a photo/video file is counted as
 
     $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
     $line_count = 0;
@@ -1109,7 +1109,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
                 //Determine URL type:
-                $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below...
+                $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below
                 $fileInfo = pathinfo($word);
                 foreach($extension_detect as $extension_type => $extension_ids) {
                     if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
@@ -1148,7 +1148,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 //This word is not referencing anything!
                 $i__cache_line .= htmlentities($word);
                 if($word_count>=$word_limit && !$hidden_started){
-                    $i__cache_line .= ' ...</div><div class="line hidden">';
+                    $i__cache_line .= '</div><div class="line hidden">';
                     $hidden_started = true;
                 }
                 $word_count++;
@@ -2269,7 +2269,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $write_privacy_i = true, $
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $x) {
-            //Supports one for now...
+            //Supports one for now
             $selected_e__id = $x['x__up'];
             break;
         }

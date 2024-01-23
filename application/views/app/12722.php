@@ -6,7 +6,7 @@ if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
 } else {
 
-    //We have the inputs we need...
+    //We have the inputs we need
 
 
     //Fetch transaction metadata and display it:

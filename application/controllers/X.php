@@ -117,7 +117,7 @@ class X extends CI_Controller
                 //Source list:
                 $counter = view_e_covers(12274, $_POST['s__id'], 0, false);
                 if(!$counter){
-                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet...</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Sources yet</div>';
                 } else {
                     echo '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
@@ -142,7 +142,7 @@ class X extends CI_Controller
                 $counter = count($is_next);
 
                 if(!$counter){
-                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Ideas yet...</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>No Ideas yet</div>';
                 } else {
                     echo '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
@@ -264,12 +264,12 @@ class X extends CI_Controller
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
                 'x__right' => $is[0]['i__id'],
-                //TODO Maybe log additional details like total ideas, time, etc...
+                //TODO Maybe log additional details like total ideas, time, etc
             ));
 
             return redirect_message('/'.$top_i__hashtag);
 
-            //TODO Go to Rating or Checkout App since the entire tree is discovered...
+            //TODO Go to Rating or Checkout App since the entire tree is discovered
 
         }
     }
@@ -669,7 +669,7 @@ class X extends CI_Controller
             //All good:
             return view_json(array(
                 'status' => 1,
-                'message' => 'Saved & Next...',
+                'message' => 'Saved & Next',
             ));
         } else {
             return view_json(array(
@@ -714,7 +714,7 @@ class X extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Skipped & Next...',
+            'message' => 'Skipped & Next',
         ));
 
     }
@@ -779,7 +779,7 @@ class X extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Saved & Next...',
+            'message' => 'Saved & Next',
         ));
 
     }
@@ -868,7 +868,7 @@ class X extends CI_Controller
                 //All good:
                 return view_json(array(
                     'status' => 1,
-                    'message' => 'Skipped & Next...',
+                    'message' => 'Skipped & Next',
                 ));
             } else {
                 //Cannot Skip:
@@ -1031,7 +1031,7 @@ class X extends CI_Controller
                     'x__up' => 30998, //Preg Match Error
                 ));
 
-                $error_message = ( count($preg_query_message) && strlen($preg_query_message[0]['x__message']) ? $preg_query_message[0]['x__message'] : 'Invalid Input, Please try again...' );
+                $error_message = ( count($preg_query_message) && strlen($preg_query_message[0]['x__message']) ? $preg_query_message[0]['x__message'] : 'Invalid Input, Please try again' );
 
                 //Log preg match failure
                 $this->X_model->create(array(
@@ -1072,7 +1072,7 @@ class X extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Saved & Next...',
+            'message' => 'Saved & Next',
         ));
 
     }

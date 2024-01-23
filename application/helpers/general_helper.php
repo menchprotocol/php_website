@@ -1131,7 +1131,7 @@ function data_type_validate($data_type, $data_value, $data_title){
         );
     } elseif(in_array($data_type, $CI->config->item('n___42188'))){
 
-        //Single Choice of Multi Choice source types should not be validated here...
+        //Single Choice of Multi Choice source types should not be validated here
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'data_type_validate() was asked to validate choice options for ['.$data_value.'] ['.$data_title.']',
@@ -1190,7 +1190,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Must set either Idea or Source ID! Pick one...',
+            'message' => 'Must set either Idea or Source ID! Pick one',
         );
 
     } elseif(!strlen($str)){
@@ -1235,7 +1235,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
 
     }
 
-    //Syntax good! Now let's check the DB for duplicates...
+    //Syntax good! Now let's check the DB for duplicates
     if($i__id > 0){
         foreach($CI->I_model->fetch(array(
             'i__id !=' => $i__id,
@@ -1716,7 +1716,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = true){
 
     $CI =& get_instance();
-    $e_id = 0; //Assume no domain unless found below...
+    $e_id = 0; //Assume no domain unless found below
 
     if(!$initiator_e__id){
         $member_e = superpower_unlocked();
@@ -2191,7 +2191,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     } elseif($return_row_only){
 
         if($s__id > 0){
-            //We  have a specific item we're looking for...
+            //We  have a specific item we're looking for
             return $all_export_rows[0];
         } else {
             return $all_export_rows;
@@ -2202,7 +2202,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     //Now let's see what to do with the index (Update, Create or delete)
     if ($s__type) {
 
-        //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on...
+        //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on
 
         //What's the status? Is it active or should it be deleted?
         if (in_array($all_db_rows[0][$focus_field_privacy], array(6178 /* Source Deleted */, 6182 /* Idea Deleted */))) {

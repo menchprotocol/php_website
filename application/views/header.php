@@ -616,7 +616,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Member search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources..." class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources" class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" placeholder="Search Source" />';
@@ -625,10 +625,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 } elseif($action_e__id==11956){
 
                                     //IF HAS THIS
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE..." class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE" class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
 
                                     //ADD THIS
-                                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE..." class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'"  placeholder="ADD THIS SOURCE" class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
 
 
                                 } elseif($action_e__id==5003){
@@ -645,7 +645,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
-                                    $input_options .= '<option value="">Set New Status...</option>';
+                                    $input_options .= '<option value="">Set New Status</option>';
                                     foreach($this->config->item('e___6177') /* Source Privacy */ as $x__type3 => $m3){
                                         $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
                                     }
@@ -666,7 +666,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
-                                    $input_options .= '<option value="">Set New Status...</option>';
+                                    $input_options .= '<option value="">Set New Status</option>';
                                     foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
                                         $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
                                     }
@@ -676,7 +676,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 } else {
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="String..." class="form-control border '.$is_upper.'">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="String" class="form-control border '.$is_upper.'">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -745,7 +745,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Source search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_finder e_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources" class="form-control algolia_finder e_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -755,7 +755,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Source search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources..." class="form-control algolia_finder e_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources" class="form-control algolia_finder e_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -763,7 +763,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 } elseif(in_array($action_e__id, array(12611,12612,27240,28801))){
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas..." class="form-control algolia_finder i_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas" class="form-control algolia_finder i_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -838,7 +838,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Idea Message -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
-                        <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                        <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
 
 
@@ -884,7 +884,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-6">
 
                             <!-- Dynamic Loader -->
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
 
                             <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>
@@ -1010,7 +1010,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-6">
 
                             <!-- Dynamic Loader -->
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading...</div>
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
 
                             <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>

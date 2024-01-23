@@ -27,7 +27,7 @@ $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 $top_i__id = ( count($top_i) ? $top_i['i__id'] : 0 );
     $top_i__id = ( count($top_i) && $x__creator ? $top_i['i__id'] : 0 );
     $top_i__hashtag = ( count($top_i) && $x__creator ? $top_i['i__hashtag'] : null );
-$top_completed = false; //Assume main intent not yet completed, unless proven otherwise...
+$top_completed = false; //Assume main intent not yet completed, unless proven otherwise
 $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || count($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
@@ -392,7 +392,7 @@ if($top_i__hashtag) {
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
 
-            $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait...</div>';
+            $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
             //Referesh soon so we can check if completed or not
             js_php_redirect('/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
@@ -409,7 +409,7 @@ if($top_i__hashtag) {
                 }
 
                 if(in_array($x_complete['x__type'], $this->config->item('n___40986'))){
-                    //Successful discovery... Show QR Code:
+                    //Successful discovery Show QR Code:
                     foreach($this->E_model->fetch(array(
                         'e__id' => $x_complete['x__creator'],
                     )) as $e){
@@ -456,7 +456,7 @@ if($top_i__hashtag) {
 
 
 
-            //Payments Must have Unit Price, otherwise they are NOT a payment until added...
+            //Payments Must have Unit Price, otherwise they are NOT a payment until added
             $info_append = '';
             $unit_currency = '';
             $unit_price = 0;
@@ -618,7 +618,7 @@ if($top_i__hashtag) {
                 $ticket_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                 $ticket_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
-                $ticket_ui .= '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading...\');$(\'#pay_now\').val(\'...\');">';
+                $ticket_ui .= '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading\');$(\'#pay_now\').val(\'...\');">';
 
                 $ticket_ui .= '</form>';
 
@@ -1122,7 +1122,7 @@ if($top_i__hashtag){
 
             }
         });
-        $('.file_save_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING...</span>');
+        $('.file_save_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING</span>');
 
     }
 
@@ -1167,7 +1167,7 @@ if($top_i__hashtag){
     function x_skip(){
 
         if(!can_skip){
-            alert('You cannot skip this...');
+            alert('You cannot skip this');
             return false;
         }
 

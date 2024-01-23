@@ -527,7 +527,7 @@ class I_model extends CI_Model
         }
 
 
-        //Additional sources to be added? Start with creator...
+        //Additional sources to be added? Start with creator
         $e_appended = array($x__creator);
 
         //Add if not added as the follower:
@@ -891,11 +891,11 @@ class I_model extends CI_Model
 
 
 
-        //Basic input validation done, let's continue...
+        //Basic input validation done, let's continue
 
 
         //Fetch all followers:
-        $applied_success = 0; //To be populated...
+        $applied_success = 0; //To be populated
 
         $is_next = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE

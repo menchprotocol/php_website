@@ -881,7 +881,7 @@ class E_model extends CI_Model
 
                     } else {
 
-                        //Always Migrate for now...
+                        //Always Migrate for now
                         $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__creator, 31784 /* Source Link Migrated */);
 
                     }
@@ -1009,8 +1009,8 @@ class E_model extends CI_Model
 
 
 
-        //Basic input validation done, let's continue...
-        $applied_success = 0; //To be populated...
+        //Basic input validation done, let's continue
+        $applied_success = 0; //To be populated
 
         //Fetch all followers:
         $followers = $this->X_model->fetch(array(

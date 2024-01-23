@@ -43,7 +43,7 @@ foreach($this->X_model->fetch(array(
 }
 
 if(!count($primary_i)){
-    //Try to assign a secondary ID as primary for now...
+    //Try to assign a secondary ID as primary for now
     foreach($secondary_i_list as $sec_i){
         $primary_i = $sec_i;
         break;

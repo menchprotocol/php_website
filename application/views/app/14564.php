@@ -9,7 +9,7 @@ if(isset($_GET['i__hashtag'])){
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'auth0_callback() Failed to create new member: '.$member_result['message'],
         ));
-        echo 'ERROR Creating New Account! Admin is notified...';
+        echo 'ERROR Creating New Account! Admin is notified';
     } else {
         js_php_redirect(new_member_redirect($member_result['e']['e__id'], $_GET['i__hashtag']), 13);
     }

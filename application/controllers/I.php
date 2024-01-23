@@ -301,7 +301,7 @@ class I extends CI_Controller {
             $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
 
             if(count($data_types)!=1) {
-                //This is strange, we are expecting 1 match only... report this:
+                //This is strange, we are expecting 1 match only report this:
                 $this->X_model->create(array(
                     'x__type' => 4246, //Platform Bug Reports
                     'x__creator' => $member_e['e__id'],
@@ -309,9 +309,9 @@ class I extends CI_Controller {
                     'x__down' => $dynamic_e__id,
                     'x__right' => $is[0]['i__id'],
                     'x__reference' => $_POST['x__id'],
-                    'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong...',
+                    'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong',
                 ));
-                continue; //Go to the next dynamic data type...
+                continue; //Go to the next dynamic data type
             }
 
             //We found 1 match as expected:

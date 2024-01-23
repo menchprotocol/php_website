@@ -122,7 +122,7 @@ class X_model extends CI_Model
         $tr_watchers = $this->E_model->fetch_recursive(42381, $add_fields['x__type'], $this->config->item('n___30820'), array(), 1);
         if(is_array($tr_watchers) && count($tr_watchers)){
 
-            //yes, start drafting email to be sent to them...
+            //yes, start drafting email to be sent to them
             $u_name = 'Unknown';
             if($add_fields['x__creator'] > 0){
                 //Fetch member details:
@@ -574,7 +574,7 @@ class X_model extends CI_Model
                 $is_required = in_array($dynamic_e__id, $this->config->item('n___42174')); //Required Settings
                 
                 if(!$is_required){
-                    //We are only interested in what is required...
+                    //We are only interested in what is required
                     continue;
                 }
                 
@@ -1642,7 +1642,7 @@ class X_model extends CI_Model
         //All good, something happened:
         return array(
             'status' => 1,
-            'message' => $answers_newly_added.' Selected. Going Next...',
+            'message' => $answers_newly_added.' Selected. Going Next',
         );
 
     }
