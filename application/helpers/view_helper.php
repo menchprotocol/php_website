@@ -2219,7 +2219,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $social_url = 'href="mailto:'.$social_link['x__message'].'"';
             } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
                 //Phone
-                $social_url = phone_href($e__id, $social_link['x__message']);
+                $social_url = 'href="'.phone_href($e__id, $social_link['x__message']).'"';
             } else {
                 //Unknown!
                 continue;
