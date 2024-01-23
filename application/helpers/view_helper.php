@@ -1078,7 +1078,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download</spanaa><!-- %s -->',
         31834 => '<spanaa href="/%s" class="ref_idea" data-toggle="tooltip" data-placement="top" data-html="true" title="Loading...">%s</spanaa>',
         42337 => '<spanaa href="/%s" class="ref_idea" data-toggle="tooltip" data-placement="top" data-html="true" title="Loading...">%s</spanaa>',
-        31835 => '<spanaa href="/@%s" class="ref_source" data-toggle="tooltip" data-placement="top" data-html="true" title="Loading...">%s</spanaa>',
+        31835 => '<spanaa href="/@%s" class="ref_source" data-toggle="tooltip" data-placement="top" data-html="true" title="Loading..." data-tip="source_popup">%s</spanaa>',
     );
 
     $replace_from = array();
