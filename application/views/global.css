@@ -3577,22 +3577,22 @@ a,
 /* SMALL */
 .custom_ui_13491_13492 .i_cache,
 .custom_ui_13491_13492 .regtext {
-    font-size:0.9em;
+    font-size:0.89em;
 }
 .custom_ui_13491_13492 .i_cache i,
 .custom_ui_13491_13492 .regtext i {
-    font-size:1.6em;
+    font-size:0.89em;
 }
 
 
 /* MEDIUM */
 .custom_ui_13491_13493 .i_cache,
 .custom_ui_13491_13493 .regtext{
-    font-size:1.3em;
+    font-size:1em;
 }
 .custom_ui_13491_13493 .i_cache i,
 .custom_ui_13491_13493 .regtext i{
-    font-size:1.3em;
+    font-size:1em;
 } /* To get to 1.15em*/
 
 
@@ -3600,11 +3600,11 @@ a,
 /* LARGE */
 .custom_ui_13491_13494 .i_cache,
 .custom_ui_13491_13494 .regtext {
-    font-size:1.6em;
+    font-size:1.3em;
 }
 .custom_ui_13491_13494 .i_cache i,
 .custom_ui_13491_13494 .regtext i {
-    font-size:1.4em;
+    font-size:1.3em;
 }
 
 
