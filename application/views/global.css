@@ -454,6 +454,9 @@ img.no-frame {
 input.main__title {
     font-size: 2em;
 }
+textarea.main__title {
+    font-size: 3em;
+}
 
 .aa-dropdown-menu .aa-suggestion,
 .suggestion {
