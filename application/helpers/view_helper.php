@@ -1619,7 +1619,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up')) as $located){
-        $ui .= '<div class="creator_headline"><a href="/@'.$located['e__handle'].'"><span class="icon-block">'.$e___13550[41949]['m__cover'].'</span><b>'.$located['e__title'].'</b></a></div>';
+        $ui .= '<div class="creator_headline"><a href="/@'.$located['e__handle'].'"><span class="icon-block-xxs grey">'.$e___13550[41949]['m__cover'].'</span><span class="grey mini-font">'.$located['e__title'].'</span></a></div>';
     }
 
     $ui .= '</div>';
