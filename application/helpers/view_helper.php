@@ -1762,7 +1762,7 @@ function view_list_e($i, $plain_no_html = false){
 
         $relevant_e .= '<div class="source-info">'
         . '<span class="icon-block-xs">'. $e___42421[$x['x__up']]['m__cover'] . '</span>' . $e___42421[$x['x__up']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
-        . ( strlen($x['x__message']) ? '<div class="payment_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
+        . ( strlen($x['x__message']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
         . '</div>';
 
     }

@@ -513,7 +513,7 @@ if($top_i__hashtag) {
             $ticket_ui .= '<div class="source-info ticket-notice">'
                 . '<span class="icon-block">'. $e___11035[31076]['m__cover'] . '</span>'
                 . '<span>'.$e___11035[31076]['m__title'] . '</span>'
-                . '<div class="payment_box">'
+                . '<div class="source_info_box">'
                 . ( strlen($e___11035[31076]['m__message']) ? '<div class="sub_note main__title">'.nl2br($e___11035[31076]['m__message']).'</div>' : '' );
 
 

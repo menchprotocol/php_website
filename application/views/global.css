@@ -3964,14 +3964,13 @@ main {
     background-color: #d2f4ea;
 }
 
-.payment_box{
-    padding-top: 5px;
-    padding-left: 26px;
+.source_info_box{
+    padding:0 0 5px 26px;
     line-height:120%;
     overflow-x: hidden;
     overflow-y: visible;
 }
-.cover-content .payment_box{
+.cover-content .source_info_box{
     padding-top: 3px;
     padding-left:26px;
 }
