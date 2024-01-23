@@ -1447,7 +1447,7 @@ function editor_load_e(e__id, x__id){
     }
     setTimeout(function () {
         set_autosize($('#modal31912 .save_e__title'));
-    }, 377);
+    }, 144);
 
 
     //Initiate Source Cover Uploader:
@@ -1506,12 +1506,9 @@ function editor_load_e(e__id, x__id){
 
 
             setTimeout(function () {
-
                 $('#modal31912 .save_e__title').focus();
                 $('[data-toggle="tooltip"]').tooltip();
-
-
-            }, 377);
+            }, 611);
 
         } else {
 
