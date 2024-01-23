@@ -1644,7 +1644,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //Raw Data:
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . '
      hidden">'.$i['i__message'].'</div>';
-    $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode || !$focus_card ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
+    $ui .= '<div class="url_truncate space-content grey '.( $discovery_mode || !$focus_card ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
 
 
 
@@ -2049,8 +2049,10 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="handle_href_e_'.$e['e__id'].' main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
     }
 
+
     //Source Handle
-    $ui .= '<div class="sub__handle grey creator_headline" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="center-block">';
+    $ui .= '<div class="grey creator_headline" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
     foreach($CI->X_model->fetch(array(
@@ -2061,6 +2063,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     ), array('x__up')) as $location){
         $ui .= view_location(42335, $location);
     }
+    $ui .= '</div>';
 
 
     //Source Follow/Action Links
