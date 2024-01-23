@@ -1000,7 +1000,7 @@ function validate_i__message($str){
 function view_i_links($i, $replace_links = true, $focus_card = false){
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
-        ( !$focus_card && substr_count($i['i__cache'], 'show_more_line') ? '' : view_list_e($i, 0, !$replace_links) );
+        ( !$focus_card && substr_count($i['i__cache'], 'show_more_line') ? '' : view_list_e($i, !$replace_links) );
 }
 
 function idea_author($i__id){
@@ -1737,7 +1737,7 @@ function view_random_title(){
     return random_adjective().' '.$color.str_replace('Badger Honey','Honey Badger',str_replace('Black Widow','',ucwords(str_replace('-',' ',one_two_explode('fa-',' ',$random_cover)))));
 }
 
-function view_list_e($i, $x__creator = 0, $plain_no_html = false){
+function view_list_e($i, $plain_no_html = false){
 
     $CI =& get_instance();
     $relevant_e = '';
