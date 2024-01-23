@@ -1076,13 +1076,16 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4260 => '<img src="%s" class="content-image" /><!-- %s -->',
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
         42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download</spanaa><!-- %s -->',
-        31834 => '<spanaa href="/%s">%s</spanaa>',
-        42337 => '<spanaa href="/%s">%s</spanaa>',
-        31835 => '<spanaa href="/@%s">%s</spanaa>',
+        31834 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>',
+        42337 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>',
+        31835 => '<spanaa href="/@%s" class="ref_source">%s</spanaa>',
     );
 
     $replace_from = array();
     $replace_to = array();
+
+//    <p><label id="use-selector-label" class="checkbox"><input id="use-selector" type="checkbox" /> <span data-title="you must re-run this jsFiddle to change the selector option once you've started the demo">use selector option</span></label></p>
+
 
     //See what we can find:
     $word_count = 0;

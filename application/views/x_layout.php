@@ -987,6 +987,8 @@ if($top_i__hashtag){
 
     $(document).ready(function () {
 
+        activate_popups();
+
         show_more(<?= $focus_i['i__id'] ?>);
 
         //Auto next a single answer:

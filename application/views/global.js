@@ -2515,6 +2515,24 @@ function sort_e_save(x__type) {
     }
 }
 
+
+function activate_popups(){
+
+    //Will allow Source & Idea hashtags to have a popover effect:
+    console.log('initialize activate_popups()');
+    $('body').popover({
+        selector: '[rel=popover]'
+    });
+    $('.ref_source').hover(function() {
+        console.log('FOUND HOVER: '+$(this).attr('href'));
+        // disable selector checkbox, put a tooltip on it, and show the buttons panel
+        $(this).tooltip();
+        // add a new button that triggers (or doesn't) a popover, with the appropriate message
+        $(this).append('<p><a class="btn btn-lg btn-danger" rel="popover" data-title="Dynamic" data-content="This button was added dynamically by JavaScript" data-placement="top">Hi '+$(this).attr('href')+'</a></p>');
+    });
+
+}
+
 function reset_sorting(){
     var r = confirm("Reset sorting alphabetically?");
     if (r==true) {
