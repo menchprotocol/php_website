@@ -71,8 +71,8 @@ if(!$is_good){
             'url' => (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
             'new_x' => $new_x,
             'input' => $arr,
-            'inputs1' => $arr->notification_type,
-            'inputs2' => $arr['notification_type'],
+            'inputs1' => ( isset($arr->notification_type) ? $arr->notification_type : array() ),
+            'inputs2' => ( isset($arr['notification_type']) ? $arr['notification_type'] : array() ),
         ),
     ));
     echo 'Invalid inputs';

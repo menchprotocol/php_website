@@ -1305,6 +1305,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     var enable_crop = ( js_e___42386[uploader_id]!==undefined );
     var force_crop = ( js_e___42387[uploader_id]!==undefined );
     var force_file_extension = ( js_e___33800[uploader_id]!==undefined && js_e___33800[uploader_id]['m__message'].length ? js_e___33800[uploader_id]['m__message'] : null );
+
     var clientAllowedFormats = [];
     if(allow_videos){
         clientAllowedFormats.push('video');
@@ -1333,7 +1334,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         cropping: enable_crop,
         showSkipCropButton: !force_crop,
         croppingShowBackButton: !force_crop,
-        croppingAspectRatio: ( js_e___42388[uploader_id]!==undefined && parseFloat(js_e___42388[uploader_id]['m__message'])>0 ? js_e___42388[uploader_id]['m__message'] : null ),
+        croppingAspectRatio: ( js_e___42388[uploader_id]!==undefined && parseFloat(js_e___42388[uploader_id]['m__message'])>0 ? parseFloat(js_e___42388[uploader_id]['m__message']) : null ),
 
         minImageWidth: ( js_e___42407[uploader_id]!==undefined && parseInt(js_e___42407[uploader_id]['m__message'])>0 ? parseInt(js_e___42407[uploader_id]['m__message']) : null ),
         maxImageWidth: ( js_e___42408[uploader_id]!==undefined && parseInt(js_e___42408[uploader_id]['m__message'])>0 ? parseInt(js_e___42408[uploader_id]['m__message']) : null ),
