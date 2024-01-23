@@ -179,11 +179,7 @@ foreach($this->config->item('e___14036') as $e__id => $m){
             $social_url = 'mailto:'.$social_link['x__message'];
         } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
             //Phone
-            if($e__id==13815){
-                $social_url = 'https://wa.me/'.preg_replace("/[^0-9]/", "", $social_link['x__message']);
-            } else {
-                $social_url = 'tel:'.preg_replace("/[^0-9]/", "", $social_link['x__message']);
-            }
+            $social_url = phone_href($e__id, $social_link['x__message']);
         } else {
             //Unknown!
             continue;

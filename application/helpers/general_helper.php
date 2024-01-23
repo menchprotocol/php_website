@@ -197,6 +197,21 @@ function update_description($before_string, $after_string){
     return 'Updated from ['.$before_string.'] to ['.$after_string.']';
 }
 
+function phone_href($x__type, $number){
+
+    $number = preg_replace("/[^0-9]/", "", $number);
+
+    if($x__type==13815){
+        //WhatsApp
+        return 'https://wa.me/'.$number;
+    } elseif($x__type==20337){
+        //Telegram
+        return 'https://t.me/'.$number;
+    } else {
+        //general number:
+        return 'tel:'.$number;
+    }
+}
 
 function random_cover($e__id){
     $CI =& get_instance();
