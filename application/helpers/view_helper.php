@@ -1298,7 +1298,7 @@ function view_location($x__type, $location){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
     $show_map_link = !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="icon-block">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xxs grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'" class="mini-frame"><span class="icon-block">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xxs grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xxs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 }
 
 
@@ -1606,7 +1606,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             'e__id' => $i['x__creator'],
             'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         )) as $creator){
-            $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' PST">'.view_time_difference($i['x__time'], true).'</span></div>';
+            $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'" class="mini-frame"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' PST">'.view_time_difference($i['x__time'], true).'</span></div>';
         }
     }
 
@@ -1618,7 +1618,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__right' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__up')) as $creator){
-        $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
+        $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'" class="mini-frame"><span class="icon-block icon-block-img">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
     }
 
     //Idea Location:
@@ -2089,7 +2089,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Handle
     $ui .= '<div class="center-block">';
-    $ui .= '<div class="grey creator_headline mini-font" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="grey creator_headline mini-font mini-frame" style="margin-top: -5px;">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
     foreach($CI->X_model->fetch(array(

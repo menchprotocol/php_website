@@ -1890,6 +1890,15 @@ i, .btn .show-max {
     line-height: 100%;
     font-size:0.89em;
 }
+.mini-frame{
+    max-width: 55%;
+    overflow: hidden;
+    line-height: 144%;
+    margin-bottom: -5px;
+    white-space: nowrap;
+    text-overflow: clip;
+    padding-right: 3px;
+}
 .cover-progress{
     width: 100%;
     top: 0;
