@@ -995,7 +995,7 @@ if($top_i__hashtag){
     $(document).ready(function () {
 
         // Tooltips
-        $('.tip').each(function () {
+        $('.ref_source').each(function () {
             $(this).tooltip(
                 {
                     html: true,
