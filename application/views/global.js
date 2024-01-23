@@ -2519,15 +2519,15 @@ function sort_e_save(x__type) {
 function activate_popups(){
 
     //Will allow Source & Idea hashtags to have a popover effect:
-    $('body').popover({
-        selector: "[data-bs-toggle='tooltip']"
-    });
     console.log('initialize activate_popups()');
-
     $('.ref_source').hover(function() {
         console.log('FOUND HOVER: '+$(this).attr('href'));
+
         $(this).attr('title','<p><b>WOW</b> this is <u>cool</u></b>');
         setTimeout(function () {
+            $('body').popover({
+                selector: "[data-bs-toggle='tooltip']"
+            });
             //Restore background:
             $('[data-toggle="tooltip"]').tooltip();
         }, 55);
