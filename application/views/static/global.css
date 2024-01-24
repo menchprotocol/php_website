@@ -1906,13 +1906,7 @@ label {
     z-index: 999;
 }
 
-.card_covers {
-    width: 100%;
-    height: 48px;
-    text-align: center;
-    margin: 0;
-    padding: 0 34px;
-}
+
 
 
 
@@ -2715,7 +2709,19 @@ h4.main__title{
     padding-right: 5px;
 }
 
+.card_covers {
+    width: 100%;
+    height: 48px;
+    text-align: center;
+    margin: 0;
+    padding: 0 34px;
+}
+
 @media (max-width:610px) {
+
+    .card_covers {
+        padding: 0 13px;
+    }
 
     .platform-navigation .block-x, .platform-navigation .block-menu {
         width:34px;
