@@ -1983,10 +1983,8 @@ input.form-control {
 
 #container_finder .mini-cover .cover-content {
     top: 5px;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    border-radius: 10px;
     position: absolute;
+    padding: 0 5px;
 }
 
 .coin-cover{

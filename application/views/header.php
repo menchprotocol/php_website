@@ -382,7 +382,7 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_finder" type="search" id="top_finder" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block-xs">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_finder" type="search" id="top_finder" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
 
 

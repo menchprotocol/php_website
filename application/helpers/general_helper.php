@@ -2047,7 +2047,8 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__url'] = '/~' . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
                 $export_row['s__privacy'] = intval($s['i__privacy']);
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = $s['i__message'];
+                $export_row['s__title'] = view_i_title($s, true);
+                $export_row['s__cache'] = $s['i__cache'];
                 $export_row['s__weight'] = intval($s['i__weight']);
 
                 //Top/Bottom Idea Keywords
@@ -2103,6 +2104,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__privacy'] = intval($s['e__privacy']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
+                $export_row['s__cache'] = '';
                 $export_row['s__weight'] = intval($s['e__weight']);
 
                 //Is this an image?
@@ -2148,6 +2150,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
                 $export_row['s__privacy'] = intval($s['e__privacy']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
+                $export_row['s__cache'] = '';
                 $export_row['s__weight'] = intval($s['e__weight']);
 
                 array_push($export_row['_tags'], 'is_app');
