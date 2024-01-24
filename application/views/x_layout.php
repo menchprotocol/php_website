@@ -224,7 +224,7 @@ if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
             if(count($query_subset) >= 2){
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
-                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$followings_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $breadcrum_content .= '<button type="button" class=" no-side-padding" id="dropdownMenuButton'.$followings_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 $breadcrum_content .= '<span style="padding-left:5px;"><i class="fal fa-chevron-square-down"></i></span>';
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$followings_i['i__id'].'">';
@@ -954,8 +954,8 @@ if($top_i__hashtag){
  *
  * <!-- Example split danger button -->
 <div class="btn-group">
-    <button type="button" class="btn btn-danger">FOLLOW</button>
-    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+    <button type="button" class=" btn-danger">FOLLOW</button>
+    <button type="button" class=" btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
         OR
     </button>
     <ul class="dropdown-menu">
