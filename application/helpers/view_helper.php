@@ -1107,7 +1107,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
             $reference_type = 0;
             if($word_count>=$word_limit && !$hidden_started){
-                $i__cache_line .= '<span class="hidden inner_hidden">';
+                $i__cache_line .= '<span class="hidden inner_line">';
                 $hidden_started = true;
             }
             $i__cache_line .= ( $word_index>0 ? ' ' : '' );

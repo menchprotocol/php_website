@@ -2196,7 +2196,7 @@ function activate_handle_finder(obj) {
 }
 
 function show_more(i__id){
-    $('.cache_frame_'+i__id+' .line').removeClass('hidden');
+    $('.cache_frame_'+i__id+' .line, .cache_frame_'+i__id+' .inner_line').removeClass('hidden');
     $('.cache_frame_'+i__id+' .show_more_line').addClass('hidden');
 }
 

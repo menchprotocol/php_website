@@ -983,6 +983,7 @@ if($top_i__hashtag){
 <input type="hidden" id="top_i__hashtag" value="<?= $top_i__hashtag ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
+
 <script>
 
     $(document).ready(function () {
