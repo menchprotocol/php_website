@@ -1973,9 +1973,9 @@ input.form-control {
 }
 
 #container_finder .mini-cover .cover-content {
-    top: 5px;
+    top: 0px;
     position: absolute;
-    padding: 0 3px;
+    padding: 1px 3px 0;
 }
 
 #container_finder .mini-cover.coin-12273 .cover-content {
