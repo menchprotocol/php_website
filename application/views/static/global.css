@@ -277,7 +277,7 @@ li a {
 
 .btn {
     font-size: 1em !important;
-    border: 1px solid #000000;
+    border: 1px solid #000000 !important;
 }
 
 
@@ -2970,12 +2970,12 @@ a,
 .btn.btn-default,
 .fa-gif-wrap
 {
-    border-color: #999999 !important;
+    border-color: #000000 !important;
 }
 
 .inner-content .texttype__lg,
 .nav-tabs .nav-item.show .nav-link{
-    border-color: #999999 !important;
+    border-color: #000000 !important;
 }
 
 /*
@@ -3608,7 +3608,7 @@ a,
 
 .input-group-text,
 .btn-grey .fa-gif-wrap {
-    border-color: #999999 !important;
+    border-color: #000000 !important;
     border-radius: 0 !important;
 }
 .grey-background {
