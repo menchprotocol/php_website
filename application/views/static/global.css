@@ -1143,8 +1143,8 @@ a.headline {
     max-width: none !important;
 }
 .search_bar {
-    margin-left: 5px;
-    width: calc(100% - 8px) !important;
+    margin-left: 1px;
+    width: calc(100% - 2px) !important;
 }
 
 .modal{
