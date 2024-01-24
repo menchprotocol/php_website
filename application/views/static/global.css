@@ -1565,7 +1565,7 @@ label {
     margin: -6px 3px -5px 2px !important;
 }
 .platform-logo img{
-    margin:-6px 0px 0px -5px !important;
+    margin:-6px 0px 0px -4px !important;
 }
 .platform-large img{
     width:128px;
@@ -1658,9 +1658,10 @@ label {
     margin: 0 13px 0 0;
 }
 .social-footer li{
+    width: 55px;
     display: inline-block;
-    font-size: 1.15em;
-    margin: 0 3px 0 0;
+    font-size: 1.21em;
+    margin: 0 3px 4px 0;
     background: rgba(0, 0, 0, 0.69) !important;
 }
 .texttype__sm {
@@ -2782,9 +2783,6 @@ h4.main__title{
         text-align: left;
     }
 
-    .social-footer li{
-        font-size: 1em;
-    }
     .icon-tweak{ padding-left: 8px; }
     .name-block{ margin-left: 40px; }
 
