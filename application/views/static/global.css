@@ -1063,7 +1063,8 @@ a.headline {
     margin: 0;
 }
 
-.edge-cover.coin-12273 .i_cache{
+.edge-cover.coin-12273 .i_cache,
+.edge-cover.coin-6255 .i_cache{
     margin-bottom:13px !important;
 }
 
@@ -1926,7 +1927,8 @@ label {
     width: calc(100% - 2px) !important;
     margin-left: 1px;
 }
-.coin-12273 .cover-content{
+.coin-12273 .cover-content,
+.coin-6255 .cover-content{
     position: relative;
     width: 100% !important;
     margin: 0;
@@ -1979,7 +1981,8 @@ input.form-control {
     padding: 1px 1px 0;
 }
 
-#container_finder .mini-cover.coin-12273 .cover-content {
+#container_finder .mini-cover.coin-12273 .cover-content,
+#container_finder .mini-cover.coin-6255 .cover-content {
     top: 0px;
     padding: 1px 1px 0;
     margin: 0 1px;
@@ -2129,7 +2132,8 @@ input.form-control {
 .focus-cover{
     margin:13px 0 0 !important;
 }
-.coin-12273.focus-cover{
+.coin-12273.focus-cover,
+.coin-6255.focus-cover{
     margin:13px 0 0 !important;
 }
 
@@ -2179,10 +2183,12 @@ input.form-control {
     text-align: center !important;
 }
 
-.coin-12273 .inner-content{
+.coin-12273 .inner-content,
+.coin-6255 .inner-content{
     height: auto; /* 200px */
 }
-.mini-cover.coin-12273 .inner-content{
+.mini-cover.coin-12273 .inner-content,
+.mini-cover.coin-6255 .inner-content{
     height: 89px;
 }
 .coin-6255 .inner-content,
@@ -2538,7 +2544,8 @@ textarea {
     padding: 13px !important;
 }
 
-.coin-12273.focus-cover .inner-content .main__title {
+.coin-6255.focus-cover .inner-content .main__title,
+.coin-12273.focus-cover .inner-content .main__title{
     padding: 0 0 5px 0 !important;
 }
 
@@ -2715,7 +2722,9 @@ h4.main__title{
     padding: 0 3px;
 }
 
-.coin-12273 .card_covers {
+
+.coin-12273 .card_covers,
+.coin-6255 .card_covers{
     padding: 0 40px;
 }
 
@@ -2897,7 +2906,8 @@ h4.main__title{
     background: #FFFFFF !important;
     color: #000000 !important;
 }
-.focus-cover.coin-12273 {
+.focus-cover.coin-12273,
+.focus-cover.coin-6255{
     margin-bottom: -40px !important;
     padding-bottom: 40px !important;
 }
@@ -2938,6 +2948,8 @@ textarea:not(.editing-mode),
 .alert i,
 .coin-12273 .cover-content .main__title,
 .coin-12273 .cover-content a button,
+.coin-6255 .cover-content .main__title,
+.coin-6255 .cover-content a button,
 .list-group-item,
 .cover-content .main__title,
 .cover-content,
