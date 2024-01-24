@@ -2139,6 +2139,9 @@ input.form-control {
     padding: 5px 0 0;
     margin: 0;
 }
+.focus-cover.coin-12274 .source-social ul {
+    padding: 21px 0 0;
+}
 .source-social ul li {
     list-style: auto;
     display: inline-block;
