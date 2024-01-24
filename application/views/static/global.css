@@ -2009,7 +2009,8 @@ input.form-control {
 }
 
 .pillbody {
-    /* min-height: 987px; */
+    min-height: 610px;
+    margin-top: 8px;
 }
 
 .headlinebody.leftPad {
@@ -2090,7 +2091,7 @@ input.form-control {
 .card_cover.coinface-12273{
     margin:0 0 !important;
     padding:8px 0 !important;
-    border-bottom: 1px solid #999999;
+    border-top: 1px solid #999999;
 }
 .focus-cover.coinface-12273{
     border-bottom: 0px solid transparent;
@@ -3774,7 +3775,7 @@ h4.main__title{
 .filter_table input {
     background-color: #FFF;
     border-radius: 21px !important;
-    border:1px solid #000 !important;
+    border:1px solid #999999 !important;
     color: #000;
 }
 .filter_table td {

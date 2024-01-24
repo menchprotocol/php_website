@@ -206,7 +206,7 @@ echo '</table>';
         -webkit-print-color-adjust:exact;
     }
     #sortable_table .table-striped td {
-        border-bottom: 1px dotted #FFFFFF !important;
+        border-bottom: 1px dotted #999999 !important;
         font-size: 1.15em;
     }
     .fa-filter, .fa-sort{
@@ -217,7 +217,7 @@ echo '</table>';
         cursor: ns-resize !important;
     }
     #sortable_table th, #sortable_table td{
-        border: 1px solid #000 !important;
+        border: 1px solid #999999 !important;
     }
 
     #sortable_table th:hover, #sortable_table th:active{

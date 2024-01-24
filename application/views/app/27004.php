@@ -404,7 +404,7 @@ if(count($i_query)){
         -webkit-print-color-adjust:exact;
     }
     .table-striped td {
-        border-bottom: 1px dotted #FFFFFF !important;
+        border-bottom: 1px dotted #999999 !important;
     }
     .fa-filter, .fa-sort{
         font-size: 1.01em !important;
