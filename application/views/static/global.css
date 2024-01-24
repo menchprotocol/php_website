@@ -1565,7 +1565,7 @@ label {
     margin: -6px 3px -5px 2px !important;
 }
 .platform-logo img{
-    margin:-2px 0px 0px -4px !important;
+    margin:-5px 0px 0px -4px !important;
 }
 .platform-large img{
     width:128px;
@@ -1611,10 +1611,6 @@ label {
 }
 .platform-logo i{
     font-size: 1em !important;
-}
-
-.platform-logo img{
-    margin-top: -5px;
 }
 
 .platform-circle{
