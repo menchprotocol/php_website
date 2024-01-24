@@ -4148,6 +4148,9 @@ main {
     line-height: 134%;
     padding: 3px 5px 3px 0;
 }
+.coin-12274 .creator_headline{
+    padding: 2px 1px 2px 0;
+}
 .focus-cover .creator_frame {
     margin-bottom: 8px;
 }
