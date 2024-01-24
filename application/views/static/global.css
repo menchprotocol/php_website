@@ -4086,7 +4086,7 @@ main {
 
 .container ul.nav-tabs {
     border-bottom: 0 !important;
-    margin: 5px 0 0;
+    margin: 5px 0 -1px;
     font-size: 1.1em;
 }
 .tab_content{
