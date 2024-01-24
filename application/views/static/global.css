@@ -4096,8 +4096,8 @@ main {
     z-index: 9999;
 }
 .tab_content{
-    padding-top: 1px;
     max-height: 987px;
+    margin-top: -1px;
 }
 
 .nav-tabs > li {
@@ -4139,6 +4139,9 @@ main {
     .platform-logo {
         margin-bottom: 5px !important;
     }
+}
+.new_list{
+    position: relative;
 }
 .creator_frame{
    display: block;
