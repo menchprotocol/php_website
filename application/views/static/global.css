@@ -2183,7 +2183,6 @@ input.form-control {
 }
 .mini-cover.coin-12273 .inner-content{
     height: 89px;
-    margin-top: -5px !important;
 }
 .coin-6255 .inner-content,
 .coin-12273 .inner-content{
@@ -2208,7 +2207,7 @@ input.form-control {
 .mini-cover .cover-content .inner-content {
     margin: 0;
     padding: 0;
-    line-height: 134%;
+    line-height: 113%;
     font-size: 0.75em;
     display: block;
     border-radius: 0;
