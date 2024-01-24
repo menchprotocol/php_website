@@ -2679,9 +2679,7 @@ h4.main__title{
     font-style: italic;
     font-size: 0.89em;
 }
-.showifmini{
-    display: none;
-}
+
 .left_modal_content { padding-right: 13px; }
 .section_subframe{
     background-color: #FFFFFF;
@@ -2785,13 +2783,6 @@ h4.main__title{
 
     .title-cover{
         margin-top: 5px;
-    }
-
-    .hideifmini{
-        display: none;
-    }
-    .showifmini{
-        display: inline-block;
     }
 
     .message-center, .message-center .i_cache {
