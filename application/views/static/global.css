@@ -1083,7 +1083,7 @@ a.headline {
 .focus-cover .space-content,
 .focus-cover .i_cache,
 .large-frame>.i_cache{
-    padding: 0 8px !important;
+    padding: 0 8px 21px !important;
 }
 
 .space-content{
