@@ -191,9 +191,10 @@ li a {
 }
 
 .social-footer li a {
-    padding: 13px;
+    padding: 13px 0px;
     margin: 0;
-    display: inline-block;
+    display: block;
+    width: 100%;
 }
 .social-footer li a:hover{
     background-color: #000000;
