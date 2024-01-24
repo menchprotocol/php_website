@@ -963,7 +963,6 @@ h4 .halfbg {
     border-radius: 0;
     padding:0;
     z-index: 9999999 !important;
-    max-width: 377px;
 }
 
 .dropdown-menu a {
@@ -2706,7 +2705,15 @@ h4.main__title{
     }
 }
 
+.dropdown-menu {
+    max-width: 610px;
+}
+
 @media (max-width:610px) {
+
+    .dropdown-menu {
+        max-width: 377px;
+    }
 
     .mench-points {
         padding-right: 2px;
