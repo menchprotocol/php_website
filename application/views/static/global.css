@@ -2013,7 +2013,6 @@ input.form-control {
 
 .pillbody {
     min-height: 610px;
-    margin-top: 8px;
 }
 
 .headlinebody.leftPad {
@@ -4087,7 +4086,7 @@ main {
 
 .container ul.nav-tabs {
     border-bottom: 0 !important;
-    margin: 21px 0 0;
+    margin: 5px 0 0;
     font-size: 1.1em;
 }
 .tab_content{
@@ -4196,7 +4195,7 @@ main {
 }
 .list-adder{
     padding: 8px 0 0 !important;
-    margin:-7px 0 0 !important;
+    margin:0 0 0 !important;
     background-color: #FFFFFF !important;
 }
 
