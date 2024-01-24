@@ -1911,6 +1911,7 @@ label {
     height: 48px;
     text-align: center;
     margin: 0;
+    overflow: auto;
 }
 
 
@@ -2087,7 +2088,7 @@ input.form-control {
     border-radius: 21px !important;
 }
 .edge-cover.coin-12274{
-    padding: 0 0 13px 0 !important;
+    padding: 0 0 21px 0 !important;
 }
 .card_cover.coinface-12273{
     margin:0 0 !important;
