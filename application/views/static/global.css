@@ -4147,8 +4147,12 @@ main {
 .creator_frame{
    display: block;
 }
+
+.main_item:hover .cover-content,
 .main_item:hover {
     background-color: #FFFFFF;
+    margin-bottom: -40px;
+    padding-bottom: 40px;
 }
 .creator_headline{
     display: inline-block;
