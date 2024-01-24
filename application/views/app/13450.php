@@ -1,6 +1,6 @@
 <?php
 
-echo '<div class="main_item row justify-content">';
+echo '<div class="row justify-content">';
 foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

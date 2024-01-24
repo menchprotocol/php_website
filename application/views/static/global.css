@@ -4147,6 +4147,9 @@ main {
 .creator_frame{
    display: block;
 }
+.main_item:hover {
+    background-color: #FFFFFF;
+}
 .creator_headline{
     display: inline-block;
     line-height: 134%;
