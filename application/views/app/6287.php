@@ -3,7 +3,9 @@
 $already_loaded = array(6287);
 $e___6287 = $this->config->item('e___6287'); //APP
 
-//Show Featured Apps
+
+
+//Start with Featured Apps
 echo '<div class="row">';
 foreach($this->X_model->fetch(array(
     'x__up' => 30841, //Featured Apps
@@ -26,10 +28,14 @@ foreach($this->X_model->fetch(array(
     array_push($already_loaded, intval($app['e__id']));
 
 }
+echo '</div>';
+
 
 
 
 //List Regular Apps:
+echo '<div class="extra_apps"><a href="javascript:void(0)" onclick="$(\'.extra_apps\').toggleClass(\'hidden\');"><i class="fas fa-arrows-v"></i> SEE MORE</a></div>';
+echo '<div class="row extra_apps hidden">';
 foreach($this->X_model->fetch(array(
     'x__up' => 6287, //Featured Apps
     'x__down NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
