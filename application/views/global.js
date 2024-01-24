@@ -2516,36 +2516,9 @@ function sort_e_save(x__type) {
 }
 
 
-function activate_popups(){
-
-    //Will allow Source & Idea hashtags to have a popover effect:
-    console.log('initialize activate_popups()');
-    $('.ref_source').hover(function() {
-        console.log('FOUND HOVER: '+$(this).attr('href'));
-
-        $(this).attr('title','<p><b>WOW</b> this is <u>cool</u></b>');
-
-        setTimeout(function () {
-            $('body').popover({
-                selector: '[data-toggle="tooltip"]'
-            });
-            //Restore background:
-            $('[data-toggle="tooltip"]').tooltip();
-        }, 311);
-
-        setTimeout(function () {
-            $('body').popover({
-                selector: '[data-toggle="tooltip"]'
-            });
-            //Restore background:
-            $('[data-toggle="tooltip"]').tooltip();
-        }, 987);
-    });
-
-}
 
 function reset_sorting(){
-    var r = confirm("Reset sorting alphabetically?");
+    var r = confirm("Reset sorting?");
     if (r==true) {
 
         var focus_card = fetch_int_val('#focus_card');

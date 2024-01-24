@@ -1094,6 +1094,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
     $line_count = 0;
     $hidden_started = false;
+    $hidden_closed = false;
 
     foreach(explode("\n", $str) as $line_index => $line) {
 
@@ -1105,6 +1106,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         foreach(explode(' ', $line) as $word_index => $word) {
 
             $reference_type = 0;
+            if($word_count>=$word_limit && !$hidden_started){
+                $i__cache_line .= '<span class="hidden inner_hidden">';
+                $hidden_started = true;
+            }
             $i__cache_line .= ( $word_index>0 ? ' ' : '' );
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
@@ -1148,17 +1153,19 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 //This word is not referencing anything!
                 $i__cache_line .= htmlentities($word);
-                if($word_count>=$word_limit && !$hidden_started){
-                    $i__cache_line .= '</div><div class="line hidden">';
-                    $hidden_started = true;
-                }
                 $word_count++;
 
             }
         }
 
+
+
         $i__cache .= '<div class="line '.(!$line_index ? 'first_line' : '').(($save_i__id && $word_count>=$word_limit && $line_count>2) ? ' hidden ' : '' ).'">';
         $i__cache .= $i__cache_line;
+        if($hidden_started && !$hidden_closed){
+            $i__cache .= '</span>';
+            $hidden_closed = true;
+        }
         $i__cache .= '</div>';
 
     }
