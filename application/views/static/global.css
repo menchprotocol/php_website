@@ -1546,8 +1546,8 @@ label {
 
 .icon-block-xx   i { font-size: 1.00em !important; }
 .block-x, i, .nav .icon-block i,
-.icon-block-xs   i { font-size: 1.34em !important; }
-.icon-block-sm   i,
+.icon-block-xs   i { font-size: 1.21em !important; }
+.icon-block-sm   i { font-size: 1.34em !important; }
 .source-social ul li i,
 .icon-block      i { font-size: 1.55em !important; }
 .icon-block-lg   i { font-size: 1.89em !important; }
