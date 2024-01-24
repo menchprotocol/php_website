@@ -1088,6 +1088,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     //See what we can find:
     $word_count = 0;
     $word_limit = 89;
+    $line_inwards = 3;
     $link_words = 13; //The number of words a link is counted as
     $media_words = 21; //The number of words a photo/video file is counted as
 
@@ -1106,7 +1107,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         foreach(explode(' ', $line) as $word_index => $word) {
 
             $reference_type = 0;
-            if($word_count>=$word_limit && !$hidden_started){
+            if($word_count>=$word_limit && !$hidden_started && (!$line_inwards || $word_index>=$line_inwards)){
                 $i__cache_line .= '<span class="hidden inner_line">';
                 $hidden_started = true;
             }
