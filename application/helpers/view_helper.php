@@ -1321,7 +1321,7 @@ function view_location($x__type, $location){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
     $show_map_link = !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xs grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xs grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xx grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xx grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 }
 
 
@@ -1801,7 +1801,7 @@ function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad =
 
     $CI =& get_instance();
     $e___26006 = $CI->config->item('e___26006'); //Toggle Headline
-    return '<a class="headline headline_'.$x__type.'" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block-xs grey">'.$m['m__cover'].'</span>' .$m['m__title'].':'.( !is_null($counter) ? ' [<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span>]' : '' ).'<span class="icon-block pull-right headline_titles headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody pillbody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
+    return '<a class="headline headline_'.$x__type.'" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block-xx grey">'.$m['m__cover'].'</span>' .$m['m__title'].':'.( !is_null($counter) ? ' [<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span>]' : '' ).'<span class="icon-block pull-right headline_titles headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody pillbody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
 
 }
 
