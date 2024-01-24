@@ -676,6 +676,14 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    const rootElement = document.querySelector('#source_emoji');
+    const picker = createPicker({
+        rootElement,
+    });
+    picker.addEventListener('emoji:select', event => {
+        console.log('Emoji selected:', event.emoji);
+    });
+
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {

@@ -116,7 +116,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo view_memory(6404,4523);
     ?>
 
-    <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
+    <link href="/application/views/static/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
+    <link href="/application/views/static/emojibuttonlistjs.min.css" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.js"></script>
@@ -126,7 +127,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
-    <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
+    <script src="/application/views/static/emojibuttonlistjs.min.js"></script>
+    <script src="/application/views/static/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
 
     <?php
 
@@ -327,7 +329,6 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
 }
 
 echo '<body class="'.$body_class.'">';
-
 echo $bgVideo;
 
 //Load live chat?
@@ -825,7 +826,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <a class="icon-block-sm uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
 
                         <!-- EMOJI -->
-                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
+                        <a class="icon-block-sm" id="source_emoji" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
 
                         <!-- Reference Source -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
