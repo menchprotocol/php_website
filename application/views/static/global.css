@@ -2107,6 +2107,10 @@ input.form-control {
     margin:0 0 13px 0 !important;
     padding-bottom:13px !important;
 }
+.card_cover.coin-6287.mini-cover{
+    margin:0 0 2px 0 !important;
+    padding-bottom:0 !important;
+}
 .card_cover .large_cover i{
     font-size:5.5em !important;
 }
