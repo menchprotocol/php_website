@@ -143,7 +143,7 @@ function view_card_x($x, $has_x__reference = false)
         } elseif($e__id==4362){
 
             //TIME
-            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST with ID '.$x['x__id'].'"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference($x['x__time']) . ' Ago</span></div>';
+            $ui .= '<div class="simple-line"><span data-toggle="tooltip" data-placement="top" title="' . $m['m__title'].': '.$x['x__time'] . ' PST | ID '.$x['x__id'].'"><span class="icon-block">'.$m['m__cover']. '</span>' . view_time_difference($x['x__time']) . ' Ago</span></div>';
 
         } elseif($e__id==4370 && $x['x__weight'] > 0){
 
@@ -1441,7 +1441,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                 //Creation Time:
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).'">' . view_time_difference($i['x__time'], true) . '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' | ID '.$i['x__id'].'">' . view_time_difference($i['x__time'], true) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_privacy_i && !$focus_card){
 
@@ -1942,7 +1942,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 //Creation Time:
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).'">' . view_time_difference($e['x__time'], true) . '</div></td>';
+                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).' | ID '.$e['x__id'].'">' . view_time_difference($e['x__time'], true) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
 
