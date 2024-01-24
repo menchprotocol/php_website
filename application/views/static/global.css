@@ -1187,10 +1187,6 @@ a.headline {
     margin-bottom:2px;
 }
 
-.platform-logo div.img {
-    margin-bottom: -5px;
-}
-
 .x-list {
     padding:15px 0;
     margin-bottom: 5px;
@@ -1607,10 +1603,11 @@ label {
     line-height: 130%;
     width:30px !important;
     height:30px !important;
-    margin:3px 3px 0 7px !important;
+    margin:0 3px 0 7px !important;
     border-radius: 21px !important;
     display: inline-block;
     font-size: 1.5em;
+    padding-top: 2px !important;
 }
 .platform-logo i{
     font-size: 1em !important;
