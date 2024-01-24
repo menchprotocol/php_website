@@ -4152,6 +4152,9 @@ main {
     border-top-left-radius: 21px;
     border-top-right-radius: 21px;
 }
+.main_item:hover .card_cover .show-on-hover {
+    display: block !important;
+}
 .main_item:hover .card_cover .cover-content,
 .main_item:hover {
     background-color: #FFFFFF !important;
