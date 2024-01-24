@@ -1184,7 +1184,7 @@ a.headline {
     margin-bottom: -7px;
 }
 .nav_finder{
-    margin-top:1px;
+    margin-top:-1px;
     margin-bottom:2px;
 }
 
