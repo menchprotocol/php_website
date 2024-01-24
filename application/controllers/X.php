@@ -190,9 +190,9 @@ class X extends CI_Controller
         if(!in_array($is[0]['i__id'], $this->X_model->started_ids($member_e['e__id']))){
 
             //is available?
-            $i_is_available = i_is_available($is[0]['i__id'], true);
-            if(!$i_is_available['status']){
-                return redirect_message('/'.$i_is_available['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
+            $i_is_discoverable = i_is_discoverable($is[0]['i__id'], true);
+            if(!$i_is_discoverable['status']){
+                return redirect_message('/'.$i_is_discoverable['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_discoverable['message'].'</div>');
             }
 
             //Is startable?
@@ -246,9 +246,9 @@ class X extends CI_Controller
             return redirect_message('/'.$top_i__hashtag, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$focus_i__hashtag.' is not currently active.</div>');
         }
 
-        $i_is_available = i_is_available($is[0]['i__id'], true, false);
-        if(!$i_is_available['status']){
-            return redirect_message('/'.$top_i__hashtag.'/'.$i_is_available['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_available['message'].'</div>');
+        $i_is_discoverable = i_is_discoverable($is[0]['i__id'], true, false);
+        if(!$i_is_discoverable['status']){
+            return redirect_message('/'.$top_i__hashtag.'/'.$i_is_discoverable['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_discoverable['message'].'</div>');
         }
 
         //Go to Next Idea:

@@ -488,7 +488,7 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x_
 }
 
 
-function i_is_available($i__id, $log_tnx, $check_inventory = true){
+function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();

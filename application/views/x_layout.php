@@ -14,8 +14,8 @@ $is_next = $this->X_model->fetch(array(
 
 //Filter Next Ideas:
 foreach($is_next as $in_key => $in_value){
-    $i_is_available = i_is_available($in_value['i__id'], false);
-    if(!$i_is_available['status']){
+    $i_is_discoverable = i_is_discoverable($in_value['i__id'], false);
+    if(!$i_is_discoverable['status']){
         //Remove this option:
         unset($is_next[$in_key]);
     }
@@ -24,6 +24,7 @@ foreach($is_next as $in_key => $in_value){
 
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
+$pathways_count = 0;
 $top_i__id = ( count($top_i) ? $top_i['i__id'] : 0 );
     $top_i__id = ( count($top_i) && $x__creator ? $top_i['i__id'] : 0 );
     $top_i__hashtag = ( count($top_i) && $x__creator ? $top_i['i__hashtag'] : null );
@@ -206,8 +207,8 @@ if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
                 'x__left' => $followings_i['i__id'],
             ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
             foreach($query_subset as $key=>$value){
-                $i_is_available = i_is_available($value['i__id'], false);
-                if(!$i_is_available['status'] || !count($this->X_model->fetch(array(
+                $i_is_discoverable = i_is_discoverable($value['i__id'], false);
+                if(!$i_is_discoverable['status'] || !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x__creator,
@@ -292,6 +293,7 @@ if($top_i__hashtag){
     $go_next_url = '/x/x_start/'.$focus_i['i__hashtag'];
 
 }
+
 
 if($top_completed || $is_or_7712){
     $_GET['open'] = true;
@@ -812,45 +814,6 @@ if($top_i__hashtag) {
 
     }
 
-}
-
-
-//Show
-
-
-$pathways_count = 0;
-if(!$top_i__hashtag){
-
-
-
-    if($is_startable){
-
-        //Get Started
-        echo '<div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
-        echo '<div class="doclear">&nbsp;</div>';
-
-    } else {
-
-        //Show Link to Top, if any:
-        $pathways = '<div class="row list-pathways">';
-        foreach($this->I_model->recursive_starting_points($focus_i['i__id']) as $top_id){
-            foreach($this->I_model->fetch(array(
-                'i__id' => $top_id,
-            )) as $top_start){
-                $pathways_count++;
-                $pathways .= view_card_i(6255, 0, null, $top_start);
-            }
-        }
-        $pathways .= '</div>';
-
-        if(!$pathways_count){
-            $_GET['open'] = true;
-        }
-
-    }
-
-} else {
-
     $buttons_found = 0;
     $buttons_ui = '';
 
@@ -918,7 +881,38 @@ if(!$top_i__hashtag){
         echo '</div>';
     }
 
+} else {
+
+    //NO TOP HASHTAH/Startable...
+
+    if($is_startable){
+
+        //Get Started
+        echo '<div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
+        echo '<div class="doclear">&nbsp;</div>';
+
+    } else {
+
+        //Show Link to Top, if any:
+        $pathways = '<div class="row list-pathways">';
+        foreach($this->I_model->recursive_starting_points($focus_i['i__id']) as $top_id){
+            foreach($this->I_model->fetch(array(
+                'i__id' => $top_id,
+            )) as $top_start){
+                $pathways_count++;
+                $pathways .= view_card_i(6255, 0, null, $top_start);
+            }
+        }
+        $pathways .= '</div>';
+
+        if(!$pathways_count){
+            $_GET['open'] = true;
+        }
+
+    }
+
 }
+
 
 
 

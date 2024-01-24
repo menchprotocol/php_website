@@ -1846,7 +1846,7 @@ label {
 
 .cover-wrapper {
     border:0;
-    margin:0 0px;
+    margin:0 1px;
 }
 .form-check{
     padding:8px;
@@ -4240,8 +4240,7 @@ main {
     color:#000000 !important;
 }
 .card_cover.mini-cover .cover-btn{
-    font-size: 4.55em;
-    top:37% !important;
+    font-size: 3.4em;
 }
 
 
