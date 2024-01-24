@@ -1984,7 +1984,7 @@ input.form-control {
 #container_finder .mini-cover .cover-content {
     top: 5px;
     position: absolute;
-    padding: 0 5px;
+    padding: 0 3px;
 }
 
 .coin-cover{
@@ -2241,6 +2241,9 @@ input.form-control {
     padding:3px 0 0;
     display: inline-block;
     min-height: 21px;
+}
+.mini-cover .cover-content .inner-content .main__title {
+    min-height: 13px;
 }
 .source-info span .main__title {
     padding:3px 0 0;
@@ -3639,7 +3642,10 @@ a,
 }
 .inner-content .main__title{
     text-align: left;
-    padding: 5px 0 5px !important;
+    padding: 5px 0 !important;
+}
+.mini-cover .inner-content .main__title{
+    padding: 0 !important;
 }
 .coin-12274 .inner-content .main__title,
 .coin-6287 .inner-content .main__title{
