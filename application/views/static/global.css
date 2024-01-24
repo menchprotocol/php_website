@@ -2096,6 +2096,9 @@ input.form-control {
     border-radius: 50% !important;
 }
 .card_cover.coin-12274{
+    border-radius: 21px !important;
+}
+.mini-cover.card_cover.coin-12274{
     border-radius: 0 !important;
 }
 .card_cover.coinface-12274{
