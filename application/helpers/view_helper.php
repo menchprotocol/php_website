@@ -576,6 +576,12 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         $e___11035 = $CI->config->item('e___11035');
         if(!isset($e___11035[$x__type]['m__title'])){
+            $CI->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__up' => 11035,
+                'x__down' => $x__type,
+                'x__message' => '@'.$x__type.' Missing from Nav @11035',
+            ));
             $e___11035[$x__type] = array(
                 'm__title' => '',
                 'm__cover' => '',
