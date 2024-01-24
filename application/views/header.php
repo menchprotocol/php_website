@@ -465,15 +465,14 @@ if(!$basic_header_footer){
                         } elseif($x__type==42246 && $member_e) {
 
                             //Profile Edit
-                            echo '<li><hr class="dropdown-divider"></li>'; //Hash to separate profile
                             $href = 'href="javascript:void(0);" onclick="editor_load_e('.$member_e['e__id'].',0)" ';
 
-                        } elseif($x__type==28615){
+                        } elseif($x__type==28615 && strlen(website_setting($x__type))){
 
                             //Phone US
                             $href = 'href="tel:'.preg_replace("/[^0-9]/", "", website_setting($x__type)).'"';
 
-                        } elseif($x__type==28614){
+                        } elseif($x__type==28614 && strlen(website_setting($x__type))){
 
                             //Email US
                             $href = 'href="mailto:'.website_setting($x__type).'"';
