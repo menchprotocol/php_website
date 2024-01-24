@@ -2112,7 +2112,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Handle
     $ui .= '<div class="center-block">';
-    $ui .= '<div class="grey creator_headline mini-font mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="grey mini-font mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
     foreach($CI->X_model->fetch(array(

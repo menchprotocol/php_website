@@ -4153,7 +4153,7 @@ main {
 .creator_headline{
     display: inline-block;
     line-height: 134%;
-    padding: 0 0;
+    padding: 2px 0;
 }
 .focus-cover .creator_frame {
     margin-bottom: 8px;
