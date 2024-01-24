@@ -2895,6 +2895,13 @@ h4.main__title{
     background: #FFFFFF !important;
     color: #000000 !important;
 }
+.focus-cover .card_cover.contrast_bg:hover {
+    z-index: -1;
+}
+.focus-cover.coin-12274 {
+    margin-bottom: -39px !important;
+    padding-bottom: 39px !important;
+}
 
 .standard-bg,
 body,
