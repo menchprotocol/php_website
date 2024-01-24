@@ -277,6 +277,9 @@ li a {
 
 .btn {
     font-size: 1em !important;
+}
+
+.btn.btn-large, .btn.btn-default {
     border: 1px solid #000000 !important;
 }
 
