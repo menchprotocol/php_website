@@ -2255,6 +2255,9 @@ input.form-control {
     overflow-x: hidden;
     overflow-y: scroll;
 }
+#container_finder .cover-content .inner-content a.main__title {
+    height: 100%;
+}
 
 .full-width-btn {
     padding: 0 3px;
