@@ -1549,10 +1549,9 @@ i, .btn .show-max {
 }
 
 .icon-block-xx i { font-size: 1.00em !important; }
-.icon-block-xs i { font-size: 1.13em !important; }
-.icon-block-sm i { font-size: 1.21em !important; }
-.icon-block    i { font-size: 1.34em !important; }
-.icon-block-xs i { font-size: 1.55em !important; }
+.icon-block-xs i { font-size: 1.21em !important; }
+.icon-block-sm i { font-size: 1.34em !important; }
+.icon-block    i { font-size: 1.55em !important; }
 .icon-block-lg i { font-size: 1.89em !important; }
 
 
