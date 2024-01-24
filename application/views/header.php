@@ -19,7 +19,7 @@ $domain_cover = get_domain('m__cover');
 $domain_logo = ( substr_count($domain_cover, '"')>0 ? one_two_explode('"','"', $domain_cover) : $domain_cover );
 $is_emoji = false;
 if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
-    $padding_hack = 1; //For URL
+    $padding_hack = 3; //For URL
 } elseif(string_is_icon($domain_logo)){
     $padding_hack = 2; //For Cover (4 before)
 } else {

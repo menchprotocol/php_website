@@ -1961,10 +1961,6 @@ label {
 }
 
 
-.is-cache .cover-content{
-    max-height: 93%;
-}
-
 
 .coin-6287 .cover-content{
     width: calc(100% - 12px) !important;
