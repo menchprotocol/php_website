@@ -789,7 +789,7 @@ p.menu_header {
 }
 
 
-.menu_header, .menu_header .icon-block-xxs i {
+.menu_header, .menu_header .icon-block-xx i {
     color:#999999 !important;
 }
 
@@ -1535,8 +1535,7 @@ i, .btn .show-max {
 .nav>.nav-item>.nav-link>.icon-block { width:30px !important; }
 #searchFrontForm .icon-block { width:30px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
-.icon-block-xxs{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
-.icon-block-xxs i{ font-size: 1em !important; }
+.icon-block-xx{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
 .icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
 .icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
@@ -1548,7 +1547,16 @@ i, .btn .show-max {
     height: 34px !important;
     margin: -5px 0 0 0 !important;
 }
-.i_cache .icon-block-xxs{ width:18px !important; }
+
+.icon-block-xx i { font-size: 1.00em !important; }
+.icon-block-xs i { font-size: 1.13em !important; }
+.icon-block-sm i { font-size: 1.21em !important; }
+.icon-block    i { font-size: 1.34em !important; }
+.icon-block-xs i { font-size: 1.55em !important; }
+.icon-block-lg i { font-size: 1.89em !important; }
+
+
+.i_cache .icon-block-xx{ width:18px !important; }
 
 
 .icon-block-xs img{
@@ -1557,7 +1565,7 @@ i, .btn .show-max {
     /*height: 21px !important;*/
     margin: -6px 0 -5px 2px !important;
 }
-.icon-block-xxs img{
+.icon-block-xx img{
     line-height: 100%;
     width: 18px !important;
     /*height: 16px !important;*/
@@ -3470,7 +3478,7 @@ a,
 .icon-block-lg img,
 .icon-block img,
 .icon-block-xs img,
-.icon-block-xxs img,
+.icon-block-xx img,
 .platform-large img,
 .image-mini img {
     border-radius: 50%;
@@ -3516,7 +3524,7 @@ a,
     text-align: center;
     font-size:1.15em;
 }
-.center-frame .i_cache .icon-block-xxs{
+.center-frame .i_cache .icon-block-xx{
     display:none;
 }
 .larger-font{
@@ -3857,7 +3865,7 @@ div.img {
     margin-bottom: -8px;
 }
 
-.icon-block-xxs div.img,
+.icon-block-xx div.img,
 .icon-block-xs div.img {
     width: 18px;
     height: 18px;

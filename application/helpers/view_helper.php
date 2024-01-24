@@ -284,9 +284,9 @@ function view_card($href, $is_current, $x__type, $o__privacy, $o__type, $o__titl
     $e___4593 = $CI->config->item('e___4593');
     $e___6177 = $CI->config->item('e___6177');
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item main__title '.( $is_current ? ' active ' : '' ).'">'.
-        ( in_array($x__type, $CI->config->item('n___32172')) ? '<span class="icon-block-xxs">'.$e___4593[$x__type]['m__cover'].'</span>' : '' ).
-        ( in_array($o__privacy, $CI->config->item('n___32172')) ? '<span class="icon-block-xxs">'.$e___6177[$o__privacy]['m__cover'].'</span>' : '' ).
-        ( strlen($o__type) ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
+        ( in_array($x__type, $CI->config->item('n___32172')) ? '<span class="icon-block-xx">'.$e___4593[$x__type]['m__cover'].'</span>' : '' ).
+        ( in_array($o__privacy, $CI->config->item('n___32172')) ? '<span class="icon-block-xx">'.$e___6177[$o__privacy]['m__cover'].'</span>' : '' ).
+        ( strlen($o__type) ? '<span class="icon-block-xx">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
         $o__title.
         ( strlen($x__message) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).
         '</a>';
@@ -294,9 +294,9 @@ function view_card($href, $is_current, $x__type, $o__privacy, $o__type, $o__titl
 
 function view_more($href, $is_current, $x__type, $o__privacy, $o__type, $o__title, $x__message = null){
     return '<a href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item main__title '.( $is_current ? ' active ' : '' ).'">'.
-        ( $x__type ? '<span class="icon-block-xxs">'.$x__type.'</span>' : '' ).
-        ( $o__privacy ? '<span class="icon-block-xxs">'.$o__privacy.'</span>' : '' ).
-        ( strlen($o__type) ? '<span class="icon-block-xxs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
+        ( $x__type ? '<span class="icon-block-xx">'.$x__type.'</span>' : '' ).
+        ( $o__privacy ? '<span class="icon-block-xx">'.$o__privacy.'</span>' : '' ).
+        ( strlen($o__type) ? '<span class="icon-block-xx">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
         $o__title.
         ( strlen($x__message) && superpower_unlocked(12701) ? '<div class="message2">'.strip_tags($x__message).'</div>' : '' ).
         '</a>';
@@ -598,7 +598,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
+            $card_icon = '<span class="icon-block-xx">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_e_covers button_of_'.$e__id.'_'.$x__type.'" id="card_e_group_'.$x__type.'_'.$e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
@@ -710,7 +710,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
                 return null;
             }
 
-            $card_icon = '<span class="icon-block-xxs">'.$e___11035[$x__type]['m__cover'].'</span>';
+            $card_icon = '<span class="icon-block-xx">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
             $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_i_covers button_of_'.$i__id.'_'.$x__type.'" id="card_group_i_'.$x__type.'_'.$i__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
@@ -823,7 +823,7 @@ function view_radio_e($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
-        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xxs" style="float:right;" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="e_radio('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" style="float:right;" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
         $count++;
     }
 
@@ -1321,7 +1321,7 @@ function view_location($x__type, $location){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
     $show_map_link = !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xxs' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font mini-frame">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font mini-frame">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 }
 
 
@@ -1814,7 +1814,7 @@ function convertURLs($string)
 
 function view_pill($focus_card, $x__type, $counter, $m, $ui = null, $is_open = true){
 
-    return '<script> '.( $is_open ? ' $(document).ready(function () { toggle_pills('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xxs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($counter) . '</span></a></li>\') </script>' .
+    return '<script> '.( $is_open ? ' $(document).ready(function () { toggle_pills('.$x__type.'); }); ' : '' ).' $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link '.( $is_open ? ' active ' : '' ).'" x__type="'.$x__type.'" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block-xx">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody pillbody headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'" read-counter="'.$counter.'">'.$ui.'</div>';
 
 }
