@@ -1893,7 +1893,7 @@ i, .btn .show-max {
     max-width: 233px;
     overflow: hidden;
     line-height: 134%;
-    margin-bottom: -7px;
+    margin-bottom: -5px;
     white-space: nowrap;
     text-overflow: clip;
 }
