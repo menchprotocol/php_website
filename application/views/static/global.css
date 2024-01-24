@@ -2120,6 +2120,7 @@ input.form-control {
 .card_cover.coin-6287{
     margin:0 0 13px 0 !important;
     padding-bottom:8px !important;
+    background-color: #FFFFFF;
 }
 .card_cover .large_cover i{
     font-size:5.5em !important;
@@ -2882,12 +2883,12 @@ h4.main__title{
 
 .coin-12274 .cover-content,
 .coin-12274.not-allowed .cover-content,
-.coin-6287 .cover-content,
 .coin-6287.not-allowed .cover-content{
     background: rgba(239,239,239,0.80) !important;
 }
 
 .search_bar,
+.coin-6287 .cover-content,
 .card_cover.contrast_bg:hover,
 .coin-12274.card_cover:hover .cover-content,
 .coin-6287.card_cover:hover .cover-content{
@@ -3053,11 +3054,6 @@ a,
 .coinType6287 {
     border-radius: 21px !important;
     border:1px solid #000;
-}
-
-.coin-6287 .coinType12274 {
-    border:1px solid #999999;
-    border-radius: 21px !important;
 }
 
 .btn.btn-12273,
