@@ -16,7 +16,7 @@ $this->X_model->create(array(
 
 
 //Focus Source:
-echo '<div class="main_item main_item_e row justify-content">';
+echo '<div class="main_item row justify-content">';
 echo view_card_e(42287, $e, null);
 echo '</div>';
 
