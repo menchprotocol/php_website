@@ -2171,7 +2171,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             array_push($social_listed, $e__id);
 
             //Append to links:
-            $social_ui .= '<li class="icon-block-xs"><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
+            $social_ui .= '<li class="'.( $focus_card ? 'icon-block' : 'icon-block-xs' ).'"><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
 
         }
     }
