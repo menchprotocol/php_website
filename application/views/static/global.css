@@ -475,7 +475,6 @@ textarea.main__title {
     bottom: 21px;
     transform: translate(-50%, -50%);
     margin: 0 auto;
-    border:1px solid #CCCCCC;
     padding: 21px;
     background-color: #faeea3;
     border-radius: 21px;
@@ -523,7 +522,6 @@ textarea.main__title {
     line-height: 100%;
     width:100%;
     height:100%;
-    border: 1px solid #999999;
 }
 
 
@@ -725,7 +723,6 @@ label:focus,
 
 .cover-image {
     width: 100%;
-    border: 1px solid #000000;
 }
 
 
@@ -959,7 +956,6 @@ h4 .halfbg {
     overflow: hidden;
 }
 .dropdown-menu {
-    border: 1px solid transparent;
     border-radius: 0;
     padding:0;
     z-index: 9999999 !important;
@@ -1022,7 +1018,7 @@ h4 .halfbg {
 
 
 textarea.note-textarea{
-    border:0;
+    border: 0;
     border-radius: 0;
     margin: 0;
     /*background-color: transparent !important;*/
@@ -1070,7 +1066,6 @@ a.headline {
 .full-text{
     width: 100%;
     height: 200px;
-    border: 1px solid #999999 !important;
     border-radius: 21px;
     margin: 0;
 }
@@ -2306,7 +2301,7 @@ input.form-control {
     max-width:610px;
 }
 .modal-content{
-    border:1px solid transparent;
+    border:0;
     border-radius: 21px;
 }
 .mass_action_toggle, .e_text_finder, .mass_action_item{
@@ -2452,7 +2447,6 @@ input.form-control {
 
 
 .form-group {
-    border: 1px solid #999999;
     border-radius: 21px;
 }
 .form-group>.form-control {
@@ -2466,7 +2460,7 @@ input.form-control {
 }
 
 .btn.btn-default {
-    border:1px solid transparent;
+    border:0;
 }
 
 
@@ -2498,7 +2492,7 @@ input.form-control {
 }
 
 .fa-gif-wrap{
-    border:1px solid transparent;
+    border:0;
     border-radius: 21px;
     font-size: 0.8em !important;
     text-transform: uppercase;
@@ -2965,12 +2959,6 @@ a,
     color: #000000;
 }
 
-.black-background {
-    border:1px solid #999999;
-}
-.doborderless .black-background {
-    border:1px solid #999999 !important;
-}
 .btn-tiny{
     font-size: 0.69em !important;
 }
@@ -3052,7 +3040,7 @@ a,
 
 .coinType6287 {
     border-radius: 21px !important;
-    border:1px solid #000;
+    border:1px dotted #999999;
 }
 
 .btn.btn-12273,
@@ -3082,13 +3070,7 @@ a,
 }
 .btn-12273 { border-color:#FFC500 !important; }
 
-.answer-item {
-    border:1px solid transparent !important;
-}
-.btn.btn-12273 {
-    border:1px solid #FFC500;
-    color: #000000;
-}
+
 .btn-superpower.active i.zq12273,
 .zq12273,
 .zq12273 i,
@@ -3145,22 +3127,17 @@ a,
 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:hover {
     background-color: #FFFFFF;
     color: #FC1B44;
-    /* border:1px solid #FC1B44; */
 }
 .btn-6255 i,
 .btn-superpower.active i.zq6255 {
     color:#FC1B44 !important;
 }
 .btn.btn-6255 {
-    border:1px solid #FC1B44;
     color: #FC1B44;
 }
 .btn-6255{
     border: 0 !important;
     background-color: #FC1B44;
-}
-.coinType6255 {
-    border:1px solid #FC1B44;
 }
 
 
@@ -4207,7 +4184,6 @@ main {
 }
 .form-check-input[type=checkbox] {
     border-radius: 0;
-    border: 1px solid #000000 !important;
     margin: 1px 0;
 }
 .form-check-input:checked {
@@ -4216,7 +4192,6 @@ main {
 .list-adder{
     padding: 8px 0 0 !important;
     margin:0 0 0 !important;
-    border: 1px solid #000000 !important;
     background-color: #FFFFFF !important;
 }
 

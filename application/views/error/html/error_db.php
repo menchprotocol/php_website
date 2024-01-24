@@ -36,7 +36,6 @@ code {
 	font-family: Consolas, Monaco, Courier New, Courier, monospace;
 	font-size: 12px;
 	background-color: #f9f9f9;
-	border: 1px solid #D0D0D0;
 	color: #002166;
 	display: block;
 	margin: 14px 0 14px 0;
@@ -45,7 +44,6 @@ code {
 
 #container {
 	margin: 10px;
-	border: 1px solid #D0D0D0;
 	box-shadow: 0 0 8px #D0D0D0;
 }
 
