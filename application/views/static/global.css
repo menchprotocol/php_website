@@ -1924,6 +1924,7 @@ label {
 }
 .mini-cover.coin-12274 .cover-content{
     width: calc(100% - 2px) !important;
+    margin-left: 1px;
 }
 .coin-12273 .cover-content{
     position: relative;
@@ -2095,7 +2096,7 @@ input.form-control {
     border-radius: 50% !important;
 }
 .card_cover.coin-12274{
-    border-radius: 21px !important;
+    border-radius: 0 !important;
 }
 .card_cover.coinface-12274{
     margin:0 !important;
