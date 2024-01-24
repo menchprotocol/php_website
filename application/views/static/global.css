@@ -1262,8 +1262,8 @@ a.headline {
     padding:34px 0 13px;
 }
 .card_subcat td {
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 5px;
+    padding-bottom: 3px;
 }
 
 .card_cover:hover .show-on-hover, .card_cover.card_checked .show-on-hover{
