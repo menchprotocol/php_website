@@ -4034,6 +4034,11 @@ main {
 .platform-navigation, .platform-navigation #searchFrontForm, .algolia-autocomplete, .algolia-autocomplete .aa-hint{
     width: 100%;
 }
+.platform-navigation #searchFrontForm {
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
+
 .platform-navigation td {
     padding:0;
     vertical-align: middle;
@@ -4098,7 +4103,6 @@ main {
 }
 .tab_content{
     max-height: 987px;
-    margin-top: -1px;
 }
 
 .nav-tabs > li {
