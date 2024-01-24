@@ -1321,7 +1321,7 @@ function view_location($x__type, $location){
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
     $show_map_link = !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="creator_headline grey mini-font mini-frame">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-font mini-frame creator_headline">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 }
 
 
@@ -2112,7 +2112,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Handle
     $ui .= '<div class="center-block">';
-    $ui .= '<div class="grey mini-font mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="creator_headline grey mini-font mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
     foreach($CI->X_model->fetch(array(
