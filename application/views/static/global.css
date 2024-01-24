@@ -3505,7 +3505,6 @@ a,
 
 .focus-cover .i_cache .line{
     min-height: 34px;
-    padding-bottom: 5px;
 }
 
 
@@ -4169,10 +4168,6 @@ main {
 .coin-12274 .creator_headline{
     padding: 2px 1px 2px 0;
 }
-.focus-cover .creator_frame {
-    margin-bottom: 8px;
-}
-
 .round-btn{
     display: inline-block;
     width: 65px;
