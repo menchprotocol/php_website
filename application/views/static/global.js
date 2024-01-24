@@ -676,12 +676,15 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-    const rootElement = document.querySelector('#source_emoji');
-    const picker = createPicker({
-        rootElement,
-    });
-    picker.addEventListener('emoji:select', event => {
-        console.log('Emoji selected:', event.emoji);
+    new EmojiPicker({
+        trigger: [
+            {
+                selector: '#idea_emoji',
+                insertInto: ['.save_i__message']
+            },
+        ],
+        closeButton: true,
+        closeOnSelect: true,
     });
 
     $(document).on('keydown', function ( e ) {
