@@ -1541,7 +1541,6 @@ i, .btn .show-max {
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
 .icon-block-img img,
 .icon-block-lg img,
-.icon-block div.img,
 .icon-block img{
     line-height: 100%;
     width: 34px !important;
@@ -3845,6 +3844,10 @@ div.img {
 .icon-block-xs div.img{
     width: 24px;
     height: 24px;
+}
+.icon-block div.img {
+    width: 34px;
+    height: 34px;
 }
 .e_cover {
 
