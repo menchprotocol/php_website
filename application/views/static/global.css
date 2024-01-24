@@ -1913,7 +1913,7 @@ label {
 }
 
 .mini-cover .cover-content{
-    max-height: 85%;
+    max-height: 89%;
 }
 
 .coin-12274 .cover-content{
@@ -1921,6 +1921,9 @@ label {
     width: 100% !important;
     margin: 0;
     top:unset;
+}
+.mini-cover.coin-12274 .cover-content{
+    width: calc(100% - 2px) !important;
 }
 .coin-12273 .cover-content{
     position: relative;
@@ -1962,9 +1965,8 @@ input.form-control {
 }
 
 .mini-cover .cover-content {
-    top: 8px;
     position: absolute;
-    border-radius: 8px !important;
+    border-radius: 0 !important;
 }
 .focus-cover .cover-content {
     max-height: 82%;
@@ -1974,6 +1976,12 @@ input.form-control {
     top: 5px;
     position: absolute;
     padding: 0 3px;
+}
+
+#container_finder .mini-cover.coin-12273 .cover-content {
+    top: 0px;
+    padding: 1px 3px 0;
+    margin: 0 1px;
 }
 
 .coin-cover{
