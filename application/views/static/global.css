@@ -958,7 +958,7 @@ h4 .halfbg {
     padding: 2px 3px;
     margin-top: 5px;
     display: block;
-    border: 1px dotted #999999 !important;
+    border: 1px dotted #000000 !important;
     overflow: hidden;
 }
 .dropdown-menu {
@@ -1846,7 +1846,7 @@ label {
 
 .cover-wrapper {
     border:0;
-    margin:0 1px;
+    margin:0 0px;
 }
 .form-check{
     padding:8px;
@@ -1875,7 +1875,7 @@ label {
     font-size: 0.80em;
 }
 .underdot{
-    border-bottom: 1px dotted #999999;
+    border-bottom: 1px dotted #000000;
 }
 .subtle-line{
     display: inline-block;
@@ -2108,7 +2108,7 @@ input.form-control {
     padding-bottom:13px !important;
 }
 .card_cover.coin-6287.mini-cover{
-    margin:0 0 2px 0 !important;
+    margin:0 !important;
     padding-bottom:0 !important;
 }
 .card_cover .large_cover i{
@@ -3045,7 +3045,7 @@ a,
 
 .coinType6287 {
     border-radius: 21px !important;
-    border:1px dotted #999999;
+    border:1px dotted #000000;
 }
 
 .btn.btn-12273,
