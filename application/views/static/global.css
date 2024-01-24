@@ -4142,6 +4142,7 @@ main {
 }
 .new_list{
     position: relative;
+    z-index: 9;
 }
 .creator_frame{
    display: block;
