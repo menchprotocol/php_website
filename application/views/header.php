@@ -467,15 +467,23 @@ if(!$basic_header_footer){
                             //Profile Edit
                             $href = 'href="javascript:void(0);" onclick="editor_load_e('.$member_e['e__id'].',0)" ';
 
-                        } elseif($x__type==28615 && strlen(website_setting($x__type))){
+                        } elseif($x__type==28615){
 
                             //Phone US
-                            $href = 'href="tel:'.preg_replace("/[^0-9]/", "", website_setting($x__type)).'"';
+                            $value = website_setting($x__type);
+                            if(!strlen($value)){
+                                continue;
+                            }
+                            $href = 'href="tel:'.preg_replace("/[^0-9]/", "", $value).'"';
 
-                        } elseif($x__type==28614 && strlen(website_setting($x__type))){
+                        } elseif($x__type==28614){
 
                             //Email US
-                            $href = 'href="mailto:'.website_setting($x__type).'"';
+                            $value = website_setting($x__type);
+                            if(!strlen($value)){
+                                continue;
+                            }
+                            $href = 'href="mailto:'.$value.'"';
 
                         } elseif(in_array($x__type, $this->config->item('n___6287'))){
 

@@ -4147,6 +4147,11 @@ main {
    display: block;
 }
 
+.flip-content .icon-block {
+    margin-right: 3px;
+    margin-left: -3px;
+}
+
 .main_item_e{
     border-top-left-radius: 21px;
     border-top-right-radius: 21px;
