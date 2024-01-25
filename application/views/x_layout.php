@@ -4,6 +4,11 @@ $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
+
+if(write_privacy_i($focus_i['i__hashtag'])){
+    echo '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$e___11035[33286]['m__cover'].'</span>You can iterate this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
+}
+
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -831,8 +836,8 @@ if($top_i__hashtag) {
 
         if($x__type==42260){
 
-            //Sources, show links to become a new source:
-            $control_btn = view_select_single(42260, 0, true, false, $focus_i['i__id']);
+            //TODO Sources, show links to become a new source:
+            //$control_btn = view_select_single(42260, 0, true, false, $focus_i['i__id']);
 
         } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
 
@@ -949,9 +954,6 @@ if($top_i__hashtag){
 
 
 
-if(write_privacy_i($focus_i['i__hashtag'])){
-    echo '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$e___11035[33286]['m__cover'].'</span>You can iterate this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
-}
 
 /*
  *
