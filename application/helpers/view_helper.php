@@ -2112,7 +2112,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         }
 
         if ($grant_privacy && $x__id && !$is_app) {
-            $ui .= '<span class="icon-block-sm ui_x__message_' . $x__id . '" data-bs-title="'.htmlentities($e['x__message']).'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+            $ui .= 'aaa<span class="icon-block-sm ui_x__message_' . $x__id . '" data-bs-title="'.htmlentities($e['x__message']).'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">c'.$e___11035[4372]['m__cover'].'</span>bbb';
         } elseif($is_app && isset($e['x__message']) && strlen($e['x__message'])){
             $ui .= '<span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"><i class="far fa-info-circle"></i></span>';
         }
