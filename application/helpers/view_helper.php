@@ -1340,6 +1340,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         return view_media($i['x__message'], '/~'.$i['i__hashtag']);
     }
 
+    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
@@ -1657,17 +1658,16 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $ui .= view_key_links(41949, $location);
     }
 
+    //Show Link Message, if Any:
+    if($x__id){
+        $ui .= '<span class="icon-block-sm ui_x__message_' . $x__id . '" data-bs-title="'.htmlentities($i['x__message']).'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+    }
+
     $ui .= '</div>';
 
 
     //Idea Message (Remaining)
     $ui .= ( $focus_card ? '<div' : '<a href="'.$href.'"' ).' class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card, $focus_card).( $focus_card ? '</div>' : '</a>' );
-
-    //Link Message, if Any:
-    if($x__id){
-        $ui .= '<div class="space-content"><div '.( ($write_privacy_i || $link_creator) ? ' onclick="editor_load_i('.$i['i__id'].','.$x__id.')" ' : '' ).' class="mini-font greybg hideIfEmpty ui_x__message_' . $x__id . '">'.$i['x__message'].'</div></div>';
-    }
-
 
 
     //Raw Data:
@@ -2075,10 +2075,6 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $grant_privacy = $write_privacy_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
 
-    if ($grant_privacy && $x__id > 0 && !$is_app) {
-        $ui .= '<span '.( $write_privacy_e ? ' onclick="editor_load_e('.$e['e__id'].','.$x__id.')" ' : '' ).' class="x__message mini-font hideIfEmpty light-bg ui_x__message_' . $x__id . '">'.htmlentities($e['x__message']).'</span>';
-    }
-
     $ui .= '</div>';
 
 
@@ -2108,7 +2104,22 @@ function view_card_e($x__type, $e, $extra_class = null)
     } else {
         //Static:
         $ui .= '<input type="hidden" class="text__6197_'.$e['e__id'].'" value="'.$e['e__title'].'">';
-        $ui .= '<div class="center">'.( $is_cache ? '<a href="'.$href.'" class="handle_href_e_'.$e['e__id'].' main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>' : '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>' ).( $is_app && isset($e['x__message']) && strlen($e['x__message']) ? ' <i class="far fa-info-circle" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"></i>' : '' ).'</div>';
+        $ui .= '<div class="center">';
+        if($is_cache){
+            $ui .= '<a href="'.$href.'" class="handle_href_e_'.$e['e__id'].' main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</a>';
+        } else {
+            $ui .= '<span class="main__title text__6197_'.$e['e__id'].'">'.$e['e__title'].'</span>';
+        }
+
+        if ($grant_privacy && $x__id && !$is_app) {
+            $ui .= '<span class="icon-block-sm ui_x__message_' . $x__id . '" data-bs-title="'.htmlentities($e['x__message']).'" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+        } elseif($is_app && isset($e['x__message']) && strlen($e['x__message'])){
+            $ui .= '<span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"><i class="far fa-info-circle"></i></span>';
+        }
+
+        $ui .= '</div>';
+
+
     }
 
 
