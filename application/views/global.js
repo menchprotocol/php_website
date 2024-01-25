@@ -2586,6 +2586,7 @@ function reset_sorting(){
 
 //See where we need to insert this...
 function insert_emoji(emoji){
+    console.log('INSERT '+emoji+' INTO '+current_emoji_focus);
     if(current_emoji_focus==31911){
         //Idea Message:
         insertText($(".save_i__message"), emoji);
