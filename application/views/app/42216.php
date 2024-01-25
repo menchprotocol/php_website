@@ -4,7 +4,7 @@
 if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time'])){
 
     //This is a request to cancel, do so and redirect:
-    if(view_e__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
+    if(view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
@@ -139,7 +139,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                             "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).'/'.$i['i__hashtag'].
                             "\n".
                             "\n".'If you cannot attend this event please inform us by cancelling here:'.
-                            "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view_app_link(42216).'?x__id='.$x['x__id'].'&e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$x['e__handle']);
+                            "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view_app_link(42216).'?x__id='.$x['x__id'].'&e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']);
 
                         //Send message:
                         $send_dm = $this->X_model->send_dm($x['e__id'], $subject, $html_message, array(
@@ -277,7 +277,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     ));
                     //Has this user discovered this idea or no?
                     $html_message .= view_i_title($down_or, true) . ":\n";
-                    $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . $top_i__hashtag . '/' . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view_e__hash(time().$x['e__handle']) : '') . "\n\n";
+                    $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . $top_i__hashtag . '/' . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view__hash(time().$x['e__handle']) : '') . "\n\n";
 
                 }
 

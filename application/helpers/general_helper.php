@@ -667,7 +667,7 @@ function auto_login() {
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $member_e = superpower_unlocked();
-    $is_login_verified = isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view_e__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
+    $is_login_verified = isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
 
     if(
         !$member_e //User must not be logged in
@@ -1389,7 +1389,7 @@ function email_ticket($x__id, $i__hashtag, $x__creator){
     )) as $e){
         $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket'.$additional_info,
             'Upon arrival have your QR code ready to be scanned:'.
-            "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).'/'.$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
+            "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).'/'.$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
     }
 
 }
@@ -1622,7 +1622,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             'x__right' => $template_i__id,
         ))))){
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="'.$base_domain.view_app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__time='.time().'&e__hash='.view_e__hash(time().$es[0]['e__handle']).'" style="font-size:13px;">'.$e___6287[28904]['m__title'].'</a></div>';
+        $email_message .= '<div class="line"><a href="'.$base_domain.view_app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$es[0]['e__handle']).'" style="font-size:13px;">'.$e___6287[28904]['m__title'].'</a></div>';
     }
 
 

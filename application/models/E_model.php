@@ -94,7 +94,7 @@ class E_model extends CI_Model
 
                 //Create Cookie:
                 $cookie_time = time();
-                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.view_e__hash($e['e__id'].$cookie_time);
+                $cookie_val = $e['e__id'].'ABCEFG'.$cookie_time.'ABCEFG'.view__hash($e['e__id'].$cookie_time);
                 setcookie('auth_cookie', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }

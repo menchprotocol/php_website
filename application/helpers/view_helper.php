@@ -1027,10 +1027,11 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
 }
 
-function view_e__hash($string){
-    return substr(md5($string.view_memory(6404,30863)), 0, 10);
-}
 
+function view__hash($string){
+    $CI =& get_instance();
+    return substr(md5($string.$CI->config->item('secret_hash')), 0, 10);
+}
 
 
 function view_i_title($i, $string_only = false){
