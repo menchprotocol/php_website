@@ -1871,12 +1871,12 @@ function flag_for_search_indexing($s__type = null, $s__id = 0) {
 
     if($s__type==12273){
         //Update idea flag
-        $this->I_model->update($s__id, array(
+        $CI->I_model->update($s__id, array(
             'i__flag' => true,
         ));
     } elseif($s__type==12274){
         //Update idea flag
-        $this->E_model->update($s__id, array(
+        $CI->E_model->update($s__id, array(
             'e__flag' => true,
         ));
     }
