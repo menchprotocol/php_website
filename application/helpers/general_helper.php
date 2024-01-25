@@ -194,7 +194,7 @@ function filter_cache_group($search_e__id, $cache_e__id){
 }
 
 function random_string($length_of_string){
-    $characters = '123456789abcdefghijklmnpqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ';
+    $characters = '123456789abcdefghijklmnpqrstuvwxyz';
     $charactersLength = strlen($characters);
     $randomString = '';
     for ($i = 0; $i < $length_of_string; $i++) {
