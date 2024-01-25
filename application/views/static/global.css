@@ -1526,9 +1526,9 @@ label {
 .icon-block-lg img,
 .icon-block img{
     line-height: 100%;
-    width: 34px !important;
-    height: 34px !important;
-    margin: -5px 0 0 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin: -5px -1px 0 0 !important;
 }
 
 .icon-block-xx   i { font-size: 1.00em !important; }
