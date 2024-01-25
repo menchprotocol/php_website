@@ -44,12 +44,14 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                     if(!$focus_link_group || $focus_link_group!=$found_link_group){
 
                         $stat_ui .=  '<tr class="mobile-shrink">';
-                        $stat_ui .=  '<td class="center" colspan="2"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">the_stats_counter_'.$stat_group_count.' '.$e___42263[$found_link_group]['m__title'].':</b></td>';
+                        $stat_ui .=  '<td class="center" colspan="2"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.'the_stats_counter____'.$stat_group_count.'____'.' '.$e___42263[$found_link_group]['m__title'].':</b></td>';
                         $stat_ui .=  '</tr>';
                         $focus_link_group = $found_link_group;
-                        array_push($stat_blocks, $stat_count);
                         $stat_count = 0; //Reset
                         $stat_group_count++;
+                        if($stat_group_count>0){
+                            $stat_blocks[($stat_group_count-1)] = $stat_count;
+                        }
 
                     }
                 }
@@ -64,7 +66,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         array_push($stat_blocks, $stat_count);
         foreach($stat_blocks as $key => $value){
-            $stat_ui = str_replace('the_stats_counter_'.$key,$value,$stat_ui);
+            $stat_ui = str_replace('the_stats_counter____'.$key.'____',$value,$stat_ui);
         }
 
         echo '<div class="card_cover no-padding col-6 '.( !in_array($e__id2, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
