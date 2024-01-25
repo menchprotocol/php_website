@@ -679,7 +679,7 @@ var algolia_index = false;
 $(document).ready(function () {
 
     //Append emoji selector:
-    const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertText($(".save_i__message"), res.native) });
+    const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertTextAtCursor($(".save_i__message"), res.native) });
     const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(emoji) });
     $(".emoji_i").append(picker_i);
     $(".emoji_e").append(picker_e);
