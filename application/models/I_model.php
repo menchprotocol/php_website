@@ -30,7 +30,7 @@ class I_model extends CI_Model
 
         //Auto generate a Hashtag if needed:
         if(!isset($add_fields['i__hashtag'])){
-            $add_fields['i__hashtag'] = random_string(13);
+            $add_fields['i__hashtag'] = random_string(8);
         }
 
         //Lets now add:
