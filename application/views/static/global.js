@@ -1100,8 +1100,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
         $('#modal31911 .save_x__id').val(x__id);
 
         //Idea<>Idea links do not have an interaction message
-        if(fetch_int_val('#focus_card')!=12273 || $('.ui_x__message_'+x__id+':first').attr('data-bs-title').length>0){
-            $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').attr('data-bs-title'));
+        if(fetch_int_val('#focus_card')!=12273 || $('.ui_x__message_'+x__id+':first').attr('data-title').length>0){
+            $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').attr('data-title'));
             $('#modal31911 .save_x__frame').removeClass('hidden');
         }
     }
@@ -1280,7 +1280,7 @@ function editor_save_i(){
             }
 
             if(modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
-                $('.ui_x__message_'+modify_data['save_x__id']).attr('data-bs-title', modify_data['save_x__message']);
+                $('.ui_x__message_'+modify_data['save_x__id']).attr('data-title', modify_data['save_x__message']);
             }
 
             //Tooltips:
@@ -1450,7 +1450,7 @@ function editor_load_e(e__id, x__id){
 
 
     if(x__id){
-        $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).attr('data-bs-title'));
+        $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).attr('data-title'));
         $('#modal31912 .save_x__frame').removeClass('hidden');
         setTimeout(function () {
             set_autosize($('#modal31912 .save_x__message'));
@@ -1609,7 +1609,7 @@ function editor_save_e(){
             update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
 
             if( modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
-                $('.ui_x__message_'+ modify_data['save_x__id']).attr('data-bs-title',modify_data['save_x__message']);
+                $('.ui_x__message_'+ modify_data['save_x__id']).attr('data-title',modify_data['save_x__message']);
             }
 
             //Tooltips:

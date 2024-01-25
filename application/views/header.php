@@ -395,7 +395,7 @@ if(!$basic_header_footer){
                         $e___40904 = $this->config->item('e___40904'); //Idea Views
                         echo '<td class="block-menu">';
                         echo '<div class="dropdown inline-block">';
-                        echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
+                        echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-toggle="dropdown" aria-expanded="false">';
                         echo '<span class="e_cover e_cover_mini menu-cover">' . $e___40904[$i_view]['m__cover'] .'</span>';
                         echo '</button>';
                         echo '<div class="dropdown-menu">';
@@ -436,7 +436,7 @@ if(!$basic_header_footer){
                     echo '<td class="block-menu">';
 
                     echo '<div class="dropdown inline-block">';
-                    echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
+                    echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-toggle="dropdown" aria-expanded="false">';
                     echo '<span class="e_cover e_cover_mini menu-cover">' . ( $member_e && strlen($member_e['e__cover']) ? view_cover($member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
