@@ -16,7 +16,7 @@ $this->X_model->create(array(
 
 
 if($write_privacy_i){
-    echo '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$e___11035[30795]['m__cover'].'</span>You can discover this idea in <a href="/'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[30795]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block">'.$e___11035[30795]['m__cover'].'</span>You can discover this idea in <a href="/'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[30795]['m__title'].'</u></b></a></div>';
 }
 
 //Focusing on a certain source?
