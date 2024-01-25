@@ -431,14 +431,7 @@ if(!$basic_header_footer){
                         echo '<td class="block-x icon_finder hidden"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }
 
-
-                    //Always give option to ideate:
-                    if(superpower_unlocked(10939)){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31911]['m__title'].'">'.$e___11035[31911]['m__cover'].'</a></td>'; //TODO fix icon reference
-                    }
-
-
-                    //USER MENU
+                    //MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
 
@@ -512,6 +505,11 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</div>';
                     echo '</td>';
+
+                    //Always give option to ideate:
+                    if(superpower_unlocked(10939)){
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31911]['m__title'].'">'.$e___11035[31911]['m__cover'].'</a></td>'; //TODO fix icon reference
+                    }
 
                     ?>
                 </tr>
@@ -864,6 +862,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <div class="dynamic_selector"><?= view_select_single(4737, 0, true, true); ?></div>
                                 </div>
 
+                                <!-- Link Note -->
+                                <div class="dynamic_editing_input save_x__frame hidden">
+                                    <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                                    <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
@@ -872,12 +876,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="dynamic_editing_input hash_group">
                                 <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                                 <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
-                            </div>
-
-                            <!-- Link Message -->
-                            <div class="dynamic_editing_input save_x__frame hidden">
-                                <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                                <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                             </div>
 
                         </div>
@@ -957,7 +955,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <div class="dynamic_selector"><?= view_select_single(6177, 0, true, true); ?></div>
                                 </div>
 
-                                <!-- Link Message -->
+                                <!-- Link Note -->
                                 <div class="dynamic_editing_input save_x__frame hidden">
                                     <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
                                     <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
