@@ -601,7 +601,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             $card_icon = '<span class="icon-block-xx">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_e_covers button_of_'.$e__id.'_'.$x__type.'" id="card_e_group_'.$x__type.'_'.$e__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_e_covers button_of_'.$e__id.'_'.$x__type.'" id="card_e_group_'.$x__type.'_'.$e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_e__id="'.$e__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
             $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_e_'.$e__id.'_'.$x__type.'" aria-labelledby="card_e_group_'.$x__type.'_'.$e__id.'">';
                 //Menu To be loaded dynamically via AJAX
             $ui .= '</div>';
@@ -713,7 +713,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             $card_icon = '<span class="icon-block-xs">'.$e___11035[$x__type]['m__cover'].'</span>';
 
             $ui = '<div class="dropdown inline-block">';
-            $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_i_covers button_of_'.$i__id.'_'.$x__type.'" id="card_group_i_'.$x__type.'_'.$i__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
+            $ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title load_i_covers button_of_'.$i__id.'_'.$x__type.'" id="card_group_i_'.$x__type.'_'.$i__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" load_x__type="'.$x__type.'" load_i__id="'.$i__id.'" load_counter="'.$count_query.'" load_first_segment="'.$first_segment.'"><span title="'.$title_desc.'" data-toggle="tooltip" data-placement="top">'.$card_icon.$visual_counter.'</span></button>';
 
             //Menu To be loaded dynamically via AJAX:
             $ui .= '<div class="dropdown-menu dropdown_'.$x__type.' coins_i_'.$i__id.'_'.$x__type.'" aria-labelledby="card_group_i_'.$x__type.'_'.$i__id.'"></div>';
@@ -1598,7 +1598,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                     $active_bars++;
                     $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                     $top_bar_ui .= '<div class="dropdown inline-block">';
-                    $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_i_'.$i['i__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
+                    $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                     $top_bar_ui .= $action_buttons;
                     $top_bar_ui .= '</div>';
@@ -1660,7 +1660,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Show Link Message, if Any:
     if($x__id){
-        $ui .= '<span class="icon-block-sm '.( !strlen($i['x__message']) ? ' hidden ' : '' ).' ui_x__message_' . $x__id . '" title="'.htmlentities($i['x__message']).'" data-toggle="tooltip" data-placement="top" data-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+        $ui .= '<span class="icon-block-xs '.( !strlen($i['x__message']) ? ' hidden ' : '' ).' ui_x__message_' . $x__id . '" title="'.htmlentities($i['x__message']).'" data-toggle="tooltip" data-placement="top" data-html="true">'.$e___11035[4372]['m__cover'].'</span>';
     }
 
     $ui .= '</div>';
@@ -2054,7 +2054,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     $active_bars++;
                     $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                     $top_bar_ui .= '<div class="dropdown inline-block">';
-                    $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_e_'.$e['e__id'].'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
+                    $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $top_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
                     $top_bar_ui .= $action_buttons;
                     $top_bar_ui .= '</div>';
@@ -2122,7 +2122,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="creator_headline grey mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     if ($grant_privacy && $x__id && !$is_app) {
-        $ui .= '<span class="icon-block-sm '.( !strlen($e['x__message']) ? ' hidden ' : '' ).' ui_x__message_' . $x__id . '" title="'.htmlentities($e['x__message']).'" data-toggle="tooltip" data-placement="top" data-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+        $ui .= '<span class="icon-block-xs '.( !strlen($e['x__message']) ? ' hidden ' : '' ).' ui_x__message_' . $x__id . '" title="'.htmlentities($e['x__message']).'" data-toggle="tooltip" data-placement="top" data-html="true">'.$e___11035[4372]['m__cover'].'</span>';
     } elseif($is_app && isset($e['x__message']) && strlen($e['x__message'])){
         $ui .= '<span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"><i class="far fa-info-circle"></i></span>';
     }
@@ -2144,7 +2144,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     /*
     $ui .= '<div class="btn-group">
   <button type="button" class="btn">Follow</button>
-  <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-expanded="true">
+  <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="true">
     <i class="far fa-angle-down"></i>
   </button>
   <ul class="dropdown-menu">
@@ -2316,7 +2316,7 @@ function view_dropdown($cache_e__id, $selected_e__id, $write_privacy_i = true, $
 
     $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
+    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
     $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-xs">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' ) : '' ).'</span>'.( $show_full_name ? '<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '' );
 
