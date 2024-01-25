@@ -1926,6 +1926,7 @@ label {
 .mini-cover.coin-12274 .cover-content{
     width: calc(100% - 2px) !important;
     margin-left: 1px;
+    top:0;
 }
 .coin-12273 .cover-content,
 .coin-6255 .cover-content{
