@@ -6,7 +6,7 @@ $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 
 if(write_privacy_i($focus_i['i__hashtag'])){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block">'.$e___11035[33286]['m__cover'].'</span>You can iterate this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-xs">'.$e___11035[33286]['m__cover'].'</span>You can iterate this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
 //NEXT IDEAS
