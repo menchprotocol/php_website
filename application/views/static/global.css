@@ -317,13 +317,7 @@ img.no-frame {
 }
 
 
-.alert{
-    padding:10px !important;
-    border-radius: 0;
-    margin:0 5px 13px !important;
-    border: 0 !important;
-    width: auto !important;
-}
+
 
 
 .alert a{
@@ -2733,8 +2727,19 @@ h4.main__title{
 .mini-frame{
     max-width: 377px;
 }
+.alert{
+    padding:10px !important;
+    border-radius: 0;
+    margin:0 0 0 !important;
+    border: 0 !important;
+    width: auto !important;
+}
 
 @media (max-width:610px) {
+
+    .alert{
+        margin:0 5px 0 !important;
+    }
 
     .mini-frame{
         max-width: 233px;
