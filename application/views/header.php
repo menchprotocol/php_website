@@ -839,8 +839,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                         </div>
 
-
-
                         <!-- Reference Source -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
 
