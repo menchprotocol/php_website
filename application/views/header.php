@@ -116,9 +116,9 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo view_memory(6404,4523);
     ?>
 
-    <link href="/application/views/static/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
-    <link href="/application/views/static/emojibuttonlistjs.min.css" rel="stylesheet">
+    <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
@@ -127,8 +127,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
-    <script src="/application/views/static/emojibuttonlistjs.min.js"></script>
-    <script src="/application/views/static/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
+    <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
 
     <?php
 
@@ -835,6 +834,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- EMOJI -->
                         <a class="icon-block-sm" id="idea_emoji" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
+
+
+
+                        <script>
+                            $(document).ready(function () {
+                                const picker = new EmojiMart.Picker({ onEmojiSelect: console.log });
+                                document.body.appendChild(picker);
+                            });
+                        </script>
 
                         <!-- Reference Source -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
