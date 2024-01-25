@@ -119,14 +119,15 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.textcomplete/1.8.5/jquery.textcomplete.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.37.0/autocomplete.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.35.1/algoliasearch.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.1/Sortable.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
 
     <?php
@@ -966,12 +967,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="emoji_frame"></div>
                             <script>
                                 $(document).ready(function () {
-                                    const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
+                                    const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insert_emoji(res.native) });
                                     $(".emoji_1").append(picker);
-
-                                    $('.emoji_1_frame').on('click', function(event){
-                                        event.stopPropagation();
-                                    });
                                 });
                             </script>
 
@@ -982,7 +979,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                                 <!-- EMOJI -->
-                                <div class="dropdown inline-block emoji_1_frame">
+                                <div class="dropdown inline-block emoji_selector">
                                     <button type="button" class="btn no-left-padding no-right-padding main__title" id="emoji_1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">😃</button>
                                     <div class="dropdown-menu emoji_1" aria-labelledby="emoji_1"></div>
                                 </div>

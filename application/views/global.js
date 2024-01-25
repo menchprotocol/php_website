@@ -2,6 +2,8 @@
 
 //Define some global variables:
 var has_unsaved_changes = false; //Tracks source/idea modal edits
+var current_emoji_focus = null;
+
 
 
 
@@ -676,6 +678,11 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $('.emoji_selector').on('click', function(event){
+        //This prevents the emoji modal from closing when an emoji is selected...
+        event.stopPropagation();
+    });
+
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {
@@ -1046,6 +1053,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
+    current_emoji_focus = 31911;
+
     $("#modal31911 .unsaved_warning").val('');
     $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio, #modal31911 .idea_reply').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
@@ -1410,6 +1419,7 @@ function editor_load_e(e__id, x__id){
 
     //Reset Fields:
     has_unsaved_changes = false;
+    current_emoji_focus = 31912;
 
     $("#modal31912 .unsaved_warning").val('');
 
@@ -2570,6 +2580,13 @@ function reset_sorting(){
 
 
 
-
-
-
+//See where we need to insert this...
+function insert_emoji(emoji){
+    if(current_emoji_focus==31911){
+        //Idea Message:
+        insertText($(".save_i__message"), emoji);
+    } else if(current_emoji_focus==31912){
+        //Source cover:
+        update__cover(emoji);
+    }
+}
