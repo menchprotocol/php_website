@@ -2117,7 +2117,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Source Location:
     foreach($CI->X_model->fetch(array(
-        'x__type' => 42335,
+        'x__type IN (' . join(',', $CI->config->item('n___42375')) . ')' => null, //PUBLIC
         'x__down' => $e['e__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
