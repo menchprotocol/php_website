@@ -2731,15 +2731,7 @@ h4.main__title{
     max-width: 377px;
 }
 
-.big-left-small-center{
-    text-align: left;
-}
-
 @media (max-width:610px) {
-
-    .big-left-small-center{
-        text-align: center;
-    }
 
     .mini-frame{
         max-width: 233px;
@@ -2787,8 +2779,6 @@ h4.main__title{
         font-size: 1.15em;
     }
 
-
-    .icon-block-mobile { width: 0 !important; }
 
     .mid-range { padding:0; }
 
