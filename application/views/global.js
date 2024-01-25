@@ -679,9 +679,10 @@ var algolia_index = false;
 $(document).ready(function () {
 
     //Append emoji selector:
-    const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insert_emoji(res.native) });
-    $(".emoji_e, .emoji_i").append(picker);
-
+    const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertText($(".save_i__message"), res.native) });
+    const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(emoji) });
+    $(".emoji_i").append(picker_i);
+    $(".emoji_e").append(picker_e);
     $('.emoji_selector').on('click', function(event){
         //This prevents the emoji modal from closing when an emoji is selected...
         event.stopPropagation();
