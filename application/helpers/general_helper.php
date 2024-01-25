@@ -1914,15 +1914,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
         //Do both ideas and sources:
         $fetch_objects = $CI->config->item('n___12761');
-        $batch_command = array(); //TODO To be populated:
-        /*
-        array_push($batch_command, array(
-            'action' => 'addObject',
-            'indexName' => 'alg_index',
-            'body' => $export_row,
-        ));
-        */
-
         if (!$return_row_only) {
 
             //We need to update the entire index, so let's truncate it first:
@@ -1932,18 +1923,6 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
             boost_power();
         }
     }
-
-    //Featured Tree for all Domains:
-    /*
-    $features_e = array();
-    foreach($CI->config->item('e___30829') as $x__type => $m) {
-        if(in_array($x__type , $CI->config->item('n___14870')) && strlen($m['m__message']) && is_array($CI->config->item('n___'.substr($m['m__message'], 1))) && count($CI->config->item('n___'.substr($m['m__message'], 1)))){
-            foreach($CI->config->item('n___'.substr($m['m__message'], 1)) as $featured_e){
-                $features_e[$featured_e] = $x__type;
-            }
-        }
-    }
-    */
 
 
     $all_export_rows = array();

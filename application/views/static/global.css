@@ -2780,7 +2780,7 @@ h4.main__title{
     }
 
 
-    .icon-block-mobile { width: 5px !important; }
+    .icon-block-mobile { width: 0 !important; }
 
     .mid-range { padding:0; }
 
