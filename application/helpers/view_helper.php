@@ -1316,11 +1316,12 @@ function view_media($media_url, $link){
 
 
 
-function view_location($x__type, $location){
+function view_key_links($x__type, $location){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
     $show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
-    $show_map_link = !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
+    $is_location = in_array($x__type, $CI->config->item('n___42428'));
+    $show_map_link = $is_location && !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
     return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a>'.( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xx grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xx grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ).'</div>';
 }
 
@@ -1653,7 +1654,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up')) as $location){
-        $ui .= view_location(41949, $location);
+        $ui .= view_key_links(41949, $location);
     }
 
     $ui .= '</div>';
@@ -2122,7 +2123,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up')) as $location){
-        $ui .= view_location(42335, $location);
+        $ui .= view_key_links($location['x__type'], $location);
     }
     $ui .= '</div>';
 
