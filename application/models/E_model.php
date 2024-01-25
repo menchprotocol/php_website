@@ -417,8 +417,8 @@ class E_model extends CI_Model
                 }
             }
 
-            //Update Algolia:
-            update_algolia(12274,  $added_e['new_e']['e__id']);
+            //Update Search Index:
+            flag_for_search_indexing(12274,  $added_e['new_e']['e__id']);
 
             //Assign session & log login transaction:
             $this->E_model->activate_session($added_e['new_e']);
@@ -484,8 +484,8 @@ class E_model extends CI_Model
                 'e__id' => $add_fields['e__id'],
             ));
 
-            //Update Algolia:
-            update_algolia(12274, $add_fields['e__id']);
+            //Update Search Index:
+            flag_for_search_indexing(12274, $add_fields['e__id']);
 
             return $es[0];
 
@@ -635,7 +635,7 @@ class E_model extends CI_Model
 
             if($external_sync){
                 //Sync algolia:
-                update_algolia(12274, $id);
+                flag_for_search_indexing(12274, $id);
             }
 
             //Log modification transaction for every field changed:

@@ -67,8 +67,8 @@ class I_model extends CI_Model
                 'i__id' => $add_fields['i__id'],
             ));
 
-            //Update Algolia:
-            update_algolia(12273, $add_fields['i__id']);
+            //Update Search Index:
+            flag_for_search_indexing(12273, $add_fields['i__id']);
 
             return $is[0];
 
@@ -205,7 +205,7 @@ class I_model extends CI_Model
 
             if($external_sync){
                 //Sync algolia:
-                update_algolia(12273, $id);
+                flag_for_search_indexing(12273, $id);
             }
 
         } elseif($affected_rows < 1){

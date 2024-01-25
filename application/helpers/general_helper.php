@@ -1853,9 +1853,38 @@ function public_app($e){
     $CI =& get_instance();
     return in_array($e['e__privacy'], $CI->config->item('n___7357')) && !in_array($e['e__id'], $CI->config->item('n___32141'));
 }
+function flag_for_search_indexing($s__type = null, $s__id = 0) {
 
-function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
-{
+    $CI =& get_instance();
+
+    if($s__type && !in_array($s__type , $CI->config->item('n___12761'))){
+        return array(
+            'status' => 0,
+            'message' => 'Object type is invalid',
+        );
+    } elseif(($s__type && !$s__id) || ($s__id && !$s__type)){
+        return array(
+            'status' => 0,
+            'message' => 'Must define both object type and ID',
+        );
+    }
+
+    if($s__type==12273){
+        //Update idea flag
+        $this->I_model->update($s__id, array(
+            'i__flag' => true,
+        ));
+    } elseif($s__type==12274){
+        //Update idea flag
+        $this->E_model->update($s__id, array(
+            'e__flag' => true,
+        ));
+    }
+
+}
+
+
+function update_algolia($s__type = null, $s__id = 0) {
 
     if(!intval(view_memory(6404,12678))){
         return false;
@@ -1898,10 +1927,9 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
     }
 
 
-    if (!$return_row_only) {
-        //Load Algolia Index
-        $search_index = load_algolia('alg_index');
-    }
+    //Load Algolia Index
+    $search_index = load_algolia('alg_index');
+
 
 
     //Which objects are we fetching?
@@ -1914,14 +1942,13 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
         //Do both ideas and sources:
         $fetch_objects = $CI->config->item('n___12761');
-        if (!$return_row_only) {
 
-            //We need to update the entire index, so let's truncate it first:
-            $search_index->clearIndex();
+        //We need to update the entire index, so let's truncate it first:
+        $search_index->clearIndex();
 
-            //Boost processing power:
-            boost_power();
-        }
+        //Boost processing power:
+        boost_power();
+
     }
 
 
@@ -2167,18 +2194,7 @@ function update_algolia($s__type = null, $s__id = 0, $return_row_only = false)
 
     //Did we find anything?
     if(count($all_export_rows) < 1){
-
         return false;
-
-    } elseif($return_row_only){
-
-        if($s__id > 0){
-            //We  have a specific item we're looking for
-            return $all_export_rows[0];
-        } else {
-            return $all_export_rows;
-        }
-
     }
 
     //Now let's see what to do with the index (Update, Create or delete)

@@ -101,19 +101,19 @@ class X_model extends CI_Model
         //Sync algolia?
         if ($external_sync) {
             if ($add_fields['x__up'] > 0) {
-                update_algolia(12274, $add_fields['x__up']);
+                flag_for_search_indexing(12274, $add_fields['x__up']);
             }
 
             if ($add_fields['x__down'] > 0) {
-                update_algolia(12274, $add_fields['x__down']);
+                flag_for_search_indexing(12274, $add_fields['x__down']);
             }
 
             if ($add_fields['x__left'] > 0) {
-                update_algolia(12273, $add_fields['x__left']);
+                flag_for_search_indexing(12273, $add_fields['x__left']);
             }
 
             if ($add_fields['x__right'] > 0) {
-                update_algolia(12273, $add_fields['x__right']);
+                flag_for_search_indexing(12273, $add_fields['x__right']);
             }
         }
 
@@ -487,8 +487,8 @@ class X_model extends CI_Model
                 ), true, $member_e['e__id']);
             }
 
-            //Update Algolia:
-            update_algolia(12274,  $o__id);
+            //Update Search Index:
+            flag_for_search_indexing(12274,  $o__id);
 
         } elseif($element_id==31004){
 
@@ -548,8 +548,8 @@ class X_model extends CI_Model
                 'i__privacy' => $new_e__id,
             ), true, $member_e['e__id']);
 
-            //Update Algolia:
-            update_algolia(12273,  $o__id);
+            //Update Search Index:
+            flag_for_search_indexing(12273,  $o__id);
 
         } elseif($element_id==4737){
 

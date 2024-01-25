@@ -638,7 +638,7 @@ class I extends CI_Controller {
 
 
         //Update Search Index:
-        update_algolia(12273, $is[0]['i__id']);
+        flag_for_search_indexing(12273, $is[0]['i__id']);
 
 
         return view_json(array(
