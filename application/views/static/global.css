@@ -3871,11 +3871,7 @@ div.img {
 .e_cover {
 
 }
-.e_cover_mini div.img {
-    width: 24px;
-    height: 24px;
-}
-
+.e_cover_mini div.img,
 .platform-logo.e_cover_mini div.img {
     width: 30px;
     height: 30px;
