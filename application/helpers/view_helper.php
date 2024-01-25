@@ -1027,7 +1027,6 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
 }
 
-
 function view__hash($string){
     $CI =& get_instance();
     return substr(md5($string.$CI->config->item('secret_hash')), 0, 10);

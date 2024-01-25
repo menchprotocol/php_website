@@ -431,7 +431,14 @@ if(!$basic_header_footer){
                         echo '<td class="block-x icon_finder hidden"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }
 
-                    //MENU
+
+                    //Always give option to ideate:
+                    if(superpower_unlocked(10939)){
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31911]['m__title'].'">'.$e___11035[31911]['m__cover'].'</a></td>'; //TODO fix icon reference
+                    }
+
+
+                    //USER MENU
                     $menu_type = ( $member_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
 
@@ -505,11 +512,6 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</div>';
                     echo '</td>';
-
-                    //Always give option to instantly add idea:
-                    if(superpower_unlocked(10939)){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31911]['m__title'].'">'.$e___11035[31911]['m__cover'].'</a></td>'; //TODO fix icon reference
-                    }
 
                     ?>
                 </tr>
