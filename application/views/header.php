@@ -852,7 +852,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="emoji_frame"></div>
                     <script>
                         $(document).ready(function () {
-                            const picker = new EmojiMart.Picker({ onEmojiSelect: console.log(data.native) });
+                            const picker = new EmojiMart.Picker({ onEmojiSelect: console.log(native) });
                             $(".emoji_frame").append(picker);
                             //update__cover
                         });
