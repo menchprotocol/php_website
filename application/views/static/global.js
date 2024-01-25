@@ -1455,6 +1455,7 @@ function editor_load_e(e__id, x__id){
 
 
     if(x__id){
+        console.log('What:'+$('.ui_x__message_'+x__id).attr('title'));
         $('#modal31912 .save_x__message').val($('.ui_x__message_'+x__id).attr('title'));
         $('#modal31912 .save_x__frame').removeClass('hidden');
         setTimeout(function () {
