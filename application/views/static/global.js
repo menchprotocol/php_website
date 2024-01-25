@@ -1280,7 +1280,7 @@ function editor_save_i(){
             }
 
             if(modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
-                $('.ui_x__message_'+modify_data['save_x__id']).attr('aria-label', modify_data['save_x__message']);
+                $('.ui_x__message_'+modify_data['save_x__id']).attr('aria-label', modify_data['save_x__message']).attr('title', modify_data['save_x__message']);
                 if(modify_data['save_x__message'].length){
                     $('.ui_x__message_'+modify_data['save_x__id']).removeClass('hidden');
                 } else {
@@ -1290,6 +1290,9 @@ function editor_save_i(){
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
+            setTimeout(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            }, 987);
 
         }
     });
@@ -1615,7 +1618,7 @@ function editor_save_e(){
             update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
 
             if( modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
-                $('.ui_x__message_'+ modify_data['save_x__id']).attr('aria-label',modify_data['save_x__message']);
+                $('.ui_x__message_'+ modify_data['save_x__id']).attr('aria-label',modify_data['save_x__message']).attr('title', modify_data['save_x__message']);
                 if(modify_data['save_x__message'].length){
                     $('.ui_x__message_'+modify_data['save_x__id']).removeClass('hidden');
                 } else {
@@ -1625,6 +1628,9 @@ function editor_save_e(){
 
             //Tooltips:
             $('[data-toggle="tooltip"]').tooltip();
+            setTimeout(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            }, 987);
 
             has_unsaved_changes = false;
             $('#modal31912').modal('hide');
