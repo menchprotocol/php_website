@@ -849,16 +849,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
 
-                    <div class="emoji_frame"></div>
-                    <script>
-                        $(document).ready(function () {
-                            const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => console.log(res) });
-                            $(".emoji_frame").append(picker);
-                            //update__cover
-                        });
-                    </script>
-
-
 
                     <div class="row">
                         <div class="col-12 col-md-6">
@@ -972,6 +962,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
+
+                            <div class="emoji_frame"></div>
+                            <script>
+                                $(document).ready(function () {
+                                    const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
+                                    $(".emoji_frame").append(picker);
+                                });
+                            </script>
 
                             <!-- SOURCE COVER -->
                             <div class="message_controllers">
