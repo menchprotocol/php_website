@@ -14,7 +14,9 @@ body {
 }
 
 
-
+.alert * {
+    color: #000000;
+}
 .table td, .table th {
     padding: 0;
 }
@@ -3718,9 +3720,7 @@ a,
 
 
 
-.alert * {
-    color: #000000 !important;
-}
+
 
 .title-left{
     float: left;
