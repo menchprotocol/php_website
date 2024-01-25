@@ -129,9 +129,6 @@ h1 {
     text-align: center;
 }
 
-h1 i {
-    font-size:1.3em;
-}
 
 h2 {
     padding:21px 8px;
@@ -4284,4 +4281,12 @@ main {
 .i_cache spanaa{
     color: #007AFD !important;
     text-decoration: none !important;
+}
+
+
+h1 i.fas,
+h1 i.fal,
+h1 i.far,
+h1 i.fad{
+    font-size:1.3em !important;
 }
