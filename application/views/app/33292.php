@@ -40,9 +40,9 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
                 if ($found_link_group > 0){
                     if(!$focus_link_group || $focus_link_group!=$found_link_group){
-                        echo '<tr class="mobile-shrink">';
-                        echo '<td class="center" colspan="2"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$stat_count.' '.$e___42263[$found_link_group]['m__title'].':</b></td>';
-                        echo '</tr>';
+                        $stat_ui .=  '<tr class="mobile-shrink">';
+                        $stat_ui .=  '<td class="center" colspan="2"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$stat_count.' '.$e___42263[$found_link_group]['m__title'].':</b></td>';
+                        $stat_ui .=  '</tr>';
                         $focus_link_group = $found_link_group;
                         $stat_count = 0; //Reset
                     }
