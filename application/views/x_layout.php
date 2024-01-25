@@ -256,6 +256,10 @@ if(!$breadcrum_content){
 }
 
 if($breadcrum_content){
+
+    //Add blank item to get final arrow:
+    $breadcrum_content .= '<li class="breadcrumb-item breadcrumb-flat">&nbsp;</li>';
+
     echo '<nav aria-label="breadcrumb" style="background-color: #FFFFFF;"><ol class="breadcrumb">';
     echo $breadcrum_content;
     echo '</ol></nav>';
