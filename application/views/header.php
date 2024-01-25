@@ -835,15 +835,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- EMOJI -->
                         <a class="icon-block-sm" id="idea_emoji" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
 
-
-
-                        <script>
-                            $(document).ready(function () {
-                                const picker = new EmojiMart.Picker({ onEmojiSelect: console.log });
-                                document.body.appendChild(picker);
-                            });
-                        </script>
-
                         <!-- Reference Source -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
 
@@ -857,6 +848,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
+
+                    <div class="emoji_frame"></div>
+                    <script>
+                        $(document).ready(function () {
+                            const picker = new EmojiMart.Picker({ onEmojiSelect: console.log.native });
+                            $(".emoji_frame").append(picker);
+                            //update__cover
+                        });
+                    </script>
 
 
 
