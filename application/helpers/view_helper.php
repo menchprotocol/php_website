@@ -1660,7 +1660,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Show Link Message, if Any:
     if($x__id){
-        $ui .= '<span class="icon-block-sm ui_x__message_' . $x__id . '" data-title="'.htmlentities($i['x__message']).'" data-toggle="tooltip" data-placement="top" data-bs-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+        $ui .= '<span class="icon-block-sm '.( !strlen($i['x__message']) ? ' hidden ' : '' ).' ui_x__message_' . $x__id . '" data-title="'.htmlentities($i['x__message']).'" data-toggle="tooltip" data-placement="top" data-bs-html="true">'.$e___11035[4372]['m__cover'].'</span>';
     }
 
     $ui .= '</div>';
@@ -2121,8 +2121,8 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $ui .= '<div class="creator_headline grey mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
-    if ($grant_privacy && $x__id && !$is_app && strlen($e['x__message'])) {
-        $ui .= '<span class="icon-block-sm ui_x__message_' . $x__id . '" data-title="'.htmlentities($e['x__message']).'" data-toggle="tooltip" data-placement="top" data-bs-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+    if ($grant_privacy && $x__id && !$is_app) {
+        $ui .= '<span class="icon-block-sm '.( !strlen($e['x__message']) ? ' hidden ' : '' ).' ui_x__message_' . $x__id . '" data-title="'.htmlentities($e['x__message']).'" data-toggle="tooltip" data-placement="top" data-bs-html="true">'.$e___11035[4372]['m__cover'].'</span>';
     } elseif($is_app && isset($e['x__message']) && strlen($e['x__message'])){
         $ui .= '<span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"><i class="far fa-info-circle"></i></span>';
     }

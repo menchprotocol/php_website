@@ -1281,6 +1281,11 @@ function editor_save_i(){
 
             if(modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
                 $('.ui_x__message_'+modify_data['save_x__id']).attr('data-title', modify_data['save_x__message']);
+                if(modify_data['save_x__message'].length){
+                    $('.ui_x__message_'+modify_data['save_x__id']).removeClass('hidden');
+                } else {
+                    $('.ui_x__message_'+modify_data['save_x__id']).addClass('hidden');
+                }
             }
 
             //Tooltips:
@@ -1610,6 +1615,11 @@ function editor_save_e(){
 
             if( modify_data['save_x__id'] && modify_data['save_x__message']!='IGNORE_INPUT'){
                 $('.ui_x__message_'+ modify_data['save_x__id']).attr('data-title',modify_data['save_x__message']);
+                if(modify_data['save_x__message'].length){
+                    $('.ui_x__message_'+modify_data['save_x__id']).removeClass('hidden');
+                } else {
+                    $('.ui_x__message_'+modify_data['save_x__id']).addClass('hidden');
+                }
             }
 
             //Tooltips:
