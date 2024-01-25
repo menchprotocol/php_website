@@ -382,7 +382,7 @@ class X_model extends CI_Model
     }
 
 
-    function update_dropdown($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id = 0) {
+    function update_select_single($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id = 0) {
 
 
         //Authenticate Member:

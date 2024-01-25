@@ -2309,7 +2309,7 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function e_radio(focus_id, selected_e__id, enable_mulitiselect, down_e__id, right_i__id){
+function view_select_multi(focus_id, selected_e__id, enable_mulitiselect, down_e__id, right_i__id){
 
     //Any warning needed?
     if(js_n___31780.includes(selected_e__id) && !confirm(js_e___31780[selected_e__id]['m__message'])){
@@ -2350,7 +2350,7 @@ function e_radio(focus_id, selected_e__id, enable_mulitiselect, down_e__id, righ
         $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active');
     }
 
-    $.post("/e/e_radio", {
+    $.post("/e/view_select_multi", {
         focus_id: focus_id,
         down_e__id: down_e__id,
         right_i__id: right_i__id,
@@ -2377,7 +2377,7 @@ function isNormalInteger(str) {
 }
 
 
-function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_name = false){
+function update_select_single(element_id, new_e__id, o__id = 0, x__id = 0, show_full_name = false){
 
     /*
     *
@@ -2433,7 +2433,7 @@ function update_dropdown(element_id, new_e__id, o__id = 0, x__id = 0, show_full_
     }
     $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/x/update_dropdown", {
+    $.post("/x/update_select_single", {
         focus_id:fetch_int_val('#focus_id'),
         o__id: o__id,
         element_id: element_id,

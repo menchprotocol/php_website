@@ -859,7 +859,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <!-- Idea Type -->
                                 <div class="dynamic_editing_input">
                                     <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4737]['m__cover'].'</span>'.$e___11035[4737]['m__title'].':';  ?></h3>
-                                    <div class="dynamic_selector"><?= view_dropdown(4737, 0, true, true); ?></div>
+                                    <div class="dynamic_selector"><?= view_select_single(4737, 0, true, true); ?></div>
                                 </div>
 
                             </div>
@@ -952,7 +952,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <!-- Source Privacy -->
                                 <div class="dynamic_editing_input">
                                     <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[6177]['m__cover'].'</span>'.$e___11035[6177]['m__title'].':';  ?></h3>
-                                    <div class="dynamic_selector"><?= view_dropdown(6177, 0, true, true); ?></div>
+                                    <div class="dynamic_selector"><?= view_select_single(6177, 0, true, true); ?></div>
                                 </div>
 
                                 <!-- Link Message -->

@@ -655,7 +655,7 @@ class E extends CI_Controller
                         if(in_array($data_type, $this->config->item('n___42188'))){
 
                             //Single or Multiple Choice:
-                            $return_radios .= view_radio_e($dynamic_e__id, $es[0]['e__id'], 0);
+                            $return_radios .= view_select($dynamic_e__id, $es[0]['e__id'], 0);
 
                         } else {
 
@@ -993,7 +993,7 @@ class E extends CI_Controller
 
 
 
-    function e_radio()
+    function view_select_multi()
     {
         /*
          *

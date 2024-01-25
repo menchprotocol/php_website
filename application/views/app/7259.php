@@ -153,7 +153,7 @@ echo '</form>';
             });
             console.log(counter + " to be deleted");
 
-            $.post("/x/update_dropdown", {
+            $.post("/x/update_select_single", {
                 focus_id:0,
                 o__id: icons_listed,
                 element_id: 31004,
