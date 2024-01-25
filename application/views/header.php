@@ -967,7 +967,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <script>
                                 $(document).ready(function () {
                                     const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
-                                    $(".emoji_frame").append(picker);
+                                    $(".emoji_1").append(picker);
                                 });
                             </script>
 
@@ -976,8 +976,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <!-- Upload Cover -->
                                 <a class="icon-block-sm uploader_42359" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
 
+
                                 <!-- EMOJI -->
-                                <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" title="Toggle Emoji Selector">😃</a>
+                                <div class="dropdown inline-block">
+                                    <button type="button" class="btn no-left-padding no-right-padding main__title" id="emoji_1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">😃</button>
+                                    <div class="dropdown-menu emoji_1" aria-labelledby="emoji_1"></div>
+                                </div>
 
                                 <!-- Font Awesome -->
                                 <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
