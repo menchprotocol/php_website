@@ -129,6 +129,10 @@ h1 {
     text-align: center;
 }
 
+h1 i {
+    font-size:1.3em;
+}
+
 h2 {
     padding:21px 8px;
     margin:0;
