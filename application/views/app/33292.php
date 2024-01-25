@@ -32,42 +32,6 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
     
     foreach($this->config->item('e___'.$e__id1) as $e__id2 => $m2) {
 
-        $stat_ui = '';
-        $stat_group_count = 0;
-        $stat_count = 0;
-        $stat_blocks = array();
-        $focus_link_group = 0;
-        foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
-
-            foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
-                if ($found_link_group > 0){
-                    if(!$focus_link_group || $focus_link_group!=$found_link_group){
-
-                        $stat_ui .=  '<tr class="mobile-shrink">';
-                        $stat_ui .=  '<td class="center" colspan="2"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.'the_stats_counter____'.$stat_group_count.'____'.' '.$e___42263[$found_link_group]['m__title'].':</b></td>';
-                        $stat_ui .=  '</tr>';
-                        $focus_link_group = $found_link_group;
-                        if($stat_group_count>0){
-                            $stat_blocks[($stat_group_count-1)] = $stat_count;
-                        }
-                        $stat_group_count++;
-                        $stat_count = 0; //Reset
-                    }
-                }
-            }
-
-            $stat_ui .= '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            $stat_ui .= '<td style="text-align: left;"><span class="icon-block-xs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col mench-points ">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xx">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
-            $stat_ui .= '</tr>';
-            $stat_count++;
-
-        }
-
-        array_push($stat_blocks, $stat_count);
-        foreach($stat_blocks as $key => $value){
-            $stat_ui = str_replace('the_stats_counter____'.$key.'____',$value,$stat_ui);
-        }
-
         echo '<div class="card_cover no-padding col-6 '.( !in_array($e__id2, $this->config->item('n___14874')) ? ' advanced-stats hidden ' : '' ).'">';
         echo '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id2.'" e__id="'.$e__id2.'">';
 
@@ -79,7 +43,26 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
-        echo $stat_ui;
+        $focus_link_group = 0;
+        foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
+
+            foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
+                if ($found_link_group > 0){
+                    if(!$focus_link_group || $focus_link_group!=$found_link_group){
+                        echo '<tr class="mobile-shrink">';
+                        echo '<td class="center" colspan="2"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b></td>';
+                        echo '</tr>';
+                        $focus_link_group = $found_link_group;
+                    }
+                }
+            }
+
+            echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
+            echo '<td style="text-align: left;"><span class="icon-block-xs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col mench-points ">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xx">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
+            echo '</tr>';
+
+        }
+
 
         echo '</table>';
 
