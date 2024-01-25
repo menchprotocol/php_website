@@ -11,13 +11,13 @@ if($e__handle){
     foreach($this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($e__handle),
     )) as $e){
-        echo '<h1><a href="/@'.$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a></h1>';
+        echo '<h2><a href="/@'.$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a></h2>';
     }
 } elseif($i__hashtag){
     foreach($this->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower($i__hashtag),
     )) as $i){
-        echo '<h1><a href="/'.$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a></h1>';
+        echo '<h2><a href="/'.$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a></h2>';
     }
 }
 
@@ -58,7 +58,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;"><span class="icon-block-xs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col mench-points ">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xx">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
+            echo '<td style="text-align: left;"><span class="icon-block-xs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col points_frame hidden">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xx">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
             echo '</tr>';
 
         }
@@ -102,7 +102,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
     $(document).ready(function () {
 
-        $("h1").append('&nbsp;<span><a href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><i class="fas fa-search-plus advanced-stats" style="font-size: 0.34em !important;"></i><i class="fas fa-search-minus advanced-stats hidden" style="font-size: 0.34em !important;"></i></a></span>');
+        $("h1").append('<a class="icon-block" href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><i class="fas fa-search-plus advanced-stats" style="font-size: 0.34em !important;"></i><i class="fas fa-search-minus advanced-stats hidden" style="font-size: 0.34em !important;"></i></a>').append('<a class="icon-block" href="javascript:void(0);" onclick="$(\'.points_frame\').toggleClass(\'hidden\');"><span class="points_frame"><?= $e___11035[42225]['m__cover'] ?></span><span class="points_frame hidden"><i class="fas fa-hexagon fa-spin-slow zq6255" aria-hidden="true"></i></span></a>');
 
         //Load initial stats:
         load_stats_33292();
