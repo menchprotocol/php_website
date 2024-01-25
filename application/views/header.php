@@ -834,7 +834,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <a class="icon-block-sm uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
 
                         <!-- EMOJI -->
-                        <a class="icon-block-sm" id="idea_emoji" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Toggle Emoji Selector">😃</a>
+                        <div class="inline-block-sm dropdown emoji_selector">
+                            <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">😃</button>
+                            <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
+                        </div>
+
+
 
                         <!-- Reference Source -->
                         <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
@@ -964,24 +969,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
                         <div class="col-12 col-md-6">
 
-                            <div class="emoji_frame"></div>
-                            <script>
-                                $(document).ready(function () {
-                                    const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insert_emoji(res.native) });
-                                    $(".emoji_1").append(picker);
-                                });
-                            </script>
-
                             <!-- SOURCE COVER -->
                             <div class="message_controllers">
                                 <!-- Upload Cover -->
                                 <a class="icon-block-sm uploader_42359" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
 
-
                                 <!-- EMOJI -->
-                                <div class="dropdown inline-block emoji_selector">
-                                    <button type="button" class="btn no-left-padding no-right-padding main__title" id="emoji_1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">😃</button>
-                                    <div class="dropdown-menu emoji_1" aria-labelledby="emoji_1"></div>
+                                <div class="inline-block-sm dropdown emoji_selector">
+                                    <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">😃</button>
+                                    <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
                                 </div>
 
                                 <!-- Font Awesome -->

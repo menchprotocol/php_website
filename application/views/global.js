@@ -678,6 +678,10 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    //Append emoji selector:
+    const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insert_emoji(res.native) });
+    $(".emoji_e, .emoji_i").append(picker);
+
     $('.emoji_selector').on('click', function(event){
         //This prevents the emoji modal from closing when an emoji is selected...
         event.stopPropagation();
