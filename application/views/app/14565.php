@@ -5,7 +5,6 @@
 //TITLE
 $website_id = website_setting(0);
 $expanded_space = in_array($website_id , $this->config->item('n___31025'));
-$double_contact = in_array($website_id , $this->config->item('n___31029'));
 
 if(in_array($website_id, $this->config->item('n___30984'))){
     echo ' <script> $(document).ready(function () { $(\'body\').addClass(\'home_black_font\'); }); </script> ';
@@ -84,14 +83,6 @@ if($domain_phone || $email_domain) {
     $contact_us .= '</ul>';
 
 }
-
-if($double_contact){
-    $messages .= '<div style="padding: 20px 0;">';
-    $messages .= $contact_us;
-    $messages .= '</div>';
-}
-
-
 
 
 
