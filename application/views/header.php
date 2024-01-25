@@ -968,6 +968,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 $(document).ready(function () {
                                     const picker = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
                                     $(".emoji_1").append(picker);
+
+                                    $('.emoji_1_frame').on('click', function(event){
+                                        event.stopPropagation();
+                                    });
                                 });
                             </script>
 
@@ -978,7 +982,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                                 <!-- EMOJI -->
-                                <div class="dropdown inline-block">
+                                <div class="dropdown inline-block emoji_1_frame">
                                     <button type="button" class="btn no-left-padding no-right-padding main__title" id="emoji_1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">😃</button>
                                     <div class="dropdown-menu emoji_1" aria-labelledby="emoji_1"></div>
                                 </div>
