@@ -21,11 +21,6 @@ foreach($is_next as $in_key => $in_value){
     }
 }
 
-
-if(write_privacy_i($focus_i['i__hashtag'])){
-    echo '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$e___11035[33286]['m__cover'].'</span>You can iterate this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
-}
-
 $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $pathways_count = 0;
@@ -950,6 +945,12 @@ echo '</div>';
 
 if($top_i__hashtag){
     echo '</div>';
+}
+
+
+
+if(write_privacy_i($focus_i['i__hashtag'])){
+    echo '<div class="alert alert-warning" role="alert"><span class="icon-block">'.$e___11035[33286]['m__cover'].'</span>You can iterate this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
 /*
