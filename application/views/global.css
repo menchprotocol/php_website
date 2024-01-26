@@ -176,6 +176,8 @@ h3{
     height: 13px;
     overflow: visible;
 }
+
+.section_subframe,
 .section_demo,
 .dynamic_selector,
 .dynamic_item input.form-control,
