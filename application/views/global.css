@@ -172,6 +172,8 @@ h3{
 }
 
 .modal-header .btn i {
+    display: block;
+    height: 16px;
     margin: -5px 0 !important;
 }
 .section_demo,
