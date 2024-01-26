@@ -171,6 +171,9 @@ h3{
     margin: 13px 0 0 0 !important;
 }
 
+.modal-header .btn-close {
+    color: #000000 !important;
+}
 .modal-header .btn i {
     display: block;
     height: 13px;
