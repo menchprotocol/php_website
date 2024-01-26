@@ -121,9 +121,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
 
     <script type="module">
-        import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
-
         //Append emoji selector:
+        import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
         const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertText($(".save_i__message"), res.native) });
         const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
         $(".emoji_i").append(picker_i);
@@ -843,22 +842,29 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <div class="message_controllers">
-
-                        <!-- Upload -->
-                        <a class="icon-block-sm uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
-
-                        <!-- EMOJI -->
-                        <div class="inline-block-sm dropdown emoji_selector">
-                            <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">😃</button>
-                            <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
-                        </div>
-
-                        <!-- Reference Source -->
-                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
-
-                        <!-- Reference Idea -->
-                        <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
-
+                        <table style="width:160px; border:0;">
+                            <tr>
+                                <td style="width: 25%;">
+                                    <!-- Upload -->
+                                    <a class="icon-block-sm uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+                                </td>
+                                <td style="width: 25%;">
+                                    <!-- EMOJI -->
+                                    <div class="inline-block-sm dropdown emoji_selector">
+                                        <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">😃</button>
+                                        <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
+                                    </div>
+                                </td>
+                                <td style="width: 25%;">
+                                    <!-- Reference Source -->
+                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
+                                </td>
+                                <td style="width: 25%;">
+                                    <!-- Reference Idea -->
+                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
 
                     <!-- Idea Message -->
