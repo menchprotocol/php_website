@@ -2258,6 +2258,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         ), array(), 0, 0) as $social_link){
 
             //Determine link type:
+            $social_url = false;
             if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
                 //We made sure not the current website:
                 $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
@@ -2266,15 +2267,12 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
                 //Phone
                 $social_url = 'href="'.phone_href($e__id, $social_link['x__message']).'"';
-            } else {
-                //Unknown!
-                continue;
             }
 
             array_push($social_listed, $e__id);
 
             //Append to links:
-            $social_ui .= '<li class="'.( $focus_card ? 'icon-block' : 'icon-block-xs' ).'"><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a></li>';
+            $social_ui .= '<li class="'.( $focus_card ? 'icon-block' : 'icon-block-xs' ).'">'.( $social_url ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'">'.$m['m__cover'].'</span>' ).'</li>';
 
         }
     }
