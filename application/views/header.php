@@ -942,8 +942,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </td>
                                 <td>
                                     <!-- EMOJI -->
-                                    <a href="javascript:void(0);" onclick="$('emoji_i').dropdown('toggle');"><i class="far fa-face-smile"></i></a>
-                                    
+                                    <a href="javascript:void(0);" onclick="$('#emoji_i').dropdown('toggle');"><i class="far fa-face-smile"></i></a>
+
                                 </td>
                                 <td>
                                     <!-- Reference Source -->
