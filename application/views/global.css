@@ -4086,11 +4086,12 @@ main {
 }
 
 .emoji_table{
-    width:144px;
+    width: auto;
     border:0;
 }
 .emoji_table td {
     text-align: center;
+    width: 34px !important;
 }
 
 .home_black_font .platform-logo i,

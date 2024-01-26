@@ -852,22 +852,22 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="message_controllers">
                         <table class="emoji_table">
                             <tr>
-                                <td style="width: 25%;">
+                                <td>
                                     <!-- Upload -->
                                     <a class="uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
                                 </td>
-                                <td style="width: 25%;">
+                                <td>
                                     <!-- EMOJI -->
                                     <div class="dropdown emoji_selector">
                                         <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile-plus"></i></button>
                                         <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                     </div>
                                 </td>
-                                <td style="width: 25%;">
+                                <td>
                                     <!-- Reference Source -->
                                     <a href="javascript:void(0);" class="insert_at_sign" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
                                 </td>
-                                <td style="width: 25%;">
+                                <td>
                                     <!-- Reference Idea -->
                                     <a href="javascript:void(0);" class="insert_hashtag" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
                                 </td>
@@ -999,28 +999,28 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="message_controllers">
                                 <table class="emoji_table">
                                     <tr>
-                                        <td style="width: 20%;">
+                                        <td>
                                             <!-- Upload Cover -->
                                             <a class="icon-block-sm uploader_42359" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
                                         </td>
-                                        <td style="width: 20%;">
+                                        <td>
                                             <!-- EMOJI -->
-                                            <div class="inline-block-sm dropdown emoji_selector">
+                                            <div class="dropdown emoji_selector">
                                                 <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile-plus"></i></button>
                                                 <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
                                             </div>
                                         </td>
-                                        <td style="width: 20%;">
+                                        <td>
                                             <!-- Font Awesome -->
-                                            <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+                                            <a href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
                                         </td>
-                                        <td style="width: 20%;">
+                                        <td>
                                             <!-- History -->
-                                            <a class="icon-block-sm cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+                                            <a class="cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
                                         </td>
-                                        <td style="width: 20%;">
+                                        <td>
                                             <!-- Delete -->
-                                            <a class="icon-block-sm" href="javascript:void(0);" onclick="update__cover('')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
+                                            <a href="javascript:void(0);" onclick="update__cover('')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
                                         </td>
                                     </tr>
                                 </table>
