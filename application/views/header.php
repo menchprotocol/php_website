@@ -1029,7 +1029,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-6">
 
                             <!-- Dynamic Loader -->
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
 
                             <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>
@@ -1162,7 +1162,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="col-12 col-md-6">
 
                             <!-- Dynamic Loader -->
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
 
                             <!-- Dynamic Radios -->
                             <div class="dynamic_editing_radio"></div>

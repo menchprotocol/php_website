@@ -108,7 +108,7 @@ function mass_apply_preview(apply_id, s__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .mass_apply_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
+    $('#modal'+apply_id+' .mass_apply_preview').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
     $.post("/x/mass_apply_preview", {
         apply_id: apply_id,
         s__id: s__id
@@ -565,7 +565,7 @@ function e_load_cover(x__type, e__id, counter, first_segment){
        return false;
     }
 
-    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/e/e_load_cover", {
         x__type:x__type,
@@ -585,7 +585,7 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
         return false;
     }
 
-    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/i/i_load_cover", {
         x__type:x__type,
@@ -1214,7 +1214,7 @@ function editor_save_i(){
     }
 
     i_saving = true;
-    $(".editor_save_i").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".editor_save_i").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     var modify_data = {
         save_i__id:         $('#modal31911 .save_i__id').val(),
@@ -1566,7 +1566,7 @@ function editor_save_e(){
     }
 
     e_saving = true;
-    $(".editor_save_e").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".editor_save_e").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     var modify_data = {
         save_e__id:         $('#modal31912 .save_e__id').val(),
@@ -1777,7 +1777,7 @@ function view_load_page() {
 
 
     current_page[focus_x__type]++; //Now we can increment current page
-    $('<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__type);
+    $('<div class="load-more"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__type);
     $.post("/x/view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
         focus_id: fetch_int_val('#focus_id'),
@@ -2367,7 +2367,7 @@ function update_select_single(element_id, new_e__id, o__id = 0, x__id = 0, show_
         alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
         return false;
     }
-    $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.dropd_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/x/update_select_single", {
         focus_id:fetch_int_val('#focus_id'),
@@ -2440,7 +2440,7 @@ function e_reset_discoveries(e__id){
     //Confirm First:
     var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
     if (r==true) {
-        $('.e_reset_discoveries').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">REMOVING ALL</b>');
+        $('.e_reset_discoveries').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">REMOVING ALL</b>');
 
         //Redirect:
         js_redirect('/x/e_reset_discoveries/'+e__id);

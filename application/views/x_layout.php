@@ -402,7 +402,7 @@ if($top_i__hashtag) {
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
 
-            $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
+            $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
             //Referesh soon so we can check if completed or not
             js_php_redirect('/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
@@ -1128,7 +1128,7 @@ if($top_i__hashtag){
 
             }
         });
-        $('.file_save_result').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING</span>');
+        $('.file_save_result').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING</span>');
 
     }
 
