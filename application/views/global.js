@@ -689,7 +689,7 @@ function random_animal(basic_style = false){
     var styles = ['fas','fad','fal','fat','fas','fad','fal','fat','fas','fad','fal','fat','fas fa-sharp','fal fa-sharp','fat fa-sharp'];
     var animals = [' ',' ',' zq12273',' zq12274',' zq6255'];
     var colors = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-cat-space','fa-fish','fa-dragon','fa-whale','fa-turtle','fa-snake','fa-spider','fa-lobster','fa-duck','fa-dove','fa-crow','fa-dinosaur','fa-bee','fa-horse','fa-raccoon','fa-pegasus','fa-','fa-bat','fa-deer','fa-badger-honey','fa-squirrel','fa-ram','fa-dolphin','fa-bird','fa-crab','fa-worm','fa-kiwi-bird','fa-shrimp','fa-duck','fa-teddy-bear','fa-t-rex'];
-    return ( basic_style ? ' fas ' : styles[Math.floor(Math.random()*styles.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)] ) + ' ' + animals[Math.floor(Math.random()*animals.length)];
+    return animals[Math.floor(Math.random()*animals.length)] + ' ' + ( basic_style ? ' fas ' : styles[Math.floor(Math.random()*styles.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)] );
 }
 
 var algolia_index = false;
