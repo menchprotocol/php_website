@@ -1114,14 +1114,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                             <!-- Upload Cover -->
                                             <a class="uploader_42359" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
                                         </td>
-                                        <td class="superpower__113758">
+                                        <td class="superpower__13758">
                                             <!-- EMOJI -->
                                             <div class="dropdown emoji_selector">
                                                 <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                                 <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
                                             </div>
                                         </td>
-                                        <td class="superpower__113758">
+                                        <td class="superpower__13758">
                                             <!-- Font Awesome -->
                                             <a href="javascript:void(0);" onclick="update__cover('fas fa-icons')" title="Search Font Awesome"><i class="fas fa-icons"></i></a>
                                         </td>
