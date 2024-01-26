@@ -548,7 +548,7 @@ textarea.main__title {
 }
 
 .breadcrumb {
-    margin: -8px 5px 13px;
+    margin:0 5px 13px;
     width: auto;
 }
 
@@ -800,6 +800,7 @@ p.menu_header {
 .fixed-top, .fixed-bottom {
     z-index: 999 !important;
 }
+.alert-default,
 .fixed-top {
     background-color: #FFFFFF;
 }
