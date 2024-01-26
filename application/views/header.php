@@ -123,14 +123,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script type="module">
         //Append emoji selector:
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
-        const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertText($(".save_i__message"), res.native) });
-        const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
-        $(".emoji_i").append(picker_i);
-        $(".emoji_e").append(picker_e);
-        $('.emoji_selector').on('click', function(event){
-            //This prevents the emoji modal from closing when an emoji is selected...
-            event.stopPropagation();
-        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -857,11 +849,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </td>
                                 <td style="width: 25%;">
                                     <!-- Reference Source -->
-                                    <a href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
+                                    <a href="javascript:void(0);" class="insert_at_sign" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
                                 </td>
                                 <td style="width: 25%;">
                                     <!-- Reference Idea -->
-                                    <a href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
+                                    <a href="javascript:void(0);" class="insert_hashtag" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
                                 </td>
                             </tr>
                         </table>
