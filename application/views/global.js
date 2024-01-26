@@ -1451,7 +1451,7 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
-    $('#modal31912 .random_animal').html(random_animal(true));
+    $('#modal31912 .random_animal').html('<i class="'+random_animal(true)+'"></i>');
     update__cover(current_cover);
 
 
