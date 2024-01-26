@@ -1083,7 +1083,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     $('.dropmenu_4737').attr('o__id',i__id);
     $('.dropmenu_4737').attr('x__id',x__id);
     $('.dropd_4737_0_0 .dropdown-item').removeClass('hidden');
-    $('#dropdownMenuButton4737_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___4737[current_idea_type]['m__cover']+'</span>'+js_e___4737[current_idea_type]['m__title']);
+    $('#dropdownMenuButton4737_0_0 .current_content').html('<span class="icon-block-sm">'+js_e___4737[current_idea_type]['m__cover']+'</span>'+js_e___4737[current_idea_type]['m__title']);
     $('.dropd_4737_0_0 .optiond_'+current_idea_type+'_0_0').addClass('hidden');
 
     //Load Instant Fields:
@@ -1461,7 +1461,7 @@ function editor_load_e(e__id, x__id){
     $('.dropmenu_6177').attr('o__id',e__id);
     $('.dropmenu_6177').attr('x__id',x__id);
     if(current_privacy > 0){
-        $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___6177[current_privacy]['m__cover']+'</span>'+js_e___6177[current_privacy]['m__title']);
+        $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-sm">'+js_e___6177[current_privacy]['m__cover']+'</span>'+js_e___6177[current_privacy]['m__title']);
         $('.dropd_6177_0_0 .optiond_'+current_privacy+'_0_0').addClass('hidden');
     }
 
