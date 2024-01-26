@@ -1872,7 +1872,7 @@ label {
     line-height: 150%;
 }
 .modal-body{
-    padding: 10px;
+    padding: 0 8px 34px;
 }
 .mini-grey{
     font-size: 0.80em;

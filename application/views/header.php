@@ -711,15 +711,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
-
-                    <div class="modal-header">
-                        <h5 class="modal-title hidden main__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
                     <form method="POST" action="<?= view_app_link(27196) ?>?focus_id=12274">
-                        <input type="hidden" name="s__id" value="" />
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="submit" class="btn btn-default">APPLY</button>
+                        </div>
                         <div class="modal-body">
+                            <input type="hidden" name="s__id" value="" />
                             <?php
 
                             //Mass Editor:
@@ -838,11 +836,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             ?>
                             <div class="mass_apply_preview"></div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-default">APPLY TO ALL</button>
-                        </div>
-                    </form>
                 </div>
+                </form>
             </div>
         </div>
         <?php
@@ -856,15 +851,16 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
 
-                    <div class="modal-header">
-                        <h5 class="modal-title hidden main__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-
                     <form method="POST" action="<?= view_app_link(27196) ?>?focus_id=12273">
-                        <input type="hidden" name="s__id" value="" />
+
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="submit" class="btn btn-default">APPLY</button>
+                        </div>
+
                         <div class="modal-body">
+
+                            <input type="hidden" name="s__id" value="" />
                             <?php
 
                             //IDEA LIST EDITOR
@@ -925,11 +921,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             ?>
                             <div class="mass_apply_preview"></div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-default">APPLY TO ALL</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -947,7 +940,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <button type="button" class="btn btn-default editor_save_i" onclick="editor_save_i()"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?></button>
+                    <button type="button" class="btn btn-default editor_save_i" onclick="editor_save_i()">SAVE</button>
                 </div>
 
                 <div class="modal-body">
@@ -1043,9 +1036,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         </div>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -1059,11 +1050,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-content slim_flat">
 
                 <div class="modal-header">
-                    <h5 class="modal-title hidden main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="editor_save_e btn btn-default" onclick="editor_save_e()">SAVE</button>
                 </div>
 
                 <div class="modal-body">
+
+                    <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
                     <input type="hidden" class="save_e__id" value="0" />
                     <input type="hidden" class="save_x__id" value="0" />
@@ -1176,13 +1169,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         </div>
                     </div>
-
-                    <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" onclick="editor_save_e()" class="editor_save_e btn btn-default">SAVE</button>
                 </div>
             </div>
         </div>
