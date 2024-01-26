@@ -1119,9 +1119,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                             <!-- Font Awesome -->
                                             <a href="javascript:void(0);" onclick="update__cover('fas fa-icons')" title="Search Font Awesome"><i class="fas fa-icons"></i></a>
                                         </td>
-                                        <td class="superpower__13758">
+                                        <td class="superpower__13758 cover_history_button">
                                             <!-- History -->
-                                            <a class="cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+                                            <a href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
                                         </td>
                                         <td>
                                             <!-- Ramdom Animal -->
