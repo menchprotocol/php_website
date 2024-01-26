@@ -933,8 +933,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="doclear">&nbsp;</div>
 
 
-                    <div class="dropdown emoji_selector">
-
                     <div class="message_controllers">
                         <table class="emoji_table">
                             <tr>
@@ -944,9 +942,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </td>
                                 <td>
                                     <!-- EMOJI -->
-
-                                        <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
-
+                                    <a href="javascript:void(0);" onclick="$('emoji_i').dropdown('toggle');"><i class="far fa-face-smile"></i></a>
+                                    
                                 </td>
                                 <td>
                                     <!-- Reference Source -->
@@ -966,8 +963,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
 
-                        <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
 
+                    <!-- EMOJI -->
+                    <div class="dropdown emoji_selector">
+                        <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smileaaa"></i></button>
+                        <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                     </div>
 
 
