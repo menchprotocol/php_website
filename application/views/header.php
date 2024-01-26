@@ -1008,6 +1008,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
                         <div class="col-12 col-md-6">
 
+                            <!-- Idea Access -->
+                            <div class="dynamic_editing_input">
+                                <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[31004]['m__cover'].'</span>'.$e___11035[31004]['m__title'].':';  ?></h3>
+                                <div class="dynamic_selector"><?= view_select_single(31004, 0, true, true); ?></div>
+                            </div>
+
                             <!-- Idea Hashtag -->
                             <div class="dynamic_editing_input hash_group">
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
