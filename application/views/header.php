@@ -124,15 +124,14 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         //Append emoji selector:
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
 
-        const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => { insertText($(".save_i__message"), res.native); $('.emoji_selector .show').removeClass('show'); } });
-        const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
+        const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => { insertText($(".save_i__message"), res.native); } });
+        const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => { update__cover(res.native); } });
         $(".emoji_i").append(picker_i);
         $(".emoji_e").append(picker_e);
         $('.emoji_selector').on('click', function(event){
             //This prevents the emoji modal from closing when an emoji is selected...
             event.stopPropagation();
         });
-
         $(".insert_hashtag").click(function (e) {
             insertText($(".save_i__message"), '#');
         });
@@ -934,6 +933,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="doclear">&nbsp;</div>
 
 
+                    <div class="dropdown emoji_selector">
+
                     <div class="message_controllers">
                         <table class="emoji_table">
                             <tr>
@@ -943,10 +944,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </td>
                                 <td>
                                     <!-- EMOJI -->
-                                    <div class="dropdown emoji_selector">
+
                                         <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
-                                        <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
-                                    </div>
+
                                 </td>
                                 <td>
                                     <!-- Reference Source -->
@@ -964,6 +964,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-sm">'.$e___11035[4736]['m__cover'].'</span>'.$e___11035[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    </div>
+
+                        <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
+
                     </div>
 
 
