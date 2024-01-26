@@ -146,7 +146,8 @@ h3{
     margin: 21px 0 -8px 0;
 }
 .message_controllers .emoji_selector{
-    max-height: 20px;
+    max-height: 21px;
+    margin-top: -18px;
 }
 .modal-content h3 {
     padding: 8px 0 !important;
