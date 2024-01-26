@@ -128,7 +128,7 @@ function load_editor(){
         $('.mass_id_' + $(this).val() ).removeClass('hidden');
     });
 
-    if(parseInt(js_e___6404[12678]['m__message'])){
+    if(search_enabled()){
 
         $('.e_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
 
@@ -539,7 +539,7 @@ function image_cover(cover_preview, cover_apply, new_title){
 
 function initiate_algolia(){
     $(".algolia_finder").focus(function () {
-        if(!algolia_index && parseInt(js_e___6404[12678]['m__message'])){
+        if(!algolia_index && search_enabled()){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
             algolia_index = client.initIndex('alg_index');
@@ -698,7 +698,7 @@ $(document).ready(function () {
             } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
                 //Add Source:
                 editor_load_e(0,0);
-            } else if(String.fromCharCode(e.which).toLowerCase() === 'f' && parseInt(js_e___6404[12678]['m__message'])){
+            } else if(String.fromCharCode(e.which).toLowerCase() === 'f' && search_enabled()){
                 //Finder:
                 toggle_finder();
             }
@@ -788,7 +788,7 @@ $(document).ready(function () {
     });
 
 
-    if(parseInt(js_e___6404[12678]['m__message'])){
+    if(search_enabled()){
 
         var icons_listed = [];
 
@@ -940,7 +940,7 @@ function i_load_finder(x__type) {
         }
     });
 
-    if(!parseInt(js_e___6404[12678]['m__message'])){
+    if(!search_enabled()){
         console.log("Search engine is disabled!");
         return false;
     }
@@ -1003,7 +1003,7 @@ function e_load_finder(x__type) {
         }
     });
 
-    if(!parseInt(js_e___6404[12678]['m__message'])){
+    if(!search_enabled()){
         console.log("Search engine is disabled!");
     }
 
@@ -2147,10 +2147,12 @@ function adjust_counter(x__type, adjustment_count){
 }
 
 
-
+function search_enabled(){
+    return universal_search_enabled && parseInt(js_e___6404[12678]['m__message']);
+}
 
 function activate_handle_finder(obj) {
-    if(parseInt(js_e___6404[12678]['m__message'])){
+    if(search_enabled()){
         obj.textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,

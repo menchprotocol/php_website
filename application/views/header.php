@@ -95,10 +95,12 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     echo '<script> ';
     //JS VARIABLES
+
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_handle = \'' . ( $member_e ? $member_e['e__handle'] : '' ) . '\'; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
+    echo ' var universal_search_enabled = ' . intval($this->config->item('universal_search_enabled')) . '; ';
     echo ' var website_id = "' . $website_id . '"; ';
     echo ' var js_session_superpowers_unlocked = ' . json_encode(($member_e ? $this->session->userdata('session_superpowers_unlocked') : array())) . ';';
     echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:public_index \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
@@ -426,7 +428,7 @@ if(!$basic_header_footer){
                     */
 
 
-                    if(intval(view_memory(6404,12678)) && $member_e && $member_e['e__id']==1){
+                    if(search_enabled() && $member_e && $member_e['e__id']==1){
                         echo '<td class="block-x icon_finder '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
                         echo '<td class="block-x icon_finder hidden"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }

@@ -1883,10 +1883,15 @@ function flag_for_search_indexing($s__type = null, $s__id = 0) {
 
 }
 
+function search_enabled(){
+    $CI =& get_instance();
+    return ( $CI->config->item('universal_search_enabled') && intval(view_memory(6404,12678)) );
+}
+
 
 function update_algolia($s__type = null, $s__id = 0) {
 
-    if(!intval(view_memory(6404,12678))){
+    if(!search_enabled()){
         return false;
     }
 

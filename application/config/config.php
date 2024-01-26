@@ -25,6 +25,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  |
  */
 
+$config['universal_search_enabled'] = 0;
+
+
 $config['base_url']                 = 'https://'.( isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'mench.com' );
 
 
