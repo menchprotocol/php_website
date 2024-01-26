@@ -534,11 +534,13 @@ function toggle__cover(new_cover){
     }
 }
 
-function update__cover(new_cover){
+function update__cover(new_cover, changed = true){
     $('#modal31912 .save_e__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
     toggle__cover(new_cover);
-    has_unsaved_changes = true;
+    if(changed){
+        has_unsaved_changes = true;
+    }
 }
 function image_cover(cover_preview, cover_apply, new_title){
     return '<a href="javascript:void(0);" onclick="update__cover(\''+cover_apply+'\')">' + view_s_mini_js(cover_preview, new_title) + '</a>';
@@ -1452,7 +1454,7 @@ function editor_load_e(e__id, x__id){
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
     $('#modal31912 .random_animal').html('<i class="'+random_animal(true)+'"></i>');
-    update__cover(current_cover);
+    update__cover(current_cover, false);
 
 
     //Load Source Privacy:
