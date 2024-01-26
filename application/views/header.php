@@ -121,11 +121,20 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
 
     <script type="module">
-        //Append emoji selector:
-        import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
 
-        const picker_i = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => { insertText($(".save_i__message"), res.native); $('.emoji_selector .show').removeClass('show'); } });
-        const picker_e = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => { update__cover(res.native); $('.emoji_selector .show').removeClass('show'); } });
+        //Emoji selector:
+
+        import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
+        const picker_i = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
+            //Insert into idea text box:
+            insertText($(".save_i__message"), res.native);
+            $('.emoji_selector .show').removeClass('show');
+        }});
+        const picker_e = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
+            //Insert into cover frame:
+            update__cover(res.native);
+            $('.emoji_selector .show').removeClass('show');
+        }});
         $(".emoji_i").append(picker_i);
         $(".emoji_e").append(picker_e);
         $('.emoji_selector').on('click', function(event){
@@ -142,6 +151,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         //Search that also has inserat module:
         //TODO test this as its new!
         if(search_enabled()){
+
             $('#modal31911 .save_i__message').textcomplete([
                 {
                     match: /(^|\s)@(\w*(?:\s*\w*))$/,
