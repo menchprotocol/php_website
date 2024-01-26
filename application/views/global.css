@@ -171,6 +171,9 @@ h3{
     margin: 13px 0 0 0 !important;
 }
 
+.modal-header .btn i {
+    margin: -3 0 !important;
+}
 .section_demo,
 .dynamic_selector,
 .dynamic_item input.form-control,
