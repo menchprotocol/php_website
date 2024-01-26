@@ -1567,7 +1567,6 @@ function editor_save_e(){
 
     e_saving = true;
     $(".editor_save_e").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
-    return false;
 
     var modify_data = {
         save_e__id:         $('#modal31912 .save_e__id').val(),

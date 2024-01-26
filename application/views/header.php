@@ -1011,7 +1011,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <!-- Idea Access -->
                             <div class="dynamic_editing_input">
                                 <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[31004]['m__cover'].'</span>'.$e___11035[31004]['m__title'].':';  ?></h3>
-                                <div class="dynamic_selector"><?= view_select_single(31004, 0, true, true); ?></div>
+                                <div class="dynamic_selector"><?= view_select_single(31004, 31005, true, true); ?></div>
                             </div>
 
                             <!-- Idea Hashtag -->
