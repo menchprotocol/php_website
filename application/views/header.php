@@ -1131,7 +1131,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         </td>
                                         <td>
                                             <!-- Delete -->
-                                            <a href="javascript:void(0);" onclick="update__cover('deleted fas fa-user')" title="Delete Cover"><i class="far fa-trash-can"></i></a>
+                                            <a href="javascript:void(0);" onclick="update__cover('deleted '+random_animal())" title="Delete Cover & set to a random animal"><i class="far fa-trash-can"></i></a>
                                         </td>
                                     </tr>
                                 </table>

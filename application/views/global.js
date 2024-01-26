@@ -684,6 +684,15 @@ function load_card_clickers(){
 
 }
 
+
+function random_animal(){
+    js_e___12279[e__id]['m__message']
+    var styles = ['fas','fad','fal','fat'];
+    var animals = [' ',' ',' ',' ',' ',' ',' zq12273',' zq12274',' zq12274',' zq6255',' zq6255',' zq6255'];
+    var colors = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-space-cat'];
+    return styles[Math.floor(Math.random()*styles.length)] + ' ' + animals[Math.floor(Math.random()*animals.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)];
+}
+
 var algolia_index = false;
 $(document).ready(function () {
 
