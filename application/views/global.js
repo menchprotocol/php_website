@@ -1090,7 +1090,6 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     if(link_i__id){
         i__id = 0;
         x__id = 0;
-        $("#modal31911 .show_id").text('Link ID '+link_i__id);
         $('#modal31911 .link_i__id').val(link_i__id);
         $("#modal31911 .idea_reply").html('<div class="grey" style="padding-bottom:3px;">Reply To:</div>' + $('.creator_frame_'+link_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+link_i__id).html() + '</div>');
         $("#modal31911 .idea_reply .line:not(.first_line)").addClass('hidden');
@@ -1100,7 +1099,6 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     if(i__id){
         //Editig an existing idea:
         $('#modal31911 .save_i__id').val(i__id);
-        $("#modal31911 .show_id").text('ID '+i__id);
         $('#modal31911 .hash_group').removeClass('hidden');
         $('#modal31911 .save_i__hashtag').val($('.ui_i__hashtag_'+i__id+':first').text());
         $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id+':first').text());
@@ -1449,7 +1447,6 @@ function editor_load_e(e__id, x__id){
     //Load Instant Fields:
     $('#modal31912 .save_e__id').val(e__id);
     $('#modal31912 .save_x__id').val(x__id);
-    $("#modal31912 .show_id").text('ID '+e__id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');

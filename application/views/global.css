@@ -1300,7 +1300,9 @@ label {
     margin: 0;
     height: 0px;
 }
-
+.modal-header .btn-close{
+    margin: 0 !important;
+}
 .itemsetting{
     color: #000000;
     text-decoration: none;

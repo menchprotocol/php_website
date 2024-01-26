@@ -945,20 +945,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
 
-                <div class="modal-header hidden">
-                    <h5 class="modal-title hidden main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?> <span class="grey show_id" title="Idea ID"></span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <button type="button" class="btn btn-default editor_save_i" onclick="editor_save_i()">SAVE</button>
+                    <button type="button" class="btn btn-default editor_save_i" onclick="editor_save_i()"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?></button>
                 </div>
 
-
-
-
                 <div class="modal-body">
+
+                    <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
                     <input type="hidden" class="save_i__id" value="0" />
                     <input type="hidden" class="save_x__id" value="0" />
@@ -1050,13 +1044,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
                     </div>
 
-                    <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
-
-                </div>
-
-
-                <div class="modal-footer">
-                    <button type="button" onclick="editor_save_i()" class="btn btn-default editor_save_i">SAVE</button>
                 </div>
 
             </div>
@@ -1072,7 +1059,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-content slim_flat">
 
                 <div class="modal-header">
-                    <h5 class="modal-title hidden main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?> <span class="grey show_id"></span></h5>
+                    <h5 class="modal-title hidden main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
