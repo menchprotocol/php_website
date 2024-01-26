@@ -114,6 +114,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     }
     echo '</script>';
 
+
+
+
+
+
     //Latest version of twitter bootstrap:
     echo view_memory(6404,4523);
     ?>
@@ -248,7 +253,16 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <?php
 
     //Load Fonts Dynamically
-    echo '<style> ';
+    echo '<style> '."\n"."\n";
+
+
+    //Hide superpower CSS thats missing:
+    foreach($this->config->item('e___10957') as $superpower_id => $superpower){
+        if(!in_array($superpower_id, $this->session->userdata('session_superpowers_unlocked'))){
+            echo ' body .superpower__'.$superpower_id.' { display:none !important; } '."\n";
+        }
+    }
+
 
     //Font Helps:
     $e___29711 = $this->config->item('e___29711'); //Google Font Family
@@ -1100,18 +1114,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                             <!-- Upload Cover -->
                                             <a class="uploader_42359" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
                                         </td>
-                                        <td>
+                                        <td class="superpower__113758">
                                             <!-- EMOJI -->
                                             <div class="dropdown emoji_selector">
                                                 <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                                 <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td class="superpower__113758">
                                             <!-- Font Awesome -->
                                             <a href="javascript:void(0);" onclick="update__cover('fas fa-icons')" title="Search Font Awesome"><i class="fas fa-icons"></i></a>
                                         </td>
-                                        <td>
+                                        <td class="superpower__13758">
                                             <!-- History -->
                                             <a class="cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
                                         </td>
