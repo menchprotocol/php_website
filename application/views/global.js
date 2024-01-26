@@ -678,22 +678,6 @@ function load_card_clickers(){
 var algolia_index = false;
 $(document).ready(function () {
 
-    const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertText($(".save_i__message"), res.native) });
-    const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
-    $(".emoji_i").append(picker_i);
-    $(".emoji_e").append(picker_e);
-    $('.emoji_selector').on('click', function(event){
-        //This prevents the emoji modal from closing when an emoji is selected...
-        event.stopPropagation();
-    });
-
-    $(".insert_hashtag").click(function (e) {
-        insertText($(".save_i__message"), '#');
-    });
-    $(".insert_at_sign").click(function (e) {
-        insertText($(".save_i__message"), '@');
-    });
-
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
         if (e.ctrlKey) {
