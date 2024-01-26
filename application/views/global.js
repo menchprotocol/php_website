@@ -2,8 +2,6 @@
 
 //Define some global variables:
 var has_unsaved_changes = false; //Tracks source/idea modal edits
-var current_emoji_focus = null;
-
 
 
 
@@ -1048,7 +1046,6 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
-    current_emoji_focus = 31911;
 
     $("#modal31911 .unsaved_warning").val('');
     $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio, #modal31911 .idea_reply').html('');
@@ -1414,7 +1411,6 @@ function editor_load_e(e__id, x__id){
 
     //Reset Fields:
     has_unsaved_changes = false;
-    current_emoji_focus = 31912;
 
     $("#modal31912 .unsaved_warning").val('');
 
@@ -2575,16 +2571,3 @@ function reset_sorting(){
     }
 }
 
-
-
-//See where we need to insert this...
-function insert_emoji(emoji){
-    console.log('INSERT '+emoji+' INTO '+current_emoji_focus);
-    if(current_emoji_focus==31911){
-        //Idea Message:
-        insertText($(".save_i__message"), emoji);
-    } else if(current_emoji_focus==31912){
-        //Source cover:
-        update__cover(emoji);
-    }
-}

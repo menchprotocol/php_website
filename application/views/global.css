@@ -4085,7 +4085,13 @@ main {
     color: #999999 !important;
 }
 
-
+.emoji_table{
+    width:144px;
+    border:0;
+}
+.emoji_table td {
+    text-align: center;
+}
 
 .home_black_font .platform-logo i,
 .home_black_font .menu-cover i,
