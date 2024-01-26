@@ -173,7 +173,8 @@ h3{
 
 .modal-header .btn i {
     display: block;
-    height: 21px;
+    height: 13px;
+    overflow: visible;
 }
 .section_demo,
 .dynamic_selector,
