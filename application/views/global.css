@@ -171,6 +171,8 @@ h3{
     margin: 13px 0 0 0 !important;
 }
 
+.section_demo,
+.dynamic_selector,
 .dynamic_item input.form-control,
 .dynamic_item textarea.form-control,
 .dynamic_editing_input input.form-control,
@@ -178,13 +180,6 @@ h3{
     padding: 5px !important;
     margin-left: 26px !important;
     width: calc(100% - 26px) !important;
-}
-
-.section_demo,
-.dynamic_selector{
-    padding: 5px !important;
-    margin-left: 31px !important;
-    width: calc(100% - 31px) !important;
 }
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding: 5px !important;
