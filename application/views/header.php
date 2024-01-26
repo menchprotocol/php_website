@@ -842,26 +842,26 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <div class="message_controllers">
-                        <table style="width:160px; border:0;">
+                        <table style="width:144px; border:0;">
                             <tr>
                                 <td style="width: 25%;">
                                     <!-- Upload -->
-                                    <a class="icon-block-sm uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+                                    <a class="uploader_13572" href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
                                 </td>
                                 <td style="width: 25%;">
                                     <!-- EMOJI -->
-                                    <div class="inline-block-sm dropdown emoji_selector">
-                                        <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">😃</button>
+                                    <div class="dropdown emoji_selector">
+                                        <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile-plus"></i></button>
                                         <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                     </div>
                                 </td>
                                 <td style="width: 25%;">
                                     <!-- Reference Source -->
-                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
+                                    <a href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
                                 </td>
                                 <td style="width: 25%;">
                                     <!-- Reference Idea -->
-                                    <a class="icon-block-sm" href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
+                                    <a href="javascript:void(0);" onclick="$('.emoji-frame').toggleClass('hidden');" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
                                 </td>
                             </tr>
                         </table>
