@@ -945,10 +945,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
 
-                <div class="modal-header">
+                <div class="modal-header hidden">
                     <h5 class="modal-title hidden main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?> <span class="grey show_id" title="Idea ID"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn btn-default editor_save_i" onclick="editor_save_i()">SAVE</button>
+                </div>
+
+
+
 
                 <div class="modal-body">
 
