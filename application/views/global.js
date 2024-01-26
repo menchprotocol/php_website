@@ -524,9 +524,23 @@ function x_create(add_fields){
 }
 
 
+$('#modal31912 .save_e__cover').change(function () {
+    toggle__cover($(this).val());
+});
+
+function toggle__cover(new_cover){
+    if(new_cover.slice(0, 2)=='fa'){
+        //This is font awesome, show:
+        $('#modal31912 .save_e__cover').removeClass('hidden');
+    } else {
+        $('#modal31912 .save_e__cover').addClass('hidden');
+    }
+}
+
 function update__cover(new_cover){
     $('#modal31912 .save_e__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
+    toggle__cover(new_cover);
     has_unsaved_changes = true;
 }
 function image_cover(cover_preview, cover_apply, new_title){
@@ -1431,8 +1445,7 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
-    $('#modal31912 .save_e__cover').val(current_cover);
-    update_cover_main(current_cover, '.demo_cover');
+    update__cover(current_cover);
 
     //Load Source Privacy:
     var current_privacy = $('.s__12274_'+e__id+':first').attr('e__privacy');

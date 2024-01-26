@@ -1109,7 +1109,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         </td>
                                         <td>
                                             <!-- Font Awesome -->
-                                            <a href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Search Font Awesome (Opens New Window)"><i class="fas fa-icons"></i></a>
+                                            <a href="javascript:void(0);" onclick="update__cover('fas fa-icons')" title="Search Font Awesome"><i class="fas fa-icons"></i></a>
                                         </td>
                                         <td>
                                             <!-- History -->
