@@ -682,6 +682,10 @@ $(document).ready(function () {
     //import insertTextAtCursor from 'insert-text-at-cursor';
     //const insertTextAtCursor = require('insert-text-at-cursor');
     //import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js';
+
+    import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
+
+
     const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertText($(".save_i__message"), res.native) });
     const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
     $(".emoji_i").append(picker_i);
