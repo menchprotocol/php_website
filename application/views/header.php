@@ -1118,8 +1118,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                             <a class="cover_history_button" href="javascript:void(0);" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
                                         </td>
                                         <td>
-                                            <!-- Delete -->
-                                            <a href="javascript:void(0);" onclick="update__cover('deleted '+random_animal())" title="Delete Cover & set to a random animal"><i class="far fa-trash-can"></i></a>
+                                            <!-- Ramdom Animal -->
+                                            <a href="javascript:void(0);" class="random_animal" onclick="update__cover('deleted '+random_animal())" title="Set a random animal"></a>
                                         </td>
                                     </tr>
                                 </table>

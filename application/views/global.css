@@ -174,14 +174,14 @@ h3{
 .dynamic_item textarea.form-control,
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
-    padding: 5px 5px 5px 26px !important;
+    padding: 5px !important;
 }
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding: 5px !important;
 }
 .dynamic_selector{
     background-color: #ffffff;
-    padding: 5px 0 5px 26px;
+    padding: 5px 0;
 }
 .block-menu .dropdown i {
     padding-top: 2px;

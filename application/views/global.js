@@ -685,11 +685,11 @@ function load_card_clickers(){
 }
 
 
-function random_animal(){
+function random_animal(basic_style = false){
     var styles = ['fas','fad','fal','fat','fas','fad','fal','fat','fas','fad','fal','fat','fas fa-sharp','fal fa-sharp','fat fa-sharp'];
     var animals = [' ',' ',' zq12273',' zq12274',' zq6255'];
-    var colors = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-cat-space','fa-fish','fa-dragon','fa-whale','fa-turtle','fa-snake','fa-spider','fa-lobster','fa-duck','fa-dove','fa-crow','fa-dinosaur','fa-bee','fa-horse','fa-raccoon','fa-pegasus'];
-    return styles[Math.floor(Math.random()*styles.length)] + ' ' + animals[Math.floor(Math.random()*animals.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)];
+    var colors = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-cat-space','fa-fish','fa-dragon','fa-whale','fa-turtle','fa-snake','fa-spider','fa-lobster','fa-duck','fa-dove','fa-crow','fa-dinosaur','fa-bee','fa-horse','fa-raccoon','fa-pegasus','fa-','fa-bat','fa-deer','fa-badger-honey','fa-squirrel','fa-ram','fa-dolphin','fa-bird','fa-crab','fa-worm','fa-kiwi-bird','fa-shrimp','fa-duck','fa-teddy-bear','fa-t-rex'];
+    return ( basic_style ? ' fas ' : styles[Math.floor(Math.random()*styles.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)] ) + ' ' + animals[Math.floor(Math.random()*animals.length)];
 }
 
 var algolia_index = false;
@@ -1451,7 +1451,9 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_e__title').val(source_title(e__id));
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
+    $('#modal31912 .random_animal').html(random_animal(true));
     update__cover(current_cover);
+
 
     //Load Source Privacy:
     var current_privacy = $('.s__12274_'+e__id+':first').attr('e__privacy');
@@ -1462,6 +1464,7 @@ function editor_load_e(e__id, x__id){
         $('#dropdownMenuButton6177_0_0 .current_content').html('<span class="icon-block-xs">'+js_e___6177[current_privacy]['m__cover']+'</span>'+js_e___6177[current_privacy]['m__title']);
         $('.dropd_6177_0_0 .optiond_'+current_privacy+'_0_0').addClass('hidden');
     }
+
 
 
     if(x__id){
