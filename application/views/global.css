@@ -170,6 +170,9 @@ h3{
     border:0;
     margin: 13px 0 0 0 !important;
 }
+
+.section_demo,
+.dynamic_selector,
 .dynamic_item input.form-control,
 .dynamic_item textarea.form-control,
 .dynamic_editing_input input.form-control,
