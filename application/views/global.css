@@ -2072,7 +2072,7 @@ input.form-control {
 .demo_cover{
     width:233px !important;
     margin:0 auto !important;
-    padding: 0 0 13px !important;
+    padding:13px 0 !important;
 }
 .section_demo{
     background-color: #FFFFFF;

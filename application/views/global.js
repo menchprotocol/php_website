@@ -524,9 +524,6 @@ function x_create(add_fields){
 }
 
 
-$('#modal31912 .save_e__cover').change(function () {
-    toggle__cover($(this).val());
-});
 
 function toggle__cover(new_cover){
     if(new_cover.slice(0, 2)=='fa'){
@@ -689,6 +686,10 @@ function load_card_clickers(){
 
 var algolia_index = false;
 $(document).ready(function () {
+
+    $('#modal31912 .save_e__cover').change(function () {
+        toggle__cover($(this).val());
+    });
 
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
