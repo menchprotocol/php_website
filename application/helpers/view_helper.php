@@ -2272,7 +2272,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             array_push($social_listed, $e__id);
 
             //Append to links:
-            $social_ui .= '<li class="icon-block-xs">'.( $social_url ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'">'.$m['m__cover'].'</span>' ).'</li>';
+            $social_ui .= '<li class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'">'.$m['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'">'.$m['m__cover'].'</span>' ).'</li>';
 
         }
     }
