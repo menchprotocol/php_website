@@ -892,7 +892,7 @@ function view_select_single($cache_e__id, $selected_e__id, $write_privacy_i = tr
 
     $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
-    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' ) : '' ).'</span>'.( $show_full_name ? '<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '' );
+    $ui .= '<span class="current_content wow">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' ) : '' ).'</span>'.( $show_full_name ? '<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '' );
 
     $ui .= '</button>';
 
