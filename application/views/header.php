@@ -712,8 +712,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
 
-                    <div class="modal-header hidden">
-                        <h5 class="modal-title main__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
+                    <div class="modal-header">
+                        <h5 class="modal-title hidden main__title" id="modal4997Label"><?= $e___11035[4997]['m__cover'].' '.$e___11035[4997]['m__title'] ?></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -856,8 +856,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
 
-                    <div class="modal-header hidden">
-                        <h5 class="modal-title main__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
+                    <div class="modal-header">
+                        <h5 class="modal-title hidden main__title" id="modal12589Label"><?= $e___11035[12589]['m__cover'].' '.$e___11035[12589]['m__title'] ?></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -945,8 +945,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
 
-                <div class="modal-header hidden">
-                    <h5 class="modal-title main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?> <span class="grey show_id" title="Idea ID"></span></h5>
+                <div class="modal-header">
+                    <h5 class="modal-title hidden main__title" id="modal31911Label"><?= $e___11035[31911]['m__cover'].' '.$e___11035[31911]['m__title'] ?> <span class="grey show_id" title="Idea ID"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -1063,8 +1063,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
 
-                <div class="modal-header hidden">
-                    <h5 class="modal-title main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?> <span class="grey show_id"></span></h5>
+                <div class="modal-header">
+                    <h5 class="modal-title hidden main__title" id="modal31912Label"><?= $e___11035[31912]['m__cover'].' '.$e___11035[31912]['m__title'] ?> <span class="grey show_id"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
