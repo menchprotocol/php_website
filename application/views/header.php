@@ -124,7 +124,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         //Append emoji selector:
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
 
-        const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => insertText($(".save_i__message"), res.native) });
+        const picker_i = new EmojiMart.Picker({ onEmojiSelect: (res, _) => { insertText($(".save_i__message"), res.native); $('.emoji_selector.dropdown.show, .emoji_selector .dropdown-menu.show').removeClass('show'); } });
         const picker_e = new EmojiMart.Picker({ onEmojiSelect: (res, _) => update__cover(res.native) });
         $(".emoji_i").append(picker_i);
         $(".emoji_e").append(picker_e);
@@ -139,6 +139,91 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         $(".insert_at_sign").click(function (e) {
             insertText($(".save_i__message"), '@');
         });
+
+        //Search that also has inserat module:
+        //TODO test this as its new!
+        if(search_enabled()){
+            $('#modal31911 .save_i__message').textcomplete([
+                {
+                    match: /(^|\s)@(\w*(?:\s*\w*))$/,
+                    search: function (q, callback) {
+                        algolia_index.search(q, {
+                            hitsPerPage: js_e___6404[31112]['m__message'],
+                            filters: 's__type=12274' + search_and_filter,
+                        })
+                            .then(function searchSuccess(content) {
+                                if (content.query === q) {
+                                    callback(content.hits);
+                                }
+                            })
+                            .catch(function searchFailure(err) {
+                                console.error(err);
+                            });
+                    },
+                    template: function (suggestion) {
+                        return view_s_js_line(suggestion);
+                    },
+                    replace: function (suggestion) {
+                        set_autosize($('#modal31911 .save_i__message'));
+                        insertText($(".save_i__message"), '@' + suggestion.s__handle + ' ');
+                        //return '@' + suggestion.s__handle + ' ';
+                        return '';
+                    }
+                },
+                {
+                    match: /(^|\s)#(\w*(?:\s*\w*))$/,
+                    search: function (q, callback) {
+                        algolia_index.search(q, {
+                            hitsPerPage: js_e___6404[31112]['m__message'],
+                            filters: 's__type=12273' + search_and_filter,
+                        })
+                            .then(function searchSuccess(content) {
+                                if (content.query === q) {
+                                    callback(content.hits);
+                                }
+                            })
+                            .catch(function searchFailure(err) {
+                                console.error(err);
+                            });
+                    },
+                    template: function (suggestion) {
+                        return view_s_js_line(suggestion);
+                    },
+                    replace: function (suggestion) {
+                        set_autosize($('#modal31911 .save_i__message'));
+                        insertText($(".save_i__message"), '#' + suggestion.s__handle + ' ');
+                        //return '#' + suggestion.s__handle + ' ';
+                        return '';
+                    }
+                },
+                {
+                    match: /(^|\s)!#(\w*(?:\s*\w*))$/,
+                    search: function (q, callback) {
+                        algolia_index.search(q, {
+                            hitsPerPage: js_e___6404[31112]['m__message'],
+                            filters: 's__type=12273' + search_and_filter,
+                        })
+                            .then(function searchSuccess(content) {
+                                if (content.query === q) {
+                                    callback(content.hits);
+                                }
+                            })
+                            .catch(function searchFailure(err) {
+                                console.error(err);
+                            });
+                    },
+                    template: function (suggestion) {
+                        return view_s_js_line(suggestion);
+                    },
+                    replace: function (suggestion) {
+                        set_autosize($('#modal31911 .save_i__message'));
+                        insertText($(".save_i__message"), '!#' + suggestion.s__handle + ' ');
+                        //return '!#' + suggestion.s__handle + ' ';
+                        return '';
+                    }
+                },
+            ]);
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -859,7 +944,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <td>
                                     <!-- EMOJI -->
                                     <div class="dropdown emoji_selector">
-                                        <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile-plus"></i></button>
+                                        <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                         <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                     </div>
                                 </td>
@@ -1006,7 +1091,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <td>
                                             <!-- EMOJI -->
                                             <div class="dropdown emoji_selector">
-                                                <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile-plus"></i></button>
+                                                <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                                 <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
                                             </div>
                                         </td>

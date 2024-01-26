@@ -1099,8 +1099,6 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     //Activate Modal:
     $('#modal31911').modal('show');
 
-    activate_handle_finder($('#modal31911 .save_i__message'));
-
     setTimeout(function () {
         //Adjust sizes:
         set_autosize($('#modal31911 .save_i__message'));
@@ -2136,84 +2134,6 @@ function search_enabled(){
     return universal_search_enabled && parseInt(js_e___6404[12678]['m__message']);
 }
 
-function activate_handle_finder(obj) {
-    if(search_enabled()){
-        obj.textcomplete([
-            {
-                match: /(^|\s)@(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    algolia_index.search(q, {
-                        hitsPerPage: js_e___6404[31112]['m__message'],
-                        filters: 's__type=12274' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    return view_s_js_line(suggestion);
-                },
-                replace: function (suggestion) {
-                    set_autosize(obj);
-                    return ' @' + suggestion.s__handle + ' ';
-                }
-            },
-            {
-                match: /(^|\s)#(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    algolia_index.search(q, {
-                        hitsPerPage: js_e___6404[31112]['m__message'],
-                        filters: 's__type=12273' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    return view_s_js_line(suggestion);
-                },
-                replace: function (suggestion) {
-                    set_autosize(obj);
-                    return ' #' + suggestion.s__handle + ' ';
-                }
-            },
-            {
-                match: /(^|\s)!#(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    algolia_index.search(q, {
-                        hitsPerPage: js_e___6404[31112]['m__message'],
-                        filters: 's__type=12273' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    return view_s_js_line(suggestion);
-                },
-                replace: function (suggestion) {
-                    set_autosize(obj);
-                    return ' !#' + suggestion.s__handle + ' ';
-                }
-            },
-        ]);
-    }
-}
 
 function show_more(i__id){
     $('.cache_frame_'+i__id+' .line, .cache_frame_'+i__id+' .inner_line').removeClass('hidden');
