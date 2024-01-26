@@ -176,6 +176,13 @@ h3{
     height: 13px;
     overflow: visible;
 }
+.btn.post_button{
+    background-color: #000000;
+    color: #FFFFFF !important;
+}
+.btn.post_button i{
+    color: #FFFFFF !important;
+}
 
 .section_subframe,
 .section_demo,
