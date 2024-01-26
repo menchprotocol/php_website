@@ -686,9 +686,9 @@ function load_card_clickers(){
 
 
 function random_animal(){
-    var styles = ['fas','fad','fal','fat'];
+    var styles = ['fas','fad','fal','fat','fas fa-sharp','fal fa-sharp','fat fa-sharp'];
     var animals = [' ',' ',' zq12273',' zq12274',' zq6255'];
-    var colors = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-space-cat','fa-fish','fa-dragon','fa-whale','fa-turtle','fa-snake','fa-spider','fa-lobster','fa-duck','fa-dove','fa-crow','fa-dinosaur','fa-bee','fa-horse','fa-raccoon','fa-pegasus'];
+    var colors = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-cat-space','fa-fish','fa-dragon','fa-whale','fa-turtle','fa-snake','fa-spider','fa-lobster','fa-duck','fa-dove','fa-crow','fa-dinosaur','fa-bee','fa-horse','fa-raccoon','fa-pegasus'];
     return styles[Math.floor(Math.random()*styles.length)] + ' ' + animals[Math.floor(Math.random()*animals.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)];
 }
 
