@@ -1328,8 +1328,9 @@ label {
 .itemsetting{
     color: #000000;
     text-decoration: none;
-    padding: 5px 0 5px 26px !important;
+    padding: 5px 0 !important;
     margin-bottom: 0 !important;
+    margin-left: 26px !important;
 }
 .itemsetting.active{
     margin-top:0 !important;
