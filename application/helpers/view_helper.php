@@ -2267,7 +2267,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     if($focus_card){
-        $ui .= '<div class="center-block">';
+        $ui .= '<div class="center-block" style="padding-top: 8px;">';
         $ui .= $featured_sources;
         $ui .= '</div>';
     }
@@ -2279,7 +2279,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     //Bottom Bar
     if(!$is_cache && !$is_app){
 
-        $ui .= '<div class="card_covers">';
+        $ui .= '<div class="card_covers hideIfEmpty">';
 
         if(!$focus_card){
 

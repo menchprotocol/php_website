@@ -2112,7 +2112,7 @@ input.form-control {
     border-radius: 21px !important;
 }
 .edge-cover.coin-12274{
-    padding: 0 0 21px 0 !important;
+    padding: 0 0 55px 0 !important;
 }
 .card_cover.coinface-12273{
     margin:0 0 !important;
@@ -2721,16 +2721,9 @@ h4.main__title{
     font-size: 0.89em;
 }
 
-.left_modal_content { padding-right: 3px; }
 .section_subframe{
     background-color: #FFFFFF;
     padding: 5px 0 0;
-}
-
-@media (max-width:768px) {
-    .left_modal_content {
-        padding-right: 0;
-    }
 }
 
 .dropdown-menu {
