@@ -1522,13 +1522,13 @@ function editor_load_e(e__id, x__id){
                     $("#modal31912 .save_x__message").val('IGNORE_INPUT');
                     $("#modal31912 .save_x__frame").addClass('hidden');
                 }
-
             }
 
             //Dynamic Radio fields (if any):
             $("#modal31912 .dynamic_editing_radio").html(data.return_radios);
 
             //Add a second save button at the bottom if we have too much data:
+            console.log('WOIW:'+index_i);
             if(index_i > 10){
                 $("#modal31912 .model-footer").html('<button type="button" class="btn btn-default editor_save_e post_button" onclick="editor_save_e()">SAVE & CLOSE</button>');
             } else {
