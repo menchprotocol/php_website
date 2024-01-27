@@ -834,9 +834,9 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
         if($single_select){
-            $ui .= '<a href="javascript:void(0);" onclick="view_select_multi('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" style="float:right;" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="view_select_multi('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
         } elseif($multi_select){
-            $ui .= '<a href="javascript:void(0);" onclick="view_select_multi('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" style="float:right;" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="view_select_multi('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
         }
 
         $count++;
@@ -1405,13 +1405,10 @@ function view_media($media_url, $link){
 
 
 
-function view_key_links($x__type, $location){
+function view_featured_links($x__type, $location){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    //$show_link = filter_var($location['x__message'], FILTER_VALIDATE_URL);
-    //$is_location = in_array($x__type, $CI->config->item('n___42428'));
-    //$show_map_link = $is_location && !$show_link && in_array($location['e__privacy'], $CI->config->item('n___41981'));
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a>'/* .( $show_link ? '<a href="'.$location['x__message'].'" target="_blank"><span class="icon-block-xx grey">'.$e___11035[42420]['m__cover'].'</span></a>' : '' )  .( $show_map_link ? '<a href="https://www.google.com/maps/search/'.urlencode($location['e__title']).'" target="_blank"><span class="icon-block-xx grey" title="'.$e___11035[42420]['m__title'].'">'.$e___11035[42420]['m__cover'].'</span></a>' : '' ) */ .'</div>';
+    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a></div>';
 }
 
 
@@ -1744,7 +1741,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up')) as $location){
-        $ui .= view_key_links(41949, $location);
+        $ui .= view_featured_links(41949, $location);
     }
 
     //Show Link Message, if Any:
@@ -2217,7 +2214,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up')) as $location){
-        $ui .= view_key_links($location['x__type'], $location);
+        $ui .= view_featured_links($location['x__type'], $location);
     }
 
     if($is_app && isset($e['x__message']) && strlen($e['x__message'])){

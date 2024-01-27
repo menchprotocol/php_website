@@ -987,11 +987,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
 
-
-                    <!-- Idea Type -->
-                    <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4737]['m__cover'].'</span>'.$e___11035[4737]['m__title'].':';  ?></h3>
-                        <div class="dynamic_selector"><?= view_select_single(4737, 0, true, true); ?></div>
+                    <!-- Idea Hashtag -->
+                    <div class="dynamic_editing_input hash_group">
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
+                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
                     <!-- Idea Access -->
@@ -1000,10 +999,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="dynamic_selector"><?= view_select_single(31004, 31005, true, true); ?></div>
                     </div>
 
-                    <!-- Idea Hashtag -->
-                    <div class="dynamic_editing_input hash_group">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[32337]['m__cover'].'</span>'.$e___11035[32337]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
-                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
+                    <!-- Idea Type -->
+                    <div class="dynamic_editing_input">
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4737]['m__cover'].'</span>'.$e___11035[4737]['m__title'].':';  ?></h3>
+                        <div class="dynamic_selector"><?= view_select_single(4737, 0, true, true); ?></div>
                     </div>
 
                     <!-- Link Note -->
@@ -1012,18 +1011,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                     </div>
 
-
                     <!-- Dynamic Loader -->
                     <div class="dynamic_editing_loading hidden"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
-
-                    <!-- Dynamic Radios -->
-                    <div class="dynamic_editing_radio"></div>
 
                     <!-- Dynamic Inputs -->
                     <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
+                    <!-- Dynamic Radios -->
+                    <div class="dynamic_editing_radio"></div>
+
 
                 </div>
+                <div class="modal-footer hideIfEmpty"></div>
             </div>
         </div>
     </div>
@@ -1068,13 +1067,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="dynamic_selector"><?= view_select_single(6177, 0, true, true); ?></div>
                     </div>
 
-                    <!-- Link Note -->
-                    <div class="dynamic_editing_input save_x__frame hidden">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                        <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
-                    </div>
-
-
                     <!-- SOURCE COVER -->
                     <div class="message_controllers">
                         <table class="emoji_table">
@@ -1105,9 +1097,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </tr>
                         </table>
                     </div>
-
-
-
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[6198]['m__cover'].'</span>'.$e___11035[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
                         <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
@@ -1128,17 +1117,24 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
 
+                    <!-- Link Note -->
+                    <div class="dynamic_editing_input save_x__frame hidden">
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                        <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                    </div>
+
+
                     <!-- Dynamic Loader -->
                     <div class="dynamic_editing_loading hidden"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
-
-                    <!-- Dynamic Radios -->
-                    <div class="dynamic_editing_radio"></div>
 
                     <!-- Dynamic Inputs -->
                     <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
+                    <!-- Dynamic Radios -->
+                    <div class="dynamic_editing_radio"></div>
 
                 </div>
+                <div class="modal-footer hideIfEmpty"></div>
             </div>
         </div>
     </div>
