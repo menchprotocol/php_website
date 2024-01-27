@@ -1022,7 +1022,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                 </div>
-                <div class="modal-footer hideIfEmpty"></div>
             </div>
         </div>
     </div>

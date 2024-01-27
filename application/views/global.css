@@ -1553,9 +1553,9 @@ label {
 .nav>.nav-item>.nav-link>.icon-block { width:30px !important; }
 #searchFrontForm .icon-block { width:30px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
-.icon-block-xx{ width:20px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
-.icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
+.icon-block-xx{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
 .icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
+.icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; }
 .icon-block-img img,
 .icon-block-lg img,
@@ -1566,7 +1566,7 @@ label {
     margin: -5px -1px 0 0 !important;
 }
 
-.icon-block-xx   i { font-size: 1.00em !important; }
+.icon-block-xx   i { font-size: 0.89em !important; }
 .block-x, i, .nav .icon-block i,
 .icon-block-xs   i { font-size: 1.21em !important; }
 .icon-block-sm   i { font-size: 1.34em !important; }

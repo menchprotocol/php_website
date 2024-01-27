@@ -1405,10 +1405,10 @@ function view_media($media_url, $link){
 
 
 
-function view_featured_links($x__type, $location){
+function view_featured_links($x__type, $location, $m = null){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    return '<div class="creator_headline"><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a></div>';
+    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'" ' : '' ).'><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a></div>';
 }
 
 
@@ -2208,13 +2208,18 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="creator_headline grey mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
+    $e___42375 = $CI->config->item('e___42375');
+    $order_columns = array();
+    foreach($e___42375 as $x__sort_id => $sort) {
+        $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+    }
     foreach($CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('n___42375')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42375')) . ')' => null, //Located
         'x__down' => $e['e__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ), array('x__up')) as $location){
-        $ui .= view_featured_links($location['x__type'], $location);
+    ), array('x__up'), 0, 0, $order_columns) as $location){
+        $ui .= view_featured_links($location['x__type'], $location, $e___42375[$location['x__type']]);
     }
 
     if($is_app && isset($e['x__message']) && strlen($e['x__message'])){
