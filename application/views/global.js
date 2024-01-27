@@ -1532,7 +1532,7 @@ function editor_load_e(e__id, x__id){
             if(index_i > 10){
                 $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default editor_save_e post_button" onclick="editor_save_e()">SAVE & CLOSE</button>');
             } else {
-                $("#modal31912 .modal-footer").html('&nbsp;');
+                $("#modal31912 .modal-footer").text('');
             }
 
             //Any Source suggestions to auto load?
