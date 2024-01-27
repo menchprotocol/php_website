@@ -2254,17 +2254,17 @@ function view_card_e($x__type, $e, $extra_class = null)
         //Determine link type:
         $social_url = false;
 
-        if(in_array(4256 , $m['m__following'])){
+        if(in_array(4256 , $e___14036[$order_columns['x__up']]['m__following'])){
             //We made sure not the current website:
             $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
-        } elseif(in_array(32097 , $m['m__following'])){
+        } elseif(in_array(32097 , $e___14036[$order_columns['x__up']]['m__following'])){
             $social_url = 'href="mailto:'.$social_link['x__message'].'"';
-        } elseif(in_array(42181 , $m['m__following'])){
+        } elseif(in_array(42181 , $e___14036[$order_columns['x__up']]['m__following'])){
             //Phone Number
-            $social_url = 'href="'.phone_href($e__id, $social_link['x__message']).'"';
+            $social_url = 'href="'.phone_href($order_columns['x__up'], $social_link['x__message']).'"';
         }
 
-        $info = $m['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : '' );
+        $info = $e___14036[$order_columns['x__up']]['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : '' );
 
         //Append to links:
         $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</span>' ).'</span>';
