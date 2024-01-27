@@ -2262,7 +2262,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             $social_url = 'href="'.phone_href($social_link['x__up'], $social_link['x__message']).'"';
         }
 
-        $info = $e___14036[$social_link['x__up']]['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : ( $social_url ? ': '.view_url_clean(one_two_explode('href="','"',$social_url)) : '' ) );
+        $info = ( strlen($social_link['x__message']) && !$social_url ? $e___14036[$social_link['x__up']]['m__title'].': '.$social_link['x__message'] : ( $social_url ? view_url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['x__up']]['m__title'] ) );
 
         //Append to links:
         $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</a>' : '<a href="/@'.$e___14036[$social_link['x__up']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</a>' ).'</span>';
