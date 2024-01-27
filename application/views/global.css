@@ -2756,7 +2756,18 @@ h4.main__title{
     max-width: 377px;
 }
 
+.coin-12274 .creator_headline{
+    padding: 0 1px 0 0;
+    height: 22px;
+}
+
 @media (max-width:610px) {
+
+    .coin-12274 .creator_headline{
+        font-size: 0.89em;
+        padding: 0;
+        height: 18px;
+    }
 
     .mini-frame{
         max-width: 233px;
@@ -4211,10 +4222,7 @@ main {
     line-height: 134%;
     padding: 3px 5px 3px 0;
 }
-.coin-12274 .creator_headline{
-    padding: 0 1px 0 0;
-    height: 22px;
-}
+
 .round-btn{
     display: inline-block;
     width: 65px;
