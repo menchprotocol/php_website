@@ -2267,7 +2267,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         $info = $e___14036[$social_link['x__up']]['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : '' );
 
         //Append to links:
-        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</span>' ).'</span>';
+        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</span>' ).'</span>';
 
     }
 
