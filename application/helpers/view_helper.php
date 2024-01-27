@@ -2259,13 +2259,14 @@ function view_card_e($x__type, $e, $extra_class = null)
 
             //Determine link type:
             $social_url = false;
-            if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
+
+            if(in_array(4256 , $m['m__following'])){
                 //We made sure not the current website:
                 $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
-            } elseif(filter_var($social_link['x__message'], FILTER_VALIDATE_EMAIL)){
+            } elseif(in_array(32097 , $m['m__following'])){
                 $social_url = 'href="mailto:'.$social_link['x__message'].'"';
-            } elseif(strlen(preg_replace("/[^0-9]/", "", $social_link['x__message'])) > 5){
-                //Phone
+            } elseif(in_array(42181 , $m['m__following'])){
+                //Phone Number
                 $social_url = 'href="'.phone_href($e__id, $social_link['x__message']).'"';
             }
 
