@@ -1497,11 +1497,11 @@ function editor_load_e(e__id, x__id){
         if (data.status) {
 
             //Dynamic Input Fields:
-            var index_i = 0;
+            var index_i_content = 0;
 
             for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
 
-                index_i = i-1;
+                var index_i = i-1;
                 if(data.return_inputs[index_i] == undefined){
                     data.return_inputs[index_i] = [];
                     data.return_inputs[index_i]["d__id"] = 0;
@@ -1512,6 +1512,7 @@ function editor_load_e(e__id, x__id){
                     data.return_inputs[index_i]["d__placeholder"] = '';
                     $("#modal31912 .dynamic_"+i).addClass('hidden');
                 } else {
+                    index_i_content++;
                     $("#modal31912 .dynamic_"+i).removeClass('hidden');
                 }
 
@@ -1529,10 +1530,10 @@ function editor_load_e(e__id, x__id){
             $("#modal31912 .dynamic_editing_radio").html(data.return_radios);
 
             //Add a second save button at the bottom if we have too much data:
-            if(index_i > 10){
+            if(index_i_content > 10){
                 $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default editor_save_e post_button" onclick="editor_save_e()">SAVE & CLOSE</button>');
             } else {
-                $("#modal31912 .modal-footer").remove();
+                $("#modal31912 .modal-footer").html('');
             }
 
             //Any Source suggestions to auto load?
