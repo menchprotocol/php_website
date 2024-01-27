@@ -1206,7 +1206,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Can only contain alphanumneric numbers and letters',
+            'message' => 'Hashtag Can only contain alphanumneric numbers and letters',
         );
 
     } elseif (!preg_match('/[a-zA-Z]/', $str)) {
@@ -1214,7 +1214,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Must contain at-least one letter between A-Z',
+            'message' => 'Hashtag Must contain at-least one letter between A-Z',
         );
 
     } elseif (strlen($str) > view_memory(6404,41985)) {
@@ -1222,7 +1222,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Must be '.view_memory(6404,41985).' characters or less',
+            'message' => 'Hashtag Must be '.view_memory(6404,41985).' characters or less',
         );
 
     } elseif ($i__id && array_key_exists($str, $CI->config->item('handle___6287'))) {
@@ -1230,7 +1230,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 1,
-            'message' => 'Handle '.$str.' already being used by an App with the same name!',
+            'message' => 'Hashtag '.$str.' already in use!',
         );
 
     }
@@ -1253,7 +1253,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
                 return array(
                     'status' => 0,
                     'db_duplicate' => 1,
-                    'message' => 'Hashtag #'.$str.' is already assigned to another idea.',
+                    'message' => 'Hashtag '.$str.' already in use!',
                 );
             }
         }
@@ -1274,7 +1274,7 @@ function validate_handle($str, $i__id = null, $e__id = null){
                 return array(
                     'status' => 0,
                     'db_duplicate' => 1,
-                    'message' => 'Handle @'.$str.' is already assigned to another source.',
+                    'message' => 'Hashtag '.$str.' already in use!',
                 );
             }
         }
