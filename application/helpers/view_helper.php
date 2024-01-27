@@ -2155,6 +2155,9 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '</tr></table>';
 
 
+    } else {
+        //Add some space:
+        $ui .= '<div style="height: 5px;">&nbsp;</div>';
     }
 
     $ui .= '<div class="bottom-wrapper">';
