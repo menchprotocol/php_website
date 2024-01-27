@@ -1408,7 +1408,7 @@ function view_media($media_url, $link){
 function view_featured_links($x__type, $location, $m = null){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'" ' : '' ).'><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a></div>';
+    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : '' ).'" ' : ' @'.$m['m__handle'] ).'><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a></div>';
 }
 
 
@@ -2262,7 +2262,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             $social_url = 'href="'.phone_href($social_link['x__up'], $social_link['x__message']).'"';
         }
 
-        $info = $e___14036[$social_link['x__up']]['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : '' );
+        $info = $e___14036[$social_link['x__up']]['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : ( $social_url ? ': '.view_url_clean($social_url) : '' ) );
 
         //Append to links:
         $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</a>' : '<a href="/@'.$e___14036[$social_link['x__up']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</a>' ).'</span>';
