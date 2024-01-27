@@ -1685,26 +1685,23 @@ function load_tab(x__type){
 
     if(focus_card==12273){
 
-        $.post("/i/view_body_i", {
+        var loading_url = "/i/view_body_i";
+        var loading_data = {
             focus_card:focus_card,
             x__type:x__type,
             counter:$('.headline_body_' + x__type).attr('read-counter'),
             i__id:fetch_int_val('#focus_id')
-        }, function (data) {
-            $('.headline_body_' + x__type + ' .tab_content').html(data);
-        });
+        };
 
     } else if(focus_card==12274){
 
-        //Load the tab:
-        $.post("/e/view_body_e", {
+        var loading_url = "/e/view_body_e";
+        var loading_data = {
             focus_card:focus_card,
             x__type:x__type,
             counter:$('.headline_body_'+x__type).attr('read-counter'),
             e__id:fetch_int_val('#focus_id')
-        }, function (data) {
-            $('.headline_body_'+x__type + ' .tab_content').html(data);
-        });
+        };
 
     } else {
 
@@ -1717,8 +1714,12 @@ function load_tab(x__type){
     //Set focus tab:
     focus_x__type = x__type;
 
-    //Give some extra loding time so the content loads on page:
-    setTimeout(function () {
+    //Load data:
+    $.post(loading_url, loading_data, function (data) {
+
+        //Add data to the page:
+        $('.headline_body_' + x__type + ' .tab_content').html(data);
+
 
         $('[data-toggle="tooltip"]').tooltip();
         load_card_clickers();
@@ -1730,7 +1731,7 @@ function load_tab(x__type){
         setTimeout(function () {
             load_covers();
             $('[data-toggle="tooltip"]').tooltip();
-        }, 987);
+        }, 233);
 
 
         $(function () {
@@ -1746,16 +1747,16 @@ function load_tab(x__type){
         if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
             setTimeout(function () {
                 sort_i_load(x__type);
-            }, 3987);
+            }, 233);
         } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
             setTimeout(function () {
                 sort_e_load(x__type);
-            }, 3987);
+            }, 233);
         }
 
         load_covers();
 
-    }, 987);
+    });
 }
 
 
