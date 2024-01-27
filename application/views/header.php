@@ -940,7 +940,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <button type="button" class="btn btn-default editor_save_i post_button" onclick="editor_save_i()">SAVE</button>
+                    <button type="button" class="btn btn-default editor_save_i post_button" onclick="editor_save_i()">SAVE & CLOSE</button>
                 </div>
 
                 <div class="modal-body">
@@ -1057,7 +1057,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <button type="button" class="editor_save_e btn btn-default post_button" onclick="editor_save_e()">SAVE</button>
+                    <button type="button" class="editor_save_e btn btn-default post_button" onclick="editor_save_e()">SAVE & CLOSE</button>
                 </div>
 
                 <div class="modal-body">

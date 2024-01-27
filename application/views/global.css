@@ -2705,7 +2705,7 @@ h4.main__title{
     padding:1px !important;
 }
 .i_cache .first_line{
-    font-size: 2.4em;
+    font-size: 2.1em;
     padding-bottom: 8px;
     line-height: 134%;
     margin-bottom: 13px;
@@ -3848,7 +3848,7 @@ h4.main__title{
 }
 
 .main_title{
-    font-size: 2.4em;
+    font-size: 2.1em;
     color: #FFF !important;
     padding: 34px 0 0;
 }
@@ -4054,6 +4054,7 @@ main {
 
 
 
+
 .platform-navigation .block-sign-x{
     width:144px;
 }
@@ -4085,6 +4086,9 @@ main {
     padding: 0 !important; /*3px 0 1px !important; */
 }
 
+.dynamic_item .mini-font i {
+    color: #000 !important;
+}
 
 .halfbg .halfbg,
 .halfbg .i_cache>span,

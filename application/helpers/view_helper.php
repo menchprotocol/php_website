@@ -2220,119 +2220,72 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= view_key_links($location['x__type'], $location);
     }
 
-    if ($grant_privacy && $x__id && !$is_app) {
-        $ui .= '<span class="icon-block-xx '.( !strlen($e['x__message']) ? ' hidden ' : '' ).' ignore-click ui_x__message_' . $x__id . '" title="'.htmlentities($e['x__message']).'" data-toggle="tooltip" data-placement="top" data-html="true">'.$e___11035[4372]['m__cover'].'</span>';
-    } elseif($is_app && isset($e['x__message']) && strlen($e['x__message'])){
+    if($is_app && isset($e['x__message']) && strlen($e['x__message'])){
         $ui .= '<span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"><i class="far fa-info-circle"></i></span>';
     }
 
     $ui .= '</div>';
-
-
-    //Source Follow/Action Links
-    /*
-    $ui .= '<div class="btn-group">
-  <button type="button" class="btn">Follow</button>
-  <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="true">
-    <i class="far fa-angle-down"></i>
-  </button>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="#">Action</a></li>
-    <li><a class="dropdown-item" href="#">Another action</a></li>
-    <li><a class="dropdown-item" href="#">Something else here</a></li>
-  </ul>
-</div>';
-    */
-
-
-
-    //Featured Sources
-    $social_ui = null;
-    $social_listed = array();
-    foreach($CI->config->item('e___14036') as $e__id => $m){
-        foreach($CI->X_model->fetch(array(
-            'x__up' => $e__id,
-            'x__down' => $e['e__id'],
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0) as $social_link){
-
-            //Determine link type:
-            $social_url = false;
-
-            if(in_array(4256 , $m['m__following'])){
-                //We made sure not the current website:
-                $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
-            } elseif(in_array(32097 , $m['m__following'])){
-                $social_url = 'href="mailto:'.$social_link['x__message'].'"';
-            } elseif(in_array(42181 , $m['m__following'])){
-                //Phone Number
-                $social_url = 'href="'.phone_href($e__id, $social_link['x__message']).'"';
-            }
-
-            array_push($social_listed, $e__id);
-
-            $info = $m['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : '' );
-
-            //Append to links:
-            $social_ui .= '<li class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</span>' ).'</li>';
-
-        }
-    }
-
-    //Find any links?
-    /*
-    $filters = array(
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__down' => $e['e__id'],
-        'LENGTH(x__message)>0' => null,
-    );
-    if(count($social_listed)){
-        $filters['x__up NOT IN (' . join(',', $social_listed) . ')'] = null;
-    }
-    foreach($CI->X_model->fetch($filters, array('x__up'), 0, 0) as $social_link){
-
-        //Determine link type:
-        if(filter_var($social_link['x__message'], FILTER_VALIDATE_URL)){
-            //We made sure not the current website:
-            $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
-        } else {
-            //Unknown!
-            continue;
-        }
-
-        //Append to links:
-        $social_ui .= '<li><a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$social_link['e__title'].'">'.view_cover($social_link['e__cover']).'</a></li>';
-
-    }
-    */
-
-
-    if($social_ui){
-        $ui .= '<div class="source-social">';
-        $ui .= '<ul>';
-        $ui .= $social_ui;
-        $ui .= '</ul>';
-        $ui .= '</div>';
-    }
-
-
-
+    //Icons were here before...
     $ui .= '</div>';
     $ui .= '</div>';
+
 
     //Bottom Bar
-    if(!$is_cache && !$is_app && !$focus_card){
+    if(!$is_cache && !$is_app){
+
         $ui .= '<div class="card_covers">';
-        foreach($CI->config->item('e___31916') as $menu_id => $m) {
-            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
-                $ui .= view_e_covers($menu_id,  $e['e__id']);
-                $ui .= '</span>';
+
+
+        //Solo icons (without counter/dropdown)
+        if ($grant_privacy && $x__id && !$is_app) {
+
+            //Start with Link Note
+            $ui .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).( !strlen($e['x__message']) ? ' hidden ' : '' ).' ignore-click ui_x__message_' . $x__id . '" title="'.htmlentities($e['x__message']).'" data-toggle="tooltip" data-placement="top" data-html="true">'.$e___11035[4372]['m__cover'].'</span>';
+
+            //Featured Sources
+            foreach($CI->config->item('e___14036') as $e__id => $m){
+                foreach($CI->X_model->fetch(array(
+                    'x__up' => $e__id,
+                    'x__down' => $e['e__id'],
+                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                ), array(), 0, 0) as $social_link){
+
+                    //Determine link type:
+                    $social_url = false;
+
+                    if(in_array(4256 , $m['m__following'])){
+                        //We made sure not the current website:
+                        $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
+                    } elseif(in_array(32097 , $m['m__following'])){
+                        $social_url = 'href="mailto:'.$social_link['x__message'].'"';
+                    } elseif(in_array(42181 , $m['m__following'])){
+                        //Phone Number
+                        $social_url = 'href="'.phone_href($e__id, $social_link['x__message']).'"';
+                    }
+
+                    $info = $m['m__title'].( strlen($social_link['x__message']) && !$social_url ? ': '.$social_link['x__message'] : '' );
+
+                    //Append to links:
+                    $ui .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$m['m__cover'].'</span>' ).'</span>';
+
+                }
             }
         }
+
+
+        if(!$focus_card){
+            //Also Append bottom bar / main menu:
+            foreach($CI->config->item('e___31916') as $menu_id => $m) {
+                $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+                if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
+                    $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
+                    $ui .= view_e_covers($menu_id,  $e['e__id']);
+                    $ui .= '</span>';
+                }
+            }
+        }
+
         $ui .= '</div>';
     }
 

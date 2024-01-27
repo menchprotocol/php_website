@@ -1239,7 +1239,7 @@ function editor_save_i(){
 
         //Load Images:
         i_saving = false;
-        $(".editor_save_i").html('SAVE');
+        $(".editor_save_i").html('SAVE & CLOSE');
 
         if (!data.status) {
 
@@ -1589,7 +1589,7 @@ function editor_save_e(){
     $.post("/e/editor_save_e", modify_data, function (data) {
 
         e_saving = false;
-        $(".editor_save_e").html('SAVE');
+        $(".editor_save_e").html('SAVE & CLOSE');
 
         if (!data.status) {
 
