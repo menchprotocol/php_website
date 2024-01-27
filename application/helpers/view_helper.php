@@ -2240,6 +2240,13 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     //Featured Sources
     foreach($CI->config->item('e___14036') as $e__id => $m){
+
+        $e___14036 = $CI->config->item('e___14036');
+        $order_columns = array();
+        foreach($e___14036 as $x__sort_id => $sort) {
+            $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
+        }
+
         foreach($CI->X_model->fetch(array(
             'x__up' => $e__id,
             'x__down' => $e['e__id'],
