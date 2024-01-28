@@ -1405,10 +1405,10 @@ function view_media($media_url, $link){
 
 
 
-function view_featured_links($x__type, $location, $m = null){
+function view_featured_links($x__type, $location, $m = null, $focus_card){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
-    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'><a href="/@'.$location['e__handle'].'"><span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span></a></div>';
+    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'>'.( $focus_card ? '<a href="/@'.$location['e__handle'].'">' : '' ).'<span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus_card ? '</a>' : '' ).'</div>';
 }
 
 
@@ -1741,7 +1741,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up')) as $location){
-        $ui .= view_featured_links(41949, $location);
+        $ui .= view_featured_links(41949, $location, null, $focus_card);
     }
 
     //Show Link Message, if Any:
@@ -2220,7 +2220,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up'), 0, 0, $order_columns) as $location){
-        $ui .= view_featured_links($location['x__type'], $location, $e___42375[$location['x__type']]);
+        $ui .= view_featured_links($location['x__type'], $location, $e___42375[$location['x__type']], $focus_card);
     }
 
     if($is_app && isset($e['x__message']) && strlen($e['x__message'])){
