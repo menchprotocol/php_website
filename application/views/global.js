@@ -2308,6 +2308,8 @@ function select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id,
 
         if (!data.status) {
             alert(data.message);
+        } else {
+            console.log(data.message);
         }
 
     });

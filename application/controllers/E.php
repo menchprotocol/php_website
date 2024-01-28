@@ -1036,6 +1036,13 @@ class E extends CI_Controller
             ));
         }
 
+        $stats = array(
+            'total' => 0,
+            'was_previously_selected' => intval($_POST['was_previously_selected']),
+            'deleted' => 0,
+            'added' => 0,
+        );
+
 
         if($_POST['down_e__id'] > 0){
 
@@ -1076,7 +1083,7 @@ class E extends CI_Controller
 
         $is_required = in_array($_POST['focus_id'], $this->config->item('n___42174')); //Required Settings
 
-        if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
+        if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected'] || !$is_required){
 
             //Since this is not a multi-select we want to delete all existing options
 
@@ -1088,7 +1095,7 @@ class E extends CI_Controller
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             );
 
-            if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
+            if((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
                 $query_filters['x__down'] = $_POST['selected_e__id'];
             }
@@ -1096,6 +1103,7 @@ class E extends CI_Controller
             //List all possible answers:
             $possible_answers = array();
             foreach($this->X_model->fetch($query_filters, array('x__down'), 0, 0) as $answer_e){
+                $stats['total']++;
                 array_push($possible_answers, $answer_e['e__id']);
             }
 
@@ -1117,6 +1125,7 @@ class E extends CI_Controller
             }
 
             foreach($delete_query as $delete){
+                $stats['deleted']++;
                 //Should usually delete a single option:
                 $this->X_model->update($delete['x__id'], array(
                     'x__privacy' => 6173, //Transaction Removed
@@ -1128,6 +1137,7 @@ class E extends CI_Controller
         //Add new option if not previously there:
         if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
             if($_POST['down_e__id']){
+                $stats['added']++;
                 $this->X_model->create(array(
                     'x__creator' => $member_e['e__id'],
                     'x__up' => $_POST['selected_e__id'],
@@ -1142,6 +1152,7 @@ class E extends CI_Controller
                     'x__right' => $_POST['right_i__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
+                    $stats['added']++;
                     $this->X_model->create(array(
                         'x__creator' => $member_e['e__id'],
                         'x__type' => 4983, //Co-Author
@@ -1155,7 +1166,7 @@ class E extends CI_Controller
 
 
         //Update Session:
-        if($_POST['down_e__id'] && count($member_e) >= 2){
+        if($_POST['down_e__id'] && count($member_e)){
             $this->E_model->activate_session($member_e, true);
         }
 
@@ -1163,7 +1174,7 @@ class E extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Updated',
+            'message' => 'Updated: '.print_r($stats),
         ));
     }
 
