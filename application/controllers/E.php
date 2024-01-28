@@ -1135,7 +1135,7 @@ class E extends CI_Controller
         }
 
         //Add new option if not previously there:
-        if(!$_POST['enable_mulitiselect'] || !$_POST['was_previously_selected']){
+        if((!$_POST['enable_mulitiselect'] && $is_required) || !$_POST['was_previously_selected']){
             if($_POST['down_e__id']){
                 $stats['added']++;
                 $this->X_model->create(array(
