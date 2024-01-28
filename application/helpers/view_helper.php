@@ -841,7 +841,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             $ui .= '<a href="javascript:void(0);" onclick="$(\'.start_selection_'.$focus_id.'\').toggleClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' start_selection_'.$focus_id.' itemsetting active" title="'.stripslashes($m['m__title']).'">'.$headline.'<span class="icon-block-xs"><i class="fal fa-pen-to-square"></i></span></a>';
         }
 
-        $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' '.( $overflow_reached ? ' start_selection_'.$focus_id.' hidden' : '' ).' itemsetting item-'.$e__id.' '.( $selected ? ' active ' : ( !$has_selected && $overflow_reached ? ' hidden ' : '' ) ). '" title="'.stripslashes($m['m__title']).'">'.$headline.'</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' start_selection_'.$focus_id.' '.( $has_selected ? ' hidden' : '' ).' itemsetting item-'.$e__id.' '.( $selected ? ' active ' : ( !$has_selected && $overflow_reached ? ' hidden ' : '' ) ). '" title="'.stripslashes($m['m__title']).'">'.$headline.'</a>';
         if(!$selected){
             $unselected_count++;
         }
