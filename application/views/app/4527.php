@@ -10,14 +10,14 @@ $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed
 if($memory_detected){
 
     //EASY:
-    $n___7357 = $this->config->item('n___7357'); //PUBLIC/OWNER
+    $n___33240 = $this->config->item('n___33240'); //PUBLIC/OWNER
     $n___7359 = $this->config->item('n___7359');
     $n___33337 = $this->config->item('n___33337');
 
 } else {
 
     //Define Manually (Might need to be updated)
-    $n___7357 = array(41980, 4755, 6181);
+    $n___33240 = array(41980, 6181);
     $n___7359 = array(6176);
     $n___33337 = array(41899, 4230, 40563, 32489, 41011, 32486);
 
@@ -28,7 +28,7 @@ foreach($this->X_model->fetch(array(
     'x__up' => 4527,
     'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-    'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+    'e__privacy IN (' . join(',', $n___33240) . ')' => null, //PUBLIC/OWNER
 ), array('x__down'), 0) as $en){
 
     //Now fetch all its followers:
@@ -36,7 +36,7 @@ foreach($this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+        'e__privacy IN (' . join(',', $n___33240) . ')' => null, //PUBLIC/OWNER
     ), array('x__down'), 0, 0, sort__e());
 
 
@@ -61,7 +61,7 @@ foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
             'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-            'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+            'e__privacy IN (' . join(',', $n___33240) . ')' => null, //PUBLIC/OWNER
         ), array('x__up'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
@@ -92,7 +92,7 @@ foreach($this->X_model->fetch(array(
         'x__up' => $handle['e__id'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //PUBLIC/OWNER
+        'e__privacy IN (' . join(',', $n___33240) . ')' => null, //PUBLIC/OWNER
     ), array('x__down'), 0) as $app){
         $memory_text .= '     \''.$app['e__handle'].'\' => '.$app['e__id'].','."\n";
     }

@@ -1979,7 +1979,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Is Lock/Private?
-    $has_hard_lock = in_array($e['e__privacy'], $CI->config->item('n___30956')) && !superpower_unlocked(12701) && (!$member_e || !$e_is_e);
+    $has_hard_lock = in_array($e['e__privacy'], $CI->config->item('n___30956')) && !$e_is_e;
     $has_soft_lock = !superpower_unlocked(12701) && ($has_hard_lock || (!in_array($e['e__privacy'], $CI->config->item('n___7357')) && !$write_privacy_e));
     $has_any_lock = $is_cache || (!superpower_unlocked(12701) && ($has_soft_lock || $has_hard_lock));
     $has_sortable = $x__id > 0 && !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && superpower_unlocked(13422) && !in_array($e['x__type'], $CI->config->item('n___42348'));
