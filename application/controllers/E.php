@@ -1083,7 +1083,7 @@ class E extends CI_Controller
 
         $is_required = in_array($_POST['focus_id'], $this->config->item('n___42174')); //Required Settings
 
-        if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected'] || !$is_required){
+        if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
 
             //Since this is not a multi-select we want to delete all existing options
 
