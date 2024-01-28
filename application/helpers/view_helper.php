@@ -826,6 +826,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     //view_single_select(4737, 0, true, true)
     $unselected_count = 0;
     $overflow_unselected_limit = 5;
+    $has_selected = count($already_selected);
     $overflow_reached = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
@@ -833,14 +834,22 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected){
             $overflow_reached = true;
         }
-        $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' itemsetting item-'.$e__id.' '.( $selected ? ' active ' : ( count($already_selected) || $overflow_reached ? ' hidden ' : '' ) ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
+
+        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' );
+
+        if($selected){
+            $ui .= '<a href="javascript:void(0);" onclick="$(\'.start_selection_'.$focus_id.'\').toggleClass(\'hidden\');" class="list-group-item '.$exclude_fonts.' itemsetting_'.$focus_id.' start_selection_'.$focus_id.' itemsetting active" title="'.stripslashes($m['m__title']).'">'.$headline.'</a>';
+        }
+
+        $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' '.( $has_selected ? ' start_selection_'.$focus_id.' hidden' : '' ).' itemsetting item-'.$e__id.' '.( $selected ? ' active ' : ( !$has_selected && $overflow_reached ? ' hidden ' : '' ) ). '" title="'.stripslashes($m['m__title']).'">'.$headline.'</a>';
         if(!$selected){
             $unselected_count++;
         }
     }
 
-    if($overflow_reached){
-        $ui .= '<a href="javascript:void(0);" onclick="$(\'.itemsetting_'.$focus_id.'\').removeClass(\'hidden\');$(\'.show_all_items\').addClass(\'hidden\');" class="list-group-item show_all_items">Show All</a>';
+    if($overflow_reached && !$has_selected){
+        //We show this only if non are selected and has too many options:
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'.start_selection_'.$focus_id.'\').toggleClass(\'hidden\');" class="list-group-item itemsetting start_selection_'.$focus_id.'"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show More...</a>';
     }
 
     $ui .= '</div>';
