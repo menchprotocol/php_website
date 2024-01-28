@@ -775,20 +775,13 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         return false;
     }
 
-    $count = 0;
     $already_selected = array();
 
 
     //UI for Single select or multi?
-    if($single_select){
-        $ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
-        $ui .= '<h3 class="mini-font grey-line grey-header"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':</h3>';
-        $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
-    } elseif($multi_select){
-        $ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
-        $ui .= '<h3 class="mini-font grey-line grey-header"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':</h3>';
-        $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
-    }
+    $ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
+    $ui .= '<h3 class="mini-font grey-line grey-header"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':</h3>';
+    $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
 
 
 
@@ -831,26 +824,30 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     }
 
     //view_single_select(4737, 0, true, true)
+    $count = 0;
+    $overflow_max = 5;
+    $overflow_limit = $overflow_max - count($already_selected);
+    $overflow_reached = $overflow_limit<=0;
+    $overflow_applied = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
-        if($single_select){
-            $ui .= '<a href="javascript:void(0);" onclick="view_multi_select('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
-        } elseif($multi_select){
-            $ui .= '<a href="javascript:void(0);" onclick="view_multi_select('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
+        $selected = in_array($e__id, $already_selected);
+        if(!$overflow_reached && $count>=$overflow_limit && !$selected){
+            $overflow_reached = true;
         }
-
+        if($overflow_reached && !$selected){
+            $overflow_applied = true;
+        }
+        $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' itemsetting item-'.$e__id.' '.( $selected ? ' active ' : ( $overflow_reached ? ' hidden ' : '' ) ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
         $count++;
     }
 
-    if($single_select){
-        $ui .= '</div>';
-        $ui .= '</div>';
-    } elseif($multi_select){
-        $ui .= '</div>';
-        $ui .= '</div>';
+    if($overflow_applied){
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'.itemsetting_'.$focus_id.'\').removeClass(\'hidden\');$(\'.show_all_items\').addClass(\'hidden\');" class="list-group-item show_all_items">Show All</a>';
     }
 
-
+    $ui .= '</div>';
+    $ui .= '</div>';
     return $ui;
 }
 

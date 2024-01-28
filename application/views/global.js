@@ -2253,7 +2253,7 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function view_multi_select(focus_id, selected_e__id, enable_mulitiselect, down_e__id, right_i__id){
+function select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id, right_i__id){
 
     //Any warning needed?
     if(js_n___31780.includes(selected_e__id) && !confirm(js_e___31780[selected_e__id]['m__message'])){
@@ -2294,7 +2294,7 @@ function view_multi_select(focus_id, selected_e__id, enable_mulitiselect, down_e
         $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active');
     }
 
-    $.post("/e/view_multi_select", {
+    $.post("/e/select_apply", {
         focus_id: focus_id,
         down_e__id: down_e__id,
         right_i__id: right_i__id,
