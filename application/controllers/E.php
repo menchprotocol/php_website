@@ -1174,7 +1174,7 @@ class E extends CI_Controller
         //All good:
         return view_json(array(
             'status' => 1,
-            'message' => 'Updated: '.print_r($stats),
+            'message' => 'Updated: '.print_r($stats, true),
         ));
     }
 
