@@ -530,7 +530,7 @@ class I_model extends CI_Model
         //Additional sources to be added? Start with creator
         $e_appended = array($x__creator);
 
-        //Add if not added as the follower:
+        //Add if not added as the author:
         if(!count($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
             'x__up' => $x__creator,
@@ -559,7 +559,7 @@ class I_model extends CI_Model
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 $this->X_model->create(array(
-                    'x__type' => 4983, //Co-Author
+                    'x__type' => 4250, //Author
                     'x__creator' => $x__creator,
                     'x__up' => $x_pinned['x__up'],
                     'x__right' => $i_new['i__id'],
