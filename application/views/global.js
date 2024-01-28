@@ -2260,7 +2260,7 @@ function select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id,
         return false;
     }
 
-    var field_required = js_n___26010.includes(focus_id);
+    var field_required = js_n___42174.includes(focus_id);
     var was_previously_selected = ( $('.radio-'+focus_id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:

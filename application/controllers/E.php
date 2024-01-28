@@ -1036,6 +1036,7 @@ class E extends CI_Controller
             ));
         }
 
+        $is_required = in_array($_POST['focus_id'], $this->config->item('n___42174')); //Required Settings
 
         if($_POST['down_e__id'] > 0){
 
@@ -1071,14 +1072,12 @@ class E extends CI_Controller
                         'x__down' => $_POST['selected_e__id'],
                     ));
                 }
-
             }
-
         }
 
 
 
-        if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected']){
+        if(!$_POST['enable_mulitiselect'] || $_POST['was_previously_selected'] || !$is_required){
 
             //Since this is not a multi-select we want to delete all existing options
 
@@ -1090,7 +1089,7 @@ class E extends CI_Controller
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             );
 
-            if($_POST['enable_mulitiselect'] && $_POST['was_previously_selected']){
+            if((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
                 $query_filters['x__down'] = $_POST['selected_e__id'];
             }
