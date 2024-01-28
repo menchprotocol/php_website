@@ -615,10 +615,10 @@ class E extends CI_Controller
                         'x__message' => 'editor_load_e() ERROR: @'.$e_template['x__up'].' is NOT in memory cache',
                     ));
                     continue;
-                } elseif(in_array($e_template['e__id'], $scanned_sources)){
+                } elseif(in_array($e_template['x__up'], $scanned_sources)){
                     continue;
                 }
-                array_push($scanned_sources, $e_template['e__id']);
+                array_push($scanned_sources, $e_template['x__up']);
 
 
                 foreach($this->config->item('e___'.$e_template['x__up']) as $dynamic_e__id => $m) {
