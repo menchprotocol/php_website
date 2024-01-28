@@ -324,7 +324,7 @@ class I extends CI_Controller {
             if(in_array($data_type, $this->config->item('n___42188'))){
 
                 //Single or Multiple Choice:
-                $return_radios .= view_single_select($dynamic_e__id, 0, $is[0]['i__id']);
+                $return_radios .= view_select($dynamic_e__id, 0, $is[0]['i__id']);
 
             } else {
 
