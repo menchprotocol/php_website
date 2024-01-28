@@ -824,22 +824,24 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     }
 
     //view_single_select(4737, 0, true, true)
-    $count = 0;
-    $overflow_max = 5;
-    $overflow_limit = $overflow_max - count($already_selected);
-    $overflow_reached = $overflow_limit<=0;
+    $unselected_count = 0;
+    $overflow_total_limit = 5;
+    $overflow_unselected_limit = $overflow_total_limit - count($already_selected);
+    $overflow_reached = $overflow_unselected_limit<=0;
     $overflow_applied = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
         $selected = in_array($e__id, $already_selected);
-        if(!$overflow_reached && $count>=$overflow_limit && !$selected){
+        if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected){
             $overflow_reached = true;
         }
         if($overflow_reached && !$selected){
             $overflow_applied = true;
         }
         $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' itemsetting item-'.$e__id.' '.( $selected ? ' active ' : ( $overflow_reached ? ' hidden ' : '' ) ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
-        $count++;
+        if(!$selected){
+            $unselected_count++;
+        }
     }
 
     if($overflow_applied){
