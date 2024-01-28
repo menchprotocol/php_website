@@ -1000,7 +1000,7 @@ class E extends CI_Controller
 
 
 
-    function view_select_multi()
+    function view_multi_select()
     {
         /*
          *

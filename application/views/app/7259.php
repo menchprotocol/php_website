@@ -117,11 +117,6 @@ if($search_for_set && count($matching_results) > 0 && !$completed_replacements){
     //now give option to replace with:
     echo '<div class="mini-header">Append Text:</div>';
     echo '<input type="text" class="form-control border maxout" name="append_text" value="'.@$_GET['append_text'].'"><br />';
-
-    //Mass Delete:
-    if($member_e['e__id']==1){
-        echo '<a href="javascript:void(0)" onclick="mass_delete()" class="btn btn-far"><i class="fas fa-trash-alt"></i></a>';
-    }
 }
 
 if($replace_with_set && !$completed_replacements){
@@ -138,38 +133,3 @@ if($replace_with_set && !$completed_replacements){
 echo '<input type="submit" class="btn btn-12273" value="Go">';
 echo '</form>';
 ?>
-
-<script>
-    function mass_delete(){
-
-        var r = confirm("WARNING: You are about to PERMANENTLY DELETE all results! Continue?");
-        if (r==true) {
-            var icons_listed = [];
-            console.log("deleting:");
-            var counter = 0;
-            $( ".result_row" ).each(function() {
-                counter++;
-                icons_listed.push(parseInt($( this ).attr( "i_id" )));
-            });
-            console.log(counter + " to be deleted");
-
-            $.post("/x/update_select_single", {
-                focus_id:0,
-                o__id: icons_listed,
-                element_id: 31004,
-                new_e__id: 6182,
-                migrate_s__id: 0,
-                x__id: 0
-            }, function (data) {
-                console.log(data);
-                if (data.status) {
-                    alert(counter + ' ideas successfully deleted');
-                } else {
-                    alert('Processing error');
-                }
-            });
-
-
-        }
-    }
-</script>

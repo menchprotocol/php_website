@@ -730,7 +730,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
 }
 
-function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
+function view_single_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     /*
      * Either single or multi select UI elements...
@@ -747,7 +747,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         //Main item must be in memory:
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_select() @'.$focus_id.' missing in Application Cache',
+            'x__message' => 'view_single_select() @'.$focus_id.' missing in Application Cache',
             'x__up' => $focus_id,
             'x__down' => $down_e__id,
             'x__right' => $right_i__id,
@@ -757,7 +757,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         //Must be either:
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_select() @'.$focus_id.' not in single select @33331 or multi select 33332',
+            'x__message' => 'view_single_select() @'.$focus_id.' not in single select @33331 or multi select 33332',
             'x__up' => $focus_id,
             'x__down' => $down_e__id,
             'x__right' => $right_i__id,
@@ -830,13 +830,13 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     }
 
-    //view_select_single(4737, 0, true, true)
+    //view_single_select(4737, 0, true, true)
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
         if($single_select){
-            $ui .= '<a href="javascript:void(0);" onclick="view_select_multi('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="view_multi_select('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
         } elseif($multi_select){
-            $ui .= '<a href="javascript:void(0);" onclick="view_select_multi('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="view_multi_select('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting item-'.$e__id.' '.( in_array($e__id, $already_selected) ? ' active ' : '' ). '" title="'.stripslashes($m['m__title']).'">'.( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ).'</a>';
         }
 
         $count++;
@@ -856,7 +856,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
 
 
-function view_select_single($cache_e__id, $selected_e__id, $write_privacy_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_single_select($cache_e__id, $selected_e__id, $write_privacy_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -1502,7 +1502,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                         'x__id' => $x__id,
                     ), array('x__creator')) as $linker){
                         $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                        $link_type_ui .= view_select_single($x__type1, $i['x__type'], $write_privacy_i, false, $i['i__id'], $x__id);
+                        $link_type_ui .= view_single_select($x__type1, $i['x__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                         $link_type_ui .= '</div></td>';
                     }
                     $link_type_id = $x__type1;
@@ -1511,7 +1511,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             }
             if(!$link_type_ui){
                 $link_type_ui .= '<td><div class="show-on-hover">';
-                $link_type_ui .= view_select_single(4593, $i['x__type'], false, false, $i['i__id'], $x__id);
+                $link_type_ui .= view_single_select(4593, $i['x__type'], false, false, $i['i__id'], $x__id);
                 $link_type_ui .= '</div></td>';
             }
         }
@@ -1546,7 +1546,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Type
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_select_single(4737, $i['i__type'], $write_privacy_i, false, $i['i__id']);
+                $top_bar_ui .= view_single_select(4737, $i['i__type'], $write_privacy_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31004 && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
@@ -1554,7 +1554,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Access
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_select_single(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id']);
+                $top_bar_ui .= view_single_select(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i){
@@ -1576,7 +1576,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_select_single(42260, 0, $member_e, false, $i['i__id']);
+                $top_bar_ui .= view_single_select(42260, 0, $member_e, false, $i['i__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
@@ -2001,7 +2001,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         'x__id' => $x__id,
                     ), array('x__creator')) as $linker){
                         $link_type_ui .= '<td><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($e['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                        $link_type_ui .= view_select_single($x__type1, $e['x__type'], $write_privacy_e, false, $e['e__id'], $x__id);
+                        $link_type_ui .= view_single_select($x__type1, $e['x__type'], $write_privacy_e, false, $e['e__id'], $x__id);
                         $link_type_ui .= '</div></td>';
                     }
                     $link_type_id = $x__type1;
@@ -2027,7 +2027,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Source Privacy
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= view_select_single(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id']);
+                $top_bar_ui .= view_single_select(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id']);
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==4362 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
