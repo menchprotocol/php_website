@@ -1847,7 +1847,9 @@ label {
 }
 .list-radio-select .selection_preview.list-group-item.active {
     background-color: transparent;
+    padding: 0 !important;
 }
+
 
 .list-radio-select .list-group-item:hover {
     color:#000000 !important;
