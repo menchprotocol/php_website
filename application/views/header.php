@@ -5,6 +5,8 @@ $e_segment = view_valid_handle_e($first_segment);
 $second_segment = $this->uri->segment(2);
 $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 $e___14870 = $this->config->item('e___14870'); //Website Partner
+$e___6201 = $this->config->item('e___6201'); //IDEA Cache
+$e___6206 = $this->config->item('e___6206'); //Source Cache
 $handle___40904 = $this->config->item('handle___40904');
 $s__type = current_s__type();
 $website_id = website_setting(0);
@@ -563,7 +565,7 @@ if(!$basic_header_footer){
 
                     //Always give option to ideate:
                     if(superpower_unlocked(10939)){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[31911]['m__title'].'">'.$e___11035[31911]['m__cover'].'</a></td>'; //TODO fix icon reference
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
                     }
 
 
@@ -933,7 +935,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
     <!-- Edit Idea Modal -->
-    <div class="i_footer_note hidden">Your idea is published. <a href=""><b>View</b></a></div>
+    <div class="i_footer_note hidden">Your idea is saved. <a href=""><b>View</b></a></div>
     <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
