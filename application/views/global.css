@@ -1841,9 +1841,13 @@ label {
 }
 
 
-.list-radio-select .list-group-item.active, .list-radio-select .list-group-item:hover {
+.list-radio-select .list-group-item.active {
     color:#000000 !important;
     background-color: #FFFFFF;
+}
+
+.list-radio-select .list-group-item:hover {
+    color:#000000 !important;
 }
 
 .top-cover{

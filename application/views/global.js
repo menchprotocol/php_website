@@ -2260,10 +2260,11 @@ function select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id,
         return false;
     }
 
+    var field_required = js_n___26010.includes(focus_id);
     var was_previously_selected = ( $('.radio-'+focus_id+' .item-'+selected_e__id).hasClass('active') ? 1 : 0 );
 
     //Save the rest of the content:
-    if(!enable_mulitiselect && was_previously_selected){
+    if(!enable_mulitiselect && field_required && was_previously_selected){
         //Nothing to do here:
         return false;
     }
@@ -2288,7 +2289,7 @@ function select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id,
     }
 
     //Enable currently selected:
-    if(enable_mulitiselect && was_previously_selected){
+    if((enable_mulitiselect || !field_required) && was_previously_selected){
         $('.radio-'+focus_id+' .item-'+selected_e__id).removeClass('active');
     } else {
         $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active');
