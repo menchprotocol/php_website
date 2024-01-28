@@ -1130,11 +1130,6 @@ class X_model extends CI_Model
                         ), $x_data['x__creator'], 29431 /* Play Auto Removed */);
                     }
 
-                } elseif($clone_i['x__type']==32426){
-
-                    //TODO Set the focus source to the source that was created here, if any:
-
-
                 }
 
             }

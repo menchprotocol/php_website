@@ -1179,6 +1179,21 @@ function change_handle($old_handle){
     }
 }
 
+function sort_by($e__id, $custom_sort = array()){
+
+    $CI =& get_instance();
+    $order_by = array();
+    foreach($CI->config->item('e___'.$e__id) as $x__sort_id => $sort) {
+        $order_by['x__up = \''.$x__sort_id.'\' DESC'] = null;
+    }
+
+    if(is_array($custom_sort)){
+        return array_merge($order_by, $custom_sort);
+    } else {
+        return $order_by;
+    }
+}
+
 function validate_handle($str, $i__id = null, $e__id = null){
 
     $CI =& get_instance();

@@ -578,142 +578,149 @@ class E extends CI_Controller
             ));
         }
 
+
         //Fetch dynamic data based on idea type:
-        $scanned_templates = array();
+        $order_42145 = sort_by(42145);
+        $scanned_sources = array();
         $return_inputs = array();
         $return_radios = '';
         $input_pointer = 0;
 
         //Fetch Source Templates, if any:
         foreach($this->X_model->fetch(array(
-            'x__up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //SOURCE TEMPLATE GROUPS
+            'x__up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //Dynamic Sources
             'x__down' => $es[0]['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('x__up')) as $e_group) {
+        ), array('x__up'), 0, 0, sort_by(42178)) as $e_group) {
 
-            if(in_array($e_group['e__id'], $scanned_templates)){
+            if(in_array($e_group['e__id'], $scanned_sources)){
                 continue;
             }
-            array_push($scanned_templates, $e_group['e__id']);
+            array_push($scanned_sources, $e_group['e__id']);
 
-            //Find template for this group:
+
             foreach($this->X_model->fetch(array(
                 'x__down' => $e_group['e__id'],
                 'x__up IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            )) as $e_template) {
+            ), array(), 0, 0, $order_42145) as $e_template) {
 
                 //Load template:
-                if(is_array($this->config->item('e___'.$e_template['x__up']))){
-
-                    foreach($this->config->item('e___'.$e_template['x__up']) as $dynamic_e__id => $m) {
-
-                        //Make sure it's a dynamic input field:
-                        if(!in_array($dynamic_e__id, $this->config->item('n___42179'))){
-                            continue;
-                        }
-
-                        //Let's first determine the data type:
-                        $data_types = array_intersect($m['m__following'], $this->config->item('n___4592'));
-
-                        if(count($data_types)!=1){
-                            //This is strange, we are expecting 1 match only report this:
-                            $this->X_model->create(array(
-                                'x__type' => 4246, //Platform Bug Reports
-                                'x__creator' => $member_e['e__id'],
-                                'x__up' => 31912, //Edit Source
-                                'x__down' => $dynamic_e__id,
-                                'x__reference' => $_POST['x__id'],
-                                'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong',
-                            ));
-                            continue; //Go to the next dynamic data type
-
-                        } elseif ($input_pointer >= view_memory(6404, 42206)) {
-                            //Monitor if we ever reach the maximum:
-                            $this->X_model->create(array(
-                                'x__type' => 4246, //Platform Bug Reports
-                                'x__creator' => $member_e['e__id'],
-                                'x__up' => 42179, //Dynamic Input Fields
-                                'x__down' => $dynamic_e__id,
-                                'x__right' => $_POST['e__id'],
-                                'x__reference' => $_POST['x__id'],
-                                'x__metadata' => $_POST,
-                                'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion',
-                            ));
-                        }
-
-                        //We found 1 match as expected:
-                        $input_pointer++;
-                        foreach($data_types as $data_type_this){
-                            $data_type = $data_type_this;
-                            break;
-                        }
-                        $is_required = in_array($dynamic_e__id, $this->config->item('n___42174')); //Required Settings
-
-                        if(in_array($data_type, $this->config->item('n___42188'))){
-
-                            //Single or Multiple Choice:
-                            $return_radios .= view_select($dynamic_e__id, $es[0]['e__id'], 0);
-
-                        } else {
-
-                            $this_data_type = $this->config->item('e___'.$data_type);
-                            $e___4592 = $this->config->item('e___4592'); //Data types
-                            $e___6177 = $this->config->item('e___6177'); //Source Privacy
-                            $e___42179 = $this->config->item('e___42179'); //Dynamic Input Field
-                            $e___11035 = $this->config->item('e___11035'); //NAVIGATION
-
-                            //Fetch the current value(s):
-                            $counted = 0;
-                            $unique_values = array();
-                            foreach($this->X_model->fetch(array(
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__down' => $es[0]['e__id'],
-                                'x__up' => $dynamic_e__id,
-                            ), array('x__up')) as $curr_val){
-                                if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
-                                    array_push($unique_values, $curr_val['x__message']);
-                                    $counted++;
-                                    array_push($return_inputs, array(
-                                        'd__id' => $dynamic_e__id,
-                                        'd_x__id' => $curr_val['x__id'],
-                                        'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
-                                        'd__value' => $curr_val['x__message'],
-                                        'd__type_name' => html_input_type($data_type),
-                                        'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                                    ));
-                                }
-                            }
-
-                            if(!$counted){
-                                foreach($this->E_model->fetch(array(
-                                    'e__id' => $dynamic_e__id,
-                                )) as $curr_val){
-                                    array_push($return_inputs, array(
-                                        'd__id' => $dynamic_e__id,
-                                        'd_x__id' => 0,
-                                        'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
-                                        'd__value' => '',
-                                        'd__type_name' => html_input_type($data_type),
-                                        'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                                    ));
-                                }
-                            }
-
-                        }
-                    }
-
-                } else {
-
+                if(!is_array($this->config->item('e___'.$e_template['x__up']))){
                     //Report Error:
                     $this->X_model->create(array(
                         'x__type' => 4246, //Platform Bug Reports
                         'x__message' => 'editor_load_e() ERROR: @'.$e_template['x__up'].' is NOT in memory cache',
                     ));
+                    continue;
+                } elseif(in_array($e_template['e__id'], $scanned_sources)){
+                    continue;
+                }
+                array_push($scanned_sources, $e_template['e__id']);
 
+
+                foreach($this->config->item('e___'.$e_template['x__up']) as $dynamic_e__id => $m) {
+
+                    //Make sure it's a dynamic input field:
+                    if(!in_array($dynamic_e__id, $this->config->item('n___42179'))){
+                        continue;
+                    } elseif(in_array($dynamic_e__id, $scanned_sources)){
+                        continue;
+                    }
+                    array_push($scanned_sources, $dynamic_e__id);
+
+                    //Let's first determine the data type:
+                    $data_types = array_intersect($m['m__following'], $this->config->item('n___4592'));
+
+                    if(count($data_types)!=1){
+
+                        //This is strange, we are expecting 1 match only report this:
+                        $this->X_model->create(array(
+                            'x__type' => 4246, //Platform Bug Reports
+                            'x__creator' => $member_e['e__id'],
+                            'x__up' => 31912, //Edit Source
+                            'x__down' => $dynamic_e__id,
+                            'x__reference' => $_POST['x__id'],
+                            'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong',
+                        ));
+                        continue; //Go to the next dynamic data type
+
+                    } elseif ($input_pointer >= view_memory(6404, 42206)) {
+                        //Monitor if we ever reach the maximum:
+                        $this->X_model->create(array(
+                            'x__type' => 4246, //Platform Bug Reports
+                            'x__creator' => $member_e['e__id'],
+                            'x__up' => 42179, //Dynamic Input Fields
+                            'x__down' => $dynamic_e__id,
+                            'x__right' => $_POST['e__id'],
+                            'x__reference' => $_POST['x__id'],
+                            'x__metadata' => $_POST,
+                            'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion',
+                        ));
+                    }
+
+                    //We found 1 match as expected:
+                    $input_pointer++;
+                    foreach($data_types as $data_type_this){
+                        $data_type = $data_type_this;
+                        break;
+                    }
+                    $is_required = in_array($dynamic_e__id, $this->config->item('n___42174')); //Required Settings
+
+                    if(in_array($data_type, $this->config->item('n___42188'))){
+
+                        //Single or Multiple Choice:
+                        $return_radios .= view_select($dynamic_e__id, $es[0]['e__id'], 0);
+
+                    } else {
+
+                        $this_data_type = $this->config->item('e___'.$data_type);
+                        $e___4592 = $this->config->item('e___4592'); //Data types
+                        $e___6177 = $this->config->item('e___6177'); //Source Privacy
+                        $e___42179 = $this->config->item('e___42179'); //Dynamic Input Field
+                        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+
+                        //Fetch the current value(s):
+                        $counted = 0;
+                        $unique_values = array();
+                        foreach($this->X_model->fetch(array(
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__down' => $es[0]['e__id'],
+                            'x__up' => $dynamic_e__id,
+                        ), array('x__up')) as $curr_val){
+                            if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
+                                array_push($unique_values, $curr_val['x__message']);
+                                $counted++;
+                                array_push($return_inputs, array(
+                                    'd__id' => $dynamic_e__id,
+                                    'd_x__id' => $curr_val['x__id'],
+                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
+                                    'd__value' => $curr_val['x__message'],
+                                    'd__type_name' => html_input_type($data_type),
+                                    'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                                ));
+                            }
+                        }
+
+                        if(!$counted){
+                            foreach($this->E_model->fetch(array(
+                                'e__id' => $dynamic_e__id,
+                            )) as $curr_val){
+                                array_push($return_inputs, array(
+                                    'd__id' => $dynamic_e__id,
+                                    'd_x__id' => 0,
+                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
+                                    'd__value' => '',
+                                    'd__type_name' => html_input_type($data_type),
+                                    'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                                ));
+                            }
+                        }
+
+                    }
                 }
 
             }
