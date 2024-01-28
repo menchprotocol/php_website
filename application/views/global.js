@@ -1113,7 +1113,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
         $('#modal31911 .save_x__id').val(x__id);
 
         //Idea<>Idea links do not have an interaction message
-        if(fetch_int_val('#focus_card')!=12273 || $('.ui_x__message_'+x__id+':first').attr('aria-label').length>0){
+        if(fetch_int_val('#focus_card')!=12273 || ($('.ui_x__message_'+x__id+':first').attr('aria-label') && $('.ui_x__message_'+x__id+':first').attr('aria-label').length>0)){
             $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').attr('aria-label'));
             $('#modal31911 .save_x__frame').removeClass('hidden');
         }
