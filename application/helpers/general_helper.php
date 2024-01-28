@@ -663,7 +663,7 @@ function cookie_delete(){
 function auto_login() {
 
     @session_start();
-    date_default_timezone_set(view_memory(6404,11079));
+    date_default_timezone_set('America/Los_Angeles');
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $member_e = superpower_unlocked();
