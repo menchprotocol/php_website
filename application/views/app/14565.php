@@ -195,6 +195,9 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 ?>
 
 <style>
+    .mini_time {
+        display: none;
+    }
     .container_content .line {
         color: #FFFFFF !important;
     }
