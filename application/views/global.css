@@ -1585,7 +1585,7 @@ label {
 .icon-block-xs img{
     line-height: 100%;
     width: 21px !important;
-    /*height: 21px !important;*/
+    height: 21px !important;
     margin: -6px 0 -5px 2px !important;
 }
 .icon-block-xx img{
