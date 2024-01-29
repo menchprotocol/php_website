@@ -1077,7 +1077,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
-    $("#modal31911 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
+    $("#modal31911 .dynamic_item").attr('d__id','').attr('d_x__id','');
+    $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
 
     //Load Idea Type:
     var current_idea_type = $('.s__12273_'+i__id+':first').attr('i__type');
@@ -1179,6 +1180,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                     }
 
                     $("#modal31911 .dynamic_"+i+" .radio_frame").remove();
+                    $("#modal31911 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]);
+
                     if(data.return_inputs[index_i]["d__is_radio"]){
                         $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
                         $("#modal31911 .dynamic_"+i+" .text_content").addClass('hidden');
@@ -1186,7 +1189,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                         $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
                         $("#modal31911 .dynamic_"+i+" .text_content").removeClass('hidden');
                         $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
-                        $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
+                        $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]);
 
                         if(x__id && fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')){
                             //Hide message textarea since this is already loaded in the dynamic inputs:
@@ -1243,8 +1246,8 @@ function editor_save_i(){
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
-        if($('#modal31911 .save_dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).attr('d_x__id').trim() + '____' + $('#modal31911 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31911 .save_dynamic_'+i).val().trim();
+        if($('#modal31911 .dynamic_'+i).attr('d__id').length){
+            modify_data['save_dynamic_'+i] = $('#modal31911 .save_dynamic_'+i).attr('d_x__id').trim() + '____' + $('#modal31911 .dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31911 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;
@@ -1454,7 +1457,8 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .save_results').html('');
     $("#modal31912 .dynamic_item, #modal31912 .save_x__frame").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
-    $("#modal31912 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
+    $("#modal31912 .dynamic_item").attr('d__id','').attr('d_x__id','');
+    $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
     //Source resets:
     $('#search_cover').val('');
@@ -1542,6 +1546,8 @@ function editor_load_e(e__id, x__id){
                 }
 
                 $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
+                $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]);
+
                 if(data.return_inputs[index_i]["d__is_radio"]){
                     $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
                     $("#modal31912 .dynamic_"+i+" .text_content").addClass('hidden');
@@ -1549,7 +1555,7 @@ function editor_load_e(e__id, x__id){
                     $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
                     $("#modal31912 .dynamic_"+i+" .text_content").removeClass('hidden')
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
-                    $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
+                    $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]);
 
                     if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[index_i]["d__id"]==e__id )){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
@@ -1616,8 +1622,8 @@ function editor_save_e(){
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
-        if($('#modal31912 .save_dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).attr('d_x__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
+        if($('#modal31912 .dynamic_'+i).attr('d__id').length){
+            modify_data['save_dynamic_'+i] = $('#modal31912 .save_dynamic_'+i).attr('d_x__id').trim() + '____' + $('#modal31912 .dynamic_'+i).attr('d__id').trim() + '____' + $('#modal31912 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;

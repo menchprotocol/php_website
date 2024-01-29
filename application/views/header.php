@@ -699,10 +699,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     //This is a HACK! 12 is a fixed number of max dynamic variables that is fixed in editor_save_i() & editor_save_e()
     $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
-        $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
+        $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_x__id="">';
         $dynamic_edit .= '<div class="text_content">';
         $dynamic_edit .= '<h3 class="mini-font"></h3>';
-        $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" d__id="" d_x__id="" value="">';
+        $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" value="">';
         $dynamic_edit .= '</div>';
         $dynamic_edit .= '</div>';
     }

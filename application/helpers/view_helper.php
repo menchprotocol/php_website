@@ -779,7 +779,9 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
 
     //UI for Single select or multi?
-    $ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
+    //$ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
+
+    $ui = '<div class="dynamic_selection">';
     $ui .= '<h3 class="mini-font grey-line grey-header"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':</h3>';
     $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
 
@@ -1533,17 +1535,26 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
             } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0){
 
-                //Creation Time:
+                //Link Time:
                 $active_bars++;
-                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' | ID '.$i['x__id'].'">' . view_time_difference($i['x__time'], true) . '</div></td>';
+                $creator_details = '';
+                $time_diff = view_time_difference($i['x__time'], true);
+                $creator_name = '';
+                if($i['x__creator'] > 0){
+                    foreach($CI->E_model->fetch(array(
+                        'e__id' => $i['x__creator'],
+                        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+                    )) as $creator){
+                        $creator_name = 'Linked by '.$creator['e__title'].' @'.$creator['e__handle'].' on ';
+                        $creator_details = '<a href="/@'.$creator['e__handle'].'"><span class="icon-block-xs">'.view_cover($creator['e__cover']).'</span></a>';
+                    }
+                }
+
+                $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_privacy_i && !$focus_card){
 
                 //Selector
-                $active_bars++;
-                $top_bar_ui .= '<td class="ignore-click toggle_i_checkbox" value="" id="selector_i_'.$i['i__id'].'" onclick="toggle_check('.$i['i__id'].')"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<input class="form-check-input " type="checkbox"  />';
-                $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==4737){
 
@@ -1720,29 +1731,16 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //Show Link User:
     $ui .= '<div class="creator_frame creator_frame_'.$i['i__id'].'">';
 
-    $link_user = 0;
-    if(!$discovery_mode && $x__id && isset($i['x__creator'])){
-        $link_user = $i['x__creator'];
-        foreach($CI->E_model->fetch(array(
-            'e__id' => $i['x__creator'],
-            'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-        )) as $creator){
-            $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded mini-frame" title="'.date("Y-m-d H:i:s", strtotime($i['x__time'])).' PST">'.view_time_difference($i['x__time'], true).'</span></div>';
-        }
-    }
-
-
-    //Show Creator, if any, and if different from linker:
+    //Show Creator if any:
     foreach($CI->X_model->fetch(array(
         'x__type' => 4250,
-        'x__up !=' => $link_user,
         'x__right' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__up')) as $creator){
         $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded mini-frame" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
     }
 
-    //Idea Location:
+    //Idea Location if any:
     foreach($CI->X_model->fetch(array(
         'x__type' => 41949, //Locate
         'x__right' => $i['i__id'],
@@ -1752,7 +1750,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         $ui .= view_featured_links(41949, $location, null, $focus_card);
     }
 
-    //Show Link Message, if Any:
+    //Link Message if any:
     if($x__id){
         $ui .= '<span class="icon-block-xx '.( !strlen($i['x__message']) ? ' hidden ' : '' ).' ignore-click ui_x__message_' . $x__id . '" title="'.htmlentities($i['x__message']).'" data-toggle="tooltip" data-placement="top" data-html="true">'.$e___11035[4372]['m__cover'].'</span>';
     }
