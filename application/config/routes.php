@@ -6,7 +6,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] = "app/index"; //Redirects to default app
 $route['404_override'] = 'app/load'; //Page not found
 
-$route['Glossary'] = "app/load/13450";
+$route['CheatSheet'] = "app/load/13450";
 $route['uploader'] = "app/load/42363";
 $route['InteractionType'] = "app/load/4593";
 $route['reminder'] = "app/load/42216";
@@ -28,7 +28,7 @@ $route['RegularExpressionMatch'] = "app/load/26611";
 $route['responses'] = "app/load/13980";
 $route['SelectionTimeout'] = "app/load/28199";
 $route['SnoozingSubscriber'] = "app/load/28917";
-$route['Notifications'] = "app/load/28904";
+$route['notifications'] = "app/load/28904";
 $route['MultiApply'] = "app/load/27196";
 $route['ReceivedSMS'] = "app/load/27901";
 $route['LoginAs'] = "app/load/27238";
