@@ -1171,7 +1171,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                     }
 
                     //Append profile header if changed:
-                    if(!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"]){
+                    if(!current_header){
+                        //For ideas only show a single header based on their type
                         current_header = data.return_inputs[index_i]["d__profile_header"];
                     } else {
                         //Neutralize it:
