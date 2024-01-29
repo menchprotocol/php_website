@@ -296,7 +296,7 @@ class I extends CI_Controller {
         $e___11035 = $this->config->item('e___11035'); //NAVIGATION
 
 
-        $profile_header = '<div class="profile_header grey main__title"><span class="icon-block-xs">'.$e___4737[$is[0]['i__type']]['m__cover'].'</span>'.$e___4737[$is[0]['i__type']]['m__title'].'</div>';
+        $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.$e___4737[$is[0]['i__type']]['m__cover'].'</span>'.$e___4737[$is[0]['i__type']]['m__title'].'</div>';
 
 
         foreach(array_intersect($this->config->item('n___'.$is[0]['i__type']), $this->config->item('n___42179')) as $dynamic_e__id){

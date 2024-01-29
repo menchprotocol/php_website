@@ -145,7 +145,7 @@ h3{
     float: right;
     margin: 21px 0 -8px 0;
 }
-.message_controllers .emoji_selector{
+.emoji_selector{
     max-height: 21px;
     margin-top: -18px;
 }
@@ -1843,7 +1843,7 @@ label {
     text-align: center;
     border-bottom: 1px solid #000;
     padding: 8px;
-    margin:21px 0 13px;
+    margin:34px 0 13px;
     font-size: 0.89em;
 }
 .list-radio-select .list-group-item.active {

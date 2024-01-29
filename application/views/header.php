@@ -135,7 +135,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
         const picker_i = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
             //Insert into idea text box:
             insertText($(".save_i__message"), res.native);
-            $('.emoji_selector .show').removeClass('show');
+            //We keep it open!
         }});
         const picker_e = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
             //Insert into cover frame:
@@ -959,7 +959,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                     <!-- Idea Message -->
-                    <div class="message_controllers">
+                    <div class="dynamic_editing_input">
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
+                        <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    </div>
+                    <div class="idea_controllers">
                         <table class="emoji_table">
                             <tr>
                                 <td>
@@ -974,22 +978,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </div>
                                 </td>
                                 <?php if(search_enabled()){ ?>
-                                <td>
-                                    <!-- Reference Source -->
-                                    <a href="javascript:void(0);" class="insert_at_sign" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
-                                </td>
-                                <td>
-                                    <!-- Reference Idea -->
-                                    <a href="javascript:void(0);" class="insert_hashtag" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
-                                </td>
+                                    <td>
+                                        <!-- Reference Source -->
+                                        <a href="javascript:void(0);" class="insert_at_sign" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
+                                    </td>
+                                    <td>
+                                        <!-- Reference Idea -->
+                                        <a href="javascript:void(0);" class="insert_hashtag" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
+                                    </td>
                                 <?php } ?>
-
                             </tr>
                         </table>
-                    </div>
-                    <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
-                        <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
 
                     <!-- Idea Hashtag -->
