@@ -382,10 +382,11 @@ class X_model extends CI_Model
     }
 
 
-    function update_select_single($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__id, $x__id = 0) {
+    function update_select_single($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__handle, $x__id = 0) {
 
 
         //Authenticate Member:
+        $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='@' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
         $member_e = superpower_unlocked();
         if (!$member_e) {
             return array(
@@ -473,13 +474,13 @@ class X_model extends CI_Model
                 }
 
                 //Delete all transactions:
-                $links_removed = $this->E_model->remove($o__id, $member_e['e__id'], $migrate_s__id);
+                $links_removed = $this->E_model->remove($o__id, $member_e['e__id'], $migrate_s__handle);
 
             }
 
             //Update:
-            if(!intval($migrate_s__id) || count($this->E_model->fetch(array(
-                    'e__id' => $migrate_s__id,
+            if(!strlen($migrate_s__handle) || count($this->E_model->fetch(array(
+                    'LOWER(e__handle)' => strtolower($migrate_s__handle),
                     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 )))){
                 $status = $this->E_model->update($o__id, array(
@@ -539,7 +540,7 @@ class X_model extends CI_Model
                 }
 
                 //Delete all transactions:
-                $links_removed = $this->I_model->remove($o__id , $member_e['e__id'], $migrate_s__id);
+                $links_removed = $this->I_model->remove($o__id , $member_e['e__id'], $migrate_s__handle);
 
             }
 

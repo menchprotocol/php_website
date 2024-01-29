@@ -2393,24 +2393,24 @@ function update_select_single(element_id, new_e__id, o__id = 0, x__id = 0, show_
     new_e__id = parseInt(new_e__id);
 
     //Deleting Anything?
-    var migrate_s__id = 0;
+    var migrate_s__handle = 0;
     if(element_id==31004 && !(new_e__id in js_e___31871)){
 
         //Deleting Idea:
-        var confirm_removal = prompt("Are you sure you want to delete this idea?\nEnter 0 to unlink OR enter Idea ID to migrate links.", "0");
+        var confirm_removal = prompt("Are you sure you want to delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
         if (!isNormalInteger(confirm_removal)) {
             return false;
         }
-        migrate_s__id = confirm_removal;
+        migrate_s__handle = confirm_removal;
 
     } else if(element_id==6177 && !(new_e__id in js_e___7358)){
 
         //Deleting Source:
-        var confirm_removal = prompt("Are you sure you want to delete this source?\nEnter 0 to unlink OR enter source ID to migrate links.", "0");
+        var confirm_removal = prompt("Are you sure you want to delete this source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
         if (!isNormalInteger(confirm_removal)) {
             return false;
         }
-        migrate_s__id = confirm_removal;
+        migrate_s__handle = confirm_removal;
 
     }
 
@@ -2429,7 +2429,7 @@ function update_select_single(element_id, new_e__id, o__id = 0, x__id = 0, show_
         o__id: o__id,
         element_id: element_id,
         new_e__id: new_e__id,
-        migrate_s__id: migrate_s__id,
+        migrate_s__handle: migrate_s__handle,
         x__id: x__id
     }, function (data) {
         if (data.status) {

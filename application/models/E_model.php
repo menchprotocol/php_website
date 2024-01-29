@@ -823,7 +823,7 @@ class E_model extends CI_Model
     }
 
 
-    function remove($e__id, $x__creator = 0, $migrate_s__id = 0){
+    function remove($e__id, $x__creator = 0, $migrate_s__handle = null){
 
         if($e__id<1){
             return 0;
@@ -832,11 +832,13 @@ class E_model extends CI_Model
         //Fetch all SOURCE LINKS:
         $x_adjusted = 0;
 
-        if($migrate_s__id > 0){
+        if(strlen($migrate_s__handle)){
+
+            $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='@' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
 
             //Validate this migration ID:
             $es = $this->E_model->fetch(array(
-                'e__id' => $migrate_s__id,
+                'LOWER(e__handle)' => strtolower($migrate_s__handle),
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
@@ -860,16 +862,16 @@ class E_model extends CI_Model
                         'x__left' => $x['x__left'],
                     );
                     if($x['x__up']==$e__id){
-                        $filters['x__up'] = $migrate_s__id;
-                        $update_filter['x__up'] = $migrate_s__id;
+                        $filters['x__up'] = $es[0]['e__id'];
+                        $update_filter['x__up'] = $es[0]['e__id'];
                     }
                     if($x['x__down']==$e__id){
-                        $filters['x__down'] = $migrate_s__id;
-                        $update_filter['x__down'] = $migrate_s__id;
+                        $filters['x__down'] = $es[0]['e__id'];
+                        $update_filter['x__down'] = $es[0]['e__id'];
                     }
                     if($x['x__creator']==$e__id){
-                        $filters['x__creator'] = $migrate_s__id;
-                        $update_filter['x__creator'] = $migrate_s__id;
+                        $filters['x__creator'] = $es[0]['e__id'];
+                        $update_filter['x__creator'] = $es[0]['e__id'];
                     }
 
                     if(0 && count($this->X_model->fetch($filters))){
@@ -893,26 +895,26 @@ class E_model extends CI_Model
                     //Migrate this transaction:
                     if($x['x__up']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__up' => $migrate_s__id,
+                            'x__up' => $es[0]['e__id'],
                         ));
                     }
 
                     if($x['x__down']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__down' => $migrate_s__id,
+                            'x__down' => $es[0]['e__id'],
                         ));
                     }
 
                     if($x['x__creator']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__creator' => $migrate_s__id,
+                            'x__creator' => $es[0]['e__id'],
                         ));
                     }
 
                 }
 
                 //Clean Duplicates:
-                $this->E_model->remove_duplicate_links($migrate_s__id);
+                $this->E_model->remove_duplicate_links($es[0]['e__id']);
 
             }
 

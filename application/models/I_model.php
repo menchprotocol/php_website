@@ -226,14 +226,16 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function remove($i__id, $x__creator = 0, $migrate_s__id = 0){
+    function remove($i__id, $x__creator = 0, $migrate_s__handle = null){
 
         $x_adjusted = 0;
-        if($migrate_s__id > 0){
+        if(strlen($migrate_s__handle)){
+
+            $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='#' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
 
             //Validate this migration ID:
             $is = $this->I_model->fetch(array(
-                'i__id' => $migrate_s__id,
+                'LOWER(i__hashtag)' => strtolower($migrate_s__handle),
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
 
@@ -259,12 +261,12 @@ class I_model extends CI_Model
                         'x__down' => $x['x__down'],
                     );
                     if($x['x__right']==$i__id){
-                        $filters['x__right'] = $migrate_s__id;
-                        $update_filter['x__right'] = $migrate_s__id;
+                        $filters['x__right'] = $is[0]['i__id'];
+                        $update_filter['x__right'] = $is[0]['i__id'];
                     }
                     if($x['x__left']==$i__id){
-                        $filters['x__left'] = $migrate_s__id;
-                        $update_filter['x__left'] = $migrate_s__id;
+                        $filters['x__left'] = $is[0]['i__id'];
+                        $update_filter['x__left'] = $is[0]['i__id'];
                     }
                     if(0 && count($this->X_model->fetch($filters))){
 
