@@ -1171,19 +1171,18 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                     }
 
                     //Append profile header if changed:
-                    if(!current_header){
-                        //For ideas only show a single header based on their type
+                    if(!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"]){
                         current_header = data.return_inputs[index_i]["d__profile_header"];
                     } else {
                         //Neutralize it:
                         data.return_inputs[index_i]["d__profile_header"] = '';
                     }
 
+                    $("#modal31911 .dynamic_"+i+" .radio_frame").remove();
                     if(data.return_inputs[index_i]["d__is_radio"]){
                         $("#modal31911 .dynamic_"+i+" .text_content").addClass('hidden');
                         $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
                     } else {
-                        $("#modal31911 .dynamic_"+i+" .radio_frame").remove();
                         $("#modal31911 .dynamic_"+i+" .text_content").removeClass('hidden');
                         $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
                         $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
@@ -1542,11 +1541,11 @@ function editor_load_e(e__id, x__id){
                     data.return_inputs[index_i]["d__profile_header"] = '';
                 }
 
+                $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
                 if(data.return_inputs[index_i]["d__is_radio"]){
                     $("#modal31912 .dynamic_"+i+" .text_content").addClass('hidden');
                     $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__html"] + '</div>' );
                 } else {
-                    $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
                     $("#modal31912 .dynamic_"+i+" .text_content").removeClass('hidden')
                     $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
