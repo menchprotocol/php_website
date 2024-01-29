@@ -973,6 +973,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                     </div>
                                 </td>
+                                <?php if(search_enabled()){ ?>
                                 <td>
                                     <!-- Reference Source -->
                                     <a href="javascript:void(0);" class="insert_at_sign" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
@@ -981,6 +982,8 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <!-- Reference Idea -->
                                     <a href="javascript:void(0);" class="insert_hashtag" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
                                 </td>
+                                <?php } ?>
+
                             </tr>
                         </table>
                     </div>

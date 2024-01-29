@@ -1907,6 +1907,7 @@ function search_enabled(){
 function update_algolia($s__type = null, $s__id = 0) {
 
     if(!search_enabled()){
+        console.log("Search engine is disabled!");
         return false;
     }
 

@@ -126,72 +126,74 @@ function load_editor(){
         $('.mass_id_' + $(this).val() ).removeClass('hidden');
     });
 
-    if(search_enabled()){
-
-        $('.e_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            $(this).val('@' + suggestion.s__handle);
-
-        }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
-
-            source: function (q, cb) {
-                algolia_index.search(q, {
-                    filters: 's__type=12274' + search_and_filter,
-                    hitsPerPage: js_e___6404[31112]['m__message'],
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            displayKey: function (suggestion) {
-                return '@' + suggestion.s__handle;
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    return view_s_js_line(suggestion);
-                },
-                empty: function (data) {
-                    return '<div class="main__title"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
-                },
-            }
-
-        }]);
-
-        $('.i_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
-
-            $(this).val('#' + suggestion.s__handle);
-
-        }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
-
-            source: function (q, cb) {
-                algolia_index.search(q, {
-                    filters: 's__type=12273' + search_and_filter,
-                    hitsPerPage: js_e___6404[31112]['m__message'],
-                }, function (error, content) {
-                    if (error) {
-                        cb([]);
-                        return;
-                    }
-                    cb(content.hits, content);
-                });
-            },
-            displayKey: function (suggestion) {
-                return '#' + suggestion.s__handle;
-            },
-            templates: {
-                suggestion: function (suggestion) {
-                    return view_s_js_line(suggestion);
-                },
-                empty: function (data) {
-                    return '<div class="main__title"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
-                },
-            }
-        }]);
-
+    if(!search_enabled()){
+        console.log("Search engine is disabled!");
+        return false;
     }
+
+    $('.e_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        $(this).val('@' + suggestion.s__handle);
+
+    }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
+
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: 's__type=12274' + search_and_filter,
+                hitsPerPage: js_e___6404[31112]['m__message'],
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function (suggestion) {
+            return '@' + suggestion.s__handle;
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return view_s_js_line(suggestion);
+            },
+            empty: function (data) {
+                return '<div class="main__title"><i class="fas fa-exclamation-circle"></i> No Sources Found</div>';
+            },
+        }
+
+    }]);
+
+    $('.i_text_finder').on('autocomplete:selected', function (event, suggestion, dataset) {
+
+        $(this).val('#' + suggestion.s__handle);
+
+    }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
+
+        source: function (q, cb) {
+            algolia_index.search(q, {
+                filters: 's__type=12273' + search_and_filter,
+                hitsPerPage: js_e___6404[31112]['m__message'],
+            }, function (error, content) {
+                if (error) {
+                    cb([]);
+                    return;
+                }
+                cb(content.hits, content);
+            });
+        },
+        displayKey: function (suggestion) {
+            return '#' + suggestion.s__handle;
+        },
+        templates: {
+            suggestion: function (suggestion) {
+                return view_s_js_line(suggestion);
+            },
+            empty: function (data) {
+                return '<div class="main__title"><i class="fas fa-exclamation-circle"></i> No Ideas Found</div>';
+            },
+        }
+    }]);
+
 }
 
 
@@ -800,94 +802,97 @@ $(document).ready(function () {
     });
 
 
-    if(search_enabled()){
+    if(!search_enabled()){
+        console.log("Search engine is disabled!");
+        return false;
+    }
 
-        var icons_listed = [];
+    var icons_listed = [];
 
-        //TOP SEARCH
-        $("#top_finder").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
-            {
-                source: function (q, cb) {
+    //TOP SEARCH
+    $("#top_finder").autocomplete({minLength: 1, autoselect: false, keyboardShortcuts: ['s']}, [
+        {
+            source: function (q, cb) {
 
-                    icons_listed = [];
+                icons_listed = [];
 
-                    //Members can filter search with first word:
-                    var search_only_e = $("#top_finder").val().charAt(0)=='@';
-                    var search_only_in = $("#top_finder").val().charAt(0)=='#';
-                    var search_only_app = $("#top_finder").val().charAt(0)=='-';
-                    $("#container_finder .row").html(''); //Reset results view
+                //Members can filter search with first word:
+                var search_only_e = $("#top_finder").val().charAt(0)=='@';
+                var search_only_in = $("#top_finder").val().charAt(0)=='#';
+                var search_only_app = $("#top_finder").val().charAt(0)=='-';
+                $("#container_finder .row").html(''); //Reset results view
 
 
-                    //Do not search if specific command ONLY:
-                    if (( search_only_in || search_only_e || search_only_app ) && !isNaN($("#top_finder").val().substr(1)) ) {
+                //Do not search if specific command ONLY:
+                if (( search_only_in || search_only_e || search_only_app ) && !isNaN($("#top_finder").val().substr(1)) ) {
 
-                        cb([]);
-                        return;
+                    cb([]);
+                    return;
 
-                    } else {
+                } else {
 
-                        //Now determine the filters we need to apply:
-                        var search_filters = '';
+                    //Now determine the filters we need to apply:
+                    var search_filters = '';
 
-                        if(search_only_in){
-                            search_filters += ' s__type=12273';
-                        } else if(search_only_e){
-                            search_filters += ' s__type=12274';
-                        } else if(search_only_app){
-                            search_filters += ' s__type=6287';
-                        }
+                    if(search_only_in){
+                        search_filters += ' s__type=12273';
+                    } else if(search_only_e){
+                        search_filters += ' s__type=12274';
+                    } else if(search_only_app){
+                        search_filters += ' s__type=6287';
+                    }
 
-                        if(js_pl_id > 0){
+                    if(js_pl_id > 0){
 
-                            //For Members:
-                            if(!js_session_superpowers_unlocked.includes(12701)){
-                                //Can view limited sources:
-                                if(search_filters.length>0){
-                                    search_filters += ' AND ';
-                                }
-                                search_filters += ' ( _tags:public_index OR _tags:z_' + js_pl_id + ' ) ';
-                            }
-
-                        } else {
-
-                            //Guest can search ideas only by default as they start typing;
+                        //For Members:
+                        if(!js_session_superpowers_unlocked.includes(12701)){
+                            //Can view limited sources:
                             if(search_filters.length>0){
                                 search_filters += ' AND ';
                             }
-                            search_filters += ' _tags:public_index ';
-
+                            search_filters += ' ( _tags:public_index OR _tags:z_' + js_pl_id + ' ) ';
                         }
 
-                        //Append filters:
-                        algolia_index.search(q, {
-                            hitsPerPage: js_e___6404[31113]['m__message'],
-                            filters:search_filters,
-                        }, function (error, content) {
-                            if (error) {
-                                cb([]);
-                                return;
-                            }
-                            cb(content.hits, content);
-                        });
+                    } else {
+
+                        //Guest can search ideas only by default as they start typing;
+                        if(search_filters.length>0){
+                            search_filters += ' AND ';
+                        }
+                        search_filters += ' _tags:public_index ';
+
                     }
 
-                },
-                templates: {
-                    suggestion: function (suggestion) {
-                        var item_key = suggestion.s__type+'_'+suggestion.s__id;
-                        if(!icons_listed.includes(item_key)) {
-                            icons_listed.push(item_key);
-                            $("#container_finder .row").append(view_s_js_cover(26011, suggestion, 0));
+                    //Append filters:
+                    algolia_index.search(q, {
+                        hitsPerPage: js_e___6404[31113]['m__message'],
+                        filters:search_filters,
+                    }, function (error, content) {
+                        if (error) {
+                            cb([]);
+                            return;
                         }
-                        return false;
-                    },
-                    empty: function (data) {
-                        $("#container_finder .row").html('<div class="main__title margin-top-down-half"><span class="icon-block"><i class="fal fa-exclamation-circle"></i></span>No results found</div>');
-                    },
+                        cb(content.hits, content);
+                    });
                 }
+
+            },
+            templates: {
+                suggestion: function (suggestion) {
+                    var item_key = suggestion.s__type+'_'+suggestion.s__id;
+                    if(!icons_listed.includes(item_key)) {
+                        icons_listed.push(item_key);
+                        $("#container_finder .row").append(view_s_js_cover(26011, suggestion, 0));
+                    }
+                    return false;
+                },
+                empty: function (data) {
+                    $("#container_finder .row").html('<div class="main__title margin-top-down-half"><span class="icon-block"><i class="fal fa-exclamation-circle"></i></span>No results found</div>');
+                },
             }
-        ]);
-    }
+        }
+    ]);
+
 });
 
 
@@ -1017,6 +1022,7 @@ function e_load_finder(x__type) {
 
     if(!search_enabled()){
         console.log("Search engine is disabled!");
+        return false;
     }
 
     $('.new-list-'+x__type + ' .add-input').keyup(function () {
@@ -1032,7 +1038,6 @@ function e_load_finder(x__type) {
         source: function (q, cb) {
 
             $('.new-list-'+x__type+' .algolia_pad_finder').html('');
-
             algolia_index.search(q, {
                 filters: 's__type=12274' + search_and_filter,
                 hitsPerPage: js_e___6404[31112]['m__message'],
