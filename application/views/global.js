@@ -1547,9 +1547,7 @@ function editor_load_e(e__id, x__id){
                 } else {
                     $("#modal31912 .dynamic_"+i+" .text_content").removeClass('hidden');
                     $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
-                    if(data.return_inputs[index_i]["d__profile_header"].length){
-                        $("#modal31912 .dynamic_"+i+" .text_content").addClass('hidden').insertBefore( '<div class="radio_frame">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
-                    }
+                    $("#modal31912 .dynamic_"+i+" .text_content").insertBefore( '<div class="radio_frame">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
 
