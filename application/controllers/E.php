@@ -583,7 +583,6 @@ class E extends CI_Controller
         $order_42145 = sort_by(42145);
         $scanned_sources = array();
         $return_inputs = array();
-        $return_radios = '';
         $input_pointer = 0;
 
         //Fetch Source Templates, if any:
@@ -605,23 +604,25 @@ class E extends CI_Controller
                 'x__up IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array(), 0, 0, $order_42145) as $e_template) {
+            ), array('x__up'), 0, 0, $order_42145) as $e_template) {
+
+                $profile_header = '<div class="profile_header"><span class="icon-block">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'<span class="icon-block" title="Profile appended for following '.stripslashes($e_template['e__title']).' @'.$e_template['e__handle'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42178]['m__cover'].'</span></div>';
 
                 //Load template:
-                if(!is_array($this->config->item('e___'.$e_template['x__up']))){
+                if(!is_array($this->config->item('e___'.$e_template['e__id']))){
                     //Report Error:
                     $this->X_model->create(array(
                         'x__type' => 4246, //Platform Bug Reports
-                        'x__message' => 'editor_load_e() ERROR: @'.$e_template['x__up'].' is NOT in memory cache',
+                        'x__message' => 'editor_load_e() ERROR: @'.$e_template['e__id'].' is NOT in memory cache',
                     ));
                     continue;
-                } elseif(in_array($e_template['x__up'], $scanned_sources)){
+                } elseif(in_array($e_template['e__id'], $scanned_sources)){
                     continue;
                 }
-                array_push($scanned_sources, $e_template['x__up']);
+                array_push($scanned_sources, $e_template['e__id']);
 
 
-                foreach($this->config->item('e___'.$e_template['x__up']) as $dynamic_e__id => $m) {
+                foreach($this->config->item('e___'.$e_template['e__id']) as $dynamic_e__id => $m) {
 
                     //Make sure it's a dynamic input field:
                     if(!in_array($dynamic_e__id, $this->config->item('n___42179'))){
@@ -672,7 +673,16 @@ class E extends CI_Controller
                     if(in_array($data_type, $this->config->item('n___42188'))){
 
                         //Single or Multiple Choice:
-                        $return_radios .= view_select($dynamic_e__id, $es[0]['e__id'], 0);
+                        array_push($return_inputs, array(
+                            'd__id' => $dynamic_e__id,
+                            'd__is_radio' => 1,
+                            'd_x__id' => 0,
+                            'd__html' => '<div class="radio_frame">'.view_select($dynamic_e__id, $es[0]['e__id'], 0).'</div>',
+                            'd__value' => '',
+                            'd__type_name' => '',
+                            'd__placeholder' => '',
+                            'd__profile_header' => $profile_header,
+                        ));
 
                     } else {
 
@@ -696,11 +706,13 @@ class E extends CI_Controller
                                 $counted++;
                                 array_push($return_inputs, array(
                                     'd__id' => $dynamic_e__id,
+                                    'd__is_radio' => 0,
                                     'd_x__id' => $curr_val['x__id'],
-                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
+                                    'd__html' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
                                     'd__value' => $curr_val['x__message'],
                                     'd__type_name' => html_input_type($data_type),
                                     'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                                    'd__profile_header' => $profile_header,
                                 ));
                             }
                         }
@@ -711,18 +723,18 @@ class E extends CI_Controller
                             )) as $curr_val){
                                 array_push($return_inputs, array(
                                     'd__id' => $dynamic_e__id,
+                                    'd__is_radio' => 0,
                                     'd_x__id' => 0,
-                                    'd__title' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
+                                    'd__html' => '<span class="icon-block-xs">'.$m['m__cover'].'</span>'.$m['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
                                     'd__value' => '',
                                     'd__type_name' => html_input_type($data_type),
                                     'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                                    'd__profile_header' => $profile_header,
                                 ));
                             }
                         }
-
                     }
                 }
-
             }
         }
 
@@ -752,7 +764,6 @@ class E extends CI_Controller
         $return_array = array(
             'status' => 1,
             'return_inputs' => $return_inputs,
-            'return_radios' => $return_radios,
             'cover_history_content' => $cover_history_content, //Past covers for quick editing
         );
 

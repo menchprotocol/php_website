@@ -291,10 +291,14 @@ class I extends CI_Controller {
 
         //Fetch dynamic data based on idea type:
         $return_inputs = array();
-        $return_radios = '';
-
-
+        $e___4737 = $this->config->item('e___4737'); // Idea Status
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
+        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+
+
+        $profile_header = '<div class="profile_header"><span class="icon-block">'.$e___4737[$is[0]['i__type']]['m__handle'].'</span>'.$e___4737[$is[0]['i__type']]['m__title'].'<span class="icon-block" title="Profile appended for idea being of type: '.$e___4737[$is[0]['i__type']]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[4737]['m__cover'].'</span></div>';
+
+
         foreach(array_intersect($this->config->item('n___'.$is[0]['i__type']), $this->config->item('n___42179')) as $dynamic_e__id){
 
             //Let's first determine the data type:
@@ -324,7 +328,16 @@ class I extends CI_Controller {
             if(in_array($data_type, $this->config->item('n___42188'))){
 
                 //Single or Multiple Choice:
-                $return_radios .= view_select($dynamic_e__id, 0, $is[0]['i__id']);
+                array_push($return_inputs, array(
+                    'd__id' => $dynamic_e__id,
+                    'd__is_radio' => 1,
+                    'd_x__id' => 0,
+                    'd__html' => '<div class="radio_frame">'.view_select($dynamic_e__id, 0, $is[0]['i__id']).'</div>',
+                    'd__value' => '',
+                    'd__type_name' => '',
+                    'd__placeholder' => '',
+                    'd__profile_header' => $profile_header,
+                ));
 
             } else {
 
@@ -348,11 +361,13 @@ class I extends CI_Controller {
                         array_push($unique_values, $curr_val['x__message']);
                         array_push($return_inputs, array(
                             'd__id' => $dynamic_e__id,
+                            'd__is_radio' => 0,
                             'd_x__id' => $curr_val['x__id'],
-                            'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
+                            'd__html' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
                             'd__value' => $curr_val['x__message'],
                             'd__type_name' => html_input_type($data_type),
                             'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                            'd__profile_header' => $profile_header,
                         ));
                     }
                 }
@@ -363,11 +378,13 @@ class I extends CI_Controller {
                     )) as $curr_val){
                         array_push($return_inputs, array(
                             'd__id' => $dynamic_e__id,
+                            'd__is_radio' => 0,
                             'd_x__id' => 0,
-                            'd__title' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
+                            'd__html' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( strlen($e___42179[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___42179[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' ),
                             'd__value' => '',
                             'd__type_name' => html_input_type($data_type),
                             'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                            'd__profile_header' => $profile_header,
                         ));
                     }
                 }
@@ -377,7 +394,6 @@ class I extends CI_Controller {
         $return_array = array(
             'status' => 1,
             'return_inputs' => $return_inputs,
-            'return_radios' => $return_radios,
         );
 
         //Log Modal View:

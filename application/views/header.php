@@ -700,8 +700,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '">';
+        $dynamic_edit .= '<div class="text_content">';
         $dynamic_edit .= '<h3 class="mini-font"></h3>';
         $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" d__id="" d_x__id="" value="">';
+        $dynamic_edit .= '</div>';
         $dynamic_edit .= '</div>';
     }
 
@@ -1017,9 +1019,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Dynamic Inputs -->
                     <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
-                    <!-- Dynamic Radios -->
-                    <div class="dynamic_editing_radio"></div>
-
 
                 </div>
             </div>
@@ -1128,9 +1127,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Dynamic Inputs -->
                     <div class="dynamic_frame"><?= $dynamic_edit ?></div>
-
-                    <!-- Dynamic Radios -->
-                    <div class="dynamic_editing_radio"></div>
 
                 </div>
                 <div class="modal-footer hideIfEmpty"></div>

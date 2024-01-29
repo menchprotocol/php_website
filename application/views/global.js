@@ -1073,7 +1073,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     has_unsaved_changes = false;
 
     $("#modal31911 .unsaved_warning").val('');
-    $('#modal31911 .save_results, #modal31911 .dynamic_editing_radio, #modal31911 .idea_reply').html('');
+    $('#modal31911 .save_results, #modal31911 .idea_reply').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
@@ -1159,7 +1159,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                         data.return_inputs[index_i] = [];
                         data.return_inputs[index_i]["d__id"] = 0;
                         data.return_inputs[index_i]["d_x__id"] = 0;
-                        data.return_inputs[index_i]["d__title"] = '';
+                        data.return_inputs[index_i]["d__html"] = '';
                         data.return_inputs[index_i]["d__value"] = '';
                         data.return_inputs[index_i]["d__type_name"] = '';
                         data.return_inputs[index_i]["d__placeholder"] = '';
@@ -1168,18 +1168,21 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                         $("#modal31911 .dynamic_"+i).removeClass('hidden');
                     }
 
-                    $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__title"]);
-                    $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
+                    if(data.return_inputs[index_i]["d__is_radio"]){
+                        $("#modal31911 .dynamic_"+i+" .text_content").addClass('hidden').insertBefore( data.return_inputs[index_i]["d__html"] );
+                    } else {
+                        $("#modal31911 .dynamic_"+i+" .text_content").removeClass('hidden');
+                        $("#modal31911 .dynamic_"+i+" .radio_frame").remove();
+                        $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
+                        $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
 
-                    if(x__id && fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')){
-                        //Hide message textarea since this is already loaded in the dynamic inputs:
-                        $("#modal31911 .save_x__message").val('IGNORE_INPUT');
-                        $("#modal31911 .save_x__frame").addClass('hidden');
+                        if(x__id && fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')){
+                            //Hide message textarea since this is already loaded in the dynamic inputs:
+                            $("#modal31911 .save_x__message").val('IGNORE_INPUT');
+                            $("#modal31911 .save_x__frame").addClass('hidden');
+                        }
                     }
                 }
-
-                //Dynamic Radio fields (if any):
-                $("#modal31911 .dynamic_editing_radio").html(data.return_radios);
 
                 setTimeout(function () {
 
@@ -1435,7 +1438,7 @@ function editor_load_e(e__id, x__id){
 
     $("#modal31912 .unsaved_warning").val('');
 
-    $('#modal31912 .save_results, #modal31912 .dynamic_editing_radio').html('');
+    $('#modal31912 .save_results').html('');
     $("#modal31912 .dynamic_item, #modal31912 .save_x__frame").addClass('hidden');
     $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('').attr('d__id','').attr('d_x__id','');
@@ -1506,7 +1509,7 @@ function editor_load_e(e__id, x__id){
                     data.return_inputs[index_i] = [];
                     data.return_inputs[index_i]["d__id"] = 0;
                     data.return_inputs[index_i]["d_x__id"] = 0;
-                    data.return_inputs[index_i]["d__title"] = '';
+                    data.return_inputs[index_i]["d__html"] = '';
                     data.return_inputs[index_i]["d__value"] = '';
                     data.return_inputs[index_i]["d__type_name"] = '';
                     data.return_inputs[index_i]["d__placeholder"] = '';
@@ -1516,18 +1519,21 @@ function editor_load_e(e__id, x__id){
                     $("#modal31912 .dynamic_"+i).removeClass('hidden');
                 }
 
-                $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__title"]);
-                $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
+                if(data.return_inputs[index_i]["d__is_radio"]){
+                    $("#modal31912 .dynamic_"+i+" .text_content").addClass('hidden').insertBefore( data.return_inputs[index_i]["d__html"] );
+                } else {
+                    $("#modal31912 .dynamic_"+i+" .text_content").removeClass('hidden');
+                    $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
+                    $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
+                    $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]).val(data.return_inputs[index_i]["d__value"]);
 
-                if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[index_i]["d__id"]==e__id )){
-                    //Hide message textarea since this is already loaded in the dynamic inputs:
-                    $("#modal31912 .save_x__message").val('IGNORE_INPUT');
-                    $("#modal31912 .save_x__frame").addClass('hidden');
+                    if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[index_i]["d__id"]==e__id )){
+                        //Hide message textarea since this is already loaded in the dynamic inputs:
+                        $("#modal31912 .save_x__message").val('IGNORE_INPUT');
+                        $("#modal31912 .save_x__frame").addClass('hidden');
+                    }
                 }
             }
-
-            //Dynamic Radio fields (if any):
-            $("#modal31912 .dynamic_editing_radio").html(data.return_radios);
 
             //Add a second save button at the bottom if we have too much data:
             if(index_i_content > 5){
