@@ -141,6 +141,9 @@ h3{
     font-weight: bold;
     padding-bottom: 13px;
 }
+.idea_controllers{
+    margin:3px 0 0 26px;
+}
 .message_controllers{
     float: right;
     margin: 21px 0 -8px 0;
