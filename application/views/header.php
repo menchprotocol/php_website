@@ -1082,9 +1082,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
                                     </div>
                                 </td>
+                                <td class="superpower__13758 fa_search hidden">
+                                    <!-- Font Awesome Search -->
+                                    <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" target="_blank" title="Open New Window to Search on Font Awesome"><i class="fas fa-external-link"></i></a>
+                                </td>
                                 <td class="superpower__13758">
-                                    <!-- Font Awesome -->
-                                    <a href="javascript:void(0);" onclick="update__cover('fas fa-icons')" title="Search Font Awesome"><i class="fas fa-icons"></i></a>
+                                    <!-- Font Awesome Insert -->
+                                    <a href="javascript:void(0);" onclick="update__cover('fas fa-icons');$('.fa_search').removeClass('hidden');" title="Add a Sample Font Awesome Icon to Get Started"><i class="fas fa-icons"></i></a>
                                 </td>
                                 <td class="superpower__13758 cover_history_button">
                                     <!-- History -->
