@@ -1840,7 +1840,12 @@ label {
     color: #000 !important;
 }
 
-
+.profile_header{
+    text-align: center;
+    border-bottom: 1px solid #000;
+    padding: 8px;
+    margin-bottom: 13px;
+}
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
     background-color: #FFFFFF;
