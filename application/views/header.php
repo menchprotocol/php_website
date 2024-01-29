@@ -1084,7 +1084,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 </td>
                                 <td class="superpower__13758 fa_search hidden">
                                     <!-- Font Awesome Search -->
-                                    <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" target="_blank" title="Open New Window to Search on Font Awesome"><i class="fas fa-external-link"></i></a>
+                                    <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" target="_blank" title="Open New Window to Search on Font Awesome"><i class="fas fa-search-plus zq12274"></i></a>
                                 </td>
                                 <td class="superpower__13758">
                                     <!-- Font Awesome Insert -->

@@ -1472,10 +1472,13 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
     //Load Instant Fields:
+    var current_title = source_title(e__id);
     $('#modal31912 .save_e__id').val(e__id);
     $('#modal31912 .save_x__id').val(x__id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
-    $('#modal31912 .save_e__title').val(source_title(e__id));
+    $('#modal31912 .save_e__title').val(current_title);
+    $('#modal31912 .fa_search a').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(current_title)+'&o=r&s=solid');
+
     var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
     $('#modal31912 .random_animal').html('<i class="'+random_animal(true)+'"></i>');
