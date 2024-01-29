@@ -584,6 +584,7 @@ class E extends CI_Controller
         $scanned_sources = array();
         $return_inputs = array();
         $input_pointer = 0;
+        $profile_header = '';
 
         //Fetch Source Templates, if any:
         foreach($this->X_model->fetch(array(
