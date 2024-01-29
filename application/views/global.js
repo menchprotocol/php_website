@@ -1171,7 +1171,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
                     }
 
                     //Append profile header if changed:
-                    if(data.return_inputs[index_i]["d__profile_header"] && (!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"])){
+                    if(data.return_inputs[index_i]["d__profile_header"].length && (!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"])){
                         current_header = data.return_inputs[index_i]["d__profile_header"];
                     } else {
                         //Neutralize it:
@@ -1535,7 +1535,7 @@ function editor_load_e(e__id, x__id){
                 }
 
                 //Append profile header if changed:
-                if(data.return_inputs[index_i]["d__profile_header"] && (!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"])){
+                if(data.return_inputs[index_i]["d__profile_header"].length && (!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"])){
                     current_header = data.return_inputs[index_i]["d__profile_header"];
                 } else {
                     //Neutralize it:
