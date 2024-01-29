@@ -1263,7 +1263,7 @@ class X extends CI_Controller
             )))) {
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'].' is an invalid Source Handle',
+                    'message' => $_POST['migrate_s__handle'].' is an invalid Source Handle. Try again if you want to migrate this source links or leave the field blank.',
                 ));
             }
         } elseif($first_letter=='#' && strlen($_POST['migrate_s__handle'])>1){
@@ -1272,7 +1272,7 @@ class X extends CI_Controller
             )))){
                 return view_json(array(
                     'status' => 0,
-                    'message' => $_POST['migrate_s__handle'].' is an invalid Idea Hashtag',
+                    'message' => $_POST['migrate_s__handle'].' is an invalid Idea Hashtag. Try again if you want to migrate this idea links or leave the field blank.',
                 ));
             }
         } else {
