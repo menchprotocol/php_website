@@ -853,7 +853,7 @@ class E extends CI_Controller
 
 
             //Required fields must have an input:
-            if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($dynamic_value)){
+            if(in_array($dynamic_e__id, $this->config->item('n___42174')) && !strlen($dynamic_value) && !in_array($dynamic_e__id, $this->config->item('n___33331')) && !in_array($dynamic_e__id, $this->config->item('n___33332'))){
                 return view_json(array(
                     'status' => 0,
                     'message' => 'Missing Required Field: '.$e___42179[$dynamic_e__id]['m__title'],
