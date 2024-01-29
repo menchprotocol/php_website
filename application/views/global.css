@@ -1561,7 +1561,6 @@ label {
 .icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; font-weight: bold; }
 .icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 120% !important; font-weight: bold; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; font-weight: bold; }
-.icon-block-img img,
 .icon-block-lg img,
 .icon-block img{
     line-height: 100%;
@@ -3540,7 +3539,6 @@ a,
 }
 .icons_large .block-cover img,
 .note-btn > span > span,
-.icon-block-img img,
 .icon-block-lg img,
 .icon-block img,
 .icon-block-xs img,
