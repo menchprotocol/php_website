@@ -598,7 +598,7 @@ class E extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__up'), 0, 0, $order_42145) as $e_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.view_cover($e_group['e__cover']).'</span><a href="/@'.$e_group['e__handle'].'" target="_blank" title="Open in New Window"><u>'.$e_group['e__title'].'</u></a><span class="icon-block-xs">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'</div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.view_cover($e_group['e__cover']).'</span><a href="/@'.$e_group['e__handle'].'" target="_blank" title="Open in New Window">'.$e_group['e__title'].'</a><span class="icon-block-xs">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'</div>';
 
                 //Load template:
                 if(!is_array($this->config->item('e___'.$e_template['e__id']))){

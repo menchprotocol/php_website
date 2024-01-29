@@ -935,7 +935,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
     <!-- Edit Idea Modal -->
-    <div class="i_footer_note hidden">Your idea is saved. <a href=""><b>View</b></a></div>
+    <div class="i_footer_note hidden">Idea saved. <a href=""><b>View</b></a></div>
     <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content slim_flat">
