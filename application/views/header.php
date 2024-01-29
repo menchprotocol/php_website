@@ -1006,7 +1006,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Idea Type -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].':';  ?></h3>
-                        <div class="dynamic_selector"><?= view_select(4737, 0); ?></div>
+                        <div class="dynamic_selector"><?= view_select(4737, 6677); ?></div>
                     </div>
 
                     <!-- Link Note -->
@@ -1064,7 +1064,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Source Privacy -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].':';  ?></h3>
-                        <div class="dynamic_selector"><?= view_select(6177, 0); ?></div>
+                        <div class="dynamic_selector"><?= view_select(6177, 6181); ?></div>
                     </div>
 
                     <!-- SOURCE COVER -->
