@@ -1118,7 +1118,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
         var focus_card = fetch_int_val('#focus_card');
         if(focus_card==12273){
             $(".save_i__message").val('#'+$('#focus_handle').val()+' ');
-        } else if (focus_card==12274){
+        } else if (focus_card==12274 && fetch_int_val('#focus_id')!=js_pl_id){
             $(".save_i__message").val('@'+$('#focus_handle').val()+' ');
         }
     }
