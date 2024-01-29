@@ -130,10 +130,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script type="module">
 
         //Emoji selector:
-        function insert_text(el,val){
-            insertText($(el), res.native);
-        }
-
         import insertText from 'https://cdn.jsdelivr.net/npm/insert-text-at-cursor@0.3.0/index.js'
         const picker_i = new EmojiMart.Picker({ theme: 'light', onEmojiSelect: (res, _) => {
             //Insert into idea text box:

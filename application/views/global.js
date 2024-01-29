@@ -1117,9 +1117,9 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
         //See where we are at and append anything needed to the idea:
         var focus_card = fetch_int_val('#focus_card');
         if(focus_card==12273){
-            insert_text(".save_i__message",'#'+fetch_int_val('#focus_handle')+' ');
+            $(".save_i__message").val('#'+fetch_int_val('#focus_handle')+' ');
         } else if (focus_card==12274){
-            insert_text(".save_i__message",'@'+fetch_int_val('#focus_handle')+' ');
+            $(".save_i__message").val('@'+fetch_int_val('#focus_handle')+' ');
         }
     }
 
