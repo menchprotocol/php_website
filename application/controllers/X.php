@@ -1254,6 +1254,31 @@ class X extends CI_Controller
             ));
         }
 
+        //Validate migration handles if any:
+        $_POST['migrate_s__handle'] = trim($_POST['migrate_s__handle']);
+        $first_letter = substr($_POST['migrate_s__handle'], 0, 1);
+        if($first_letter=='@' && strlen($_POST['migrate_s__handle'])>1){
+            if (!count($this->E_model->fetch(array(
+                'LOWER(e__handle)' => strtolower(substr($_POST['migrate_s__handle'], 1)),
+            )))) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => $_POST['migrate_s__handle'].' is an invalid Source Handle',
+                ));
+            }
+        } elseif($first_letter=='#' && strlen($_POST['migrate_s__handle'])>1){
+            if(!count($this->I_model->fetch(array(
+                'LOWER(i__hashtag)' => strtolower(substr($_POST['migrate_s__handle'], 1)),
+            )))){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => $_POST['migrate_s__handle'].' is an invalid Idea Hashtag',
+                ));
+            }
+        } else {
+            $_POST['migrate_s__handle'] = '';
+        }
+
         if(is_array($_POST['o__id'])){
             $mass_result = array();
             foreach($_POST['o__id'] as $o__id){
