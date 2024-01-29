@@ -479,7 +479,7 @@ class X_model extends CI_Model
             }
 
             //Update:
-            if(!strlen($migrate_s__handle) || count($this->E_model->fetch(array(
+            if(strlen($migrate_s__handle)<2 || count($this->E_model->fetch(array(
                     'LOWER(e__handle)' => strtolower($migrate_s__handle),
                     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                 )))){

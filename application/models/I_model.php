@@ -229,7 +229,7 @@ class I_model extends CI_Model
     function remove($i__id, $x__creator = 0, $migrate_s__handle = null){
 
         $x_adjusted = 0;
-        if(strlen($migrate_s__handle)){
+        if(strlen($migrate_s__handle)>1){
 
             $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='#' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
 
