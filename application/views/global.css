@@ -1845,6 +1845,7 @@ label {
     border-bottom: 1px solid #000;
     padding: 8px;
     margin:21px 0 13px;
+    font-size: 0.89em;
 }
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
