@@ -1165,17 +1165,6 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     //Load dynamic data:
     var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
 
-    //Update the UI so we have this saved:
-    if(!i__id && created_i__id>0){
-        //Save the idea ID in case the user changes idea type:
-        $('#modal31911 .created_i__id').val(created_i__id);
-    }
-
-    //Track unsaved changes to prevent unwated modal closure:
-    $("#modal31911 .unsaved_warning").change(function() {
-        has_unsaved_changes = true;
-    });
-
 }
 
 function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
@@ -1195,12 +1184,20 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
             if(!i__id && data.created_i__id>0){
                 console.log('NEW IDEA #'+data.created_i__id+' has been created');
                 created_i__id = data.created_i__id;
+                $('#modal31911 .created_i__id').val(created_i__id);
                 i__id = created_i__id;
             }
 
             if(initial_loading){
+
                 //Initiate Idea  Uploader:
                 load_cloudinary(13572, ['i__id_'+i__id], '.uploader_13572', '#modal31911');
+
+
+                //Track unsaved changes to prevent unwated modal closure:
+                $("#modal31911 .unsaved_warning").change(function() {
+                    has_unsaved_changes = true;
+                });
             }
 
             var current_header = null;
