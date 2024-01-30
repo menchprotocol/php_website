@@ -1707,7 +1707,9 @@ function editor_save_e(){
 
             //Update Privacy:
             $('.s__12274_'+modify_data['save_e__id']).attr('e__privacy', modify_data['save_e__privacy']);
-            update_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_x__id'], false);
+            if(modify_data['save_x__id'] > 0){
+                ui_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_x__id'], false);
+            }
             
             //Update Raw Cover:
             $('.ui_e__cover_'+modify_data['save_e__id']+':first').attr('raw_cover', modify_data['save_e__cover']);
@@ -2422,6 +2424,26 @@ function update_form_select(element_id, new_e__id, initial_loading){
     }
 }
 
+function ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name){
+
+    var data_object = eval('js_e___'+element_id);
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
+
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + x__id).removeClass('active');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
+
+    var selected_e__id = $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value' , new_e__id);
+
+    if(element_id==6177){
+        //Source access:
+        $('.s__12274_'+o__id).attr('e__privacy', new_e__id);
+    } else if(element_id==4737){
+        //Idea Type:
+        $('.s__12273_'+o__id).attr('i__type', new_e__id);
+    }
+
+}
 
 function update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show_full_name = false){
 
@@ -2482,21 +2504,7 @@ function update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show
         if (data.status) {
 
             //Update on page:
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
-
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + x__id).removeClass('active');
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
-
-            var selected_e__id = $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value');
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value' , new_e__id);
-
-            if(element_id==6177){
-                //Source access:
-                $('.s__12274_'+o__id).attr('e__privacy', new_e__id);
-            } else if(element_id==4737){
-                //Idea Type:
-                $('.s__12273_'+o__id).attr('i__type', new_e__id);
-            }
+            ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
 
