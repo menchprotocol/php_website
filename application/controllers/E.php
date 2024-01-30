@@ -967,8 +967,8 @@ class E extends CI_Controller
             'e__title' => $validate_e__title['e__title_clean'],
             'e__cover' => trim($_POST['save_e__cover']),
             'e__handle' => trim($_POST['save_e__handle']),
+            'e__privacy' => $_POST['save_e__privacy'],
         ), true, $member_e['e__id']);
-
 
         //Do we have a link reference message that need to be saved?
         if($_POST['save_x__id']>0 && $_POST['save_x__message']!='IGNORE_INPUT'){
