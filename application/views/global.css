@@ -2955,6 +2955,9 @@ h4.main__title{
     margin-top: 5px;
     margin-left: -3px;
 }
+.source_bio{
+    padding-top: 8px;
+}
 
 .light-bg {
     background: rgba(239,239,239,0.89) !important;
