@@ -695,8 +695,7 @@ if($member_e){
 
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
-    //This is a HACK! 12 is a fixed number of max dynamic variables that is fixed in editor_save_i() & editor_save_e()
-    $dynamic_edit = '';
+    $dynamic_edit = '<div class="dynamic_inner_frame '.( !superpower_unlocked(10939) ? ' hidden ' : '' ).'">';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_x__id="">';
         $dynamic_edit .= '<div class="text_content">';
@@ -705,6 +704,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         $dynamic_edit .= '</div>';
         $dynamic_edit .= '</div>';
     }
+    $dynamic_edit .= '</div>';
 
     //Apply to All Sources
     if(superpower_unlocked(12703)){
@@ -998,7 +998,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
                     <!-- Idea Type -->
-                    <div class="dynamic_editing_input">
+                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
                         <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                     </div>

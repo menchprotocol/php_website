@@ -1513,6 +1513,9 @@ function editor_load_e(e__id, x__id){
 
     //Load Instant Fields:
     var current_title = source_title(e__id);
+    var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
+    var current_privacy = $('.s__12274_'+e__id).attr('e__privacy');
+
     $('#modal31912 .save_e__id').val(e__id);
     $('#modal31912 .save_x__id').val(x__id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
@@ -1520,9 +1523,8 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .fa_search a').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(current_title)+'&o=r&s=solid');
 
     //Source Privacy:
-    update_form_select(6177, $('.s__12274_'+e__id).attr('e__privacy'), 1);
+    update_form_select(6177, current_privacy, 1);
 
-    var current_cover = $('.ui_e__cover_'+e__id+':first').attr('raw_cover');
 
     $('#modal31912 .random_animal').html('<i class="'+random_animal(true)+'"></i>');
     update__cover(current_cover, false);
@@ -1702,6 +1704,10 @@ function editor_save_e(){
 
             //Update Title:
             update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
+
+            //Update Privacy:
+            $('.s__12274_'+e__id).attr('e__privacy', modify_data['save_e__privacy']);
+            update_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_x__id'], false);
             
             //Update Raw Cover:
             $('.ui_e__cover_'+modify_data['save_e__id']+':first').attr('raw_cover', modify_data['save_e__cover']);
