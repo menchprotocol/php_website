@@ -1463,14 +1463,14 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         }
     );
 
-    if(!loading_inline_container && loading_button){
+    if(!loading_inline_container && loading_button && widget){
         //Attach to widget:
         $(loading_button).click(function (e) {
             widget.open();
         });
     }
 
-    if(loading_modal){
+    if(loading_modal && widget){
         //Attach to widget:
         $(loading_modal).on('hidden.bs.modal', function () {
             widget.destroy({ removeThumbnails: true })
@@ -2404,6 +2404,7 @@ function update_form_select(element_id, new_e__id, initial_loading){
         has_unsaved_changes = true;
         if(element_id==4737){
             //Changing idea type would re-load dynamic fields based on type:
+            console.log('Reloading: '+element_id+' with value: '+' NEW ID '+new_e__id+' / '+$('#modal31911 .created_i__id').val());
             load_i_dynamic($('#modal31911 .created_i__id').val(), 0, new_e__id, false);
         }
     }
