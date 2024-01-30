@@ -1492,7 +1492,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__hashtag && $focus_e && $discovery_mode;
 
     $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
-    $has_sortable = $x__id > 0 && !$focus_card && $write_privacy_i && in_array($x__type, $CI->config->item('n___4603')) && !in_array($i['x__type'], $CI->config->item('n___42348'));
+    $has_sortable = $x__id > 0 && !$focus_card && $write_privacy_i && in_array($x__type, $CI->config->item('n___4603'));
 
     if($discovery_mode || $cache_app) {
         if($link_creator && $top_i__hashtag){
@@ -2019,7 +2019,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $has_hard_lock = in_array($e['e__privacy'], $CI->config->item('n___30956')) && !$e_is_e;
     $has_soft_lock = !superpower_unlocked(12701) && ($has_hard_lock || (!in_array($e['e__privacy'], $CI->config->item('n___7357')) && !$write_privacy_e));
     $has_any_lock = $is_cache || (!superpower_unlocked(12701) && ($has_soft_lock || $has_hard_lock));
-    $has_sortable = $x__id > 0 && !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && superpower_unlocked(13422) && !in_array($e['x__type'], $CI->config->item('n___42348'));
+    $has_sortable = $x__id > 0 && !$has_soft_lock && in_array($x__type, $CI->config->item('n___13911')) && superpower_unlocked(13422);
     $show_text_editor = $write_privacy_e && !$has_any_lock && !$is_cache;
 
     //Source UI
