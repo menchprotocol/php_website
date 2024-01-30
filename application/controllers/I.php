@@ -376,7 +376,7 @@ class I extends CI_Controller {
                 //Fetch the current value:
                 $counted = 0;
                 $unique_values = array();
-                if($_POST['i__id'] > 0){ //Must have an original ID to possibly have a value...
+                if($i__id > 0){ //Must have an original ID to possibly have a value...
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
