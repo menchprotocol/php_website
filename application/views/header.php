@@ -959,7 +959,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Idea Message -->
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
                     <div class="idea_controllers">
@@ -992,19 +992,19 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Idea Hashtag -->
                     <div class="dynamic_editing_input hash_group">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': '. ' <b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
                     <!-- Idea Access -->
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].':';  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <div class="dynamic_selector"><?= view_single_select(31004, 31005, true, true); ?></div>
                     </div>
 
                     <!-- Idea Type -->
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].':';  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <div class="dynamic_selector"><?= view_single_select(4737, 0, true, true); ?></div>
                     </div>
 
@@ -1049,20 +1049,20 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Source Title -->
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6197]['m__cover'].'</span>'.$e___6206[6197]['m__title'].': '. ( in_array(6197, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6197]['m__cover'].'</span>'.$e___6206[6197]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <textarea class="form-control unsaved_warning save_e__title main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
 
 
                     <!-- Source Handle -->
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[32338]['m__cover'].'</span>'.$e___6206[32338]['m__title'].': '. ( in_array(32338, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[32338]['m__cover'].'</span>'.$e___6206[32338]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
                     </div>
 
                     <!-- Source Privacy -->
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].':';  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <div class="dynamic_selector"><?= view_single_select(6177, 0, true, true); ?></div>
                     </div>
 
@@ -1101,7 +1101,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </table>
                     </div>
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': '. ( in_array(6198, $this->config->item('n___42174')) ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' );  ?></h3>
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': '. '<b title="Required Field" style="color:#FF0000;">*</b>';  ?></h3>
                         <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
                         <input type="text" class="form-control unsaved_warning save_e__cover superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
                         <div>
