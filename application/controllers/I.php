@@ -491,21 +491,37 @@ class I extends CI_Controller {
                 'message' => 'Missing Transaction Data',
             ));
 
+        } elseif (!isset($_POST['save_i__type']) || !in_array($_POST['save_i__type'], $this->config->item('n___4737'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid idea Type',
+            ));
+        } elseif (!isset($_POST['save_i__privacy']) || !in_array($_POST['save_i__privacy'], $this->config->item('n___31004'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid idea Privacy',
+            ));
         }
 
-        $is_new_idea = !strlen($_POST['save_i__hashtag']) && !intval($_POST['save_i__id']);
 
-        if(!$is_new_idea){
+
+        if($_POST['save_i__id'] > 0){
+
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['save_i__id'],
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
             if(!count($is)){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'Idea Not Active',
+                    'message' => 'Idea Not Valid',
                 ));
             }
+            //Might be new:
+            $is_new_idea = ( $is[0]['i__privacy']==42636 );
+
+        } else {
+            //Must be new:
+            $is_new_idea = true;
         }
 
 
@@ -525,7 +541,7 @@ class I extends CI_Controller {
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
 
         //Process dynamic inputs if any:
-        if(!$is_new_idea){
+        if($_POST['save_i__id'] > 0){
             for ($p = 1; $p <= view_memory(6404,42206); $p++) {
 
                 if(!isset($_POST['save_dynamic_' . $p])){
@@ -612,7 +628,15 @@ class I extends CI_Controller {
 
         //Validate Idea Hashtag & save if needed:
         $attemp_update = 0;
-        if(!$is_new_idea && $is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
+        if($is_new_idea && $_POST['save_i__id'] > 0){
+
+            //Update new idea fields:
+            $this->I_model->update($is[0]['i__id'], array(
+                'i__type' => $_POST['save_i__type'],
+                'i__privacy' => $_POST['save_i__privacy'],
+            ), true, $member_e['e__id']);
+
+        } elseif($is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
 
             $validate_handle = validate_handle($_POST['save_i__hashtag'], $is[0]['i__id'], null);
             if(!$validate_handle['status']){
@@ -638,23 +662,17 @@ class I extends CI_Controller {
                 'i__hashtag' => $is[0]['i__hashtag'],
             ), true, $member_e['e__id']);
 
-        } elseif($is_new_idea){
+        }
 
-            //Create a new hashtag based on the message:
-            $is[0] = $this->I_model->create(array(
-                'i__message' => $_POST['save_i__message'],
-            ), $member_e['e__id']);
 
-            //Also have to add as a comment to another idea?
-            if(intval($_POST['link_i__id'])>0){
-                $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
-                    'x__left' => $_POST['link_i__id'],
-                    'x__right' => $is[0]['i__id'],
-                    'x__type' => 30901, //Reply
-                ));
-            }
-
+        //Also have to add as a comment to another idea?
+        if(intval($_POST['link_i__id'])>0){
+            $this->X_model->create(array(
+                'x__creator' => $member_e['e__id'],
+                'x__left' => $_POST['link_i__id'],
+                'x__right' => $is[0]['i__id'],
+                'x__type' => 30901, //Reply
+            ));
         }
 
 
@@ -691,7 +709,7 @@ class I extends CI_Controller {
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
             'return_i__cache_links' => view_i_links($is[0]),
-            'redirect_idea' => ( $is_new_idea ? '/~'.$is[0]['i__hashtag'] : null ),
+            'redirect_idea' => ( isset($is[0]['i__hashtag']) ? '/~'.$is[0]['i__hashtag'] : null ),
             'message' => $attemp_update.' Attempt Updated | '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 

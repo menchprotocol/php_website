@@ -1003,7 +1003,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                     </div>
 
-                    <!-- Idea Access -->
+                    <!-- Idea Privacy -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
                         <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>

@@ -801,6 +801,11 @@ class E extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Source Handle',
             ));
+        } elseif (!isset($_POST['save_e__privacy']) || !in_array($_POST['save_e__privacy'], $this->config->item('n___6177'))) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Invalid Source Privacy',
+            ));
         } elseif (!isset($_POST['save_e__cover'])) {
             return view_json(array(
                 'status' => 0,
