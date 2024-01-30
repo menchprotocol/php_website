@@ -182,7 +182,7 @@ if(superpower_unlocked()) {
             $('#step'+step_count).removeClass('hidden');
 
             setTimeout(function () {
-                $('#step'+step_count+' .white-border:first').focus();
+                $('#step'+step_count+' .input_border:first').focus();
             }, 144);
 
         }
@@ -322,7 +322,7 @@ if(superpower_unlocked()) {
 
                 <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
 
-                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $e___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border white-border white-border"></div>
+                <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $e___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
 
                 <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
 
@@ -380,13 +380,13 @@ if(superpower_unlocked()) {
                     <!-- Account Name -->
                     <div style="padding:21px 0 3px; display:block;">
                         <div class="main__title"><span class="icon-block"><?= $e___4269[40893]['m__cover'] ?></span><?= $e___4269[40893]['m__title'] ?></div>
-                        <div class="form-group"><input type="text" placeholder="" id="new_username" class="form-control border main__title white-border" /></div>
+                        <div class="form-group"><input type="text" placeholder="" id="new_username" class="form-control border main__title input_border" /></div>
                     </div>
 
                     <!-- Enter Email -->
                     <div class="new_email hidden" style="padding:34px 0 3px; display:block;">
                         <div class="main__title"><span class="icon-block"><?= $e___4269[3288]['m__cover'] ?></span><?= $e___4269[3288]['m__title'] ?></div>
-                        <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title white-border" /></div>
+                        <div class="form-group"><input type="email" placeholder="" id="new_account_email" class="form-control border main__title input_border" /></div>
                     </div>
                     <div class="doclear">&nbsp;</div>
                 </div>
@@ -394,7 +394,7 @@ if(superpower_unlocked()) {
 
                 <!-- Sign in Code -->
                 <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
-                <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border white-border white-border" /></div>
+                <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border input_border" /></div>
                 <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 

@@ -4,7 +4,7 @@
 echo '<form method="GET" action="">';
 
 echo '<div class="mini-header">Search String:</div>';
-echo '<input type="text" class="form-control white-border border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
+echo '<input type="text" class="form-control input_border border maxout" name="search_for" value="'.@$_GET['search_for'].'"><br />';
 
 
 
@@ -67,17 +67,17 @@ if($search_for_set){
 if($search_for_set && count($matching_results) > 0){
     //now give option to replace with:
     echo '<div class="mini-header">Replace With:</div>';
-    echo '<input type="text" class="form-control white-border border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
+    echo '<input type="text" class="form-control input_border border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
 
     //now give option to replace with:
     echo '<div class="mini-header">Append Text:</div>';
-    echo '<input type="text" class="form-control white-border border maxout" name="append_text" value="'.@$_GET['append_text'].'"><br />';
+    echo '<input type="text" class="form-control input_border border maxout" name="append_text" value="'.@$_GET['append_text'].'"><br />';
 }
 
 if($replace_with_set){
     //now give option to replace with:
     echo '<div class="mini-header">Confirm Replacement by Typing "'.$confirmation_keyword.'":</div>';
-    echo '<input type="text" class="form-control white-border border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
+    echo '<input type="text" class="form-control input_border border maxout" name="confirm_statement" value="'. @$_GET['confirm_statement'] .'"><br />';
 }
 
 
