@@ -948,6 +948,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
 
+                    <input type="hidden" class="created_i__id" value="0" />
                     <input type="hidden" class="save_i__id" value="0" />
                     <input type="hidden" class="save_x__id" value="0" />
                     <input type="hidden" class="link_i__id" value="0" />

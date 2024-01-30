@@ -278,8 +278,10 @@ class I extends CI_Controller {
 
         $i__id = 0; //New idea
         $i__type = intval($_POST['current_i__type']);
+        $created_i__id = 0;
 
         if($_POST['i__id'] > 0){
+
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['i__id'],
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -298,6 +300,17 @@ class I extends CI_Controller {
 
             $i__id = intval($is[0]['i__id']);
             $i__type = intval($is[0]['i__type']);
+
+        } else {
+
+            //Create a new idea:
+            $i_new = $this->I_model->create(array(
+                'i__message' => 'Placeholder Text',
+                'i__type' => $_POST['current_i__type'],
+            ), $member_e['e__id']);
+
+            $i__id = $i_new['i__id'];
+            $created_i__id = $i__id;
 
         }
 
@@ -362,7 +375,7 @@ class I extends CI_Controller {
                 //Fetch the current value:
                 $counted = 0;
                 $unique_values = array();
-                if($i__id > 0){
+                if($_POST['i__id'] > 0){ //Must have an original ID to possibly have a value...
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
@@ -405,10 +418,11 @@ class I extends CI_Controller {
                 }
             }
         }
-
+        
         $return_array = array(
             'status' => 1,
             'return_inputs' => $return_inputs,
+            'created_i__id' => $created_i__id,
         );
 
         //Log Modal View:
