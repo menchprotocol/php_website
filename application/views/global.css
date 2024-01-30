@@ -1827,7 +1827,8 @@ label {
 }
 .list-radio-select .list-group-item {
     color:#999999 !important;
-    overflow: hidden;
+    overflow-y: visible;
+    overflow-x: hidden;
     white-space: nowrap;
     text-overflow: ellipsis ellipsis;
 }
@@ -2270,7 +2271,7 @@ input.form-control {
 .mini-cover .cover-content .inner-content {
     margin: 0;
     padding: 0;
-    line-height: 113%;
+    line-height: 121%;
     font-size: 0.75em;
     display: block;
     border-radius: 0;
@@ -2777,7 +2778,7 @@ h4.main__title{
     max-height: 89px;
     overflow-y: hidden;
     overflow-x: auto;
-    line-height: 113%;
+    line-height: 121%;
 }
 .edge-cover.coin-12274 .source_bio{
     padding: 0 0 5px;
