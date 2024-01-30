@@ -228,7 +228,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         $top_i__hashtag = '';
         foreach ($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 32426, //PINNED IDEA
+            'x__type' => 32426, //TARGET IDEA
             '(x__right = ' . $i['i__id'] . ' OR x__left = ' . $i['i__id'] . ')' => null,
             'x__left >' => 0,
             'x__right >' => 0,

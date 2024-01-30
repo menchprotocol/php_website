@@ -872,7 +872,7 @@ function view_single_select_form($cache_e__id, $selected_e__id){
 
     $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.$e___this[$selected_e__id]['m__title'].'<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span></span>';
+    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.$e___this[$selected_e__id]['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>';
 
     $ui .= '</button>';
 
@@ -886,7 +886,7 @@ function view_single_select_form($cache_e__id, $selected_e__id){
 
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
         if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-            $ui .= '<a class="dropdown-item drop_item_form_'.$cache_e__id.' main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.')"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
+            $ui .= '<a class="dropdown-item drop_item_form_'.$cache_e__id.' main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.')"><span class="content_'.$e__id.'"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
         }
 
     }

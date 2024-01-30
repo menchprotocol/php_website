@@ -2358,105 +2358,12 @@ function isNormalInteger(str) {
 
 
 function update_form_select(element_id, new_e__id){
-
-    /*
-    *
-    * TODO complete!
-    *
-    * */
-
-
-    if($('.dropmenu_instant_'+element_id).length && !o__id){
-        o__id = $('.dropmenu_instant_'+element_id+':first').attr('o__id');
-        x__id = $('.dropmenu_instant_'+element_id+':first').attr('x__id');
-    }
-
-    console.log('Attempt to update dropdown @'+element_id+' to @'+new_e__id);
-
-    new_e__id = parseInt(new_e__id);
-
-    //Deleting Anything?
-    var migrate_s__handle = 0;
-    if(element_id==31004 && !(new_e__id in js_e___31871)){
-
-        //Deleting Idea:
-        var migrate_s__handle = prompt("Are you sure you want to delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
-
-    } else if(element_id==6177 && !(new_e__id in js_e___7358)){
-
-        //Deleting Source:
-        var migrate_s__handle = prompt("Are you sure you want to delete this source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
-
-    }
-
-
-
-    //Show Loading
-    var data_object = eval('js_e___'+element_id);
-    if(!data_object[new_e__id]){
-        alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
-        return false;
-    }
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
-
-    $.post("/x/update_instant_select", {
-        focus_id:fetch_int_val('#focus_id'),
-        o__id: o__id,
-        element_id: element_id,
-        new_e__id: new_e__id,
-        migrate_s__handle: migrate_s__handle,
-        x__id: x__id
-    }, function (data) {
-        if (data.status) {
-
-            //Update on page:
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
-
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + x__id).removeClass('active');
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
-
-            var selected_e__id = $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value');
-            $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value' , new_e__id);
-
-            if(element_id==6177){
-                //Source access:
-                $('.s__12274_'+o__id).attr('e__privacy', new_e__id);
-            } else if(element_id==4737){
-                //Idea Type:
-                $('.s__12273_'+o__id).attr('i__type', new_e__id);
-            }
-
-            if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
-
-                //Go to main idea page:
-                js_redirect(data.deletion_redirect);
-
-            } else if( data.delete_element && data.delete_element.length > 0 ){
-
-                //Go to main idea page:
-                setTimeout(function () {
-                    //Restore background:
-                    $( data.delete_element ).fadeOut();
-                    setTimeout(function () {
-                        //Restore background:
-                        $( data.delete_element ).remove();
-                    }, 55);
-                }, 377);
-
-            }
-
-            if( data.auto_open_i_editor_modal ){
-                //We need to show idea modal:
-                editor_load_i(o__id, $('.s__12273_'+o__id).attr('x__id'));
-            }
-
-        } else {
-
-            //Show error:
-            alert(data.message);
-
-        }
-    });
+    //Toggles UI for FORM Selector
+    $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
+    $('.dropd_form_' + element_id + ' .optiond_'+new_e__id).addClass('active');
+    $('.dropd_form_' + element_id).attr('selected_value', new_e__id);
+    $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+new_e__id).html());
+    has_unsaved_changes = true;
 }
 
 
