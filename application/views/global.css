@@ -2794,11 +2794,25 @@ h4.main__title{
     margin-bottom: 10px !important;
 }
 
+.search_bar,
+.card_cover.contrast_bg:hover,
+.coin-12274.card_cover:hover .cover-content,
+.coin-6287.card_cover:hover .cover-content{
+    background: #FFFFFF !important;
+    color: #000000 !important;
+}
+
 @media (max-width:610px) {
+
+    .search_bar,
+    .card_cover.contrast_bg:hover,
+    .coin-12274.card_cover:hover .cover-content,
+    .coin-6287.card_cover:hover .cover-content{
+        background: transparent !important;
+    }
 
     .focus-cover .cover-btn i {
         font-size: 1.34em !important;
-        margin-top: -18%;
     }
 
     .mini-frame{
@@ -2964,13 +2978,7 @@ h4.main__title{
     background: rgba(239,239,239,0.89) !important;
 }
 
-.search_bar,
-.card_cover.contrast_bg:hover,
-.coin-12274.card_cover:hover .cover-content,
-.coin-6287.card_cover:hover .cover-content{
-    background: #FFFFFF !important;
-    color: #000000 !important;
-}
+
 .focus-cover.coin-12273,
 .focus-cover.coin-6255{
     margin-bottom: -40px !important;
