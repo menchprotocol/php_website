@@ -4179,7 +4179,7 @@ main {
     margin: 5px 0 -1px;
     font-size: 1.1em;
     position: relative;
-    z-index: 999;
+    z-index: 998;
 }
 .tab_content{
     max-height: 987px;
