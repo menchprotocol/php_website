@@ -724,7 +724,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
 }
 
-function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
+function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     /*
      * Either single or multi select UI elements...
@@ -741,7 +741,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         //Main item must be in memory:
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_select() @'.$focus_id.' missing in Application Cache',
+            'x__message' => 'view_instant_select() @'.$focus_id.' missing in Application Cache',
             'x__up' => $focus_id,
             'x__down' => $down_e__id,
             'x__right' => $right_i__id,
@@ -751,7 +751,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         //Must be either:
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_select() @'.$focus_id.' not in single select @33331 or multi select 33332',
+            'x__message' => 'view_instant_select() @'.$focus_id.' not in single select @33331 or multi select 33332',
             'x__up' => $focus_id,
             'x__down' => $down_e__id,
             'x__right' => $right_i__id,
