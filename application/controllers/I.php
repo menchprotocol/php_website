@@ -307,6 +307,7 @@ class I extends CI_Controller {
             $i_new = $this->I_model->create(array(
                 'i__message' => 'Placeholder Text',
                 'i__type' => $_POST['current_i__type'],
+                'i__privacy' => 42636, //Pre-drafting idea
             ), $member_e['e__id']);
 
             $i__id = $i_new['i__id'];
@@ -418,7 +419,7 @@ class I extends CI_Controller {
                 }
             }
         }
-        
+
         $return_array = array(
             'status' => 1,
             'return_inputs' => $return_inputs,

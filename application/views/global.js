@@ -1197,6 +1197,7 @@ function load_i_dynamic(i__id, x__id, current_i__type){
         if (data.status) {
 
             if(!i__id && data.created_i__id>0){
+                console.log('NEW IDEA #'+data.created_i__id+' has been created');
                 created_i__id = data.created_i__id;
             }
 
