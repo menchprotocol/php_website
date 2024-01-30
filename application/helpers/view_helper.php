@@ -2299,6 +2299,12 @@ function view_card_e($x__type, $e, $extra_class = null)
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, $order_columns) as $social_link){
 
+        if(strlen($social_link['x__message']) && in_array($social_link['x__up'], $CI->config->item('n___32172'))){
+            //Must always see, show content here:
+            $ui .= '<div class="source_bio grey center">'.$social_link['x__message'].'</div>';
+            continue;
+        }
+
         //Determine link type:
         $social_url = false;
 
