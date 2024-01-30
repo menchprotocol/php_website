@@ -2564,19 +2564,6 @@ input.form-control {
 
 
 
-.cover-btn i {
-    font-size: 1.21em !important;
-    margin-top: -26%;
-}
-.focus-cover .cover-btn i {
-    font-size: 1.34em !important;
-    margin-top: -22%;
-}
-.list-covers .card_cover {
-    text-align: center;
-    padding:0 5px !important;
-    margin-bottom: 10px !important;
-}
 textarea {
     resize: none;
 }
@@ -2792,7 +2779,27 @@ h4.main__title{
     overflow: visible;
 }
 
+
+.cover-btn i {
+    font-size: 1.21em !important;
+    margin-top: -26%;
+}
+.focus-cover .cover-btn i {
+    font-size: 1.55em !important;
+    margin-top: -18%;
+}
+.list-covers .card_cover {
+    text-align: center;
+    padding:0 5px !important;
+    margin-bottom: 10px !important;
+}
+
 @media (max-width:610px) {
+
+    .focus-cover .cover-btn i {
+        font-size: 1.34em !important;
+        margin-top: -18%;
+    }
 
     .mini-frame{
         max-width: 233px;
