@@ -1706,7 +1706,7 @@ function editor_save_e(){
             update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
 
             //Update Privacy:
-            $('.s__12274_'+e__id).attr('e__privacy', modify_data['save_e__privacy']);
+            $('.s__12274_'+modify_data['save_e__id']).attr('e__privacy', modify_data['save_e__privacy']);
             update_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_x__id'], false);
             
             //Update Raw Cover:
