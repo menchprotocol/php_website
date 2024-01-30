@@ -1163,10 +1163,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
 
     //Load dynamic data:
-    var created_i__id = load_i_dynamic(i__id, x__id, current_i__type);
-
-    //Initiate Idea  Uploader:
-    load_cloudinary(13572, ['i__id_'+i__id, 'created_i__id_'+created_i__id, 'link_i__id_'+link_i__id, 'quote_i__id_'+quote_i__id], '.uploader_13572', '#modal31911');
+    var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
 
     //Update the UI so we have this saved:
     if(!i__id && created_i__id>0){
@@ -1181,7 +1178,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
 }
 
-function load_i_dynamic(i__id, x__id, current_i__type){
+function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
 
     var created_i__id = 0;
 
@@ -1198,6 +1195,12 @@ function load_i_dynamic(i__id, x__id, current_i__type){
             if(!i__id && data.created_i__id>0){
                 console.log('NEW IDEA #'+data.created_i__id+' has been created');
                 created_i__id = data.created_i__id;
+                i__id = created_i__id;
+            }
+
+            if(initial_loading){
+                //Initiate Idea  Uploader:
+                load_cloudinary(13572, ['i__id_'+i__id], '.uploader_13572', '#modal31911');
             }
 
             var current_header = null;
@@ -2404,7 +2407,7 @@ function update_form_select(element_id, new_e__id, initial_loading){
         has_unsaved_changes = true;
         if(element_id==4737){
             //Changing idea type would re-load dynamic fields based on type:
-            load_i_dynamic($('#modal31911 .created_i__id').val(), 0, new_e__id);
+            load_i_dynamic($('#modal31911 .created_i__id').val(), 0, new_e__id, false);
         }
     }
 }
