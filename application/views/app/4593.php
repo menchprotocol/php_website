@@ -1,7 +1,7 @@
 <?php
 
 //List all interactions types and their counts:
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //Summary
 $table_sortable = array('#th_primary','#th_count','#th_total','#th_points','#th_perfect');
 $total_count = 0;
 $total_access = array();

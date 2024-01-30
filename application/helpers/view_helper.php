@@ -738,7 +738,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     $CI =& get_instance();
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e___11035 = $CI->config->item('e___11035'); //Summary
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
     $focus_select = $CI->config->item( $single_select ? 'e___33331' : 'e___33332');
@@ -838,7 +838,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             $overflow_reached = true;
         }
 
-        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42355]['m__cover'].'</span>' : '' );
+        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' );
 
         if($selected){
             $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($m['m__title']).'">'.$headline.'<span class="icon-block-xs"><i class="fal fa-pen-to-square"></i></span></a>';
@@ -863,50 +863,41 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
 
 
-function view_single_select_form($cache_e__id, $selected_e__id, $write_privacy_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_single_select_form($cache_e__id, $selected_e__id){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
-    $member_e = superpower_unlocked();
-    $e___4527 = $CI->config->item('e___4527');
+    $e___11035 = $CI->config->item('e___11035'); //Summary
 
-
-    if($selected_e__id && !isset($e___this[$selected_e__id])){
+    if(!$selected_e__id || !isset($e___this[$selected_e__id])){
         return false;
     }
 
     //Make sure it's not locked:
-    $write_privacy_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $write_privacy_i : false );
+    $ui = '<div class="dropdown inline-block dropd_form_'.$cache_e__id.'" selected_value="'.$selected_e__id.'">';
 
-    $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
+    $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
-
-    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' ) : '' ).'</span>'.( $show_full_name ? '<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '' );
+    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.$e___this[$selected_e__id]['m__title'].'<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span></span>';
 
     $ui .= '</button>';
 
-    if($write_privacy_i){
+    $ui .= '<div class="dropdown-menu dropmenu_form_'.$cache_e__id.'" aria-labelledby="dropdown_form_'.$cache_e__id.'">';
 
-        $ui .= '<div class="dropdown-menu dropmenu_'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'">';
+    foreach($e___this as $e__id => $m) {
 
-        foreach($e___this as $e__id => $m) {
-
-            if(in_array($e__id, $CI->config->item('n___32145'))){
-                continue; //Locked Dropdown
-            }
-
-            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_select_single('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')" title="'.$m['m__message'].'"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
-            }
-
+        if(in_array($e__id, $CI->config->item('n___32145'))){
+            continue; //Locked Dropdown
         }
 
-        $ui .= '</div>';
+        $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+        if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
+            $ui .= '<a class="dropdown-item drop_item_form_'.$cache_e__id.' main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.')"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
+        }
+
     }
 
-
+    $ui .= '</div>';
     $ui .= '</div>';
 
     return $ui;
@@ -918,8 +909,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
     $member_e = superpower_unlocked();
-    $e___4527 = $CI->config->item('e___4527');
-
+    $e___11035 = $CI->config->item('e___11035'); //Summary
 
     if($selected_e__id && !isset($e___this[$selected_e__id])){
 
@@ -945,9 +935,9 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
     //Make sure it's not locked:
     $write_privacy_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $write_privacy_i : false );
 
-    $ui = '<div class="dropdown inline-block dropd_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected-val="'.$selected_e__id.'">';
+    $ui = '<div class="dropdown inline-block dropd_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected_value="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
+    $ui .= '<button type="button" '.( $write_privacy_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
     $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' ) : '' ).'</span>'.( $show_full_name ? '<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '' );
 
@@ -955,7 +945,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 
     if($write_privacy_i){
 
-        $ui .= '<div class="dropdown-menu dropmenu_'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'" aria-labelledby="dropdownMenuButton'.$cache_e__id.'_'.$o__id.'_'.$x__id.'">';
+        $ui .= '<div class="dropdown-menu dropmenu_instant_'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'" aria-labelledby="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'">';
 
         foreach($e___this as $e__id => $m) {
 
@@ -965,7 +955,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<a class="dropdown-item dropi_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_select_single('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')" title="'.$m['m__message'].'"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
+                $ui .= '<a class="dropdown-item drop_item_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
             }
 
         }
@@ -1464,7 +1454,7 @@ function view_media($media_url, $link){
 
 function view_featured_links($x__type, $location, $m = null, $focus_card){
     $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e___11035 = $CI->config->item('e___11035'); //Summary
     return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'>'.( $focus_card ? '<a href="/@'.$location['e__handle'].'">' : '' ).'<span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xx' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame creator_headline '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus_card ? '</a>' : '' ).'</div>';
 }
 
@@ -1483,7 +1473,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         return view_media($i['x__message'], '/~'.$i['i__hashtag']);
     }
 
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e___11035 = $CI->config->item('e___11035'); //Summary
     $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
@@ -1728,7 +1718,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                             //Delete Permanently
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" this_id="'.$i['i__privacy'].'" onclick="update_select_single(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item dropi_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" this_id="'.$i['i__privacy'].'" onclick="update_instant_select(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(28727)){
 
@@ -2011,7 +2001,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $write_privacy_e = ( $access_locked ? false :  write_privacy_e($e['e__handle']) );
     $member_e = superpower_unlocked();
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e___11035 = $CI->config->item('e___11035'); //Summary
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
@@ -2164,7 +2154,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                             //Delete Permanently
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" this_id="'.$e['e__privacy'].'" onclick="update_select_single(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item dropi_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" this_id="'.$e['e__privacy'].'" onclick="update_instant_select(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
 

@@ -168,7 +168,7 @@ class X extends CI_Controller
         //Adds Idea to the Members read
 
         $member_e = superpower_unlocked();
-        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //Summary
 
         //valid idea?
         $is = $this->I_model->fetch(array(
@@ -621,7 +621,7 @@ class X extends CI_Controller
         ));
 
         //All good:
-        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //Summary
         return view_json(array(
             'status' => 1,
             'message' => $cdn_status['cdn_url'],
@@ -1245,7 +1245,7 @@ class X extends CI_Controller
 
 
 
-    function update_select_single(){
+    function update_instant_select(){
 
         if(!isset($_POST['focus_id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_e__id']) || !isset($_POST['migrate_s__handle']) || !isset($_POST['x__id'])){
             return view_json(array(
@@ -1282,11 +1282,11 @@ class X extends CI_Controller
         if(is_array($_POST['o__id'])){
             $mass_result = array();
             foreach($_POST['o__id'] as $o__id){
-                array_push($mass_result, $this->X_model->update_select_single($_POST['focus_id'],$o__id,$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['x__id']));
+                array_push($mass_result, $this->X_model->update_instant_select($_POST['focus_id'],$o__id,$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['x__id']));
             }
             return view_json($mass_result);
         } else {
-            return view_json($this->X_model->update_select_single($_POST['focus_id'],$_POST['o__id'],$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['x__id']));
+            return view_json($this->X_model->update_instant_select($_POST['focus_id'],$_POST['o__id'],$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['x__id']));
         }
 
     }

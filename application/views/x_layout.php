@@ -1,6 +1,6 @@
 <?php
 
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //Summary
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
@@ -229,10 +229,10 @@ if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
             if(count($query_subset) >= 2){
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
-                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdownMenuButton'.$followings_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdown_instant_'.$followings_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 $breadcrum_content .= '<span style="padding-left:5px;"><i class="fal fa-chevron-square-down"></i></span>';
                 $breadcrum_content .= '</button>';
-                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton'.$followings_i['i__id'].'">';
+                $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_'.$followings_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
                     $breadcrum_content .= '<a href="/'.$top_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
                 }

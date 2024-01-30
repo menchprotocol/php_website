@@ -3,7 +3,7 @@ $member_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $e_segment = view_valid_handle_e($first_segment);
 $second_segment = $this->uri->segment(2);
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //Summary
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 $e___6201 = $this->config->item('e___6201'); //IDEA Cache
 $e___6206 = $this->config->item('e___6206'); //Source Cache
@@ -999,13 +999,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Idea Type -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(4737, 0, true, true); ?></div>
+                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                     </div>
 
                     <!-- Idea Access -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, true, true); ?></div>
+                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
                     </div>
 
                     <!-- Link Note -->
@@ -1062,7 +1062,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Source Privacy -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(6177, 0, true, true); ?></div>
+                        <div class="dynamic_selector"><?= view_single_select_form(6177, 6181); ?></div>
                     </div>
 
                     <!-- SOURCE COVER -->

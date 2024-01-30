@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //Summary
 $last_x_days = 7;
 
 $x__time_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));

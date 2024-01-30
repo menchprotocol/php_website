@@ -70,7 +70,7 @@ if(superpower_unlocked()) {
 
 
     $e___4269 = $this->config->item('e___4269');
-    $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+    $e___11035 = $this->config->item('e___11035'); //Summary
 
     $this_attempt = array(
         'x__type' => ( count($sign_i) ? 7560 : 7561 ),

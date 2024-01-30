@@ -2,7 +2,7 @@
 
 $e__handle = ( isset($_GET['e__handle']) ? $_GET['e__handle'] : null );
 $i__hashtag = ( !$e__handle && isset($_GET['i__hashtag']) ? $_GET['i__hashtag'] : null );
-$e___11035 = $this->config->item('e___11035'); //NAVIGATION
+$e___11035 = $this->config->item('e___11035'); //Summary
 $e___42225 = $this->config->item('e___42225'); //MENCH Points
 $e___42263 = $this->config->item('e___42263'); //Link Groups
 

@@ -68,7 +68,7 @@ class App extends CI_Controller
         $member_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
-        $e___11035 = $this->config->item('e___11035'); //NAVIGATION
+        $e___11035 = $this->config->item('e___11035'); //Summary
 
         if($memory_detected && $is_u_request){
             //Needs superpowers?

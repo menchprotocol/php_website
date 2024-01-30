@@ -707,7 +707,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
     $CI =& get_instance();
     $e___6287 = $CI->config->item('e___6287'); //APP
-    $e___11035 = $CI->config->item('e___11035'); //NAVIGATION
+    $e___11035 = $CI->config->item('e___11035'); //Summary
     $e___40946 = $CI->config->item('e___40946'); //Source List Controllers
     $list_config = array(); //To compile the settings of this sheet:
     $column_e = array();
