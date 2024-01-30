@@ -262,31 +262,43 @@ class I extends CI_Controller {
     function editor_load_i()
     {
 
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
         $member_e = superpower_unlocked();
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || !isset($_POST['x__id'])) {
+        } elseif (!isset($_POST['i__id']) || !isset($_POST['x__id']) || !isset($_POST['current_i__type'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
             ));
-        } elseif (!count($is)) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Idea is no longer active',
+        }
+
+
+        $i__id = 0; //New idea
+        $i__type = intval($_POST['current_i__type']);
+
+        if($_POST['i__id'] > 0){
+            $is = $this->I_model->fetch(array(
+                'i__id' => $_POST['i__id'],
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
-        } elseif (!write_privacy_i($is[0]['i__hashtag'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'You are missing permission to edit this idea',
-            ));
+            if (!count($is)) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'Idea is no longer active',
+                ));
+            } elseif (!write_privacy_i($is[0]['i__hashtag'])) {
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'You are missing permission to edit this idea',
+                ));
+            }
+
+            $i__id = intval($is[0]['i__id']);
+            $i__type = intval($is[0]['i__type']);
+
         }
 
         //Fetch dynamic data based on idea type:
@@ -296,10 +308,10 @@ class I extends CI_Controller {
         $e___11035 = $this->config->item('e___11035'); //Summary
 
 
-        $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.$e___4737[$is[0]['i__type']]['m__cover'].'</span>'.$e___4737[$is[0]['i__type']]['m__title'].'</div>';
+        $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.$e___4737[$i__type]['m__cover'].'</span>'.$e___4737[$i__type]['m__title'].'</div>';
 
 
-        foreach(array_intersect($this->config->item('n___'.$is[0]['i__type']), $this->config->item('n___42179')) as $dynamic_e__id){
+        foreach(array_intersect($this->config->item('n___'.$i__type), $this->config->item('n___42179')) as $dynamic_e__id){
 
             //Let's first determine the data type:
             $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
@@ -311,7 +323,7 @@ class I extends CI_Controller {
                     'x__creator' => $member_e['e__id'],
                     'x__up' => 42179, //Dynamic Input Fields
                     'x__down' => $dynamic_e__id,
-                    'x__right' => $is[0]['i__id'],
+                    'x__right' => $i__id,
                     'x__reference' => $_POST['x__id'],
                     'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong',
                 ));
@@ -332,7 +344,7 @@ class I extends CI_Controller {
                     'd__id' => $dynamic_e__id,
                     'd__is_radio' => 1,
                     'd_x__id' => 0,
-                    'd__html' => view_select($dynamic_e__id, 0, $is[0]['i__id']),
+                    'd__html' => view_select($dynamic_e__id, 0, $i__id),
                     'd__value' => '',
                     'd__type_name' => '',
                     'd__placeholder' => '',
@@ -350,27 +362,30 @@ class I extends CI_Controller {
                 //Fetch the current value:
                 $counted = 0;
                 $unique_values = array();
-                foreach($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                    'x__right' => $is[0]['i__id'],
-                    'x__up' => $dynamic_e__id,
-                ), array('x__up')) as $curr_val){
-                    if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
-                        $counted++;
-                        array_push($unique_values, $curr_val['x__message']);
-                        array_push($return_inputs, array(
-                            'd__id' => $dynamic_e__id,
-                            'd__is_radio' => 0,
-                            'd_x__id' => $curr_val['x__id'],
-                            'd__html' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                            'd__value' => $curr_val['x__message'],
-                            'd__type_name' => html_input_type($data_type),
-                            'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                            'd__profile_header' => $profile_header,
-                        ));
+                if($i__id > 0){
+                    foreach($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+                        'x__right' => $i__id,
+                        'x__up' => $dynamic_e__id,
+                    ), array('x__up')) as $curr_val){
+                        if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
+                            $counted++;
+                            array_push($unique_values, $curr_val['x__message']);
+                            array_push($return_inputs, array(
+                                'd__id' => $dynamic_e__id,
+                                'd__is_radio' => 0,
+                                'd_x__id' => $curr_val['x__id'],
+                                'd__html' => '<span class="icon-block-xs">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                                'd__value' => $curr_val['x__message'],
+                                'd__type_name' => html_input_type($data_type),
+                                'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                                'd__profile_header' => $profile_header,
+                            ));
+                        }
                     }
                 }
+
 
                 if(!$counted){
                     foreach($this->E_model->fetch(array(
@@ -401,7 +416,7 @@ class I extends CI_Controller {
             'x__creator' => $member_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
             'x__up' => 31911, //Edit Idea
-            'x__right' => $is[0]['i__id'],
+            'x__right' => $i__id,
             'x__reference' => $_POST['x__id'],
             'x__metadata' => $return_array,
         ));

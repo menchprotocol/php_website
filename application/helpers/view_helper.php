@@ -757,16 +757,6 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             'x__right' => $right_i__id,
         ));
         return false;
-    } elseif(($down_e__id && $right_i__id) || (!$down_e__id && !$right_i__id)){
-        //Must be either:
-        $CI->X_model->create(array(
-            'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_select() Required either a Source OR Idea ID',
-            'x__up' => $focus_id,
-            'x__down' => $down_e__id,
-            'x__right' => $right_i__id,
-        ));
-        return false;
     }
 
     $already_selected = array();
@@ -806,7 +796,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             }
         }
 
-    } else {
+    } elseif($right_i__id>0) {
 
         //Idea focus:
         foreach($CI->X_model->fetch(array(
@@ -886,7 +876,7 @@ function view_single_select_form($cache_e__id, $selected_e__id){
 
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
         if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-            $ui .= '<a class="dropdown-item drop_item_form_'.$cache_e__id.' main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.')"><span class="content_'.$e__id.'"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
+            $ui .= '<a class="dropdown-item drop_item_form_'.$cache_e__id.' main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.', 0)"><span class="content_'.$e__id.'"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
         }
 
     }
@@ -1522,7 +1512,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" class="card_cover card_i_cover contrast_bg '.( $focus_card ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 card_click_x ' : ' coin-12273 card_click_i ' ).' coinface-12273 s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
