@@ -838,7 +838,7 @@ function view_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             $overflow_reached = true;
         }
 
-        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42179]['m__cover'].'</span>' : '' );
+        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[42355]['m__cover'].'</span>' : '' );
 
         if($selected){
             $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($m['m__title']).'">'.$headline.'<span class="icon-block-xs"><i class="fal fa-pen-to-square"></i></span></a>';
