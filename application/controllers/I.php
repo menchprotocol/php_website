@@ -284,7 +284,6 @@ class I extends CI_Controller {
 
             $is = $this->I_model->fetch(array(
                 'i__id' => $_POST['i__id'],
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
             if (!count($is)) {
                 return view_json(array(
