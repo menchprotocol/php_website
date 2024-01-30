@@ -1162,12 +1162,11 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     }, 987);
 
 
-    //Initiate Idea  Uploader:
-    load_cloudinary(13572, ['i__id_'+i__id, 'link_i__id_'+link_i__id, 'quote_i__id_'+quote_i__id], '.uploader_13572', '#modal31911');
-
-
     //Load dynamic data:
     var created_i__id = load_i_dynamic(i__id, x__id, current_i__type);
+
+    //Initiate Idea  Uploader:
+    load_cloudinary(13572, ['i__id_'+i__id, 'created_i__id_'+created_i__id, 'link_i__id_'+link_i__id, 'quote_i__id_'+quote_i__id], '.uploader_13572', '#modal31911');
 
     //Update the UI so we have this saved:
     if(!i__id && created_i__id>0){
@@ -1374,7 +1373,7 @@ function editor_save_i(){
 
 function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){
 
-    console.log('Initiating Uploader @'+uploader_id);
+    console.log('Initiating Uploader @'+uploader_id+' with tags '+uploader_tags.join(' & '));
 
     if(js_e___42363[uploader_id]==undefined){
         console.log('Unknown Uploader @'+uploader_id+' Missing in @42363');
