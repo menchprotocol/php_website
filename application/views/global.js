@@ -1275,8 +1275,11 @@ function editor_save_i(){
     i_saving = true;
     $(".editor_save_i").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
+    var current_i__id = parseInt($('#modal31911 .save_i__id').val());
+    var created_i__id = parseInt($('#modal31911 .created_i__id').val());
+
     var modify_data = {
-        save_i__id:         $('#modal31911 .save_i__id').val(),
+        save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
         save_x__id:         $('#modal31911 .save_x__id').val(),
         link_i__id:         $('#modal31911 .link_i__id').val(),
         save_x__message:    $('#modal31911 .save_x__message').val().trim(),
