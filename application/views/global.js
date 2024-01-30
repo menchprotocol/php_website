@@ -1707,10 +1707,8 @@ function editor_save_e(){
 
             //Update Privacy:
             $('.s__12274_'+modify_data['save_e__id']).attr('e__privacy', modify_data['save_e__privacy']);
-            if(modify_data['save_x__id'] > 0){
-                ui_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_x__id'], false);
-            }
-            
+            ui_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_x__id'], false);
+
             //Update Raw Cover:
             $('.ui_e__cover_'+modify_data['save_e__id']+':first').attr('raw_cover', modify_data['save_e__cover']);
 
