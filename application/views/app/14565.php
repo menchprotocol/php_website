@@ -21,7 +21,7 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 34513, //Pinned
     'x__up' => $website_id,
-), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $this_i){
+), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
     } else {
@@ -29,25 +29,6 @@ foreach($this->X_model->fetch(array(
         array_push($secondary_i_list, $this_i);
     }
 }
-
-//Secondary Ideas:
-foreach($this->X_model->fetch(array(
-    'x__up' => $website_id,
-    'x__type' => 32264, //Reshare
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__weight' => 'DESC')) as $this_i){
-    array_push($secondary_i_list, $this_i);
-}
-
-if(!count($primary_i)){
-    //Try to assign a secondary ID as primary for now
-    foreach($secondary_i_list as $sec_i){
-        $primary_i = $sec_i;
-        break;
-    }
-}
-
 
 
 echo ' <script> $(document).ready(function () { show_more('.$primary_i['i__id'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
