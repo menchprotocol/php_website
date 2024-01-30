@@ -467,6 +467,13 @@ class E extends CI_Controller
 
         if($adding_to_i) {
 
+            $e_already_linked = count($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'x__up' => $focus_e['e__id'],
+                'x__right' => $fetch_o[0]['i__id'],
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            )));
+
             //Add Reference:
             $ur2 = $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
@@ -474,13 +481,6 @@ class E extends CI_Controller
                 'x__up' => $focus_e['e__id'],
                 'x__right' => $fetch_o[0]['i__id'],
             ));
-
-            $e_already_linked = count($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__up' => $focus_e['e__id'],
-                'x__right' => $fetch_o[0]['i__id'],
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            )));
 
         } else {
 
