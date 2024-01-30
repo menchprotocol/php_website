@@ -2426,6 +2426,7 @@ function update_form_select(element_id, new_e__id, initial_loading){
 
 function ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name){
 
+    console.log('UI instant');
     var data_object = eval('js_e___'+element_id);
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
 
