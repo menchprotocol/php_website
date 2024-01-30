@@ -1285,8 +1285,8 @@ function editor_save_i(){
         save_x__message:    $('#modal31911 .save_x__message').val().trim(),
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
-        save_i__type:       $('#modal31911 .dropd_form_4737').attr('selected_value').trim(),
-        save_i__privacy:    $('#modal31911 .dropd_form_31004').attr('selected_value').trim(),
+        save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
+        save_i__privacy:    $('.dropd_form_31004').attr('selected_value').trim(),
     };
 
     //Append Dynamic Data:
@@ -1657,9 +1657,9 @@ function editor_save_e(){
         save_e__title:      $('#modal31912 .save_e__title').val().trim(),
         save_e__cover:      $('#modal31912 .save_e__cover').val().trim(),
         save_e__handle:     $('#modal31912 .save_e__handle').val().trim(),
-        save_e__privacy:    $('#modal31911 .dropd_form_6177').attr('selected_value').trim(),
         save_x__id:         $('#modal31912 .save_x__id').val(),
         save_x__message:    $('#modal31912 .save_x__message').val().trim(),
+        save_e__privacy:    $('.dropd_form_6177').attr('selected_value').trim(),
     };
 
     //Append Dynamic Data:
