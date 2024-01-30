@@ -837,7 +837,7 @@ if($top_i__hashtag) {
         if($x__type==42260){
 
             //TODO Sources, show links to become a new source:
-            //$control_btn = view_single_select(42260, 0, true, false, $focus_i['i__id']);
+            //$control_btn = view_single_select_instant(42260, 0, true, false, $focus_i['i__id']);
 
         } elseif($x__type==12273 && !$is_or_7712 && count($is_next)){
 

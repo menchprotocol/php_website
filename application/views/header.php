@@ -996,16 +996,16 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
-                    <!-- Idea Access -->
-                    <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select(31004, 31005, true, true); ?></div>
-                    </div>
-
                     <!-- Idea Type -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select(4737, 0, true, true); ?></div>
+                        <div class="dynamic_selector"><?= view_single_select_form(4737, 0, true, true); ?></div>
+                    </div>
+
+                    <!-- Idea Access -->
+                    <div class="dynamic_editing_input">
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
+                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, true, true); ?></div>
                     </div>
 
                     <!-- Link Note -->
@@ -1019,7 +1019,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Dynamic Inputs -->
                     <div class="dynamic_frame"><?= $dynamic_edit ?></div>
-
 
                 </div>
             </div>
@@ -1063,7 +1062,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     <!-- Source Privacy -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select(6177, 0, true, true); ?></div>
+                        <div class="dynamic_selector"><?= view_single_select_form(6177, 0, true, true); ?></div>
                     </div>
 
                     <!-- SOURCE COVER -->
