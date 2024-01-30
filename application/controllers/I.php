@@ -635,6 +635,8 @@ class I extends CI_Controller {
                 'i__type' => $_POST['save_i__type'],
                 'i__privacy' => $_POST['save_i__privacy'],
             ), true, $member_e['e__id']);
+            $is[0]['i__type'] = trim($_POST['save_i__type']);
+            $is[0]['i__privacy'] = trim($_POST['save_i__privacy']);
 
         } elseif($is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
 
