@@ -66,18 +66,18 @@ $messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_f
 //SOCIAL FOOTER
 $domain_phone =  website_setting(28615);
 $email_domain =  website_setting(28614);
-$e___14925 = $this->config->item('e___14925'); //Domain Setting
+$e___11035 = $this->config->item('e___11035');
 
 $contact_us = '';
 if($domain_phone || $email_domain) {
 
     $contact_us .= '<ul class="social-footer">';
     if($domain_phone){
-        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___14925[28615]['m__title'].'">'.$e___14925[28615]['m__cover'].' '.$domain_phone.'</a></li>';
+        $contact_us .= '<li><a href="tel:'.preg_replace("/[^0-9]/", "", $domain_phone).'" data-toggle="tooltip" data-placement="top" title="'.$e___11035[28615]['m__title'].'">'.$e___11035[28615]['m__cover'].' '.$domain_phone.'</a></li>';
     }
 
     if($email_domain){
-        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$e___14925[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___14925[28614]['m__cover'].' '.$email_domain.'</a></li>';
+        $contact_us .= '<li><a href="mailto:'.$email_domain.'" title="'.$e___11035[28614]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[28614]['m__cover'].' '.$email_domain.'</a></li>';
     }
     $contact_us .= '</ul>';
 
