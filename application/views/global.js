@@ -1163,6 +1163,16 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
 
     //Load dynamic data:
+    load_i_dynamic(i__id, x__id, current_i__type);
+
+    //Track unsaved changes to prevent unwated modal closure:
+    $("#modal31911 .unsaved_warning").change(function() {
+        has_unsaved_changes = true;
+    });
+
+}
+
+function load_i_dynamic(i__id, x__id, current_i__type){
     $.post("/i/editor_load_i", {
         i__id: i__id,
         x__id: x__id,
@@ -1235,14 +1245,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
         }
     });
-
-    //Track unsaved changes to prevent unwated modal closure:
-    $("#modal31911 .unsaved_warning").change(function() {
-        has_unsaved_changes = true;
-    });
-
 }
-
 
 var i_saving = false; //Prevent double saving
 function editor_save_i(){
@@ -2379,12 +2382,12 @@ function update_form_select(element_id, new_e__id, initial_loading){
     $('.dropd_form_' + element_id + ' .optiond_'+new_e__id).addClass('active');
     $('.dropd_form_' + element_id).attr('selected_value', new_e__id);
     $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+new_e__id).html());
-    if(element_id==4737){
-        //Changing idea type would re-load dynamic fields based on type:
-
-    }
     if(!initial_loading){
         has_unsaved_changes = true;
+        if(element_id==4737){
+            //Changing idea type would re-load dynamic fields based on type:
+            load_i_dynamic(0, 0, new_e__id);
+        }
     }
 }
 
