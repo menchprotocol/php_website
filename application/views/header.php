@@ -963,6 +963,20 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
+
+                    <!-- Idea Type -->
+                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>" style="margin: 0 !important;">
+                        <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
+                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
+                    </div>
+
+                    <!-- Idea Privacy -->
+                    <div class="dynamic_editing_input" style="margin: 0 !important;">
+                        <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
+                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
+                    </div>
+
+                    <!-- Idea Message Controller -->
                     <div class="idea_controllers">
                         <table class="emoji_table">
                             <tr>
@@ -989,18 +1003,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <?php } ?>
                             </tr>
                         </table>
-                    </div>
-
-                    <!-- Idea Type -->
-                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>">
-                        <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
-                    </div>
-
-                    <!-- Idea Privacy -->
-                    <div class="dynamic_editing_input" style="margin: 0 !important;">
-                        <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
                     </div>
 
                     <!-- Idea Hashtag -->
