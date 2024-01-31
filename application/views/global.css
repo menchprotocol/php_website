@@ -2986,7 +2986,9 @@ h4.main__title{
 
 .search_bar,
 .edge-cover.coin-12274:hover,
-.edge-cover.coin-6287:hover{
+.edge-cover.coin-6287:hover,
+.edge-cover.coin-12274:hover .cover-content,
+.edge-cover.coin-6287:hover .cover-content{
     background: #FFFFFF !important;
     color: #000000 !important;
 }
