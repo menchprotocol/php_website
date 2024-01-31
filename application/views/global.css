@@ -2966,12 +2966,19 @@ h4.main__title{
 
 
 /* Idea Add Button Hack: */
-.platform-navigation .block-x a i {
-    background-color: #000000;
+.platform-navigation .block-x a {
+    display: block;
+    text-align: center;
+    margin-left: 5px;
+    margin-bottom: 0px;
     padding: 0;
-    line-height: 55%;
-    margin-top: 5px;
-    margin-left: -3px;
+    width: 16px;
+    background-color: #000000;
+    height: 16px;
+}
+.platform-navigation .block-x a i {
+    margin-left: -2px;
+    margin-top: -2px;
 }
 
 
@@ -4120,13 +4127,7 @@ main {
 .platform-navigation .block-sign-x{
     width:144px;
 }
-.platform-navigation .block-x a {
-    display: block;
-    text-align: center;
-    margin-left:5px;
-    margin-bottom:-3px;
-    padding:0px 0px 0px 2px;
-}
+
 
 .platform-navigation .block-x .fas, .block-x .fal, .block-x .far, .block-x .fad{
     font-size: 1.2em;
