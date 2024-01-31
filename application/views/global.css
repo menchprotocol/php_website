@@ -214,6 +214,9 @@ h3{
 .inner_message .dynamic_editing_input{
     display: inline-block;
     float: left;
+}
+
+.inner_message .dynamic_selector{
     margin-right: 5px !important;
     margin-left:0 !important;
 }
