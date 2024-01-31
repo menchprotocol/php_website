@@ -190,6 +190,11 @@ h3{
     color: #FFFFFF !important;
 }
 
+.inner_message .dynamic_editing_input{
+    display: inline-block;
+    float: left;
+}
+
 .section_subframe,
 .section_demo,
 .dynamic_selector,

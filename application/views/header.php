@@ -967,16 +967,16 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
-                        <!-- Idea Type -->
-                        <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
-                            <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
-                            <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
-                        </div>
+                        <div class="inner_message">
+                            <!-- Idea Type -->
+                            <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
+                                <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
+                            </div>
 
-                        <!-- Idea Privacy -->
-                        <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
-                            <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
+                            <!-- Idea Privacy -->
+                            <div class="dynamic_editing_input" style="margin: 0 !important;">
+                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
+                            </div>
                         </div>
 
                         <!-- Idea Message Controller -->
