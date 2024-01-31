@@ -2841,6 +2841,7 @@ h4.main__title{
         max-width: 377px;
 
     }
+    .inner_message .solo_input,
     .inner_message .dropdown-menu a,
     .inner_message .current_content{
         font-size: 0.69em !important;
