@@ -695,7 +695,7 @@ if($member_e){
 
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
-    $dynamic_edit = '<div class="dynamic_inner_frame '.( !superpower_unlocked(10939) ? ' hidden ' : '' ).'">';
+    $dynamic_edit = '<div class="dynamic_inner_frame '.hide_if_missing_superpower(10939).'">';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_x__id="">';
         $dynamic_edit .= '<div class="text_content">';
@@ -963,13 +963,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Idea Message -->
-                        <div class="dynamic_editing_input">
+                        <div class="dynamic_editing_input" style="margin: 0 !important;">
                             <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
                         <!-- Idea Type -->
-                        <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>" style="margin: 0 !important; border-top: 1px solid #EFEFEF !important;">
+                        <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important; border-top: 1px solid #EFEFEF !important;">
                             <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
                             <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                         </div>
