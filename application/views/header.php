@@ -968,6 +968,20 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
 
                         <div class="inner_message">
+
+                            <!-- Upload -->
+                            <div class="dynamic_editing_input" style="margin: 0 !important;">
+                                <a class="uploader_13572 icon-block-xs" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+                            </div>
+
+                            <!-- EMOJI -->
+                            <div class="dynamic_editing_input" style="margin: 0 !important;">
+                                <div class="dropdown emoji_selector">
+                                    <button type="button" class="btn no-left-padding no-right-padding icon-block-xs" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
+                                    <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
+                                </div>
+                            </div>
+
                             <!-- Idea Type -->
                             <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
                                 <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
@@ -982,34 +996,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         </div>
 
-                        <!-- Idea Message Controller -->
-                        <div class="idea_controllers">
-                            <table class="emoji_table">
-                                <tr>
-                                    <td>
-                                        <!-- Upload -->
-                                        <a class="uploader_13572" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
-                                    </td>
-                                    <td>
-                                        <!-- EMOJI -->
-                                        <div class="dropdown emoji_selector">
-                                            <button type="button" class="btn no-left-padding no-right-padding" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
-                                            <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
-                                        </div>
-                                    </td>
-                                    <?php if(search_enabled()){ ?>
-                                        <td>
-                                            <!-- Reference Source -->
-                                            <a href="javascript:void(0);" class="insert_at_sign" data-toggle="tooltip" data-placement="top" title="Reference Source"><i class="far fa-at"></i></a>
-                                        </td>
-                                        <td>
-                                            <!-- Reference Idea -->
-                                            <a href="javascript:void(0);" class="insert_hashtag" data-toggle="tooltip" data-placement="top" title="Reference Idea"><i class="far fa-hashtag"></i></a>
-                                        </td>
-                                    <?php } ?>
-                                </tr>
-                            </table>
-                        </div>
+
 
                         <div class="<?= hide_if_missing_superpower(10939) ?>">
                             <!-- Idea Hashtag -->
