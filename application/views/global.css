@@ -2266,7 +2266,7 @@ input.form-control {
     width: 100%;
 }
 .coinface-12274 .cover-content .inner-content {
-    padding: 3px 3px 0;
+    padding: 0 2px 0;
 }
 .mini-cover .cover-content .inner-content {
     margin: 0;
@@ -2585,7 +2585,7 @@ textarea {
 .focus-cover .inner-content .main__title {
     font-size: 1.15em;
     line-height: 134%;
-    padding: 13px !important;
+    padding: 0 8px 8px !important;
 }
 
 .coin-6255.focus-cover .inner-content .main__title,
