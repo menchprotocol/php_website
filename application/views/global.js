@@ -1464,25 +1464,39 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     console.log(widget_setting); //TODO Remove later for debugging now
     var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
 
-            console.log('ON SUBMISSION'); //TODO Remove later for debugging now
+        console.log('ON SUBMISSION'); //TODO Remove later for debugging now
+        console.log(result); //TODO Remove later for debugging now
+
+        if (0 && !error && result && result.event === "queues-start" && result.info.secure_url) {
+
+            console.log('SUCCESS'); //TODO Remove later for debugging now
             console.log(result); //TODO Remove later for debugging now
 
-            if (!error && result && result.event === "success" && result.info.secure_url) {
+            if(uploader_id==42359){
+                //Source Cover Uploader:
+                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+            } else if(uploader_id==13572){
+                //Idea Uploader
+            } else if(uploader_id==12117){
+                //Discovery Uploader
+            }
 
-                console.log('SUCCESS'); //TODO Remove later for debugging now
-                console.log(result); //TODO Remove later for debugging now
+        } else if (!error && result && result.event === "success" && result.info.secure_url) {
 
-                if(uploader_id==42359){
-                    //Source Cover Uploader:
-                    update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
-                } else if(uploader_id==13572){
-                    //Idea Uploader
-                } else if(uploader_id==12117){
-                    //Discovery Uploader
-                }
+            console.log('SUCCESS'); //TODO Remove later for debugging now
+            console.log(result); //TODO Remove later for debugging now
+
+            if(uploader_id==42359){
+                //Source Cover Uploader:
+                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+            } else if(uploader_id==13572){
+                //Idea Uploader
+            } else if(uploader_id==12117){
+                //Discovery Uploader
             }
         }
-    );
+
+    });
 
     if(!loading_inline_container && loading_button && widget){
         //Attach to widget:
