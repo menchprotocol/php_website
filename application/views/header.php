@@ -977,6 +977,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="dynamic_editing_input" style="margin: 0 !important;">
                                 <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
                             </div>
+
+                            <div class="doclear">&nbsp;</div>
+
                         </div>
 
                         <!-- Idea Message Controller -->
