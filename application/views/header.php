@@ -960,7 +960,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <!-- Idea Message -->
                     <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
+                        <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
                         <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     </div>
                     <div class="idea_controllers">
@@ -991,22 +991,22 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </table>
                     </div>
 
+                    <!-- Idea Type -->
+                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>">
+                        <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
+                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
+                    </div>
+
+                    <!-- Idea Privacy -->
+                    <div class="dynamic_editing_input" style="margin: 0 !important;">
+                        <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
+                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
+                    </div>
+
                     <!-- Idea Hashtag -->
                     <div class="dynamic_editing_input hash_group">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': ';  ?></h3>
                         <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
-                    </div>
-
-                    <!-- Idea Privacy -->
-                    <div class="dynamic_editing_input">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
-                    </div>
-
-                    <!-- Idea Type -->
-                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                     </div>
 
                     <!-- Link Note -->
