@@ -965,7 +965,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                     </div>
 
                     <!-- Idea Type -->
-                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>" style="margin: 0 !important;">
+                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>" style="margin: 0 !important; border-top: 1px solid #EFEFEF !important;">
                         <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
                         <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                     </div>
