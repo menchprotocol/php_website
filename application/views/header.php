@@ -957,8 +957,21 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="doclear">&nbsp;</div>
 
 
-                        <!-- Idea Creator -->
-                        <div class="creator_headline" style="margin-left: -8px !important;"><span class="icon-block"><?= view_cover($member_e['e__cover']) ?></span><b><?= $member_e['e__title'] ?></b><span class="grey mini-font mini-padded mini-frame">@<?= $member_e['e__handle'] ?></span></div>
+                        <!-- Idea Creator(s) -->
+                        <div class="creator_headline" style="margin-left: -8px !important;">
+                            <?php
+                            foreach($this->X_model->fetch(array(
+                                'x__down' => $member_e['e__id'],
+                                'x__type' => 41011, //PINNED FOLLOWER
+                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array('x__up'), 0) as $x_pinned) {
+                                echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
+                            }
+
+                            //Always append current user:
+                            echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span><b>'.$member_e['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$member_e['e__handle'].'</span></div>';
+                            ?>
+                        </div>
 
 
                         <!-- Idea Message -->
