@@ -980,7 +980,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
 
-                            <div style="width: 55px; float: right; overflow: visible; display: inline-block;">
+                            <div class="message_right_box">
                                 <!-- Upload -->
                                 <div class="dynamic_editing_input solo_input" style="margin: 0 !important;">
                                     <a class="uploader_13572 icon-block-xs" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
