@@ -1549,6 +1549,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
         foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
 
+            //See if missing superpower?
+            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_top_bar['m__following']);
+            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+                continue;
+            }
+
             //Determine hover state:
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
@@ -1607,6 +1613,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
             } elseif($x__type_top_bar==30901 && $write_privacy_i){
 
+                //Reply
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i(0,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
@@ -1614,6 +1621,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
             } elseif($x__type_top_bar==42260){
 
+                //Reactions
                 $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(42260, 0, $member_e, false, $i['i__id'], $x__id);
@@ -2040,6 +2048,12 @@ function view_card_e($x__type, $e, $extra_class = null)
         $top_bar_ui = '';
         $active_bars = 0;
         foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
+
+            //See if missing superpower?
+            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_top_bar['m__following']);
+            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+                continue;
+            }
 
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
