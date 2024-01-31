@@ -954,7 +954,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="hidden" class="save_x__id" value="0" />
                         <input type="hidden" class="link_i__id" value="0" />
 
-                        <div class="idea_reply cover-text hideIfEmpty"></div>
+                        <div class="idea_reply cover-text hideIfEmpty" style="margin-left: -8px !important;"></div>
                         <div class="doclear">&nbsp;</div>
 
 
@@ -965,11 +965,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
                             <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control note-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
                         <!-- Idea Type -->
-                        <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important; border-top: 1px solid #EFEFEF !important;">
+                        <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
                             <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
                             <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                         </div>
