@@ -217,7 +217,7 @@ h3{
 }
 
 .inner_message .dynamic_selector{
-    margin-right: 5px !important;
+    margin-right: 0 !important;
     margin-left:0 !important;
 }
 
@@ -2839,7 +2839,7 @@ h4.main__title{
     }
     .dropdown-menu a,
     .current_content{
-        font-size: 0.55em !important;
+        font-size: 0.89em !important;
     }
 
     .i_cache .first_line{
