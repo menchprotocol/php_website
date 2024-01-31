@@ -4270,12 +4270,6 @@ main {
 .main_item:hover .card_cover .show-on-hover {
     display: block !important;
 }
-.main_item:hover .card_cover .cover-content,
-.main_item:hover {
-    background-color: #FFFFFF !important;
-    margin-bottom: -40px;
-    padding-bottom: 40px;
-}
 .creator_headline{
     display: inline-block;
     line-height: 134%;
