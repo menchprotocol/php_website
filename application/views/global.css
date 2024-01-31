@@ -2997,9 +2997,9 @@ h4.main__title{
 }
 
 .search_bar,
-.card_cover.contrast_bg:hover,
-.coin-12274.card_cover:hover .cover-content,
-.coin-6287.card_cover:hover .cover-content{
+.edge-cover.card_cover.contrast_bg:hover,
+.edge-cover.coin-12274.card_cover:hover .cover-content,
+.edge-cover.coin-6287.card_cover:hover .cover-content{
     background: #FFFFFF !important;
     color: #000000 !important;
 }
