@@ -1897,7 +1897,7 @@ label {
     border:0;
     margin:0 auto;
     padding: 0 1px;
-    max-width: 144px;
+    max-width: 189px;
 }
 
 .form-check{
@@ -2801,8 +2801,8 @@ h4.main__title{
 
 
 .cover-btn i {
-    font-size: 1.21em !important;
-    margin-top: -26%;
+    font-size: 1.08em !important;
+    margin-top: -24%;
 }
 .focus-cover .cover-btn i {
     font-size: 1.55em !important;
