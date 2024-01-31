@@ -191,12 +191,9 @@ h3{
 }
 .inner_message {
     clear: both;
-    background-color: #EFEFEF;
+    background-color: #FFFFFF;
     display: block;
-}
-.inner_message .dynamic_editing_input{
-    display: inline-block;
-    float: left;
+    margin-left: 26px;
 }
 
 .section_subframe,
@@ -213,6 +210,14 @@ h3{
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding: 5px !important;
 }
+
+.inner_message .dynamic_editing_input{
+    display: inline-block;
+    float: left;
+    margin-right: 5px !important;
+    margin-left:0 !important;
+}
+
 .dynamic_selector{
     background-color: #ffffff;
     padding: 5px 0;
