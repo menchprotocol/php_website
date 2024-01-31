@@ -516,7 +516,7 @@ class I extends CI_Controller {
                     'message' => 'Idea Not Valid',
                 ));
             }
-            //Might be new:
+            //Might be new if pre-drafting:
             $is_new_idea = ( $is[0]['i__privacy']==42636 );
 
         } else {

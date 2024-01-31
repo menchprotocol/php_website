@@ -997,16 +997,16 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                     </div>
 
-                    <!-- Idea Type -->
-                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>">
-                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
-                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
-                    </div>
-
                     <!-- Idea Privacy -->
                     <div class="dynamic_editing_input">
                         <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[31004]['m__cover'].'</span>'.$e___6201[31004]['m__title'].': ';  ?></h3>
                         <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
+                    </div>
+
+                    <!-- Idea Type -->
+                    <div class="dynamic_editing_input <?= ( !superpower_unlocked(10939) ? ' hidden ' : '' ) ?>">
+                        <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[4737]['m__cover'].'</span>'.$e___6201[4737]['m__title'].': ';  ?></h3>
+                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
                     </div>
 
                     <!-- Link Note -->
