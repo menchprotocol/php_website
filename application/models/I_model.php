@@ -555,16 +555,16 @@ class I_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x_pinned) {
             if(!in_array($x_pinned['x__up'], $e_appended) && !count($this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+                    'x__type' => 4250, //Lead Author
                     'x__up' => $x_pinned['x__up'],
                     'x__right' => $i_new['i__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 $this->X_model->create(array(
-                    'x__type' => 4250, //Author
-                    'x__creator' => $x__creator,
+                    'x__type' => 4250, //Lead Author
                     'x__up' => $x_pinned['x__up'],
                     'x__right' => $i_new['i__id'],
+                    'x__creator' => $x__creator,
                 ));
                 array_push($e_appended, $x_pinned['x__up']);
             }
