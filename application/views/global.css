@@ -1895,7 +1895,9 @@ label {
 
 .cover-wrapper {
     border:0;
-    margin:0 1px;
+    margin:0 auto;
+    padding: 0 1px;
+    max-width: 144px;
 }
 
 .form-check{
