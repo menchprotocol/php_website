@@ -361,7 +361,7 @@ class I extends CI_Controller {
                     'd__value' => '',
                     'd__type_name' => '',
                     'd__placeholder' => '',
-                    'd__profile_header' => null,
+                    'd__profile_header' => '',
                 ));
 
             } else {
@@ -393,7 +393,7 @@ class I extends CI_Controller {
                                 'd__value' => $curr_val['x__message'],
                                 'd__type_name' => html_input_type($data_type),
                                 'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                                'd__profile_header' => null,
+                                'd__profile_header' => '',
                             ));
                         }
                     }
@@ -412,7 +412,7 @@ class I extends CI_Controller {
                             'd__value' => '',
                             'd__type_name' => html_input_type($data_type),
                             'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                            'd__profile_header' => null,
+                            'd__profile_header' => '',
                         ));
                     }
                 }
