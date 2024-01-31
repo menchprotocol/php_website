@@ -2153,7 +2153,7 @@ input.form-control {
     border-bottom: 0px solid;
     margin-bottom: 5px !important;
 }
-.flip-content .card_cover.contrast_bg:hover {
+.flip-content .card_cover:hover {
     background: #000000 !important;
 }
 
@@ -2991,7 +2991,7 @@ h4.main__title{
     color: #000000 !important;
 }
 
-.card_cover.contrast_bg:hover {
+.flip-content .card_cover:hover {
     background: #000000 !important;
 }
 
