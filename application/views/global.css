@@ -2831,6 +2831,11 @@ h4.main__title{
     margin: 0 0 13px !important;
 }
 
+.solo_input .btn {
+    padding: 0 !important;
+    margin-top: -2px;
+}
+
 @media (max-width:610px) {
 
     .mini-frame{
