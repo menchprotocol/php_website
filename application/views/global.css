@@ -2985,12 +2985,16 @@ h4.main__title{
 }
 
 .search_bar,
-.edge-cover.card_cover.contrast_bg:hover,
 .edge-cover.coin-12274.card_cover:hover .cover-content,
 .edge-cover.coin-6287.card_cover:hover .cover-content{
     background: #FFFFFF !important;
     color: #000000 !important;
 }
+
+.card_cover.contrast_bg:hover {
+    background: #000000 !important;
+}
+
 .focus-cover.coin-12273,
 .focus-cover.coin-6255{
     margin-bottom: -40px !important;
