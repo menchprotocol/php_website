@@ -2230,7 +2230,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="inner-content">';
 
 
-    if($show_text_editor && !$is_cache && !$is_app){
+    if($show_text_editor && !$is_cache && !$is_app && superpower_unlocked(10939)){
         //Editable:
         $ui .= view_input(6197, $e['e__title'], $e['e__id'], $write_privacy_e, ( isset($e['x__weight']) ? ($e['x__weight']*100)+1 : 0  ), true);
         $ui .= '<div class="hidden text__6197_'.$e['e__id'].'">'.$e['e__title'].'</div>';

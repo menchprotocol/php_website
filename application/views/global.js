@@ -1743,6 +1743,12 @@ function editor_save_e(){
             has_unsaved_changes = false;
             $('#modal31912').modal('hide');
 
+            //Do we need to refresh the page?
+            if(fetch_int_val('#focus_card')==12274 && fetch_int_val('#focus_id')==modify_data['save_e__id']){
+                //Refresh page since source edited their own profile:
+                js_redirect('/@'+$('#focus_handle').val());
+            }
+
         }
 
     });
