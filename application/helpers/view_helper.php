@@ -1521,7 +1521,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //Top Bar
     $top_bar_ui = '';
     $active_bars = 0;
-    if(!$cache_app && !$discovery_mode && superpower_unlocked(10939)){
+    if(!$cache_app && !$discovery_mode && $write_privacy_i){
 
         //Determine Link Group
         $link_type_id = 4593; //Transaction Type
@@ -1801,7 +1801,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
 
     //Bottom Bar
-    //&& (!$discovery_mode || superpower_unlocked(10939))
     if(!$cache_app && !$focus_card ){
         $active_bars = 0;
         $bottom_bar_ui = '';
@@ -2016,7 +2015,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" e__privacy="' . $e['e__privacy'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" x__privacy="'.$e['x__privacy'].'" ' : '' ).' class="card_cover card_e_cover contrast_bg no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click_e col-md-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
 
-    if(!$cache_app && !$is_app && superpower_unlocked(10939)) {
+    if(!$cache_app && !$is_app && $write_privacy_e) {
 
         //Source Link Groups
         $link_type_id = 0;
