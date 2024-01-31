@@ -5,7 +5,7 @@ $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 
-if(write_privacy_i($focus_i['i__hashtag'])){
+if(write_privacy_i($focus_i['i__hashtag']) && superpower_unlocked(10939)){
     echo '<div class="alert alert-default" role="alert"><span class="icon-block-xs">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
