@@ -1129,20 +1129,18 @@ function data_type_validate($data_type, $data_value, $data_title){
             'status' => 0,
             'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'].' which is a number between 0 & 100.',
         );
-    } elseif(in_array($data_type, $CI->config->item('n___42188'))){
-
-        //Single Choice of Multi Choice source types should not be validated here
-        $CI->X_model->create(array(
-            'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'data_type_validate() was asked to validate choice options for ['.$data_value.'] ['.$data_title.']',
-        ));
-
     } elseif(in_array($data_type, $CI->config->item('n___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)){
         //URL:
         return array(
             'status' => 0,
             'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
+    } elseif(in_array($data_type, $CI->config->item('n___42188'))){
+        //Single Choice of Multi Choice source types should not be validated here
+        $CI->X_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__message' => 'data_type_validate() was asked to validate choice options for @'.$data_type.' ['.$data_value.'] ['.$data_title.']',
+        ));
     }
 
     //All good:
