@@ -563,7 +563,7 @@ if(!$basic_header_footer){
 
 
                     //Always give option to ideate:
-                    if(superpower_unlocked(10939)){
+                    if($member_e){
                         echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
                     }
 
@@ -1009,23 +1009,25 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </table>
                         </div>
 
-                        <!-- Idea Hashtag -->
-                        <div class="dynamic_editing_input hash_group">
-                            <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': ';  ?></h3>
-                            <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
+                        <div class="<?= hide_if_missing_superpower(10939) ?>">
+                            <!-- Idea Hashtag -->
+                            <div class="dynamic_editing_input hash_group">
+                                <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': ';  ?></h3>
+                                <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
+                            </div>
+
+                            <!-- Link Note -->
+                            <div class="dynamic_editing_input save_x__frame hidden">
+                                <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                                <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
+                            </div>
+
+                            <!-- Dynamic Loader -->
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
+
+                            <!-- Dynamic Inputs -->
+                            <div class="dynamic_frame"><?= $dynamic_edit ?></div>
                         </div>
-
-                        <!-- Link Note -->
-                        <div class="dynamic_editing_input save_x__frame hidden">
-                            <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
-                        </div>
-
-                        <!-- Dynamic Loader -->
-                        <div class="dynamic_editing_loading hidden"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
-
-                        <!-- Dynamic Inputs -->
-                        <div class="dynamic_frame"><?= $dynamic_edit ?></div>
 
                     </div>
                 </div>

@@ -1090,7 +1090,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
         i__id = 0;
         x__id = 0;
         $('#modal31911 .link_i__id').val(link_i__id);
-        $("#modal31911 .idea_reply").html('<div class="grey" style="padding-bottom:3px;">Reply To:</div>' + $('.creator_frame_'+link_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+link_i__id).html() + '</div>');
+        $("#modal31911 .idea_reply").html('<div class="grey" style="padding:0 0 3px 5px;">Reply To:</div>' + $('.creator_frame_'+link_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+link_i__id).html() + '</div>');
         $("#modal31911 .idea_reply .line:not(.first_line)").addClass('hidden');
         //$("#modal31911 .idea_reply .show_more_line").addClass('hidden');
     }
