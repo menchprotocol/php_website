@@ -959,7 +959,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Idea Creator -->
-                        <div class="creator_headline"><span class="icon-block"><?= view_cover($member_e['e__cover']) ?></span><b><?= $member_e['e__title'] ?></b><span class="grey mini-font mini-padded mini-frame">@<?= $member_e['e__handle'] ?></span></div>
+                        <div class="creator_headline" style="margin-left: -8px !important;"><span class="icon-block"><?= view_cover($member_e['e__cover']) ?></span><b><?= $member_e['e__title'] ?></b><span class="grey mini-font mini-padded mini-frame">@<?= $member_e['e__handle'] ?></span></div>
 
 
                         <!-- Idea Message -->
