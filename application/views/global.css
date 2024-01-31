@@ -2969,7 +2969,7 @@ h4.main__title{
 .platform-navigation .block-x a {
     display: block;
     text-align: center;
-    margin-left: 5px;
+    margin-left: 8px !important;
     margin-bottom: 0px;
     padding: 0;
     width: 16px;

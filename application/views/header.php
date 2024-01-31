@@ -564,7 +564,7 @@ if(!$basic_header_footer){
 
                     //Always give option to ideate:
                     if(superpower_unlocked(10939)){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" style="margin-left: 0;" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
                     }
 
 
