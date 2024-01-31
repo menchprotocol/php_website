@@ -1464,9 +1464,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     console.log(widget_setting); //TODO Remove later for debugging now
     var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
 
-        console.log('ON SUBMISSION'); //TODO Remove later for debugging now
-        console.log(result); //TODO Remove later for debugging now
-
         if (0 && !error && result && result.event === "queues-start" && result.info.secure_url) {
 
             console.log('SUCCESS'); //TODO Remove later for debugging now
@@ -1494,6 +1491,11 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             } else if(uploader_id==12117){
                 //Discovery Uploader
             }
+        } else {
+
+            console.log('FAIL'); //TODO Remove later for debugging now
+            console.log(result); //TODO Remove later for debugging now
+
         }
 
     });
