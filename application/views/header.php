@@ -969,6 +969,16 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <div class="inner_message">
 
+                            <!-- Idea Type -->
+                            <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
+                                <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
+                            </div>
+
+                            <!-- Idea Privacy -->
+                            <div class="dynamic_editing_input" style="margin: 0 !important;">
+                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
+                            </div>
+
                             <!-- Upload -->
                             <div class="dynamic_editing_input solo_input" style="margin: 0 !important;">
                                 <a class="uploader_13572 icon-block-xs" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
@@ -980,16 +990,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     <button type="button" class="btn no-left-padding no-right-padding icon-block-xs" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                     <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                 </div>
-                            </div>
-
-                            <!-- Idea Type -->
-                            <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
-                            </div>
-
-                            <!-- Idea Privacy -->
-                            <div class="dynamic_editing_input" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
                             </div>
 
                             <div class="doclear">&nbsp;</div>
