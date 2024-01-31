@@ -189,7 +189,11 @@ h3{
 .btn.post_button i{
     color: #FFFFFF !important;
 }
-
+.inner_message {
+    clear: both;
+    background-color: #EFEFEF;
+    display: block;
+}
 .inner_message .dynamic_editing_input{
     display: inline-block;
     float: left;
