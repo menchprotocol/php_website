@@ -2828,7 +2828,7 @@ h4.main__title{
 }
 
 .save_results{
-    margin: 5px 0 13px;
+    margin: 0 0 13px !important;
 }
 
 @media (max-width:610px) {

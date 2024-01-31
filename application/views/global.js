@@ -2447,12 +2447,28 @@ function ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name){
     var selected_e__id = $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value');
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id).attr('selected_value' , new_e__id);
 
+
+    var main_object_type = 0;
+    var main_object_update = false;
+
     if(element_id==6177){
         //Source access:
         $('.s__12274_'+o__id).attr('e__privacy', new_e__id);
+        main_object_type = 12274;
+        main_object_update = 'e__privacy';
     } else if(element_id==4737){
         //Idea Type:
         $('.s__12273_'+o__id).attr('i__type', new_e__id);
+        main_object_type = 12273;
+        main_object_update = 'i__type';
+    } else if(element_id==31004){
+        //Idea Privacy:
+        main_object_type = 12273;
+        main_object_update = 'i__privacy';
+    }
+
+    if(main_object_type>0 && main_object_update){
+        $('.s__'+main_object_type+'_'+o__id).attr(main_object_update, new_e__id);
     }
 
 }
@@ -2482,16 +2498,27 @@ function update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show
     new_e__id = parseInt(new_e__id);
 
     //Deleting Anything?
+    var main_object_type = 0;
+    var main_object_update = false;
     var migrate_s__handle = 0;
     if(element_id==31004 && !(new_e__id in js_e___31871)){
 
         //Deleting Idea:
+        main_object_type = 12273;
+        main_object_update = 'i__privacy';
         var migrate_s__handle = prompt("Are you sure you want to delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
 
     } else if(element_id==6177 && !(new_e__id in js_e___7358)){
 
         //Deleting Source:
+        main_object_type = 12274;
+        main_object_update = 'e__privacy';
         var migrate_s__handle = prompt("Are you sure you want to delete this source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
+
+    } else if(element_id==4737 && !(new_e__id in js_e___7358)){
+
+        main_object_type = 12273;
+        main_object_update = 'i__type';
 
     }
 
