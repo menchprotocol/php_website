@@ -979,13 +979,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <div class="dynamic_selector"><?= view_single_select_form(31004, 31005); ?></div>
                             </div>
 
-                            <!-- Upload -->
                             <div class="dynamic_editing_input solo_input" style="margin: 0 !important; float: right;">
+                                <!-- Upload -->
                                 <a class="uploader_13572 icon-block-xs" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
-                            </div>
 
-                            <!-- EMOJI -->
-                            <div class="dynamic_editing_input" style="margin: 0 !important; float: right;">
+                                <!-- EMOJI -->
                                 <div class="dropdown solo_input">
                                     <button type="button" class="btn no-left-padding no-right-padding icon-block-xs" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                     <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
