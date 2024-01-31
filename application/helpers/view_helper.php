@@ -847,7 +847,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
 
 
-function view_single_select_form($cache_e__id, $selected_e__id){
+function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_arrow = false){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -862,7 +862,7 @@ function view_single_select_form($cache_e__id, $selected_e__id){
 
     $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-    $ui .= '<span class="current_content"><span class="icon-block-xs">'.$e___this[$selected_e__id]['m__cover'].'</span>'.$e___this[$selected_e__id]['m__title'].'</span><span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>';
+    $ui .= '<span class="current_content"><span class="icon-block-xs">'.$e___this[$selected_e__id]['m__cover'].'</span>'.$e___this[$selected_e__id]['m__title'].'</span>'.( $show_dropdown_arrow ? '<span class="icon-block-xs"><i class="fal fa-angle-down"></i></span>' : '' );
 
     $ui .= '</button>';
 

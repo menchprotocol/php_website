@@ -942,7 +942,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <button type="button" class="btn btn-default editor_save_i post_button" onclick="editor_save_i()">SAVE & CLOSE</button>
+                        <button type="button" class="btn btn-default editor_save_i post_button" onclick="editor_save_i()">SAVE</button>
                     </div>
 
                     <div class="modal-body">
@@ -1044,7 +1044,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <button type="button" class="editor_save_e btn btn-default post_button" onclick="editor_save_e()">SAVE & CLOSE</button>
+                        <button type="button" class="editor_save_e btn btn-default post_button" onclick="editor_save_e()">SAVE</button>
                     </div>
 
                     <div class="modal-body">
@@ -1071,7 +1071,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Source Privacy -->
                         <div class="dynamic_editing_input">
                             <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': ';  ?></h3>
-                            <div class="dynamic_selector"><?= view_single_select_form(6177, 6181); ?></div>
+                            <div class="dynamic_selector"><?= view_single_select_form(6177, 6181, true); ?></div>
                         </div>
 
                         <!-- SOURCE COVER -->

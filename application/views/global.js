@@ -1303,7 +1303,7 @@ function editor_save_i(){
 
         //Load Images:
         i_saving = false;
-        $(".editor_save_i").html('SAVE & CLOSE');
+        $(".editor_save_i").html('SAVE');
 
         if (!data.status) {
 
@@ -1616,7 +1616,7 @@ function editor_load_e(e__id, x__id){
 
             //Add a second save button at the bottom if we have too much data:
             if(index_i_content > 5){
-                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default editor_save_e post_button" onclick="editor_save_e()">SAVE & CLOSE</button>');
+                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default editor_save_e post_button" onclick="editor_save_e()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
             }
@@ -1683,7 +1683,7 @@ function editor_save_e(){
     $.post("/e/editor_save_e", modify_data, function (data) {
 
         e_saving = false;
-        $(".editor_save_e").html('SAVE & CLOSE');
+        $(".editor_save_e").html('SAVE');
 
         if (!data.status) {
 
