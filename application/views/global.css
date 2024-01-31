@@ -2965,7 +2965,7 @@ h4.main__title{
 
 
 
-/* Idea Add Button Hack: */
+/* Idea Add Button Hack to make the plus more clear: */
 .platform-navigation .block-x a {
     display: block;
     text-align: center;
@@ -2973,8 +2973,8 @@ h4.main__title{
     margin-bottom: 0px;
     padding: 0;
     width: 16px;
-    background-color: #000000;
     height: 16px;
+    background-color: #000000;
 }
 .platform-navigation .block-x a i {
     margin-left: -2px;

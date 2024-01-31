@@ -323,8 +323,6 @@ class I extends CI_Controller {
         $e___11035 = $this->config->item('e___11035'); //Summary
 
 
-        $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.$e___4737[$i__type]['m__cover'].'</span>'.$e___4737[$i__type]['m__title'].'</div>';
-
 
         foreach(array_intersect($this->config->item('n___'.$i__type), $this->config->item('n___42179')) as $dynamic_e__id){
 
@@ -363,7 +361,7 @@ class I extends CI_Controller {
                     'd__value' => '',
                     'd__type_name' => '',
                     'd__placeholder' => '',
-                    'd__profile_header' => $profile_header,
+                    'd__profile_header' => null,
                 ));
 
             } else {
@@ -395,7 +393,7 @@ class I extends CI_Controller {
                                 'd__value' => $curr_val['x__message'],
                                 'd__type_name' => html_input_type($data_type),
                                 'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                                'd__profile_header' => $profile_header,
+                                'd__profile_header' => null,
                             ));
                         }
                     }
@@ -414,7 +412,7 @@ class I extends CI_Controller {
                             'd__value' => '',
                             'd__type_name' => html_input_type($data_type),
                             'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                            'd__profile_header' => $profile_header,
+                            'd__profile_header' => null,
                         ));
                     }
                 }
