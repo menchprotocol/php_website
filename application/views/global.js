@@ -1552,10 +1552,6 @@ function editor_load_e(e__id, x__id){
 
 
 
-    //Initiate Source Cover Uploader:
-    load_cloudinary(42359, ['e__id_'+e__id], '.uploader_42359', '#modal31912');
-
-
     $.post("/e/editor_load_e", {
         e__id: e__id,
         x__id: x__id
@@ -1564,6 +1560,9 @@ function editor_load_e(e__id, x__id){
         $("#modal31912 .dynamic_editing_loading").addClass('hidden');
 
         if (data.status) {
+
+            //Initiate Source Cover Uploader:
+            load_cloudinary(42359, ['e__id_'+e__id], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
             var index_i_content = 0;

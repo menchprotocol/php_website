@@ -695,7 +695,7 @@ if($member_e){
 
 if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
-    $dynamic_edit = '<div class="dynamic_inner_frame '.hide_if_missing_superpower(10939).'">';
+    $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_x__id="">';
         $dynamic_edit .= '<div class="text_content">';
@@ -704,7 +704,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         $dynamic_edit .= '</div>';
         $dynamic_edit .= '</div>';
     }
-    $dynamic_edit .= '</div>';
 
     //Apply to All Sources
     if(superpower_unlocked(12703)){
