@@ -1399,13 +1399,13 @@ function cloudinary_remove(info_id){
 
 function cloudinary_add_pending(info){
     has_unsaved_changes = true;
-    $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><pre>'+info.file.name+'</pre><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+    $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><h6>'+info.file.name+'</h6><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 }
 
 function cloudinary_add_uploaded(info){
 
     //Replace pending content with newly uploaded:
-    var view_template = '<pre>'+info.original_filename+'</pre><span><i class="far fa-file"></i></span>';
+    var view_template = '<h6>'+info.original_filename+'</h6><span><i class="far fa-file"></i></span>';
     if(info.resource_type=='image'){
         view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_89,w_89')+'" />';
     }

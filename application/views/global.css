@@ -2882,7 +2882,7 @@ h4.main__title{
     z-index: 1000;
 }
 
-.media_frame .media_item pre {
+.media_frame .media_item h6 {
     position: absolute;
     top: 34px;
     left: 5px;
