@@ -2863,7 +2863,7 @@ h4.main__title{
     float: left;
     overflow: hidden;
     margin-left: 5px;
-    margin-bottom: 5px;
+    margin-top: 5px;
     position: relative;
 }
 
@@ -2883,8 +2883,12 @@ h4.main__title{
     width: 21px;
     height: 21px;
     border-radius: 50%;
-    background-color: #000;
+    background-color: rgba(0,0,0,0.55) !important;
     z-index: 1001;
+}
+.media_frame .sort_media a i {
+    color: #FFFFFF;
+    font-size: 1.1em;
 }
 
 @media (max-width:610px) {
