@@ -1016,7 +1016,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 <!-- EMOJI -->
                                 <div class="dynamic_editing_input" style="margin: 0 !important;">
-                                    <div class="dropdown solo_input">
+                                    <div class="dropdown emoji_selector solo_input">
                                         <button type="button" class="btn no-left-padding no-right-padding icon-block-xs" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                         <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                     </div>
@@ -1105,7 +1105,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                     <td class="superpower__13758">
                                         <!-- EMOJI -->
-                                        <div class="dropdown emoji_selector">
+                                        <div class="dropdown emoji_selector" style="max-height: 21px; margin-top: -18px;">
                                             <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                             <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
                                         </div>
