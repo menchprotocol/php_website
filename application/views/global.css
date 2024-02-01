@@ -2850,8 +2850,10 @@ h4.main__title{
 }
 
 .media_frame {
-    background-color: #999;
     clear: both;
+    background-color: #FFFFFF;
+    display: block;
+    margin-left: 26px;
 }
 
 .media_frame .sort_media {
@@ -2860,6 +2862,8 @@ h4.main__title{
     border-radius: 21px;
     float: left;
     overflow: hidden;
+    margin-right: 3px;
+    margin-bottom: 3px;
 }
 
 .media_frame .sort_media img {
