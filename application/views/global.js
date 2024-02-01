@@ -1404,39 +1404,27 @@ function cloudinary_add_pending(info){
 
 function cloudinary_add_uploaded(info){
 
-    //Replace pending content with newly uploaded:
-    var view_template = '<h5><i class="fas fa-check-circle"></i></h5><h6>'+info.original_filename+'</h6>';
-
-
     //Assume its a file unless proven otherwise:
+    var view_template = '<h5><i class="fas fa-check-circle"></i></h5><h6>'+info.original_filename+'</h6>';
     var media_type = 42185; //File
 
-
+    //See if we can find a Video, Image or Audio file:
     if(info.format && info.format.length>0){
-        ;
+        if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
+            //Video
+            media_type = 42185;
+            view_template = '<video class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video>';
+        } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
+            //Image
+            media_type = 42185;
+            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" />';
+        } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
+            //Audio
+            media_type = 42185;
+            view_template = '<audio controls src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"></audio>';
+        }
     }
 
-    if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
-        //Video
-        //view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_89,w_89')+'" />';
-    } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.audio){
-        //Image
-        //view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_89,w_89')+'" />';
-    } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
-        //Audio
-        //view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_89,w_89')+'" />';
-    }
-
-    //Do we have a thumbnail for this resource?
-    if(info.resource_type=='image'){
-        //Yes:
-        view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" />';
-    } else {
-        //Show media type icon:
-        view_template = '<span><i class="far fa-file"></i></span>';
-    }
-
-    format
     $('#'+info.id).html(view_template+'<a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
 
     //Enable Sorting:
