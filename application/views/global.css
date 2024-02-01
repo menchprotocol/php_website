@@ -186,7 +186,7 @@ h3{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 32px;
+    margin-left: 40px;
     padding: 5px 0;
 }
 
@@ -198,8 +198,8 @@ h3{
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
     padding: 5px !important;
-    margin-left: 32px !important;
-    width: calc(100% - 32px) !important;
+    margin-left: 40px !important;
+    width: calc(100% - 40px) !important;
 }
 .inner_message .dynamic_selector{
     padding: 0 !important;
@@ -1357,7 +1357,7 @@ label {
     text-decoration: none;
     padding: 5px !important;
     margin-bottom: 0 !important;
-    margin-left: 32px !important;
+    margin-left: 40px !important;
 }
 .itemsetting.active{
     margin-top:0 !important;
@@ -1941,7 +1941,7 @@ label {
     line-height: 150%;
 }
 .modal-body{
-    padding: 0 8px 21px;
+    padding: 0 13px 21px 0;
 }
 .mini-grey{
     font-size: 0.80em;
@@ -2834,7 +2834,7 @@ h4.main__title{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 32px;
+    margin-left: 40px;
 }
 
 .media_frame .media_item,
@@ -4153,14 +4153,14 @@ main {
 }
 
 .source_info_box{
-    padding:0 0 5px 32px;
+    padding:0 0 5px 40px;
     line-height:121%;
     overflow-x: hidden;
     overflow-y: visible;
 }
 .cover-content .source_info_box{
     padding-top: 3px;
-    padding-left:32px;
+    padding-left:40px;
 }
 
 .sale_increment{
