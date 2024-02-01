@@ -186,7 +186,7 @@ h3{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 26px;
+    margin-left: 32px;
     padding: 5px 0;
 }
 
@@ -198,8 +198,8 @@ h3{
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
     padding: 5px !important;
-    margin-left: 26px !important;
-    width: calc(100% - 26px) !important;
+    margin-left: 32px !important;
+    width: calc(100% - 32px) !important;
 }
 .inner_message .dynamic_selector{
     padding: 0 !important;
@@ -1357,7 +1357,7 @@ label {
     text-decoration: none;
     padding: 5px !important;
     margin-bottom: 0 !important;
-    margin-left: 26px !important;
+    margin-left: 32px !important;
 }
 .itemsetting.active{
     margin-top:0 !important;
@@ -1576,13 +1576,13 @@ label {
 .block{ display: block !important; width: 100%; }
 .hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
-.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; }
 .nav>.nav-item>.nav-link>.icon-block { width:30px !important; }
 #searchFrontForm .icon-block { width:30px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-xx{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
+.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; }
 .icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; font-weight: bold; }
 .icon-block-lg img,
 .icon-block img{
@@ -2090,28 +2090,6 @@ input.form-control {
     padding:5px 0;
 }
 
-
-
-.coin-cover-left{
-    top: 47px;
-    left: 8px;
-}
-.focus-cover .coin-cover-left {
-    top: 45px;
-    left: 45px;
-}
-.coin-cover-right{
-    top: 45px;
-    right: 13px;
-}
-.focus-cover .coin-cover-right {
-    top: 45px;
-    right: 45px;
-}
-.mini-cover .coin-cover-right {
-    top: 25px;
-    right: 5px;
-}
 
 
 
@@ -2856,7 +2834,7 @@ h4.main__title{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 26px;
+    margin-left: 32px;
 }
 
 .media_frame .media_item,
@@ -2990,24 +2968,6 @@ h4.main__title{
 
 
     .mid-range { padding:0; }
-
-    .coin-cover-left{
-        top: 39px;
-        left: 1px;
-    }
-    .coin-cover-right{
-        top: 39px;
-        right: 1px;
-    }
-
-    .focus-cover .coin-cover-left{
-        top: 39px;
-        left: 26px;
-    }
-    .focus-cover .coin-cover-right{
-        top: 39px;
-        right: 26px;
-    }
 
     .title-cover{
         margin-top: 5px;
@@ -4193,14 +4153,14 @@ main {
 }
 
 .source_info_box{
-    padding:0 0 5px 26px;
+    padding:0 0 5px 32px;
     line-height:121%;
     overflow-x: hidden;
     overflow-y: visible;
 }
 .cover-content .source_info_box{
     padding-top: 3px;
-    padding-left:26px;
+    padding-left:32px;
 }
 
 .sale_increment{

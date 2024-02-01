@@ -757,7 +757,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $is_required = in_array($focus_id, $CI->config->item('n___42174')); //Required Settings
 
     $ui = '<div class="dynamic_selection">';
-    $ui .= '<h3 class="mini-font grey-line grey-header"><span class="icon-block-xs">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':'.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).'</h3>';
+    $ui .= '<h3 class="mini-font grey-line grey-header"><span class="icon-block">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':'.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).'</h3>';
     $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
 
 
@@ -812,7 +812,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             $overflow_reached = true;
         }
 
-        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block-xs change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' );
+        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' );
 
         if($selected){
             $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($m['m__title']).'">'.$headline.'<span class="icon-block-xs"><i class="fal fa-pen-to-square"></i></span></a>';

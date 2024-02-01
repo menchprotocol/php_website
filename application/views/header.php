@@ -976,7 +976,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Idea Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
                             <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="media_frame hideIfEmpty">
                                 <div class="doclear">&nbsp;</div>
@@ -1021,13 +1020,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="<?= hide_if_missing_superpower(10939) ?>">
                             <!-- Idea Hashtag -->
                             <div class="dynamic_editing_input hash_group">
-                                <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': ';  ?></h3>
+                                <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': ';  ?></h3>
                                 <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="..." maxlength="<?= view_memory(6404,41985) ?>">
                             </div>
 
                             <!-- Link Note -->
                             <div class="dynamic_editing_input save_x__frame hidden">
-                                <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                                <h3 class="mini-font"><?= '<span class="icon-block">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
                                 <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                             </div>
 
@@ -1066,20 +1065,20 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Source Title -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6197]['m__cover'].'</span>'.$e___6206[6197]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6197]['m__cover'].'</span>'.$e___6206[6197]['m__title'].': ';  ?></h3>
                             <textarea class="form-control unsaved_warning save_e__title main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                         </div>
 
 
                         <!-- Source Handle -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[32338]['m__cover'].'</span>'.$e___6206[32338]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[32338]['m__cover'].'</span>'.$e___6206[32338]['m__title'].': ';  ?></h3>
                             <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
                         </div>
 
                         <!-- Source Privacy -->
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': ';  ?></h3>
                             <div class="dynamic_selector"><?= view_single_select_form(6177, 6181, true); ?></div>
                         </div>
 
@@ -1118,7 +1117,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </table>
                         </div>
                         <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': ';  ?></h3>
                             <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
                             <input type="text" class="form-control unsaved_warning save_e__cover superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
                             <div>
@@ -1139,7 +1138,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Link Note -->
                         <div class="dynamic_editing_input save_x__frame hidden">
-                            <h3 class="mini-font"><?= '<span class="icon-block-xs">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
+                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
                             <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
                         </div>
 
