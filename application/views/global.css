@@ -2203,8 +2203,6 @@ input.form-control {
     line-height: 134%;
     font-size: 1em;
     display: block;
-    vertical-align: middle;
-    overflow-y: auto;
 }
 .source-social{
     display: block;
