@@ -1507,7 +1507,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 update__cover('far fa-yin-yang fa-spin');
             } else if(uploader_id==13572){
                 //Idea Uploader
-                cloudinary_add_pending(result.event.info);
+                cloudinary_add_pending(result.info);
             } else if(uploader_id==12117){
                 //Discovery Uploader
 
@@ -1524,7 +1524,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
             } else if(uploader_id==13572){
                 //Idea Uploader
-                cloudinary_add_uploaded(result.event.info);
+                cloudinary_add_uploaded(result.info);
             } else if(uploader_id==12117){
                 //Discovery Uploader
 
