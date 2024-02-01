@@ -2793,7 +2793,7 @@ h4.main__title{
 }
 
 .message_right_box{
-    width: 69px;
+    width: 75px;
     float: right;
     overflow: visible;
     display: inline-block;
@@ -2822,7 +2822,7 @@ h4.main__title{
 }
 
 .message_right_box .dropdown.solo_input {
-    margin-left: 8px;
+    margin-left: 3px;
 }
 
 .media_frame {
