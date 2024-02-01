@@ -953,12 +953,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="hidden" class="save_x__id" value="0" />
                         <input type="hidden" class="link_i__id" value="0" />
 
-                        <div class="idea_reply cover-text hideIfEmpty" style="margin-left: -8px !important;"></div>
+                        <div class="idea_reply cover-text hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
 
 
                         <!-- Idea Creator(s) -->
-                        <div class="creator_headline" style="margin-left: -8px !important;">
+                        <div class="creator_headline">
                             <?php
                             foreach($this->X_model->fetch(array(
                                 'x__down' => $member_e['e__id'],
