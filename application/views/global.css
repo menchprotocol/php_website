@@ -1982,7 +1982,7 @@ label {
     width: calc(100% - 10px) !important;
     position: relative;
     overflow-x: visible;
-    overflow-y: auto;
+    overflow-y: hidden;
     display: block;
     margin: 0 2px;
     max-height: 69%;
@@ -2022,7 +2022,6 @@ label {
 .edge-cover.coin-12274 .cover-content,
 .focus-cover.coin-12274 .cover-content{
     top: unset !important;
-    margin-top: 1px;
 }
 .coin-12274 .card_covers{
     top: 34px !important;
