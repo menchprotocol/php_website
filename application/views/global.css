@@ -2877,6 +2877,12 @@ h4.main__title{
     z-index: 1000;
 }
 
+.media_frame .sort_media span i {
+    top: 12px;
+    left: 12px;
+    position: absolute;
+    font-size: 4em !important;
+}
 
 .media_frame .sort_media a {
     position: absolute;

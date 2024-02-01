@@ -980,7 +980,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="media_frame hideIfEmpty">
                                 <div class="sort_media" uploaded_id="" upload_type="">
-                                    <span><i class="far fa-image"></i></span>
+                                    <span><i class="far fa-yin-yang fa-spin"></i></span>
                                     <a href="javascript:void(0)" onclick="alert('remove')"><i class="far fa-trash-can"></i></a>
                                 </div>
                                 <div class="sort_media" uploaded_id="" upload_type="">
