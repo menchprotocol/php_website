@@ -2887,14 +2887,16 @@ h4.main__title{
     top: 34px;
     left: 5px;
     width: 75px;
-    height: 47px;
-    background-color: #00CC00;
+    max-height: 47px;
+    background: rgba(239,239,239,0.89) !important;
     z-index: 1002;
-    font-size: .8em;
+    font-size:0.55em;
+    font-weight: bold;
     overflow: hidden;
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
+    text-align: center;
 }
 
 .media_frame .media_item span i {
