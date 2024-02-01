@@ -1397,7 +1397,7 @@ function cloudinary_remove(info_id){
 
 
 function cloudinary_add_pending(info){
-    $('.media_frame').prepend('<pre>'+info.file.name+'</pre><div class="media_item" id="'+info.id+'"><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+    $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><pre>'+info.file.name+'</pre><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 }
 
 function cloudinary_add_uploaded(info){
