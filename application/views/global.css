@@ -2883,13 +2883,14 @@ h4.main__title{
     width: 21px;
     height: 21px;
     border-radius: 50%;
-    padding: 5px;
+    padding: 0px 5px;
     background-color: rgba(0,0,0,0.55) !important;
     z-index: 1001;
 }
 .media_frame .sort_media a i {
     color: #FFFFFF;
-    font-size: 0.69em;
+    margin-top: -2px;
+    font-size: 0.8em !important;
 }
 
 @media (max-width:610px) {
