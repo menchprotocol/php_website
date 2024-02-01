@@ -1384,7 +1384,6 @@ function editor_save_i(){
 
 var confirm_removal_once_done = false;
 function cloudinary_remove(info_id){
-
     if(!confirm_removal_once_done){
         //Confirm removal once:
         var r = confirm("Are you sure you want to delete this?");
@@ -1397,18 +1396,19 @@ function cloudinary_remove(info_id){
 }
 
 function cloudinary_add_pending(info){
-    return '<div class="media_item" id="'+info.id+'"><span><i class="far fa-yin-yang fa-spin"></i></span></div>';
+    $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 }
 
 function cloudinary_add_uploaded(info){
 
-    //Remove pending:
-
-    //Add newly uploaded:
+    //Replace pending content with newly uploaded:
+    setTimeout(function () {
+        //Focus on writing a message:
+        $('#'+info.id).html('<img src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,h_89,w_89/\''+info.path+'\'" /><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+    }, 2987);
 
     //Enable Sorting:
 
-    return '<div class="media_item" id="'+info.id+'" file_type="'+info.file.type+'"><img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" /><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a></div>';
 }
 
 function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){

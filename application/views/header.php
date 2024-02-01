@@ -979,14 +979,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
                             <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                             <div class="media_frame hideIfEmpty">
-                                <div class="media_item" uploaded_id="" upload_type="">
-                                    <span><i class="far fa-yin-yang fa-spin"></i></span>
-                                </div>
-
-                                <div class="media_item" uploaded_id="" upload_type="">
-                                    <img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" />
-                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="fas fa-xmark"></i></a>
-                                </div>
                                 <div class="doclear">&nbsp;</div>
                             </div>
                         </div>
