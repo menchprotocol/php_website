@@ -2888,9 +2888,12 @@ h4.main__title{
     left: 5px;
     width: calc(100% - 10px);
     height: 34px;
-    overflow: hidden;
     background-color: #00CC00;
-    z-index: 1000;
+    z-index: 1002;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
 }
 
 .media_frame .media_item span i {

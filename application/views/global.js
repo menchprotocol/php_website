@@ -1391,12 +1391,14 @@ function cloudinary_remove(info_id){
             return false;
         }
         confirm_removal_once_done = true; //Dont ask again
+        has_unsaved_changes = true;
     }
     $('#'+info_id).remove();
 }
 
 
 function cloudinary_add_pending(info){
+    has_unsaved_changes = true;
     $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><pre>'+info.file.name+'</pre><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 }
 
