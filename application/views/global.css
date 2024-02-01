@@ -1943,6 +1943,9 @@ label {
 .modal-body{
     padding: 0 21px 21px 0;
 }
+.modal-header {
+    padding: 13px 21px;
+}
 .mini-grey{
     font-size: 0.80em;
 }
