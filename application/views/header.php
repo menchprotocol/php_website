@@ -978,6 +978,20 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
                             <h3 class="mini-font hidden"><?= '<span class="icon-block-xs">'.$e___6201[4736]['m__cover'].'</span>'.$e___6201[4736]['m__title'].': ';  ?></h3>
                             <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <div class="media_frame">
+                                <div class="sort_media" uploaded_id="" upload_type="">
+                                    <img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" />
+                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="fas fa-xmark"></i></a>
+                                </div>
+                                <div class="sort_media" uploaded_id="" upload_type="">
+                                    <img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" />
+                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="fas fa-xmark"></i></a>
+                                </div>
+                                <div class="sort_media" uploaded_id="" upload_type="">
+                                    <img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" />
+                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="fas fa-xmark"></i></a>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="inner_message">

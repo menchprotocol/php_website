@@ -1464,25 +1464,33 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     console.log(widget_setting); //TODO Remove later for debugging now
     var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
 
-        if (0 && !error && result && result.event === "queues-start" && result.info.secure_url) {
+        if(error || !result){
 
-            console.log('SUCCESS'); //TODO Remove later for debugging now
+            //Log error to look at later:
+
+
+        } else if (result.event === "upload-added") {
+
+            console.log(result.event); //TODO Remove later for debugging now
             console.log(result); //TODO Remove later for debugging now
 
+            //Append loaders:
             if(uploader_id==42359){
                 //Source Cover Uploader:
-                update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+                update__cover('far fa-yin-yang fa-spin');
             } else if(uploader_id==13572){
                 //Idea Uploader
             } else if(uploader_id==12117){
                 //Discovery Uploader
+
             }
 
-        } else if (!error && result && result.event === "success" && result.info.secure_url) {
+        } else if (result.event === "success") {
 
-            console.log('SUCCESS'); //TODO Remove later for debugging now
+            console.log(result.event); //TODO Remove later for debugging now
             console.log(result); //TODO Remove later for debugging now
 
+            //Add uploaded media:
             if(uploader_id==42359){
                 //Source Cover Uploader:
                 update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
