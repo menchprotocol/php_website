@@ -2890,7 +2890,7 @@ h4.main__title{
     width: 21px;
     height: 21px;
     border-radius: 50%;
-    padding: 0px 4px;
+    padding: 0px 5px;
     background-color: rgba(0,0,0,0.55) !important;
     z-index: 1001;
 }
