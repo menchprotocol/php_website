@@ -2867,7 +2867,8 @@ h4.main__title{
     position: relative;
 }
 
-.media_frame .sort_media img {
+.media_frame .sort_media img,
+.media_frame .sort_media span {
     position: absolute;
     top: 0;
     left: 0;
@@ -2875,6 +2876,7 @@ h4.main__title{
     height: 89px;
     z-index: 1000;
 }
+
 
 .media_frame .sort_media a {
     position: absolute;
