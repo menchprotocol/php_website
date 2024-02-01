@@ -2857,13 +2857,13 @@ h4.main__title{
 }
 
 .media_frame .sort_media {
-    width: 55px;
-    height: 55px;
-    border-radius: 21px;
+    width: 89px;
+    height: 89px;
+    border-radius: 13px;
     float: left;
     overflow: hidden;
-    margin-right: 3px;
-    margin-bottom: 3px;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
 
 .media_frame .sort_media img {
