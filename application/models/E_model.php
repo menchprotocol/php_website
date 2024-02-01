@@ -60,7 +60,7 @@ class E_model extends CI_Model
         );
 
         //Make sure they also belong to this website's members:
-        $this->E_model->regular_add_e(website_setting(0), $e['e__id']);
+        $this->E_model->add_regular_e(website_setting(0), $e['e__id']);
 
 
         //Check & Adjust their subscription, IF needed:
@@ -236,7 +236,7 @@ class E_model extends CI_Model
     }
 
 
-    function regular_add_e($x__up, $x__down, $x__message = null) {
+    function add_regular_e($x__up, $x__down, $x__message = null) {
         //Add if link not already there:
         if(!count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -309,7 +309,7 @@ class E_model extends CI_Model
 
 
 
-    function add_member($full_name, $email = null, $phone_number = null, $image_url = null, $x__website = 0, $importing_full_names = false){
+    function add_member($full_name, $email = null, $phone_number = null, $image_url = null, $x__website = 0){
 
         //Set website if not set:
         if(!$x__website){
@@ -365,7 +365,7 @@ class E_model extends CI_Model
 
             //Add to anonymous:
             $this->X_model->create(array(
-                'x__up' => 14938, //Anonymous Login
+                'x__up' => 14938, //Guest
                 'x__type' => 4230,
                 'x__creator' => $added_e['new_e']['e__id'],
                 'x__down' => $added_e['new_e']['e__id'],
@@ -380,50 +380,35 @@ class E_model extends CI_Model
 
 
         //Add member to Domain Member Group(s):
-        $this->E_model->regular_add_e($x__website, $added_e['new_e']['e__id']);
+        $this->E_model->add_regular_e($x__website, $added_e['new_e']['e__id']);
 
 
-        if($importing_full_names){
-
-            //Also create legal name link:
-            $this->X_model->create(array(
-                'x__up' => 30198, //Full Name
-                'x__type' => 4230,
-                'x__message' => $full_name,
-                'x__creator' => $added_e['new_e']['e__id'],
-                'x__down' => $added_e['new_e']['e__id'],
-                'x__website' => $x__website,
-            ));
-
-        } else {
-
-            //Send Welcome Email if any:
-            if($email){
-                foreach($this->X_model->fetch(array(
+        //Send Welcome Email if any:
+        if($email){
+            foreach($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 33600, //Draft
+                'x__up' => 14929, //Website Welcome Email Templates
+            ), array('x__right'), 0) as $i){
+                if(count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 33600, //Draft
-                    'x__up' => 14929, //Website Welcome Email Templates
-                ), array('x__right'), 0) as $i){
-                    if(count($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 33600, //Draft
-                        'x__up' => $x__website, //for Current website
-                        'x__right' => $i['i__id'], //Is this the template?
-                    )))){
-                        //Found the email template to send:
-                        $total_sent = $this->X_model->send_i_dm(array(array('e__id'=>$added_e['new_e']['e__id'])), $i, 0, $x__website);
-                        break; //Just the first template match
-                    }
+                    'x__up' => $x__website, //for Current website
+                    'x__right' => $i['i__id'], //Is this the template?
+                )))){
+                    //Found the email template to send:
+                    $total_sent = $this->X_model->send_i_dm(array(array('e__id'=>$added_e['new_e']['e__id'])), $i, 0, $x__website);
+                    break; //Just the first template match
                 }
             }
-
-            //Update Search Index:
-            flag_for_search_indexing(12274,  $added_e['new_e']['e__id']);
-
-            //Assign session & log login transaction:
-            $this->E_model->activate_session($added_e['new_e']);
-
         }
+
+        //Update Search Index:
+        flag_for_search_indexing(12274,  $added_e['new_e']['e__id']);
+
+        //Assign session & log login transaction:
+        $this->E_model->activate_session($added_e['new_e']);
+
 
         //Return Member:
         return array(
@@ -935,44 +920,6 @@ class E_model extends CI_Model
         }
 
         return $x_adjusted;
-    }
-
-    function add_e($e__id){
-
-        $member_e = superpower_unlocked();
-        if(!$member_e){
-            return false;
-        }
-
-        //Assign to Creator:
-        $this->X_model->create(array(
-            'x__type' => 4230,
-            'x__creator' => $member_e['e__id'],
-            'x__up' => $member_e['e__id'],
-            'x__down' => $e__id,
-        ));
-
-        //Review source later:
-        if(!superpower_unlocked(13422)){
-
-            //Add Pending Review:
-            $this->X_model->create(array(
-                'x__type' => 4230,
-                'x__creator' => $member_e['e__id'],
-                'x__up' => 12775, //PENDING REVIEW
-                'x__down' => $e__id,
-            ));
-
-            //SOURCE PENDING MODERATION TYPE:
-            $this->X_model->create(array(
-                'x__type' => 7504, //SOURCE PENDING MODERATION
-                'x__creator' => $member_e['e__id'],
-                'x__up' => 12775, //PENDING REVIEW
-                'x__down' => $e__id,
-            ));
-
-        }
-
     }
 
 

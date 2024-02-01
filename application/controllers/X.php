@@ -981,24 +981,6 @@ class X extends CI_Controller
                 ));
             }
 
-            //Make sure full name is added as a Source Link Added (Needed for Sign Agreement):
-            if(!count($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 7545, //Following Add
-                'x__right' => $is[0]['i__id'],
-                'x__up' => 30198, //Full Name
-            )))){
-                $this->X_model->create(array(
-                    'x__creator' => 14068, //Guest Member
-                    'x__type' => 7545, //Following Add
-                    'x__up' => 30198, //Full Name
-                    'x__right' => $is[0]['i__id'],
-                ));
-            }
-
-            //Update Legal name with this name:
-            $return = e_link_message(30198, $member_e['e__id'], $_POST['x_write']);
-
         } else {
 
             //Unknown type!

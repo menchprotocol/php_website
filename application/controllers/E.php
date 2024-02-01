@@ -516,7 +516,7 @@ class E extends CI_Controller
             //Create transaction:
             $ur2 = $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__message' => $x__message,
                 'x__down' => $x__down,
                 'x__up' => $x__up,

@@ -437,16 +437,6 @@ function view_sign($i, $previous_response = null){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     $e___4737 = $CI->config->item('e___4737'); //Idea Status
-    $u_names = array();
-
-    if($member_e){
-        $u_names = $CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $member_e['e__id'],
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => 30198, //Full Legal Name
-        ));
-    }
 
     //Sign Agreement
     $message_ui = '';
@@ -455,7 +445,7 @@ function view_sign($i, $previous_response = null){
         $message_ui .= '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
     }
 
-    $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" value="'.( count($u_names) && strlen($u_names[0]['x__message']) ? $u_names[0]['x__message'] : $previous_response ).'" placeholder="" id="x_write" name="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
+    $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" value="'.$previous_response.'" placeholder="" id="x_write" name="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
 
     //Signature agreement:
     $message_ui .= '<div class="form-check">
@@ -1176,16 +1166,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
      *
      * */
 
-    $extension_detect = array(
-        4258 => array('mp4','m4v','m4p','avi','mov','flv','f4v','f4p','f4a','f4b','wmv','webm','mkv','vob','ogv','ogg','3gp','mpg','mpeg','m2v'), //Video URL
-        4259 => array('pcm','wav','aiff','mp3','aac','ogg','wma','flac','alac','m4a','m4b','m4p'), //Audio URL
-        4260 => array('jpeg','jpg','png','gif','tiff','bmp','img','svg','ico','webp','heic','avif'), //Image URL
-        42185 => array('pdf','doc','docx','odt','xls','xlsx','ods','ppt','pptx','txt','zip','rar'), //Document URL
-    );
-
     //Display Images, Audio, Video & PDF Files:
     //Analyze the message to find referencing URLs and Members in the message text:
     $CI =& get_instance();
+
 
     //All the possible reference types that can be found:
     $i__references = array(
@@ -1250,12 +1234,17 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 //Determine URL type:
                 $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below
                 $fileInfo = pathinfo($word);
-                foreach($extension_detect as $extension_type => $extension_ids) {
-                    if(isset($fileInfo['extension']) && in_array($fileInfo['extension'], $extension_ids)){
-                        $reference_type = $extension_type;
-                        break;
+
+                if(isset($fileInfo['extension'])){
+                    //Supported Media Extensions
+                    foreach($CI->config->item('e___42641') as $x__type => $m) {
+                        if(in_array($fileInfo['extension'], explode(' ',$m['m__message']))){
+                            $reference_type = $x__type;
+                            break;
+                        }
                     }
                 }
+
 
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], $word, $word);

@@ -3,6 +3,8 @@
 $found_i = false;
 $signed_i = false;
 
+die('needs updating for name and links');
+
 
 if(isset($_GET['i__hashtag'])){
 
@@ -50,7 +52,9 @@ if(isset($_GET['i__hashtag'])){
 
                 //Still missing user?
                 if(!count($map_users)){
-                    $member_result = $this->E_model->add_member($_POST['x_write'], $email, $phone, null, 0, true);
+                    //TODO will get full notification and login! needs to be adjusted...
+
+                    //$member_result = $this->E_model->add_member($_POST['x_write'], $email, $phone, null, 0);
                     if($member_result['status']) {
                         $map_users[0] = $member_result['e'];
                     }

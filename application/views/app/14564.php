@@ -3,7 +3,7 @@
 if(isset($_GET['i__hashtag'])){
 
     //New account to be created:
-    $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0)); //, urldecode($_GET['image_url'])
+    $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0));
     if(!$member_result['status']) {
         $this->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports

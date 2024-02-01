@@ -2150,7 +2150,7 @@ input.form-control {
     padding:13px 0 !important;
 }
 .section_demo{
-    background-color: #FFFFFF;
+    background-color: #EFEFEF;
     text-align: center;
 }
 
@@ -2862,8 +2862,8 @@ h4.main__title{
 .media_frame .media_item,
 .media_frame .media_item img,
 .media_frame .media_item span {
-    width: 89px;
-    height: 89px;
+    width: 233px;
+    height: 233px;
 }
 .media_frame .media_item {
     border-radius: 13px;
@@ -2872,6 +2872,7 @@ h4.main__title{
     margin-left: 5px;
     margin-top: 5px;
     position: relative;
+    background-color: #EFEFEF;
 }
 
 .media_frame .media_item img,
@@ -2917,7 +2918,19 @@ h4.main__title{
     background-color: rgba(0,0,0,0.55) !important;
     z-index: 1001;
 }
-.media_frame .media_item a i {
+.media_frame .media_item h5 {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    padding: 0px 5px;
+    background-color: rgba(0,0,0,0.55) !important;
+    z-index: 1001;
+}
+.media_frame .media_item a i,
+.media_frame .media_item h5 i{
     color: #FFFFFF;
     font-size: 0.89em !important;
 }
