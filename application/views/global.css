@@ -2886,10 +2886,11 @@ h4.main__title{
     position: absolute;
     top: 34px;
     left: 5px;
-    width: calc(100% - 10px);
-    height: 34px;
+    width: 75px;
+    height: 47px;
     background-color: #00CC00;
     z-index: 1002;
+    font-size: .8em;
     overflow: hidden;
     overflow-wrap: break-word;
     word-wrap: break-word;
