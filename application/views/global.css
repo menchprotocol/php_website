@@ -2878,17 +2878,17 @@ h4.main__title{
 
 .media_frame .sort_media a {
     position: absolute;
-    top: 13px;
-    right: 13px;
-    width: 21px;
-    height: 21px;
+    top: 8px;
+    right: 8px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background-color: rgba(0,0,0,0.55) !important;
     z-index: 1001;
 }
 .media_frame .sort_media a i {
     color: #FFFFFF;
-    font-size: 1.1em;
+    font-size: 1em;
 }
 
 @media (max-width:610px) {
