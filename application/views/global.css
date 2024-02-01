@@ -2849,6 +2849,24 @@ h4.main__title{
     margin-left: 8px;
 }
 
+.media_frame {
+    background-color: #999;
+    clear: both;
+}
+
+.media_frame .sort_media {
+    width: 55px;
+    height: 55px;
+    border-radius: 21px;
+    float: left;
+    overflow: hidden;
+}
+
+.media_frame .sort_media img {
+    width: 55px;
+    height: 55px;
+}
+
 @media (max-width:610px) {
 
     .message_right_box{
