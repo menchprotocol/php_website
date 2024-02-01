@@ -1413,7 +1413,7 @@ function cloudinary_add_uploaded(info){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
             media_type = 42185;
-            view_template = '<video class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video>';
+            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"><source src="'+info.secure_url+'" type="video/mp4"></video>';
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
             media_type = 42185;
@@ -1421,7 +1421,7 @@ function cloudinary_add_uploaded(info){
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 42185;
-            view_template = '<audio controls src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"></audio>';
+            view_template = '<audio controls src="'+info.secure_url+'"></audio>';
         }
     }
 
