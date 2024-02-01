@@ -28,22 +28,15 @@ foreach($this->X_model->fetch(array(
     'x__up' => 4527,
     'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+    'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
 ), array('x__down'), 0) as $en){
-
-    if($en['x__type']==4230){
-        $this->X_model->update($en['x__id'], array(
-            'x__type' => 4251,
-        ));
-    }
-    if(!in_array($en['e__privacy'], $n___7357)){
-        continue;
-    }
 
     //Now fetch all its followers:
     $down__e = $this->X_model->fetch(array(
         'x__up' => $en['x__down'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
     ), array('x__down'), 0, 0, sort__e());
 
 
@@ -51,14 +44,6 @@ foreach($this->X_model->fetch(array(
     $down_ids = array();
     $down_titles = array();
     foreach($down__e as $follower){
-        if($follower['x__type']==4230){
-            $this->X_model->update($follower['x__id'], array(
-                'x__type' => 4251,
-            ));
-        }
-        if(!in_array($follower['e__privacy'], $n___7357)){
-            continue;
-        }
         array_push($down_ids , $follower['e__id']);
         array_push($down_titles , $follower['e__title']);
     }
@@ -76,15 +61,8 @@ foreach($this->X_model->fetch(array(
             'x__down' => $follower['e__id'],
             'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
+            'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
         ), array('x__up'), 0) as $cp_en){
-            if($cp_en['x__type']==4230){
-                $this->X_model->update($cp_en['x__id'], array(
-                    'x__type' => 4251,
-                ));
-            }
-            if(!in_array($cp_en['e__privacy'], $n___7357)){
-                continue;
-            }
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
 
