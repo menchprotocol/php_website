@@ -981,15 +981,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="media_frame hideIfEmpty">
                                 <div class="sort_media" uploaded_id="" upload_type="">
                                     <img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" />
-                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="fas fa-xmark"></i></a>
+                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="far fa-trash-can"></i></a>
                                 </div>
                                 <div class="sort_media" uploaded_id="" upload_type="">
                                     <img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" />
-                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="fas fa-xmark"></i></a>
+                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="far fa-trash-can"></i></a>
                                 </div>
                                 <div class="sort_media" uploaded_id="" upload_type="">
                                     <img src="https://s3foundation.s3-us-west-2.amazonaws.com/f0302425c41a7425bd68610e24b07812.png" />
-                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="fas fa-xmark"></i></a>
+                                    <a href="javascript:void(0)" onclick="alert('remove')"><i class="far fa-trash-can"></i></a>
                                 </div>
                                 <div class="doclear">&nbsp;</div>
                             </div>
