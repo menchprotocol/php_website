@@ -1395,6 +1395,7 @@ function cloudinary_remove(info_id){
     $('#'+info_id).remove();
 }
 
+
 function cloudinary_add_pending(info){
     $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 }
@@ -1402,7 +1403,11 @@ function cloudinary_add_pending(info){
 function cloudinary_add_uploaded(info){
 
     //Replace pending content with newly uploaded:
-    $('#'+info.id).html('<img src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,h_89,w_89/'+info.path+'" /><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+    var view_template = '<span><i class="far fa-file"></i></span>';
+    if(info.resource_type=='image'){
+        view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_89,w_89')+'" />';
+    }
+    $('#'+info.id).html(view_template+'<a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
 
     //Enable Sorting:
 
