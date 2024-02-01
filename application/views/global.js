@@ -1402,10 +1402,7 @@ function cloudinary_add_pending(info){
 function cloudinary_add_uploaded(info){
 
     //Replace pending content with newly uploaded:
-    setTimeout(function () {
-        //Focus on writing a message:
-        $('#'+info.id).html('<img src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,h_89,w_89/\''+info.path+'\'" /><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
-    }, 2987);
+    $('#'+info.id).html('<img src="https://res.cloudinary.com/menchcloud/image/upload/c_fill,h_89,w_89/'+info.path+'" /><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
 
     //Enable Sorting:
 
