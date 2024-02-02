@@ -1418,7 +1418,7 @@ function cloudinary_add_uploaded(info){
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
-            view_template = '<audio controls src="'+info.secure_url+'"></audio><span><i class="fas fa-file"></i></span>';
+            view_template = '<audio controls src="'+info.secure_url+'"></audio><span><i class="far fa-microphone"></i></span>';
         }
     }
 
@@ -1449,6 +1449,14 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     var global_tags = ['uploader_'+uploader_id, 'u__id_'+js_pl_id];
     var allow_videos = js_e___42390[uploader_id]!==undefined;
     var allow_imgaes = js_e___42389[uploader_id]!==undefined;
+    var allow_audio = js_e___42644[uploader_id]!==undefined;
+
+    if(!allow_videos && !allow_imgaes && !allow_audio){
+        //Assume all are allowed:
+        allow_audio = true;
+        allow_videos = true;
+        allow_imgaes = true;
+    }
 
     //Initiate CLoudiary for cover:
     var max_file_size_mb = ( js_e___42383[uploader_id]!==undefined && parseFloat(js_e___42383[uploader_id]['m__message'])>0 && parseFloat(js_e___42383[uploader_id]['m__message'])<default_max_file_size_mb ? parseFloat(js_e___42383[uploader_id]['m__message']) : default_max_file_size_mb );
@@ -1456,19 +1464,17 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
     var enable_crop = ( js_e___42386[uploader_id]!==undefined );
     var force_crop = ( js_e___42387[uploader_id]!==undefined );
-    var force_file_extension = ( js_e___33800[uploader_id]!==undefined && js_e___33800[uploader_id]['m__message'].length ? js_e___33800[uploader_id]['m__message'] : null );
+
 
     var clientAllowedFormats = [];
     if(allow_videos){
-        clientAllowedFormats.push('video');
-    } else if(allow_imgaes){
-        clientAllowedFormats.push('image');
+        clientAllowedFormats.concat(js_e___42641[4258]['m__message'].split(' '));
     }
-    if(force_file_extension){
-        var file_extension_array = force_file_extension.split(',');
-        for(var i = 0; i < file_extension_array.length; i++) {
-            clientAllowedFormats.push(file_extension_array[i].replace(/^\s*/, "").replace(/\s*$/, ""));
-        }
+    if(allow_imgaes){
+        clientAllowedFormats.concat(js_e___42641[4260]['m__message'].split(' '));
+    }
+    if(allow_audio){
+        clientAllowedFormats.concat(js_e___42641[4259]['m__message'].split(' '));
     }
 
     var widget_setting = {
@@ -1479,7 +1485,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         maxVideoFileSize: ( max_file_size_mb * 1000000 ),
         maxImageFileSize: ( max_file_size_mb * 1000000 ),
         maxRawFileSize: ( max_file_size_mb * 1000000 ),
-        thumbnails: null,
         maxChunkSize: ( max_file_size_mb > 100 ? 100 : max_file_size_mb ) * 1000000,
 
         clientAllowedFormats: clientAllowedFormats,
