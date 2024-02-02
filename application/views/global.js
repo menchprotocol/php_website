@@ -1542,7 +1542,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
         //Fixed variables:
         cloudName: 'menchcloud',
-        detection: 'menchcloud',
         uploadPreset: 'mench_uploader',
         showPoweredBy: false,
         autoMinimize: true,
