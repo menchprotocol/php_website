@@ -1423,7 +1423,7 @@ function cloudinary_add_uploaded(info){
     }
 
     if(media_type){
-        $('#'+info.id).html(view_template+'<pre>File Name:</pre><textarea type="text">'+info.original_filename+'</textarea><a href="javascript:void(0)" class="do_close" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+info.id).html(view_template+'<a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
     } else {
         //Unsupported file, should not happen since we limited file extensions to those we know:
         $('#'+info.id).remove(); //Remove added loader...
