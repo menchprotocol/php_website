@@ -1350,7 +1350,7 @@ label {
     height: 0px;
 }
 .modal-header .btn-close{
-    margin: 0 !important;
+    margin: 0 0 5px 0 !important;
 }
 .itemsetting{
     color: #000000;
@@ -2839,6 +2839,7 @@ h4.main__title{
 .media_frame .media_item span {
     width: 233px;
     height: 233px;
+    cursor: move;
 }
 .media_frame .media_item {
     border-radius: 13px;

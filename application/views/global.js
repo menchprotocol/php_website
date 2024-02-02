@@ -336,7 +336,7 @@ function sort_e_load(x__type) {
         $('.sort_e_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
-            animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+            animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
             handle: "#list-in-"+x__type+" .sort_e_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
@@ -1382,6 +1382,39 @@ function editor_save_i(){
 }
 
 
+function save_media_sort() {
+
+    console.log('media is sorted');
+    return false;
+
+    var new_x__weight = [];
+    var sort_rank = 0;
+
+    $("#list-in-"+x__type+" .coinface-12274").each(function () {
+        //Fetch variables for this idea:
+        var e__id = parseInt($(this).attr('e__id'));
+        var x__id = parseInt($(this).attr('x__id'));
+
+        sort_rank++;
+
+        //Store in DB:
+        new_x__weight[sort_rank] = x__id;
+    });
+
+    //It might be zero for lists that have jsut been emptied
+    if (sort_rank > 0) {
+        //Update backend:
+        $.post("/e/sort_e_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
+            //Update UI to confirm with member:
+            if (!data.status) {
+                //There was some sort of an error returned!
+                alert(data.message);
+            }
+        });
+    }
+}
+
+
 var confirm_removal_once_done = false;
 function cloudinary_remove(info_id){
     if(!confirm_removal_once_done){
@@ -1405,29 +1438,39 @@ function cloudinary_add_pending(info){
 function cloudinary_add_uploaded(info){
 
     //Assume its a file unless proven otherwise:
-    var view_template = '<h5><i class="fas fa-check-circle"></i></h5><h6>'+info.original_filename+'</h6>';
+    var view_template = '<h6>'+info.original_filename+'</h6>';
     var media_type = 42185; //File
 
     //See if we can find a Video, Image or Audio file:
     if(info.format && info.format.length>0){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
-            media_type = 42185;
-            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"><source src="'+info.secure_url+'" type="video/mp4"></video>';
+            media_type = 4258;
+            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video>';
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
-            media_type = 42185;
+            media_type = 4260;
             view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" />';
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
-            media_type = 42185;
-            view_template = '<audio controls src="'+info.secure_url+'"></audio>';
+            media_type = 4259;
+            view_template = '<audio controls src="'+info.secure_url+'"></audio><span><i class="fas fa-file"></i></span>';
         }
     }
 
     $('#'+info.id).html(view_template+'<a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
 
     //Enable Sorting:
+    setTimeout(function () {
+        var sort = Sortable.create($('.media_frame'), {
+            animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
+            draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
+            handle: ".media_frame .media_item", // Restricts sort start click/touch to the specified element
+            onUpdate: function (evt/**Event*/) {
+                save_media_sort();
+            }
+        });
+    }, 144);
 
 }
 
@@ -1499,6 +1542,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
         //Fixed variables:
         cloudName: 'menchcloud',
+        detection: 'menchcloud',
         uploadPreset: 'mench_uploader',
         showPoweredBy: false,
         autoMinimize: true,
@@ -2381,7 +2425,7 @@ function sort_i_load(x__type){
 
         //Load sorter:
         var sort = Sortable.create(theobject, {
-            animation: 150, // ms, animation speed moving items when sorting, `0` � without animation
+            animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
             draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
             handle: "#list-in-"+x__type+" .sort_i_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
