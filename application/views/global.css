@@ -2878,6 +2878,13 @@ h4.main__title{
 
 @media (max-width:610px) {
 
+    .inner_message {
+        padding: 2px 1px 1px;
+    }
+    .inner_message .icon-block {
+        width: 34px;
+    }
+
     .mini-frame{
         max-width: 233px;
     }
