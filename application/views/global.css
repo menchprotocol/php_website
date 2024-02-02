@@ -2861,6 +2861,24 @@ h4.main__title{
     z-index: 1000;
 }
 
+
+.media_frame .media_item pre {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 55px;
+    height: 21px;
+    background: rgba(239,239,239,0.89) !important;
+    z-index: 1002 !important;
+    font-size:0.89em;
+    font-weight: bold;
+    overflow: hidden;
+    text-align: left;
+    padding: 3px;
+    border:1px solid #000;
+    line-height: 113%;
+}
+
 .media_frame .media_item textarea {
     position: absolute;
     top: 34px;
@@ -2878,6 +2896,7 @@ h4.main__title{
     text-align: left;
     padding: 3px;
     border:1px solid #000;
+    line-height: 113%;
 }
 
 .media_frame .media_item span i {

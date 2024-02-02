@@ -1381,40 +1381,6 @@ function editor_save_i(){
     });
 }
 
-
-function save_media_sort() {
-
-    console.log('media is sorted');
-    return false;
-
-    var new_x__weight = [];
-    var sort_rank = 0;
-
-    $("#list-in-"+x__type+" .coinface-12274").each(function () {
-        //Fetch variables for this idea:
-        var e__id = parseInt($(this).attr('e__id'));
-        var x__id = parseInt($(this).attr('x__id'));
-
-        sort_rank++;
-
-        //Store in DB:
-        new_x__weight[sort_rank] = x__id;
-    });
-
-    //It might be zero for lists that have jsut been emptied
-    if (sort_rank > 0) {
-        //Update backend:
-        $.post("/e/sort_e_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
-            //Update UI to confirm with member:
-            if (!data.status) {
-                //There was some sort of an error returned!
-                alert(data.message);
-            }
-        });
-    }
-}
-
-
 var confirm_removal_once_done = false;
 function cloudinary_remove(info_id){
     if(!confirm_removal_once_done){
@@ -1458,7 +1424,7 @@ function cloudinary_add_uploaded(info){
         }
     }
 
-    $('#'+info.id).html(view_template+'<textarea type="text" title="Source Name (Required)" data-toggle="tooltip" data-placement="top">'+info.original_filename+'</textarea><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+    $('#'+info.id).html(view_template+'<pre>File Name:</pre><textarea type="text">'+info.original_filename+'</textarea><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
 
 }
 
@@ -1549,20 +1515,20 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         } else if (result.event === "queues-start") {
 
             //Enable Sorting:
-            console.log('QUEUE STARTED'); //TODO Remove later for debugging now
             var sort = Sortable.create(document.getElementById("media_frame"), {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
                 draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
                 handle: ".media_frame .media_item", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
-                    save_media_sort();
+                    //Nothing we need to do since the order will be grabbed upon submission...
+                    //Just mark as unsaved again to make sure it saves:
+                    has_unsaved_changes = true;
                 }
             });
 
         } else if (result.event === "queues-start") {
 
             console.log('QUEUE ENDED'); //TODO Remove later for debugging now
-            $('[data-toggle="tooltip"]').tooltip();
 
         } else if (result.event === "upload-added") {
 
