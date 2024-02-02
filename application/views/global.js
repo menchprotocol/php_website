@@ -1404,6 +1404,8 @@ function cloudinary_add_pending(info){
 function cloudinary_add_uploaded(info){
 
     //Search for a Video, Image or Audio file:
+    var view_template = '';
+    var media_type = 0;
     if(info.format && info.format.length>0){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
@@ -1417,15 +1419,16 @@ function cloudinary_add_uploaded(info){
             //Audio
             media_type = 4259;
             view_template = '<audio controls src="'+info.secure_url+'"></audio><span><i class="fas fa-file"></i></span>';
-        } else {
-            //Not supported:
-            $('#'+info.id).remove(); //Remove added loader...
-            alert('Upload Error: Uploaded File '+info.original_filename+'.'+info.format+' is not a valid Video, Image or Audio file.');
-            return false;
         }
     }
 
-    $('#'+info.id).html(view_template+'<pre>File Name:</pre><textarea type="text">'+info.original_filename+'</textarea><a href="javascript:void(0)" class="do_close" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+    if(media_type){
+        $('#'+info.id).html(view_template+'<pre>File Name:</pre><textarea type="text">'+info.original_filename+'</textarea><a href="javascript:void(0)" class="do_close" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+    } else {
+        //Unsupported file:
+        $('#'+info.id).remove(); //Remove added loader...
+        alert('Upload Error: Uploaded File '+info.original_filename+'.'+info.format+' is not a valid Video, Image or Audio file.');
+    }
 
 }
 
