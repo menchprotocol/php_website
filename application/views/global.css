@@ -189,6 +189,9 @@ h3{
     margin-left: 40px;
     padding: 5px 3px 3px;
 }
+.float_right{
+    float: right !important;
+}
 
 
 .section_subframe,
