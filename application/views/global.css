@@ -187,7 +187,7 @@ h3{
     background-color: #FFFFFF;
     display: block;
     margin-left: 40px;
-    padding: 3px;
+    padding: 5px;
 }
 
 .section_subframe,
@@ -211,7 +211,7 @@ h3{
 .inner_message .dynamic_editing_input{
     display: inline-block;
     float: left;
-    padding: 0 3px;
+    padding: 0;
     margin: 0 !important;
 }
 .inner_message .dynamic_editing_input .btn{
