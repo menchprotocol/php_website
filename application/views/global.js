@@ -1468,13 +1468,13 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
     var clientAllowedFormats = [];
     if(allow_videos){
-        clientAllowedFormats.concat(js_e___42641[4258]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_e___42641[4258]['m__message'].split(' '));
     }
     if(allow_imgaes){
-        clientAllowedFormats.concat(js_e___42641[4260]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_e___42641[4260]['m__message'].split(' '));
     }
     if(allow_audio){
-        clientAllowedFormats.concat(js_e___42641[4259]['m__message'].split(' '));
+        clientAllowedFormats = clientAllowedFormats.concat(js_e___42641[4259]['m__message'].split(' '));
     }
 
     var widget_setting = {
