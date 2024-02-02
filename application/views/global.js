@@ -1432,13 +1432,13 @@ function cloudinary_remove(info_id){
 
 function cloudinary_add_pending(info){
     has_unsaved_changes = true;
-    $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><h6>'+info.file.name+'</h6><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+    $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 }
 
 function cloudinary_add_uploaded(info){
 
     //Assume its a file unless proven otherwise:
-    var view_template = '<h6>'+info.original_filename+'</h6><span><i class="fas fa-file"></i></span>';
+    var view_template = '<input type="text" value="'+info.original_filename+'" /><span><i class="fas fa-file"></i></span>';
     var media_type = 42185; //File
 
     //See if we can find a Video, Image or Audio file:
