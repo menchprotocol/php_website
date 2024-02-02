@@ -1529,6 +1529,13 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         } else if (result.event === "queues-start") {
 
             console.log('QUEUE ENDED'); //TODO Remove later for debugging now
+            $(".media_frame .media_item textarea").keydown(function(e){
+                if (e.keyCode == 13 && !e.shiftKey)
+                {
+                    // prevent default behavior
+                    e.preventDefault();
+                }
+            });
 
         } else if (result.event === "upload-added") {
 
