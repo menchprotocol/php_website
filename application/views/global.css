@@ -4337,10 +4337,10 @@ main {
 
 .x__message_headline{
     display: block;
-    line-height: 134%;
-    padding: 3px;
+    line-height: 100%;
+    padding: 0 2px;
     font-size: 0.89em;
-    max-height: 34px;
+    max-height: 55px;
     overflow-x: hidden;
     overflow-y: auto;
 }
