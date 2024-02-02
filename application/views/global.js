@@ -1420,7 +1420,7 @@ function cloudinary_add_uploaded(info){
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
-            view_template = '<audio controls src="'+info.secure_url+'"></audio>';
+            view_template = '<audio controls src="'+info.secure_url+'"></audio><span><i class="fas fa-file"></i></span>';
         }
     }
 
