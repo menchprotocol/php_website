@@ -2864,19 +2864,20 @@ h4.main__title{
 
 .media_frame .media_item pre {
     position: absolute;
-    top: 8px;
+    top: 14px;
     left: 8px;
-    width: 55px;
+    /* width: 78px; */
     height: 21px;
     background: rgba(239,239,239,0.89) !important;
-    z-index: 1002 !important;
-    font-size:0.89em;
+    z-index: 1003 !important;
+    font-size: 0.89em;
     font-weight: bold;
     overflow: hidden;
     text-align: left;
     padding: 3px;
-    border:1px solid #000;
+    border: 1px solid #000;
     line-height: 113%;
+    border-bottom: 0;
 }
 
 .media_frame .media_item textarea {
