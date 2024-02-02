@@ -1772,7 +1772,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Link Message if any:
     if($x__id){
-        $ui .= '<div class="creator_headline grey mini-frame hideIfEmpty ignore-click ui_x__message_' . $x__id . '">'.htmlentities($i['x__message']).'</div>';
+        $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . '">'.htmlentities($i['x__message']).'</div>';
     }
 
     $ui .= '</div>';
@@ -2258,7 +2258,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<span class="icon-block-sm" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"><i class="far fa-info-circle"></i></span>';
     } else if($grant_privacy && $x__id){
         //Main description:
-        $ui .= '<div class="creator_headline grey mini-frame hideIfEmpty ignore-click ui_x__message_' . $x__id . '">'.htmlentities($e['x__message']).'</div>';
+        $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . '">'.htmlentities($e['x__message']).'</div>';
     }
 
     $ui .= '</div>';

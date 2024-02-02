@@ -4335,6 +4335,16 @@ main {
     padding: 3px 5px 3px 0;
 }
 
+.x__message_headline{
+    display: block;
+    line-height: 134%;
+    padding: 3px;
+    font-size: 0.89em;
+    max-height: 34px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .round-btn{
     display: inline-block;
     width: 65px;
