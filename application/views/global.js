@@ -1809,18 +1809,9 @@ function editor_save_e(){
             var old_handle = $(".ui_e__handle_"+modify_data['save_e__id']+':first').text();
             var new_handle = modify_data['save_e__handle'];
             if(old_handle!=new_handle){
-
-                console.log('handle change');
-                console.log(old_handle);
-                console.log(new_handle);
-                console.log(fetch_int_val('#focus_card'));
-                console.log(modify_data['save_e__id']);
-                console.log(fetch_int_val('#focus_id'));
-                return false;
-
                 if(fetch_int_val('#focus_card')==12274 && modify_data['save_e__id']==fetch_int_val('#focus_id')){
                     //Refresh page since focus item handle changed:
-                    js_redirect('/@'+new_handle);
+                    return js_redirect('/@'+new_handle);
                 } else {
                     //Make adjustments to current page:
                     $('.s__12274_'+modify_data['save_e__id']).attr('e__handle', new_handle);
