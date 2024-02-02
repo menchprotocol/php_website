@@ -303,7 +303,7 @@ if(superpower_unlocked()) {
 
         <div class="text-center platform-large"><?= get_domain('m__cover') ?></div>
         <div class="text-center platform-text main__title"><?= get_domain('m__title') ?></div>
-        <div class="login-content" style="margin-top:40px;">
+        <div class="login-content" style="margin-top:21px;">
 
             <div id="step1" class="signup-steps">
                 <?php
