@@ -189,6 +189,9 @@ h3{
     margin-left: 40px;
     padding: 5px;
 }
+.inner_message i {
+    font-size: 0.89em !important;
+}
 
 .section_subframe,
 .section_demo,
