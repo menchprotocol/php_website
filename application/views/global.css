@@ -1634,7 +1634,11 @@ label {
 }
 .platform-large{
     font-size: 8em !important;
-    padding:0 0 34px 0;
+    padding:0 0 13px 0;
+}
+.platform-text{
+    font-size: 3em !important;
+    padding:0 0 21px 0;
 }
 .image-mini img{
     line-height: 100%;
