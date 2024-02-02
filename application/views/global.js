@@ -1546,19 +1546,17 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
             //Log error
 
-        } else if (result.event === "???") {
+        } else if (result.event === "queues-start") {
 
             //Enable Sorting:
-            setTimeout(function () {
-                var sort = Sortable.create(document.getElementById("media_frame"), {
-                    animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                    draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
-                    handle: ".media_frame .media_item", // Restricts sort start click/touch to the specified element
-                    onUpdate: function (evt/**Event*/) {
-                        save_media_sort();
-                    }
-                });
-            }, 144);
+            var sort = Sortable.create(document.getElementById("media_frame"), {
+                animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
+                draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
+                handle: ".media_frame .media_item", // Restricts sort start click/touch to the specified element
+                onUpdate: function (evt/**Event*/) {
+                    save_media_sort();
+                }
+            });
 
         } else if (result.event === "upload-added") {
 
