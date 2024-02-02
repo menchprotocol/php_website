@@ -999,12 +999,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <!-- Idea Privacy -->
                             <div class="dynamic_editing_input" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, true); ?></div>
+                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, false); ?></div>
                             </div>
 
                             <!-- Idea Type -->
                             <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(4737, 6677); ?></div>
+                                <div class="dynamic_selector"><?= view_single_select_form(4737, 6677, false, true); ?></div>
                             </div>
 
                             <div class="doclear">&nbsp;</div>
@@ -1075,7 +1075,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Source Privacy -->
                         <div class="dynamic_editing_input">
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': ';  ?></h3>
-                            <div class="dynamic_selector"><?= view_single_select_form(6177, 6181, true); ?></div>
+                            <div class="dynamic_selector"><?= view_single_select_form(6177, 6181, true, true); ?></div>
                         </div>
 
                         <!-- SOURCE COVER -->

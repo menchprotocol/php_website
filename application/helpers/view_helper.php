@@ -837,7 +837,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
 
 
-function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_arrow = false, $show_title = true){
+function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_arrow, $show_title){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
