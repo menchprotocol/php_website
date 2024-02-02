@@ -2879,10 +2879,10 @@ h4.main__title{
 @media (max-width:610px) {
 
     .inner_message {
-        padding: 2px 1px 1px;
+        padding: 2px 0;
     }
     .inner_message .icon-block {
-        width: 34px;
+        width: 34px !important;
     }
 
     .mini-frame{
