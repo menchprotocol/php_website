@@ -2547,7 +2547,7 @@ function ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name){
 
     console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn' + new_e__id);
     var data_object = eval('js_e___'+element_id);
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
 
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + x__id).removeClass('active');
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
@@ -2638,7 +2638,7 @@ function update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show
         alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
         return false;
     }
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/x/update_instant_select", {
         focus_id:fetch_int_val('#focus_id'),
