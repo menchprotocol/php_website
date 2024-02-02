@@ -2866,7 +2866,7 @@ h4.main__title{
     top: 34px;
     left: 8px;
     width: calc(233px - 16px);
-    height: 89px;
+    height: 55px;
     background: rgba(239,239,239,0.89) !important;
     z-index: 1002 !important;
     font-size:0.89em;
@@ -2875,7 +2875,9 @@ h4.main__title{
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
-    text-align: center;
+    text-align: left;
+    padding: 3px;
+    border:1px solid #000;
 }
 
 .media_frame .media_item span i {
