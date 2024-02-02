@@ -2839,8 +2839,8 @@ h4.main__title{
 .media_frame .media_item img,
 .media_frame .media_item video,
 .media_frame .media_item audio {
-    width: 176px;
-    height: 176px;
+    width: 155px;
+    height: 155px;
     cursor: move;
 }
 .media_frame .media_item {

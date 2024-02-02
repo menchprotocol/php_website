@@ -1410,11 +1410,11 @@ function cloudinary_add_uploaded(info){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
             media_type = 4258;
-            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_176,w_176')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video>';
+            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_155,w_155')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video>';
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
             media_type = 4260;
-            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_176,w_176')+'" />';
+            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_155,w_155')+'" />';
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
