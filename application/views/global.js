@@ -1446,15 +1446,15 @@ function cloudinary_add_uploaded(info){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
             media_type = 4258;
-            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video><h6>'+info.original_filename+'</h6>';
+            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video><textarea type="text">'+info.original_filename+'</textarea>';
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
             media_type = 4260;
-            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><h6>'+info.original_filename+'</h6>';
+            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><textarea type="text">'+info.original_filename+'</textarea>';
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
-            view_template = '<audio controls src="'+info.secure_url+'"></audio><h6>'+info.original_filename+'</h6>';
+            view_template = '<audio controls src="'+info.secure_url+'"></audio><textarea type="text">'+info.original_filename+'</textarea>';
         }
     }
 
