@@ -999,7 +999,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <!-- Idea Privacy -->
                             <div class="dynamic_editing_input" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, false); ?></div>
+                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, true); ?></div>
                             </div>
 
                             <!-- Idea Type -->

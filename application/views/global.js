@@ -1142,7 +1142,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     }
 
     //Idea Privacy:
-    update_form_select(31004, current_i__privacy, 1, false);
+    update_form_select(31004, current_i__privacy, 1, true);
 
     //Idea Type:
     update_form_select(4737, current_i__type, 1, true);
@@ -1328,11 +1328,11 @@ function editor_save_i(){
 
             //Update Idea Type:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__type', modify_data['save_i__type']);
-            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_x__id'], false);
+            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_x__id'], true);
 
             //Update Idea Privacy:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__privacy', modify_data['save_i__privacy']);
-            ui_instant_select(31004, modify_data['save_i__privacy'], modify_data['save_i__id'], modify_data['save_x__id'], false);
+            ui_instant_select(31004, modify_data['save_i__privacy'], modify_data['save_i__id'], modify_data['save_x__id'], true);
 
             //Update Handle & Href links if needed:
             if(old_handle!=new_handle){
