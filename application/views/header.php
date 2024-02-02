@@ -985,13 +985,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="inner_message">
 
                             <!-- Upload -->
-                            <div class="dynamic_editing_input no_padded solo_input" style="margin: 0 !important;">
+                            <div class="dynamic_editing_input no_padded">
                                 <a class="uploader_13572 icon-block-sm" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
                             </div>
 
                             <!-- EMOJI -->
-                            <div class="dynamic_editing_input no_padded" style="margin: 0 !important;">
-                                <div class="dropdown emoji_selector solo_input">
+                            <div class="dynamic_editing_input no_padded">
+                                <div class="dropdown emoji_selector">
                                     <button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                     <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                 </div>

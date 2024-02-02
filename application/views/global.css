@@ -2807,16 +2807,6 @@ h4.main__title{
     margin: 0 0 13px !important;
 }
 
-.solo_input a {
-    text-align: right;
-}
-.solo_input a i {
-    margin-top: 3px;
-}
-.solo_input .btn {
-    padding: 0 !important;
-    margin-bottom: -2px;
-}
 
 .media_frame {
     clear: both;
@@ -2888,7 +2878,6 @@ h4.main__title{
         max-width: 377px;
 
     }
-    .inner_message .solo_input,
     .inner_message .dropdown-menu a,
     .inner_message .current_content{
         font-size: 0.69em !important;
