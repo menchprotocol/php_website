@@ -646,7 +646,13 @@ class I extends CI_Controller {
                 ));
             }
 
-            //Update Handles everywhere they are referenced:
+            //Save hashtag since changed:
+            $is[0]['i__hashtag'] = trim($_POST['save_i__hashtag']);
+            $this->I_model->update($is[0]['i__id'], array(
+                'i__hashtag' => $is[0]['i__hashtag'],
+            ), true, $member_e['e__id']);
+
+            //Now Handles everywhere they are referenced:
             foreach ($this->X_model->fetch(array(
                 'x__left' => $is[0]['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
@@ -655,12 +661,6 @@ class I extends CI_Controller {
                 $attemp_update++;
                 view_sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
-
-            //Save hashtag since changed:
-            $is[0]['i__hashtag'] = trim($_POST['save_i__hashtag']);
-            $this->I_model->update($is[0]['i__id'], array(
-                'i__hashtag' => $is[0]['i__hashtag'],
-            ), true, $member_e['e__id']);
 
         }
 

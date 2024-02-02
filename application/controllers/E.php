@@ -923,7 +923,6 @@ class E extends CI_Controller
 
         //Validate Source Handle & save if needed:
         if($es[0]['e__handle'] !== trim($_POST['save_e__handle'])){
-
             $validate_handle = validate_handle(trim($_POST['save_e__handle']), null, $es[0]['e__id']);
             if(!$validate_handle['status']){
                 return view_json(array(
@@ -931,17 +930,6 @@ class E extends CI_Controller
                     'message' => $validate_handle['message'],
                 ));
             }
-
-            //Update Handles everywhere they are referenced:
-            foreach ($this->X_model->fetch(array(
-                'x__up' => $es[0]['e__id'],
-                'x__type' => 31835, //Source Mention
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('x__right')) as $ref) {
-                view_sync_links(str_replace('@'.$es[0]['e__handle'], '@'.trim($_POST['save_e__handle']), $ref['i__message']), true, $ref['i__id']);
-            }
-            $es[0]['e__handle'] = trim($_POST['save_e__handle']);
-
         }
 
         //Validate Source Title & save if needed:
@@ -969,6 +957,21 @@ class E extends CI_Controller
             'e__handle' => trim($_POST['save_e__handle']),
             'e__privacy' => $_POST['save_e__privacy'],
         ), true, $member_e['e__id']);
+
+
+        if($es[0]['e__handle'] !== trim($_POST['save_e__handle'])){
+
+            //Update Handles everywhere they are referenced:
+            foreach ($this->X_model->fetch(array(
+                'x__up' => $es[0]['e__id'],
+                'x__type' => 31835, //Source Mention
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ), array('x__right')) as $ref) {
+                view_sync_links(str_replace('@'.$es[0]['e__handle'], '@'.trim($_POST['save_e__handle']), $ref['i__message']), true, $ref['i__id']);
+            }
+            $es[0]['e__handle'] = trim($_POST['save_e__handle']);
+
+        }
 
         //Do we have a link reference message that need to be saved?
         if($_POST['save_x__id']>0 && $_POST['save_x__message']!='IGNORE_INPUT'){
