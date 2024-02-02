@@ -647,9 +647,8 @@ class I extends CI_Controller {
             }
 
             //Save hashtag since changed:
-            $is[0]['i__hashtag'] = trim($_POST['save_i__hashtag']);
             $this->I_model->update($is[0]['i__id'], array(
-                'i__hashtag' => $is[0]['i__hashtag'],
+                'i__hashtag' => trim($_POST['save_i__hashtag']),
             ), true, $member_e['e__id']);
 
             //Now Handles everywhere they are referenced:
@@ -661,6 +660,9 @@ class I extends CI_Controller {
                 $attemp_update++;
                 view_sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
+
+            //Assign new value:
+            $is[0]['i__hashtag'] = trim($_POST['save_i__hashtag']);
 
         }
 
