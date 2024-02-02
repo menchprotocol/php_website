@@ -977,7 +977,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
                             <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                            <div class="media_frame hideIfEmpty">
+                            <div id="media_frame" class="media_frame hideIfEmpty">
                                 <div class="doclear">&nbsp;</div>
                             </div>
                         </div>
