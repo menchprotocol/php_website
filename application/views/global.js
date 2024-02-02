@@ -1142,10 +1142,10 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     }
 
     //Idea Privacy:
-    update_form_select(31004, current_i__privacy, 1);
+    update_form_select(31004, current_i__privacy, 1, false);
 
     //Idea Type:
-    update_form_select(4737, current_i__type, 1);
+    update_form_select(4737, current_i__type, 1, true);
 
     //Activate Modal:
     $('#modal31911').modal('show');
@@ -1640,7 +1640,7 @@ function editor_load_e(e__id, x__id){
     $('#modal31912 .fa_search a').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(current_title)+'&o=r&s=solid');
 
     //Source Privacy:
-    update_form_select(6177, current_privacy, 1);
+    update_form_select(6177, current_privacy, 1, true);
 
 
     $('#modal31912 .random_animal').html('<i class="'+random_animal(true)+'"></i>');
@@ -2522,12 +2522,17 @@ function isNormalInteger(str) {
 }
 
 
-function update_form_select(element_id, new_e__id, initial_loading){
+function update_form_select(element_id, new_e__id, initial_loading, show_title){
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
     $('.dropd_form_' + element_id + ' .optiond_'+new_e__id).addClass('active');
     $('.dropd_form_' + element_id).attr('selected_value', new_e__id);
-    $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+new_e__id).html());
+    if(show_title){
+        $('.dropd_form_' + element_id + ' .current_content').html($('.dropd_form_' + element_id + ' .content_'+new_e__id).html());
+    } else {
+        //Just replace icon:
+        $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_'+new_e__id+' span').html());
+    }
     if(!initial_loading){
         has_unsaved_changes = true;
         if(element_id==4737){
