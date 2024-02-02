@@ -1438,7 +1438,7 @@ function cloudinary_add_pending(info){
 function cloudinary_add_uploaded(info){
 
     //Assume its a file unless proven otherwise:
-    var view_template = '<textarea type="text">'+info.original_filename+'</textarea><span><i class="fas fa-file"></i></span>';
+    var view_template = '<span><i class="fas fa-file"></i></span>';
     var media_type = 42185; //File
 
     //See if we can find a Video, Image or Audio file:
@@ -1446,19 +1446,19 @@ function cloudinary_add_uploaded(info){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
             media_type = 4258;
-            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video><textarea type="text">'+info.original_filename+'</textarea>';
+            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video>';
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
             media_type = 4260;
-            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><textarea type="text">'+info.original_filename+'</textarea>';
+            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" />';
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
-            view_template = '<audio controls src="'+info.secure_url+'"></audio><textarea type="text">'+info.original_filename+'</textarea>';
+            view_template = '<audio controls src="'+info.secure_url+'"></audio>';
         }
     }
 
-    $('#'+info.id).html(view_template+'<a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+    $('#'+info.id).html(view_template+'<textarea type="text" title="Source Name (Required)" data-toggle="tooltip" data-placement="top">'+info.original_filename+'</textarea><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
 
 }
 
