@@ -2836,8 +2836,8 @@ h4.main__title{
 .media_frame .media_item img,
 .media_frame .media_item video,
 .media_frame .media_item audio {
-    width: 233px;
-    height: 233px;
+    width: 144px;
+    height: 144px;
     cursor: move;
 }
 .media_frame .media_item {
@@ -2893,7 +2893,7 @@ h4.main__title{
     position: absolute;
     top: 34px;
     left: 8px;
-    width: calc(233px - 16px);
+    width: calc(144px - 16px);
     height: 55px;
     background: rgba(239,239,239,0.89) !important;
     z-index: 1003 !important;
