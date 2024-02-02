@@ -1460,18 +1460,6 @@ function cloudinary_add_uploaded(info){
 
     $('#'+info.id).html(view_template+'<a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
 
-    //Enable Sorting:
-    setTimeout(function () {
-        var sort = Sortable.create(document.getElementById("media_frame"), {
-            animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
-            handle: ".media_frame .media_item", // Restricts sort start click/touch to the specified element
-            onUpdate: function (evt/**Event*/) {
-                save_media_sort();
-            }
-        });
-    }, 144);
-
 }
 
 function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){
@@ -1556,8 +1544,21 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
         if(error || !result){
 
-            //Log error to look at later:
+            //Log error
 
+        } else if (result.event === "???") {
+
+            //Enable Sorting:
+            setTimeout(function () {
+                var sort = Sortable.create(document.getElementById("media_frame"), {
+                    animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
+                    draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
+                    handle: ".media_frame .media_item", // Restricts sort start click/touch to the specified element
+                    onUpdate: function (evt/**Event*/) {
+                        save_media_sort();
+                    }
+                });
+            }, 144);
 
         } else if (result.event === "upload-added") {
 
@@ -1592,6 +1593,12 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 //Discovery Uploader
 
             }
+
+        } else {
+
+            console.log('OTHERRRRRRRRRRRRRR'); //TODO Remove later for debugging now
+            console.log(result.event); //TODO Remove later for debugging now
+            console.log(result); //TODO Remove later for debugging now
 
         }
 
