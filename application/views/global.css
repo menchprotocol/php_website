@@ -2926,6 +2926,7 @@ h4.main__title{
     left: 8px;
     padding: 5px 5px;
     background-color: #000;
+    font-size: 1.3em;
     color: #FFF;
     z-index: 1002;
 }

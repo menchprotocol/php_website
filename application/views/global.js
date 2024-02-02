@@ -1404,7 +1404,7 @@ function cloudinary_add_pending(info){
 function cloudinary_add_uploaded(info){
 
     //Assume its a file unless proven otherwise:
-    var view_template = '<span><i class="fas fa-file"></i></span>';
+    var view_template = '<span><i class="fas fa-file"></i></span><a href="'+info.secure_url+'" target="_blank" class="do_download">DOWNLOAD <i class="far fa-external-link"></i></a>';
     var media_type = 42185; //File
 
     //See if we can find a Video, Image or Audio file:
@@ -1529,13 +1529,14 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         } else if (result.event === "queues-start") {
 
             console.log('QUEUE ENDED'); //TODO Remove later for debugging now
-            $(".media_frame .media_item textarea").keydown(function(e){
-                if (e.keyCode == 13 && !e.shiftKey)
-                {
-                    // prevent default behavior
-                    e.preventDefault();
-                }
-            });
+            setTimeout(function () {
+                $(".media_frame .media_item textarea").keydown(function(e){
+                    if (e.keyCode == 13 && !e.shiftKey)
+                    {
+                        e.preventDefault();
+                    }
+                });
+            }, 987);
 
         } else if (result.event === "upload-added") {
 
