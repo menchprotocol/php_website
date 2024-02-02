@@ -189,9 +189,7 @@ h3{
     margin-left: 40px;
     padding: 5px;
 }
-.inner_message i {
-    font-size: 0.89em !important;
-}
+
 
 .section_subframe,
 .section_demo,
@@ -4384,7 +4382,9 @@ main {
     text-overflow: ellipsis;
     display: block;
 }
-
+.inner_message i {
+    font-size: 0.89em !important;
+}
 
 .cover-btn{
     font-size: 6.7em;
