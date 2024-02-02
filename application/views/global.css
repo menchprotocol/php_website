@@ -2855,14 +2855,12 @@ h4.main__title{
     background-color: #EFEFEF;
 }
 
-.media_frame .media_item span i {
-}
 .media_frame .media_item span {
     position: absolute;
-    bottom: 8px;
-    right: 8px;
+    bottom: 34px;
+    right: 34px;
     z-index: 1000;
-    font-size: 8em !important;
+    font-size: 5em !important;
 }
 .media_frame .media_item img,
 .media_frame .media_item video,
