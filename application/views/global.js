@@ -1438,7 +1438,7 @@ function cloudinary_add_pending(info){
 function cloudinary_add_uploaded(info){
 
     //Assume its a file unless proven otherwise:
-    var view_template = '<input type="text" value="'+info.original_filename+'" /><span><i class="fas fa-file"></i></span>';
+    var view_template = '<textarea type="text">'+info.original_filename+'</textarea><span><i class="fas fa-file"></i></span>';
     var media_type = 42185; //File
 
     //See if we can find a Video, Image or Audio file:
