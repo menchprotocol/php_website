@@ -1176,7 +1176,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4258 => array(), //Video URL
         4259 => array(), //Audio URL
         4260 => array(), //Image URL
-        42185 => array(), //Document URL
 
         4256 => array(), //Generic URL
 
@@ -1191,7 +1190,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         4259 => '<audio controls src="%s"></audio><!-- %s -->',
         4260 => '<img src="%s" class="content-image" /><!-- %s -->',
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
-        42185 => '<spanaa href="%s" target="_blank" class="ignore-click">Download</spanaa><!-- %s -->',
         31834 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>', //TODO Implement dynamic preview tooltip
         42337 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>', //TODO Implement dynamic preview tooltip
         31835 => '<spanaa href="/@%s" class="ref_source">%s</spanaa>', //TODO Implement dynamic preview tooltip

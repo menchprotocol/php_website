@@ -2855,7 +2855,7 @@ h4.main__title{
     top: 93px;
     right: 9px;
     z-index: 1000;
-    font-size: 5em !important;
+    font-size: 4.2em !important;
     text-align: right;
     width: 144px;
     height: 89px;
@@ -2918,16 +2918,6 @@ h4.main__title{
     border-radius: 50%;
     padding: 0px 5px;
     background-color: rgba(0,0,0,0.55) !important;
-    z-index: 1002;
-}
-.media_frame .media_item a.do_download {
-    position: absolute;
-    top: 55px;
-    left: 8px;
-    padding: 5px 5px;
-    background-color: #000;
-    font-size: 1.3em;
-    color: #FFF;
     z-index: 1002;
 }
 .media_frame .media_item h5 {

@@ -1403,11 +1403,7 @@ function cloudinary_add_pending(info){
 
 function cloudinary_add_uploaded(info){
 
-    //Assume its a file unless proven otherwise:
-    var view_template = '<span><i class="fas fa-file"></i></span><a href="'+info.secure_url+'" target="_blank" class="do_download">DOWNLOAD <i class="far fa-external-link"></i></a>';
-    var media_type = 42185; //File
-
-    //See if we can find a Video, Image or Audio file:
+    //Search for a Video, Image or Audio file:
     if(info.format && info.format.length>0){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
@@ -1421,6 +1417,11 @@ function cloudinary_add_uploaded(info){
             //Audio
             media_type = 4259;
             view_template = '<audio controls src="'+info.secure_url+'"></audio><span><i class="fas fa-file"></i></span>';
+        } else {
+            //Not supported:
+            $('#'+info.id).remove(); //Remove added loader...
+            alert('Upload Error: Uploaded File '+info.original_filename+'.'+info.format+' is not a valid Video, Image or Audio file.');
+            return false;
         }
     }
 
