@@ -1632,6 +1632,9 @@ label {
 .platform-large img{
     width:128px;
 }
+.platform-large i{
+    margin-bottom: -21px !important;
+}
 .platform-large{
     font-size: 8em !important;
     padding:0 0 34px 0;
