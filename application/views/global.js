@@ -1549,7 +1549,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         } else if (result.event === "queues-start") {
 
             //Enable Sorting:
-            console.log('SORTING STARTED'); //TODO Remove later for debugging now
+            console.log('QUEUE STARTED'); //TODO Remove later for debugging now
             var sort = Sortable.create(document.getElementById("media_frame"), {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
                 draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
@@ -1558,6 +1558,11 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     save_media_sort();
                 }
             });
+
+        } else if (result.event === "queues-start") {
+
+            console.log('QUEUE ENDED'); //TODO Remove later for debugging now
+            $('[data-toggle="tooltip"]').tooltip();
 
         } else if (result.event === "upload-added") {
 
