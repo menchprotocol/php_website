@@ -117,8 +117,6 @@ if(!$focus_tab){
 
     $(document).ready(function () {
 
-        $('#abc123').html($('#modal31911 .modal-content').html());
-
         show_more(<?= $focus_i['i__id'] ?>);
 
         //Look for power editor updates:
