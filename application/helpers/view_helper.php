@@ -2134,9 +2134,9 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //UNLINK
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
 
-                        } elseif($e__id_dropdown==6178 && $write_privacy_e){
+                        } elseif($e__id_dropdown==42649 && $write_privacy_e){
 
-                            //Delete Permanently
+                            //Delete Source
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
                             $action_buttons .= '<a href="javascript:void();" this_id="'.$e['e__privacy'].'" onclick="update_instant_select(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
