@@ -1772,7 +1772,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Link Message if any:
     if($x__id){
-        $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . '" style="padding-left:40px;">'.htmlentities($i['x__message']).'</div>';
+        $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . '" style="padding-left:34px;">'.htmlentities($i['x__message']).'</div>';
     }
 
     $ui .= '</div>';

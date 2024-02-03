@@ -186,7 +186,7 @@ h3{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 40px;
+    margin-left: 34px;
     padding: 2px 0;
 }
 .float_right{
@@ -202,8 +202,8 @@ h3{
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
     padding: 5px !important;
-    margin-left: 40px !important;
-    width: calc(100% - 40px) !important;
+    margin-left: 34px !important;
+    width: calc(100% - 34px) !important;
 }
 .inner_message .dynamic_selector{
     padding: 0 !important;
@@ -339,7 +339,7 @@ li a {
 }
 
 .form-control-thick{
-    padding:7px 10px 7px 40px;
+    padding:7px 10px 7px 34px;
 }
 
 .btn {
@@ -440,7 +440,7 @@ img.no-frame {
     padding: 0;
 }
 .accordion .card-body{
-    padding: 13px 21px 21px 40px;
+    padding: 13px 21px 21px 34px;
 }
 .accordion>.card {
     border-radius: 21px !important;
@@ -687,12 +687,12 @@ textarea.main__title {
 }
 
 .x-info{
-    padding:21px 0 21px 40px;
+    padding:21px 0 21px 34px;
     margin:0;
     line-height: 150%;
 }
 .message_content{
-    margin-left: 40px;
+    margin-left: 34px;
 }
 .i-footer .message_content{
     margin-left:0;
@@ -752,7 +752,7 @@ label:focus,
 
 .right-adj {
     margin-top:-21px;
-    margin-right:40px !important;
+    margin-right:34px !important;
 }
 
 .nav-controller {
@@ -1089,7 +1089,7 @@ textarea.note-textarea{
 }
 
 .note-textarea.edit-on {
-    margin:0 0 0 40px;
+    margin:0 0 0 34px;
     padding:5px 0;
     line-height: 150% !important;
 }
@@ -1146,8 +1146,8 @@ a.headline {
 }
 
 .space-content{
-    padding-left: 40px !important;
-    padding-right: 40px !important;
+    padding-left: 34px !important;
+    padding-right: 34px !important;
     display: block;
     line-height: 150%;
 }
@@ -1160,7 +1160,7 @@ a.headline {
 .title-block{
     display: block;
     padding:0 !important;
-    margin:-20px 5px 0 40px !important;
+    margin:-20px 5px 0 34px !important;
 }
 .title-no-right {
     padding-right:5px !important;
@@ -1188,7 +1188,7 @@ a.headline {
     margin-bottom: 21px;
 }
 .left-margin{
-    margin-left: 40px;
+    margin-left: 34px;
     display: inline-block;
 }
 .left-half-margin{
@@ -1366,7 +1366,7 @@ label {
     text-decoration: none;
     padding: 5px !important;
     margin-bottom: 0 !important;
-    margin-left: 40px !important;
+    margin-left: 34px !important;
 }
 .itemsetting.active{
     margin-top:0 !important;
@@ -1471,7 +1471,7 @@ label {
 }
 
 .note-btn {
-    width: 40px;
+    width: 34px;
     top: 13px;
 }
 .note-btn > span {
@@ -2517,7 +2517,7 @@ input.form-control {
 
 .first_btn{
     padding-right: 13px !important;
-    width: 40px !important;
+    width: 34px !important;
 }
 
 .btn.btn-default {
@@ -2762,7 +2762,7 @@ h4.main__title{
 
 .coin-12273 .card_covers,
 .coin-6255.coinface-12273 .card_covers{
-    padding: 0 40px;
+    padding: 0 34px;
 }
 .mini-frame{
     max-width: 377px;
@@ -2817,7 +2817,7 @@ h4.main__title{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 40px;
+    margin-left: 34px;
 }
 
 .media_frame .media_item,
@@ -2931,7 +2931,7 @@ h4.main__title{
     }
 
     .icon-tweak{ padding-left: 8px; }
-    .name-block{ margin-left: 40px; }
+    .name-block{ margin-left: 34px; }
 
 
     .title-block{
@@ -2968,13 +2968,13 @@ h4.main__title{
     .show-min{display: inline-block !important;}
 
     .platform-navigation .block-sign-x{
-        width:40px;
+        width:34px;
     }
     .btn-lrg{
         font-size: 1.15em !important;
     }
 
-    .col2nd { padding-left: 40px !important; padding-top: 8px; }
+    .col2nd { padding-left: 34px !important; padding-top: 8px; }
     h1{
         font-size: 2.9em;
     }
@@ -3043,8 +3043,8 @@ h4.main__title{
 
 .focus-cover.coin-12273,
 .focus-cover.coin-6255{
-    margin-bottom: -40px !important;
-    padding-bottom: 40px !important;
+    margin-bottom: -34px !important;
+    padding-bottom: 34px !important;
 }
 
 .standard-bg,
@@ -3815,7 +3815,7 @@ a,
 }
 .editor_preview{
     padding:5px 0 !important;
-    margin: 0 40px;
+    margin: 0 34px;
     border-radius: 21px !important;
 }
 
@@ -4099,14 +4099,14 @@ main {
 }
 
 .source_info_box{
-    padding:0 0 5px 40px;
+    padding:0 0 5px 34px;
     line-height:121%;
     overflow-x: hidden;
     overflow-y: visible;
 }
 .cover-content .source_info_box{
     padding-top: 3px;
-    padding-left:40px;
+    padding-left:34px;
 }
 
 .sale_increment{
