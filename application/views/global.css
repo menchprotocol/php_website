@@ -308,7 +308,7 @@ li a {
 }
 
 .dropdown-item .img {
-    margin-bottom: -20px;
+    margin-bottom: -17px;
 }
 
 /* FONTS */
@@ -3987,17 +3987,11 @@ div.img {
     width: 24px;
     height: 24px;
 }
-.icon-block div.img {
-    width: 34px;
-    height: 34px;
-}
-.e_cover {
-
-}
+.icon-block div.img,
 .e_cover_mini div.img,
 .platform-logo.e_cover_mini div.img {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
 }
 
 .e_cover_micro div.img {
