@@ -1435,9 +1435,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         return false;
     }
 
-
     //Fetch global defaults:
-    var default_max_file_size_mb = parseFloat(js_e___6404[42383]['m__message']);
     var default_max_file_count = parseFloat(js_e___6404[42382]['m__message']);
 
     var global_tags = ['uploader_'+uploader_id, 'u__id_'+js_pl_id];
@@ -1453,7 +1451,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     }
 
     //Initiate CLoudiary for cover:
-    var max_file_size_mb = ( js_e___42383[uploader_id]!==undefined && parseFloat(js_e___42383[uploader_id]['m__message'])>0 && parseFloat(js_e___42383[uploader_id]['m__message'])<default_max_file_size_mb ? parseFloat(js_e___42383[uploader_id]['m__message']) : default_max_file_size_mb );
     var max_file_count = ( js_e___42382[uploader_id]!==undefined && parseFloat(js_e___42382[uploader_id]['m__message'])>0 && parseFloat(js_e___42382[uploader_id]['m__message'])<default_max_file_count ? parseFloat(js_e___42382[uploader_id]['m__message']) : default_max_file_count );
 
     var enable_crop = ( js_e___42386[uploader_id]!==undefined );
@@ -1475,11 +1472,11 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
         multiple: ( max_file_count>1 ),
         max_files: max_file_count,
-        maxFileSize: ( max_file_size_mb * 1000000 ),
-        maxVideoFileSize: ( max_file_size_mb * 1000000 ),
-        maxImageFileSize: ( max_file_size_mb * 1000000 ),
-        maxRawFileSize: ( max_file_size_mb * 1000000 ),
-        maxChunkSize: ( max_file_size_mb > 100 ? 100 : max_file_size_mb ) * 1000000,
+        maxFileSize: ( 2000 * 1000000 ),
+        maxVideoFileSize: ( 2000 * 1000000 ),
+        maxImageFileSize: ( 20 * 1000000 ),
+        maxRawFileSize: ( 20 * 1000000 ),
+        maxChunkSize: ( 100 * 1000000 ),
 
         clientAllowedFormats: clientAllowedFormats,
         cropping: enable_crop,
