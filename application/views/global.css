@@ -1564,10 +1564,6 @@ label {
     padding: 10px 10px 10px 0;
 }
 
-.icon-block-lg i {
-    font-size: .8em !important;
-    margin-top: -4px !important;
-}
 
 .btn-lrg i, .controller-nav i {
     font-size: 1em !important;
@@ -1590,10 +1586,7 @@ label {
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-xx{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
-.icon-block-sm{ width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
-.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; }
-.icon-block-lg{ width:50px; display: inline-block; text-align: center; font-size: 2.2em; font-weight: bold; }
-.icon-block-lg img,
+.icon-block { width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block img{
     line-height: 100%;
     width: 30px !important;
@@ -1605,9 +1598,8 @@ label {
 .icon-block-xx   i { font-size: 0.89em !important; }
 .block-x, i, .nav .icon-block i,
 .icon-block-xs   i { font-size: 1.21em !important; }
-.icon-block-sm   i { font-size: 1.34em !important; }
+.icon-block      i { font-size: 1.34em !important; }
 .icon-block      i { font-size: 1.55em !important; }
-.icon-block-lg   i { font-size: 1.89em !important; }
 
 
 .i_cache .icon-block-xx{ width:18px !important; }
@@ -1705,10 +1697,7 @@ label {
     width:24px;
 }
 
-.icon-block-lg img {
-    width: 46px !important;
-    height: auto !important;
-}
+
 .social-footer{
     text-align: center;
     list-style: none;
@@ -2891,9 +2880,6 @@ h4.main__title{
         padding: 3px !important;
         font-size: 1.1em;
     }
-    .inner_message .icon-block {
-        width: 34px !important;
-    }
 
     .mini-frame{
         max-width: 233px;
@@ -2967,13 +2953,7 @@ h4.main__title{
     .mobile-shrink { font-size: 0.69em; }
     .texttype__lg { font-size: 2.3em; }
 
-    /* .mini-hidden{ display: none; } */
 
-    .icon-block-lg img {
-        width: 40px !important;
-        margin: -13px 0 -8px -2px !important;
-        margin: 0 !important;
-    }
     .content-image{ max-height:144px; }
 
     .media-content, .x__message img, .x__message video, .i_content img { max-width: 100%; }
@@ -3641,7 +3621,6 @@ a,
 }
 .icons_large .block-cover img,
 .note-btn > span > span,
-.icon-block-lg img,
 .icon-block img,
 .icon-block-xs img,
 .icon-block-xx img,
@@ -4401,9 +4380,6 @@ main {
     white-space: nowrap;
     text-overflow: ellipsis;
     display: block;
-}
-.inner_message i {
-    font-size: 1.21em !important;
 }
 
 .cover-btn{
