@@ -1383,7 +1383,7 @@ function editor_save_i(){
 }
 
 var confirm_removal_once_done = false;
-function cloudinary_remove(info_id){
+function delete_media(info_id){
     if(!confirm_removal_once_done){
         //Confirm removal once:
         var r = confirm("Are you sure you want to delete this?");
@@ -1405,27 +1405,34 @@ function cloudinary_add_pending(info){
 var media_cache = []; //Stores the json data for successfully uploaded media files
 function cloudinary_add_uploaded(info){
 
+    //Append this to the main source:
+    media_cache[info.id] = info;
+    console.log('MEDIA CACHE:');
+    console.log(media_cache);
+
     //Search for a Video, Image or Audio file:
     var view_template = '';
     var media_type = 0;
     if(info.format && info.format.length>0){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
+
             //Video
             media_type = 4258;
-            $('#'+info.id).html('<div class="video_container_'+info.id+'"></div><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            //$('#'+info.id).html('<div class="video_container_'+info.id+'"></div><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
             insert_video('.video_container_'+info.id, info.public_id, info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233'));
             return true;
 
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
             media_type = 4260;
-            $('#'+info.id).html('<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
             return true;
 
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
-            $('#'+info.id).html('<audio controls src="'+info.secure_url+'"></audio><span><i class="far fa-microphone"></i></span><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><audio controls src="'+info.secure_url+'"></audio><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
             return true;
 
         }

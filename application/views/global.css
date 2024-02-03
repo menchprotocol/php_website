@@ -2828,6 +2828,13 @@ h4.main__title{
     height: 144px;
     cursor: move;
 }
+.media_frame .media_item pre {
+    width: 144px;
+    height: 21px;
+    bottom: 0;
+    left: 0;
+    line-height: 113%;
+}
 .media_frame .media_item {
     border-radius: 13px;
     float: left;
