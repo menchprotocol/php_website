@@ -1023,7 +1023,7 @@ h4 .halfbg {
 }
 
 .dropdown-menu a {
-    padding-right: 13px;
+    margin-right: 34px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
