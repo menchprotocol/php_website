@@ -1693,7 +1693,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                             //Transaction Details
                             $action_buttons .= '<a href="'.view_app_link(4341).'?x__id='.$x__id.'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==6182 && $write_privacy_i){
+                        } elseif($e__id_dropdown==42648 && $write_privacy_i){
 
                             //Delete Permanently
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
