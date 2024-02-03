@@ -1432,7 +1432,8 @@ function cloudinary_add_uploaded(info){
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
-            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><audio controls src="'+info.secure_url+'"></audio><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            //<audio controls src="'+info.secure_url+'"></audio>
+            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
             return true;
 
         }

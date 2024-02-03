@@ -2829,11 +2829,13 @@ h4.main__title{
     cursor: move;
 }
 .media_frame .media_item pre {
+    position: absolute;
     width: 144px;
     height: 21px;
     bottom: 0;
     left: 0;
     line-height: 113%;
+    z-index: 1005;
 }
 .media_frame .media_item {
     border-radius: 13px;
