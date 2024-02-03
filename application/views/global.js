@@ -1521,9 +1521,18 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
         if(error || !result){
 
+            //Remove from screen if any:
+
+            //Show error if any:
+            if(info.failed && info.status && info.status.length>0){
+                alert('ERROR for File ['+info.name+']: '+info.status);
+            }
+            $('#'+info.id).remove(); //Remove added loader...
+
             //Log error
             console.log('ERROR'); //TODO Remove later for debugging now
             console.log(result); //TODO Remove later for debugging now
+
 
         } else if (result.event === "queues-start") {
 
