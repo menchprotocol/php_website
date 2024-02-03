@@ -2832,16 +2832,17 @@ h4.main__title{
     position: absolute;
     width: 144px;
     height: 21px;
-    bottom: -18px;
+    bottom: 0px;
     left: 0;
     line-height: 113%;
     z-index: 1005;
     color: #FFFFFF;
-    font-width: bold;
     background-color: rgba(0,0,0,0.55) !important;
     overflow: hidden;
     text-align: center;
     padding: 2px;
+    font-size: 0.89em;
+    border: 0;
 }
 .media_frame .media_item {
     border-radius: 8px;
@@ -2855,13 +2856,17 @@ h4.main__title{
 
 .media_frame .media_item span {
     position: absolute;
-    top: 34px;
-    width: 100%;
-    z-index: 1006;
-    font-size: 2.55em !important;
+    top: 8px;
+    right: 8px;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    padding: 0px 5px;
+    z-index: 1002;
+    font-size: 1em !important;
     text-align: center;
     cursor: move;
-    overflow: visible;
+    overflow: hidden;
 }
 .media_frame .media_item img,
 .media_frame .media_item video,
