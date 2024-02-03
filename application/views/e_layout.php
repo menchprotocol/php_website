@@ -113,8 +113,8 @@ if(!$focus_tab){
     $(document).ready(function () {
 
         const cld = cloudinary.videoPlayer('example-player',{ cloudName: 'menchcloud' });
-        cld.source('https://res.cloudinary.com/menchcloud/video/upload/sp_auto/v1706994901/video-output-7D1A867D-CD28-4559-A201-D627C157171B_xdwomb.m3u8');
-
+        //cld.source('https://res.cloudinary.com/menchcloud/video/upload/sp_auto/v1706994901/video-output-7D1A867D-CD28-4559-A201-D627C157171B_xdwomb.m3u8');
+        cld.source('https://res.cloudinary.com/menchcloud/video/upload/v1706994899/WhatsApp_Video_2023-09-06_at_1.31.11_PM_wopvbv.mp4');
         set_autosize($('.text__6197_'+fetch_int_val('#focus_id')));
     });
 
