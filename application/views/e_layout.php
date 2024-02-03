@@ -94,6 +94,16 @@ if(!$focus_tab){
 
 ?>
 
+<video
+        id="example-player"
+        controls
+        muted
+        class="cld-video-player cld-video-player-skin-dark"
+        data-cld-public-id="myvideo">
+</video>
+
+
+
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
 <input type="hidden" id="focus_handle" value="<?= $e['e__handle'] ?>" />
 <input type="hidden" id="focus_card" value="12274" />
@@ -101,6 +111,10 @@ if(!$focus_tab){
 <script>
 
     $(document).ready(function () {
+
+        const cld = cloudinary.videoPlayer('example-player',{ cloudName: 'menchcloud' });
+        cld.source('https://res.cloudinary.com/menchcloud/video/upload/sp_auto/v1706994901/video-output-7D1A867D-CD28-4559-A201-D627C157171B_xdwomb.m3u8');
+
         set_autosize($('.text__6197_'+fetch_int_val('#focus_id')));
     });
 

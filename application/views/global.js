@@ -1191,7 +1191,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
             if(initial_loading){
 
                 //Initiate Idea  Uploader:
-                load_cloudinary(13572, ['i__id_'+i__id], '.uploader_13572', '#modal31911');
+                load_cloudinary(13572, ['#'+i__id], '.uploader_13572', '#modal31911');
 
 
                 //Track unsaved changes to prevent unwated modal closure:
@@ -1438,7 +1438,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     //Fetch global defaults:
     var default_max_file_count = parseFloat(js_e___6404[42382]['m__message']);
 
-    var global_tags = ['uploader_'+uploader_id, 'u__id_'+js_pl_id];
+    var global_tags = ['uploader@'+uploader_id, '@'+js_pl_id];
     var allow_videos = js_e___42390[uploader_id]!==undefined;
     var allow_imgaes = js_e___42389[uploader_id]!==undefined;
     var allow_audio = js_e___42644[uploader_id]!==undefined;
@@ -1667,7 +1667,7 @@ function editor_load_e(e__id, x__id){
         if (data.status) {
 
             //Initiate Source Cover Uploader:
-            load_cloudinary(42359, ['e__id_'+e__id], '.uploader_42359', '#modal31912');
+            load_cloudinary(42359, ['@'+e__id], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
             var index_i_content = 0;
