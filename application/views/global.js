@@ -1524,10 +1524,10 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             //Remove from screen if any:
 
             //Show error if any:
-            //if(info.failed && info.status && info.status.length>0){}
-            //alert('ERROR for File ['+info.name+']: '+info.status);
-            //$('#'+info.id).remove(); //Remove added loader...
-
+            if(result.failed && result.status && result.status.length>0){
+                $('#'+result.id).remove(); //Remove added loader...
+                alert('ERROR for File ['+result.name+']: '+result.status);
+            }
             //Log error
             console.log('ERROR'); //TODO Remove later for debugging now
             console.log(result); //TODO Remove later for debugging now
