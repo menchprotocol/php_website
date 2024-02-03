@@ -1402,6 +1402,7 @@ function cloudinary_add_pending(info){
     $('.media_frame').prepend('<div class="media_item" id="'+info.id+'"><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 }
 
+var media_cache = []; //Stores the json data for successfully uploaded media files
 function cloudinary_add_uploaded(info){
 
     //Search for a Video, Image or Audio file:
@@ -1521,6 +1522,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         if(error || !result){
 
             //Log error
+            console.log('ERROR'); //TODO Remove later for debugging now
+            console.log(result); //TODO Remove later for debugging now
 
         } else if (result.event === "queues-start") {
 
