@@ -46,7 +46,7 @@ if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user 
 
 function insert_video(element, public_id, poster_url = null){
     var clean_id = MD5(public_id);
-    $(element).html('<video id="'+clean_id+'" controls class="cld-video-player cld-video-player-skin-dark" data-cld-public-id="myvideo" poster="'+poster_url+'"></video>');
+    $(element).html('<video id="'+clean_id+'" controls class="cld-video-player cld-video-player-skin-dark" data-cld-public-id="myvideo" ></video>'); //poster="'+poster_url+'"
     var cld = cloudinary.videoPlayer(clean_id,{ cloudName: 'menchcloud' });
     cld.source(public_id);
 }
