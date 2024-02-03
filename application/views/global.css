@@ -187,7 +187,7 @@ h3{
     background-color: #FFFFFF;
     display: block;
     margin-left: 34px;
-    padding: 2px 0;
+    padding: 3px 0 1px;
 }
 .float_right{
     float: right !important;
