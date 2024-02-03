@@ -1524,9 +1524,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             //Remove from screen if any:
 
             //Show error if any:
-            if(info.failed && info.status && info.status.length>0){
-                alert('ERROR for File ['+info.name+']: '+info.status);
-            }
+            //if(info.failed && info.status && info.status.length>0){}
+            alert('ERROR for File ['+info.name+']: '+info.status);
             $('#'+info.id).remove(); //Remove added loader...
 
             //Log error
