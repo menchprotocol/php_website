@@ -97,25 +97,13 @@ if(!$focus_tab){
 
 
 
-<div class="video_container"></div>
-
-
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
 <input type="hidden" id="focus_handle" value="<?= $e['e__handle'] ?>" />
 <input type="hidden" id="focus_card" value="12274" />
 <input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
 <script>
 
-    function insert_video(element, public_id){
-        var clean_id = MD5(public_id);
-        $(element).html('<video id="'+clean_id+'" controls class="cld-video-player cld-video-player-skin-dark" data-cld-public-id="myvideo"></video>');
-        var cld = cloudinary.videoPlayer(clean_id,{ cloudName: 'menchcloud' });
-        cld.source(public_id);
-    }
     $(document).ready(function () {
-
-        insert_video('.video_container','WhatsApp_Video_2023-09-06_at_1.31.11_PM_wopvbv');
-
         set_autosize($('.text__6197_'+fetch_int_val('#focus_id')));
     });
 

@@ -44,6 +44,12 @@ if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user 
 
 }
 
+function insert_video(element, public_id, poster_url = null){
+    var clean_id = MD5(public_id);
+    $(element).html('<video id="'+clean_id+'" controls class="cld-video-player cld-video-player-skin-dark" data-cld-public-id="myvideo" poster="'+poster_url+'"></video>');
+    var cld = cloudinary.videoPlayer(clean_id,{ cloudName: 'menchcloud' });
+    cld.source(public_id);
+}
 
 jQuery.fn.sortElements = (function(){
 
@@ -1405,25 +1411,28 @@ function cloudinary_add_uploaded(info){
         if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
             //Video
             media_type = 4258;
-            view_template = '<video class="play_video" onclick="this.play()" controls poster="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_144,w_144')+'"><source src="'+info.secure_url+'" type="video/'+info.format+'"></video>';
+            $('#'+info.id).html('<div class="video_container_'+info.id+'"></div><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            insert_video('.video_container_'+info.id, info.public_id, info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233'));
+            return true;
+
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
             media_type = 4260;
-            view_template = '<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_144,w_144')+'" />';
+            $('#'+info.id).html('<img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            return true;
+
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
             //Audio
             media_type = 4259;
-            view_template = '<audio controls src="'+info.secure_url+'"></audio><span><i class="far fa-microphone"></i></span>';
+            $('#'+info.id).html('<audio controls src="'+info.secure_url+'"></audio><span><i class="far fa-microphone"></i></span><a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            return true;
+
         }
     }
 
-    if(media_type){
-        $('#'+info.id).html(view_template+'<a href="javascript:void(0)" onclick="cloudinary_remove(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
-    } else {
-        //Unsupported file, should not happen since we limited file extensions to those we know:
-        $('#'+info.id).remove(); //Remove added loader...
-        alert('Upload Error: Uploaded File '+info.original_filename+'.'+info.format+' is not a valid Video, Image or Audio file.');
-    }
+    //Unsupported file, should not happen since we limited file extensions to those we know:
+    $('#'+info.id).remove(); //Remove added loader...
+    alert('Upload Error: Uploaded File '+info.original_filename+'.'+info.format+' is not a valid Video, Image or Audio file.');
 
 }
 
