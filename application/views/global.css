@@ -2857,7 +2857,7 @@ h4.main__title{
     position: absolute;
     top: 34px;
     width: 100%;
-    z-index: 1000;
+    z-index: 1006;
     font-size: 2.55em !important;
     text-align: center;
     cursor: move;

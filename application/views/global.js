@@ -1418,7 +1418,7 @@ function cloudinary_add_uploaded(info){
 
             //Video
             media_type = 4258;
-            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><span>'+js_e___42294[media_type]['m__cover']+'</span><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
             //$('#'+info.id).html('<div class="video_container_'+info.id+'"></div><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
             insert_video('.video_container_'+info.id, info.public_id, info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233'));
             return true;
@@ -1426,7 +1426,7 @@ function cloudinary_add_uploaded(info){
         } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
             //Image
             media_type = 4260;
-            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
+            $('#'+info.id).html('<pre>'+info.original_filename+'</pre><span>'+js_e___42294[media_type]['m__cover']+'</span><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
             return true;
 
         } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
