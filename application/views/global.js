@@ -1470,9 +1470,9 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
             //Show error if any:
             if(result.failed && result.status && result.status.length>0){
-                alert('ERROR for File ['+result.name+']: '+result.status);
-                if(result.public_id){
-                    delete_media(result.id, result.public_id, true);
+                alert('ERROR for File ['+result.info.name+']: '+result.status);
+                if(result.info.public_id){
+                    delete_media(result.info.id, result.info.public_id, true);
                 }
             }
             //Log error
