@@ -522,21 +522,8 @@ class I extends CI_Controller {
             $is_new_idea = true;
         }
 
-        //See if we have any current media for this idea:
 
 
-        //Compare to media submitted from user:
-        if(count($_POST['save_media'])){
-
-            //SOmething might have been updated (Title, Sort, Deleted)
-            foreach($_POST['save_media'] as $media){
-                if(!intval($media['e__id'])){
-                    //We need to create a source...
-                } else {
-
-                }
-            }
-        }
 
 
 

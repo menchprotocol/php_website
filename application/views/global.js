@@ -1082,7 +1082,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     has_unsaved_changes = false;
 
     $("#modal31911 .unsaved_warning").val('');
-    $('#modal31911 .save_results, #modal31911 .idea_reply').html('');
+    $('#modal31911 .save_results, #modal31911 .idea_reply, #modal31911 .media_frame').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id, #modal31911 .created_i__id').val(0);
@@ -1301,20 +1301,22 @@ function editor_save_i(){
 
     $("#media_frame .media_item").each(function () {
         if(media_cache[uploader_id][$(this).attr('public_id')]){
-            //Fetch variables for this idea:
+
+            //Fetch variables for this media:
             modify_data['save_media'][sort_rank] = {
-                public_id:         $(this).attr('public_id'),
-                media_e__id:         parseInt($(this).attr('media_e__id')),
-                e__id:         parseInt($(this).attr('e__id')),
-                e__cover:    $(this).attr('e__cover'),
-                e__title:    $(this).attr('e__title'),
-                playback_url:    $(this).attr('playback_url'),
-                media_cache:       media_cache[uploader_id][$(this).attr('public_id')],
+                public_id:    $(this).attr('public_id'),
+                media_e__id:  parseInt($(this).attr('media_e__id')),
+                e__id:        parseInt($(this).attr('e__id')),
+                e__cover:     $(this).attr('e__cover'),
+                e__title:     $(this).attr('e__title'),
+                playback_url: $(this).attr('playback_url'),
+                media_cache:  media_cache[uploader_id][$(this).attr('public_id')],
             }
+
             sort_rank++;
+
         } else {
             //TODO log error:
-
             alert('ERROR: Missing Media File '+$(this).attr('public_id')+' '+uploader_id);
             return false;
         }
@@ -1701,7 +1703,7 @@ function editor_load_e(e__id, x__id){
 
     //Source resets:
     $('#search_cover').val('');
-    $(".cover_history_content, .media_frame").html('');
+    $(".cover_history_content").html('');
     $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
