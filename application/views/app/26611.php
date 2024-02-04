@@ -10,7 +10,7 @@ if(isset($_GET['i__hashtag'])){
         $preg_query = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $i['i__id'],
+            'x__next' => $i['i__id'],
             'x__up' => 26611,
         ));
 
@@ -24,7 +24,7 @@ if(isset($_GET['i__hashtag'])){
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 6144, //Written Response
-                'x__left' => $i['i__id'],
+                'x__previous' => $i['i__id'],
             ), array(), 0) as $x) {
                 $responses++;
                 if(!preg_match($preg_query[0]['x__message'], $x['x__message'])) {

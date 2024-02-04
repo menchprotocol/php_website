@@ -37,7 +37,7 @@ foreach($list_settings['query_string'] as $x){
     foreach($list_settings['column_i'] as $i2){
 
         $discoveries = $this->X_model->fetch(array(
-            'x__left' => $i2['i__id'],
+            'x__previous' => $i2['i__id'],
             'x__creator' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -162,7 +162,7 @@ foreach($list_settings['column_i'] as $i2){
     $max_available = $this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-        'x__right' => $i2['i__id'],
+        'x__next' => $i2['i__id'],
         'x__up' => 26189,
     ), array(), 1);
     $current_x = ( isset($count_totals['i'][$i2['i__id']]) ? $count_totals['i'][$i2['i__id']] : 0 );

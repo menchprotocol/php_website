@@ -83,7 +83,7 @@ class I extends CI_Controller {
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__left' => $is[0]['i__id'],
+                    'x__previous' => $is[0]['i__id'],
                 ), array(), 0) as $x){
                     if(!count($this->X_model->fetch(array(
                         'x__up' => $e_append['e__id'],
@@ -336,7 +336,7 @@ class I extends CI_Controller {
                     'x__creator' => $member_e['e__id'],
                     'x__up' => 42179, //Dynamic Input Fields
                     'x__down' => $dynamic_e__id,
-                    'x__right' => $i__id,
+                    'x__next' => $i__id,
                     'x__reference' => $_POST['x__id'],
                     'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong',
                 ));
@@ -379,7 +379,7 @@ class I extends CI_Controller {
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                        'x__right' => $i__id,
+                        'x__next' => $i__id,
                         'x__up' => $dynamic_e__id,
                     ), array('x__up')) as $curr_val){
                         if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
@@ -430,7 +430,7 @@ class I extends CI_Controller {
             'x__creator' => $member_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
             'x__up' => 31911, //Edit Idea
-            'x__right' => $i__id,
+            'x__next' => $i__id,
             'x__reference' => $_POST['x__id'],
             'x__metadata' => $return_array,
         ));
@@ -585,7 +585,7 @@ class I extends CI_Controller {
                     $values = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                        'x__right' => $is[0]['i__id'],
+                        'x__next' => $is[0]['i__id'],
                         'x__up' => $dynamic_e__id,
                     ));
                 }
@@ -608,7 +608,7 @@ class I extends CI_Controller {
                         'x__creator' => $member_e['e__id'],
                         'x__type' => 4983, //Co-Author
                         'x__up' => $dynamic_e__id,
-                        'x__right' => $is[0]['i__id'],
+                        'x__next' => $is[0]['i__id'],
                         'x__message' => $dynamic_value,
                         'x__weight' => number_x__weight($dynamic_value),
                     ));
@@ -644,10 +644,10 @@ class I extends CI_Controller {
 
             //Now Handles everywhere they are referenced:
             foreach ($this->X_model->fetch(array(
-                'x__left' => $is[0]['i__id'],
+                'x__previous' => $is[0]['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('x__right')) as $ref) {
+            ), array('x__next')) as $ref) {
                 view_sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
 
@@ -661,8 +661,8 @@ class I extends CI_Controller {
         if(intval($_POST['link_i__id'])>0){
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
-                'x__left' => $_POST['link_i__id'],
-                'x__right' => $is[0]['i__id'],
+                'x__previous' => $_POST['link_i__id'],
+                'x__next' => $is[0]['i__id'],
                 'x__type' => 30901, //Reply
             ));
         }

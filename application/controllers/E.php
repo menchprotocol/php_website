@@ -334,8 +334,8 @@ class E extends CI_Controller
                 'x__type' => $x['x__type'],
                 'x__up' => $focus_e['e__id'],
                 'x__down' => $x['x__down'],
-                'x__left' => $x['x__left'],
-                'x__right' => $x['x__right'],
+                'x__previous' => $x['x__previous'],
+                'x__next' => $x['x__next'],
                 'x__message' => $x['x__message'],
                 'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
@@ -470,7 +470,7 @@ class E extends CI_Controller
             $e_already_linked = count($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__up' => $focus_e['e__id'],
-                'x__right' => $fetch_o[0]['i__id'],
+                'x__next' => $fetch_o[0]['i__id'],
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )));
 
@@ -479,7 +479,7 @@ class E extends CI_Controller
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 4983, //Co-Author
                 'x__up' => $focus_e['e__id'],
-                'x__right' => $fetch_o[0]['i__id'],
+                'x__next' => $fetch_o[0]['i__id'],
             ));
 
         } else {
@@ -647,7 +647,7 @@ class E extends CI_Controller
                             'x__creator' => $member_e['e__id'],
                             'x__up' => 42179, //Dynamic Input Fields
                             'x__down' => $dynamic_e__id,
-                            'x__right' => $_POST['e__id'],
+                            'x__next' => $_POST['e__id'],
                             'x__reference' => $_POST['x__id'],
                             'x__metadata' => $_POST,
                             'x__message' => 'Dynamic Fields Reach their maximum limit of ' . view_memory(6404, 42206) . '  which may require field expansion',
@@ -966,7 +966,7 @@ class E extends CI_Controller
                 'x__up' => $es[0]['e__id'],
                 'x__type' => 31835, //Source Mention
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('x__right')) as $ref) {
+            ), array('x__next')) as $ref) {
                 view_sync_links(str_replace('@'.$es[0]['e__handle'], '@'.trim($_POST['save_e__handle']), $ref['i__message']), true, $ref['i__id']);
             }
             $es[0]['e__handle'] = trim($_POST['save_e__handle']);
@@ -1063,12 +1063,12 @@ class E extends CI_Controller
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 33600, //Draft
                     'x__up' => $_POST['selected_e__id'],
-                ), array('x__right'), 0) as $i){
+                ), array('x__next'), 0) as $i){
                     if(count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 33600, //Draft
                         'x__up' => 31065, //Choice Update Email Templates
-                        'x__right' => $i['i__id'], //Is this the template?
+                        'x__next' => $i['i__id'], //Is this the template?
                     )))){
                         //Found the email template to send:
                         $total_sent = $this->X_model->send_i_dm(array($member_e), $i, 0, website_setting(0), false);
@@ -1129,7 +1129,7 @@ class E extends CI_Controller
             } elseif($_POST['right_i__id']){
                 $delete_query = $this->X_model->fetch(array(
                     'x__up IN (' . join(',', $possible_answers) . ')' => null,
-                    'x__right' => $_POST['right_i__id'],
+                    'x__next' => $_POST['right_i__id'],
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ));
@@ -1160,7 +1160,7 @@ class E extends CI_Controller
                 if(!count($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
                     'x__up' => $_POST['selected_e__id'],
-                    'x__right' => $_POST['right_i__id'],
+                    'x__next' => $_POST['right_i__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                     $stats['added']++;
@@ -1168,7 +1168,7 @@ class E extends CI_Controller
                         'x__creator' => $member_e['e__id'],
                         'x__type' => 4983, //Co-Author
                         'x__up' => $_POST['selected_e__id'],
-                        'x__right' => $_POST['right_i__id'],
+                        'x__next' => $_POST['right_i__id'],
                     ));
                 }
 
@@ -1567,7 +1567,7 @@ class E extends CI_Controller
             //Log new key:
             $this->X_model->create(array(
                 'x__creator' => $x__creator, //Member making request
-                'x__left' => intval($_POST['sign_i__id']),
+                'x__previous' => intval($_POST['sign_i__id']),
                 'x__type' => 32078, //Sign In Key
                 'x__privacy' => 6175, //Pending until used (if used)
                 'x__message' => $_POST['account_email_phone'],
@@ -1584,7 +1584,7 @@ class E extends CI_Controller
             //Log new key:
             $this->X_model->create(array(
                 'x__creator' => $x__creator, //Member making request
-                'x__left' => intval($_POST['sign_i__id']),
+                'x__previous' => intval($_POST['sign_i__id']),
                 'x__type' => 32078, //Sign In Key
                 'x__privacy' => 6175, //Pending until used (if used)
                 'x__message' => $_POST['account_email_phone'],

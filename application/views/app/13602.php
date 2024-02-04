@@ -14,7 +14,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
-        ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
+        ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif($x__type==12274){
 
@@ -69,7 +69,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
                 'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
-            ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
+            ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
 
         } elseif($x__type==12274){
 

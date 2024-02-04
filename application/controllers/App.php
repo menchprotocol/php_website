@@ -98,7 +98,7 @@ class App extends CI_Controller
 
 
         //Cache App?
-        $x__left = ( $i ? $i['i__id'] : 0 );
+        $x__previous = ( $i ? $i['i__id'] : 0 );
         $x__down = ( $e ? $e['e__id'] : 0 );
         $title = null;
         $ui = null;
@@ -121,7 +121,7 @@ class App extends CI_Controller
                         'x__website' => website_setting(0),
                         'x__type' => 14599, //Cache App
                         'x__up' => $app_e__id,
-                        'x__left' => $x__left,
+                        'x__previous' => $x__previous,
                         'x__down' => $x__down,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -164,7 +164,7 @@ class App extends CI_Controller
                 'x__type' => 14599, //Cache App
                 'x__up' => $app_e__id,
                 'x__message' => $ui,
-                'x__left' => $x__left,
+                'x__previous' => $x__previous,
                 'x__down' => $x__down,
             ));
             $cache_x__id = $cache_x['x__id'];
@@ -203,7 +203,7 @@ class App extends CI_Controller
                 foreach($this->I_model->fetch(array(
                     'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
                 )) as $i){
-                    $log_data['x__left'] = $i['i__id'];
+                    $log_data['x__previous'] = $i['i__id'];
                     $title = view_i_title($i, true).' | '.$title;
                 }
             }

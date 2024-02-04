@@ -14,7 +14,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
             //Show Header:
             foreach($this->I_model->fetch(array(
-                'i__id' => $x['x__right'],
+                'i__id' => $x['x__next'],
             )) as $i_from){
                 echo '<h1><a href="/'.$i_from['i__hashtag'].'"><u>' . view_i_title($i_from, true) . '</u></a></h1>';
             }
@@ -29,7 +29,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                 //Notify and give option to go to starting point:
                 foreach($this->I_model->fetch(array(
-                    'i__id' => $x['x__left'],
+                    'i__id' => $x['x__previous'],
                 )) as $i_go){
                     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="/'.$i_go['i__hashtag'].'">'.view_i_title($i_go, true).'</a>.</div>';
                 }
@@ -64,7 +64,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         'x__up IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
         'i__type' => 30874, //Events
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__right'), 0) as $i) {
+    ), array('x__next'), 0) as $i) {
 
         //Make sure not handled this idea with a different reminder:
         if(!in_array($i['i__id'], $i_scanned)){
@@ -76,7 +76,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $i['i__id'],
+                'x__next' => $i['i__id'],
                 'x__up' => 26556, //Time Starts
             )) as $time){
                 $time_starts = strtotime($time['x__message']);
@@ -93,7 +93,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     $time_ends = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                        'x__right' => $i['i__id'],
+                        'x__next' => $i['i__id'],
                         'x__up' => 26557, //Time Ends
                     ), array(), 1);
 
@@ -102,7 +102,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 32235, //Navigation
-                        'x__right' => $i['i__id'],
+                        'x__next' => $i['i__id'],
                     )) as $follow){
                         array_push($must_follow, $follow['x__up']);
                     }
@@ -115,7 +115,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
-                        'x__left' => $i['i__id'],
+                        'x__previous' => $i['i__id'],
                     ), array('x__creator'), 0) as $x){
 
                         //Make sure this member qualified:
@@ -143,7 +143,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                         //Send message:
                         $send_dm = $this->X_model->send_dm($x['e__id'], $subject, $html_message, array(
-                            'x__left' => $i['i__id'],
+                            'x__previous' => $i['i__id'],
                         ), $i['i__id'], $user_website);
 
                         $total_sent += ( $send_dm['status'] ? 1 : 0 );
@@ -185,14 +185,14 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         'x__up' => 26556, //Time Starts
         'i__type' => 30874, //Events
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__right'), 0) as $i) {
+    ), array('x__next'), 0) as $i) {
 
         //Determine if it's time to send this message:
         $time_starts = 0;
         foreach ($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $i['i__id'],
+            'x__next' => $i['i__id'],
             'x__up' => 26556, //Time Starts
         )) as $time) {
             $time_starts = strtotime($time['x__message']);
@@ -209,7 +209,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         foreach ($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $i['i__id'],
+            'x__next' => $i['i__id'],
             'x__up' => 26557, //Time Ends
         )) as $time) {
             $end_sending = strtotime($time['x__message']);
@@ -221,20 +221,20 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-            'x__left' => $i['i__id'],
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+            'x__previous' => $i['i__id'],
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
 
         $top_i__hashtag = '';
         foreach ($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type' => 32426, //TARGET IDEA
-            '(x__right = ' . $i['i__id'] . ' OR x__left = ' . $i['i__id'] . ')' => null,
-            'x__left >' => 0,
-            'x__right >' => 0,
+            '(x__next = ' . $i['i__id'] . ' OR x__previous = ' . $i['i__id'] . ')' => null,
+            'x__previous >' => 0,
+            'x__next >' => 0,
         )) as $top_i) {
             foreach ($this->I_model->fetch(array(
-                'i__id' => ($top_i['x__right'] == $i['i__id'] ? $top_i['x__left'] : $top_i['x__right']),
+                'i__id' => ($top_i['x__next'] == $i['i__id'] ? $top_i['x__previous'] : $top_i['x__next']),
             )) as $sel_i) {
                 $top_i__hashtag = '/' . $sel_i['i__hashtag'];
                 break;
@@ -259,7 +259,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
             //Send to everyone who has not received an email yet:
             if (!count($this->X_model->fetch(array(
-                'x__left' => $i['i__id'],
+                'x__previous' => $i['i__id'],
                 'x__creator' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -273,7 +273,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x['e__id'],
-                        'x__left' => $down_or['i__id'],
+                        'x__previous' => $down_or['i__id'],
                     ));
                     //Has this user discovered this idea or no?
                     $html_message .= view_i_title($down_or, true) . ":\n";
@@ -282,8 +282,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 }
 
                 $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message . "\n" . trim($html_message), array(
-                    'x__right' => $list_settings['list_config'][32426],
-                    'x__left' => $i['i__id'],
+                    'x__next' => $list_settings['list_config'][32426],
+                    'x__previous' => $i['i__id'],
                 ), $i['i__id'], $i['x__website'], true);
                 $total_sent += ($send_dm['status'] ? 1 : 0);
 

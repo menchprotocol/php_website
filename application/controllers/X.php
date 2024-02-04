@@ -106,7 +106,7 @@ class X extends CI_Controller
             'x__type' => 14576, //MODAL VIEWED
             'x__up' => $_POST['apply_id'],
             'x__down' => ( $_POST['apply_id']==4997 ? $_POST['s__id'] : 0 ),
-            'x__right' => ( $_POST['apply_id']==12589 ? $_POST['s__id'] : 0 ),
+            'x__next' => ( $_POST['apply_id']==12589 ? $_POST['s__id'] : 0 ),
         ));
 
         if(!isset($_POST['apply_id']) || !isset($_POST['s__id'])){
@@ -137,8 +137,8 @@ class X extends CI_Controller
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                    'x__left' => $_POST['s__id'],
-                ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+                    'x__previous' => $_POST['s__id'],
+                ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
                 $counter = count($is_next);
 
                 if(!$counter){
@@ -199,7 +199,7 @@ class X extends CI_Controller
             if(!count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $is[0]['i__id'],
+                'x__next' => $is[0]['i__id'],
                 'x__up' => 4235,
             )))){
                 return redirect_message('/'.$focus_i__hashtag, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not startable.</div>');
@@ -209,8 +209,8 @@ class X extends CI_Controller
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 4235, //Get started
-                'x__right' => $is[0]['i__id'],
-                'x__left' => $is[0]['i__id'],
+                'x__next' => $is[0]['i__id'],
+                'x__previous' => $is[0]['i__id'],
             ));
 
             //Mark as complete:
@@ -263,7 +263,7 @@ class X extends CI_Controller
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
-                'x__right' => $is[0]['i__id'],
+                'x__next' => $is[0]['i__id'],
                 //TODO Maybe log additional details like total ideas, time, etc
             ));
 
@@ -419,7 +419,7 @@ class X extends CI_Controller
         $is_startable = count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $focus_is[0]['i__id'],
+            'x__next' => $focus_is[0]['i__id'],
             'x__up' => 4235,
         )));
 
@@ -431,9 +431,9 @@ class X extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $focus_es[0]['e__id'],
-                'x__left' => $focus_is[0]['i__id'],
+                'x__previous' => $focus_is[0]['i__id'],
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ), array('x__right'));
+            ), array('x__next'));
 
             //Missing focus Idea?
             if(!$top_i__hashtag) {
@@ -465,8 +465,8 @@ class X extends CI_Controller
         $this->X_model->create(array(
             'x__creator' => ( count($focus_es) ? $focus_es[0]['e__id'] : 14068 ), //Guest Member
             'x__type' => 7610, //MEMBER VIEWED DISCOVERY
-            'x__left' => ( count($top_is) ? $top_is[0]['i__id'] : 0 ),
-            'x__right' => $focus_is[0]['i__id'],
+            'x__previous' => ( count($top_is) ? $top_is[0]['i__id'] : 0 ),
+            'x__next' => $focus_is[0]['i__id'],
         ));
 
         $this->load->view('header', array(
@@ -519,8 +519,8 @@ class X extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                'x__left' => $_POST['focus_id'],
-            ), array('x__right'), 0, 0, array('i__message' => 'ASC')) as $x) {
+                'x__previous' => $_POST['focus_id'],
+            ), array('x__next'), 0, 0, array('i__message' => 'ASC')) as $x) {
                 $order++;
                 $this->X_model->update($x['x__id'], array(
                     'x__weight' => $order,
@@ -607,7 +607,7 @@ class X extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__left' => $is[0]['i__id'],
+            'x__previous' => $is[0]['i__id'],
             'x__creator' => $member_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
@@ -767,7 +767,7 @@ class X extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Tickets
             'x__creator' => $member_e['e__id'],
-            'x__left' => $is[0]['i__id'],
+            'x__previous' => $is[0]['i__id'],
         )))){
             //Free Ticket:
             $this->X_model->mark_complete(42332, $member_e['e__id'], $_POST['top_i__id'], $is[0], array(
@@ -834,7 +834,7 @@ class X extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $_POST['i__id'],
+            'x__next' => $_POST['i__id'],
             'x__up' => 32103, //Preg Remove
         )) as $preg_query){
             $new_form = preg_replace($preg_query['x__message'], "", $_POST['x_write'] );
@@ -845,8 +845,8 @@ class X extends CI_Controller
                     'x__type' => 32103, //Preg Remove
                     'x__creator' => $member_e['e__id'],
                     'x__message' => '['.$_POST['x_write'].'] Transformed to ['.$new_form.']',
-                    'x__left' => $_POST['top_i__id'],
-                    'x__right' => $_POST['i__id'],
+                    'x__previous' => $_POST['top_i__id'],
+                    'x__next' => $_POST['i__id'],
                 ));
             }
         }
@@ -858,7 +858,7 @@ class X extends CI_Controller
             if(count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $_POST['i__id'],
+                'x__next' => $_POST['i__id'],
                 'x__up' => 28239, //Can Skip
             )))){
                 //Log Skip:
@@ -889,13 +889,13 @@ class X extends CI_Controller
             $time_starts = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $_POST['i__id'],
+                'x__next' => $_POST['i__id'],
                 'x__up' => 42203, //Time Equal or Greater Than
             ), array(), 1);
             $time_ends = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $_POST['i__id'],
+                'x__next' => $_POST['i__id'],
                 'x__up' => 26557, //Time Ends
             ), array(), 1);
 
@@ -923,13 +923,13 @@ class X extends CI_Controller
             $min_value = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $_POST['i__id'],
+                'x__next' => $_POST['i__id'],
                 'x__up' => 31800, //Min Value
             ), array(), 1);
             $max_value = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $_POST['i__id'],
+                'x__next' => $_POST['i__id'],
                 'x__up' => 31801, //Max Value
             ), array(), 1);
 
@@ -1000,7 +1000,7 @@ class X extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $_POST['i__id'],
+            'x__next' => $_POST['i__id'],
             'x__up' => 26611, //Preg Match
         )) as $preg_query){
             if(!preg_match($preg_query['x__message'], $_POST['x_write'])) {
@@ -1009,7 +1009,7 @@ class X extends CI_Controller
                 $preg_query_message = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__right' => $_POST['i__id'],
+                    'x__next' => $_POST['i__id'],
                     'x__up' => 30998, //Preg Match Error
                 ));
 
@@ -1020,8 +1020,8 @@ class X extends CI_Controller
                     'x__type' => 30998, //Preg Match Error Message
                     'x__creator' => $member_e['e__id'],
                     'x__message' => $error_message,
-                    'x__left' => $_POST['top_i__id'],
-                    'x__right' => $_POST['i__id'],
+                    'x__previous' => $_POST['top_i__id'],
+                    'x__next' => $_POST['i__id'],
                 ));
 
                 //We have an error, let the user know:
@@ -1038,7 +1038,7 @@ class X extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__left' => $is[0]['i__id'],
+            'x__previous' => $is[0]['i__id'],
             'x__creator' => $member_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
@@ -1118,7 +1118,7 @@ class X extends CI_Controller
                                 'x__up' => $es[0]['e__id'],
                                 'i__type' => $x__type3,
                                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                            ), array('x__right'), 0, 0, array(), 'COUNT(x__id) as totals');
+                            ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
 
@@ -1155,7 +1155,7 @@ class X extends CI_Controller
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                                'x__right IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
+                                'x__next IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
                                 'e__privacy' => $x__type3,
                             ), array('x__up'), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -1181,7 +1181,7 @@ class X extends CI_Controller
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
-                                '( x__left IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ') OR x__right IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . '))' => null,
+                                '( x__previous IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ') OR x__next IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . '))' => null,
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
@@ -1383,8 +1383,8 @@ class X extends CI_Controller
         $x = $this->X_model->create(array(
             'x__creator' => $member_e['e__id'],
             'x__up' => $member_e['e__id'],
-            'x__left' => $_POST['top_i__id'],
-            'x__right' => $_POST['i__id'],
+            'x__previous' => $_POST['top_i__id'],
+            'x__next' => $_POST['i__id'],
             'x__type' => $_POST['x__type'],
         ));
 

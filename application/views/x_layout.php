@@ -14,8 +14,8 @@ $is_next = $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-    'x__left' => $focus_i['i__id'],
-), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+    'x__previous' => $focus_i['i__id'],
+), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
 //Filter Next Ideas:
 foreach($is_next as $in_key => $in_value){
@@ -36,7 +36,7 @@ $top_completed = false; //Assume main intent not yet completed, unless proven ot
 $can_skip = in_array($focus_i['i__type'], $this->config->item('n___42211')) || count($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-    'x__right' => $focus_i['i__id'],
+    'x__next' => $focus_i['i__id'],
     'x__up' => 28239, //Can Skip
 )));
 
@@ -208,15 +208,15 @@ if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-                'x__left' => $followings_i['i__id'],
-            ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+                'x__previous' => $followings_i['i__id'],
+            ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
             foreach($query_subset as $key=>$value){
                 $i_is_discoverable = i_is_discoverable($value['i__id'], false);
                 if(!$i_is_discoverable['status'] || !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__creator' => $x__creator,
-                        'x__left' => $value['i__id'],
+                        'x__previous' => $value['i__id'],
                     )))){
                     unset($query_subset[$key]);
                 }
@@ -251,8 +251,8 @@ if(!$breadcrum_content){
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
-        'x__right' => $focus_i['i__id'],
-    ), array('x__left')) as $prev_i){
+        'x__next' => $focus_i['i__id'],
+    ), array('x__previous')) as $prev_i){
         $breadcrum_content .= '<li class="breadcrumb-item breadcrumb-flat">';
         $breadcrum_content .= '<a href="/'.$prev_i['i__hashtag'].'"><u>'.view_i_title($prev_i).'</u></a>';
         $breadcrum_content .= '</li>';
@@ -327,7 +327,7 @@ if($top_i__hashtag) {
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $x__creator,
-                'x__left' => $focus_i['i__id'],
+                'x__previous' => $focus_i['i__id'],
             )))) {
                 //Skipped:
                 $this->X_model->mark_complete(31022, $x__creator, $top_i__id, $focus_i);
@@ -340,14 +340,14 @@ if($top_i__hashtag) {
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-                'x__left' => $focus_i['i__id'],
-            ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $x) {
+                'x__previous' => $focus_i['i__id'],
+            ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $x) {
                 //See if this answer was selected:
                 if (count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__left' => $focus_i['i__id'],
-                    'x__right' => $x['i__id'],
+                    'x__previous' => $focus_i['i__id'],
+                    'x__next' => $x['i__id'],
                     'x__creator' => $x__creator,
                 )))) {
                     array_push($x_selects, $x);
@@ -372,8 +372,8 @@ if($top_i__hashtag) {
                 $previously_selected = count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__left' => $focus_i['i__id'],
-                    'x__right' => $next_i['i__id'],
+                    'x__previous' => $focus_i['i__id'],
+                    'x__next' => $next_i['i__id'],
                     'x__creator' => $x__creator,
                 )));
 
@@ -442,25 +442,25 @@ if($top_i__hashtag) {
             $currency_types = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $focus_i['i__id'],
+                'x__next' => $focus_i['i__id'],
                 'x__up IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //Currency
             ));
             $total_dues = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $focus_i['i__id'],
+                'x__next' => $focus_i['i__id'],
                 'x__up' => 26562, //Total Due
             ));
             $cart_max = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $focus_i['i__id'],
+                'x__next' => $focus_i['i__id'],
                 'x__up' => 29651, //Cart Max Quantity
             ));
             $cart_min = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__right' => $focus_i['i__id'],
+                'x__next' => $focus_i['i__id'],
                 'x__up' => 31008, //Cart Min Quantity
             ));
 
@@ -486,7 +486,7 @@ if($top_i__hashtag) {
                 $digest_fees = count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__right' => $focus_i['i__id'],
+                    'x__next' => $focus_i['i__id'],
                     'x__up' => 30589, //Digest Fees
                 )));
 
@@ -500,7 +500,7 @@ if($top_i__hashtag) {
                 if(!count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__right' => $focus_i['i__id'],
+                    'x__next' => $focus_i['i__id'],
                     'x__up' => 30615, //Is Refundable
                 )))){
                     $info_append .= 'Final sale. ';
@@ -570,8 +570,8 @@ if($top_i__hashtag) {
                                         'x__creator' => $x[0]['e__id'], //Ticket Buyer
                                         'x__up' => $member_e['e__id'], //Ticket Scanner
                                         'x__weight' => $quantity, //Tickets Checked-in (They can check-in in multiple rounds)
-                                        'x__right' => $x[0]['x__right'],
-                                        'x__left' => $x[0]['x__left'],
+                                        'x__next' => $x[0]['x__next'],
+                                        'x__previous' => $x[0]['x__previous'],
                                         'x__reference' => $x[0]['x__id'],
                                     ));
 
@@ -700,7 +700,7 @@ if($top_i__hashtag) {
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7545, //Following Add
-                'x__right' => $focus_i['i__id'],
+                'x__next' => $focus_i['i__id'],
             )) as $append_e){
                 //Does the user have this source with any values?
                 foreach($this->X_model->fetch(array(
@@ -744,7 +744,7 @@ if($top_i__hashtag) {
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__right' => $focus_i['i__id'],
+                    'x__next' => $focus_i['i__id'],
                     'x__up' => 31813, //Steps
                 )) as $num_steps){
                     if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
@@ -756,7 +756,7 @@ if($top_i__hashtag) {
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__right' => $focus_i['i__id'],
+                    'x__next' => $focus_i['i__id'],
                     'x__up' => 31800, //Min Value
                 )) as $num_steps){
                     if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
@@ -768,7 +768,7 @@ if($top_i__hashtag) {
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__right' => $focus_i['i__id'],
+                    'x__next' => $focus_i['i__id'],
                     'x__up' => 31801, //Max Value
                 )) as $num_steps){
                     if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
@@ -781,7 +781,7 @@ if($top_i__hashtag) {
                 $input_type = (count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__right' => $focus_i['i__id'],
+                    'x__next' => $focus_i['i__id'],
                     'x__up' => 32442, //Select Time
                 ))) ? 'datetime-local'  : 'date' );
 
@@ -850,7 +850,7 @@ if($top_i__hashtag) {
             $sub_counter = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__right' => $focus_i['i__id'],
+                'x__next' => $focus_i['i__id'],
             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
             //NEXT

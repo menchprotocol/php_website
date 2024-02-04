@@ -39,7 +39,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
         'x__up' => $es[0]['e__id'],
-    ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+    ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
 
     //List all payment Ideas and their total earnings
@@ -58,7 +58,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__left' => $i['i__id'],
+            'x__previous' => $i['i__id'],
         ), array(), 0, 0, array('x__creator' => 'ASC')) as $x){
 
             $x__metadata = unserialize($x['x__metadata']);
@@ -150,7 +150,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
                     $daily_sales[$date] = $this_payout;
                 }
 
-                $origin_e = $x['x__right'];
+                $origin_e = $x['x__next'];
                 if(isset($origin_sales[$origin_e])){
                     $origin_sales[$origin_e] += number_format($this_payout, 0, '','');
                 } else {
@@ -178,7 +178,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
         $max_available = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $i['i__id'],
+            'x__next' => $i['i__id'],
             'x__up' => 26189,
         ), array(), 1);
         $available_transactions = (count($max_available) && is_numeric($max_available[0]['x__message']) ? intval($max_available[0]['x__message']) : '∞');
@@ -362,7 +362,7 @@ if(count($i_query)){
                     if(($sales/$gross_revenue)>=0.5 || count($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                            'x__right' => $origin,
+                            'x__next' => $origin,
                             'x__up' => 30564, //None Promoter
                         )))){
                         //This item has more than 50% of sales, remove it:

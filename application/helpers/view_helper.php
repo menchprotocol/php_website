@@ -517,7 +517,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__up' => $e__id,
         );
 
-        $joins_objects = array('x__right');
+        $joins_objects = array('x__next');
 
         $order_columns = array();
         $order_columns['x__weight'] = 'ASC';
@@ -537,7 +537,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $order_columns['x__id'] = 'DESC';
 
         //DISCOVERIES
-        $joins_objects = array('x__left');
+        $joins_objects = array('x__previous');
         $query_filters = array(
             'x__creator' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERY GROUP
@@ -622,7 +622,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
-            'x__right' => $i__id,
+            'x__next' => $i__id,
         );
 
         $order_columns = array();
@@ -633,24 +633,24 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
         //IDEA Link Groups Previous
         $order_columns = array('x__id' => 'DESC');
-        $joins_objects = array('x__left');
+        $joins_objects = array('x__previous');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //IDEA LINKS
-            'x__right' => $i__id,
+            'x__next' => $i__id,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___42265'))){
 
         //IDEA Link Groups Next
         $order_columns = array('x__weight' => 'ASC');
-        $joins_objects = array('x__right');
+        $joins_objects = array('x__next');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
-            'x__left' => $i__id,
+            'x__previous' => $i__id,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
@@ -661,7 +661,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
-            'x__left' => $i__id,
+            'x__previous' => $i__id,
         );
         if(isset($_GET['focus__e'])){
             $query_filters['x__creator'] = intval($_GET['focus__e']);
@@ -734,7 +734,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             'x__message' => 'view_instant_select() @'.$focus_id.' missing in Application Cache',
             'x__up' => $focus_id,
             'x__down' => $down_e__id,
-            'x__right' => $right_i__id,
+            'x__next' => $right_i__id,
         ));
         return false;
     } elseif(!$single_select && !$multi_select){
@@ -744,7 +744,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             'x__message' => 'view_instant_select() @'.$focus_id.' not in single select @33331 or multi select 33332',
             'x__up' => $focus_id,
             'x__down' => $down_e__id,
-            'x__right' => $right_i__id,
+            'x__next' => $right_i__id,
         ));
         return false;
     }
@@ -791,7 +791,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         //Idea focus:
         foreach($CI->X_model->fetch(array(
             'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
-            'x__right' => $right_i__id,
+            'x__next' => $right_i__id,
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $sel){
@@ -1129,7 +1129,7 @@ function idea_author($i__id){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-        'x__right' => $i__id,
+        'x__next' => $i__id,
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__up'];
@@ -1142,7 +1142,7 @@ function idea_creation_time($i__id){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-        'x__right' => $i__id,
+        'x__next' => $i__id,
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__time'];
@@ -1313,7 +1313,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         foreach($CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4736')) . ')' => null, //Idea Message Links 3x
-            'x__right' => $save_i__id,
+            'x__next' => $save_i__id,
         )) as $x){
 
             //Is this still valid?
@@ -1346,7 +1346,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
             foreach($db_vals as $db_val){
 
                 //Additional source/idea reference?
-                $x__left = 0;
+                $x__previous = 0;
                 $x__up = 0;
                 $x__message = '';
 
@@ -1355,14 +1355,14 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     foreach($CI->I_model->fetch(array(
                         'LOWER(i__hashtag)' => strtolower(substr($db_val, 1)),
                     )) as $target){
-                        $x__left = $target['i__id'];
+                        $x__previous = $target['i__id'];
                     }
                 } elseif($db_type==42337){
                     $x__type = 42337;
                     foreach($CI->I_model->fetch(array(
                         'LOWER(i__hashtag)' => strtolower(substr($db_val, 2)),
                     )) as $target){
-                        $x__left = $target['i__id'];
+                        $x__previous = $target['i__id'];
                     }
                 } elseif($db_type==31835) {
                     $x__type = 31835;
@@ -1383,8 +1383,8 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     'x__type' => $x__type,
                     'x__creator' => $member_e['e__id'],
                     'x__message' => $x__message,
-                    'x__right' => $save_i__id,
-                    'x__left' => $x__left,
+                    'x__next' => $save_i__id,
+                    'x__previous' => $x__previous,
                     'x__up' => $x__up,
                 ));
 
@@ -1488,7 +1488,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__creator' => $focus_source,
-            'x__left' => $i['i__id'],
+            'x__previous' => $i['i__id'],
         ));
         $has_discovered = count($discoveries);
     }
@@ -1754,7 +1754,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //Show Creator if any:
     foreach($CI->X_model->fetch(array(
         'x__type' => 4250,
-        'x__right' => $i['i__id'],
+        'x__next' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__up')) as $creator){
         $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
@@ -1763,7 +1763,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     //Idea Location if any:
     foreach($CI->X_model->fetch(array(
         'x__type' => 41949, //Locate
-        'x__right' => $i['i__id'],
+        'x__next' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__up')) as $location){
@@ -1888,7 +1888,7 @@ function view_list_e($i, $plain_no_html = false){
     foreach($CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Writer Links Active
-        'x__right' => $i['i__id'],
+        'x__next' => $i['i__id'],
         'x__up IN (' . join(',', $CI->config->item('n___42421')) . ')' => null, //Featured Inputs
     ), array('x__up'), 0, 0, $order_columns) as $x){
 

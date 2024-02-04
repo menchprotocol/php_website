@@ -11,7 +11,7 @@ if(isset($_GET['i__hashtag'])){
         $preg_query = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__right' => $i['i__id'],
+            'x__next' => $i['i__id'],
             'x__up' => 32103,
         ));
 
@@ -21,7 +21,7 @@ if(isset($_GET['i__hashtag'])){
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 7545, //Following Add
-            'x__right' => $i['i__id'],
+            'x__next' => $i['i__id'],
         ), array('x__up')) as $x_tag){
             array_push($apply_to, intval($x_tag['x__up']));
         }
@@ -128,7 +128,7 @@ if(isset($_GET['i__hashtag'])){
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'LENGTH(x__message)>0' => null,
-                'x__left' => $i['i__id'],
+                'x__previous' => $i['i__id'],
             ), array(), 0) as $x) {
                 $responses++;
                 $new_form = preg_replace($preg_query[0]['x__message'], "", $x['x__message'] );

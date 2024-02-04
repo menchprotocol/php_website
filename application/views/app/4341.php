@@ -46,21 +46,21 @@ if(isset($_GET['x__down']) && strlen($_GET['x__down']) > 0){
     }
 }
 
-if(isset($_GET['x__left']) && strlen($_GET['x__left']) > 0){
-    if (substr_count($_GET['x__left'], ',') > 0) {
+if(isset($_GET['x__previous']) && strlen($_GET['x__previous']) > 0){
+    if (substr_count($_GET['x__previous'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__left IN (' . $_GET['x__left'] . '))'] = null;
-    } elseif (intval($_GET['x__left']) > 0) {
-        $query_filters['x__left'] = $_GET['x__left'];
+        $query_filters['( x__previous IN (' . $_GET['x__previous'] . '))'] = null;
+    } elseif (intval($_GET['x__previous']) > 0) {
+        $query_filters['x__previous'] = $_GET['x__previous'];
     }
 }
 
-if(isset($_GET['x__right']) && strlen($_GET['x__right']) > 0){
-    if (substr_count($_GET['x__right'], ',') > 0) {
+if(isset($_GET['x__next']) && strlen($_GET['x__next']) > 0){
+    if (substr_count($_GET['x__next'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__right IN (' . $_GET['x__right'] . '))'] = null;
-    } elseif (intval($_GET['x__right']) > 0) {
-        $query_filters['x__right'] = $_GET['x__right'];
+        $query_filters['( x__next IN (' . $_GET['x__next'] . '))'] = null;
+    } elseif (intval($_GET['x__next']) > 0) {
+        $query_filters['x__next'] = $_GET['x__next'];
     }
 }
 
@@ -96,9 +96,9 @@ if(isset($_GET['any_i__id']) && strlen($_GET['any_i__id']) > 0){
     //We need to look for both following/follower
     if (substr_count($_GET['any_i__id'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__right IN (' . $_GET['any_i__id'] . ') OR x__left IN (' . $_GET['any_i__id'] . ') ' . $followings_tr_filter . ' )'] = null;
+        $query_filters['( x__next IN (' . $_GET['any_i__id'] . ') OR x__previous IN (' . $_GET['any_i__id'] . ') ' . $followings_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_i__id']) > 0) {
-        $query_filters['( x__right = ' . $_GET['any_i__id'] . ' OR x__left = ' . $_GET['any_i__id'] . $followings_tr_filter . ')'] = null;
+        $query_filters['( x__next = ' . $_GET['any_i__id'] . ' OR x__previous = ' . $_GET['any_i__id'] . $followings_tr_filter . ')'] = null;
     }
 }
 
@@ -225,9 +225,9 @@ echo '<span class="mini-header">ANY IDEA:</span>';
 echo '<input type="text" name="any_i__id" value="' . ((isset($_GET['any_i__id'])) ? $_GET['any_i__id'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="x__left" value="' . ((isset($_GET['x__left'])) ? $_GET['x__left'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="x__previous" value="' . ((isset($_GET['x__previous'])) ? $_GET['x__previous'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="x__right" value="' . ((isset($_GET['x__right'])) ? $_GET['x__right'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">IDEA NEXT:</span><input type="text" name="x__next" value="' . ((isset($_GET['x__next'])) ? $_GET['x__next'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 

@@ -146,7 +146,7 @@ function i__weight_calculator($i){
     $CI =& get_instance();
     $count_x = $CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__left='.$i['i__id'].' OR x__right='.$i['i__id'].')' => null,
+        '(x__previous='.$i['i__id'].' OR x__next='.$i['i__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
@@ -350,7 +350,7 @@ function i_spots_remaining($i__id){
     $max_available = $CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
-        'x__right' => $i__id,
+        'x__next' => $i__id,
         'x__up' => 26189,
     ), array(), 1);
     if(count($max_available) && is_numeric($max_available[0]['x__message'])){
@@ -359,7 +359,7 @@ function i_spots_remaining($i__id){
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
-            'x__left' => $i__id,
+            'x__previous' => $i__id,
         );
         if($member_e){
             //Do not count current user to give them option to edit & resubmit:
@@ -371,7 +371,7 @@ function i_spots_remaining($i__id){
         foreach($CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 32235, //Navigation
-            'x__right' => $i__id,
+            'x__next' => $i__id,
         )) as $follow){
             array_push($must_follow, $follow['x__up']);
         }
@@ -415,7 +415,7 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x_
         $access_blocked = $CI->X_model->create(array(
             'x__type' => ( $x__creator>0 ? 29737 : 30341 ), //Access Blocked
             'x__creator' => $x__creator,
-            'x__left' => $i__id,
+            'x__previous' => $i__id,
             'x__up' => $x__up,
             'x__down' => $x__down,
             'x__message' => $log_message,
@@ -425,24 +425,24 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x_
         foreach($CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___32234')) . ')' => null, //Discovery Expansions
-            'x__right' => $i__id, //This was select as an answer to x__left
-            'x__left > 0' => null,
-        ), array('x__left'), 0) as $x_progress) {
+            'x__next' => $i__id, //This was select as an answer to x__previous
+            'x__previous > 0' => null,
+        ), array('x__previous'), 0) as $x_progress) {
 
             //Find all answers
             foreach($CI->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__creator' => $x__creator,
-                'x__left' => $x_progress['x__left'],
+                'x__previous' => $x_progress['x__previous'],
             ), array(), 0) as $x){
 
                 //Delete all Selections:
                 foreach($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___32234')) . ')' => null, //Discovery Expansions
-                    'x__left' => $x_progress['x__left'],
-                ), array('x__right'), 0) as $x2){
+                    'x__previous' => $x_progress['x__previous'],
+                ), array('x__next'), 0) as $x2){
                     $CI->X_model->update($x2['x__id'], array(
                         'x__privacy' => 6173, //Transaction Removed
                         'x__reference' => $access_blocked['x__id'],
@@ -464,7 +464,7 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x_
             ), $x__creator, 29782 );
 
             //Guide them back to the top:
-            $return_i__id = $x_progress['x__left'];
+            $return_i__id = $x_progress['x__previous'];
 
             //We can only handle 1 question for now
             //TODO If multiple questions found, see which one is within top_i__id
@@ -497,7 +497,7 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
 
     //Any Inclusion Any Requirements?
     $fetch_13865 = $CI->X_model->fetch(array(
-        'x__right' => $i__id,
+        'x__next' => $i__id,
         'x__type' => 13865, //Must Include Any
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -530,7 +530,7 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
 
     //Any Inclusion All Requirements?
     $fetch_27984 = $CI->X_model->fetch(array(
-        'x__right' => $i__id,
+        'x__next' => $i__id,
         'x__type' => 27984, //Must Include All
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -569,7 +569,7 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
 
     //Any Exclusion All Requirements?
     $fetch_26600 = $CI->X_model->fetch(array(
-        'x__right' => $i__id,
+        'x__next' => $i__id,
         'x__type' => 26600, //Must Exclude All
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -728,7 +728,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
        }
        //Now search for these settings across sources:
        foreach($CI->X_model->fetch(array(
-           'x__right' => $i['i__id'],
+           'x__next' => $i['i__id'],
            'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
            'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
@@ -737,11 +737,11 @@ function list_settings($i__hashtag, $fetch_contact = false){
        }
        //Now search for these settings across ideas:
        foreach($CI->X_model->fetch(array(
-           'x__left' => $i['i__id'],
+           'x__previous' => $i['i__id'],
            'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-       ), array('x__right'), 0) as $setting_link){
+       ), array('x__next'), 0) as $setting_link){
            array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
        }
 
@@ -770,7 +770,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
        $query_string = array();
        if(count($list_config[40791])){
            $query_string = $CI->X_model->fetch(array(
-               'x__left IN (' . join(',', $list_config[40791]) . ')' => null,
+               'x__previous IN (' . join(',', $list_config[40791]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
            ), array('x__creator'), 1000, 0, array('x__id' => 'DESC'));
@@ -782,7 +782,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
            ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
        } else {
            $query_string = $CI->X_model->fetch(array(
-               'x__left' => $i['i__id'],
+               'x__previous' => $i['i__id'],
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
            ), array('x__creator'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
@@ -807,7 +807,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                unset($query_string[$key]);
 
            } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
-                   'x__left IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
+                   'x__previous IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
                    'x__creator' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -854,9 +854,9 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                'x__up' => $list_config[34513],
-               'x__right !=' => $i['i__id'],
+               'x__next !=' => $i['i__id'],
                'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-           ), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
+           ), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
                array_push($column_i, $link_i);
            }
 
@@ -911,7 +911,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
            foreach($CI->X_model->fetch(array(
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type' => 32235, //Navigation
-               'x__right' => $i2['i__id'],
+               'x__next' => $i2['i__id'],
            )) as $follow){
                array_push($must_follow, $follow['x__up']);
            }
@@ -1398,7 +1398,7 @@ function email_ticket($x__id, $i__hashtag, $x__creator){
     $additional_info = '';
     foreach($CI->X_model->fetch(array(
         'x__id' => $x__id,
-    ), array('x__right')) as $top_i){
+    ), array('x__next')) as $top_i){
         $additional_info = ' for '.view_i_title($top_i, true);
         break;
     }
@@ -1485,7 +1485,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
             'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
             'x__creator' => $e__id,
             'x__message' => $single_message,
-            'x__right' => $template_i__id,
+            'x__next' => $template_i__id,
             'x__metadata' => array(
                 'post' => $post,
                 'response' => $y,
@@ -1552,7 +1552,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___42256')) . ')' => null, //Writes
             'x__up' => 31779, //Mandatory Emails
-            'x__right' => $template_i__id,
+            'x__next' => $template_i__id,
         ))))){
         //User specific notifications:
         $email_message .= '<div class="line"><a href="'.$base_domain.view_app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$es[0]['e__handle']).'" style="font-size:13px;">'.$e___6287[28904]['m__title'].'</a></div>';
@@ -1619,7 +1619,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         //Let's log a system email as the last resort way to record this transaction:
         $CI->X_model->create(array_merge($x_data, array(
             'x__type' => 29399,
-            'x__right' => $template_i__id,
+            'x__next' => $template_i__id,
             'x__creator' => $e__id,
             'x__message' => $subject."\n\n".$email_message,
             'x__metadata' => array(
@@ -1631,11 +1631,11 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         )));
 
         //Can we also mark the discovery as complete?
-        if($e__id && isset($x_data['x__left']) && $x_data['x__left']>0 && isset($x_data['x__right'])) {
+        if($e__id && isset($x_data['x__previous']) && $x_data['x__previous']>0 && isset($x_data['x__next'])) {
             foreach ($CI->I_model->fetch(array(
-                'i__id' => $x_data['x__left'],
+                'i__id' => $x_data['x__previous'],
             )) as $email_i) {
-                $CI->X_model->read_only_complete($e__id, $x_data['x__right'], $email_i, $x_data);
+                $CI->X_model->read_only_complete($e__id, $x_data['x__next'], $email_i, $x_data);
             }
         }
 
@@ -1768,7 +1768,7 @@ function write_privacy_i($i__hashtag, $i__id = 0){
     return (
         superpower_unlocked(12700) || //WALKIE TALKIE
         (
-            count($CI->X_model->fetch($filters, array('x__right')))
+            count($CI->X_model->fetch($filters, array('x__next')))
         )
     );
 
@@ -2001,16 +2001,16 @@ function update_algolia($s__type = null, $s__id = 0) {
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-                    'x__left' => $s['i__id'],
-                ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $i) {
+                    'x__previous' => $s['i__id'],
+                ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['i__message'] . ' ';
                 }
                 foreach ($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-                    'x__right' => $s['i__id'],
-                ), array('x__left'), 0, 0, array('x__weight' => 'ASC')) as $i) {
+                    'x__next' => $s['i__id'],
+                ), array('x__previous'), 0, 0, array('x__weight' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['i__message'] . ' ';
                 }
 
@@ -2018,7 +2018,7 @@ function update_algolia($s__type = null, $s__id = 0) {
                 foreach($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $s['i__id'],
+                    'x__next' => $s['i__id'],
                 ), array('x__up'), 0) as $x){
 
                     //Featured?

@@ -10,7 +10,7 @@ $write_privacy_i = write_privacy_i($focus_i['i__hashtag']);
 $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
-    'x__right' => $focus_i['i__id'],
+    'x__next' => $focus_i['i__id'],
     'x__weight' => $new_order,
 ));
 

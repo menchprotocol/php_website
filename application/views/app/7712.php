@@ -16,13 +16,13 @@ foreach($this->I_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-        'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $down_or){
+        'x__previous' => $in['i__id'],
+    ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $down_or){
 
         $x_covers = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__left' => $down_or['i__id'],
+            'x__previous' => $down_or['i__id'],
         ), array(), 1, 0, array(), 'COUNT(x__id) as totals');
 
 

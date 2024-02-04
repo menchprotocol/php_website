@@ -13,7 +13,7 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
     foreach($this->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     )) as $i){
-        $filters['x__right'] = $i['i__id'];
+        $filters['x__next'] = $i['i__id'];
         $buffer_time = 0;
     }
 }
@@ -22,20 +22,20 @@ $links_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds ideas:
-foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
+foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
 
     //Now go through everyone who discovered this selection:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansions
-        'x__left' => $expires['i__id'],
+        'x__previous' => $expires['i__id'],
     ), array('x__creator'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
-            'x__left' => $x_progress['x__right'],
+            'x__previous' => $x_progress['x__next'],
             'x__creator' => $x_progress['e__id'],
         ));
         $seconds_left = intval( intval( $expires['x__message']) + $buffer_time - (time() - strtotime($x_progress['x__time'])));
@@ -47,7 +47,7 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
-                'x__left' => $expires['i__id'],
+                'x__previous' => $expires['i__id'],
                 'x__creator' => $x_progress['e__id'],
             ), array(), 0) as $delete){
 
@@ -75,8 +75,8 @@ foreach($this->X_model->fetch($filters, array('x__right'), 0) as $expires){
 
 echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
 
-if(isset($filters['x__right'])){
-    foreach($this->I_model->fetch(array('i__id' => $filters['x__right'])) as $i){
+if(isset($filters['x__next'])){
+    foreach($this->I_model->fetch(array('i__id' => $filters['x__next'])) as $i){
         //We were deleting a single item, redirect back:
         js_php_redirect('/~'.$i['i__hashtag'], 0);
     }

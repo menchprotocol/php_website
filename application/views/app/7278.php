@@ -41,12 +41,12 @@ foreach($is as $in){
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-        'x__left' => $in['i__id'],
-    ), array('x__right'), 0, 0) as $next_i){
+        'x__previous' => $in['i__id'],
+    ), array('x__next'), 0, 0) as $next_i){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12273].$next_i['x__left'],
-            'target' => $id_prefix[12273].$next_i['x__right'],
+            'source' => $id_prefix[12273].$next_i['x__previous'],
+            'target' => $id_prefix[12273].$next_i['x__next'],
             'label' => $e___4593[$next_i['x__type']]['m__title'], //TODO maybe give visibility to condition here?
             'weight' => 1,
             'edge_type' => $next_i['x__type'],

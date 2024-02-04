@@ -259,10 +259,10 @@ function fetch_int_val(object_name){
 function toggle_headline(x__type){
 
     var x__down = 0;
-    var x__right = 0;
+    var x__next = 0;
     var focus_card = fetch_int_val('#focus_card');
     if(focus_card==12273){
-        x__right = fetch_int_val('#focus_id');
+        x__next = fetch_int_val('#focus_id');
     } else if (focus_card==12274){
         x__down = fetch_int_val('#focus_id');
     }
@@ -309,7 +309,7 @@ function toggle_headline(x__type){
         x__type: action_id,
         x__up: x__type,
         x__down: x__down,
-        x__right: x__right,
+        x__next: x__next,
     });
 }
 
@@ -356,11 +356,11 @@ function toggle_pills(x__type){
 
     focus_card = x__type;
     var x__down = 0;
-    var x__right = 0;
+    var x__next = 0;
     var focus_card = fetch_int_val('#focus_card');
 
     if(focus_card==12273){
-        x__right = fetch_int_val('#focus_id');
+        x__next = fetch_int_val('#focus_id');
     } else if (focus_card==12274){
         x__down = fetch_int_val('#focus_id');
     }
@@ -393,7 +393,7 @@ function toggle_pills(x__type){
             x__type: action_id,
             x__up: x__type,
             x__down: x__down,
-            x__right: x__right,
+            x__next: x__next,
         });
 
     }

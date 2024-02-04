@@ -288,13 +288,13 @@ class E_model extends CI_Model
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
         //Remove if not in the secondary group:
         foreach($all_results as $key => $primary_list){
             if(!count($this->X_model->fetch(array(
                 'x__up' => $sub_id,
-                'x__right' => $primary_list['i__id'],
+                'x__next' => $primary_list['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
@@ -389,12 +389,12 @@ class E_model extends CI_Model
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 33600, //Draft
                 'x__up' => 14929, //Website Welcome Email Templates
-            ), array('x__right'), 0) as $i){
+            ), array('x__next'), 0) as $i){
                 if(count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 33600, //Draft
                     'x__up' => $x__website, //for Current website
-                    'x__right' => $i['i__id'], //Is this the template?
+                    'x__next' => $i['i__id'], //Is this the template?
                 )))){
                     //Found the email template to send:
                     $total_sent = $this->X_model->send_i_dm(array(array('e__id'=>$added_e['new_e']['e__id'])), $i, 0, $x__website);
@@ -459,7 +459,7 @@ class E_model extends CI_Model
             //Log transaction new Idea hashtag:
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
-                'x__right' => $add_fields['e__id'],
+                'x__next' => $add_fields['e__id'],
                 'x__message' => $add_fields['e__handle'],
                 'x__type' => 42169, //Source Generated Handle
             ));
@@ -843,8 +843,8 @@ class E_model extends CI_Model
                         'x__reference' => $x['x__reference'],
                         //'LOWER(x__message)' => strtolower($x['x__message']),
 
-                        'x__right' => $x['x__right'],
-                        'x__left' => $x['x__left'],
+                        'x__next' => $x['x__next'],
+                        'x__previous' => $x['x__previous'],
                     );
                     if($x['x__up']==$e__id){
                         $filters['x__up'] = $es[0]['e__id'];

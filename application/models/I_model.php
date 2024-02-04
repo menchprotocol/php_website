@@ -47,14 +47,14 @@ class I_model extends CI_Model
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__up' => $x__creator,
-                'x__right' => $add_fields['i__id'],
+                'x__next' => $add_fields['i__id'],
                 'x__type' => 4250, //New Idea Created
             ));
 
             //Log transaction new Idea hashtag:
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
-                'x__right' => $add_fields['i__id'],
+                'x__next' => $add_fields['i__id'],
                 'x__message' => $add_fields['i__hashtag'],
                 'x__type' => 42168, //Idea Generated Hashtag
             ));
@@ -189,7 +189,7 @@ class I_model extends CI_Model
                 $this->X_model->create(array(
                     'x__creator' => $x__creator,
                     'x__type' => $x__type,
-                    'x__right' => $id,
+                    'x__next' => $id,
                     'x__down' => $x__down,
                     'x__up' => $x__up,
                     'x__message' => $x__message,
@@ -212,7 +212,7 @@ class I_model extends CI_Model
 
             //This should not happen:
             $this->X_model->create(array(
-                'x__right' => $id,
+                'x__next' => $id,
                 'x__type' => 4246, //Platform Bug Reports
                 'x__creator' => $x__creator,
                 'x__message' => 'update() Failed to update',
@@ -244,7 +244,7 @@ class I_model extends CI_Model
                 foreach($this->X_model->fetch(array( //Idea Transactions
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type !=' => 13579, //Idea Transaction Unpublished
-                    '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
+                    '(x__next = '.$i__id.' OR x__previous = '.$i__id.')' => null,
                 ), array(), 0) as $x){
 
                     //Make sure not duplicate, if so, delete:
@@ -260,13 +260,13 @@ class I_model extends CI_Model
                         'x__up' => $x['x__up'],
                         'x__down' => $x['x__down'],
                     );
-                    if($x['x__right']==$i__id){
-                        $filters['x__right'] = $is[0]['i__id'];
-                        $update_filter['x__right'] = $is[0]['i__id'];
+                    if($x['x__next']==$i__id){
+                        $filters['x__next'] = $is[0]['i__id'];
+                        $update_filter['x__next'] = $is[0]['i__id'];
                     }
-                    if($x['x__left']==$i__id){
-                        $filters['x__left'] = $is[0]['i__id'];
-                        $update_filter['x__left'] = $is[0]['i__id'];
+                    if($x['x__previous']==$i__id){
+                        $filters['x__previous'] = $is[0]['i__id'];
+                        $update_filter['x__previous'] = $is[0]['i__id'];
                     }
                     if(0 && count($this->X_model->fetch($filters))){
 
@@ -291,7 +291,7 @@ class I_model extends CI_Model
             foreach($this->X_model->fetch(array( //Idea Transactions
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type !=' => 13579, //Idea Transaction Unpublished
-                '(x__right = '.$i__id.' OR x__left = '.$i__id.')' => null,
+                '(x__next = '.$i__id.' OR x__previous = '.$i__id.')' => null,
             ), array(), 0) as $x){
                 //Delete this transaction:
                 $x_adjusted += $this->X_model->update($x['x__id'], array(
@@ -324,7 +324,7 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___27240')) . ')' => null, //COPY Transactions
-            '(x__right='.$i['i__id'].' OR x__left='.$i['i__id'].')' => null,
+            '(x__next='.$i['i__id'].' OR x__previous='.$i['i__id'].')' => null,
         ), array(), 0) as $x){
 
             //Duplicate transaction, with new idea
@@ -334,8 +334,8 @@ class I_model extends CI_Model
                 'x__message' => $x['x__message'],
                 'x__up' => $x['x__up'],
                 'x__down' => $x['x__down'],
-                'x__left' => ( $i['i__id']==$x['x__left'] ? $i_new['i__id'] : $x['x__left'] ),
-                'x__right' => ( $i['i__id']==$x['x__right'] ? $i_new['i__id'] : $x['x__right'] ),
+                'x__previous' => ( $i['i__id']==$x['x__previous'] ? $i_new['i__id'] : $x['x__previous'] ),
+                'x__next' => ( $i['i__id']==$x['x__next'] ? $i_new['i__id'] : $x['x__next'] ),
             )))){
                 $this->X_model->create(array(
                     //Copy:
@@ -349,8 +349,8 @@ class I_model extends CI_Model
                     'x__reference' => $x['x__reference'],
                     //Change:
                     'x__creator' => $x__creator,
-                    'x__left' => ( $i['i__id']==$x['x__left'] ? $i_new['i__id'] : $x['x__left'] ),
-                    'x__right' => ( $i['i__id']==$x['x__right'] ? $i_new['i__id'] : $x['x__right'] ),
+                    'x__previous' => ( $i['i__id']==$x['x__previous'] ? $i_new['i__id'] : $x['x__previous'] ),
+                    'x__next' => ( $i['i__id']==$x['x__next'] ? $i_new['i__id'] : $x['x__next'] ),
                 ));
             }
 
@@ -463,8 +463,8 @@ class I_model extends CI_Model
 
                 //Duplicate Check:
                 if (count($this->X_model->fetch(array(
-                        'x__left' => ( $is_upwards ? $link_i[0]['i__id'] : $focus_i[0]['i__id'] ),
-                        'x__right' => ( $is_upwards ? $focus_i[0]['i__id'] : $link_i[0]['i__id'] ),
+                        'x__previous' => ( $is_upwards ? $link_i[0]['i__id'] : $focus_i[0]['i__id'] ),
+                        'x__next' => ( $is_upwards ? $focus_i[0]['i__id'] : $link_i[0]['i__id'] ),
                         'x__type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     ))) > 0) {
@@ -496,7 +496,7 @@ class I_model extends CI_Model
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__up' => $focus_e[0]['e__id'],
-                    'x__right' => $link_i[0]['i__id'],
+                    'x__next' => $link_i[0]['i__id'],
                 )))){
                     return array(
                         'status' => 0,
@@ -536,14 +536,14 @@ class I_model extends CI_Model
         if(!count($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
             'x__up' => $x__creator,
-            'x__right' => $i_new['i__id'],
+            'x__next' => $i_new['i__id'],
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )))){
             $this->X_model->create(array(
                 'x__type' => 4983, //Co-Author
                 'x__creator' => $x__creator,
                 'x__up' => $x__creator,
-                'x__right' => $i_new['i__id'],
+                'x__next' => $i_new['i__id'],
             ));
         }
 
@@ -557,13 +557,13 @@ class I_model extends CI_Model
             if(!in_array($x_pinned['x__up'], $e_appended) && !count($this->X_model->fetch(array(
                     'x__type' => 4250, //Lead Author
                     'x__up' => $x_pinned['x__up'],
-                    'x__right' => $i_new['i__id'],
+                    'x__next' => $i_new['i__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 $this->X_model->create(array(
                     'x__type' => 4250, //Lead Author
                     'x__up' => $x_pinned['x__up'],
-                    'x__right' => $i_new['i__id'],
+                    'x__next' => $i_new['i__id'],
                     'x__creator' => $x__creator,
                 ));
                 array_push($e_appended, $x_pinned['x__up']);
@@ -581,21 +581,21 @@ class I_model extends CI_Model
                 'x__type' => ( !$is_upwards && count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__left' => $focus_id,
+                    'x__previous' => $focus_id,
                 ), array(), 1)) ? 33344 : 4228 ), //Drafting vs Sequenced idea
-                ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
-                ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
+                ( $is_upwards ? 'x__next' : 'x__previous' ) => $focus_id,
+                ( $is_upwards ? 'x__previous' : 'x__next' ) => $i_new['i__id'],
                 'x__weight' => 0,
             ), true);
 
             //Fetch and return full data to be properly shown on the UI
             $new_i = $this->X_model->fetch(array(
-                ( $is_upwards ? 'x__right' : 'x__left' ) => $focus_id,
-                ( $is_upwards ? 'x__left' : 'x__right' ) => $i_new['i__id'],
+                ( $is_upwards ? 'x__next' : 'x__previous' ) => $focus_id,
+                ( $is_upwards ? 'x__previous' : 'x__next' ) => $i_new['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ), array(($is_upwards ? 'x__left' : 'x__right')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
+            ), array(($is_upwards ? 'x__previous' : 'x__next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
 
             $new_i_html = view_card_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
 
@@ -604,14 +604,14 @@ class I_model extends CI_Model
             if(!in_array($focus_e[0]['e__id'], $e_appended) && !count($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
                     'x__up' => $focus_e[0]['e__id'],
-                    'x__right' => $i_new['i__id'],
+                    'x__next' => $i_new['i__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 $this->X_model->create(array(
                     'x__type' => 4983, //Co-Author
                     'x__creator' => $x__creator,
                     'x__up' => $focus_e[0]['e__id'],
-                    'x__right' => $i_new['i__id'],
+                    'x__next' => $i_new['i__id'],
                 ));
                 array_push($e_appended, $focus_e[0]['e__id']);
             }
@@ -621,8 +621,8 @@ class I_model extends CI_Model
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                 'x__up' => $focus_e[0]['e__id'],
-                'x__right' => $i_new['i__id'],
-            ), array('x__right'));
+                'x__next' => $i_new['i__id'],
+            ), array('x__next'));
 
             $new_i_html = view_card_i($x__type, 0, null, $new_i[0], $focus_e[0]);
 
@@ -671,8 +671,8 @@ class I_model extends CI_Model
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
-            'x__left' => $i['i__id'],
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
+            'x__previous' => $i['i__id'],
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
 
             if(!in_array(intval($next_i['i__id']), $recursive_i_ids)){
                 if(!($scope=='OR' && !$is_or_i)){
@@ -725,17 +725,17 @@ class I_model extends CI_Model
         $filters = array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
-            'x__right' => $i__id,
+            'x__next' => $i__id,
         );
 
         foreach($this->X_model->fetch($filters, array(), 0) as $x){
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__type' => $x['x__type'],
-                'x__right' => $i_new['i__id'],
+                'x__next' => $i_new['i__id'],
                 'x__up' => $x['x__up'],
                 'x__down' => $x['x__down'],
-                'x__left' => $x['x__left'],
+                'x__previous' => $x['x__previous'],
                 'x__message' => $x['x__message'],
                 'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
@@ -749,13 +749,13 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
-            'x__right' => $i__id,
-        ), array('x__left'), 0) as $x){
+            'x__next' => $i__id,
+        ), array('x__previous'), 0) as $x){
             $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__type' => $x['x__type'],
-                'x__right' => $i_new['i__id'],
-                'x__left' => $x['i__id'],
+                'x__next' => $i_new['i__id'],
+                'x__previous' => $x['i__id'],
                 'x__message' => $x['x__message'],
                 'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
@@ -769,13 +769,13 @@ class I_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___41301')) . ')' => null, //Duplicate Links
-            'x__left' => $i__id,
-        ), array('x__right'), 0) as $x){
+            'x__previous' => $i__id,
+        ), array('x__next'), 0) as $x){
 
             if($do_recursive && !count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__right' => $i__id,
+                    'x__next' => $i__id,
                     'x__up' => 42208, //No-Clone Idea
                 )))){
                 //Clone Followers Recursively:
@@ -785,8 +785,8 @@ class I_model extends CI_Model
                 $this->X_model->create(array(
                     'x__creator' => $x__creator,
                     'x__type' => $x['x__type'],
-                    'x__left' => $i_new['i__id'],
-                    'x__right' => $x['i__id'],
+                    'x__previous' => $i_new['i__id'],
+                    'x__next' => $x['i__id'],
                     'x__message' => $x['x__message'],
                     'x__weight' => $x['x__weight'],
                     'x__reference' => $x['x__reference'],
@@ -827,14 +827,14 @@ class I_model extends CI_Model
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
-            'x__right' => $i__id,
-        ), array('x__left')) as $prev_i){
+            'x__next' => $i__id,
+        ), array('x__previous')) as $prev_i){
 
 
             $is_start = count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__right' => $prev_i['i__id'],
+                'x__next' => $prev_i['i__id'],
                 'x__up' => 4235,
             )));
 
@@ -903,8 +903,8 @@ class I_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
-            'x__left' => $i__id,
-        ), array('x__right'), 0, 0, array('x__weight' => 'ASC'));
+            'x__previous' => $i__id,
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
 
         //Process request:
@@ -922,7 +922,7 @@ class I_model extends CI_Model
                     $i_has_e = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                        'x__right' => $next_i['i__id'],
+                        'x__next' => $next_i['i__id'],
                         'x__up' => $e['e__id'],
                     ));
 
@@ -942,7 +942,7 @@ class I_model extends CI_Model
                             'x__creator' => $x__creator,
                             'x__up' => $e['e__id'],
                             'x__type' => $e_mapper[$action_e__id],
-                            'x__right' => $next_i['i__id'],
+                            'x__next' => $next_i['i__id'],
                             'x__message' => trim($action_command2),
                         ), true);
 
@@ -981,8 +981,8 @@ class I_model extends CI_Model
                         $is_previous = $this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             'x__type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-                            'x__left' => $i['i__id'],
-                            'x__right' => $next_i['i__id'],
+                            'x__previous' => $i['i__id'],
+                            'x__next' => $next_i['i__id'],
                         ), array(), 0);
 
 
@@ -1028,7 +1028,7 @@ class I_model extends CI_Model
         $this->X_model->create(array(
             'x__creator' => $x__creator,
             'x__type' => $action_e__id,
-            'x__right' => $i__id,
+            'x__next' => $i__id,
             'x__metadata' => array(
                 'payload' => $_POST,
                 'i_total' => count($is_next),

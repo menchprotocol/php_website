@@ -21,7 +21,7 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 34513, //Pinned
     'x__up' => $website_id,
-), array('x__right'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $this_i){
+), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
     } else {

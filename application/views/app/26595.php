@@ -44,7 +44,7 @@ if(isset($_POST['payment_status'])){
             $original_payment = $this->X_model->fetch(array(
                 'x__type' => 26595,
                 'x__creator' => $x__creator,
-                'x__left' => $next_is[0]['i__id'],
+                'x__previous' => $next_is[0]['i__id'],
             ));
 
             //Log Refund:

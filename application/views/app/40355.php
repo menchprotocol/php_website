@@ -20,7 +20,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
     'x__up' => $list_settings['list_config'][34513],
     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-), array('x__right'), 0, 0, array('x__weight' => 'ASC')) as $link_i){
+), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $link_i){
 
     $sub_list_settings = list_settings($link_i['i__hashtag'], true);
     if(!count($sub_list_settings['query_string'])){
