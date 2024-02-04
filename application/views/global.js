@@ -1546,6 +1546,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     } else {
                         console.log('ERORRRRRRRR: UNKNOWN Media Type');
                     }
+                } else {
+                    console.log('ERORRRRRRRR: MIssing format to detect results');
                 }
 
 
