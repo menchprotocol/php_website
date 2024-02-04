@@ -2813,11 +2813,15 @@ h4.main__title{
 }
 
 
-.media_frame {
+.media_outer_frame {
     clear: both;
     background-color: #FFFFFF;
     display: block;
     margin-left: 34px;
+}
+.media_frame {
+    clear: both;
+    display: block;
 }
 
 .media_frame .media_item,

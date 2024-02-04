@@ -1482,15 +1482,14 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             //Enable Sorting:
             var sort = Sortable.create(document.getElementById("media_frame"), {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: ".media_frame .media_item", // Specifies which items inside the element should be sortable
-                handle: ".media_frame .media_item", // Restricts sort start click/touch to the specified element
+                draggable: ".media_item", // Specifies which items inside the element should be sortable
+                handle: ".media_item", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
                     //Nothing we need to do since the order will be grabbed upon submission...
                     //Just mark as unsaved again to make sure it saves:
                     has_unsaved_changes = true;
                 }
             });
-
 
         } else if (result.event === "upload-added") {
 
