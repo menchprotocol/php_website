@@ -1472,7 +1472,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             if(result.failed && result.status && result.status.length>0){
                 alert('ERROR for File ['+result.info.name+']: '+result.status);
                 if(result.info.public_id){
-                    delete_media(uploader_id, result.info.id, result.info.public_id, true);
+                    delete_media(uploader_id, result.info.id, result.info.public_id, true, true);
                 }
             }
             //Log error
@@ -1558,7 +1558,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                     //Duplicate local upload, give error and remove:
                     alert('Error: File uploaded twice, so we will keep one copy and remove the other...');
-                    delete_media(uploader_id, result.info.id, result.info.public_id, true);
+                    delete_media(uploader_id, result.info.id, result.info.public_id, false, true);
 
                 } else if(media_e__id) {
 
@@ -1605,7 +1605,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
 
 var confirm_removal_once_done = false;
-function delete_media(uploader_id, info_id, public_id, skip_check = false){
+function delete_media(uploader_id, info_id, public_id, remove_cache = true, skip_check = false){
     if(!skip_check && !confirm_removal_once_done){
         //Confirm removal once:
         var r = confirm("Are you sure you want to delete this?");
@@ -1616,7 +1616,7 @@ function delete_media(uploader_id, info_id, public_id, skip_check = false){
         has_unsaved_changes = true;
     }
     $('#'+info_id).remove();
-    if(public_id && media_cache[uploader_id][public_id]){
+    if(remove_cache && public_id && media_cache[uploader_id][public_id]){
         delete media_cache[uploader_id][public_id];
     }
 }
@@ -1649,7 +1649,7 @@ function cloudinary_load_source(uploader_id, frame_id, public_id, e__cover, e__t
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
         alert('Upload Error: Uploaded File '+e__title+' is not a valid Video, Image or Audio file.');
-        delete_media(uploader_id, frame_id, public_id, true);
+        delete_media(uploader_id, frame_id, public_id, true, true);
 
     }
 }
