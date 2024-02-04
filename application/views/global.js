@@ -1530,6 +1530,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
             } else if(uploader_id==13572){
 
+
+
                 //Idea Uploader
                 var media_e__id = 0;
                 if(result.info.format && result.info.format.length>0){
@@ -1547,7 +1549,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
 
                 //Append this to the main source:
-                if(media_cache[uploader_id][result.info.public_id] && media_cache[uploader_id][result.info.public_id].length){
+                if(media_cache[uploader_id][result.info.public_id]){
 
                     //Duplicate local upload, give error and remove:
                     alert('Upload Error: You have uploaded the file ['+result.info.original_filename+'] twice, so we would only keep one copy...');
