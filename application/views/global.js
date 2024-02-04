@@ -1531,7 +1531,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             } else if(uploader_id==13572){
 
 
-
                 //Idea Uploader
                 var media_e__id = 0;
                 if(result.info.format && result.info.format.length>0){
@@ -1544,6 +1543,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     } else if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.audio){
                         //Audio
                         media_e__id = 4259;
+                    } else {
+                        console.log('ERORRRRRRRR: UNKNOWN Media Type');
                     }
                 }
 
@@ -1552,12 +1553,12 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 if(media_cache[uploader_id][result.info.public_id]){
 
                     //Duplicate local upload, give error and remove:
-                    alert('Upload Error: File uploaded twice, so we will only keep one copy and remove the other one...');
+                    alert('Error: File uploaded twice, so we will keep one copy and remove the other...');
                     $('#'+result.info.id).remove();
 
                 } else if(media_e__id) {
 
-                    cloudinary_load_source(result.info.id, result.info.public_id, result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377'), result.info.original_filename, media_e__id, ( result.info.playback_url ? result.info.playback_url : null ));
+                    cloudinary_load_source(result.info.id, result.info.public_id, result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377'), ( result.info.original_filename ? result.info.original_filename : js_e___42294[media_e__id]['m__title']+' File' ), media_e__id, ( result.info.playback_url ? result.info.playback_url : null ));
 
                     media_cache[uploader_id][result.info.public_id] = result.info;
                     console.log('MEDIA CACHE:');
@@ -1566,6 +1567,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 } else {
 
                     //Log error
+                    console.log('ERORRRRRRRR: Missing Media Type');
 
                 }
 
@@ -1622,19 +1624,19 @@ function cloudinary_load_source(frame_id, public_id, e__cover, e__title, media_e
     if(media_e__id = 4258){
 
         //Video
-        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span>'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
         //insert_video('#'+frame_id, public_id, e__cover);
 
     } else if(media_e__id = 4260){
 
         //Image
-        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span>'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
 
     } else if(media_e__id = 4259){
 
         //Audio
         //<audio controls src="'+playback_url+'"></audio>
-        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span>'+js_e___42294[media_e__id]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
 
     } else {
 
