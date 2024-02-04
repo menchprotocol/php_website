@@ -1534,15 +1534,15 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 //Idea Uploader
                 var media_e__id = 0;
                 if(result.info.format && result.info.format.length>0){
-                    if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.playback_url){
-                        //Video
-                        media_e__id = 4258;
+                    if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.playback_url){
+                        //Audio
+                        media_e__id = 4259;
                     } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.thumbnail_url){
                         //Image
                         media_e__id = 4260;
-                    } else if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.playback_url){
-                        //Audio
-                        media_e__id = 4259;
+                    } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.playback_url){
+                        //Video
+                        media_e__id = 4258;
                     } else {
                         console.log('ERORRRRRRRR: UNKNOWN Media Type');
                     }
