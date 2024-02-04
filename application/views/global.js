@@ -1552,7 +1552,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 if(media_cache[uploader_id][result.info.public_id]){
 
                     //Duplicate local upload, give error and remove:
-                    alert('Upload Error: You have uploaded the file ['+result.info.original_filename+'] twice, so we would only keep one copy...');
+                    alert('Upload Error: File uploaded twice, so we will only keep one copy and remove the other one...');
                     $('#'+result.info.id).remove();
 
                 } else if(media_e__id) {
