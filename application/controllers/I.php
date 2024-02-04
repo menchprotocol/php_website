@@ -468,7 +468,7 @@ class I extends CI_Controller {
                 'message' => 'Missing hashtag',
             ));
 
-        } elseif(!isset($_POST['save_i__id'])){
+        } elseif(!isset($_POST['save_i__id']) || !intval($_POST['save_i__id'])){
 
             return view_json(array(
                 'status' => 0,
@@ -494,7 +494,7 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid idea Type',
             ));
-        } elseif (!isset($_POST['save_media']) || !isset($_POST['save_i__privacy']) || !in_array($_POST['save_i__privacy'], $this->config->item('n___31004'))) {
+        } elseif (!isset($_POST['save_i__privacy']) || !in_array($_POST['save_i__privacy'], $this->config->item('n___31004'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid idea Privacy',
@@ -503,25 +503,15 @@ class I extends CI_Controller {
 
 
 
-        if($_POST['save_i__id'] > 0){
-
-            $is = $this->I_model->fetch(array(
-                'i__id' => $_POST['save_i__id'],
+        $is = $this->I_model->fetch(array(
+            'i__id' => $_POST['save_i__id'],
+        ));
+        if(!count($is)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea Not Valid',
             ));
-            if(!count($is)){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Idea Not Valid',
-                ));
-            }
-            //Might be new if pre-drafting:
-            $is_new_idea = ( $is[0]['i__privacy']==42636 );
-
-        } else {
-            //Must be new:
-            $is_new_idea = true;
         }
-
 
 
 
@@ -537,10 +527,21 @@ class I extends CI_Controller {
         }
 
 
-        //Validate Dynamic Inputs:
-        $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
+        //Might be new if pre-drafting:
+        if( $is[0]['i__privacy']==42636 ){
+            //Update new idea fields:
+            $this->I_model->update($is[0]['i__id'], array(
+                'i__type' => $_POST['save_i__type'],
+                'i__privacy' => $_POST['save_i__privacy'],
+            ), true, $member_e['e__id']);
+            $is[0]['i__type'] = trim($_POST['save_i__type']);
+            $is[0]['i__privacy'] = trim($_POST['save_i__privacy']);
+        }
+
+
 
         //Process dynamic inputs if any:
+        $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
         if($_POST['save_i__id'] > 0){
             for ($p = 1; $p <= view_memory(6404,42206); $p++) {
 
@@ -626,19 +627,7 @@ class I extends CI_Controller {
 
 
 
-        //Validate Idea Hashtag & save if needed:
-        $attemp_update = 0;
-        if($is_new_idea && $_POST['save_i__id'] > 0){
-
-            //Update new idea fields:
-            $this->I_model->update($is[0]['i__id'], array(
-                'i__type' => $_POST['save_i__type'],
-                'i__privacy' => $_POST['save_i__privacy'],
-            ), true, $member_e['e__id']);
-            $is[0]['i__type'] = trim($_POST['save_i__type']);
-            $is[0]['i__privacy'] = trim($_POST['save_i__privacy']);
-
-        } elseif($is[0]['i__hashtag'] !== trim($_POST['save_i__hashtag'])){
+        if(strlen($_POST['save_i__hashtag']) && $is[0]['i__hashtag']!==trim($_POST['save_i__hashtag'])){
 
             $validate_handle = validate_handle($_POST['save_i__hashtag'], $is[0]['i__id'], null);
             if(!$validate_handle['status']){
@@ -659,7 +648,6 @@ class I extends CI_Controller {
                 'x__type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__right')) as $ref) {
-                $attemp_update++;
                 view_sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
 
@@ -714,7 +702,7 @@ class I extends CI_Controller {
             'return_i__cache' => $view_sync_links['i__cache'],
             'return_i__cache_links' => view_i_links($is[0]),
             'redirect_idea' => ( isset($is[0]['i__hashtag']) ? '/~'.$is[0]['i__hashtag'] : null ),
-            'message' => $attemp_update.' Attempt Updated | '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
+            'message' => $view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 
     }
