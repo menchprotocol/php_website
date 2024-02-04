@@ -3,8 +3,6 @@
 //Define some global variables:
 var has_unsaved_changes = false; //Tracks source/idea modal edits
 
-var MD5 = function(d){var r = M(V(Y(X(d),8*d.length)));return r.toLowerCase()};function M(d){for(var _,m="0123456789ABCDEF",f="",r=0;r<d.length;r++)_=d.charCodeAt(r),f+=m.charAt(_>>>4&15)+m.charAt(15&_);return f}function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}function bit_rol(d,_){return d<<_|d>>>32-_}
-
 
 //Full Story
 if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user other than Shervin
@@ -44,10 +42,9 @@ if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user 
 
 }
 
-function insert_video(element, public_id, poster_url = null){
-    var clean_id = MD5(public_id);
-    $(element).html('<video id="'+clean_id+'" controls class="cld-video-player cld-video-player-skin-dark" data-cld-public-id="myvideo" ></video>'); //poster="'+poster_url+'"
-    var cld = cloudinary.videoPlayer(clean_id,{ cloudName: 'menchcloud' });
+function insert_video(element, public_id, e__cover = null){
+    $(element).html('<video id="video_player_'+public_id+'" controls class="cld-video-player" poster="'+e__cover+'"></video>');
+    var cld = cloudinary.videoPlayer('video_player_'+public_id,{ cloudName: 'menchcloud' });
     cld.source(public_id);
 }
 
@@ -1382,68 +1379,6 @@ function editor_save_i(){
     });
 }
 
-var confirm_removal_once_done = false;
-function delete_media(info_id){
-    if(!confirm_removal_once_done){
-        //Confirm removal once:
-        var r = confirm("Are you sure you want to delete this?");
-        if (!(r==true)) {
-            return false;
-        }
-        confirm_removal_once_done = true; //Dont ask again
-        has_unsaved_changes = true;
-    }
-    $('#'+info_id).remove();
-}
-
-
-function cloudinary_add_pending(info){
-    has_unsaved_changes = true;
-    $('.media_frame').prepend('<div class="media_item" e__id="0" etag="" media_id="" id="'+info.id+'"><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
-}
-
-var media_cache = []; //Stores the json data for successfully uploaded media files
-function cloudinary_add_uploaded(info){
-
-    //Append this to the main source:
-    media_cache[info.id] = info;
-    console.log('MEDIA CACHE:');
-    console.log(media_cache);
-
-    //Search for a Video, Image or Audio file:
-    var view_template = '';
-    var media_type = 0;
-    if(info.format && info.format.length>0){
-        if(js_e___42641[4258]['m__message'].split(' ').includes(info.format) && info.video){
-
-            //Video
-            media_type = 4258;
-            $('#'+info.id).html('<input type="text" value="'+info.original_filename+'" placeholder="Source Title" /><span>'+js_e___42294[media_type]['m__cover']+'</span><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
-            //$('#'+info.id).html('<div class="video_container_'+info.id+'"></div><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
-            //insert_video('.video_container_'+info.id, info.public_id, info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233'));
-            return true;
-
-        } else if(js_e___42641[4260]['m__message'].split(' ').includes(info.format) && info.resource_type=='image'){
-            //Image
-            media_type = 4260;
-            $('#'+info.id).html('<input type="text" value="'+info.original_filename+'" placeholder="Source Title" /><span>'+js_e___42294[media_type]['m__cover']+'</span><img src="'+info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_233,w_233')+'" /><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
-            return true;
-
-        } else if(js_e___42641[4259]['m__message'].split(' ').includes(info.format) && info.audio){
-            //Audio
-            media_type = 4259;
-            //<audio controls src="'+info.secure_url+'"></audio>
-            $('#'+info.id).html('<input type="text" value="'+info.original_filename+'" placeholder="Source Title" /><span>'+js_e___42294[media_type]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+info.id+'\')"><i class="fas fa-xmark"></i></a>');
-            return true;
-
-        }
-    }
-
-    //Unsupported file, should not happen since we limited file extensions to those we know:
-    $('#'+info.id).remove(); //Remove added loader...
-    alert('Upload Error: Uploaded File '+info.original_filename+'.'+info.format+' is not a valid Video, Image or Audio file.');
-
-}
 
 function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){
 
@@ -1524,6 +1459,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         defaultSource: 'local',
     };
 
+
     console.log(widget_setting); //TODO Remove later for debugging now
     var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
 
@@ -1555,34 +1491,31 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 }
             });
 
-        } else if (result.event === "queues-start") {
-
-            console.log('QUEUE ENDED'); //TODO Remove later for debugging now
-            setTimeout(function () {
-                $(".media_frame .media_item textarea").keydown(function(e){
-                    if (e.keyCode == 13 && !e.shiftKey)
-                    {
-                        e.preventDefault();
-                    }
-                });
-            }, 987);
 
         } else if (result.event === "upload-added") {
 
-            console.log(result.event); //TODO Remove later for debugging now
+            //Add Pending Loader
+            console.log(result.event);
             console.log(result); //TODO Remove later for debugging now
 
             //Append loaders:
             if(uploader_id==42359){
+
                 //Source Cover Uploader:
                 update__cover('far fa-yin-yang fa-spin');
+
             } else if(uploader_id==13572){
-                //Idea Uploader
-                cloudinary_add_pending(result.info);
+
+                //Discovery Uploader
+                has_unsaved_changes = true;
+                $('.media_frame').prepend('<div id="'+result.info.id+'" class="media_item" media_e__id="" public_id="" playback_url="" e__id="0"  e__cover="" e__title=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+
             } else if(uploader_id==12117){
+
                 //Discovery Uploader
 
             }
+
 
         } else if (result.event === "success") {
 
@@ -1591,11 +1524,33 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
             //Add uploaded media:
             if(uploader_id==42359){
+
                 //Source Cover Uploader:
                 update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
+
             } else if(uploader_id==13572){
+
                 //Idea Uploader
-                cloudinary_add_uploaded(result.info);
+                var media_e__id = 0;
+                if(result.info.format && result.info.format.length>0){
+                    if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.video){
+                        //Video
+                        media_e__id = 4258;
+                    } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
+                        //Image
+                        media_e__id = 4260;
+                    } else if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.audio){
+                        //Audio
+                        media_e__id = 4259;
+                    }
+                }
+                if(media_e__id){
+                    cloudinary_load_source(result.info.id, result.info.public_id, result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377'), result.info.original_filename, media_e__id, ( result.info.playback_url ? result.info.playback_url : null ));
+                } else {
+                    //TODO Report error!
+
+                }
+
             } else if(uploader_id==12117){
                 //Discovery Uploader
 
@@ -1603,7 +1558,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
         } else {
 
-            console.log('OTHERRRRRRRRRRRRRR'); //TODO Remove later for debugging now
+            console.log('UNKNOWN :(((((((((((((((((((((((((((((((('); //TODO Remove later for debugging now
             console.log(result.event); //TODO Remove later for debugging now
             console.log(result); //TODO Remove later for debugging now
 
@@ -1630,6 +1585,71 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
 }
 
+
+var confirm_removal_once_done = false;
+function delete_media(info_id){
+    if(!confirm_removal_once_done){
+        //Confirm removal once:
+        var r = confirm("Are you sure you want to delete this?");
+        if (!(r==true)) {
+            return false;
+        }
+        confirm_removal_once_done = true; //Dont ask again
+        has_unsaved_changes = true;
+    }
+    $('#'+info_id).remove();
+}
+
+
+
+var media_cache = []; //Stores the json data for successfully uploaded media files
+function cloudinary_load_source(frame_id, public_id, e__cover, e__title, media_e__id, playback_url, e__id = 0){
+
+    //Check to make sure not already here:
+
+
+    //Append this to the main source:
+    if(media_cache[public_id] && media_cache[public_id].length){
+        //Duplicate local upload, give error and remove:
+        alert('Upload Error: You have uploaded the file ['+e__title+'] twice, so we would only keep one copy...');
+        $('#'+frame_id).remove();
+    }
+    media_cache[public_id] = info;
+    console.log('MEDIA CACHE:');
+    console.log(media_cache);
+
+    //Search for a Video, Image or Audio file:
+    var view_template = '';
+
+
+    //Update meta variables:
+    $('#'+frame_id).attr('public_id',public_id).attr('media_e__id',media_e__id).attr('e__id',e__id).attr('e__cover',e__cover).attr('e__title',e__title).attr('playback_url',playback_url);
+
+    if(media_e__id = 4258){
+
+        //Video
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span>'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
+        //insert_video('#'+frame_id, public_id, e__cover);
+
+    } else if(media_e__id = 4260){
+
+        //Image
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span>'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
+
+    } else if(media_e__id = 4259){
+
+        //Audio
+        //<audio controls src="'+playback_url+'"></audio>
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span>'+js_e___42294[media_e__id]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
+
+    } else {
+
+        //Unsupported file, should not happen since we limited file extensions to those we know:
+        $('#'+frame_id).remove(); //Remove added loader...
+        alert('Upload Error: Uploaded File '+e__title+' is not a valid Video, Image or Audio file.');
+
+    }
+}
 
 
 function editor_load_e(e__id, x__id){
