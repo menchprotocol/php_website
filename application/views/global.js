@@ -1546,14 +1546,16 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 }
                 if(media_e__id){
 
-                    cloudinary_load_source(result.info.id, result.info.public_id, result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377'), result.info.original_filename, media_e__id, ( result.info.playback_url ? result.info.playback_url : null ));
-
                     //Append this to the main source:
                     if(media_cache[uploader_id][result.info.public_id] && media_cache[uploader_id][result.info.public_id].length){
+
                         //Duplicate local upload, give error and remove:
                         alert('Upload Error: You have uploaded the file ['+result.info.original_filename+'] twice, so we would only keep one copy...');
                         $('#'+result.info.id).remove();
+
                     } else {
+
+                        cloudinary_load_source(result.info.id, result.info.public_id, result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377'), result.info.original_filename, media_e__id, ( result.info.playback_url ? result.info.playback_url : null ));
                         media_cache[uploader_id][result.info.public_id] = result.info;
                         console.log('MEDIA CACHE:');
                         console.log(media_cache);
@@ -1569,12 +1571,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 //Discovery Uploader
 
             }
-
-        } else {
-
-            console.log('UNKNOWN :(((((((((((((((((((((((((((((((('); //TODO Remove later for debugging now
-            console.log(result.event); //TODO Remove later for debugging now
-            console.log(result); //TODO Remove later for debugging now
 
         }
 
