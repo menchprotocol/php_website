@@ -933,56 +933,56 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     if($member_e){
 
-    ?>
+        ?>
 
-    <!-- Edit Idea Modal -->
-    <div class="i_footer_note hidden">Idea saved. <a href=""><b>View</b></a></div>
-    <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content slim_flat">
+        <!-- Edit Idea Modal -->
+        <div class="i_footer_note hidden">Idea saved. <a href=""><b>View</b></a></div>
+        <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content slim_flat">
 
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <button type="button" class="btn btn-default editor_save_i post_button" onclick="editor_save_i()">SAVE</button>
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
-
-                    <input type="hidden" class="created_i__id" value="0" />
-                    <input type="hidden" class="save_i__id" value="0" />
-                    <input type="hidden" class="save_x__id" value="0" />
-                    <input type="hidden" class="link_i__id" value="0" />
-
-                    <div class="idea_reply cover-text hideIfEmpty"></div>
-                    <div class="doclear">&nbsp;</div>
-
-
-                    <!-- Idea Creator(s) -->
-                    <div class="creator_headline">
-                        <?php
-                        foreach($this->X_model->fetch(array(
-                            'x__down' => $member_e['e__id'],
-                            'x__type' => 41011, //PINNED FOLLOWER
-                            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        ), array('x__up'), 0) as $x_pinned) {
-                            echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
-                        }
-
-                        //Always append current user:
-                        echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span><b>'.$member_e['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$member_e['e__handle'].'</span></div>';
-                        ?>
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn btn-default editor_save_i post_button" onclick="editor_save_i()">SAVE</button>
                     </div>
 
+                    <div class="modal-body">
+
+                        <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
+
+                        <input type="hidden" class="created_i__id" value="0" />
+                        <input type="hidden" class="save_i__id" value="0" />
+                        <input type="hidden" class="save_x__id" value="0" />
+                        <input type="hidden" class="link_i__id" value="0" />
+
+                        <div class="idea_reply cover-text hideIfEmpty"></div>
+                        <div class="doclear">&nbsp;</div>
+
+
+                        <!-- Idea Creator(s) -->
+                        <div class="creator_headline">
+                            <?php
+                            foreach($this->X_model->fetch(array(
+                                'x__down' => $member_e['e__id'],
+                                'x__type' => 41011, //PINNED FOLLOWER
+                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array('x__up'), 0) as $x_pinned) {
+                                echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
+                            }
+
+                            //Always append current user:
+                            echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span><b>'.$member_e['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$member_e['e__handle'].'</span></div>';
+                            ?>
+                        </div>
+
+
                         <!-- Idea Message -->
-                    <div class="dynamic_editing_input" style="margin: 0 !important;">
-
-                        <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-
-                        <div class="media_outer_frame hideIfEmpty">
-                            <div id="media_frame" class="media_frame hideIfEmpty"></div>
-                            <div class="doclear">&nbsp;</div>
+                        <div class="dynamic_editing_input" style="margin: 0 !important;">
+                            <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= $e___6201[4736]['m__title'] ?>..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                            <div class="media_outer_frame hideIfEmpty">
+                                <div id="media_frame" class="media_frame hideIfEmpty"></div>
+                                <div class="doclear">&nbsp;</div>
+                            </div>
                         </div>
 
                         <div class="inner_message">
