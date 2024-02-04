@@ -1472,7 +1472,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             if(result.failed && result.status && result.status.length>0){
                 alert('ERROR for File ['+result.info.name+']: '+result.status);
                 if(result.info.public_id){
-                    delete_media(result.info.id, result.info.public_id, true);
+                    delete_media(uploader_id, result.info.id, result.info.public_id, true);
                 }
             }
             //Log error
@@ -1558,7 +1558,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                     //Duplicate local upload, give error and remove:
                     alert('Error: File uploaded twice, so we will keep one copy and remove the other...');
-                    delete_media(result.info.id, result.info.public_id, true);
+                    delete_media(uploader_id, result.info.id, result.info.public_id, true);
 
                 } else if(media_e__id) {
 
@@ -1605,7 +1605,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
 
 var confirm_removal_once_done = false;
-function delete_media(info_id, public_id, skip_check = false){
+function delete_media(uploader_id, info_id, public_id, skip_check = false){
     if(!skip_check && !confirm_removal_once_done){
         //Confirm removal once:
         var r = confirm("Are you sure you want to delete this?");
@@ -1631,25 +1631,25 @@ function cloudinary_load_source(uploader_id, frame_id, public_id, e__cover, e__t
     if(media_e__id == 4258){
 
         //Video
-        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\',\''+public_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+frame_id+'\',\''+public_id+'\')"><i class="fas fa-xmark"></i></a>');
         //insert_video('#'+frame_id, public_id, e__cover);
 
     } else if(media_e__id == 4260){
 
         //Image
-        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\',\''+public_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+frame_id+'\',\''+public_id+'\')"><i class="fas fa-xmark"></i></a>');
 
     } else if(media_e__id == 4259){
 
         //Audio
         //<audio controls src="'+playback_url+'"></audio>
-        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\',\''+public_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+frame_id+'\',\''+public_id+'\')"><i class="fas fa-xmark"></i></a>');
 
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
         alert('Upload Error: Uploaded File '+e__title+' is not a valid Video, Image or Audio file.');
-        delete_media(frame_id, public_id, true);
+        delete_media(uploader_id, frame_id, public_id, true);
 
     }
 }
