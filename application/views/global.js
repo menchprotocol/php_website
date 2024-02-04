@@ -1470,11 +1470,10 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
             //Show error if any:
             if(result.failed && result.status && result.status.length>0){
-                $('#'+result.id).remove(); //Remove added loader...
-                if(result.public_id && media_cache[uploader_id][result.public_id]){
-                    delete media_cache[uploader_id][result.public_id];
-                }
                 alert('ERROR for File ['+result.name+']: '+result.status);
+                if(result.public_id){
+                    delete_media(result.id, result.public_id, true);
+                }
             }
             //Log error
             console.log('ERROR'); //TODO Remove later for debugging now
@@ -1559,10 +1558,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                     //Duplicate local upload, give error and remove:
                     alert('Error: File uploaded twice, so we will keep one copy and remove the other...');
-                    $('#'+result.info.id).remove();
-                    if(result.info.public_id && media_cache[uploader_id][result.info.public_id]){
-                        delete media_cache[uploader_id][result.info.public_id];
-                    }
+                    delete_media(result.info.id, result.info.public_id, true);
 
                 } else if(media_e__id) {
 
@@ -1609,8 +1605,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
 
 var confirm_removal_once_done = false;
-function delete_media(info_id, public_id){
-    if(!confirm_removal_once_done){
+function delete_media(info_id, public_id, skip_check = false){
+    if(!skip_check && !confirm_removal_once_done){
         //Confirm removal once:
         var r = confirm("Are you sure you want to delete this?");
         if (!(r==true)) {
@@ -1652,9 +1648,8 @@ function cloudinary_load_source(uploader_id, frame_id, public_id, e__cover, e__t
     } else {
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
-        $('#'+frame_id).remove(); //Remove added loader...
-        delete media_cache[uploader_id][public_id];
         alert('Upload Error: Uploaded File '+e__title+' is not a valid Video, Image or Audio file.');
+        delete_media(frame_id, public_id, true);
 
     }
 }
