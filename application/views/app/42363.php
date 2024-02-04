@@ -60,7 +60,7 @@ if(isset($_POST['payment_status'])){
 }
 
 
-if(!$is_good){
+if(!$is_good || 1){
 
     $arr = json_decode(file_get_contents('php://input'));
 
