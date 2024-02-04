@@ -38,7 +38,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
-        'x__up' => $es[0]['e__id'],
+        'x__following' => $es[0]['e__id'],
     ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
 
@@ -179,7 +179,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
-            'x__up' => 26189,
+            'x__following' => 26189,
         ), array(), 1);
         $available_transactions = (count($max_available) && is_numeric($max_available[0]['x__message']) ? intval($max_available[0]['x__message']) : '∞');
 
@@ -223,12 +223,12 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
         $filters = array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => $e['e__id'], //Member
+            'x__following' => $e['e__id'], //Member
         );
         if(count($all_e)){
-            $filters[ 'x__down NOT IN (' . join(',', $all_e) . ')'] = null;
+            $filters[ 'x__follower NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->X_model->fetch($filters, array('x__down'), 0);
+        $other_es = $this->X_model->fetch($filters, array('x__follower'), 0);
     }
 
 
@@ -363,7 +363,7 @@ if(count($i_query)){
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                             'x__next' => $origin,
-                            'x__up' => 30564, //None Promoter
+                            'x__following' => 30564, //None Promoter
                         )))){
                         //This item has more than 50% of sales, remove it:
                         continue;

@@ -61,7 +61,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     foreach ($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-        'x__up IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
+        'x__following IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
         'i__type' => 30874, //Events
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), array('x__next'), 0) as $i) {
@@ -77,7 +77,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__next' => $i['i__id'],
-                'x__up' => 26556, //Time Starts
+                'x__following' => 26556, //Time Starts
             )) as $time){
                 $time_starts = strtotime($time['x__message']);
                 break;
@@ -87,14 +87,14 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             if($time_starts>time()){
 
                 //Let's see if this future event is less than X seconds away:
-                if(($time_starts - intval($e___42216[$i['x__up']]['m__message'])) < time()){
+                if(($time_starts - intval($e___42216[$i['x__following']]['m__message'])) < time()){
 
                     //End time?
                     $time_ends = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
-                        'x__up' => 26557, //Time Ends
+                        'x__following' => 26557, //Time Ends
                     ), array(), 1);
 
                     //Navigation?
@@ -104,7 +104,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                         'x__type' => 32235, //Navigation
                         'x__next' => $i['i__id'],
                     )) as $follow){
-                        array_push($must_follow, $follow['x__up']);
+                        array_push($must_follow, $follow['x__following']);
                     }
 
                     array_push($i_scanned, $i['i__id']);
@@ -120,8 +120,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                         //Make sure this member qualified:
                         if(count($must_follow)>0 && count($must_follow)!=count($this->X_model->fetch(array(
-                                'x__down' => $x['e__id'],
-                                'x__up IN (' . join(',', $must_follow) . ')' => null,
+                                'x__follower' => $x['e__id'],
+                                'x__following IN (' . join(',', $must_follow) . ')' => null,
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             )))){
@@ -182,7 +182,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
         'x__weight >' => time(), //Future event
-        'x__up' => 26556, //Time Starts
+        'x__following' => 26556, //Time Starts
         'i__type' => 30874, //Events
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), array('x__next'), 0) as $i) {
@@ -193,7 +193,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
-            'x__up' => 26556, //Time Starts
+            'x__following' => 26556, //Time Starts
         )) as $time) {
             $time_starts = strtotime($time['x__message']);
             break;
@@ -210,7 +210,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
-            'x__up' => 26557, //Time Ends
+            'x__following' => 26557, //Time Ends
         )) as $time) {
             $end_sending = strtotime($time['x__message']);
             break;

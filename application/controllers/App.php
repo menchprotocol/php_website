@@ -99,7 +99,7 @@ class App extends CI_Controller
 
         //Cache App?
         $x__previous = ( $i ? $i['i__id'] : 0 );
-        $x__down = ( $e ? $e['e__id'] : 0 );
+        $x__follower = ( $e ? $e['e__id'] : 0 );
         $title = null;
         $ui = null;
         $new_cache = false;
@@ -120,9 +120,9 @@ class App extends CI_Controller
                     foreach($this->X_model->fetch(array(
                         'x__website' => website_setting(0),
                         'x__type' => 14599, //Cache App
-                        'x__up' => $app_e__id,
+                        'x__following' => $app_e__id,
                         'x__previous' => $x__previous,
-                        'x__down' => $x__down,
+                        'x__follower' => $x__follower,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
@@ -162,10 +162,10 @@ class App extends CI_Controller
             $cache_x = $this->X_model->create(array(
                 'x__creator' => $x__creator,
                 'x__type' => 14599, //Cache App
-                'x__up' => $app_e__id,
+                'x__following' => $app_e__id,
                 'x__message' => $ui,
                 'x__previous' => $x__previous,
-                'x__down' => $x__down,
+                'x__follower' => $x__follower,
             ));
             $cache_x__id = $cache_x['x__id'];
         }
@@ -176,7 +176,7 @@ class App extends CI_Controller
         $log_data = array(
             'x__creator' => $x__creator,
             'x__type' => 14067, //APP LOADED
-            'x__up' => $app_e__id,
+            'x__following' => $app_e__id,
             'x__reference' => $cache_x__id,
             'x__metadata' => array(
                 '$_GET' => $_GET,
@@ -194,7 +194,7 @@ class App extends CI_Controller
                 foreach($this->E_model->fetch(array(
                     'LOWER(e__handle)' => strtolower($_GET['e__handle']),
                 )) as $e){
-                    $log_data['x__down'] = $e['e__id'];
+                    $log_data['x__follower'] = $e['e__id'];
                     $title = $e['e__title'].' | '.$title;
                 }
             }

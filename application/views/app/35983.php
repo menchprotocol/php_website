@@ -18,7 +18,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__up' => 3288, //Email
+                'x__following' => 3288, //Email
                 'x__message' => trim(strtolower($email)),
             )) as $e_data){
 
@@ -28,16 +28,16 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                 if(isset($_POST['import_e__id']) && intval($_POST['import_e__id']) && !count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__up' => $_POST['import_e__id'],
-                    'x__down' => $e_data['x__down'],
+                    'x__following' => $_POST['import_e__id'],
+                    'x__follower' => $e_data['x__follower'],
                 )))){
 
                     $added_emails++;
                     $this->X_model->create(array(
                         'x__type' => 4230,
                         'x__creator' => $member_e['e__id'],
-                        'x__up' => $_POST['import_e__id'],
-                        'x__down' => $e_data['x__down'],
+                        'x__following' => $_POST['import_e__id'],
+                        'x__follower' => $e_data['x__follower'],
                     ));
 
                 }

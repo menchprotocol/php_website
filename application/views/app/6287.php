@@ -8,12 +8,12 @@ $e___6287 = $this->config->item('e___6287'); //APP
 //Start with Featured Apps
 echo '<div class="row">';
 foreach($this->X_model->fetch(array(
-    'x__up' => 30841, //Featured Apps
-    'x__down NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
+    'x__following' => 30841, //Featured Apps
+    'x__follower NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__down'), 0, 0, sort__e()) as $app) {
+), array('x__follower'), 0, 0, sort__e()) as $app) {
 
     if(!in_array($app['e__id'], $this->config->item('n___6287')) || in_array($app['e__id'], $this->config->item('n___32141'))){ //Hidden Apps?
         continue;
@@ -37,12 +37,12 @@ echo '</div>';
 echo '<div class="extra_apps center" style="padding: 34px 0;"><a href="javascript:void(0)" onclick="$(\'.extra_apps\').toggleClass(\'hidden\');"><i class="fas fa-search-plus"></i> SEE MORE</a></div>';
 echo '<div class="row extra_apps hidden">';
 foreach($this->X_model->fetch(array(
-    'x__up' => 6287, //Featured Apps
-    'x__down NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
+    'x__following' => 6287, //Featured Apps
+    'x__follower NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__down'), 0, 0, sort__e()) as $app) {
+), array('x__follower'), 0, 0, sort__e()) as $app) {
 
     if(in_array($app['e__id'] , $this->config->item('n___32141'))){ //Hidden Apps?
         continue;

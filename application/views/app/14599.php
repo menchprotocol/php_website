@@ -13,7 +13,7 @@ foreach($this->config->item('e___14599') as $app_e__id => $cache_apps){
     //Fetch Last Cache
     $latest_cache = $this->X_model->fetch(array(
         'x__type' => 14599, //Cache App
-        'x__up' => $app_e__id,
+        'x__following' => $app_e__id,
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array(), 1, 0, array('x__time' => 'DESC'));
 

@@ -66,9 +66,9 @@ if(isset($_GET['i__hashtag'])){
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => 3288, //Email
+            'x__following' => 3288, //Email
             'x__message' => $userInfo['email'],
-        ), array('x__down'));
+        ), array('x__follower'));
 
         //Can we determine the type?
         $signin_method = 0;
@@ -82,7 +82,7 @@ if(isset($_GET['i__hashtag'])){
         $this->X_model->create(array(
             'x__type' => 14436, //Social Sign in
             'x__creator' => ( count($member_emails) ? $member_emails[0]['e__id'] : 0 ),
-            'x__up' => $signin_method,
+            'x__following' => $signin_method,
             'x__metadata' => array(
                 'auth0_getUser' => $userInfo,
             ),

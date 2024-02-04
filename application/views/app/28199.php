@@ -3,7 +3,7 @@
 $filters = array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-    'x__up' => 28199,
+    'x__following' => 28199,
 );
 
 //Give it some extra time in case they are in Paypal making the payment

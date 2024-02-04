@@ -165,11 +165,11 @@ class E extends CI_Controller
 
             //Count followers:
             $list_e_count = $this->X_model->fetch(array(
-                'x__up' => $_POST['e__id'],
+                'x__following' => $_POST['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__down'), 0, 0, array(), 'COUNT(e__id) as totals');
+            ), array('x__follower'), 0, 0, array(), 'COUNT(e__id) as totals');
 
             if (count($es) < 1) {
 
@@ -286,15 +286,15 @@ class E extends CI_Controller
 
         //Followers:
         foreach($this->X_model->fetch(array(
-            'x__up' => $_POST['e__id'],
+            'x__following' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => $x['x__type'],
-                'x__up' => $focus_e['e__id'],
-                'x__down' => $x['x__down'],
+                'x__following' => $focus_e['e__id'],
+                'x__follower' => $x['x__follower'],
                 'x__message' => $x['x__message'],
                 'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
@@ -306,15 +306,15 @@ class E extends CI_Controller
 
         //Followings:
         foreach($this->X_model->fetch(array(
-            'x__down' => $_POST['e__id'],
+            'x__follower' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => $x['x__type'],
-                'x__up' => $x['x__up'],
-                'x__down' => $focus_e['e__id'],
+                'x__following' => $x['x__following'],
+                'x__follower' => $focus_e['e__id'],
                 'x__message' => $x['x__message'],
                 'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
@@ -327,13 +327,13 @@ class E extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
-            'x__up' => $_POST['e__id'],
+            'x__following' => $_POST['e__id'],
         ), array(), 0) as $x){
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => $x['x__type'],
-                'x__up' => $focus_e['e__id'],
-                'x__down' => $x['x__down'],
+                'x__following' => $focus_e['e__id'],
+                'x__follower' => $x['x__follower'],
                 'x__previous' => $x['x__previous'],
                 'x__next' => $x['x__next'],
                 'x__message' => $x['x__message'],
@@ -469,7 +469,7 @@ class E extends CI_Controller
 
             $e_already_linked = count($this->X_model->fetch(array(
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__up' => $focus_e['e__id'],
+                'x__following' => $focus_e['e__id'],
                 'x__next' => $fetch_o[0]['i__id'],
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )));
@@ -478,7 +478,7 @@ class E extends CI_Controller
             $ur2 = $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 4983, //Co-Author
-                'x__up' => $focus_e['e__id'],
+                'x__following' => $focus_e['e__id'],
                 'x__next' => $fetch_o[0]['i__id'],
             ));
 
@@ -490,15 +490,15 @@ class E extends CI_Controller
             if ($is_upwards) {
 
                 //Following
-                $x__down = $fetch_o[0]['e__id'];
-                $x__up = $focus_e['e__id'];
+                $x__follower = $fetch_o[0]['e__id'];
+                $x__following = $focus_e['e__id'];
                 $x__weight = 0; //Never sort following, only sort followers
 
             } else {
 
                 //Followers
-                $x__up = $fetch_o[0]['e__id'];
-                $x__down = $focus_e['e__id'];
+                $x__following = $fetch_o[0]['e__id'];
+                $x__follower = $focus_e['e__id'];
                 $x__weight = 0;
 
             }
@@ -507,8 +507,8 @@ class E extends CI_Controller
             $x__message = null;
 
             $e_already_linked = count($this->X_model->fetch(array(
-                'x__down' => $x__down,
-                'x__up' => $x__up,
+                'x__follower' => $x__follower,
+                'x__following' => $x__following,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             )));
@@ -518,8 +518,8 @@ class E extends CI_Controller
                 'x__creator' => $member_e['e__id'],
                 'x__type' => 4251,
                 'x__message' => $x__message,
-                'x__down' => $x__down,
-                'x__up' => $x__up,
+                'x__follower' => $x__follower,
+                'x__following' => $x__following,
                 'x__weight' => $x__weight,
             ));
 
@@ -579,11 +579,11 @@ class E extends CI_Controller
 
         //Fetch Source Templates, if any:
         foreach($this->X_model->fetch(array(
-            'x__up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //Dynamic Sources
-            'x__down' => $es[0]['e__id'],
+            'x__following IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //Dynamic Sources
+            'x__follower' => $es[0]['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('x__up'), 0, 0, sort_by(42178)) as $e_group) {
+        ), array('x__following'), 0, 0, sort_by(42178)) as $e_group) {
 
             if(in_array($e_group['e__id'], $scanned_sources)){
                 continue;
@@ -592,11 +592,11 @@ class E extends CI_Controller
 
 
             foreach($this->X_model->fetch(array(
-                'x__down' => $e_group['e__id'],
-                'x__up IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
+                'x__follower' => $e_group['e__id'],
+                'x__following IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('x__up'), 0, 0, $order_42145) as $e_template) {
+            ), array('x__following'), 0, 0, $order_42145) as $e_template) {
 
                 $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'<a href="/@'.$e_group['e__handle'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow '.$e_group['e__title'].'... Click to Open in a New Window"><span class="icon-block-xs">'.view_cover($e_group['e__cover']).'</span></a></div>';
 
@@ -633,8 +633,8 @@ class E extends CI_Controller
                         $this->X_model->create(array(
                             'x__type' => 4246, //Platform Bug Reports
                             'x__creator' => $member_e['e__id'],
-                            'x__up' => 31912, //Edit Source
-                            'x__down' => $dynamic_e__id,
+                            'x__following' => 31912, //Edit Source
+                            'x__follower' => $dynamic_e__id,
                             'x__reference' => $_POST['x__id'],
                             'x__message' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong',
                         ));
@@ -645,8 +645,8 @@ class E extends CI_Controller
                         $this->X_model->create(array(
                             'x__type' => 4246, //Platform Bug Reports
                             'x__creator' => $member_e['e__id'],
-                            'x__up' => 42179, //Dynamic Input Fields
-                            'x__down' => $dynamic_e__id,
+                            'x__following' => 42179, //Dynamic Input Fields
+                            'x__follower' => $dynamic_e__id,
                             'x__next' => $_POST['e__id'],
                             'x__reference' => $_POST['x__id'],
                             'x__metadata' => $_POST,
@@ -690,9 +690,9 @@ class E extends CI_Controller
                         foreach($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__down' => $es[0]['e__id'],
-                            'x__up' => $dynamic_e__id,
-                        ), array('x__up')) as $curr_val){
+                            'x__follower' => $es[0]['e__id'],
+                            'x__following' => $dynamic_e__id,
+                        ), array('x__following')) as $curr_val){
                             if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
                                 array_push($unique_values, $curr_val['x__message']);
                                 $counted++;
@@ -735,7 +735,7 @@ class E extends CI_Controller
         $cover_history_content = array();
         $unique_covers = array();
         foreach($this->X_model->fetch(array(
-            'x__down' => $_POST['e__id'],
+            'x__follower' => $_POST['e__id'],
             'x__type' => 10653, //Source Cover Update
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
@@ -763,8 +763,8 @@ class E extends CI_Controller
         $this->X_model->create(array(
             'x__creator' => $member_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
-            'x__up' => 31912, //Edit Source
-            'x__down' => $es[0]['e__id'],
+            'x__following' => 31912, //Edit Source
+            'x__follower' => $es[0]['e__id'],
             'x__reference' => $_POST['x__id'],
             'x__metadata' => $return_array,
         ));
@@ -879,8 +879,8 @@ class E extends CI_Controller
                 $values = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__up' => $dynamic_e__id,
-                    'x__down' => $es[0]['e__id'],
+                    'x__following' => $dynamic_e__id,
+                    'x__follower' => $es[0]['e__id'],
                 ));
             }
 
@@ -901,8 +901,8 @@ class E extends CI_Controller
                 $this->X_model->create(array(
                     'x__creator' => $member_e['e__id'],
                     'x__type' => 4230,
-                    'x__up' => $dynamic_e__id,
-                    'x__down' => $es[0]['e__id'],
+                    'x__following' => $dynamic_e__id,
+                    'x__follower' => $es[0]['e__id'],
                     'x__message' => $dynamic_value,
                     'x__weight' => number_x__weight($dynamic_value),
                 ));
@@ -963,7 +963,7 @@ class E extends CI_Controller
 
             //Update Handles everywhere they are referenced:
             foreach ($this->X_model->fetch(array(
-                'x__up' => $es[0]['e__id'],
+                'x__following' => $es[0]['e__id'],
                 'x__type' => 31835, //Source Mention
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__next')) as $ref) {
@@ -1062,12 +1062,12 @@ class E extends CI_Controller
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 33600, //Draft
-                    'x__up' => $_POST['selected_e__id'],
+                    'x__following' => $_POST['selected_e__id'],
                 ), array('x__next'), 0) as $i){
                     if(count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 33600, //Draft
-                        'x__up' => 31065, //Choice Update Email Templates
+                        'x__following' => 31065, //Choice Update Email Templates
                         'x__next' => $i['i__id'], //Is this the template?
                     )))){
                         //Found the email template to send:
@@ -1085,8 +1085,8 @@ class E extends CI_Controller
                     $this->X_model->create(array(
                         'x__creator' => $member_e['e__id'],
                         'x__type' => 29648, //Communication Downgraded
-                        'x__up' => $_POST['focus_id'],
-                        'x__down' => $_POST['selected_e__id'],
+                        'x__following' => $_POST['focus_id'],
+                        'x__follower' => $_POST['selected_e__id'],
                     ));
                 }
             }
@@ -1100,7 +1100,7 @@ class E extends CI_Controller
 
             //Fetch all possible answers based on followings source:
             $query_filters = array(
-                'x__up' => $_POST['focus_id'],
+                'x__following' => $_POST['focus_id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -1108,12 +1108,12 @@ class E extends CI_Controller
 
             if((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
-                $query_filters['x__down'] = $_POST['selected_e__id'];
+                $query_filters['x__follower'] = $_POST['selected_e__id'];
             }
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->X_model->fetch($query_filters, array('x__down'), 0, 0) as $answer_e){
+            foreach($this->X_model->fetch($query_filters, array('x__follower'), 0, 0) as $answer_e){
                 $stats['total']++;
                 array_push($possible_answers, $answer_e['e__id']);
             }
@@ -1121,14 +1121,14 @@ class E extends CI_Controller
             //Delete previously selected options:
             if($_POST['down_e__id']){
                 $delete_query = $this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $possible_answers) . ')' => null,
-                    'x__down' => $_POST['down_e__id'],
+                    'x__following IN (' . join(',', $possible_answers) . ')' => null,
+                    'x__follower' => $_POST['down_e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ));
             } elseif($_POST['right_i__id']){
                 $delete_query = $this->X_model->fetch(array(
-                    'x__up IN (' . join(',', $possible_answers) . ')' => null,
+                    'x__following IN (' . join(',', $possible_answers) . ')' => null,
                     'x__next' => $_POST['right_i__id'],
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1151,15 +1151,15 @@ class E extends CI_Controller
                 $stats['added']++;
                 $this->X_model->create(array(
                     'x__creator' => $member_e['e__id'],
-                    'x__up' => $_POST['selected_e__id'],
+                    'x__following' => $_POST['selected_e__id'],
                     'x__type' => 4230,
-                    'x__down' => $_POST['down_e__id'],
+                    'x__follower' => $_POST['down_e__id'],
                 ));
             } elseif($_POST['right_i__id']){
 
                 if(!count($this->X_model->fetch(array(
                     'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-                    'x__up' => $_POST['selected_e__id'],
+                    'x__following' => $_POST['selected_e__id'],
                     'x__next' => $_POST['right_i__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
@@ -1167,7 +1167,7 @@ class E extends CI_Controller
                     $this->X_model->create(array(
                         'x__creator' => $member_e['e__id'],
                         'x__type' => 4983, //Co-Author
-                        'x__up' => $_POST['selected_e__id'],
+                        'x__following' => $_POST['selected_e__id'],
                         'x__next' => $_POST['right_i__id'],
                     ));
                 }
@@ -1427,11 +1427,11 @@ class E extends CI_Controller
         } else {
 
             $already_added = $this->X_model->fetch(array(
-                'x__up' => $_POST['e__id'],
-                'x__down' => $_POST['x__creator'],
+                'x__following' => $_POST['e__id'],
+                'x__follower' => $_POST['x__creator'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__up'));
+            ), array('x__following'));
 
             if(count($already_added)){
 
@@ -1468,8 +1468,8 @@ class E extends CI_Controller
 
                     //Does not exist, Add:
                     $this->X_model->create(array(
-                        'x__up' => $_POST['e__id'],
-                        'x__down' => $_POST['x__creator'],
+                        'x__following' => $_POST['e__id'],
+                        'x__follower' => $_POST['x__creator'],
                         'x__creator' => $member_e['e__id'],
                         'x__message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : null ),
                         'x__type' => 4230,
@@ -1539,9 +1539,9 @@ class E extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => ( filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783 ), //Email / Phone
+            'x__following' => ( filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783 ), //Email / Phone
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__down')) as $map_e){
+        ), array('x__follower')) as $map_e){
             $u = $map_e;
             $x__creator = $map_e['e__id'];
             break;

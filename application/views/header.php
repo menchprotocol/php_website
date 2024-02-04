@@ -963,10 +963,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="creator_headline">
                             <?php
                             foreach($this->X_model->fetch(array(
-                                'x__down' => $member_e['e__id'],
+                                'x__follower' => $member_e['e__id'],
                                 'x__type' => 41011, //PINNED FOLLOWER
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array('x__up'), 0) as $x_pinned) {
+                            ), array('x__following'), 0) as $x_pinned) {
                                 echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
                             }
 

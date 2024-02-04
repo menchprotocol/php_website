@@ -5,7 +5,7 @@ if(!$is_u_request || isset($_GET['cron'])){
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 33600, //Draft
-        'x__up' => 26582,
+        'x__following' => 26582,
     ), array('x__next'), 0) as $i){
 
         //Determine if it's time to send this message:
@@ -14,7 +14,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
-            'x__up' => 26556, //Time Starts
+            'x__following' => 26556, //Time Starts
         )) as $time){
             $time_starts = strtotime($time['x__message']);
             break;
@@ -31,7 +31,7 @@ if(!$is_u_request || isset($_GET['cron'])){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
-            'x__up' => 26557, //Time Ends
+            'x__following' => 26557, //Time Ends
         )) as $time){
             $end_sending = strtotime($time['x__message']);
             break;

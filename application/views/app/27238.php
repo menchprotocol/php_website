@@ -23,8 +23,8 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])) {
         if(!count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up IN (' . join(',', $this->config->item('n___32537')) . ')' => null, //Interested Member
-            'x__down' => $es[0]['e__id'],
+            'x__following IN (' . join(',', $this->config->item('n___32537')) . ')' => null, //Interested Member
+            'x__follower' => $es[0]['e__id'],
         )))){
 
             return view_json(array(

@@ -45,7 +45,7 @@ if($is_u_request && !isset($_GET['email_trigger'])){
 
 
     $subscriber_filters = array(
-        'x__up' => 12114,
+        'x__following' => 12114,
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -53,13 +53,13 @@ if($is_u_request && !isset($_GET['email_trigger'])){
 
     //Should we limit the scope?
     if($is_u_request){
-        $subscriber_filters['x__down'] = $member_e['e__id'];
+        $subscriber_filters['x__follower'] = $member_e['e__id'];
     }
 
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->X_model->fetch($subscriber_filters, array('x__down')) as $subscribed_u){
+    foreach($this->X_model->fetch($subscriber_filters, array('x__follower')) as $subscribed_u){
 
         $this->X_model->send_dm($subscribed_u['e__id'], $subject, $html_message);
         $email_recipients++;

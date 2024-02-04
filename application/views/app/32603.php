@@ -38,16 +38,16 @@ if(isset($_GET['i__hashtag'])){
                 $map_users = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__up' => 3288, //Email
+                    'x__following' => 3288, //Email
                     'LOWER(x__message)' => $email.'',
-                ), array('x__down'));
+                ), array('x__follower'));
                 if(!count($map_users)){
                     $map_users = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__up' => 4783, //Phone
+                        'x__following' => 4783, //Phone
                         'x__message' => $phone.'',
-                    ), array('x__down'));
+                    ), array('x__follower'));
                 }
 
                 //Still missing user?

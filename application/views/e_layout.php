@@ -9,7 +9,7 @@ $write_privacy_e = write_privacy_e($e['e__handle']);
 $this->X_model->create(array(
     'x__creator' => $member_e['e__id'],
     'x__type' => 4994, //Member Viewed Source
-    'x__down' => $e['e__id'],
+    'x__follower' => $e['e__id'],
     'x__weight' => $new_order,
 ));
 

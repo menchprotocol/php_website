@@ -7,8 +7,8 @@ $cron_jobs = $this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    'x__up' => 7274,
-), array('x__down'), view_memory(6404,11064), 0, array('x__weight' => 'ASC'));
+    'x__following' => 7274,
+), array('x__follower'), view_memory(6404,11064), 0, array('x__weight' => 'ASC'));
 foreach($cron_jobs as $cron_job){
     if(strlen($cron_job['x__message']) > $longest_time){
         $longest_time = strlen($cron_job['x__message']);

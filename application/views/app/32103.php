@@ -12,7 +12,7 @@ if(isset($_GET['i__hashtag'])){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
-            'x__up' => 32103,
+            'x__following' => 32103,
         ));
 
 
@@ -22,8 +22,8 @@ if(isset($_GET['i__hashtag'])){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type' => 7545, //Following Add
             'x__next' => $i['i__id'],
-        ), array('x__up')) as $x_tag){
-            array_push($apply_to, intval($x_tag['x__up']));
+        ), array('x__following')) as $x_tag){
+            array_push($apply_to, intval($x_tag['x__following']));
         }
 
 
@@ -43,10 +43,10 @@ if(isset($_GET['i__hashtag'])){
                     'LOWER(e__handle)' => strtolower($_GET['e__handle']),
                 )) as $e){
                     foreach($this->X_model->fetch(array(
-                        'x__up' => $e['e__id'],
+                        'x__following' => $e['e__id'],
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    ), array('x__down'), 0) as $x) {
+                    ), array('x__follower'), 0) as $x) {
 
                         $responses++;
                         $new_form = preg_replace($preg_query[0]['x__message'], "", $x['x__message'] );
@@ -65,8 +65,8 @@ if(isset($_GET['i__hashtag'])){
 
                                     foreach($apply_to as $apply_e__id){
                                         foreach($this->X_model->fetch(array(
-                                            'x__up' => $apply_e__id,
-                                            'x__down' => $x['x__creator'],
+                                            'x__following' => $apply_e__id,
+                                            'x__follower' => $x['x__creator'],
                                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                         ), array(), 0) as $follow_appended) {
@@ -92,8 +92,8 @@ if(isset($_GET['i__hashtag'])){
                                     //Also update follower link?
                                     foreach($apply_to as $apply_e__id){
                                         foreach($this->X_model->fetch(array(
-                                            'x__up' => $apply_e__id,
-                                            'x__down' => $x['x__creator'],
+                                            'x__following' => $apply_e__id,
+                                            'x__follower' => $x['x__creator'],
                                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                         ), array(), 0) as $follow_appended) {
@@ -147,8 +147,8 @@ if(isset($_GET['i__hashtag'])){
 
                             foreach($apply_to as $apply_e__id){
                                 foreach($this->X_model->fetch(array(
-                                    'x__up' => $apply_e__id,
-                                    'x__down' => $x['x__creator'],
+                                    'x__following' => $apply_e__id,
+                                    'x__follower' => $x['x__creator'],
                                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 ), array(), 0) as $follow_appended) {
@@ -173,8 +173,8 @@ if(isset($_GET['i__hashtag'])){
                             //Also update follower link?
                             foreach($apply_to as $apply_e__id){
                                 foreach($this->X_model->fetch(array(
-                                    'x__up' => $apply_e__id,
-                                    'x__down' => $x['x__creator'],
+                                    'x__following' => $apply_e__id,
+                                    'x__follower' => $x['x__creator'],
                                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 ), array(), 0) as $follow_appended) {

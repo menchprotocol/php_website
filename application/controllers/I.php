@@ -86,8 +86,8 @@ class I extends CI_Controller {
                     'x__previous' => $is[0]['i__id'],
                 ), array(), 0) as $x){
                     if(!count($this->X_model->fetch(array(
-                        'x__up' => $e_append['e__id'],
-                        'x__down' => $x['x__creator'],
+                        'x__following' => $e_append['e__id'],
+                        'x__follower' => $x['x__creator'],
                         'x__message' => $x['x__message'],
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -96,8 +96,8 @@ class I extends CI_Controller {
                         $completed++;
                         $this->X_model->create(array(
                             'x__creator' => ($member_e ? $member_e['e__id'] : $x['x__creator']),
-                            'x__up' => $e_append['e__id'],
-                            'x__down' => $x['x__creator'],
+                            'x__following' => $e_append['e__id'],
+                            'x__follower' => $x['x__creator'],
                             'x__message' => $x['x__message'],
                             'x__type' => 4230,
                         ));
@@ -334,8 +334,8 @@ class I extends CI_Controller {
                 $this->X_model->create(array(
                     'x__type' => 4246, //Platform Bug Reports
                     'x__creator' => $member_e['e__id'],
-                    'x__up' => 42179, //Dynamic Input Fields
-                    'x__down' => $dynamic_e__id,
+                    'x__following' => 42179, //Dynamic Input Fields
+                    'x__follower' => $dynamic_e__id,
                     'x__next' => $i__id,
                     'x__reference' => $_POST['x__id'],
                     'x__message' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong',
@@ -380,8 +380,8 @@ class I extends CI_Controller {
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                         'x__next' => $i__id,
-                        'x__up' => $dynamic_e__id,
-                    ), array('x__up')) as $curr_val){
+                        'x__following' => $dynamic_e__id,
+                    ), array('x__following')) as $curr_val){
                         if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
                             $counted++;
                             array_push($unique_values, $curr_val['x__message']);
@@ -429,7 +429,7 @@ class I extends CI_Controller {
         $this->X_model->create(array(
             'x__creator' => $member_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
-            'x__up' => 31911, //Edit Idea
+            'x__following' => 31911, //Edit Idea
             'x__next' => $i__id,
             'x__reference' => $_POST['x__id'],
             'x__metadata' => $return_array,
@@ -586,7 +586,7 @@ class I extends CI_Controller {
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                         'x__next' => $is[0]['i__id'],
-                        'x__up' => $dynamic_e__id,
+                        'x__following' => $dynamic_e__id,
                     ));
                 }
 
@@ -607,7 +607,7 @@ class I extends CI_Controller {
                     $this->X_model->create(array(
                         'x__creator' => $member_e['e__id'],
                         'x__type' => 4983, //Co-Author
-                        'x__up' => $dynamic_e__id,
+                        'x__following' => $dynamic_e__id,
                         'x__next' => $is[0]['i__id'],
                         'x__message' => $dynamic_value,
                         'x__weight' => number_x__weight($dynamic_value),

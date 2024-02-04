@@ -258,13 +258,13 @@ function fetch_int_val(object_name){
 
 function toggle_headline(x__type){
 
-    var x__down = 0;
+    var x__follower = 0;
     var x__next = 0;
     var focus_card = fetch_int_val('#focus_card');
     if(focus_card==12273){
         x__next = fetch_int_val('#focus_id');
     } else if (focus_card==12274){
-        x__down = fetch_int_val('#focus_id');
+        x__follower = fetch_int_val('#focus_id');
     }
 
     if($('.headline_title_' + x__type+' .icon_26008').hasClass('hidden')){
@@ -307,8 +307,8 @@ function toggle_headline(x__type){
     x_create({
         x__creator: js_pl_id,
         x__type: action_id,
-        x__up: x__type,
-        x__down: x__down,
+        x__following: x__type,
+        x__follower: x__follower,
         x__next: x__next,
     });
 }
@@ -355,14 +355,14 @@ function sort_e_load(x__type) {
 function toggle_pills(x__type){
 
     focus_card = x__type;
-    var x__down = 0;
+    var x__follower = 0;
     var x__next = 0;
     var focus_card = fetch_int_val('#focus_card');
 
     if(focus_card==12273){
         x__next = fetch_int_val('#focus_id');
     } else if (focus_card==12274){
-        x__down = fetch_int_val('#focus_id');
+        x__follower = fetch_int_val('#focus_id');
     }
 
     //Toggle view
@@ -391,8 +391,8 @@ function toggle_pills(x__type){
         x_create({
             x__creator: js_pl_id,
             x__type: action_id,
-            x__up: x__type,
-            x__down: x__down,
+            x__following: x__type,
+            x__follower: x__follower,
             x__next: x__next,
         });
 
@@ -760,7 +760,7 @@ $(document).ready(function () {
         x_create({
             x__creator: js_pl_id,
             x__type: 14576, //MODAL VIEWED
-            x__up: x__type,
+            x__following: x__type,
         });
     });
 

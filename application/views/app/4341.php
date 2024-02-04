@@ -28,21 +28,21 @@ if(isset($_GET['x__creator']) && strlen($_GET['x__creator']) > 0){
 }
 
 
-if(isset($_GET['x__up']) && strlen($_GET['x__up']) > 0){
-    if (substr_count($_GET['x__up'], ',') > 0) {
+if(isset($_GET['x__following']) && strlen($_GET['x__following']) > 0){
+    if (substr_count($_GET['x__following'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__up IN (' . $_GET['x__up'] . '))'] = null;
-    } elseif (intval($_GET['x__up']) > 0) {
-        $query_filters['x__up'] = $_GET['x__up'];
+        $query_filters['( x__following IN (' . $_GET['x__following'] . '))'] = null;
+    } elseif (intval($_GET['x__following']) > 0) {
+        $query_filters['x__following'] = $_GET['x__following'];
     }
 }
 
-if(isset($_GET['x__down']) && strlen($_GET['x__down']) > 0){
-    if (substr_count($_GET['x__down'], ',') > 0) {
+if(isset($_GET['x__follower']) && strlen($_GET['x__follower']) > 0){
+    if (substr_count($_GET['x__follower'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__down IN (' . $_GET['x__down'] . '))'] = null;
-    } elseif (intval($_GET['x__down']) > 0) {
-        $query_filters['x__down'] = $_GET['x__down'];
+        $query_filters['( x__follower IN (' . $_GET['x__follower'] . '))'] = null;
+    } elseif (intval($_GET['x__follower']) > 0) {
+        $query_filters['x__follower'] = $_GET['x__follower'];
     }
 }
 
@@ -86,9 +86,9 @@ if(isset($_GET['any_e__id']) && strlen($_GET['any_e__id']) > 0){
     //We need to look for both following/follower
     if (substr_count($_GET['any_e__id'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__down IN (' . $_GET['any_e__id'] . ') OR x__up IN (' . $_GET['any_e__id'] . ') OR x__creator IN (' . $_GET['any_e__id'] . ') ' . $followings_tr_filter . ' )'] = null;
+        $query_filters['( x__follower IN (' . $_GET['any_e__id'] . ') OR x__following IN (' . $_GET['any_e__id'] . ') OR x__creator IN (' . $_GET['any_e__id'] . ') ' . $followings_tr_filter . ' )'] = null;
     } elseif (intval($_GET['any_e__id']) > 0) {
-        $query_filters['( x__down = ' . $_GET['any_e__id'] . ' OR x__up = ' . $_GET['any_e__id'] . ' OR x__creator = ' . $_GET['any_e__id'] . $followings_tr_filter . ' )'] = null;
+        $query_filters['( x__follower = ' . $_GET['any_e__id'] . ' OR x__following = ' . $_GET['any_e__id'] . ' OR x__creator = ' . $_GET['any_e__id'] . $followings_tr_filter . ' )'] = null;
     }
 }
 
@@ -247,9 +247,9 @@ echo '</div></td>';
 
 echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__creator" value="' . ((isset($_GET['x__creator'])) ? $_GET['x__creator'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__up" value="' . ((isset($_GET['x__up'])) ? $_GET['x__up'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__following" value="' . ((isset($_GET['x__following'])) ? $_GET['x__following'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="x__down" value="' . ((isset($_GET['x__down'])) ? $_GET['x__down'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE followers:</span><input type="text" name="x__follower" value="' . ((isset($_GET['x__follower'])) ? $_GET['x__follower'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 

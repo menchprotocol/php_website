@@ -77,12 +77,12 @@ foreach($es as $en){
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__up' => $en['e__id'],
-    ), array('x__down'), 0, 0) as $e_down){
+        'x__following' => $en['e__id'],
+    ), array('x__follower'), 0, 0) as $e_down){
 
         $this->db->insert('gephi_edges', array(
-            'source' => $id_prefix[12274].$e_down['x__up'],
-            'target' => $id_prefix[12274].$e_down['x__down'],
+            'source' => $id_prefix[12274].$e_down['x__following'],
+            'target' => $id_prefix[12274].$e_down['x__follower'],
             'label' => $e___4593[$e_down['x__type']]['m__title'].': '.$e_down['x__message'],
             'weight' => 1,
             'edge_type' => $e_down['x__type'],

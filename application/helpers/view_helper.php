@@ -475,9 +475,9 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //Down Source Link Groups:
         $order_columns = array('x__type = \'41011\' DESC' => null, 'x__weight' => 'ASC', 'x__time' => 'DESC');
-        $joins_objects = array('x__down');
+        $joins_objects = array('x__follower');
         $query_filters = array(
-            'x__up' => $e__id,
+            'x__following' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
@@ -487,9 +487,9 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //Up Source Link Groups:
         $order_columns = array('x__type = \'41011\' DESC' => null, 'x__weight' => 'ASC', 'x__time' => 'DESC');
-        $joins_objects = array('x__up');
+        $joins_objects = array('x__following');
         $query_filters = array(
-            'x__down' => $e__id,
+            'x__follower' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
@@ -499,9 +499,9 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         //Source Tree
         $order_columns = array('x__weight' => 'ASC', 'x__time' => 'DESC');
-        $joins_objects = array('x__down');
+        $joins_objects = array('x__follower');
         $query_filters = array(
-            'x__up' => $e__id,
+            'x__following' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
@@ -514,7 +514,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__up' => $e__id,
+            'x__following' => $e__id,
         );
 
         $joins_objects = array('x__next');
@@ -565,8 +565,8 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         if(!isset($e___11035[$x__type]['m__title'])){
             $CI->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__up' => 11035,
-                'x__down' => $x__type,
+                'x__following' => 11035,
+                'x__follower' => $x__type,
                 'x__message' => '@'.$x__type.' Missing from Nav @11035',
             ));
             $e___11035[$x__type] = array(
@@ -618,7 +618,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
         //SOURCES
-        $joins_objects = array('x__up');
+        $joins_objects = array('x__following');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
@@ -732,8 +732,8 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'view_instant_select() @'.$focus_id.' missing in Application Cache',
-            'x__up' => $focus_id,
-            'x__down' => $down_e__id,
+            'x__following' => $focus_id,
+            'x__follower' => $down_e__id,
             'x__next' => $right_i__id,
         ));
         return false;
@@ -742,8 +742,8 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'view_instant_select() @'.$focus_id.' not in single select @33331 or multi select 33332',
-            'x__up' => $focus_id,
-            'x__down' => $down_e__id,
+            'x__following' => $focus_id,
+            'x__follower' => $down_e__id,
             'x__next' => $right_i__id,
         ));
         return false;
@@ -767,12 +767,12 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         //Source Focus:
         foreach($CI->X_model->fetch(array(
-            'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
-            'x__down' => $down_e__id,
+            'x__following IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
+            'x__follower' => $down_e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $sel){
-            array_push($already_selected, $sel['x__up']);
+            array_push($already_selected, $sel['x__following']);
         }
 
         if(!count($already_selected) && $single_select && superpower_unlocked()){
@@ -790,12 +790,12 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         //Idea focus:
         foreach($CI->X_model->fetch(array(
-            'x__up IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
+            'x__following IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
             'x__next' => $right_i__id,
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $sel){
-            array_push($already_selected, $sel['x__up']);
+            array_push($already_selected, $sel['x__following']);
         }
 
     }
@@ -894,13 +894,13 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 
         //See if this user has any of these options:
         foreach($CI->X_model->fetch(array(
-            'x__up IN (' . join(',', $CI->config->item('n___'.$cache_e__id)) . ')' => null, //SOURCE LINKS
-            'x__down' => $member_e['e__id'],
+            'x__following IN (' . join(',', $CI->config->item('n___'.$cache_e__id)) . ')' => null, //SOURCE LINKS
+            'x__follower' => $member_e['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $x) {
             //Supports one for now
-            $selected_e__id = $x['x__up'];
+            $selected_e__id = $x['x__following'];
             break;
         }
     */
@@ -1132,7 +1132,7 @@ function idea_author($i__id){
         'x__next' => $i__id,
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
-        return $x['x__up'];
+        return $x['x__following'];
     }
     $member_e = superpower_unlocked();
     return ( $member_e ? $member_e['e__id'] : 14068 );
@@ -1347,7 +1347,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
                 //Additional source/idea reference?
                 $x__previous = 0;
-                $x__up = 0;
+                $x__following = 0;
                 $x__message = '';
 
                 if($db_type==31834){
@@ -1370,11 +1370,11 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                         'LOWER(e__handle)' => strtolower(substr($db_val, 1)),
                     )) as $target){
                         $str = str_replace('@'.$target['e__id'],'@'.$target['e__handle'], $str); //TODO Remove!
-                        $x__up = $target['e__id'];
+                        $x__following = $target['e__id'];
                     }
                 } else {
                     $x__type = $db_type; //Message URLs
-                    $x__up = idea_author($save_i__id);
+                    $x__following = idea_author($save_i__id);
                     $x__message = $db_val;
                 }
 
@@ -1385,7 +1385,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                     'x__message' => $x__message,
                     'x__next' => $save_i__id,
                     'x__previous' => $x__previous,
-                    'x__up' => $x__up,
+                    'x__following' => $x__following,
                 ));
 
                 $sync_stats['new_links_added']++;
@@ -1756,7 +1756,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__type' => 4250,
         'x__next' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-    ), array('x__up')) as $creator){
+    ), array('x__following')) as $creator){
         $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
     }
 
@@ -1766,7 +1766,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__next' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ), array('x__up')) as $location){
+    ), array('x__following')) as $location){
         $ui .= view_featured_links(41949, $location, null, $focus_card);
     }
 
@@ -1881,7 +1881,7 @@ function view_list_e($i, $plain_no_html = false){
     $e___42421 = $CI->config->item('e___42421');
     $order_columns = array();
     foreach($e___42421 as $x__sort_id => $sort) {
-        $order_columns['x__up = \''.$x__sort_id.'\' DESC'] = null;
+        $order_columns['x__following = \''.$x__sort_id.'\' DESC'] = null;
     }
 
     //Query Relevant Sources:
@@ -1889,14 +1889,14 @@ function view_list_e($i, $plain_no_html = false){
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Writer Links Active
         'x__next' => $i['i__id'],
-        'x__up IN (' . join(',', $CI->config->item('n___42421')) . ')' => null, //Featured Inputs
-    ), array('x__up'), 0, 0, $order_columns) as $x){
+        'x__following IN (' . join(',', $CI->config->item('n___42421')) . ')' => null, //Featured Inputs
+    ), array('x__following'), 0, 0, $order_columns) as $x){
 
         //Format data if needed:
-        $x['x__message'] = data_type_format($x['x__up'], $x['x__message']);
+        $x['x__message'] = data_type_format($x['x__following'], $x['x__message']);
 
         $relevant_e .= '<div class="source-info">'
-        . '<span class="icon-block-xs">'. $e___42421[$x['x__up']]['m__cover'] . '</span>' . $e___42421[$x['x__up']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
+        . '<span class="icon-block-xs">'. $e___42421[$x['x__following']]['m__cover'] . '</span>' . $e___42421[$x['x__following']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
         . ( strlen($x['x__message']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
         . '</div>';
 
@@ -2193,7 +2193,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $ui .= '<div class="bottom-wrapper">';
 
-    $grant_privacy = $write_privacy_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__up'] || $member_e['e__id']==$e['x__down']));
+    $grant_privacy = $write_privacy_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__following'] || $member_e['e__id']==$e['x__follower']));
 
     $ui .= '</div>';
 
@@ -2247,10 +2247,10 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___42375')) . ')' => null, //Located
-        'x__down' => $e['e__id'],
+        'x__follower' => $e['e__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ), array('x__up'), 0, 0, $order_columns) as $location){
+    ), array('x__following'), 0, 0, $order_columns) as $location){
         $ui .= view_featured_links($location['x__type'], $location, $e___42375[$location['x__type']], $focus_card);
     }
 
@@ -2274,16 +2274,16 @@ function view_card_e($x__type, $e, $extra_class = null)
     $e___14036 = $CI->config->item('e___14036');
     $order_columns = array();
     foreach($e___14036 as $x__sort_id => $sort) {
-        $order_columns['x__up = \''.$x__sort_id.'\' DESC'] = null;
+        $order_columns['x__following = \''.$x__sort_id.'\' DESC'] = null;
     }
     foreach($CI->X_model->fetch(array(
-        'x__up IN (' . join(',', $CI->config->item('n___14036')) . ')' => null, //Featured Sources
-        'x__down' => $e['e__id'],
+        'x__following IN (' . join(',', $CI->config->item('n___14036')) . ')' => null, //Featured Sources
+        'x__follower' => $e['e__id'],
         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, $order_columns) as $social_link){
 
-        if($focus_card && in_array($social_link['x__up'], $CI->config->item('n___32172'))){
+        if($focus_card && in_array($social_link['x__following'], $CI->config->item('n___32172'))){
             if(strlen($social_link['x__message'])){
                 //Must always see, show content here:
                 $ui .= '<div class="source_bio grey center">'.$social_link['x__message'].'</div>';
@@ -2294,20 +2294,20 @@ function view_card_e($x__type, $e, $extra_class = null)
         //Determine link type:
         $social_url = false;
 
-        if(in_array(4256 , $e___14036[$social_link['x__up']]['m__following'])){
+        if(in_array(4256 , $e___14036[$social_link['x__following']]['m__following'])){
             //We made sure not the current website:
             $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
-        } elseif(in_array(32097 , $e___14036[$social_link['x__up']]['m__following'])){
+        } elseif(in_array(32097 , $e___14036[$social_link['x__following']]['m__following'])){
             $social_url = 'href="mailto:'.$social_link['x__message'].'"';
-        } elseif(in_array(42181 , $e___14036[$social_link['x__up']]['m__following'])){
+        } elseif(in_array(42181 , $e___14036[$social_link['x__following']]['m__following'])){
             //Phone Number
-            $social_url = 'href="'.phone_href($social_link['x__up'], $social_link['x__message']).'"';
+            $social_url = 'href="'.phone_href($social_link['x__following'], $social_link['x__message']).'"';
         }
 
-        $info = ( strlen($social_link['x__message']) && !$social_url ? $e___14036[$social_link['x__up']]['m__title'].': '.$social_link['x__message'] : ( $social_url ? view_url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['x__up']]['m__title'] ) );
+        $info = ( strlen($social_link['x__message']) && !$social_url ? $e___14036[$social_link['x__following']]['m__title'].': '.$social_link['x__message'] : ( $social_url ? view_url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['x__following']]['m__title'] ) );
 
         //Append to links:
-        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</a>' : ( $focus_card ? '<a href="/@'.$e___14036[$social_link['x__up']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__up']]['m__cover'].'</span>' ) ).'</span>';
+        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-xs' : 'icon-block-xx' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : ( $focus_card ? '<a href="/@'.$e___14036[$social_link['x__following']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</span>' ) ).'</span>';
 
     }
 

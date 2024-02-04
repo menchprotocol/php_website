@@ -11,7 +11,7 @@ if(isset($_GET['e__handle'])){
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array('x__up'), 0) as $x) {
+    ), array('x__following'), 0) as $x) {
         $x__message_md5 = substr(md5($x['x__message']), 0, 16);
         if(!isset($main_index[$x__message_md5])){
             $main_index[$x__message_md5] = array();
@@ -20,10 +20,10 @@ if(isset($_GET['e__handle'])){
             if(!isset($duplicates_found[$x__message_md5])){
                 $duplicates_found[$x__message_md5] = $main_index[$x__message_md5];
             }
-            array_push($duplicates_found[$x__message_md5], $x['x__down']);
+            array_push($duplicates_found[$x__message_md5], $x['x__follower']);
         }
 
-        array_push($main_index[$x__message_md5], $x['x__down']);
+        array_push($main_index[$x__message_md5], $x['x__follower']);
 
     }
 

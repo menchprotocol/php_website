@@ -12,11 +12,11 @@ echo "\n";
 
 //Custom Apps:
 foreach($this->X_model->fetch(array(
-    'x__up' => 6287, //Apps
+    'x__following' => 6287, //Apps
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__down'), 0) as $app) {
+), array('x__follower'), 0) as $app) {
     echo '$route[\''.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
 }
 

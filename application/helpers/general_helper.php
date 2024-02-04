@@ -166,7 +166,7 @@ function e__weight_calculator($e){
     $CI =& get_instance();
     $count_x = $CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__down='.$e['e__id'].' OR x__up='.$e['e__id'].' OR x__creator='.$e['e__id'].')' => null,
+        '(x__follower='.$e['e__id'].' OR x__following='.$e['e__id'].' OR x__creator='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
@@ -293,7 +293,7 @@ function reset_cache($x__creator){
     $count = 0;
     foreach($CI->X_model->fetch(array(
         'x__type' => 14599, //Cache App
-        'x__up IN (' . join(',', $CI->config->item('n___14599')) . ')' => null, //Cache Apps
+        'x__following IN (' . join(',', $CI->config->item('n___14599')) . ')' => null, //Cache Apps
         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     )) as $delete_cahce){
@@ -351,7 +351,7 @@ function i_spots_remaining($i__id){
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
         'x__next' => $i__id,
-        'x__up' => 26189,
+        'x__following' => 26189,
     ), array(), 1);
     if(count($max_available) && is_numeric($max_available[0]['x__message'])){
 
@@ -373,7 +373,7 @@ function i_spots_remaining($i__id){
             'x__type' => 32235, //Navigation
             'x__next' => $i__id,
         )) as $follow){
-            array_push($must_follow, $follow['x__up']);
+            array_push($must_follow, $follow['x__following']);
         }
 
         $current_discoveries = 0;
@@ -381,8 +381,8 @@ function i_spots_remaining($i__id){
             //We must qualify each discovery individually:
             foreach($CI->X_model->fetch($query_filters) as $e){
                 if(count($must_follow)==count($CI->X_model->fetch(array(
-                        'x__down' => $e['x__creator'],
-                        'x__up IN (' . join(',', $must_follow) . ')' => null,
+                        'x__follower' => $e['x__creator'],
+                        'x__following IN (' . join(',', $must_follow) . ')' => null,
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     )))){
@@ -404,7 +404,7 @@ function i_spots_remaining($i__id){
     return $spots_remaining;
 }
 
-function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x__down){
+function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__following, $x__follower){
 
     $return_i__id = $i__id;
     $CI =& get_instance();
@@ -416,8 +416,8 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__up, $x_
             'x__type' => ( $x__creator>0 ? 29737 : 30341 ), //Access Blocked
             'x__creator' => $x__creator,
             'x__previous' => $i__id,
-            'x__up' => $x__up,
-            'x__down' => $x__down,
+            'x__following' => $x__following,
+            'x__follower' => $x__follower,
             'x__message' => $log_message,
         ));
 
@@ -501,30 +501,30 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
         'x__type' => 13865, //Must Include Any
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__up'), 0);
+    ), array('x__following'), 0);
     if(count($fetch_13865)){
         //Let's see if they meet any of these PREREQUISITES:
         $meets_inc1_prereq = false;
-        $x__up = 0;
+        $x__following = 0;
         $excludes_message = 'Unknown Error @13865';
 
         if($x__creator > 0){
             foreach($fetch_13865 as $e_pre){
-                if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                if(( $member_e && $member_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__up' => $e_pre['x__up'],
-                        'x__down' => $x__creator,
+                        'x__following' => $e_pre['x__following'],
+                        'x__follower' => $x__creator,
                     )))){
                     $meets_inc1_prereq = true;
-                    $x__up = ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 );
+                    $x__following = ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
                     $excludes_message = "You cannot discover this idea because you are missing a requirement, ".$double_check;
                     break;
                 }
             }
         }
         if(!$meets_inc1_prereq && $x__creator > 0){
-            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 13865, $x__up);
+            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 13865, $x__following);
         }
     }
 
@@ -534,22 +534,22 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
         'x__type' => 27984, //Must Include All
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__up'), 0);
+    ), array('x__following'), 0);
     if(count($fetch_27984)){
         //There are some requirements, Let's see if they meet all of them:
         $missing_es = '';
         $meets_inc2_prereq = 0;
 
-        $x__up = 0;
+        $x__following = 0;
         $excludes_message = 'Unknown Error @27984';
 
         if($x__creator > 0){
             foreach($fetch_27984 as $e_pre){
-                if($x__creator && (( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                if($x__creator && (( $member_e && $member_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__up' => $e_pre['x__up'],
-                        'x__down' => $x__creator,
+                        'x__following' => $e_pre['x__following'],
+                        'x__follower' => $x__creator,
                     ))))){
                     $meets_inc2_prereq++;
                 } else {
@@ -557,13 +557,13 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
                     $missing_es .= ( strlen($missing_es) ? ' & ' : '' ).$e_pre['e__title'];
                 }
 
-                $x__up = ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 );
+                $x__following = ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
                 $excludes_message = "You cannot discover this idea because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check;
             }
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 27984, $x__up);
+            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 27984, $x__following);
         }
     }
 
@@ -573,24 +573,24 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
         'x__type' => 26600, //Must Exclude All
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__up'), 0);
+    ), array('x__following'), 0);
     if(count($fetch_26600)){
         //Let's see if they meet any of these PREREQUISITES:
-        $x__up = 0;
+        $x__following = 0;
         $excludes_all = false;
         $excludes_message = 'Unknown Error @26600';
         if($x__creator > 0){
             foreach($fetch_26600 as $e_pre){
-                if(( $member_e && $member_e['e__id']==$e_pre['x__up'] ) || count($CI->X_model->fetch(array(
+                if(( $member_e && $member_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__up' => $e_pre['x__up'],
-                        'x__down' => $x__creator,
+                        'x__following' => $e_pre['x__following'],
+                        'x__follower' => $x__creator,
                     )))){
                     //Found an exclusion, so skip this:
                     $excludes_all = false;
                     $excludes_message = "You cannot discover this idea because you belong to [".$e_pre['e__title']."]";
-                    $x__up =  ( isset($e_pre['x__up']) ? $e_pre['x__up'] : 0 );
+                    $x__following =  ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
                     break;
                 } else {
                     $excludes_all = true;
@@ -599,7 +599,7 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
         }
 
         if(!$excludes_all){
-            return access_blocked($log_tnx, $excludes_message, $x__creator, $i__id, 26600, $x__up);
+            return access_blocked($log_tnx, $excludes_message, $x__creator, $i__id, 26600, $x__following);
         }
     }
 
@@ -732,7 +732,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
            'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
            'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-       ), array('x__up'), 0) as $setting_link){
+       ), array('x__following'), 0) as $setting_link){
            array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
        }
        //Now search for these settings across ideas:
@@ -776,10 +776,10 @@ function list_settings($i__hashtag, $fetch_contact = false){
            ), array('x__creator'), 1000, 0, array('x__id' => 'DESC'));
        } elseif(count($list_config[27984])>0){
            $query_string = $CI->X_model->fetch(array(
-               'x__up IN (' . join(',', $list_config[27984]) . ')' => null,
+               'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-           ), array('x__down'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+           ), array('x__follower'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
        } else {
            $query_string = $CI->X_model->fetch(array(
                'x__previous' => $i['i__id'],
@@ -797,8 +797,8 @@ function list_settings($i__hashtag, $fetch_contact = false){
                unset($query_string[$key]);
 
            } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
-                   'x__up IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
-                   'x__down' => $x['e__id'],
+                   'x__following IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
+                   'x__follower' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                )))) {
@@ -820,8 +820,8 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
                foreach($list_config[27984] as $limit_27984){
                    if(!count($CI->X_model->fetch(array(
-                       'x__up' => $limit_27984,
-                       'x__down' => $x['e__id'],
+                       'x__following' => $limit_27984,
+                       'x__follower' => $x['e__id'],
                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                    )))){
@@ -844,16 +844,16 @@ function list_settings($i__hashtag, $fetch_contact = false){
        if($list_config[34513]){
 
            $column_e = $CI->X_model->fetch(array(
-               'x__up' => $list_config[34513],
+               'x__following' => $list_config[34513],
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-           ), array('x__down'), 0, 0, sort__e());
+           ), array('x__follower'), 0, 0, sort__e());
 
            foreach($CI->X_model->fetch(array(
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-               'x__up' => $list_config[34513],
+               'x__following' => $list_config[34513],
                'x__next !=' => $i['i__id'],
                'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
            ), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
@@ -868,20 +868,20 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
                //Fetch email & phone:
                $fetch_names = $CI->X_model->fetch(array(
-                   'x__up' => 42584, //First Name
-                   'x__down' => $x['e__id'],
+                   'x__following' => 42584, //First Name
+                   'x__follower' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                ));
                $fetch_emails = $CI->X_model->fetch(array(
-                   'x__up' => 3288, //Email
-                   'x__down' => $x['e__id'],
+                   'x__following' => 3288, //Email
+                   'x__follower' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                ));
                $fetch_phones = $CI->X_model->fetch(array(
-                   'x__up' => 4783, //Phone
-                   'x__down' => $x['e__id'],
+                   'x__following' => 4783, //Phone
+                   'x__follower' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                ));
@@ -913,7 +913,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__type' => 32235, //Navigation
                'x__next' => $i2['i__id'],
            )) as $follow){
-               array_push($must_follow, $follow['x__up']);
+               array_push($must_follow, $follow['x__following']);
            }
            $column_i[$key]['must_follow'] = $must_follow;
        }
@@ -1188,7 +1188,7 @@ function sort_by($e__id, $custom_sort = array()){
     $CI =& get_instance();
     $order_by = array();
     foreach($CI->config->item('e___'.$e__id) as $x__sort_id => $sort) {
-        $order_by['x__up = \''.$x__sort_id.'\' DESC'] = null;
+        $order_by['x__following = \''.$x__sort_id.'\' DESC'] = null;
     }
 
     if(is_array($custom_sort)){
@@ -1377,7 +1377,7 @@ function delete_all_between($beginning, $end, $string) {
 function user_website($x__creator){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
-        'x__down' => $x__creator,
+        'x__follower' => $x__creator,
         'x__type' => 4251, //New Source Created
     ), array(), 1) as $e_created){
         return $e_created['x__website'];
@@ -1527,8 +1527,8 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
 
             //Also fetch email for this user to populate the reply to:
             $fetch_emails = $CI->X_model->fetch(array(
-                'x__up' => 3288, //Email
-                'x__down' => $e__id,
+                'x__following' => 3288, //Email
+                'x__follower' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ));
@@ -1551,7 +1551,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
     if($e__id > 0 && count($es) && (!$template_i__id || !count($CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___42256')) . ')' => null, //Writes
-            'x__up' => 31779, //Mandatory Emails
+            'x__following' => 31779, //Mandatory Emails
             'x__next' => $template_i__id,
         ))))){
         //User specific notifications:
@@ -1721,7 +1721,7 @@ function write_privacy_e($e__handle, $e__id = 0){
     $filters = array(
         'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__up' => $member_e['e__id'],
+        'x__following' => $member_e['e__id'],
     );
     if(strlen($e__handle)){
         $filters['LOWER(e__handle)'] = strtolower($e__handle);
@@ -1738,7 +1738,7 @@ function write_privacy_e($e__handle, $e__id = 0){
         || ($member_e && ($e__handle==$member_e['e__handle'] || $e__id==$member_e['e__id']))
 
         //If Source Follows this Member
-        || count($CI->X_model->fetch($filters, array('x__down')))
+        || count($CI->X_model->fetch($filters, array('x__follower')))
 
     );
 
@@ -1756,7 +1756,7 @@ function write_privacy_i($i__hashtag, $i__id = 0){
     $filters = array( //IDEA SOURCE
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-        'x__up' => $member_e['e__id'],
+        'x__following' => $member_e['e__id'],
     );
 
     if(strlen($i__hashtag)){
@@ -1924,11 +1924,11 @@ function update_algolia($s__type = null, $s__id = 0) {
         } elseif (!$s__id && $loop_obj==6287) {
 
             $db_rows[$loop_obj] = $CI->X_model->fetch(array(
-                'x__up' => 6287, //Featured Apps
+                'x__following' => 6287, //Featured Apps
                 'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__down'), 0);
+            ), array('x__follower'), 0);
 
         }
 
@@ -2019,7 +2019,7 @@ function update_algolia($s__type = null, $s__id = 0) {
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                     'x__next' => $s['i__id'],
-                ), array('x__up'), 0) as $x){
+                ), array('x__following'), 0) as $x){
 
                     //Featured?
                     if(in_array($x['e__id'], $CI->config->item('n___41804'))){
@@ -2063,10 +2063,10 @@ function update_algolia($s__type = null, $s__id = 0) {
                 //Fetch Following:
                 foreach($CI->X_model->fetch(array(
                     'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $s['e__id'], //This follower source
+                    'x__follower' => $s['e__id'], //This follower source
                     'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
+                ), array('x__following'), 0, 0, array('e__title' => 'DESC')) as $x) {
 
                     //Add tags:
                     array_push($export_row['_tags'], 'z_' . $x['e__id']);
@@ -2107,10 +2107,10 @@ function update_algolia($s__type = null, $s__id = 0) {
                 //Fetch Following:
                 foreach($CI->X_model->fetch(array(
                     'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__down' => $s['e__id'], //This follower source
+                    'x__follower' => $s['e__id'], //This follower source
                     'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                     'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__up'), 0, 0, array('e__title' => 'DESC')) as $x) {
+                ), array('x__following'), 0, 0, array('e__title' => 'DESC')) as $x) {
 
                     //Add tags:
                     array_push($export_row['_tags'], 'z_' . $x['e__id']);

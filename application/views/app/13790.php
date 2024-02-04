@@ -63,8 +63,8 @@ foreach($list_settings['query_string'] as $x){
 
 
         if(count($discoveries) && (!count($i2['must_follow']) || count($i2['must_follow'])!=count($this->X_model->fetch(array(
-                    'x__down' => $x['e__id'],
-                    'x__up IN (' . join(',', $i2['must_follow']) . ')' => null,
+                    'x__follower' => $x['e__id'],
+                    'x__following IN (' . join(',', $i2['must_follow']) . ')' => null,
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ))))){
@@ -91,17 +91,17 @@ foreach($list_settings['query_string'] as $x){
     foreach($list_settings['column_e'] as $e){
 
         $input_modal = count($this->X_model->fetch(array(
-            'x__up IN (' . join(',', $this->config->item('n___37707')) . ')' => null, //SOURCE LINKS
-            'x__down' => $e['e__id'],
+            'x__following IN (' . join(',', $this->config->item('n___37707')) . ')' => null, //SOURCE LINKS
+            'x__follower' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )));
 
         $fetch_data = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__down' => $x['e__id'],
+            'x__follower' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__up' => $e['e__id'],
+            'x__following' => $e['e__id'],
         ));
 
 
@@ -132,9 +132,9 @@ foreach($list_settings['query_string'] as $x){
 
             $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__down' => $e['e__id'],
+                    'x__follower' => $e['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__up IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
+                    'x__following IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['x__message'])) : 1 );
         }
     }
@@ -163,7 +163,7 @@ foreach($list_settings['column_i'] as $i2){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
         'x__next' => $i2['i__id'],
-        'x__up' => 26189,
+        'x__following' => 26189,
     ), array(), 1);
     $current_x = ( isset($count_totals['i'][$i2['i__id']]) ? $count_totals['i'][$i2['i__id']] : 0 );
     $max_limit = (count($max_available) && is_numeric($max_available[0]['x__message']) && intval($max_available[0]['x__message'])>0 ? intval($max_available[0]['x__message']) : 0 );
