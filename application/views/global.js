@@ -1379,7 +1379,7 @@ function editor_save_i(){
     });
 }
 
-
+var media_cache = []; //Stores the json data for successfully uploaded media files
 function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){
 
     console.log('Initiating Uploader @'+uploader_id+' with tags '+uploader_tags.join(' & '));
@@ -1389,6 +1389,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         return false;
     }
 
+    media_cache[uploader_id] = [];
     //Fetch global defaults:
     var default_max_file_count = parseFloat(js_e___6404[42382]['m__message']);
 
@@ -1544,8 +1545,23 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     }
                 }
                 if(media_e__id){
+
                     cloudinary_load_source(result.info.id, result.info.public_id, result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377'), result.info.original_filename, media_e__id, ( result.info.playback_url ? result.info.playback_url : null ));
+
+                    //Append this to the main source:
+                    if(info){
+                        if(media_cache[uploader_id][result.info.public_id] && media_cache[uploader_id][result.info.public_id].length){
+                            //Duplicate local upload, give error and remove:
+                            alert('Upload Error: You have uploaded the file ['+e__title+'] twice, so we would only keep one copy...');
+                            $('#'+frame_id).remove();
+                        }
+                        media_cache[uploader_id][result.info.public_id] = result.info;
+                        console.log('MEDIA CACHE:');
+                        console.log(media_cache);
+                    }
+
                 } else {
+
                     //TODO Report error!
 
                 }
@@ -1601,25 +1617,7 @@ function delete_media(info_id){
 
 
 
-var media_cache = []; //Stores the json data for successfully uploaded media files
 function cloudinary_load_source(frame_id, public_id, e__cover, e__title, media_e__id, playback_url, e__id = 0){
-
-    //Check to make sure not already here:
-
-
-    //Append this to the main source:
-    if(media_cache[public_id] && media_cache[public_id].length){
-        //Duplicate local upload, give error and remove:
-        alert('Upload Error: You have uploaded the file ['+e__title+'] twice, so we would only keep one copy...');
-        $('#'+frame_id).remove();
-    }
-    media_cache[public_id] = info;
-    console.log('MEDIA CACHE:');
-    console.log(media_cache);
-
-    //Search for a Video, Image or Audio file:
-    var view_template = '';
-
 
     //Update meta variables:
     $('#'+frame_id).attr('public_id',public_id).attr('media_e__id',media_e__id).attr('e__id',e__id).attr('e__cover',e__cover).attr('e__title',e__title).attr('playback_url',playback_url);
