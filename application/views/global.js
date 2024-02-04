@@ -1197,11 +1197,11 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                 //Initiate Idea  Uploader:
                 load_cloudinary(13572, ['#'+i__id], '.uploader_13572', '#modal31911');
 
-
                 //Track unsaved changes to prevent unwated modal closure:
                 $("#modal31911 .unsaved_warning").change(function() {
                     has_unsaved_changes = true;
                 });
+
             }
 
             var current_header = null;
@@ -1281,7 +1281,7 @@ function editor_save_i(){
 
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
     var created_i__id = parseInt($('#modal31911 .created_i__id').val());
-
+    var uploader_id = 13572; //THis is for idea modal
     var modify_data = {
         save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
         save_x__id:         $('#modal31911 .save_x__id').val(),
@@ -1291,7 +1291,35 @@ function editor_save_i(){
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
         save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
         save_i__privacy:    $('.dropd_form_31004').attr('selected_value').trim(),
+        save_media:         [],
     };
+
+    //Append Media:
+    //modify_data['media_uploads']
+    var sorted_media = [];
+    var sort_rank = 0;
+
+    $("#media_frame .media_item").each(function () {
+        if(media_cache[uploader_id][$(this).attr('public_id')]){
+            //Fetch variables for this idea:
+            modify_data['save_media'][sort_rank] = {
+                public_id:         $(this).attr('public_id'),
+                media_e__id:         parseInt($(this).attr('media_e__id')),
+                e__id:         parseInt($(this).attr('e__id')),
+                e__cover:    $(this).attr('e__cover'),
+                e__title:    $(this).attr('e__title'),
+                playback_url:    $(this).attr('playback_url'),
+                media_cache:       media_cache[uploader_id][$(this).attr('public_id')],
+            }
+            sort_rank++;
+        } else {
+            //TODO log error:
+
+            alert('ERROR: Missing Media File '+$(this).attr('public_id')+' '+uploader_id);
+            return false;
+        }
+    });
+
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
@@ -1673,7 +1701,7 @@ function editor_load_e(e__id, x__id){
 
     //Source resets:
     $('#search_cover').val('');
-    $(".cover_history_content").html('');
+    $(".cover_history_content, .media_frame").html('');
     $(".cover_history_button").addClass('hidden');
     $('#modal31912 .black-background-obs').removeClass('isSelected');
 
