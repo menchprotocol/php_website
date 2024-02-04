@@ -1557,7 +1557,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                     cloudinary_load_source(result.info.id, result.info.public_id, result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377'), result.info.original_filename, media_e__id, ( result.info.playback_url ? result.info.playback_url : null ));
 
-                    media_cache[uploader_id][result.info.id] = result.info;
+                    media_cache[uploader_id][result.info.public_id] = result.info;
                     console.log('MEDIA CACHE:');
                     console.log(media_cache);
 
