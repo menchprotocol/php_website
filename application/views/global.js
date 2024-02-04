@@ -1623,18 +1623,18 @@ function cloudinary_load_source(frame_id, public_id, e__cover, e__title, media_e
     //Update meta variables:
     $('#'+frame_id).attr('public_id',public_id).attr('media_e__id',media_e__id).attr('e__id',e__id).attr('e__cover',e__cover).attr('e__title',e__title).attr('playback_url',playback_url);
 
-    if(media_e__id = 4258){
+    if(media_e__id == 4258){
 
         //Video
         $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
         //insert_video('#'+frame_id, public_id, e__cover);
 
-    } else if(media_e__id = 4260){
+    } else if(media_e__id == 4260){
 
         //Image
         $('#'+frame_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+frame_id+'\')"><i class="fas fa-xmark"></i></a>');
 
-    } else if(media_e__id = 4259){
+    } else if(media_e__id == 4259){
 
         //Audio
         //<audio controls src="'+playback_url+'"></audio>
