@@ -315,16 +315,16 @@ class I extends CI_Controller {
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                         'x__next' => $i__id,
                         'x__following' => $dynamic_e__id,
-                    ), array('x__following')) as $curr_val){
-                        if(strlen($curr_val['x__message']) && !in_array($curr_val['x__message'], $unique_values)){
+                    ), array('x__following')) as $selected_e){
+                        if(strlen($selected_e['x__message']) && !in_array($selected_e['x__message'], $unique_values)){
                             $counted++;
-                            array_push($unique_values, $curr_val['x__message']);
+                            array_push($unique_values, $selected_e['x__message']);
                             array_push($return_inputs, array(
                                 'd__id' => $dynamic_e__id,
                                 'd__is_radio' => 0,
-                                'd_x__id' => $curr_val['x__id'],
-                                'd__html' => '<span class="icon-block">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
-                                'd__value' => $curr_val['x__message'],
+                                'd_x__id' => $selected_e['x__id'],
+                                'd__html' => dynamic_headline($dynamic_e__id, $e___42179[$dynamic_e__id], $selected_e),
+                                'd__value' => $selected_e['x__message'],
                                 'd__type_name' => html_input_type($data_type),
                                 'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
                                 'd__profile_header' => '',
@@ -337,12 +337,12 @@ class I extends CI_Controller {
                 if(!$counted){
                     foreach($this->E_model->fetch(array(
                         'e__id' => $dynamic_e__id,
-                    )) as $curr_val){
+                    )) as $selected_e){
                         array_push($return_inputs, array(
                             'd__id' => $dynamic_e__id,
                             'd__is_radio' => 0,
                             'd_x__id' => 0,
-                            'd__html' => '<span class="icon-block">'.$e___42179[$dynamic_e__id]['m__cover'].'</span>'.$e___42179[$dynamic_e__id]['m__title'].': '.( !in_array($curr_val['e__privacy'], $this->config->item('n___33240')) ? '<span title="'.$e___6177[$curr_val['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$curr_val['e__privacy']]['m__cover'].'</span>' : '' ).( isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' ).( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ),
+                            'd__html' => dynamic_headline($dynamic_e__id, $e___42179[$dynamic_e__id], $selected_e),
                             'd__value' => '',
                             'd__type_name' => html_input_type($data_type),
                             'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),

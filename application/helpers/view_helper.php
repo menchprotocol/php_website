@@ -714,6 +714,31 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
 }
 
+function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
+
+    $CI =& get_instance();
+    $e___6177 = $CI->config->item('e___6177'); //Source Privacy
+    $e___11035 = $CI->config->item('e___11035'); //Summary
+
+    $headline = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].': ';
+
+    if(isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message'])){
+        $headline .= '<span class="icon-block-xs" title="'.$e___11035[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>';
+    }
+    if(in_array($dynamic_e__id, $CI->config->item('n___42174'))){
+        $headline .= '<span class="icon-block-xs" title="'.$e___11035[42174]['m__message'].'" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">'.$e___11035[42174]['m__cover'].'</span>';
+    }
+    if(in_array($dynamic_e__id, $CI->config->item('n___32145'))){
+        $headline .= '<span class="icon-block-xs" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
+    }
+    if($selected_e && !in_array($selected_e['e__privacy'], $CI->config->item('n___33240'))){
+        $headline .= '<span class="icon-block-xs" title="'.$e___6177[$selected_e['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$selected_e['e__privacy']]['m__cover'].'</span>';
+    }
+
+    return $headline;
+}
+
+
 function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     /*
@@ -725,19 +750,10 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $e___11035 = $CI->config->item('e___11035'); //Summary
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
+    $access_locked = in_array($focus_id, $CI->config->item('n___32145'));
     $focus_select = $CI->config->item( $single_select ? 'e___33331' : 'e___33332');
 
-    if(!is_array($CI->config->item('n___'.$focus_id)) || !count($CI->config->item('n___'.$focus_id))){
-        //Main item must be in memory:
-        $CI->X_model->create(array(
-            'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_instant_select() @'.$focus_id.' missing in Application Cache',
-            'x__following' => $focus_id,
-            'x__follower' => $down_e__id,
-            'x__next' => $right_i__id,
-        ));
-        return false;
-    } elseif(!$single_select && !$multi_select){
+    if(!$single_select && !$multi_select){
         //Must be either:
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
@@ -751,17 +767,10 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     $already_selected = array();
 
-
     //UI for Single select or multi?
-    //$ui = '<div class="dynamic_item" placeholder="" d__id="'.$focus_id.'">';
-    $is_required = in_array($focus_id, $CI->config->item('n___42174')); //Required Settings
-
     $ui = '<div class="dynamic_selection">';
-    $ui .= '<h3 class="mini-font grey-line grey-header"><span class="icon-block">'.$focus_select[$focus_id]['m__cover'].'</span>'.$focus_select[$focus_id]['m__title'].':'.( $is_required ? ' <b title="Required Field" style="color:#FF0000;">*</b>' : '' ).'</h3>';
+    $ui .= '<h3 class="mini-font grey-line grey-header">'.dynamic_headline($focus_id, $focus_select[$focus_id]).'</h3>';
     $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
-
-
-
 
     if($down_e__id > 0){
 
@@ -806,26 +815,44 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $has_selected = count($already_selected);
     $overflow_reached = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
-    foreach($CI->config->item('e___'.$focus_id) as $e__id => $m) {
-        $selected = in_array($e__id, $already_selected);
+
+
+    foreach($CI->X_model->fetch(array(
+        'x__following' => $focus_id,
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+    ), array('x__follower'), 0) as $list_item){
+
+        $selected = in_array($list_item['e__id'], $already_selected);
         if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected){
             $overflow_reached = true;
         }
 
-        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'].( isset($e___42179[$e__id]['m__message']) && strlen($e___42179[$e__id]['m__message']) ? '<span class="icon-block-xx" title="'.$e___42179[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>' : '' );
+        $headline = ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'];
 
-        if($selected){
-            $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($m['m__title']).'">'.$headline.'<span class="icon-block-xs"><i class="fal fa-pen-to-square"></i></span></a>';
+        if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
+            $headline .= '<span class="icon-block-xs float_right" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
 
-        $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$e__id.' '.$exclude_fonts.' item-'.$e__id.' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($m['m__title']).'">'.$headline.'</a>';
+        if($selected){
+            if($access_locked){
+                $ui .= '<span class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
+            } else {
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'<span class="icon-block-xs"><i class="fal fa-pen-to-square"></i></span></a>';
+            }
+        }
+
+        if(!$access_locked){
+            $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</a>';
+        }
 
         if(!$selected){
             $unselected_count++;
         }
     }
 
-    if($overflow_reached && !$has_selected){
+    if($overflow_reached && !$has_selected && !$access_locked){
         //We show this only if non are selected and has too many options:
         $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item itemsetting selection_preview selection_preview_'.$focus_id.'"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show More...</a>';
     }
