@@ -1167,6 +1167,15 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                     data.return_inputs[index_i]["d__profile_header"] = '';
                 }
 
+
+                var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                if(is_locked && !data.return_inputs[index_i]["d__value"].length){
+                    //Hide since its locked without a value:
+                    $("#modal31911 .dynamic_"+i).addClass('hidden');
+                } else {
+                    $("#modal31911 .dynamic_"+i).removeClass('hidden');
+                }
+
                 $("#modal31911 .dynamic_"+i+" .radio_frame").remove();
                 $("#modal31911 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]);
 
@@ -1174,17 +1183,10 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                     $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
                     $("#modal31911 .dynamic_"+i+" .text_content").addClass('hidden');
                 } else {
-                    var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                     $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
                     $("#modal31911 .dynamic_"+i+" .text_content").removeClass('hidden');
                     $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
-                    if(is_locked && !data.return_inputs[index_i]["d__value"].length){
-                        //Hide since its locked without a value:
-                        $("#modal31911 .dynamic_"+i).addClass('hidden');
-                    } else {
-                        $("#modal31911 .dynamic_"+i).removeClass('hidden');
-                    }
 
                     if(x__id && fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
@@ -1723,21 +1725,22 @@ function editor_load_e(e__id, x__id){
                 $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
                 $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]);
 
+                var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
+                if(is_locked && !data.return_inputs[index_i]["d__value"].length){
+                    //Hide since its locked without a value:
+                    $("#modal31912 .dynamic_"+i).addClass('hidden');
+                } else {
+                    $("#modal31912 .dynamic_"+i).removeClass('hidden');
+                }
+
                 if(data.return_inputs[index_i]["d__is_radio"]){
                     $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
                     $("#modal31912 .dynamic_"+i+" .text_content").addClass('hidden');
                 } else {
-                    var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                     $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
                     $("#modal31912 .dynamic_"+i+" .text_content").removeClass('hidden');
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
-                    if(is_locked && !data.return_inputs[index_i]["d__value"].length){
-                        //Hide since its locked without a value:
-                        $("#modal31912 .dynamic_"+i).addClass('hidden');
-                    } else {
-                        $("#modal31912 .dynamic_"+i).removeClass('hidden');
-                    }
 
                     if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[index_i]["d__id"]==e__id )){
                         //Hide message textarea since this is already loaded in the dynamic inputs:

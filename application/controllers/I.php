@@ -290,7 +290,7 @@ class I extends CI_Controller {
                     'd__is_radio' => 1,
                     'd_x__id' => 0,
                     'd__html' => view_instant_select($dynamic_e__id, 0, $i__id),
-                    'd__value' => '',
+                    'd__value' => ( $i__id>0 ? $i__id : '' ),
                     'd__type_name' => '',
                     'd__placeholder' => '',
                     'd__profile_header' => '',
