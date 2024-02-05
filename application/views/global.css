@@ -2866,7 +2866,7 @@ h4.main__title{
     height: 21px;
     border-radius: 50%;
     padding: 0px 2px;
-    background-color: rgba(255,255,255,0.55) !important;
+    background-color: rgba(0,0,0,0.55) !important;
     z-index: 1002;
     text-align: center;
     cursor: move;

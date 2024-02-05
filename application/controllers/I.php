@@ -541,6 +541,14 @@ class I extends CI_Controller {
 
 
         //Update Media...
+        $media_stats = array(
+            'total_current' => 0,
+            'total_submitted' => 0,
+            'adjust_created' => 0,
+            'adjust_duplicated' => 0,
+            'adjust_updated' => 0,
+            'adjust_removed' => 0,
+        );
         $full_media = array();
         $current_media_e__ids = array();
         $sort_count = 0;
@@ -551,8 +559,9 @@ class I extends CI_Controller {
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
-            $full_media[$sort_count] = $media;
+            $media_stats['total_current']++;
             $current_media_e__ids[$sort_count] = intval($media['x__following']);
+            $full_media[$media['x__following']] = $media;
             $sort_count++;
         }
 
@@ -566,32 +575,33 @@ class I extends CI_Controller {
 
                 if($submitted_media['e__id']>0){
 
+                    $adjust_updated = false;
+
                     //Update media order?
                     if($current_media_e__ids[$sort_count]!=$submitted_media['e__id']){
                         //Order has changed, update it:
-                        $this->X_model->update($full_media[$sort_count]['x__id'], array(
+                        $adjust_updated = true;
+                        $this->X_model->update($full_media[$submitted_media['e__id']]['x__id'], array(
                             'x__weight' => $sort_count,
                         ), $member_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                     }
 
                     //Update the source title?
                     $validate_e__title = validate_e__title($submitted_media['e__title']);
-                    if($validate_e__title['status'] && $full_media[$sort_count]['e__title']!=$submitted_media['e__title']){
+                    if($validate_e__title['status'] && $full_media[$submitted_media['e__id']]['e__title']!=$submitted_media['e__title']){
+                        $adjust_updated = true;
                         $this->E_model->update($submitted_media['e__id'], array(
                             'e__title' => trim($submitted_media['e__title']),
                         ), true, $member_e['e__id']);
                     }
 
-                    if(!in_array($submitted_media['e__id'], $current_media_e__ids)) {
-                        //This should not happen as an existing media should be found, unless deleted some other way...
-                        //Nothing to do...
+                    if($adjust_updated){
+                        $media_stats['adjust_updated']++;
                     }
 
                 } else {
 
                     //Adding new media...
-
-
                     //Search eTag to see if we already have it:
                     if(strlen($submitted_media['etag'])){
                         //We we already have this asset, link to that source without giving this new source the authority over it...
@@ -616,6 +626,7 @@ class I extends CI_Controller {
                         }
 
                         //Create new media and assign ID:
+                        $media_stats['adjust_created']++;
                         $submitted_media['e__id'] = $added_e['new_e']['e__id'];
 
                         //new asset, create new source and insert tags...
@@ -653,6 +664,7 @@ class I extends CI_Controller {
                                     'x__following' => $x__type,
                                     'e__title' => $target_variable,
                                 ), array('x__follower'), 1, 0, array('x__id' => 'ASC')) as $child_source){
+                                    $media_stats['adjust_duplicated']++;
                                     $child_id = $child_source['e__id'];
                                 }
 
@@ -703,38 +715,57 @@ class I extends CI_Controller {
 
 
                     //By now have the media source, create necessary links:
-                    if($submitted_media['e__id'] && $submitted_media['e__id']){
+                    if($submitted_media['e__id'] && $submitted_media['media_e__id']){
 
-                        //Link to Idea:
-                        $this->X_model->create(array(
-                            'x__creator' => $member_e['e__id'],
-                            'x__following' => $x__type,
-                            'x__follower' => $submitted_media['e__id'],
-                            'x__message' => $target_variable,
-                            'x__type' => 4230,
-                        ));
+                        //Maps Idea Media Links to corresponding Source Media links:
+                        $media_index = array(
+                            4258 => 42659, //Video
+                            4259 => 42658, //Audio
+                            4260 => 42655, //Image
+                        );
 
-                        //Link to Creator Source:
-                        $this->X_model->create(array(
-                            'x__creator' => $member_e['e__id'],
-                            'x__following' => $x__type,
-                            'x__follower' => $submitted_media['e__id'],
-                            'x__message' => $target_variable,
-                            'x__type' => 4230,
-                        ));
+                        if(array_key_exists($submitted_media['media_e__id'], $media_index)){
 
+                            //Link to Idea:
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__next' => $is[0]['i__id'],
+                                'x__following' => $submitted_media['e__id'],
+                                'x__type' => $submitted_media['media_e__id'],
+                                'x__weight' => $sort_count,
+                            ));
+
+                            //Link to Source:
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__following' => $member_e['e__id'],
+                                'x__follower' => $submitted_media['e__id'],
+                                'x__type' => $media_index[$submitted_media['media_e__id']],
+                            ));
+
+                        }
                     }
-
-
                 }
-
 
                 //Add this to the submitted ones:
                 $submitted_media_e__ids[$sort_count] = $submitted_media['e__id'];
+                $media_stats['total_submitted']++;
                 $sort_count++;
-            }
 
+            }
         }
+
+        //Remove current media missing from submitted (Removed during editing):
+        foreach(array_diff($current_media_e__ids, $submitted_media_e__ids) as $deleted_media_e__id){
+            $media_stats['adjust_removed']++;
+            $this->X_model->update($full_media[$deleted_media_e__id]['x__id'], array(
+                'x__privacy' => 6173, //Transaction Removed
+            ), $member_e['e__id'], 42694 /* Media Removed */);
+        }
+
+
+
+
 
 
 
@@ -900,7 +931,7 @@ class I extends CI_Controller {
             'return_i__cache' => $view_sync_links['i__cache'],
             'return_i__cache_links' => view_i_links($is[0]),
             'redirect_idea' => ( isset($is[0]['i__hashtag']) ? '/~'.$is[0]['i__hashtag'] : null ),
-            'message' => $view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
+            'message' => $media_stats['total_current'].' current & '.$media_stats['total_submitted'].' submitted media: '.$media_stats['total_submitted'].' Created, '.$media_stats['adjust_updated'].' Updated & '.$media_stats['adjust_removed'].' Removed while detected '.$media_stats['adjust_duplicated'].' duplicate uploads. '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 
     }
