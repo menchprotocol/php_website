@@ -1319,7 +1319,9 @@ function editor_save_i(){
         }
     });
     if(!media_uploaded){
-        alert('ERROR: Media has not yet uploaded, please wait until upload is complete...');
+        i_saving = false;
+        $(".editor_save_i").html('SAVE');
+        $("#modal31911 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Error: Media has not yet uploaded, please wait until upload is complete...');
         return false;
     }
 
