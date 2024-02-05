@@ -592,7 +592,7 @@ class I extends CI_Controller {
 
                                 //If not found create the child:
                                 if(!$child_id){
-                                    $added_child = $this->E_model->verify_create($target_variable, $member_e['e__id'], one_two_explode('"','"',$m['m__cover']));
+                                    $added_child = $this->E_model->verify_create($target_variable, $member_e['e__id']);
                                     if(!$added_child['status']){
                                         //TODO Log error!
                                         continue;

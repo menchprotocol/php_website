@@ -1169,7 +1169,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
 
 
                 var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
-                if(is_locked && !data.return_inputs[index_i]["d__value"].length && !data.return_inputs[index_i]["d__is_radio"]){
+                if(is_locked && !data.return_inputs[index_i]["d__value"].length){
                     //Hide since its locked without a value:
                     $("#modal31911 .dynamic_"+i+" .inner_dynamic").addClass('hidden');
                 } else {
@@ -1726,7 +1726,7 @@ function editor_load_e(e__id, x__id){
                 $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]);
 
                 var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
-                if(is_locked && !data.return_inputs[index_i]["d__value"].length && !data.return_inputs[index_i]["d__is_radio"]){
+                if(is_locked && !data.return_inputs[index_i]["d__value"].length){
                     //Hide since its locked without a value:
                     $("#modal31912 .dynamic_"+i+" .inner_dynamic").addClass('hidden');
                 } else {
