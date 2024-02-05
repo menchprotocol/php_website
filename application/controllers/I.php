@@ -540,6 +540,204 @@ class I extends CI_Controller {
 
 
 
+        //Update Media...
+        $full_media = array();
+        $current_media_e__ids = array();
+        $sort_count = 0;
+        //Fetch current media:
+        foreach($this->X_model->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___5=42294')) . ')' => null, //Media
+            'x__next' => $is[0]['i__id'],
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+        ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
+            $full_media[$sort_count] = $media;
+            $current_media_e__ids[$sort_count] = intval($media['x__following']);
+            $sort_count++;
+        }
+
+        //Fetch submitted media:
+        $submitted_media_e__ids = array();
+        $sort_count = 0; //Reset sorting to compare to submitted media...
+        if(is_array($_POST['save_media']) && count($_POST['save_media'])>0){
+
+            //We have media to process:
+            foreach($_POST['save_media'] as $submitted_media){
+
+                if($submitted_media['e__id']>0){
+
+                    //Update media order?
+                    if($current_media_e__ids[$sort_count]!=$submitted_media['e__id']){
+                        //Order has changed, update it:
+                        $this->X_model->update($full_media[$sort_count]['x__id'], array(
+                            'x__weight' => $sort_count,
+                        ), $member_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
+                    }
+
+                    //Update the source title?
+                    $validate_e__title = validate_e__title($submitted_media['e__title']);
+                    if($validate_e__title['status'] && $full_media[$sort_count]['e__title']!=$submitted_media['e__title']){
+                        $this->E_model->update($submitted_media['e__id'], array(
+                            'e__title' => trim($submitted_media['e__title']),
+                        ), true, $member_e['e__id']);
+                    }
+
+                    if(!in_array($submitted_media['e__id'], $current_media_e__ids)) {
+                        //This should not happen as an existing media should be found, unless deleted some other way...
+                        //Nothing to do...
+                    }
+
+                } else {
+
+                    //Adding new media...
+
+
+                    //Search eTag to see if we already have it:
+                    if(strlen($submitted_media['etag'])){
+                        //We we already have this asset, link to that source without giving this new source the authority over it...
+                        //First person to upload a source will get authority over its created source...
+                        foreach($this->X_model->fetch(array(
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__following' => 42662, //etag
+                            'x__message' => $submitted_media['etag'],
+                        ), array('x__follower'), 1) as $existing_media){
+                            $submitted_media['e__id'] = $existing_media['e__id'];
+                        }
+                    }
+
+                    if(!$submitted_media['e__id']){
+
+                        //Create Source for this new asset:
+                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], $submitted_media['e__cover']);
+                        if(!$added_e['status']){
+                            //TODO Log error!
+                            continue;
+                        }
+
+                        //Create new media and assign ID:
+                        $submitted_media['e__id'] = $added_e['new_e']['e__id'];
+
+                        //new asset, create new source and insert tags...
+                        $e___32088 = $this->config->item('e___32088'); //Platform Variables
+                        foreach($this->config->item('e___42679') as $x__type => $m) {
+
+                            //Ensure variable name exists so we can check the API call:
+                            $target_variable = false;
+                            if(isset($e___32088[$x__type]['m__message'])){
+                                //Determine if variable exists...
+                                if(in_array($x__type, $this->config->item('n___42680')) && isset($submitted_media['video'][$e___32088[$x__type]['m__message']])){
+                                    //Video info:
+                                    $target_variable = $submitted_media['video'][$e___32088[$x__type]['m__message']];
+                                } elseif(in_array($x__type, $this->config->item('n___42675')) && isset($submitted_media['audio'][$e___32088[$x__type]['m__message']])){
+                                    //Audio info:
+                                    $target_variable = $submitted_media['audio'][$e___32088[$x__type]['m__message']];
+                                } elseif(isset($submitted_media[$e___32088[$x__type]['m__message']])) {
+                                    //Media info:
+                                    $target_variable = $submitted_media[$e___32088[$x__type]['m__message']];
+                                }
+                            }
+                            if(!strlen($target_variable) || $target_variable=='0'){
+                                //This variable does not have a value, move on...
+                                continue;
+                            }
+
+                            //We have a variable, see what it is...
+                            if(in_array($x__type, $this->config->item('n___33331'))){
+
+                                //Single select that needs auto creation of sources if missing:
+                                $child_id = 0;
+                                foreach($this->X_model->fetch(array(
+                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                    'x__following' => $x__type,
+                                    'e__title' => $target_variable,
+                                ), array('x__follower'), 1, 0, array('x__id' => 'ASC')) as $child_source){
+                                    $child_id = $child_source['e__id'];
+                                }
+
+                                //If not found create the child:
+                                if(!$child_id){
+                                    $added_child = $this->E_model->verify_create($target_variable, $member_e['e__id'], one_two_explode('"','"',$m['m__cover']));
+                                    if(!$added_child['status']){
+                                        //TODO Log error!
+                                        continue;
+                                    }
+
+                                    //Add links for this new source:
+                                    $this->X_model->create(array(
+                                        'x__creator' => $member_e['e__id'],
+                                        'x__following' => $x__type,
+                                        'x__follower' => $added_child['new_e']['e__id'],
+                                        'x__type' => 4251,
+                                    ));
+
+                                    //Assign child source:
+                                    $child_id = $added_child['new_e']['e__id'];
+                                }
+
+                                if($child_id){
+                                    //Child source found, simply link:
+                                    $this->X_model->create(array(
+                                        'x__creator' => $member_e['e__id'],
+                                        'x__following' => $x__type,
+                                        'x__follower' => $child_id,
+                                        'x__type' => 4230,
+                                    ));
+                                }
+
+                            } else {
+
+                                //Save variable as is:
+                                $this->X_model->create(array(
+                                    'x__creator' => $member_e['e__id'],
+                                    'x__following' => $x__type,
+                                    'x__follower' => $submitted_media['e__id'],
+                                    'x__message' => $target_variable,
+                                    'x__type' => 4230,
+                                ));
+
+                            }
+                        }
+                    }
+
+
+                    //By now have the media source, create necessary links:
+                    if($submitted_media['e__id'] && $submitted_media['e__id']){
+
+                        //Link to Idea:
+                        $this->X_model->create(array(
+                            'x__creator' => $member_e['e__id'],
+                            'x__following' => $x__type,
+                            'x__follower' => $submitted_media['e__id'],
+                            'x__message' => $target_variable,
+                            'x__type' => 4230,
+                        ));
+
+                        //Link to Creator Source:
+                        $this->X_model->create(array(
+                            'x__creator' => $member_e['e__id'],
+                            'x__following' => $x__type,
+                            'x__follower' => $submitted_media['e__id'],
+                            'x__message' => $target_variable,
+                            'x__type' => 4230,
+                        ));
+
+                    }
+
+
+                }
+
+
+                //Add this to the submitted ones:
+                $submitted_media_e__ids[$sort_count] = $submitted_media['e__id'];
+                $sort_count++;
+            }
+
+        }
+
+
+
         //Process dynamic inputs if any:
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
         if($_POST['save_i__id'] > 0){

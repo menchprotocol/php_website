@@ -446,7 +446,11 @@ class E_model extends CI_Model
 
             //Log transaction new source:
             $creator = ($x__creator > 0 ? $x__creator : $add_fields['e__id']);
-            if($creator!=$add_fields['e__id']){
+            if($creator!=$add_fields['e__id'] && !count($this->X_model->fetch(array(
+                    'x__following' => $creator,
+                    'x__follower' => $add_fields['e__id'],
+                    'x__type' => 4251, //New Source Created
+                )))){
                 $this->X_model->create(array(
                     'x__creator' => $creator,
                     'x__following' => $creator,

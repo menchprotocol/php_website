@@ -1298,10 +1298,9 @@ function editor_save_i(){
     //modify_data['media_uploads']
     var sorted_media = [];
     var sort_rank = 0;
-
+    var media_uploaded = true;
     $("#media_frame .media_item").each(function () {
         if(media_cache[uploader_id][$(this).attr('etag')]){
-
             //Fetch variables for this media:
             modify_data['save_media'][sort_rank] = {
                 public_id:    $(this).attr('public_id'),
@@ -1313,15 +1312,16 @@ function editor_save_i(){
                 playback_url: $(this).attr('playback_url'),
                 media_cache:  media_cache[uploader_id][$(this).attr('etag')],
             }
-
             sort_rank++;
-
         } else {
-            //TODO log error:
-            alert('ERROR: Missing Media File '+$(this).attr('etag')+' '+uploader_id);
-            return false;
+            //This media is missing, upload is not complete:
+            media_uploaded = false;
         }
     });
+    if(!media_uploaded){
+        alert('ERROR: Media has not yet uploaded, please wait until upload is complete...');
+        return false;
+    }
 
 
     //Append Dynamic Data:
@@ -1541,7 +1541,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                 //Discovery Uploader
                 has_unsaved_changes = true;
-                $('.media_frame').prepend('<div id="'+result.info.id+'" class="media_item" media_e__id="" public_id="" etag="" playback_url="" e__id="0"  e__cover="" e__title=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('.media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" public_id="" etag="" playback_url="" e__id="0"  e__cover="" e__title=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             } else if(uploader_id==12117){
 
@@ -1567,13 +1567,13 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 //Idea Uploader
                 var media_e__id = 0;
                 if(result.info.format && result.info.format.length>0){
-                    if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.playback_url){
+                    if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio){
                         //Audio
                         media_e__id = 4259;
-                    } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.thumbnail_url){
+                    } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
                         //Image
                         media_e__id = 4260;
-                    } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.playback_url){
+                    } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
                         media_e__id = 4258;
                     } else {
