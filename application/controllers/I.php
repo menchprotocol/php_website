@@ -388,7 +388,7 @@ class I extends CI_Controller {
                 'message' => view_unauthorized_message(),
             ));
 
-        } elseif(!isset($_POST['save_i__message']) || !strlen($_POST['save_i__message'])){
+        } elseif(!isset($_POST['save_i__message'])){
 
             return view_json(array(
                 'status' => 0,
