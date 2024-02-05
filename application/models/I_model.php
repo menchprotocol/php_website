@@ -18,9 +18,8 @@ class I_model extends CI_Model
     function create($add_fields, $x__creator = 14068)
     {
 
-        //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('i__message'), $x__creator)) {
-            return false;
+        if(!isset($add_fields['i__message'])){
+            $add_fields['i__message'] = null;
         }
 
         if(!isset($add_fields['i__type']) || !in_array($add_fields['i__type'], $this->config->item('n___4737'))){
@@ -372,7 +371,6 @@ class I_model extends CI_Model
          * (IF $link_i__id>0) OR will create a new idea with outcome $i__message
          * and transaction it to $focus_id (In this case $link_i__id will be 0)
          *
-         * p.s. Inputs have previously been validated via ideas/i__add() function
          *
          * */
 
@@ -513,18 +511,14 @@ class I_model extends CI_Model
 
             //We are NOT adding an existing Idea, but instead, we're creating a new Idea
 
-            //Validate Idea Outcome:
-            $validate_i__message = validate_i__message($i__message);
-            if(!$validate_i__message['status']){
-                //We had an error, return it:
-                return $validate_i__message;
-            }
 
             //Create new Idea:
             $i_new = $this->I_model->create(array(
-                'i__message' => $i__message,
                 'i__type' => 6677, //New Default Ideas
             ), $x__creator);
+
+            $view_sync_links = view_sync_links($i__message, true, $i_new['i__id']);
+
 
         }
 

@@ -238,9 +238,6 @@ function view_s_js_cover(x__type, suggestion, action_id){
     if(x__type==26011){
         //Mini Coin
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
-    } else if(x__type==26012){
-        //Link Idea
-        return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="i__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
     } else if(x__type==26013){
         //Link Source
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
@@ -941,73 +938,11 @@ function update_cover_mini(cover_code, target_css){
 
 
 function load_finder(focus_card, x__type){
-    if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
-        i_load_finder(x__type);
-    } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
+    if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
         e_load_finder(x__type);
     }
 }
 
-
-function i_load_finder(x__type) {
-
-    console.log(x__type + " i_load_finder()");
-
-    $('.new-list-'+x__type+' .add-input').keypress(function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if ((code==13) || (e.ctrlKey && code==13)) {
-            e.preventDefault();
-            return i__add(x__type, 0);
-        }
-    });
-
-    if(!search_enabled()){
-        console.log("Search engine is disabled!");
-        return false;
-    }
-
-    //Load Saerch:
-    $('.new-list-'+x__type+' .add-input').keyup(function () {
-
-        //Clear if no input:
-        if(!$(this).val().length){
-            $('.new-list-'+x__type+' .algolia_pad_finder').html('');
-        }
-
-    }).autocomplete({hint: false, autoselect: false, minLength: 1}, [{
-        source: function (q, cb) {
-
-            $('.new-list-'+x__type+' .algolia_pad_finder').html('');
-
-            algolia_index.search(q, {
-
-                filters: 's__type=12273' + search_and_filter,
-                hitsPerPage: js_e___6404[31112]['m__message'],
-
-            }, function (error, content) {
-                if (error) {
-                    cb([]);
-                    return;
-                }
-                cb(content.hits, content);
-            });
-
-        },
-        templates: {
-            suggestion: function (suggestion) {
-                $('.new-list-'+x__type+' .algolia_pad_finder').append(view_s_js_cover(26012, suggestion, x__type));
-            },
-            header: function (data) {
-                if(data.query && data.query.length){
-                    $('.new-list-'+x__type+' .algolia_pad_finder').prepend('<div class="card_cover mini-cover coin-12273 coin-id-0 col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="black-background-obs cover-link isSelected"><div class="cover-btn"></div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="i__add('+x__type+', 0)" class="main__title">'+data.query+'</a></div></div></div>');
-                }
-            },
-            empty: function (data) {
-                return '';
-            },
-        }
-    }]);
-}
 
 function e_load_finder(x__type) {
 
@@ -2081,81 +2016,6 @@ function view_load_page() {
 }
 
 
-
-var i_is_adding = false;
-function i__add(x__type, link_i__id) {
-
-    /*
-     *
-     * Either creates an IDEA transaction between focus_id & link_i__id
-     * OR will create a new idea based on input text and then transaction it
-     * to fetch_int_val('#focus_id') (In this case link_i__id=0)
-     *
-     * */
-
-    if(i_is_adding){
-        return false;
-    }
-
-    //Remove results:
-    $('.mini-cover.coin-12273.coin-id-'+link_i__id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
-    i_is_adding = true;
-    var sort_i_grab = ".card_cover";
-    var input_field = $('.new-list-'+x__type+' .add-input');
-    var new_i__message = input_field.val();
-
-
-    //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
-    if (!link_i__id && new_i__message.length < 1) {
-        alert('Missing Idea Title');
-        input_field.focus();
-        return false;
-    }
-
-    //Set processing status:
-    add_to_list(x__type, sort_i_grab, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
-
-    //Update backend:
-    $.post("/i/i__add", {
-        x__type: x__type,
-        focus_card: fetch_int_val('#focus_card'),
-        focus_id: fetch_int_val('#focus_id'),
-        new_i__message: new_i__message,
-        link_i__id: link_i__id
-    }, function (data) {
-
-        //Delete loader:
-        $("#tempLoader").remove();
-        i_is_adding = false;
-
-        if (data.status) {
-
-            //Add new
-            add_to_list(x__type, sort_i_grab, data.new_i_html, 1);
-
-            //Lookout for textinput updates
-            x_set_start_text();
-            set_autosize($('.texttype__lg'));
-
-            //Hide Coin:
-            $('.mini-cover.coin-12273.coin-id-'+link_i__id).fadeOut();
-
-            setTimeout(function () {
-                sort_i_load(x__type);
-                load_covers();
-            }, 987);
-
-        } else {
-            //Show errors:
-            alert(data.message);
-        }
-
-    });
-
-    //Return false to prevent <form> submission:
-    return false;
-
-}
 
 function toggle_max_view(css_class){
 

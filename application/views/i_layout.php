@@ -52,17 +52,7 @@ foreach($this->config->item('e___31890') as $x__type => $m) {
     $input_content = '';
     if($can_add){
 
-        if(in_array($x__type, $this->config->item('n___11020'))){
-
-            //IDEAS
-            $input_content .= '<div class="new_list new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
-                <div class="input-group border">
-                    <input type="text"
-                           class="form-control form-control-thick add-input algolia_finder dotransparent"
-                           placeholder="+ Add Idea">
-                </div></div></div><div class="algolia_pad_finder dropdown_'.$x__type.' row justify-content"></div></div>';
-
-        } elseif(in_array($x__type, $this->config->item('n___42261'))){
+        if(in_array($x__type, $this->config->item('n___42261'))){
 
             $input_content .= '<div class="new_list new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">

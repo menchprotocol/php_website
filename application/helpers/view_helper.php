@@ -1090,35 +1090,6 @@ function view_valid_handle_reverse_i($string, $check_db = false){
 }
 
 
-function validate_i__message($str){
-
-    //Validate:
-    $error = null;
-    if(!strlen(trim($str))){
-
-        $error = 'Missing idea title';
-
-    } elseif (strlen($str) > view_memory(6404,4736)) {
-
-        $error = 'Must be '.view_memory(6404,4736).' characters or less';
-
-    }
-
-    if($error){
-        return array(
-            'status' => 0,
-            'message' => $error,
-        );
-    } else {
-        return array(
-            'status' => 1,
-            'message' => 'All Good',
-        );
-    }
-
-}
-
-
 function view_i_links($i, $replace_links = true, $focus_card = false){
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).

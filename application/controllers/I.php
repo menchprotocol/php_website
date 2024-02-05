@@ -125,72 +125,6 @@ class I extends CI_Controller {
 
 
 
-
-    function i__add()
-    {
-
-        /*
-         *
-         * Either creates a IDEA transaction between focus_id & link_i__id
-         * OR will create a new idea with outcome i__message and then transaction it
-         * to focus_id (In this case link_i__id=0)
-         *
-         * */
-
-        //Authenticate Member:
-        $member_e = superpower_unlocked(10939);
-        if (!$member_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(10939),
-            ));
-        } elseif (!isset($_POST['x__type']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Core Variables',
-            ));
-        } elseif (!isset($_POST['new_i__message']) || !isset($_POST['link_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing either Idea Outcome OR Follower Idea ID',
-            ));
-        }
-
-        $validate_i__message = validate_i__message($_POST['new_i__message']);
-        if(!$validate_i__message['status']){
-            //We had an error, return it:
-            return view_json($validate_i__message);
-        }
-
-
-        if(!$_POST['link_i__id'] && view_valid_handle_i($_POST['new_i__message'])){
-            foreach($this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower(view_valid_handle_i($_POST['new_i__message'])),
-            )) as $i){
-                $_POST['link_i__id'] = $i['i__id'];
-            }
-        }
-
-        if($_POST['link_i__id'] > 0){
-            //Fetch transaction idea to determine idea type:
-            $x_i = $this->I_model->fetch(array(
-                'i__id' => intval($_POST['link_i__id']),
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ));
-            if(!count($x_i)){
-                //validate Idea:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Idea #'.$_POST['link_i__id'].' is not active.',
-                ));
-            }
-        }
-
-        //All seems good, go ahead and try to create/link the Idea:
-        return view_json($this->I_model->create_or_link($_POST['focus_card'], $_POST['x__type'], trim($_POST['new_i__message']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
-
-    }
-
     function view_body_i(){
         //Authenticate Member:
         if (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
@@ -517,16 +451,6 @@ class I extends CI_Controller {
 
 
 
-        //Validate Idea Message:
-        $validate_i__message = validate_i__message($_POST['save_i__message']);
-        if(!$validate_i__message['status']){
-            return view_json(array(
-                'status' => 0,
-                'message' => $validate_i__message['message'],
-            ));
-        }
-
-
         //Might be new if pre-drafting:
         if( $is[0]['i__privacy']==42636 ){
             //Update new idea fields:
@@ -763,9 +687,27 @@ class I extends CI_Controller {
             ), $member_e['e__id'], 42694 /* Media Removed */);
         }
 
+        $final_media_count = $media_stats['total_current'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
 
 
 
+        //Validate Idea Message:
+        if(strlen($_POST['save_i__message'])>view_memory(6404,4736)){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea message must be less than '.view_memory(6404,4736).' characters.',
+            ));
+
+        } elseif(!$final_media_count && !strlen(trim($_POST['save_i__message']))){
+
+            //Since we do not have media, we must have a message:
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You must either write an idea or upload media to save.',
+            ));
+
+        }
 
 
 
