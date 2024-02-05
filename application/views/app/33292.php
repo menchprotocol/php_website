@@ -50,7 +50,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                 if ($found_link_group > 0){
                     if(!$focus_link_group || $focus_link_group!=$found_link_group){
                         echo '<tr class="mobile-shrink">';
-                        echo '<td class="center" colspan="2" title="@'.$e___42263[$found_link_group]['m__cover'].'"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b></td>';
+                        echo '<td class="center" colspan="2" title="@'.$e___42263[$found_link_group]['m__handle'].'"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b></td>';
                         echo '</tr>';
                         $focus_link_group = $found_link_group;
                     }
