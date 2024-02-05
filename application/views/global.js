@@ -1734,9 +1734,9 @@ function editor_load_e(e__id, x__id){
                     $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
                     if(is_locked && !data.return_inputs[index_i]["d__value"].length){
                         //Hide since its locked without a value:
-                        $("#modal31911 .dynamic_"+i).addClass('hidden');
+                        $("#modal31912 .dynamic_"+i).addClass('hidden');
                     } else {
-                        $("#modal31911 .dynamic_"+i).removeClass('hidden');
+                        $("#modal31912 .dynamic_"+i).removeClass('hidden');
                     }
 
                     if(x__id && ( (fetch_int_val('#focus_card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus_id')) || data.return_inputs[index_i]["d__id"]==e__id )){
