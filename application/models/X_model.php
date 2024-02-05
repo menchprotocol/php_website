@@ -728,26 +728,7 @@ class X_model extends CI_Model
 
 
 
-    function send_i_dm($list_of_e__id, $i, $x__next = 0, $x__website = 0, $ensure_undiscovered = true){
-
-        $top_i__hashtag = '';
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type' => 32426, //TARGET IDEA
-            '(x__next = '.$i['i__id'].' OR x__previous = '.$i['i__id'].')' => null,
-            'x__previous >' => 0,
-            'x__next >' => 0,
-        )) as $top_i){
-            foreach($this->I_model->fetch(array(
-                'i__id' => ( $top_i['x__next']==$i['i__id'] ? $top_i['x__previous'] : $top_i['x__next'] ),
-            )) as $sel_i){
-                $top_i__hashtag = '/'.$sel_i['i__hashtag'];
-                break;
-            }
-            if($top_i__hashtag){
-                break;
-            }
-        }
+    function send_i_dm($list_of_e__id, $i, $x__website = 0, $ensure_undiscovered = true){
 
         $children = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -794,11 +775,10 @@ class X_model extends CI_Model
                 foreach($children as $down_or){
                     //Has this user discovered this idea or no?
                     $html_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
-                    $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).$top_i__hashtag.'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']).'</div>';
+                    $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']).'</div>';
                 }
 
                 $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$html_message, array(
-                    'x__next' => $x__next,
                     'x__previous' => $i['i__id'],
                 ), $i['i__id'], $x__website, true);
 

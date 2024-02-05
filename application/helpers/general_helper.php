@@ -755,15 +755,6 @@ function list_settings($i__hashtag, $fetch_contact = false){
            $list_config[34513] = 0;
        }
 
-       if(count($list_config[32426])){
-           foreach($list_config[32426] as $first_frame){
-               $list_config[32426] = $first_frame;
-               break;
-           }
-       } else {
-           $list_config[32426] = 0;
-       }
-
 
 
        //Generate filter:
