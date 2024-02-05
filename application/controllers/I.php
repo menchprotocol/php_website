@@ -256,8 +256,6 @@ class I extends CI_Controller {
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
         $e___11035 = $this->config->item('e___11035'); //Summary
 
-
-
         foreach(array_intersect($this->config->item('n___'.$i__type), $this->config->item('n___42179')) as $dynamic_e__id){
 
             //Let's first determine the data type:
@@ -616,9 +614,9 @@ class I extends CI_Controller {
                                     //Child source found, simply link:
                                     $this->X_model->create(array(
                                         'x__creator' => $member_e['e__id'],
-                                        'x__following' => $x__type,
-                                        'x__follower' => $child_id,
-                                        'x__type' => 4230,
+                                        'x__following' => $child_id,
+                                        'x__follower' => $submitted_media['e__id'],
+                                        'x__type' => 4251,
                                     ));
                                 }
 
@@ -665,6 +663,14 @@ class I extends CI_Controller {
                                 'x__following' => $member_e['e__id'],
                                 'x__follower' => $submitted_media['e__id'],
                                 'x__type' => $media_index[$submitted_media['media_e__id']],
+                            ));
+
+                            //Link to Media Type:
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__following' => $submitted_media['media_e__id'],
+                                'x__follower' => $submitted_media['e__id'],
+                                'x__type' => 4251,
                             ));
 
                         }
