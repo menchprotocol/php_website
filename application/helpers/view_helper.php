@@ -785,13 +785,15 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     if($down_e__id > 0){
 
         //Source Focus:
-        foreach($CI->X_model->fetch(array(
-            'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
-            'x__follower' => $down_e__id,
-            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        )) as $sel){
-            array_push($already_selected, $sel['x__following']);
+        if(count($selection_ids)){
+            foreach($CI->X_model->fetch(array(
+                'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+                'x__follower' => $down_e__id,
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            )) as $sel){
+                array_push($already_selected, $sel['x__following']);
+            }
         }
 
         if(!count($already_selected) && $single_select && superpower_unlocked()){
