@@ -554,7 +554,7 @@ class I extends CI_Controller {
         $sort_count = 0;
         //Fetch current media:
         foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___5=42294')) . ')' => null, //Media
+            'x__type IN (' . join(',', $this->config->item('n___42294')) . ')' => null, //Media
             'x__next' => $is[0]['i__id'],
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
