@@ -527,14 +527,14 @@ class I extends CI_Controller {
 
                     //Adding new media...
                     //Search eTag to see if we already have it:
-                    if(strlen($submitted_media['etag'])){
+                    if(strlen($submitted_media['media_cache']['etag'])){
                         //We we already have this asset, link to that source without giving this new source the authority over it...
                         //First person to upload a source will get authority over its created source...
                         foreach($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__following' => 42662, //etag
-                            'x__message' => $submitted_media['etag'],
+                            'x__message' => $submitted_media['media_cache']['etag'],
                         ), array('x__follower'), 1) as $existing_media){
                             $submitted_media['e__id'] = $existing_media['e__id'];
                         }
@@ -561,15 +561,15 @@ class I extends CI_Controller {
                             $target_variable = false;
                             if(isset($e___32088[$x__type]['m__message'])){
                                 //Determine if variable exists...
-                                if(in_array($x__type, $this->config->item('n___42680')) && isset($submitted_media['video'][$e___32088[$x__type]['m__message']])){
+                                if(in_array($x__type, $this->config->item('n___42680')) && isset($submitted_media['media_cache']['video'][$e___32088[$x__type]['m__message']])){
                                     //Video info:
-                                    $target_variable = $submitted_media['video'][$e___32088[$x__type]['m__message']];
-                                } elseif(in_array($x__type, $this->config->item('n___42675')) && isset($submitted_media['audio'][$e___32088[$x__type]['m__message']])){
+                                    $target_variable = $submitted_media['media_cache']['video'][$e___32088[$x__type]['m__message']];
+                                } elseif(in_array($x__type, $this->config->item('n___42675')) && isset($submitted_media['media_cache']['audio'][$e___32088[$x__type]['m__message']])){
                                     //Audio info:
-                                    $target_variable = $submitted_media['audio'][$e___32088[$x__type]['m__message']];
-                                } elseif(isset($submitted_media[$e___32088[$x__type]['m__message']])) {
+                                    $target_variable = $submitted_media['media_cache']['audio'][$e___32088[$x__type]['m__message']];
+                                } elseif(isset($submitted_media['media_cache'][$e___32088[$x__type]['m__message']])) {
                                     //Media info:
-                                    $target_variable = $submitted_media[$e___32088[$x__type]['m__message']];
+                                    $target_variable = $submitted_media['media_cache'][$e___32088[$x__type]['m__message']];
                                 }
                             }
                             if(!strlen($target_variable) || $target_variable=='0'){
