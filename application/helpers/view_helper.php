@@ -766,6 +766,16 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     }
 
     $already_selected = array();
+    $selection_ids = array();
+    $selection_options = $CI->X_model->fetch(array(
+        'x__following' => $focus_id,
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+    ), array('x__follower'), 0);
+    foreach($selection_options as $list_item){
+        array_push($selection_ids, $list_item['e__id']);
+    }
 
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
@@ -776,7 +786,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         //Source Focus:
         foreach($CI->X_model->fetch(array(
-            'x__following IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
+            'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
             'x__follower' => $down_e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -786,8 +796,8 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         if(!count($already_selected) && $single_select && superpower_unlocked()){
             //FIND DEFAULT if set in session of this user:
-            foreach($CI->config->item('e___'.$focus_id) as $e__id2 => $m2){
-                $var_id = @$CI->session->userdata('session_custom_ui_'.$focus_id);
+            $var_id = @$CI->session->userdata('session_custom_ui_'.$focus_id);
+            foreach($selection_ids as $e__id2){
                 if($var_id==$e__id2){
                     $already_selected = array($e__id2);
                     break;
@@ -799,7 +809,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         //Idea focus:
         foreach($CI->X_model->fetch(array(
-            'x__following IN (' . join(',', $CI->config->item('n___'.$focus_id)) . ')' => null, //All possible answers
+            'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
             'x__next' => $right_i__id,
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -816,13 +826,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $overflow_reached = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
 
-
-    foreach($CI->X_model->fetch(array(
-        'x__following' => $focus_id,
-        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ), array('x__follower'), 0) as $list_item){
+    foreach($selection_options as $list_item){
 
         $selected = in_array($list_item['e__id'], $already_selected);
         if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected){
