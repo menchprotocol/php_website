@@ -2608,7 +2608,7 @@ textarea {
     width: 100%;
     max-width: 100%;
     max-height: 610px;
-    border-radius: 5px;
+    border-radius: 13px;
 }
 .video_contain {
     position: fixed;
@@ -2849,7 +2849,7 @@ h4.main__title{
     border: 0;
 }
 .media_frame .media_item {
-    border-radius: 5px;
+    border-radius: 13px;
     float: left;
     overflow: hidden;
     margin-left: 5px;
@@ -4302,7 +4302,10 @@ main {
     max-width: 100%;
     border-radius: 21px;
 }
-
+.media_display img {
+    width: 100%;
+    border-radius: 13px;
+}
 
 
 @media (hover: hover) {
