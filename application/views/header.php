@@ -700,7 +700,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
         $dynamic_edit .= '<div class="dynamic_item hidden dynamic_' . $p . '" d__id="" d_x__id="">';
-        $dynamic_edit .= '<div class="inner3_dynamic">';
+        $dynamic_edit .= '<div class="inner_dynamic">';
         $dynamic_edit .= '<div class="text_content">';
         $dynamic_edit .= '<h3 class="mini-font"></h3>';
         $dynamic_edit .= '<input type="text" class="form-control unsaved_warning save_dynamic_'.$p.'" value="">';

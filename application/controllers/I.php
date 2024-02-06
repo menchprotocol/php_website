@@ -617,7 +617,7 @@ class I extends CI_Controller {
                                         'x__creator' => $member_e['e__id'],
                                         'x__following' => $x__type,
                                         'x__follower' => $added_child['new_e']['e__id'],
-                                        'x__type' => 4251,
+                                        'x__type' => 4230,
                                     ));
 
                                     //Assign child source:
@@ -630,7 +630,7 @@ class I extends CI_Controller {
                                         'x__creator' => $member_e['e__id'],
                                         'x__following' => $child_id,
                                         'x__follower' => $submitted_media['e__id'],
-                                        'x__type' => 4251,
+                                        'x__type' => 4230,
                                     ));
                                 }
 
@@ -684,7 +684,7 @@ class I extends CI_Controller {
                                 'x__creator' => $member_e['e__id'],
                                 'x__following' => $submitted_media['media_e__id'],
                                 'x__follower' => $submitted_media['e__id'],
-                                'x__type' => 4251,
+                                'x__type' => 4230,
                                 'x__metadata' => $submitted_media,
                             ));
 
