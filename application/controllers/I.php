@@ -495,7 +495,7 @@ class I extends CI_Controller {
         //Fetch submitted media:
         $submitted_media_e__ids = array();
         $sort_count = 0; //Reset sorting to compare to submitted media...
-        if(is_array($_POST['save_media']) && count($_POST['save_media'])>0){
+        if(isset($_POST['save_media']) && is_array($_POST['save_media']) && count($_POST['save_media'])>0){
 
             //We have media to process:
             foreach($_POST['save_media'] as $submitted_media){
@@ -667,7 +667,7 @@ class I extends CI_Controller {
 
                         $core_value = array(
                             4258 => $submitted_media['media_cache']['public_id'], //Video Public ID
-                            4259 => ( isset($submitted_media['media_cache']['playback_url']) ? $submitted_media['media_cache']['playback_url'] : null ), //Audio Playback URL
+                            4259 => ( isset($submitted_media['media_cache']['secure_url']) ? $submitted_media['media_cache']['secure_url'] : null ), //Audio Playback URL
                             4260 => null, //Image Thumbnail is always at e__cover, no need to store locally
                         );
 
