@@ -1222,6 +1222,7 @@ function editor_save_i(){
 
     i_saving = true;
     $(".editor_save_i").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $("#modal31911 .save_results").html('');
 
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
     var created_i__id = parseInt($('#modal31911 .created_i__id').val());
@@ -1328,7 +1329,6 @@ function editor_save_i(){
             }
 
             //Reset errors:
-            $("#modal31911 .save_results").html('');
             has_unsaved_changes = false;
             $('#modal31911').modal('hide');
 
@@ -1795,6 +1795,7 @@ function editor_save_e(){
 
     e_saving = true;
     $(".editor_save_e").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $("#modal31912 .save_results").html('');
 
     var modify_data = {
         save_e__id:         $('#modal31912 .save_e__id').val(),
@@ -1842,9 +1843,6 @@ function editor_save_e(){
                     $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']+':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
-
-            //Reset errors:
-            $("#modal31912 .save_results").html('');
 
             //Update Title:
             update_text_name(6197, modify_data['save_e__id'], modify_data['save_e__title']);
