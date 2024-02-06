@@ -1323,7 +1323,7 @@ function editor_save_i(){
                     //Update Hashtag & Link:
                     $('.s__12273_'+modify_data['save_i__id']).attr('i__hashtag', new_handle);
                     $(".ui_i__hashtag_"+modify_data['save_i__id']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
-                    $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']+':first').attr('href').replace(old_handle, new_handle));
+                    $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']+':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
 
@@ -1536,7 +1536,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                 } else if(media_e__id) {
 
-                    cloudinary_load_source(uploader_id, result.info.id, media_e__id, ( result.info.thumbnail_url ? result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replace('_',' ').replace('-',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
+                    cloudinary_load_source(uploader_id, result.info.id, media_e__id, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log('MEDIA CACHE:');
@@ -1839,7 +1839,7 @@ function editor_save_e(){
                     //Make adjustments to current page:
                     $('.s__12274_'+modify_data['save_e__id']).attr('e__handle', new_handle);
                     $('.ui_e__handle_'+modify_data['save_e__id']).text(new_handle);
-                    $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']+':first').attr('href').replace(old_handle, new_handle));
+                    $(".handle_href_e_"+modify_data['save_e__id']).attr('href', $(".handle_href_e_"+modify_data['save_e__id']+':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
 
