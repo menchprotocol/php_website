@@ -1714,7 +1714,7 @@ function editor_load_e(e__id, x__id){
                     current_header = data.return_inputs[index_i]["d__profile_header"];
                 } else {
                     //Neutralize it:
-                    data.return_inputs[index_i]["d__profile_header"] = '';
+                    //data.return_inputs[index_i]["d__profile_header"] = '';
                 }
 
                 $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
