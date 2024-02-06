@@ -595,7 +595,6 @@ class E extends CI_Controller
             }
             array_push($scanned_sources, $e_group['e__id']);
 
-
             foreach($this->X_model->fetch(array(
                 'x__follower' => $e_group['e__id'],
                 'x__following IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
@@ -604,6 +603,7 @@ class E extends CI_Controller
             ), array('x__following'), 0, 0, $order_42145) as $e_template) {
 
                 $profile_header = '<div class="profile_header main__title"><span class="icon-block-xs">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'<a href="/@'.$e_group['e__handle'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow '.$e_group['e__title'].'... Click to Open in a New Window"><span class="icon-block-xs">'.view_cover($e_group['e__cover']).'</span></a></div>';
+
 
                 //Load template:
                 if(!is_array($this->config->item('e___'.$e_template['e__id']))){

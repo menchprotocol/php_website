@@ -1126,6 +1126,7 @@ function view_valid_handle_reverse_i($string, $check_db = false){
 function view_i_links($i, $replace_links = true, $focus_card = false){
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
+        view_i_media($i).
         ( $focus_card || !substr_count($i['i__cache'], 'show_more_line') ? view_list_e($i, !$replace_links) : '' );
 }
 
@@ -1177,26 +1178,17 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     //All the possible reference types that can be found:
     $i__references = array(
-        4258 => array(), //Video URL
-        4259 => array(), //Audio URL
-        4260 => array(), //Image URL
-
         4256 => array(), //Generic URL
-
-        31834 => array(), //Idea Reference
-        42337 => array(), //Idea Contradiction
+        31834 => array(), //Idea Synonym
+        42337 => array(), //Idea Antonym
         31835 => array(), //Source Mention
     );
 
-
     $ui_template = array(
-        4258 => '<video class="play_video" onclick="this.play()" controls poster="https://s3foundation.s3-us-west-2.amazonaws.com/9988e7bc95f25002b40c2a376cc94806.png"><source src="%s" type="video/mp4"></video><!-- %s -->',
-        4259 => '<audio controls src="%s"></audio><!-- %s -->',
-        4260 => '<img src="%s" class="content-image" /><!-- %s -->',
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
-        31834 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>', //TODO Implement dynamic preview tooltip
-        42337 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>', //TODO Implement dynamic preview tooltip
-        31835 => '<spanaa href="/@%s" class="ref_source">%s</spanaa>', //TODO Implement dynamic preview tooltip
+        31834 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>',
+        42337 => '<spanaa href="/%s" class="ref_idea">%s</spanaa>',
+        31835 => '<spanaa href="/@%s" class="ref_source">%s</spanaa>',
     );
 
     $replace_from = array();
@@ -1208,7 +1200,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     $word_limit = 89;
     $line_inwards = 3;
     $link_words = 13; //The number of words a link is counted as
-    $media_words = 21; //The number of words a photo/video file is counted as
 
     $i__cache = '<div class="i_cache cache_frame_'.$save_i__id.'">';
     $line_count = 0;
@@ -1233,27 +1224,15 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
             if (filter_var($word, FILTER_VALIDATE_URL)) {
 
-                //Determine URL type:
-                $reference_type = 4256; //Generic URL, unless we can detect one of the specific types below
-                $fileInfo = pathinfo($word);
-
-                if(isset($fileInfo['extension'])){
-                    //Supported Media Extensions
-                    foreach($CI->config->item('e___42641') as $x__type => $m) {
-                        if(in_array($fileInfo['extension'], explode(' ',$m['m__message']))){
-                            $reference_type = $x__type;
-                            break;
-                        }
-                    }
-                }
-
-
+                //Generic URL:
+                $reference_type = 4256;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .=  @sprintf($ui_template[$reference_type], $word, $word);
-                $word_count += ( in_array($reference_type, $CI->config->item('n___42294')) ? $media_words  : $link_words );
+                $word_count += $link_words;
 
             } elseif (view_valid_handle_e($word, true)) {
 
+                //Idea Synonym
                 $reference_type = 31835;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
@@ -1261,6 +1240,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
             } elseif (view_valid_handle_reverse_i($word, true)) {
 
+                //Idea Antonym
                 $reference_type = 42337;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 2), $word);
@@ -1268,6 +1248,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
             } elseif (view_valid_handle_i($word, true)) {
 
+                //Source Mention
                 $reference_type = 31834;
                 array_push($i__references[$reference_type], $word);
                 $i__cache_line .= @sprintf($ui_template[$reference_type], substr($word, 1), $word);
@@ -1870,7 +1851,7 @@ function view_random_title(){
 function view_list_e($i, $plain_no_html = false){
 
     $CI =& get_instance();
-    $relevant_e = '';
+    $message_append = '';
 
     //Define Order:
     $e___42421 = $CI->config->item('e___42421');
@@ -1890,14 +1871,67 @@ function view_list_e($i, $plain_no_html = false){
         //Format data if needed:
         $x['x__message'] = data_type_format($x['x__following'], $x['x__message']);
 
-        $relevant_e .= '<div class="source-info">'
-        . '<span class="icon-block-xs">'. $e___42421[$x['x__following']]['m__cover'] . '</span>' . $e___42421[$x['x__following']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
-        . ( strlen($x['x__message']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
-        . '</div>';
+        $message_append .= '<div class="source-info">'
+            . '<span class="icon-block-xs">'. $e___42421[$x['x__following']]['m__cover'] . '</span>' . $e___42421[$x['x__following']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
+            . ( strlen($x['x__message']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view_url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
+            . '</div>';
 
     }
 
-    return ( strlen($relevant_e) ? ( $plain_no_html ? $relevant_e : '<div class="source-featured">'.$relevant_e.'</div>' ) : false );
+    return ( strlen($message_append) ? ( $plain_no_html ? $message_append : '<div class="source-featured">'.$message_append.'</div>' ) : false );
+
+}
+
+
+function view_i_media($i){
+
+    $CI =& get_instance();
+    $message_append = '';
+
+    //Define Order:
+    $e___42294 = $CI->config->item('e___42294');
+    $order_columns = array();
+    foreach($e___42294 as $x__sort_id => $sort) {
+        $order_columns['x__following = \''.$x__sort_id.'\' DESC'] = null;
+    }
+
+    //Query Relevant Sources:
+    foreach($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
+        'x__next' => $i['i__id'],
+    ), array('x__following'), 0, 0, $order_columns) as $x){
+
+        if($x['x__type']==4258){
+            //Video
+            $template = '<video id="video_player_'.$x['x__message'].'" controls class="cld-video-player" poster="'.$x['e__cover'].'"></video>'.
+             '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
+        } elseif($x['x__type']==4259){
+            //Audio
+            $template = '<audio controls src="'.$x['x__message'].'"></audio>';
+            //Also do a video player to see difference:
+            foreach($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__following' => 42660, //Public ID
+                'x__follower' => $x['e__id'], //Public ID
+            ), array(), 1) as $existing_media){
+                $template .= '<video id="video_player_'.$existing_media['x__message'].'" controls class="cld-video-player"></video>'.
+                    '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
+            }
+        } elseif($x['x__type']==4260){
+            //Image
+            $template = '<img src="'.$x['e__cover'].'"></video>';
+        } else {
+            continue; //Should not happen!
+        }
+
+        //Format data if needed:
+        $message_append .= '<div class="media_display media_display_'.$x['x__type'].'">'.$template.'</div>';
+
+    }
+
+    return $message_append;
 
 }
 

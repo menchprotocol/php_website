@@ -668,7 +668,7 @@ class I extends CI_Controller {
                         $core_value = array(
                             4258 => $submitted_media['media_cache']['public_id'], //Video Public ID
                             4259 => ( isset($submitted_media['media_cache']['playback_url']) ? $submitted_media['media_cache']['playback_url'] : null ), //Audio Playback URL
-                            4260 => $submitted_media['e__cover'], //Image Thumbnail
+                            4260 => null, //Image Thumbnail is always at e__cover, no need to store locally
                         );
 
                         if(array_key_exists($submitted_media['media_e__id'], $media_index)){
