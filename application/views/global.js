@@ -1155,11 +1155,11 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                 }
 
                 //Append profile header if changed:
-                if(!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"]){
+                if(!current_header || current_header!==data.return_inputs[index_i]["d__profile_header"]){
                     current_header = data.return_inputs[index_i]["d__profile_header"];
                 } else {
                     //Neutralize it:
-                    //data.return_inputs[index_i]["d__profile_header"] = '';
+                    data.return_inputs[index_i]["d__profile_header"] = '';
                 }
 
 
@@ -1710,11 +1710,11 @@ function editor_load_e(e__id, x__id){
                 }
 
                 //Append profile header if changed:
-                if(!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"]){
+                if(!current_header || current_header!==data.return_inputs[index_i]["d__profile_header"]){
                     current_header = data.return_inputs[index_i]["d__profile_header"];
                 } else {
                     //Neutralize it:
-                    //data.return_inputs[index_i]["d__profile_header"] = '';
+                    data.return_inputs[index_i]["d__profile_header"] = '';
                 }
 
                 $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
