@@ -543,7 +543,14 @@ class I extends CI_Controller {
                         //Create Source for this new asset:
                         $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], $submitted_media['e__cover']);
                         if(!$added_e['status']){
-                            //TODO Log error!
+                            $this->X_model->create(array(
+                                'x__type' => 4246, //Platform Bug Reports
+                                'x__message' => 'Failed to create a new source for ['.$submitted_media['e__title'].'] with cover ['.$submitted_media['e__cover'].']',
+                                'x__metadata' => array(
+                                    'submitted_media' => $submitted_media,
+                                    'post' => $_POST,
+                                ),
+                            ));
                             continue;
                         }
 
@@ -594,7 +601,14 @@ class I extends CI_Controller {
                                 if(!$child_id){
                                     $added_child = $this->E_model->verify_create($target_variable, $member_e['e__id']);
                                     if(!$added_child['status']){
-                                        //TODO Log error!
+                                        $this->X_model->create(array(
+                                            'x__type' => 4246, //Platform Bug Reports
+                                            'x__message' => 'Failed to create a new source for ['.$target_variable.']',
+                                            'x__metadata' => array(
+                                                'submitted_media' => $submitted_media,
+                                                'post' => $_POST,
+                                            ),
+                                        ));
                                         continue;
                                     }
 
@@ -671,6 +685,7 @@ class I extends CI_Controller {
                                 'x__following' => $submitted_media['media_e__id'],
                                 'x__follower' => $submitted_media['e__id'],
                                 'x__type' => 4251,
+                                'x__metadata' => $submitted_media,
                             ));
 
                         }
