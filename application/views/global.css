@@ -4308,6 +4308,11 @@ main {
     margin-bottom: 8px;
 }
 
+.media_display audio {
+    border: 1px solid #000;
+    border-radius: 34px;
+}
+
 
 @media (hover: hover) {
     .text-logo {
