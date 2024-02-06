@@ -1159,7 +1159,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                     current_header = data.return_inputs[index_i]["d__profile_header"];
                 } else {
                     //Neutralize it:
-                    data.return_inputs[index_i]["d__profile_header"] = '';
+                    //data.return_inputs[index_i]["d__profile_header"] = '';
                 }
 
 

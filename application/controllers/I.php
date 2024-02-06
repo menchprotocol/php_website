@@ -658,13 +658,6 @@ class I extends CI_Controller {
                     //By now have the media source, create necessary links:
                     if($submitted_media['e__id'] && $submitted_media['media_e__id']){
 
-                        //Maps Idea Media Links to corresponding Source Media links:
-                        $media_index = array(
-                            4258 => 42659, //Video
-                            4259 => 42658, //Audio
-                            4260 => 42655, //Image
-                        );
-
                         $core_value = array(
                             4258 => $submitted_media['media_cache']['public_id'], //Video Public ID
                             4259 => ( isset($submitted_media['media_cache']['secure_url']) ? $submitted_media['media_cache']['secure_url'] : null ), //Audio Playback URL
@@ -683,12 +676,12 @@ class I extends CI_Controller {
                                 'x__weight' => $sort_count,
                             ));
 
-                            //Link to Source:
+                            //Link to Source as Uploader:
                             $this->X_model->create(array(
                                 'x__creator' => $member_e['e__id'],
                                 'x__following' => $member_e['e__id'],
                                 'x__follower' => $submitted_media['e__id'],
-                                'x__type' => $media_index[$submitted_media['media_e__id']],
+                                'x__type' => 42659, //Uploader
                                 'x__message' => $core_value[$submitted_media['media_e__id']],
                             ));
 
