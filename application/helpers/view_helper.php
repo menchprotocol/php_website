@@ -1914,7 +1914,7 @@ function view_i_media($i){
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_'.$x['x__type'].'">'.$template.'</div>';
+        $message_append .= '<div class="media_display media_display_'.$x['x__type'].( $x['x__type']==4258 ? ' ignore-click ' : '' ).'">'.$template.'</div>';
 
     }
 
