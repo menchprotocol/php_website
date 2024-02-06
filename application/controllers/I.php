@@ -541,7 +541,7 @@ class I extends CI_Controller {
                     if(!$submitted_media['e__id']){
 
                         //Create Source for this new asset:
-                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], $submitted_media['e__cover']);
+                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], $submitted_media['e__cover'], true);
                         if(!$added_e['status']){
                             $this->X_model->create(array(
                                 'x__type' => 4246, //Platform Bug Reports
@@ -660,6 +660,12 @@ class I extends CI_Controller {
                             4260 => 42655, //Image
                         );
 
+                        $core_value = array(
+                            4258 => $submitted_media['media_cache']['public_id'], //Video Public ID
+                            4259 => $submitted_media['media_cache']['playback_url'], //Audio Playback URL
+                            4260 => $submitted_media['e__cover'], //Image Thumbnail
+                        );
+
                         if(array_key_exists($submitted_media['media_e__id'], $media_index)){
 
                             //Link to Idea:
@@ -668,6 +674,7 @@ class I extends CI_Controller {
                                 'x__next' => $is[0]['i__id'],
                                 'x__following' => $submitted_media['e__id'],
                                 'x__type' => $submitted_media['media_e__id'],
+                                'x__message' => $core_value[$submitted_media['media_e__id']],
                                 'x__weight' => $sort_count,
                             ));
 
@@ -677,6 +684,7 @@ class I extends CI_Controller {
                                 'x__following' => $member_e['e__id'],
                                 'x__follower' => $submitted_media['e__id'],
                                 'x__type' => $media_index[$submitted_media['media_e__id']],
+                                'x__message' => $core_value[$submitted_media['media_e__id']],
                             ));
 
                             //Link to Media Type:

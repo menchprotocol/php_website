@@ -419,7 +419,7 @@ class E_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__creator = 14068)
+    function create($add_fields, $x__creator = 14068, $skip_creator_link = false)
     {
 
         //What is required to create a new Idea?
@@ -446,7 +446,7 @@ class E_model extends CI_Model
 
             //Log transaction new source:
             $creator = ($x__creator > 0 ? $x__creator : $add_fields['e__id']);
-            if($creator!=$add_fields['e__id'] && !count($this->X_model->fetch(array(
+            if(!$skip_creator_link && $creator!=$add_fields['e__id'] && !count($this->X_model->fetch(array(
                     'x__following' => $creator,
                     'x__follower' => $add_fields['e__id'],
                     'x__type' => 4251, //New Source Created
@@ -1165,7 +1165,7 @@ class E_model extends CI_Model
     }
 
 
-    function verify_create($e__title, $x__creator = 0, $e__cover = null){
+    function verify_create($e__title, $x__creator = 0, $e__cover = null, $skip_creator_link = false){
 
         //Validate Title
         $validate_e__title = validate_e__title($e__title);
@@ -1177,7 +1177,7 @@ class E_model extends CI_Model
         $focus_e = $this->E_model->create(array(
             'e__title' => $validate_e__title['e__title_clean'],
             'e__cover' => $e__cover,
-        ), $x__creator);
+        ), $x__creator, $skip_creator_link);
 
         //Return success:
         return array(
