@@ -1536,7 +1536,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                 } else if(media_e__id) {
 
-                    cloudinary_load_source(uploader_id, result.info.id, media_e__id, ( result.info.thumbnail_url ? result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? result.info.original_filename.replace('_',' ').replace('-',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
+                    cloudinary_load_source(uploader_id, result.info.id, media_e__id, ( result.info.thumbnail_url ? result.info.thumbnail_url.replace('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replace('_',' ').replace('-',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log('MEDIA CACHE:');
