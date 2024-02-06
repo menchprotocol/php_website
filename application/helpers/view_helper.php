@@ -1920,7 +1920,7 @@ function view_i_media($i){
                 'x__following' => 42660, //Public ID
                 'x__follower' => $x['e__id'],
             ), array(), 1) as $existing_media){
-                $template .= '<video id="video_player_'.$existing_media['x__message'].'" controls data-setup=\'{"fluid": true}\' controls class="cld-video-player cld-video-player-skin-light"></video>'.
+                $template .= '<audio id="video_player_'.$existing_media['x__message'].'" data-setup=\'{"fluid": true}\' controls class="cld-video-player cld-video-player-skin-light"></audio>'.
                     '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$existing_media['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$existing_media['x__message'].'\'); </script>';
             }
 
