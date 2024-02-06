@@ -3161,7 +3161,7 @@ a,
 
 .cld-video-player{
     max-width: 610px;
-    max-height: 305px;
+    min-height: 305px;
     min-width: 100%;
 }
 
