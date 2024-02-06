@@ -1130,12 +1130,6 @@ a.headline {
     border-radius: 21px;
     margin: 0;
 }
-
-.edge-cover.coin-12273 .i_cache,
-.edge-cover.coin-6255 .i_cache{
-    margin-bottom:13px !important;
-}
-
 .sort_i_grab, .sort_e_grab, .fa-sort, .fa-arrows{
     cursor: grab;
 }
