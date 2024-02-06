@@ -431,6 +431,11 @@ class I extends CI_Controller {
                 'status' => 0,
                 'message' => 'Invalid idea Privacy',
             ));
+        } elseif(strlen($_POST['save_i__message'])>view_memory(6404,4736)){
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea message must be less than '.view_memory(6404,4736).' characters.',
+            ));
         }
 
 
@@ -711,31 +716,24 @@ class I extends CI_Controller {
         //Remove current media missing from submitted (Removed during editing):
         foreach(array_diff($current_media_e__ids, $submitted_media_e__ids) as $deleted_media_e__id){
             $media_stats['adjust_removed']++;
+            /*
             $this->X_model->update($full_media[$deleted_media_e__id]['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
-            ), $member_e['e__id'], 42694 /* Media Removed */);
+            ), $member_e['e__id'], 42694); //Media Removed
+            */
         }
 
-        $final_media_count = $media_stats['total_current'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
 
 
 
         //Validate Idea Message:
-        if(strlen($_POST['save_i__message'])>view_memory(6404,4736)){
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Idea message must be less than '.view_memory(6404,4736).' characters.',
-            ));
-
-        } elseif(!$final_media_count && !strlen(trim($_POST['save_i__message']))){
-
+        $final_media_count = $media_stats['total_current'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
+        if(!$final_media_count && !strlen(trim($_POST['save_i__message']))){
             //Since we do not have media, we must have a message:
             return view_json(array(
                 'status' => 0,
                 'message' => 'You must either write an idea or upload media to save.',
             ));
-
         }
 
 
