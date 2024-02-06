@@ -4298,7 +4298,7 @@ main {
 }
 
 .form-control {
-    border:0 !important;
+    border-radius:0 !important;
 }
 
 .media_display img,
