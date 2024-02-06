@@ -4297,7 +4297,8 @@ main {
     border-radius: 0px;
 }
 
-.form-control {
+.form-control,
+.alert{
     border-radius:0 !important;
 }
 
