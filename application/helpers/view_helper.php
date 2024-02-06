@@ -1888,19 +1888,12 @@ function view_i_media($i){
     $CI =& get_instance();
     $message_append = '';
 
-    //Define Order:
-    $e___42294 = $CI->config->item('e___42294');
-    $order_columns = array();
-    foreach($e___42294 as $x__sort_id => $sort) {
-        $order_columns['x__following = \''.$x__sort_id.'\' DESC'] = null;
-    }
-
     //Query Relevant Sources:
     foreach($CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
         'x__next' => $i['i__id'],
-    ), array('x__following'), 0, 0, $order_columns) as $x){
+    ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $x){
 
         if($x['x__type']==4258){
 
