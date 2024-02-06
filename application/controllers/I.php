@@ -667,7 +667,7 @@ class I extends CI_Controller {
 
                         $core_value = array(
                             4258 => $submitted_media['media_cache']['public_id'], //Video Public ID
-                            4259 => $submitted_media['media_cache']['playback_url'], //Audio Playback URL
+                            4259 => ( isset($submitted_media['media_cache']['playback_url']) ? $submitted_media['media_cache']['playback_url'] : null ), //Audio Playback URL
                             4260 => $submitted_media['e__cover'], //Image Thumbnail
                         );
 
