@@ -1250,7 +1250,7 @@ function editor_save_i(){
                 media_e__id:  parseInt($(this).attr('media_e__id')),
                 e__id:        parseInt($(this).attr('e__id')),
                 e__cover:     $(this).attr('e__cover'),
-                e__title:     $(this).attr('e__title'),
+                e__title:     $('#'+$(this).attr('id')+' input').val(),
                 media_cache:  media_cache[uploader_id][$(this).attr('id')],
             }
             sort_rank++;
@@ -1484,7 +1484,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                 //Discovery Uploader
                 has_unsaved_changes = true;
-                $('.media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" e__id="0"  e__cover="" e__title=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('.media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             } else if(uploader_id==12117){
 
@@ -1600,7 +1600,7 @@ function delete_media(uploader_id, info_id, remove_cache = true, skip_check = fa
 function cloudinary_load_source(uploader_id, info_id, media_e__id, e__cover, e__title, e__id = 0){
 
     //Update meta variables:
-    $('#'+info_id).attr('media_e__id',media_e__id).attr('e__id',e__id).attr('e__cover',e__cover).attr('e__title',e__title);
+    $('#'+info_id).attr('media_e__id',media_e__id).attr('e__id',e__id).attr('e__cover',e__cover);
 
     if(media_e__id == 4258){
 
