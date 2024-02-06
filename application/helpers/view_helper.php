@@ -1905,7 +1905,7 @@ function view_i_media($i){
         if($x['x__type']==4258){
 
             //Video
-            $template = '<video id="video_player_'.$x['x__message'].'" data-setup=\'{"fluid": true}\' controls class="cld-video-player cld-video-player-skin-light" poster="'.$x['e__cover'].'"></video>'.
+            $template = '<video id="video_player_'.$x['x__message'].'" controls class="cld-video-player cld-fluid cld-video-player-skin-light" poster="'.$x['e__cover'].'"></video>'.
                 '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
 
         } elseif($x['x__type']==4259){
