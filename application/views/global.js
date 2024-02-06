@@ -1155,7 +1155,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                 }
 
                 //Append profile header if changed:
-                if(!current_header || current_header!==data.return_inputs[index_i]["d__profile_header"]){
+                if(!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"]){
                     current_header = data.return_inputs[index_i]["d__profile_header"];
                 } else {
                     //Neutralize it:
@@ -1175,7 +1175,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                 $("#modal31911 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_x__id',data.return_inputs[index_i]["d_x__id"]);
 
                 if(data.return_inputs[index_i]["d__is_radio"]){
-                    $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__html"] + '</div>' );
+                    $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
                     $("#modal31911 .dynamic_"+i+" .text_content").addClass('hidden');
                 } else {
                     $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
@@ -1710,7 +1710,7 @@ function editor_load_e(e__id, x__id){
                 }
 
                 //Append profile header if changed:
-                if(!current_header || current_header!==data.return_inputs[index_i]["d__profile_header"]){
+                if(!current_header || current_header!=data.return_inputs[index_i]["d__profile_header"]){
                     current_header = data.return_inputs[index_i]["d__profile_header"];
                 } else {
                     //Neutralize it:
@@ -1729,7 +1729,7 @@ function editor_load_e(e__id, x__id){
                 }
 
                 if(data.return_inputs[index_i]["d__is_radio"]){
-                    $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__html"] + '</div>' );
+                    $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
                     $("#modal31912 .dynamic_"+i+" .text_content").addClass('hidden');
                 } else {
                     $("#modal31912 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + '</div>' );
