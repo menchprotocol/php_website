@@ -546,7 +546,7 @@ class I extends CI_Controller {
                     if(!$submitted_media['e__id']){
 
                         //Create Source for this new asset:
-                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], $submitted_media['e__cover'], true);
+                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], ( strlen($submitted_media['e__cover']) ? $submitted_media['e__cover'] : 'fas fa-volume-up' ), true);
                         if(!$added_e['status']){
                             $this->X_model->create(array(
                                 'x__type' => 4246, //Platform Bug Reports
