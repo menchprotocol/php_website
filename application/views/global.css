@@ -4302,6 +4302,9 @@ main {
 }
 .media_display img {
     width: 100%;
+}
+
+.media_display {
     margin-bottom: 13px;
 }
 
