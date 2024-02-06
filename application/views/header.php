@@ -378,8 +378,8 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                 echo 'background: transparent !important; ';
                 echo '}';
 
-                echo ' .halfbg { background: rgba(0, 0, 0, 0.69) !important; border-radius: 0; } ';
-                echo ' .fixed-top { background: rgba(21,21,21, 1) !important; border-radius: 0; } ';
+                echo ' .halfbg { background: rgba(0, 0, 0, 0.69) !important;  } ';
+                echo ' .fixed-top { background: rgba(21,21,21, 1) !important;  } ';
                 echo ' .top-header-position.fixed-top { background: none !important; } ';
                 echo ' .i_cache>span u, .i_cache>span a { line-height: 100% !important; padding:0 !important; } ';
 

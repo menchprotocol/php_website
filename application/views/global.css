@@ -55,22 +55,22 @@ body {
     text-align: right !important;
 }
 .media-content {
-    border-radius: 0 !important;
+
     max-width:610px !important;
 }
 .maxwidth {
-    border-radius: 0 !important;
+
     max-width:610px !important;
     margin: 0 auto !important;
 }
 .x__message video {
     max-width:610px;
-    border-radius: 0 !important;
+
 }
 .x__message img, .i_content img, .content-image {
     max-width: 100%;
     max-height: 610px;
-    border-radius: 0 !important;
+
     display: block;
 }
 .inner-content img {
@@ -101,13 +101,13 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 0 !important;
+
 }
 
 
 .list-group-item {
     border: 0;
-    border-radius: 0 !important;
+
     padding:10px 5px 8px;
     margin: 0;
     background-color: transparent;
@@ -155,7 +155,7 @@ h3{
     color: #000000;
 }
 .modal-content .form-control{
-    border-radius: 0;
+
     margin:0;
     border: 0 !important;
     border-top: 0 !important;
@@ -375,13 +375,13 @@ a.btn, .btn.dropdown-toggle, label.btn {
 
 
 img.no-frame {
-    border-radius: 21px !important;
+    border-radius: 0px !important;
 }
 
 
 .alert{
     padding:8px !important;
-    border-radius: 0;
+
     margin:0 !important;
     border: 0 !important;
     width: auto !important;
@@ -443,7 +443,7 @@ img.no-frame {
     padding: 13px 21px 21px 34px;
 }
 .accordion>.card {
-    border-radius: 21px !important;
+    border-radius: 0px !important;
     border:0;
 }
 
@@ -546,7 +546,7 @@ textarea.main__title {
     margin: 0 auto;
     padding: 21px;
     background-color: #faeea3;
-    border-radius: 21px;
+    border-radius: 0px;
     font-size: 1.3em;
 }
 .i_footer_note a{
@@ -821,7 +821,7 @@ label:focus,
 
 .list-group-item-action img {
     max-height: 610px;
-    border-radius: 0 !important;
+
 }
 
 .menu_header {
@@ -1005,7 +1005,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
 }
 
 h4 .halfbg {
-    border-radius: 21px;
+    border-radius: 0px;
 }
 
 
@@ -1017,7 +1017,7 @@ h4 .halfbg {
     overflow: hidden;
 }
 .dropdown-menu {
-    border-radius: 0;
+
     padding:0;
     z-index: 9999999 !important;
 }
@@ -1080,7 +1080,7 @@ h4 .halfbg {
 
 textarea.note-textarea{
     border: 0;
-    border-radius: 0;
+
     margin: 0;
     /*background-color: transparent !important;*/
     box-shadow: none;
@@ -1127,7 +1127,7 @@ a.headline {
 .full-text{
     width: 100%;
     height: 200px;
-    border-radius: 21px;
+    border-radius: 0px;
     margin: 0;
 }
 .sort_i_grab, .sort_e_grab, .fa-sort, .fa-arrows{
@@ -1489,7 +1489,7 @@ label {
 
 .nav-pills .nav-link{
     margin: 0 3px;
-    border-radius: 21px;
+    border-radius: 0px;
 }
 
 
@@ -1659,7 +1659,7 @@ label {
     width:30px !important;
     height:30px !important;
     margin:0px 5px !important;
-    border-radius: 21px !important;
+    border-radius: 0px !important;
     display: inline-block;
     font-size: 1.5em;
     padding-top: 5px !important;
@@ -1766,7 +1766,7 @@ label {
 .ticket-notice {
     background-color: #fffdb7;
     padding: 10px 0 !important;
-    border-radius: 21px;
+    border-radius: 0px;
 }
 
 .title-cover{
@@ -1841,7 +1841,7 @@ label {
 }
 
 .list-radio-select {
-    border-radius: 0;
+
     width: 100%;
 }
 .list-radio-select .list-group-item {
@@ -1936,7 +1936,7 @@ label {
 .chat-title span{
     z-index: 99999999;
     padding: 3px;
-    border-radius: 21px;
+    border-radius: 0px;
     line-height: 150%;
 }
 .modal-body{
@@ -2041,7 +2041,7 @@ label {
 
 
 input.form-control {
-    border-radius: 0 !important;
+
 }
 
 
@@ -2052,7 +2052,7 @@ input.form-control {
 
 .mini-cover .cover-content {
     position: absolute;
-    border-radius: 0 !important;
+
 }
 
 #container_finder .mini-cover .cover-content {
@@ -2113,7 +2113,7 @@ input.form-control {
     position: relative;
     margin:0 0 0 0 !important;
     padding: 0 0 0 0 !important;
-    border-radius: 0 !important;
+
 }
 .demo_cover,
 .demo_cover .cover-link {
@@ -2132,7 +2132,7 @@ input.form-control {
 
 .card_cover.coin-12274,
 .card_cover.coin-6287{
-    border-radius: 21px !important;
+    border-radius: 0px !important;
 }
 .edge-cover.coin-12274{
     padding: 0 0 55px 0 !important;
@@ -2157,7 +2157,7 @@ input.form-control {
     border-radius: 50% !important;
 }
 .card_cover.coin-12274{
-    border-radius: 0 !important;
+
 }
 .card_cover.coinface-12274{
     margin:0 !important;
@@ -2270,7 +2270,7 @@ input.form-control {
     line-height: 121%;
     font-size: 0.75em;
     display: block;
-    border-radius: 0;
+
     vertical-align: middle;
 }
 
@@ -2357,7 +2357,7 @@ input.form-control {
 }
 .modal-content{
     border:0;
-    border-radius: 21px;
+    border-radius: 0px;
 }
 .mass_action_toggle, .e_text_finder, .mass_action_item{
     width: 100% !important;
@@ -2370,7 +2370,7 @@ input.form-control {
 }
 .gif-col img{
     width: 100%;
-    border-radius: 21px;
+    border-radius: 0px;
 }
 .avatar-type-group{
     margin: 20px auto;
@@ -2428,7 +2428,7 @@ input.form-control {
     height: 65px;
     padding: 12px 0 0 1px;
     text-align: center;
-    border-radius: 50%;=
+    border-radius: 50%;
 }
 .round-btn{
     display: inline-block;
@@ -2452,7 +2452,7 @@ input.form-control {
     padding: 21px;
     background-color: #000000;
     color: #FFF;
-    border-radius: 21px;
+    border-radius: 0px;
     margin-top: 34px;
     font-size: 2.1em;
 }
@@ -2502,10 +2502,10 @@ input.form-control {
 
 
 .form-group {
-    border-radius: 21px;
+    border-radius: 0px;
 }
 .form-group>.form-control {
-    border-radius: 21px !important;
+    border-radius: 0px !important;
 }
 
 
@@ -2548,7 +2548,7 @@ input.form-control {
 
 .fa-gif-wrap{
     border:0;
-    border-radius: 21px;
+    border-radius: 0px;
     font-size: 0.8em !important;
     text-transform: uppercase;
     padding: 2px;
@@ -2925,7 +2925,7 @@ h4.main__title{
     .card_cover .large_title { font-size:1em !important; }
     .card_cover .large_cover i { font-size:3.4em !important; }
     .slim_flat{
-        border-radius: 0 !important;
+
     }
 
     .cover-content{
@@ -3218,7 +3218,7 @@ a,
 }
 
 .coinType6287 {
-    border-radius: 21px !important;
+    border-radius: 0px !important;
     border:1px dotted #000000;
 }
 
@@ -3262,11 +3262,11 @@ a,
     color:#FFC500 !important;
 }
 .coinType12273 {
-    border-radius: 0;
+
 }
 .btn.btn-12274,
 .coinType12274 {
-    border-radius:50% !important;
+    border-radius: 50% !important;
 }
 .bg12273,
 .btn-12273 {
@@ -3780,7 +3780,7 @@ a,
 .input-group-text,
 .btn-grey .fa-gif-wrap {
     border-color: #000000 !important;
-    border-radius: 0 !important;
+
 }
 .grey-background {
     background-color: transparent !important;
@@ -3818,7 +3818,7 @@ a,
 }
 .coin-12274 .cover-content,
 .coin-6287 .cover-content{
-    border-radius: 0;
+
 }
 .coin-12274 .mini-font,
 .coin-6287 .mini-font{
@@ -3829,14 +3829,14 @@ a,
 }
 
 .doabsolute {
-    border-radius: 21px !important;
+    border-radius: 0px !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
 .editor_preview{
     padding:5px 0 !important;
     margin: 0 34px;
-    border-radius: 21px !important;
+    border-radius: 0px !important;
 }
 
 .table-striped tbody tr:nth-of-type(odd){
@@ -3941,14 +3941,14 @@ h4.main__title{
 
 .filter_table {
     background-color: #FFF;
-    border-radius: 21px !important;
+    border-radius: 0px !important;
     color: #000;
 }
 
 .input_border,
 .filter_table input {
     background-color: #FFF;
-    border-radius: 21px !important;
+    border-radius: 0px !important;
     border:1px solid #000000 !important;
     color: #000;
 }
@@ -4292,7 +4292,7 @@ main {
 .platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
     margin: 0;
     max-width: 100%;
-    border-radius: 21px;
+    border-radius: 0px;
 }
 .media_display img {
     width: 100%;
@@ -4300,11 +4300,6 @@ main {
 
 .media_display {
     margin-bottom: 8px;
-}
-
-.media_display audio {
-    border: 1px solid #000;
-    border-radius: 34px;
 }
 
 
@@ -4366,12 +4361,12 @@ main {
 .btn.btn-default,
 .btn-large,
 .btn-6255 {
-    border-radius: 21px !important;
+    border-radius: 0px !important;
 }
 
 .card_frame{
     border: 0;
-    border-radius: 21px !important;
+    border-radius: 0px !important;
     margin: 0;
     padding: 21px 0;
     cursor: pointer;
@@ -4385,7 +4380,7 @@ main {
     border:1px solid #FC1B44 !important;
 }
 .form-check-input[type=checkbox] {
-    border-radius: 0;
+
     margin: 1px 0;
 }
 .form-check-input:checked {

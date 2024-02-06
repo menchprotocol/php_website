@@ -1,7 +1,7 @@
 <?php
 
 echo '<div style="margin-bottom:13px;">Copy/Paste the following code in routes.php</div>';
-echo '<textarea class="mono-space" readonly style="background-color: #FFFFFF; color:#000000 !important; padding:5px; font-size:0.65em; height:377px; width: 100%; border-radius: 21px;">';
+echo '<textarea class="mono-space" readonly style="background-color: #FFFFFF; color:#000000 !important; padding:5px; font-size:0.65em; height:377px; width: 100%; border-radius: 0px;">';
 
 echo '<?php'."\n\n";
 echo 'defined(\'BASEPATH\') or exit(\'No direct script access allowed\');'."\n"."\n";
