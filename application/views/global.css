@@ -3162,6 +3162,7 @@ a,
 .cld-video-player{
     max-width: 610px;
     max-height: 305px;
+    min-width: 100%;
 }
 
 .inner-content .texttype__lg,

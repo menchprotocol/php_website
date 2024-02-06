@@ -1903,10 +1903,21 @@ function view_i_media($i){
     ), array('x__following'), 0, 0, $order_columns) as $x){
 
         if($x['x__type']==4258){
+
             //Video
+
+            $widths = $CI->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__following' => 42660, //Width
+                'x__follower' => $x['e__id'],
+            ), array(), 1);
+
             $template = '<video id="video_player_'.$x['x__message'].'" controls class="cld-video-player" poster="'.$x['e__cover'].'"></video>'.
              '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
+
         } elseif($x['x__type']==4259){
+
             //Audio
             $template = '<audio controls src="'.$x['x__message'].'"></audio>';
 
@@ -1920,6 +1931,7 @@ function view_i_media($i){
                 $template .= '<video id="video_player_'.$existing_media['x__message'].'" controls class="cld-video-player"></video>'.
                     '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$existing_media['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$existing_media['x__message'].'\'); </script>';
             }
+
         } elseif($x['x__type']==4260){
             //Image
             $template = '<img src="'.$x['e__cover'].'"></video>';
