@@ -442,6 +442,7 @@ img.no-frame {
 .accordion .card-body{
     padding: 13px 21px 21px 34px;
 }
+
 .accordion>.card {
     border-radius: 0px !important;
     border:0;
@@ -1004,6 +1005,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     padding-top: 8px;
 }
 
+.dropdown-menu,
 h4 .halfbg {
     border-radius: 0px;
 }
