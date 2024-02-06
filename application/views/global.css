@@ -4296,6 +4296,11 @@ main {
     max-width: 100%;
     border-radius: 0px;
 }
+
+.form-control {
+    border:0 !important;
+}
+
 .media_display img,
 .media_display audio {
     width: 100%;
