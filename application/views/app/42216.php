@@ -232,7 +232,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         $content_message = view_i_links($i);
         if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
             //Let's remove the first line since it's used in the title:
-            $content_message = delete_all_between('<div class="line first_line hideIfEmpty">', '</div>', $content_message);
+            $content_message = delete_all_between('<div class="line hideIfEmpty first_line">', '</div>', $content_message);
         }
 
         foreach ($list_settings['query_string'] as $x) {
