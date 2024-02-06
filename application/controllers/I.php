@@ -716,11 +716,9 @@ class I extends CI_Controller {
         //Remove current media missing from submitted (Removed during editing):
         foreach(array_diff($current_media_e__ids, $submitted_media_e__ids) as $deleted_media_e__id){
             $media_stats['adjust_removed']++;
-            /*
             $this->X_model->update($full_media[$deleted_media_e__id]['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
             ), $member_e['e__id'], 42694); //Media Removed
-            */
         }
 
 
