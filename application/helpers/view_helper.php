@@ -1917,7 +1917,7 @@ function view_i_media($i){
                 'x__follower' => $x['e__id'], //Public ID
             ), array(), 1) as $existing_media){
                 $template .= '<video id="video_player_'.$existing_media['x__message'].'" controls class="cld-video-player"></video>'.
-                    '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
+                    '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$existing_media['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$existing_media['x__message'].'\'); </script>';
             }
         } elseif($x['x__type']==4260){
             //Image
