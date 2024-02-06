@@ -4296,7 +4296,8 @@ main {
     max-width: 100%;
     border-radius: 0px;
 }
-.media_display img {
+.media_display img,
+.media_display audio {
     width: 100%;
 }
 
