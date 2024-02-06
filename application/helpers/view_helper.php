@@ -1908,14 +1908,8 @@ function view_i_media($i){
              '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
         } elseif($x['x__type']==4259){
             //Audio
-            foreach($CI->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__following' => 42693, //Secure URL
-                'x__follower' => $x['e__id'],
-            ), array(), 1) as $existing_media){
-                $template = '<audio controls src="'.$existing_media['x__message'].'"></audio>';
-            }
+            $template = '<audio controls src="'.$x['x__message'].'"></audio>';
+
             //Also do a video player to see difference:
             foreach($CI->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
