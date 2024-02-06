@@ -1913,24 +1913,13 @@ function view_i_media($i){
                 'x__follower' => $x['e__id'],
             ), array(), 1);
 
-            $template = '<video id="video_player_'.$x['x__message'].'" controls class="cld-video-player" poster="'.$x['e__cover'].'"></video>'.
+            $template = '<video id="video_player_'.$x['x__message'].'" data-setup=\'{"fluid": true}\' controls class="cld-video-player cld-video-player-skin-light" poster="'.$x['e__cover'].'"></video>'.
              '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
 
         } elseif($x['x__type']==4259){
 
             //Audio
             $template = '<audio controls src="'.$x['x__message'].'"></audio>';
-
-            //Also do a video player to see difference:
-            foreach($CI->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__following' => 42660, //Public ID
-                'x__follower' => $x['e__id'],
-            ), array(), 1) as $existing_media){
-                $template .= '<video id="video_player_'.$existing_media['x__message'].'" controls class="cld-video-player"></video>'.
-                    '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$existing_media['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$existing_media['x__message'].'\'); </script>';
-            }
 
         } elseif($x['x__type']==4260){
             //Image

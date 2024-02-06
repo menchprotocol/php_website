@@ -42,11 +42,6 @@ if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user 
 
 }
 
-function insert_video(element, public_id, e__cover = null){
-    $(element).html('<video id="video_player_'+public_id+'" controls class="cld-video-player" poster="'+e__cover+'"></video>');
-    var cld = cloudinary.videoPlayer('video_player_'+public_id,{ cloudName: 'menchcloud' });
-    cld.source(public_id);
-}
 
 jQuery.fn.sortElements = (function(){
 

@@ -3159,12 +3159,6 @@ a,
     border-color: #000000 !important;
 }
 
-.cld-video-player{
-    max-width: 610px;
-    min-height: 305px;
-    min-width: 100%;
-}
-
 .inner-content .texttype__lg,
 .nav-tabs .nav-item.show .nav-link{
     border-color: #000000 !important;
