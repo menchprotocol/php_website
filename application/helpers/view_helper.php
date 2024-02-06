@@ -1910,9 +1910,9 @@ function view_i_media($i){
             //Audio
             $template = '<audio controls src="'.$x['x__message'].'"></audio>';
             //Also do a video player to see difference:
-            foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            foreach($CI->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__following' => 42660, //Public ID
                 'x__follower' => $x['e__id'], //Public ID
             ), array(), 1) as $existing_media){
