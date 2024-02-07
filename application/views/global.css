@@ -2808,6 +2808,18 @@ h4.main__title{
 }
 
 
+.small-player .vjs-time-controls, .small-player .vjs-time-divider {
+    display:none;
+}
+.small-player .vjs-big-play-button {
+    width: 4em;
+    height: 4em;
+}
+.small-player .vjs-big-play-button:before {
+    font-size:2em;
+    line-height:2;
+}
+
 .media_outer_frame {
     clear: both;
     background-color: #FFFFFF;
