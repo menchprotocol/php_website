@@ -1247,16 +1247,31 @@ function editor_save_i(){
     var sort_rank = 0;
     var media_uploaded = true;
     $("#media_frame .media_item").each(function () {
-        if(media_cache[uploader_id][$(this).attr('id')]){
+        var current_e_id = parseInt($(this).attr('e__id'));
+
+        if(current_e_id > 0){
+
+            //Already there...
+            modify_data['save_media'][sort_rank] = {
+                media_e__id:  parseInt($(this).attr('media_e__id')),
+                e__id:        current_e_id,
+                e__cover:     $(this).attr('e__cover'),
+                e__title:     $('#'+$(this).attr('id')+' input').val(),
+            }
+            sort_rank++;
+
+        } else if(media_cache[uploader_id][$(this).attr('id')]){
+
             //Fetch variables for this media:
             modify_data['save_media'][sort_rank] = {
                 media_e__id:  parseInt($(this).attr('media_e__id')),
-                e__id:        parseInt($(this).attr('e__id')),
+                e__id:        current_e_id,
                 e__cover:     $(this).attr('e__cover'),
                 e__title:     $('#'+$(this).attr('id')+' input').val(),
                 media_cache:  media_cache[uploader_id][$(this).attr('id')],
             }
             sort_rank++;
+
         } else {
             //This media is missing, upload is not complete:
             media_uploaded = false;

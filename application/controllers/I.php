@@ -530,7 +530,7 @@ class I extends CI_Controller {
 
                     //Adding new media...
                     //Search eTag to see if we already have it:
-                    if(strlen($submitted_media['media_cache']['etag'])){
+                    if(isset($submitted_media['media_cache']['etag']) && strlen($submitted_media['media_cache']['etag'])){
                         //We we already have this asset, link to that source without giving this new source the authority over it...
                         //First person to upload a source will get authority over its created source...
                         foreach($this->X_model->fetch(array(
@@ -659,7 +659,7 @@ class I extends CI_Controller {
                     if($submitted_media['e__id'] && $submitted_media['media_e__id']){
 
                         $core_value = array(
-                            4258 => $submitted_media['media_cache']['public_id'], //Video Public ID
+                            4258 => ( isset($submitted_media['media_cache']['public_id']) ? $submitted_media['media_cache']['public_id'] : null ), //Video Public ID
                             4259 => ( isset($submitted_media['media_cache']['secure_url']) ? $submitted_media['media_cache']['secure_url'] : null ), //Audio Playback URL
                             4260 => null, //Image Thumbnail is always at e__cover, no need to store locally
                         );
