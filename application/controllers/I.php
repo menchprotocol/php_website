@@ -52,7 +52,7 @@ class I extends CI_Controller {
         if ( count($is) < 1) {
 
             //See if we can find via ID?
-            if(0 && is_numeric($i__hashtag)){
+            if(is_numeric($i__hashtag)){
                 foreach($this->I_model->fetch(array(
                     'i__id' => $i__hashtag,
                 )) as $go){
@@ -64,7 +64,7 @@ class I extends CI_Controller {
 
         }
 
-        $member_e = superpower_unlocked(10939); //Idea Pen?
+        $member_e = superpower_unlocked(); //Idea Pen?
         if(!$member_e){
             if(in_array($is[0]['i__privacy'], $this->config->item('n___31871'))){
                 return redirect_message('/'.$i__hashtag);
