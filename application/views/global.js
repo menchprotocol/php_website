@@ -1481,7 +1481,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 sourceBg: "#FFFFFF"
             },
             frame: {
-                background: "#777777"
+                background: "transparent"
             }
         }
     };
