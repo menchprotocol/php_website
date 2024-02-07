@@ -87,13 +87,15 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     $e___14506 = $this->config->item('e___14506');
     $google_fonts = array();
     $session_data = $this->session->all_userdata();
+    print_r($session_data);
+
     $current_font_family = "'Cute Font', cursive";
     $current_font_code = 'Cute+Font';
-    if(isset($session_data['session_custom_ui_29763']) && strlen($session_data['session_custom_ui_29763']) && isset($e___29763[$session_data['session_custom_ui_29763']]['m__message']) && strlen($e___29763[$session_data['session_custom_ui_29763']]['m__message'])){
-        $current_font_family = $e___29763[$session_data['session_custom_ui_29763']]['m__message'];
+    if(strlen($this->session->userdata('session_custom_ui_29763')) && isset($e___29763[$this->session->userdata('session_custom_ui_29763')]['m__message']) && strlen($e___29763[$this->session->userdata('session_custom_ui_29763')]['m__message'])){
+        $current_font_family = $e___29763[$this->session->userdata('session_custom_ui_29763')]['m__message'];
     }
-    if(isset($session_data['session_custom_ui_29711']) && strlen($session_data['session_custom_ui_29711']) && isset($e___29711[$session_data['session_custom_ui_29711']]['m__message']) && strlen($e___29711[$session_data['session_custom_ui_29711']]['m__message'])){
-        $current_font_code = $e___29711[$session_data['session_custom_ui_29711']]['m__message'];
+    if(strlen($this->session->userdata('session_custom_ui_29711')) && isset($e___29711[$this->session->userdata('session_custom_ui_29711')]['m__message']) && strlen($e___29711[$this->session->userdata('session_custom_ui_29711')]['m__message'])){
+        $current_font_code = $e___29711[$this->session->userdata('session_custom_ui_29711')]['m__message'];
     }
 
 
