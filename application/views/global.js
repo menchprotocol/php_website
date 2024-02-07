@@ -1466,7 +1466,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         defaultSource: 'local',
         styles:{
             palette: {
-                window: "#FFFFFF",
+                window: "#777777",
                 windowBorder: "#999999",
                 tabIcon: "#000000",
                 menuIcons: "#999999",
@@ -1478,7 +1478,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 error: "#FC1B44",
                 inProgress: "#999999",
                 complete: "#000000",
-                sourceBg: "#777777"
+                sourceBg: "#FFFFFF"
             },
             frame: {
                 background: "#FFFFFF"
