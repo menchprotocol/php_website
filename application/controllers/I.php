@@ -530,6 +530,7 @@ class I extends CI_Controller {
 
                     //Adding new media...
                     //Search eTag to see if we already have it:
+                    $etag_detected = false;
                     if(isset($submitted_media['media_cache']['etag']) && strlen($submitted_media['media_cache']['etag'])){
                         //We we already have this asset, link to that source without giving this new source the authority over it...
                         //First person to upload a source will get authority over its created source...
@@ -540,6 +541,7 @@ class I extends CI_Controller {
                             'x__message' => $submitted_media['media_cache']['etag'],
                         ), array('x__follower'), 1) as $existing_media){
                             $submitted_media['e__id'] = $existing_media['e__id'];
+                            $etag_detected = true;
                         }
                     }
 
@@ -665,32 +667,54 @@ class I extends CI_Controller {
                         );
 
                         //Link to Idea:
-                        $this->X_model->create(array(
-                            'x__creator' => $member_e['e__id'],
+                        if(!count($this->X_model->fetch(array(
                             'x__next' => $is[0]['i__id'],
                             'x__following' => $submitted_media['e__id'],
                             'x__type' => $submitted_media['media_e__id'],
-                            'x__message' => $core_value[$submitted_media['media_e__id']],
-                            'x__weight' => $sort_count,
-                        ));
+                        )))){
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__next' => $is[0]['i__id'],
+                                'x__following' => $submitted_media['e__id'],
+                                'x__type' => $submitted_media['media_e__id'],
+                                'x__message' => $core_value[$submitted_media['media_e__id']],
+                                'x__weight' => $sort_count,
+                            ));
+                        }
+
 
                         //Link to Source as Uploader:
-                        $this->X_model->create(array(
-                            'x__creator' => $member_e['e__id'],
+                        $link_type = ( $etag_detected ? 4230 : 42659 );
+                        if(!count($this->X_model->fetch(array(
                             'x__following' => $member_e['e__id'],
                             'x__follower' => $submitted_media['e__id'],
-                            'x__type' => 42659, //Uploader
-                            'x__message' => $core_value[$submitted_media['media_e__id']],
-                        ));
+                            'x__type' => $link_type,
+                        )))){
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__following' => $member_e['e__id'],
+                                'x__follower' => $submitted_media['e__id'],
+                                'x__type' => $link_type,
+                                'x__message' => $core_value[$submitted_media['media_e__id']],
+                            ));
+                        }
+
 
                         //Link to Media Type:
-                        $this->X_model->create(array(
-                            'x__creator' => $member_e['e__id'],
+                        if(!count($this->X_model->fetch(array(
                             'x__following' => $submitted_media['media_e__id'],
                             'x__follower' => $submitted_media['e__id'],
                             'x__type' => 4230,
-                            'x__metadata' => $submitted_media,
-                        ));
+                        )))){
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__following' => $submitted_media['media_e__id'],
+                                'x__follower' => $submitted_media['e__id'],
+                                'x__type' => 4230,
+                                'x__metadata' => $submitted_media,
+                            ));
+                        }
+
 
                     }
                 }
