@@ -1478,7 +1478,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 error: "#FC1B44",
                 inProgress: "#007AFD",
                 complete: "#FFC500",
-                sourceBg: "#FFFFFF"
+                sourceBg: "#777777"
             },
             frame: {
                 background: "#FFFFFF"
