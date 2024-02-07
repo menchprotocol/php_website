@@ -1042,6 +1042,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
         //Load Current Media:
         $(".ui_i__cache_"+i__id+" .media_display").each(function () {
+            $('.media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" e__id="0"  e__cover=""></div>');
             cloudinary_load_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
         });
 
