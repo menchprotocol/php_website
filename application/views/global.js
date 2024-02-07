@@ -1045,6 +1045,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
             $('.media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" e__id="0"  e__cover=""></div>');
             cloudinary_load_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
         });
+        sort_media();
 
     } else {
 
@@ -1356,6 +1357,19 @@ function editor_save_i(){
     });
 }
 
+function sort_media(){
+    var sort = Sortable.create(document.getElementById("media_frame"), {
+        animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
+        draggable: ".media_item", // Specifies which items inside the element should be sortable
+        handle: ".media_item", // Restricts sort start click/touch to the specified element
+        onUpdate: function (evt/**Event*/) {
+            //Nothing we need to do since the order will be grabbed upon submission...
+            //Just mark as unsaved again to make sure it saves:
+            has_unsaved_changes = true;
+        }
+    });
+}
+
 var media_cache = []; //Stores the json data for successfully uploaded media files
 function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){
 
@@ -1458,16 +1472,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         } else if (result.event === "queues-start") {
 
             //Enable Sorting:
-            var sort = Sortable.create(document.getElementById("media_frame"), {
-                animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: ".media_item", // Specifies which items inside the element should be sortable
-                handle: ".media_item", // Restricts sort start click/touch to the specified element
-                onUpdate: function (evt/**Event*/) {
-                    //Nothing we need to do since the order will be grabbed upon submission...
-                    //Just mark as unsaved again to make sure it saves:
-                    has_unsaved_changes = true;
-                }
-            });
+            sort_media();
 
         } else if (result.event === "upload-added") {
 
