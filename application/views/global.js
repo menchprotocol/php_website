@@ -1556,25 +1556,19 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio){
                         //Audio
                         media_e__id = 4259;
-                        playback_code = result.info.public_id;
+                        playback_code = result.info.secure_url;
                     } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
                         //Image
                         media_e__id = 4260;
                     } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
                         media_e__id = 4258;
-                        playback_code = result.info.secure_url;
+                        playback_code = result.info.public_id;
                     }
                 }
 
                 //Append this to the main source:
-                if(media_cache[uploader_id][result.info.id]){
-
-                    //Duplicate local upload, give error and remove:
-                    alert('Error: File uploaded twice, so we will keep one copy and remove the other...');
-                    delete_media(uploader_id, result.info.id, false, true);
-
-                } else if(media_e__id) {
+                if(media_e__id) {
 
                     cloudinary_load_source(uploader_id, result.info.id, media_e__id, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
 
