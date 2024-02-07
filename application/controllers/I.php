@@ -540,6 +540,7 @@ class I extends CI_Controller {
                             'x__following' => 42662, //etag
                             'x__message' => $submitted_media['media_cache']['etag'],
                         ), array('x__follower'), 1) as $existing_media){
+                            $media_stats['adjust_duplicated']++;
                             $submitted_media['e__id'] = $existing_media['e__id'];
                             $etag_detected = true;
                         }
@@ -600,7 +601,6 @@ class I extends CI_Controller {
                                     'x__following' => $x__type,
                                     'e__title' => $target_variable,
                                 ), array('x__follower'), 1, 0, array('x__id' => 'ASC')) as $child_source){
-                                    $media_stats['adjust_duplicated']++;
                                     $child_id = $child_source['e__id'];
                                 }
 
