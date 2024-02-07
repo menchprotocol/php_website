@@ -664,37 +664,34 @@ class I extends CI_Controller {
                             4260 => null, //Image Thumbnail is always at e__cover, no need to store locally
                         );
 
-                        if(array_key_exists($submitted_media['media_e__id'], $media_index)){
+                        //Link to Idea:
+                        $this->X_model->create(array(
+                            'x__creator' => $member_e['e__id'],
+                            'x__next' => $is[0]['i__id'],
+                            'x__following' => $submitted_media['e__id'],
+                            'x__type' => $submitted_media['media_e__id'],
+                            'x__message' => $core_value[$submitted_media['media_e__id']],
+                            'x__weight' => $sort_count,
+                        ));
 
-                            //Link to Idea:
-                            $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
-                                'x__next' => $is[0]['i__id'],
-                                'x__following' => $submitted_media['e__id'],
-                                'x__type' => $submitted_media['media_e__id'],
-                                'x__message' => $core_value[$submitted_media['media_e__id']],
-                                'x__weight' => $sort_count,
-                            ));
+                        //Link to Source as Uploader:
+                        $this->X_model->create(array(
+                            'x__creator' => $member_e['e__id'],
+                            'x__following' => $member_e['e__id'],
+                            'x__follower' => $submitted_media['e__id'],
+                            'x__type' => 42659, //Uploader
+                            'x__message' => $core_value[$submitted_media['media_e__id']],
+                        ));
 
-                            //Link to Source as Uploader:
-                            $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
-                                'x__following' => $member_e['e__id'],
-                                'x__follower' => $submitted_media['e__id'],
-                                'x__type' => 42659, //Uploader
-                                'x__message' => $core_value[$submitted_media['media_e__id']],
-                            ));
+                        //Link to Media Type:
+                        $this->X_model->create(array(
+                            'x__creator' => $member_e['e__id'],
+                            'x__following' => $submitted_media['media_e__id'],
+                            'x__follower' => $submitted_media['e__id'],
+                            'x__type' => 4230,
+                            'x__metadata' => $submitted_media,
+                        ));
 
-                            //Link to Media Type:
-                            $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
-                                'x__following' => $submitted_media['media_e__id'],
-                                'x__follower' => $submitted_media['e__id'],
-                                'x__type' => 4230,
-                                'x__metadata' => $submitted_media,
-                            ));
-
-                        }
                     }
                 }
 
