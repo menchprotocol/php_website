@@ -89,15 +89,13 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     $session_data = $this->session->all_userdata();
     print_r($session_data);
 
+
     $current_font_family = "'Cute Font', cursive";
     $current_font_code = 'Cute+Font';
-    if(strlen($this->session->userdata('session_custom_ui_29763')) && isset($e___29763[$this->session->userdata('session_custom_ui_29763')]['m__message']) && strlen($e___29763[$this->session->userdata('session_custom_ui_29763')]['m__message'])){
-        $current_font_family = $e___29763[$this->session->userdata('session_custom_ui_29763')]['m__message'];
+    if(is_numeric($this->session->userdata('session_custom_ui_14506'))){
+        $current_font_family = $e___29763[$this->session->userdata('session_custom_ui_14506')]['m__message'];
+        $current_font_code = $e___29711[$this->session->userdata('session_custom_ui_14506')]['m__message'];
     }
-    if(strlen($this->session->userdata('session_custom_ui_29711')) && isset($e___29711[$this->session->userdata('session_custom_ui_29711')]['m__message']) && strlen($e___29711[$this->session->userdata('session_custom_ui_29711')]['m__message'])){
-        $current_font_code = $e___29711[$this->session->userdata('session_custom_ui_29711')]['m__message'];
-    }
-
 
 
     //Do we have Google Analytics?
