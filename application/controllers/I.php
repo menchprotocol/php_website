@@ -550,7 +550,6 @@ class I extends CI_Controller {
                         //Create Source for this new media:
                         $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], ( $submitted_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'fas fa-volume-up' : $submitted_media['e__cover'] ), true);
                         if(!$added_e['status']){
-
                             $this->X_model->create(array(
                                 'x__type' => 4246, //Platform Bug Reports
                                 'x__message' => 'Failed to create a new source for ['.$submitted_media['e__title'].'] with cover ['.$submitted_media['e__cover'].']',
@@ -559,11 +558,7 @@ class I extends CI_Controller {
                                     'post' => $_POST,
                                 ),
                             ));
-
-                            return view_json(array(
-                                'status' => 0,
-                                'message' => 'Failed to create new source for ['.$submitted_media['e__title'].']',
-                            ));
+                            continue;
                         }
 
                         //Create new media and assign ID:
@@ -738,7 +733,7 @@ class I extends CI_Controller {
 
 
         //Validate Idea Message:
-        $final_media_count = $media_stats['total_current'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
+        $final_media_count = $media_stats['total_current'] + $media_stats['adjust_duplicated'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
         if(!$final_media_count && !strlen(trim($_POST['save_i__message']))){
             //Since we do not have media, we must have a message:
             return view_json(array(
