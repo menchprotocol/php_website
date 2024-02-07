@@ -574,7 +574,7 @@ class I extends CI_Controller {
                             $target_variable = false;
                             if(isset($e___32088[$x__type]['m__message'])){
                                 //Determine if variable exists...
-                                if(in_array($x__type, $this->config->item('n___42680')) && isset($submitted_media['media_cache']['video'][$e___32088[$x__type]['m__message']])){
+                                if(in_array($x__type, $this->config->item('n___42763')) && isset($submitted_media['media_cache']['video'][$e___32088[$x__type]['m__message']])){
                                     //Video info:
                                     $target_variable = $submitted_media['media_cache']['video'][$e___32088[$x__type]['m__message']];
                                 } elseif(in_array($x__type, $this->config->item('n___42675')) && isset($submitted_media['media_cache']['audio'][$e___32088[$x__type]['m__message']])){
