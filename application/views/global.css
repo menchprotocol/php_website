@@ -2808,15 +2808,6 @@ h4.main__title{
 }
 
 
-.small-player .vjs-time-controls, .small-player .vjs-time-divider {
-    display:none;
-}
-.small-player .vjs-big-play-button {
-    display:none;
-}
-.small-player .vjs-big-play-button:before {
-    display:none;
-}
 
 .media_outer_frame {
     clear: both;
