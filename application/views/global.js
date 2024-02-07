@@ -1481,7 +1481,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 sourceBg: "#FFFFFF"
             },
             frame: {
-                background: "rgba(239,239,239,0.34)"
+                background: "rgba(0,0,0,0.55)"
             }
         }
     };
