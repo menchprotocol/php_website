@@ -1399,7 +1399,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     //Fetch global defaults:
     var default_max_file_count = parseFloat(js_e___6404[42382]['m__message']);
 
-    var global_tags = ['uploader@'+uploader_id, '@'+js_pl_id];
+    var global_tags = ['@'+uploader_id, '@'+website_id, '@'+js_pl_id];
     var allow_videos = js_e___42390[uploader_id]!==undefined;
     var allow_imgaes = js_e___42389[uploader_id]!==undefined;
     var allow_audio = js_e___42644[uploader_id]!==undefined;
