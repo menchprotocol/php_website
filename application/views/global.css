@@ -4297,6 +4297,12 @@ main {
     border-radius: 0px;
 }
 
+:root  {
+    --primary-color:  #000000;
+    --secondary-color:  #999999;
+    --background-color:  #FFFFFF;
+}
+
 .form-control,
 .alert{
     border-radius:0 !important;
