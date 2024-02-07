@@ -738,7 +738,7 @@ class I extends CI_Controller {
             //Since we do not have media, we must have a message:
             return view_json(array(
                 'status' => 0,
-                'message' => 'You must either write an idea or upload media to save. '.$final_media_count.' = '.$media_stats['total_current'].' + '.$media_stats['adjust_created'].' - '.$media_stats['adjust_removed'],
+                'message' => 'You must either write an idea or upload media to save.',
             ));
         }
 
