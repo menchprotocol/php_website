@@ -1482,9 +1482,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
             },
             frame: {
                 background: "#777777"
-            },
-            fonts: {
-                current_font_family: "https://fonts.googleapis.com/css?family="+current_font_code,
             }
         }
     };

@@ -86,16 +86,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     $e___29711 = $this->config->item('e___29711'); //Google Font Family
     $e___14506 = $this->config->item('e___14506');
     $google_fonts = array();
-    $session_data = $this->session->all_userdata();
-    print_r($session_data);
-
-
-    $current_font_family = "'Cute Font', cursive";
-    $current_font_code = 'Cute+Font';
-    if(is_numeric($this->session->userdata('session_custom_ui_14506'))){
-        $current_font_family = $e___29763[$this->session->userdata('session_custom_ui_14506')]['m__message'];
-        $current_font_code = $e___29711[$this->session->userdata('session_custom_ui_14506')]['m__message'];
-    }
 
 
     //Do we have Google Analytics?
@@ -117,8 +107,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_handle = \'' . ( $member_e ? $member_e['e__handle'] : '' ) . '\'; ';
-    echo ' var current_font_family = "' . $current_font_family . '"; ';
-    echo ' var current_font_code = "' . $current_font_code . '"; ';
     echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
     echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
     echo ' var universal_search_enabled = ' . intval($this->config->item('universal_search_enabled')) . '; ';
