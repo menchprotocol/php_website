@@ -1042,8 +1042,8 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
         //Load Current Media:
         $(".ui_i__cache_"+i__id+" .media_display").each(function () {
-            $('.media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" e__id="0"  e__cover=""></div>');
-            cloudinary_load_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
+            $('.media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
+            cloudinary_load_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
         });
         sort_media();
 
@@ -1254,6 +1254,7 @@ function editor_save_i(){
             //Already there...
             modify_data['save_media'][sort_rank] = {
                 media_e__id:  parseInt($(this).attr('media_e__id')),
+                playback_code: $(this).attr('playback_code'),
                 e__id:        current_e_id,
                 e__cover:     $(this).attr('e__cover'),
                 e__title:     $('#'+$(this).attr('id')+' input').val(),
@@ -1265,6 +1266,7 @@ function editor_save_i(){
             //Fetch variables for this media:
             modify_data['save_media'][sort_rank] = {
                 media_e__id:  parseInt($(this).attr('media_e__id')),
+                playback_code: $(this).attr('playback_code'),
                 e__id:        current_e_id,
                 e__cover:     $(this).attr('e__cover'),
                 e__title:     $('#'+$(this).attr('id')+' input').val(),
@@ -1525,7 +1527,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                 //Discovery Uploader
                 has_unsaved_changes = true;
-                $('.media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('.media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             } else if(uploader_id==12117){
 
@@ -1547,19 +1549,21 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
             } else if(uploader_id==13572){
 
-
                 //Idea Uploader
+                var playback_code = '';
                 var media_e__id = 0;
                 if(result.info.format && result.info.format.length>0){
                     if(js_e___42641[4259]['m__message'].split(' ').includes(result.info.format) && result.info.is_audio){
                         //Audio
                         media_e__id = 4259;
+                        playback_code = result.info.public_id;
                     } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
                         //Image
                         media_e__id = 4260;
                     } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
                         media_e__id = 4258;
+                        playback_code = result.info.secure_url;
                     }
                 }
 
@@ -1572,7 +1576,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
                 } else if(media_e__id) {
 
-                    cloudinary_load_source(uploader_id, result.info.id, media_e__id, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
+                    cloudinary_load_source(uploader_id, result.info.id, media_e__id, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log('MEDIA CACHE:');
@@ -1631,17 +1635,20 @@ function delete_media(uploader_id, info_id, remove_cache = true, skip_check = fa
     }
 }
 
+function play_video(public_id){
+    var cld = cloudinary.videoPlayer('video_player_'+public_id,{ cloudName: 'menchcloud' });
+    cld.source(public_id);
+}
 
-
-function cloudinary_load_source(uploader_id, info_id, media_e__id, e__cover, e__title, e__id = 0){
+function cloudinary_load_source(uploader_id, info_id, media_e__id, playback_code, e__cover, e__title, e__id = 0){
 
     //Update meta variables:
-    $('#'+info_id).attr('media_e__id',media_e__id).attr('e__id',e__id).attr('e__cover',e__cover);
+    $('#'+info_id).attr('media_e__id',media_e__id).attr('playback_code',playback_code).attr('e__id',e__id).attr('e__cover',e__cover);
 
     if(media_e__id == 4258){
 
         //Video
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><video id="video_player_'+public_id+'" controls class="cld-video-player cld-fluid cld-video-player-skin-light" poster="'+e__cover+'"></video><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="fas fa-xmark"></i></a>');
 
     } else if(media_e__id == 4260){
 
@@ -1651,7 +1658,7 @@ function cloudinary_load_source(uploader_id, info_id, media_e__id, e__cover, e__
     } else if(media_e__id == 4259){
 
         //Audio
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="fas fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><audio controls src="'+playback_code+'"></audio><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="fas fa-xmark"></i></a>');
 
     } else {
 
@@ -1660,6 +1667,9 @@ function cloudinary_load_source(uploader_id, info_id, media_e__id, e__cover, e__
         delete_media(uploader_id, info_id, true, true);
 
     }
+
+
+
 }
 
 

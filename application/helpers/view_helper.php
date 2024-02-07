@@ -1898,8 +1898,7 @@ function view_i_media($i){
         if($x['x__type']==4258){
 
             //Video
-            $template = '<video id="video_player_'.$x['x__message'].'" controls class="cld-video-player cld-fluid cld-video-player-skin-light" poster="'.$x['e__cover'].'"></video>'.
-                '<script> var cld = cloudinary.videoPlayer(\'video_player_'.$x['x__message'].'\',{ cloudName: \'menchcloud\' }); cld.source(\''.$x['x__message'].'\'); </script>';
+            $template = '<video id="video_player_'.$x['x__message'].'" controls class="cld-video-player cld-fluid cld-video-player-skin-light" poster="'.$x['e__cover'].'"></video><script> play_video(\''.$x['x__message'].'\'); </script>';
 
         } elseif($x['x__type']==4259){
 
@@ -1907,14 +1906,16 @@ function view_i_media($i){
             $template = '<audio controls src="'.$x['x__message'].'"></audio>';
 
         } elseif($x['x__type']==4260){
+
             //Image
             $template = '<img src="'.$x['e__cover'].'"></video>';
+
         } else {
             continue; //Should not happen!
         }
 
         //Format data if needed:
-        $message_append .= '<div class="media_display media_display_'.$x['x__type'].( $x['x__type']==4258 ? ' ignore-click ' : '' ).'" id="loaded_media_'.$x['x__id'].'" class="media_item" media_e__id="'.$x['x__type'].'" e__id="'.$x['e__id'].'"  e__cover="'.$x['e__cover'].'" e__title="'.$x['e__title'].'">'.$template.'</div>';
+        $message_append .= '<div class="media_display media_display_'.$x['x__type'].( $x['x__type']==4258 ? ' ignore-click ' : '' ).'" id="loaded_media_'.$x['x__id'].'" class="media_item" media_e__id="'.$x['x__type'].'" e__id="'.$x['e__id'].'"  e__cover="'.$x['e__cover'].'" playback_code="'.$x['x__message'].'" e__title="'.$x['e__title'].'">'.$template.'</div>';
 
     }
 

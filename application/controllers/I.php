@@ -629,6 +629,7 @@ class I extends CI_Controller {
 
                                     //Assign child source:
                                     $child_id = $added_child['new_e']['e__id'];
+
                                 }
 
                                 if($child_id){
@@ -660,12 +661,6 @@ class I extends CI_Controller {
                     //By now have the media source, create necessary links:
                     if($submitted_media['e__id'] && $submitted_media['media_e__id']){
 
-                        $core_value = array(
-                            4258 => ( isset($submitted_media['media_cache']['public_id']) ? $submitted_media['media_cache']['public_id'] : null ), //Video Public ID
-                            4259 => ( isset($submitted_media['media_cache']['secure_url']) ? $submitted_media['media_cache']['secure_url'] : null ), //Audio Playback URL
-                            4260 => null, //Image Thumbnail is always at e__cover, no need to store locally
-                        );
-
                         //Link to Idea:
                         if(!count($this->X_model->fetch(array(
                             'x__next' => $is[0]['i__id'],
@@ -677,7 +672,7 @@ class I extends CI_Controller {
                                 'x__next' => $is[0]['i__id'],
                                 'x__following' => $submitted_media['e__id'],
                                 'x__type' => $submitted_media['media_e__id'],
-                                'x__message' => $core_value[$submitted_media['media_e__id']],
+                                'x__message' => $submitted_media['playback_code'],
                                 'x__weight' => $sort_count,
                             ));
                         }
@@ -695,7 +690,7 @@ class I extends CI_Controller {
                                 'x__following' => $member_e['e__id'],
                                 'x__follower' => $submitted_media['e__id'],
                                 'x__type' => $link_type,
-                                'x__message' => $core_value[$submitted_media['media_e__id']],
+                                'x__message' => $submitted_media['playback_code'],
                             ));
                         }
 
@@ -714,7 +709,6 @@ class I extends CI_Controller {
                                 'x__metadata' => $submitted_media,
                             ));
                         }
-
 
                     }
                 }
