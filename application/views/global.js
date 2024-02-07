@@ -1040,6 +1040,11 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
         $('#modal31911 .save_i__hashtag').val($('.ui_i__hashtag_'+i__id+':first').text());
         $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id+':first').text());
 
+        //Load Current Media:
+        $(".ui_i__cache_"+i__id+" .media_display").each(function () {
+            cloudinary_load_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
+        });
+
     } else {
 
         //See the default passed to the form:
@@ -1432,7 +1437,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
     };
 
 
-    console.log(widget_setting); //TODO Remove later for debugging now
+    console.log(widget_setting);
     var widget = cloudinary.createUploadWidget(widget_setting, (error, result) => {
 
         if(error || !result){
@@ -1445,8 +1450,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 delete_media(uploader_id, result.info.id, true, true);
             }
             //Log error
-            console.log('ERROR'); //TODO Remove later for debugging now
-            console.log(result); //TODO Remove later for debugging now
+            console.log('ERROR');
+            console.log(result);
 
 
         } else if (result.event === "queues-start") {
@@ -1467,7 +1472,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
             //Add Pending Loader
             console.log(result.event);
-            console.log(result); //TODO Remove later for debugging now
+            console.log(result);
 
             //Append loaders:
             if(uploader_id==42359){
@@ -1490,8 +1495,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
 
         } else if (result.event === "success") {
 
-            console.log(result.event); //TODO Remove later for debugging now
-            console.log(result); //TODO Remove later for debugging now
+            console.log(result.event);
+            console.log(result);
 
             //Add uploaded media:
             if(uploader_id==42359){
@@ -1514,13 +1519,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
                         media_e__id = 4258;
-                    } else {
-                        console.log('ERORRRRRRRR: UNKNOWN Media Type');
                     }
-                } else {
-                    console.log('ERORRRRRRRR: MIssing format to detect results');
                 }
-
 
                 //Append this to the main source:
                 if(media_cache[uploader_id][result.info.id]){
