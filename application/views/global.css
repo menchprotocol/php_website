@@ -2819,14 +2819,6 @@ h4.main__title{
     display: block;
 }
 
-.media_frame .media_item,
-.media_frame .media_item img,
-.media_frame .media_item video,
-.media_frame .media_item audio {
-    width: 144px;
-    height: 144px;
-    cursor: move;
-}
 .media_frame .media_item input {
     position: absolute;
     width: 144px;
@@ -2866,13 +2858,40 @@ h4.main__title{
     cursor: move;
     overflow: hidden;
 }
-.media_frame .media_item img,
-.media_frame .media_item video,
+
 .media_frame .media_item audio {
+    position: absolute;
+    bottom: 21px;
+    left: 0;
+    z-index: 1001;
+    width: 100%;
+    cursor: move;
+}
+
+.media_frame .media_item {
+    width: 144px;
+    height: 144px;
+    cursor: move;
+}
+
+.media_frame .media_item video {
+    position: absolute;
+    bottom: 21px;
+    left: 0;
+    z-index: 1001;
+    width: 144px;
+    height: 123px;
+    cursor: move;
+}
+
+.media_frame .media_item img {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1001;
+    width: 144px;
+    height: 144px;
+    cursor: move;
 }
 
 .media_frame .media_item a {
