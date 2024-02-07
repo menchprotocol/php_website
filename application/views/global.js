@@ -1464,6 +1464,29 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         tags: global_tags.concat(uploader_tags),
         sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
         defaultSource: 'local',
+        styles:{
+            palette: {
+                window: "#FFFFFF",
+                windowBorder: "#999999",
+                tabIcon: "#007AFD",
+                menuIcons: "#999999",
+                textDark: "#000000",
+                textLight: "#FFFFFF",
+                link:  "#007AFD",
+                action:  "#FC1B44",
+                inactiveTabIcon: "#999999",
+                error: "#FC1B44",
+                inProgress: "#007AFD",
+                complete: "#FFC500",
+                sourceBg: "#FFFFFF"
+            },
+            frame: {
+                background: "#FFFFFF"
+            },
+            fonts: {
+                current_font_family: "https://fonts.googleapis.com/css?family="+current_font_code,
+            }
+        }
     };
 
 
