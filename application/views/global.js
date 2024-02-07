@@ -1476,8 +1476,8 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 action:  "#FC1B44",
                 inactiveTabIcon: "#999999",
                 error: "#FC1B44",
-                inProgress: "#007AFD",
-                complete: "#FFC500",
+                inProgress: "#999999",
+                complete: "#000000",
                 sourceBg: "#777777"
             },
             frame: {
