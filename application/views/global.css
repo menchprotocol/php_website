@@ -1894,7 +1894,7 @@ label {
     text-align: center;
     border-bottom: 1px solid #000;
     padding: 8px;
-    margin:34px -34px 13px -5px;
+    margin:34px -13px 13px -5px;
     font-size: 0.89em;
 }
 .list-radio-select .list-group-item.active {
@@ -2830,7 +2830,7 @@ h4.main__title{
 }
 
 .save_results{
-    margin:8px -34px 13px -5px !important;
+    margin:8px -13px 13px -5px !important;
 }
 
 
