@@ -986,6 +986,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
                         </div>
 
+                        <div class="inner_message idea_list_previous hideIfEmpty"></div>
+                        <div class="doclear">&nbsp;</div>
+
                         <div class="inner_message">
 
                             <!-- EMOJI -->
@@ -1014,10 +1017,6 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <div class="doclear">&nbsp;</div>
 
                         </div>
-
-
-                        <div class="idea_list_previous cover-text hideIfEmpty"></div>
-                        <div class="doclear">&nbsp;</div>
 
 
                         <div class="<?= hide_if_missing_superpower(10939) ?>">
