@@ -986,8 +986,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
                         </div>
 
-                        <div class="inner_message idea_list_previous hideIfEmpty"></div>
-                        <div class="doclear">&nbsp;</div>
+                        <div class="inner_message">
+                            <div class="idea_list_previous hideIfEmpty"></div>
+                        </div>
 
                         <div class="inner_message">
 
