@@ -2743,6 +2743,9 @@ h4.main__title{
     line-height: 134%;
     margin-bottom: 13px;
 }
+.modal-body .i_cache .first_line{
+    margin-bottom: 0px;
+}
 .edge-cover .i_cache .first_line{
     margin-bottom: 0;
     padding-bottom: 3px;
