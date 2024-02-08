@@ -515,10 +515,11 @@ class E extends CI_Controller
 
             //Create transaction:
             if(!count($this->X_model->fetch(array(
-                    'x__type' => 4251,
-                    'x__follower' => $x__follower,
-                    'x__following' => $x__following,
-                )))){
+                'x__type' => 4251,
+                'x__follower' => $x__follower,
+                'x__following' => $x__following,
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            )))){
                 $ur2 = $this->X_model->create(array(
                     'x__creator' => $member_e['e__id'],
                     'x__type' => 4251,

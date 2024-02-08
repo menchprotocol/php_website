@@ -665,6 +665,7 @@ class I extends CI_Controller {
                             'x__next' => $is[0]['i__id'],
                             'x__following' => $submitted_media['e__id'],
                             'x__type' => $submitted_media['media_e__id'],
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
                                 'x__creator' => $member_e['e__id'],
@@ -683,6 +684,7 @@ class I extends CI_Controller {
                             'x__following' => $member_e['e__id'],
                             'x__follower' => $submitted_media['e__id'],
                             'x__type' => $link_type,
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
                                 'x__creator' => $member_e['e__id'],
@@ -699,6 +701,7 @@ class I extends CI_Controller {
                             'x__following' => $submitted_media['media_e__id'],
                             'x__follower' => $submitted_media['e__id'],
                             'x__type' => 4230,
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
                                 'x__creator' => $member_e['e__id'],
