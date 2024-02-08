@@ -1169,7 +1169,8 @@ a.headline {
 }
 .idea_list_previous .idea_response{
     border-left: 0 !important;
-    margin-left: 34px;
+    margin-left: 18px; /* Since no 2px border */
+    margin-right: 5px;
 }
 
 .idea_response .btn{
