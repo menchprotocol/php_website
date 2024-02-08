@@ -1099,7 +1099,7 @@ function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previ
     //Reset Fields:
     has_unsaved_changes = false;
     $("#modal31911 .unsaved_warning").val('');
-    $('#modal31911 .save_results, #modal31911 .idea_list_next, #modal31911 .media_frame').html('');
+    $('#modal31911 .save_results, #modal31911 .idea_list_next, #modal31911 .idea_list_previous, #modal31911 .media_frame').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id, #modal31911 .created_i__id').val(0);
