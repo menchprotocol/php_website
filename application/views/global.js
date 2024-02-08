@@ -417,7 +417,7 @@ function toggle_pills(x__type, initial_load = false){
             }
 
             //Set focus tab:
-            focus_x__type = x__type;
+            focus_x__type = parseInt(x__type);
             window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
 
             //Load data:
