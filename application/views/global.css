@@ -3103,6 +3103,11 @@ div.dropdown-item
     background-color: #FFFFFF !important;
     color: #000000;
 }
+.custom_top{
+    border-bottom: 1px solid #000;
+    margin-bottom: 13px;
+    margin-right: -34px;
+}
 .mid-text-line span
 {
     background-color: #EFEFEF !important;
