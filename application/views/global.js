@@ -363,7 +363,7 @@ function load_hashtag_menu(){
 function set_hashtag_if_empty(x__type_hash){
     //Will only set the hashtag if not already set
     //This prevents the default tab to override a specific hashtag load request...
-    if(!window.location.hash) {
+    if(!window.location.hash || !$('.handle_nav_'+document.location.hash.substr(1)).attr('x__type')) {
         window.location.hash = '#'+x__type_hash;
     }
 }
