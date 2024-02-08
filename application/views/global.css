@@ -4328,7 +4328,13 @@ main {
     display: block !important;
     justify-content: center !important;
     flex-direction: row !important;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
+.nav-tabs::-webkit-scrollbar {
+    display: none;
+}
+
 .nav-tabs .nav-item {
     margin-bottom: 0px;
 }
