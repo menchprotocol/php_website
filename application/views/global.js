@@ -1099,7 +1099,7 @@ function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previ
     //Reset Fields:
     has_unsaved_changes = false;
     $("#modal31911 .unsaved_warning").val('');
-    $('#modal31911 .save_results, #modal31911 .idea_reply, #modal31911 .media_frame').html('');
+    $('#modal31911 .save_results, #modal31911 .idea_list_next, #modal31911 .media_frame').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
     $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
     $('#modal31911 .save_i__id, #modal31911 .save_x__id, #modal31911 .created_i__id').val(0);
@@ -1127,8 +1127,14 @@ function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previ
         i__id = 0;
         x__id = 0;
         $('#modal31911 .next_i__id').val(next_i__id);
-        $("#modal31911 .idea_reply").html('<div class="creator_headline"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+next_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
-        $("#modal31911 .idea_reply .line:not(.first_line)").addClass('hidden');
+        $("#modal31911 .idea_list_next").html('<div class="creator_headline"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+next_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
+        $("#modal31911 .idea_list_next .line:not(.first_line)").addClass('hidden');
+    } else if(previous_i__id && js_n___4486.includes(add_type)){
+        i__id = 0;
+        x__id = 0;
+        $('#modal31911 .previous_i__id').val(previous_i__id);
+        $("#modal31911 .idea_list_previous").html('<div class="creator_headline"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+previous_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
+        $("#modal31911 .idea_list_previous .line:not(.first_line)").addClass('hidden');
     }
 
     if(i__id){
@@ -1335,6 +1341,7 @@ function editor_save_i(){
         save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
         save_x__id:         $('#modal31911 .save_x__id').val(),
         next_i__id:         $('#modal31911 .next_i__id').val(),
+        previous_i__id:     $('#modal31911 .previous_i__id').val(),
         save_x__message:    $('#modal31911 .save_x__message').val().trim(),
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),

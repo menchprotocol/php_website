@@ -740,7 +740,7 @@ class I extends CI_Controller {
             //Since we do not have media, we must have a message:
             return view_json(array(
                 'status' => 0,
-                'message' => 'You must either write an idea or upload media to save.',
+                'message' => 'Write or Upload something to save.',
             ));
         }
 

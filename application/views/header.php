@@ -954,8 +954,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <input type="hidden" class="save_i__id" value="0" />
                         <input type="hidden" class="save_x__id" value="0" />
                         <input type="hidden" class="next_i__id" value="0" />
+                        <input type="hidden" class="previous_i__id" value="0" />
 
-                        <div class="idea_reply cover-text hideIfEmpty"></div>
+                        <div class="idea_list_next cover-text hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
 
 
@@ -1014,6 +1015,9 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         </div>
 
+
+                        <div class="idea_list_previous cover-text hideIfEmpty"></div>
+                        <div class="doclear">&nbsp;</div>
 
 
                         <div class="<?= hide_if_missing_superpower(10939) ?>">
