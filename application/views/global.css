@@ -3104,9 +3104,13 @@ div.dropdown-item
     color: #000000;
 }
 .custom_top{
-    border-bottom: 1px solid #000;
-    margin-bottom: 13px;
+    margin-bottom: -3px;
     margin-right: -34px;
+}
+.custom_top .space-content {
+    border-left: 2px solid #999 !important;
+    margin-left: 16px;
+    padding-left: 16px !important;
 }
 .mid-text-line span
 {
