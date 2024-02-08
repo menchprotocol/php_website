@@ -349,7 +349,9 @@ function toggle_pills(x__type, initial_load = false){
 
     if(initial_load && window.location.hash) {
         var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        x__type = $('.handle_nav_'+hash).attr('x__type');
+        if($('.handle_nav_'+hash).attr('x__type') && $('.handle_nav_'+hash).attr('x__type').length){
+            x__type = $('.handle_nav_'+hash).attr('x__type');
+        }
     }
 
     var x__follower = 0;
