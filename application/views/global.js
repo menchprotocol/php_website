@@ -1151,7 +1151,7 @@ function editor_load_i(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         //Load Current Media:
         $(".ui_i__cache_"+i__id+" .media_display").each(function () {
             $('.media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
-            cloudinary_load_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
+            cloudinary_preview_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
         });
         sort_media();
 
@@ -1669,6 +1669,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
                         //Image
                         media_e__id = 4260;
+                        playback_code = result.info.thumbnail_url;
                     } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
                         media_e__id = 4258;
@@ -1679,7 +1680,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 //Append this to the main source:
                 if(media_e__id) {
 
-                    cloudinary_load_source(uploader_id, result.info.id, media_e__id, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
+                    cloudinary_preview_source(uploader_id, result.info.id, media_e__id, playback_code, ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','c_fill,h_377,w_377') : null ), ( result.info.original_filename ? js_e___42294[media_e__id]['m__title']+' '+result.info.original_filename.replaceAll('_',' ').replaceAll('-',' ').replaceAll('  ',' ').replaceAll('  ',' ').replaceAll('  ',' ') : js_e___42294[media_e__id]['m__title']+' File' ));
 
                     media_cache[uploader_id][result.info.id] = result.info;
                     console.log('MEDIA CACHE:');
@@ -1743,7 +1744,7 @@ function play_video(public_id){
     cld.source(public_id);
 }
 
-function cloudinary_load_source(uploader_id, info_id, media_e__id, playback_code, e__cover, e__title, e__id = 0){
+function cloudinary_preview_source(uploader_id, info_id, media_e__id, playback_code, e__cover, e__title, e__id = 0){
 
     //Update meta variables:
     $('#'+info_id).attr('media_e__id',media_e__id).attr('playback_code',playback_code).attr('e__id',e__id).attr('e__cover',e__cover);

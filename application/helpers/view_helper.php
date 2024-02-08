@@ -1908,7 +1908,7 @@ function view_i_media($i){
         } elseif($x['x__type']==4260){
 
             //Image
-            $template = '<img src="'.$x['e__cover'].'"></video>';
+            $template = '<img src="'.$x['x__message'].'"></video>';
 
         } else {
             continue; //Should not happen!
