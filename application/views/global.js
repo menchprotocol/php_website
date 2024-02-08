@@ -1110,10 +1110,12 @@ function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previ
     if(!next_i__id && !previous_i__id && !i__id && !x__id && !add_type){
         if(js_n___42265.includes(focus_x__type)){
             //Next idea group:
+            console.log('NEXT MATCH');
             next_i__id = fetch_int_val('#focus_id');
             add_type = 4228; //Sequence
         } else if(js_n___42380.includes(focus_x__type)) {
             //Previous idea group:
+            console.log('PREVIOUS MATCH');
             previous_i__id = fetch_int_val('#focus_id');
             add_type = 4228; //Sequence
         }
