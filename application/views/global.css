@@ -147,12 +147,12 @@ h3{
 }
 .modal-content h3 {
     padding: 8px 0 !important;
-    background-color: #EFEFEF;
-    color: #000000;
+    background-color: #FFFFFF;
+    color: #999999;
     margin-bottom: 0;
 }
 .modal-content h3 i {
-    color: #000000;
+    color: #999999;
 }
 .modal-content .form-control{
 
@@ -2133,7 +2133,7 @@ input.form-control {
     padding:13px 0 !important;
 }
 .section_demo{
-    background-color: #EFEFEF;
+    background-color: #FFFFFF;
     text-align: center;
 }
 
@@ -4231,7 +4231,7 @@ main {
 }
 
 .dynamic_item .mini-font i {
-    color: #000 !important;
+    color: #999999 !important;
 }
 
 .halfbg .halfbg,
