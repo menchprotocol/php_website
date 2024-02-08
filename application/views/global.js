@@ -1126,7 +1126,7 @@ function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previ
         i__id = 0;
         x__id = 0;
         $('#modal31911 .next_i__id').val(next_i__id);
-        $("#modal31911 .idea_reply").html('<div class="grey" style="padding:0 0 3px 5px;"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+next_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
+        $("#modal31911 .idea_reply").html('<div class="grey"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+next_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
         $("#modal31911 .idea_reply .line:not(.first_line)").addClass('hidden');
     }
 
