@@ -4398,6 +4398,7 @@ main {
     display: inline-block;
     line-height: 134%;
     padding: 3px 5px 3px 0;
+    padding: 0;
 }
 
 .x__message_headline{
