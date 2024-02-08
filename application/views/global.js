@@ -345,6 +345,12 @@ function sort_e_load(x__type) {
 }
 
 
+window.onpopstate = function(event)
+{
+    alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+};
+
+
 function toggle_pills(x__type, initial_load = false){
 
     if(initial_load && window.location.hash) {
