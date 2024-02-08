@@ -359,7 +359,7 @@ class I_model extends CI_Model
 
     }
 
-    function create_or_link($focus_card, $x__type, $i__message, $x__creator, $focus_id, $link_i__id = 0)
+    function create_or_link($focus_card, $x__type, $i__message, $x__creator, $focus_id, $next_i__id = 0)
     {
 
         /*
@@ -367,9 +367,9 @@ class I_model extends CI_Model
          * The main idea creation function that would create
          * appropriate transactions and return the idea view.
          *
-         * Either creates an IDEA transaction between $focus_id & $link_i__id
-         * (IF $link_i__id>0) OR will create a new idea with outcome $i__message
-         * and transaction it to $focus_id (In this case $link_i__id will be 0)
+         * Either creates an IDEA transaction between $focus_id & $next_i__id
+         * (IF $next_i__id>0) OR will create a new idea with outcome $i__message
+         * and transaction it to $focus_id (In this case $next_i__id will be 0)
          *
          *
          * */
@@ -385,7 +385,7 @@ class I_model extends CI_Model
                     '$i__message' => $i__message,
                     '$x__creator' => $x__creator,
                     '$focus_id' => $focus_id,
-                    '$link_i__id' => $link_i__id,
+                    '$next_i__id' => $next_i__id,
                 ),
             ));
             return array(
@@ -401,7 +401,7 @@ class I_model extends CI_Model
         //Validate Original idea
         if($focus_is_i){
 
-            if ($focus_id > 0 && $link_i__id==$focus_id) {
+            if ($focus_id > 0 && $next_i__id==$focus_id) {
                 //Make sure none of the followings are the same:
                 return array(
                     'status' => 0,
@@ -438,13 +438,13 @@ class I_model extends CI_Model
 
 
         //Linking to Existing or Creating New?
-        if ($link_i__id > 0) {
+        if ($next_i__id > 0) {
 
-            //Linking to $link_i__id (NOT creating any new ideas)
+            //Linking to $next_i__id (NOT creating any new ideas)
 
             //Fetch more details on the follower idea we're about to transaction:
             $link_i = $this->I_model->fetch(array(
-                'i__id' => $link_i__id,
+                'i__id' => $next_i__id,
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
             if (count($link_i) < 1) {

@@ -2,6 +2,7 @@
 
 //Define some global variables:
 var has_unsaved_changes = false; //Tracks source/idea modal edits
+var focus_x__type = 0;
 
 
 //Full Story
@@ -346,7 +347,6 @@ function sort_e_load(x__type) {
 
 function toggle_pills(x__type){
 
-    focus_card = x__type;
     var x__follower = 0;
     var x__next = 0;
     var focus_card = fetch_int_val('#focus_card');
@@ -1006,11 +1006,10 @@ function e_load_finder(x__type) {
 
 
 
-function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
+function editor_load_i(i__id, x__id, add_type = 0, next_i__id = 0, previous_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
-
     $("#modal31911 .unsaved_warning").val('');
     $('#modal31911 .save_results, #modal31911 .idea_reply, #modal31911 .media_frame').html('');
     $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
@@ -1019,14 +1018,26 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
     $("#modal31911 .dynamic_item").attr('d__id','').attr('d_x__id','');
     $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
 
+    //Are we adding an idea for a target action tab?
+    if(!next_i__id && !previous_i__id && !i__id && !x__id && !add_type && fetch_int_val('#focus_card')==12273){
+        if(js_n___42265.includes(focus_x__type)){
+            //Next idea group:
+            next_i__id = fetch_int_val('#focus_id');
+            add_type = 4228; //Sequence
+        } else if(js_n___42380.includes(focus_x__type)) {
+            //Previous idea group:
+            previous_i__id = fetch_int_val('#focus_id');
+            add_type = 4228; //Sequence
+        }
+    }
+
     //Load Instant Fields:
-    if(link_i__id){
+    if(next_i__id && js_n___4486.includes(add_type)){
         i__id = 0;
         x__id = 0;
-        $('#modal31911 .link_i__id').val(link_i__id);
-        $("#modal31911 .idea_reply").html('<div class="grey" style="padding:0 0 3px 5px;">Reply To:</div>' + $('.creator_frame_'+link_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+link_i__id).html() + '</div>');
+        $('#modal31911 .next_i__id').val(next_i__id);
+        $("#modal31911 .idea_reply").html('<div class="grey" style="padding:0 0 3px 5px;"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+next_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
         $("#modal31911 .idea_reply .line:not(.first_line)").addClass('hidden');
-        //$("#modal31911 .idea_reply .show_more_line").addClass('hidden');
     }
 
     if(i__id){
@@ -1058,7 +1069,7 @@ function editor_load_i(i__id, x__id, link_i__id = 0, quote_i__id = 0){
 
         //See where we are at and append anything needed to the idea:
         var autoload_message = '';
-        if(!link_i__id && !quote_i__id){
+        if(!next_i__id && !previous_i__id){
             var focus_card = fetch_int_val('#focus_card');
             if(focus_card==12273){
                 autoload_message = '#'+$('#focus_handle').val()+' ';
@@ -1232,7 +1243,7 @@ function editor_save_i(){
     var modify_data = {
         save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
         save_x__id:         $('#modal31911 .save_x__id').val(),
-        link_i__id:         $('#modal31911 .link_i__id').val(),
+        next_i__id:         $('#modal31911 .next_i__id').val(),
         save_x__message:    $('#modal31911 .save_x__message').val().trim(),
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
@@ -1944,7 +1955,6 @@ function editor_save_e(){
 
 
 
-var focus_x__type = 0;
 function load_tab(x__type){
 
     var focus_card = fetch_int_val('#focus_card');

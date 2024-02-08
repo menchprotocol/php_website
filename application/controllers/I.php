@@ -406,7 +406,7 @@ class I extends CI_Controller {
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif(!isset($_POST['link_i__id'])){
+        } elseif(!isset($_POST['next_i__id'])){
 
             return view_json(array(
                 'status' => 0,
@@ -861,10 +861,10 @@ class I extends CI_Controller {
 
 
         //Also have to add as a comment to another idea?
-        if(intval($_POST['link_i__id'])>0){
+        if(intval($_POST['next_i__id'])>0){
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
-                'x__previous' => $_POST['link_i__id'],
+                'x__previous' => $_POST['next_i__id'],
                 'x__next' => $is[0]['i__id'],
                 'x__type' => 30901, //Reply
             ));
