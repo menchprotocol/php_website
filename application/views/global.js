@@ -1669,7 +1669,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     } else if(js_e___42641[4260]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='image'){
                         //Image
                         media_e__id = 4260;
-                        playback_code = result.info.thumbnail_url;
+                        playback_code = ( result.info.thumbnail_url ? result.info.thumbnail_url.replaceAll('c_limit,h_60,w_90','w_1597,h_1597,c_fit') : result.info.secure_url );
                     } else if(js_e___42641[4258]['m__message'].split(' ').includes(result.info.format) && result.info.resource_type=='video'){
                         //Video
                         media_e__id = 4258;
