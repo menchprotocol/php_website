@@ -546,6 +546,8 @@ class E extends CI_Controller
 
         $member_e = superpower_unlocked();
         $e___11035 = $this->config->item('e___11035');
+        $e___42776 = $this->config->item('e___42776');
+        $e___4592 = $this->config->item('e___4592'); //Data types
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
@@ -581,6 +583,34 @@ class E extends CI_Controller
         $return_inputs = array();
         $input_pointer = 0;
         $profile_header = '';
+
+        //Start by univessal inputs:
+        foreach($this->E_model->fetch(array(
+            'e__id IN (' . join(',', $this->config->item('n___42776')) . ')' => null, //Universal Dynamic Inputs
+        )) as $selected_e){
+
+            $data_type = 4255; //Text, HACK for now TODO fix later...
+
+            //Any value?
+            $values = $this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__follower' => $es[0]['e__id'],
+                'x__following' => $selected_e['e__id'],
+            ));
+
+            array_push($return_inputs, array(
+                'd__id' => $selected_e['e__id'],
+                'd__is_radio' => 0,
+                'd_x__id' => 0,
+                'd__html' => dynamic_headline($selected_e['e__id'], $e___42776[$selected_e['e__id']], $selected_e),
+                'd__value' => ( isset($values[0]['x__message']) && strlen($values[0]['x__message'])>0 ? $values[0]['x__message'] : '' ),
+                'd__type_name' => html_input_type($data_type),
+                'd__placeholder' => ( strlen($e___42776[$selected_e['e__id']]['m__message']) ? $e___42776[$selected_e['e__id']]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                'd__profile_header' => '', //No header for universals
+            ));
+
+        }
 
         //Fetch Source Templates, if any:
         foreach($this->X_model->fetch(array(
@@ -665,7 +695,6 @@ class E extends CI_Controller
                         $data_type = $data_type_this;
                         break;
                     }
-                    $is_required = in_array($dynamic_e__id, $this->config->item('n___42174')); //Required Settings
 
                     if(in_array($data_type, $this->config->item('n___42188'))){
 
@@ -684,7 +713,6 @@ class E extends CI_Controller
                     } else {
 
                         $this_data_type = $this->config->item('e___'.$data_type);
-                        $e___4592 = $this->config->item('e___4592'); //Data types
                         $e___6177 = $this->config->item('e___6177'); //Source Privacy
                         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Field
                         $e___11035 = $this->config->item('e___11035'); //Summary

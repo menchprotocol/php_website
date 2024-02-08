@@ -280,7 +280,6 @@ class I extends CI_Controller {
                 $data_type = $data_type_this;
                 break;
             }
-            $is_required = in_array($dynamic_e__id, $this->config->item('n___42174')); //Required Settings
 
             if(in_array($data_type, $this->config->item('n___42188'))){
 
