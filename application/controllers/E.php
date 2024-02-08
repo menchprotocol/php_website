@@ -741,24 +741,26 @@ class E extends CI_Controller
             foreach($this->E_model->fetch(array(
                 'e__id IN (' . join(',', $this->config->item('n___42776')) . ')' => null, //Universal Dynamic Inputs
             )) as $selected_e){
-                $data_type = 4255; //Text, HACK for now TODO fix later...
-                //Any value?
-                $values = $this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__follower' => $es[0]['e__id'],
-                    'x__following' => $selected_e['e__id'],
-                ));
-                array_push($return_inputs, array(
-                    'd__id' => $selected_e['e__id'],
-                    'd__is_radio' => 0,
-                    'd_x__id' => 0,
-                    'd__html' => dynamic_headline($selected_e['e__id'], $e___42776[$selected_e['e__id']], $selected_e),
-                    'd__value' => ( isset($values[0]['x__message']) && strlen($values[0]['x__message'])>0 ? $values[0]['x__message'] : '' ),
-                    'd__type_name' => html_input_type($data_type),
-                    'd__placeholder' => ( strlen($e___42776[$selected_e['e__id']]['m__message']) ? $e___42776[$selected_e['e__id']]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
-                    'd__profile_header' => '', //No header for universals
-                ));
+                foreach(array_intersect($e___42776[$selected_e['e__id']]['m__following'], $this->config->item('n___4592')) as $data_type){
+                    //Any value?
+                    $values = $this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__follower' => $es[0]['e__id'],
+                        'x__following' => $selected_e['e__id'],
+                    ));
+                    array_push($return_inputs, array(
+                        'd__id' => $selected_e['e__id'],
+                        'd__is_radio' => 0,
+                        'd_x__id' => 0,
+                        'd__html' => dynamic_headline($selected_e['e__id'], $e___42776[$selected_e['e__id']], $selected_e),
+                        'd__value' => ( isset($values[0]['x__message']) && strlen($values[0]['x__message'])>0 ? $values[0]['x__message'] : '' ),
+                        'd__type_name' => html_input_type($data_type),
+                        'd__placeholder' => ( strlen($e___42776[$selected_e['e__id']]['m__message']) ? $e___42776[$selected_e['e__id']]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
+                        'd__profile_header' => '', //No header for universals
+                    ));
+                    break;
+                }
             }
         }
 
