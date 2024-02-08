@@ -71,7 +71,7 @@ foreach($this->config->item('e___31890') as $x__type => $m) {
     if($can_add || $coins_count[$x__type]>0){
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-        echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'" onclick="toggle_pills('.$x__type.')">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+        echo '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
     }
 
 }
@@ -82,14 +82,14 @@ $focus_tab = 0;
 foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
-        echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.', true); }); </script>';
+        echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
         break;
     }
 }
 if(!$focus_tab){
     foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
         $focus_tab = $x__type;
-        echo '<script> $(document).ready(function () { toggle_pills('.$focus_tab.', true); }); </script>';
+        echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
         break;
     }
 }

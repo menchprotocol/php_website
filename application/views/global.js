@@ -345,19 +345,33 @@ function sort_e_load(x__type) {
 }
 
 
+
 window.onpopstate = function(event)
 {
-    alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    if(document.location.hash){
+        var hashtag = document.location.hash.substr(1);
+        if(hashtag && hashtag.length>0){
+            toggle_pills(hashtag);
+        }
+    }
 };
 
 
-function toggle_pills(x__type, initial_load = false){
+function set_hashtag_if_empty(x__type_hash){
+    //Will only set the hashtag if not already set
+    //This prevents the default tab to override a specific hashtag load request...
+    if(!window.location.hash) {
+        window.location.hash = '#'+x__type_hash;
+    }
+}
 
-    if(initial_load && window.location.hash) {
-        var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
-        if($('.handle_nav_'+hash).attr('x__type') && $('.handle_nav_'+hash).attr('x__type').length){
-            x__type = $('.handle_nav_'+hash).attr('x__type');
-        }
+function toggle_pills(x__type_hash){
+
+    if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
+        x__type = $('.handle_nav_'+x__type_hash).attr('x__type');
+    } else {
+        console.log('ERROR: #'+x__type_hash+' is not a valid menu.');
+        return false;
     }
 
     var x__follower = 0;

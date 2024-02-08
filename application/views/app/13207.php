@@ -1,7 +1,6 @@
 <?php
 
 $community_pills = '';
-$is_open = true;
 
 foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->E_model->fetch(array('LOWER(e__handle)' => strtolower($_GET['e__handle']))) : $this->E_model->scissor_e(website_setting(0), 13207) ) as $e_item) {
 
@@ -25,9 +24,9 @@ foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->E_mod
                 'm__cover' => view_cover($x['e__cover'], true),
                 'm__title' => $x['e__title'],
                 'm__message' => $x['x__message'],
-            ), $ui, $is_open);
+                'm__handle' => $x['e__handle'],
+            ), $ui);
 
-            $is_open = false;
         }
     }
 }
