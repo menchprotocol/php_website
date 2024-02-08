@@ -1094,7 +1094,7 @@ function e_load_finder(x__type) {
 
 
 
-function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previous_i__id = 0){
+function editor_load_i(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1108,32 +1108,32 @@ function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previ
 
     //Are we adding an idea for a target action tab?
     console.log('i Modal loaded for '+focus_x__type);
-    if(!next_i__id && !previous_i__id && !i__id && !x__id && !add_type){
+    if(!next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
         if(js_n___42265.includes(focus_x__type)){
             //Next idea group:
             console.log('NEXT MATCH');
             next_i__id = fetch_int_val('#focus_id');
-            add_type = 4228; //Sequence
+            link_x__type = 4228; //Sequence
         } else if(js_n___42380.includes(focus_x__type)) {
             //Previous idea group:
             console.log('PREVIOUS MATCH');
             previous_i__id = fetch_int_val('#focus_id');
-            add_type = 4228; //Sequence
+            link_x__type = 4228; //Sequence
         }
     }
 
-    //Load Instant Fields:
-    if(next_i__id && js_n___4486.includes(add_type)){
+    //Load Link addition info, if any:
+    if(next_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
         $('#modal31911 .next_i__id').val(next_i__id);
-        $("#modal31911 .idea_list_next").html('<div class="creator_headline"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+next_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
+        $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div className="creator_headline"><span className="icon-block">'+js_e___4486[link_x__type]['m__cover']+'</span>'+js_e___4486[link_x__type]['m__title']+'</div><div class="space-content">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
         $("#modal31911 .idea_list_next .line:not(.first_line)").addClass('hidden');
-    } else if(previous_i__id && js_n___4486.includes(add_type)){
+    } else if(previous_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
         $('#modal31911 .previous_i__id').val(previous_i__id);
-        $("#modal31911 .idea_list_previous").html('<div class="creator_headline"><span class="icon-block">'+js_e___4486[add_type]['m__cover']+'</span>'+js_e___4486[add_type]['m__title']+':</div>' + $('.creator_frame_'+previous_i__id).html() + '<div class="space-content">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
+        $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div className="creator_headline"><span className="icon-block">'+js_e___4486[link_x__type]['m__cover']+'</span>'+js_e___4486[link_x__type]['m__title']+'</div><div class="space-content">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
         $("#modal31911 .idea_list_previous .line:not(.first_line)").addClass('hidden');
     }
 
