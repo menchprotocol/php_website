@@ -1140,17 +1140,16 @@ a.headline {
 .sort_i_grab, .sort_e_grab, .fa-sort, .fa-arrows{
     cursor: grab;
 }
-.focus-cover .space-content,
 .focus-cover .i_cache,
 .large-frame>.i_cache{
     padding: 0 8px 0 !important;
 }
 
 .space-content{
-    padding-left: 21px !important;
-    padding-right: 21px !important;
     display: block;
     line-height: 150%;
+    border-left: 2px solid #999 !important;
+    margin-left: 16px;
 }
 .space-content .btn{
     margin:-10px 0 0 0;
@@ -3106,11 +3105,6 @@ div.dropdown-item
 .custom_top{
     margin-bottom: -3px;
     margin-right: -34px;
-}
-.custom_top .space-content {
-    border-left: 2px solid #999 !important;
-    margin-left: 16px;
-    padding-left: 16px !important;
 }
 .mid-text-line span
 {
