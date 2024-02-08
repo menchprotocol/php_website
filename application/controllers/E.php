@@ -290,17 +290,29 @@ class E extends CI_Controller
             'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+            //Make sure none existent in new source:
+            if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
                 'x__following' => $focus_e['e__id'],
                 'x__follower' => $x['x__follower'],
                 'x__message' => $x['x__message'],
-                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
-                'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
-            ));
+                'x__metadata' => $x['x__metadata'],
+            )))){
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__weight' => $x['x__weight'],
+
+                    'x__type' => $x['x__type'],
+                    'x__following' => $focus_e['e__id'],
+                    'x__follower' => $x['x__follower'],
+                    'x__message' => $x['x__message'],
+                    'x__reference' => $x['x__reference'],
+                    'x__privacy' => $x['x__privacy'],
+                    'x__metadata' => $x['x__metadata'],
+                ));
+            }
         }
 
 
@@ -310,17 +322,28 @@ class E extends CI_Controller
             'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+            if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
                 'x__following' => $x['x__following'],
                 'x__follower' => $focus_e['e__id'],
                 'x__message' => $x['x__message'],
-                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
-            ));
+            )))){
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__weight' => $x['x__weight'],
+
+                    'x__type' => $x['x__type'],
+                    'x__following' => $x['x__following'],
+                    'x__follower' => $focus_e['e__id'],
+                    'x__message' => $x['x__message'],
+                    'x__reference' => $x['x__reference'],
+                    'x__metadata' => $x['x__metadata'],
+                    'x__privacy' => $x['x__privacy'],
+                ));
+            }
         }
 
         //Ideas:
@@ -329,21 +352,33 @@ class E extends CI_Controller
             'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
             'x__following' => $_POST['e__id'],
         ), array(), 0) as $x){
-            $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+            if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
                 'x__following' => $focus_e['e__id'],
                 'x__follower' => $x['x__follower'],
                 'x__previous' => $x['x__previous'],
                 'x__next' => $x['x__next'],
                 'x__message' => $x['x__message'],
-                'x__weight' => $x['x__weight'],
                 'x__reference' => $x['x__reference'],
                 'x__metadata' => $x['x__metadata'],
                 'x__privacy' => $x['x__privacy'],
-            ));
-        }
+            )))){
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__weight' => $x['x__weight'],
 
+                    'x__type' => $x['x__type'],
+                    'x__following' => $focus_e['e__id'],
+                    'x__follower' => $x['x__follower'],
+                    'x__previous' => $x['x__previous'],
+                    'x__next' => $x['x__next'],
+                    'x__message' => $x['x__message'],
+                    'x__reference' => $x['x__reference'],
+                    'x__metadata' => $x['x__metadata'],
+                    'x__privacy' => $x['x__privacy'],
+                ));
+            }
+        }
 
         return view_json(array(
             'status' => 1,

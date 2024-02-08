@@ -450,6 +450,7 @@ class E_model extends CI_Model
                     'x__following' => $creator,
                     'x__follower' => $add_fields['e__id'],
                     'x__type' => 4251, //New Source Created
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 $this->X_model->create(array(
                     'x__creator' => $creator,

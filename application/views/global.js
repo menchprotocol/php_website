@@ -791,7 +791,7 @@ $(document).ready(function () {
         if (e.ctrlKey) {
             if(String.fromCharCode(e.which).toLowerCase() === 'i'){
                 //Add Idea
-                editor_load_i(0,0);
+                editor_load_i();
             } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
                 //Add Source:
                 editor_load_e(0,0);
@@ -1093,7 +1093,7 @@ function e_load_finder(x__type) {
 
 
 
-function editor_load_i(i__id, x__id, add_type = 0, next_i__id = 0, previous_i__id = 0){
+function editor_load_i(i__id = 0, x__id = 0, add_type = 0, next_i__id = 0, previous_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1106,7 +1106,8 @@ function editor_load_i(i__id, x__id, add_type = 0, next_i__id = 0, previous_i__i
     $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
 
     //Are we adding an idea for a target action tab?
-    if(!next_i__id && !previous_i__id && !i__id && !x__id && !add_type && fetch_int_val('#focus_card')==12273){
+    console.log('i Modal loaded for '+focus_x__type);
+    if(!next_i__id && !previous_i__id && !i__id && !x__id && !add_type){
         if(js_n___42265.includes(focus_x__type)){
             //Next idea group:
             next_i__id = fetch_int_val('#focus_id');

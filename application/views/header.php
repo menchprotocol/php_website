@@ -564,7 +564,7 @@ if(!$basic_header_footer){
 
                     //Always give option to ideate:
                     if($member_e){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i(0,0)" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
                     }
 
 
