@@ -380,6 +380,11 @@ function toggle_pills(x__type, initial_load = false){
         $('.thepill' + x__type+ ' .nav-link').addClass('active');
         $('.headline_body_' + x__type).removeClass('hidden');
 
+        //Set focus tab:
+        console.log('focus_x__type Updated from '+focus_x__type+' to '+x__type);
+        focus_x__type = parseInt(x__type);
+        window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
+
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type + ' .tab_content').html().length ){
 
@@ -415,11 +420,6 @@ function toggle_pills(x__type, initial_load = false){
                 return false;
 
             }
-
-            //Set focus tab:
-            console.log('focus_x__type Updated from '+focus_x__type+' to '+x__type);
-            focus_x__type = parseInt(x__type);
-            window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
 
             //Load data:
             $.post(loading_url, loading_data, function (data) {
