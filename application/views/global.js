@@ -375,8 +375,88 @@ function toggle_pills(x__type){
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type + ' .tab_content').html().length ){
+
             $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
-            load_tab(x__type);
+
+            var focus_card = fetch_int_val('#focus_card');
+            console.log('Tab loading from @'+focus_card+' for @'+x__type);
+
+            if(focus_card==12273){
+
+                var loading_url = "/i/view_body_i";
+                var loading_data = {
+                    focus_card:focus_card,
+                    x__type:x__type,
+                    counter:$('.headline_body_' + x__type).attr('read-counter'),
+                    i__id:fetch_int_val('#focus_id')
+                };
+
+            } else if(focus_card==12274){
+
+                var loading_url = "/e/view_body_e";
+                var loading_data = {
+                    focus_card:focus_card,
+                    x__type:x__type,
+                    counter:$('.headline_body_'+x__type).attr('read-counter'),
+                    e__id:fetch_int_val('#focus_id')
+                };
+
+            } else {
+
+                //Whaaaat is this?
+                console.log('ERROR: Unknown Tab!');
+                return false;
+
+            }
+
+            //Set focus tab:
+            focus_x__type = x__type;
+            window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
+
+            //Load data:
+            $.post(loading_url, loading_data, function (data) {
+
+                //Add data to the page:
+                $('.headline_body_' + x__type + ' .tab_content').html(data);
+
+
+                $('[data-toggle="tooltip"]').tooltip();
+                load_card_clickers();
+                initiate_algolia();
+                load_editor();
+                x_set_start_text();
+                set_autosize($('.x_set_class_text'));
+
+                setTimeout(function () {
+                    load_covers();
+                    $('[data-toggle="tooltip"]').tooltip();
+                }, 233);
+
+
+                $(function () {
+                    var $win = $(window);
+                    $win.scroll(function () {
+                        //Download loading from bottom:
+                        if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
+                            view_load_page();
+                        }
+                    });
+                });
+
+                if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
+                    setTimeout(function () {
+                        sort_i_load(x__type);
+                    }, 233);
+                } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
+                    setTimeout(function () {
+                        sort_e_load(x__type);
+                    }, 233);
+                }
+
+                load_covers();
+
+            });
+
         }
 
         //Log Transaction:
@@ -1950,91 +2030,6 @@ function editor_save_e(){
 
 
 
-
-
-
-
-
-function load_tab(x__type){
-
-    var focus_card = fetch_int_val('#focus_card');
-    console.log('Tab loading from @'+focus_card+' for @'+x__type);
-
-    if(focus_card==12273){
-
-        var loading_url = "/i/view_body_i";
-        var loading_data = {
-            focus_card:focus_card,
-            x__type:x__type,
-            counter:$('.headline_body_' + x__type).attr('read-counter'),
-            i__id:fetch_int_val('#focus_id')
-        };
-
-    } else if(focus_card==12274){
-
-        var loading_url = "/e/view_body_e";
-        var loading_data = {
-            focus_card:focus_card,
-            x__type:x__type,
-            counter:$('.headline_body_'+x__type).attr('read-counter'),
-            e__id:fetch_int_val('#focus_id')
-        };
-
-    } else {
-
-        //Whaaaat is this?
-        console.log('ERROR: Unknown Tab!');
-        return false;
-
-    }
-
-    //Set focus tab:
-    focus_x__type = x__type;
-
-    //Load data:
-    $.post(loading_url, loading_data, function (data) {
-
-        //Add data to the page:
-        $('.headline_body_' + x__type + ' .tab_content').html(data);
-
-
-        $('[data-toggle="tooltip"]').tooltip();
-        load_card_clickers();
-        initiate_algolia();
-        load_editor();
-        x_set_start_text();
-        set_autosize($('.x_set_class_text'));
-
-        setTimeout(function () {
-            load_covers();
-            $('[data-toggle="tooltip"]').tooltip();
-        }, 233);
-
-
-        $(function () {
-            var $win = $(window);
-            $win.scroll(function () {
-                //Download loading from bottom:
-                if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                    view_load_page();
-                }
-            });
-        });
-
-        if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
-            setTimeout(function () {
-                sort_i_load(x__type);
-            }, 233);
-        } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
-            setTimeout(function () {
-                sort_e_load(x__type);
-            }, 233);
-        }
-
-        load_covers();
-
-    });
-}
 
 
 
