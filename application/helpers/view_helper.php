@@ -2253,18 +2253,18 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="creator_headline grey mini-frame">@<span class="ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
-    $e___42375 = $CI->config->item('e___42375');
+    $e___42777 = $CI->config->item('e___42777');
     $order_columns = array();
-    foreach($e___42375 as $x__sort_id => $sort) {
+    foreach($e___42777 as $x__sort_id => $sort) {
         $order_columns['x__type = \''.$x__sort_id.'\' DESC'] = null;
     }
     foreach($CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('n___42375')) . ')' => null, //Located
+        'x__type IN (' . join(',', $CI->config->item('n___42777')) . ')' => null, //Featured Profile
         'x__follower' => $e['e__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__following'), 0, 0, $order_columns) as $location){
-        $ui .= view_featured_links($location['x__type'], $location, $e___42375[$location['x__type']], $focus_card);
+        $ui .= view_featured_links($location['x__type'], $location, $e___42777[$location['x__type']], $focus_card);
     }
 
 
