@@ -1140,22 +1140,37 @@ a.headline {
 .sort_i_grab, .sort_e_grab, .fa-sort, .fa-arrows{
     cursor: grab;
 }
+.focus-cover .space-content,
 .focus-cover .i_cache,
 .large-frame>.i_cache{
     padding: 0 8px 0 !important;
 }
 
 .space-content{
+    padding-left: 34px !important;
+    padding-right: 34px !important;
+    display: block;
+    line-height: 150%;
+}
+.space-content .btn{
+    margin:-10px 0 0 0;
+}
+.space-content .btn.edit-locked{
+    margin:-3px 0 0 0;
+}
+
+
+.idea_response{
     display: block;
     line-height: 150%;
     border-left: 2px solid #999 !important;
     margin-left: 16px;
     padding-left: 16px;
 }
-.space-content .btn{
+.idea_response .btn{
     margin:-10px 0 0 0;
 }
-.space-content .btn.edit-locked{
+.idea_response .btn.edit-locked{
     margin:-3px 0 0 0;
 }
 .title-block{
