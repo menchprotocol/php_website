@@ -1167,6 +1167,11 @@ a.headline {
     margin-left: 16px;
     padding-left: 16px;
 }
+.idea_list_previous .idea_response{
+    border-left: 0 !important;
+    margin-left: 34px;
+}
+
 .idea_response .btn{
     margin:-10px 0 0 0;
 }
