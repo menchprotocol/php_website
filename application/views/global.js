@@ -346,15 +346,18 @@ function sort_e_load(x__type) {
 
 
 
-window.onpopstate = function(event)
-{
+window.onpopstate = function(event) {
+    load_hashtag_menu();
+};
+
+function load_hashtag_menu(){
     if(document.location.hash){
         var hashtag = document.location.hash.substr(1);
         if(hashtag && hashtag.length>0){
             toggle_pills(hashtag);
         }
     }
-};
+}
 
 
 function set_hashtag_if_empty(x__type_hash){
@@ -802,6 +805,8 @@ function random_animal(basic_style = false){
 
 var algolia_index = false;
 $(document).ready(function () {
+
+    load_hashtag_menu();
 
     $('#modal31912 .save_e__cover').change(function () {
         toggle__cover($(this).val());
