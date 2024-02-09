@@ -844,6 +844,19 @@ if($top_i__hashtag) {
             //Ideas
             $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(6255)">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.count($is_next).' '.$m2['m__title'].'</span>';
 
+        } elseif($x__type==42260 && $member_e){
+
+            //Reactions
+            $reactions = $this->X_model->fetch(array(
+                'x__following' => $member_e['e__id'],
+                'x__next' => $focus_i['i__id'],
+                'x__type IN (' . join(',', $this->config->item('n___42260')) . ')' => null, //Reactions
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array(), 1, 0, array('x__weight' => 'ASC'));
+
+            $control_btn = view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $focus_i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
+
+
         } elseif($x__type==6255 && !$top_completed){
 
             //Count total
