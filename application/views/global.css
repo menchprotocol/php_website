@@ -2859,7 +2859,7 @@ h4.main__title{
 .media_frame .media_item {
     float: left;
     overflow: hidden;
-    margin-left: 5px;
+    margin-right: 5px;
     margin-top: 5px;
     position: relative;
 }
