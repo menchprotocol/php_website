@@ -1242,18 +1242,6 @@ a.headline {
 }
 
 
-
-.text-logo {
-    font-size: 1.25em;
-    display: inline-block;
-    padding-left: 0;
-    font-weight: bold;
-    max-width: calc(100% - 43px);
-    height: 36px;
-    overflow: hidden;
-    line-height: 151%;
-    margin-bottom: -7px;
-}
 .nav_finder{
     margin-top:-1px;
     margin-bottom:2px;
@@ -1631,9 +1619,6 @@ label {
     /*height: 16px !important;*/
     margin: -6px 3px -5px 2px !important;
 }
-.platform-logo img{
-    margin:-6px -1px 0 0 !important;
-}
 .platform-large img{
     width:128px;
 }
@@ -1673,20 +1658,6 @@ label {
     font-size: 1.3em !important;
     font-weight: bold;
     line-height: 134%;
-}
-.platform-logo{
-    line-height: 130%;
-    width:30px !important;
-    height:30px !important;
-    margin:0px 5px !important;
-    border-radius: 0px !important;
-    display: inline-block;
-    font-size: 1.5em;
-    padding-top: 5px !important;
-
-}
-.platform-logo i{
-    font-size: 1em !important;
 }
 
 .platform-circle{
@@ -4043,10 +4014,45 @@ div.img {
 }
 .icon-block div.img,
 .e_cover_mini div.img,
-.platform-logo.e_cover_mini div.img {
+.logo_cover.e_cover_mini div.img {
     width: 28px;
     height: 28px;
 }
+
+.logo_title {
+    position: absolute;
+    top: 5px;
+    left: 34px;
+
+    display: block;
+    line-height: 151%;
+    font-size: 1.21em;
+    font-weight: bold;
+    width: calc(100% - 34px);
+    height: 36px;
+    overflow: hidden;
+    background-color: #00CC00;
+}
+.logo_cover{
+    position: absolute;
+    top: 5px;
+    left: 0;
+
+    display: block;
+    line-height: 151%;
+    width:30px !important;
+    height:30px !important;
+    border-radius: 0px !important;
+    background-color: #FF0000;
+}
+.logo_cover img{
+    margin:0 !important;
+    border-radius: 50%;
+}
+.logo_cover i{
+    font-size: 1.55em !important;
+}
+
 
 .e_cover_micro div.img {
     width: 24px;
@@ -4182,10 +4188,10 @@ main {
 
 
 .home_black_font h1,
-.home_black_font .platform-logo i,
+.home_black_font .logo_cover i,
 .home_black_font .block-x i,
 .home_black_font .menu-cover i,
-.home_black_font .text-logo {
+.home_black_font .logo_title {
     color:#000000;
 }
 .home_black_font h1 {
@@ -4194,10 +4200,10 @@ main {
 
 .social-footer i,
 .home_white_font h1,
-.home_white_font .platform-logo i,
+.home_white_font .logo_cover i,
 .home_white_font .block-x i,
 .home_white_font .menu-cover i,
-.home_white_font .text-logo {
+.home_white_font .logo_title {
     color:#FFFFFF;
 }
 .home_white_font h1 {
@@ -4270,16 +4276,16 @@ main {
     font-size: 0.89em;
 }
 
-.home_black_font .platform-logo i,
+.home_black_font .logo_cover i,
 .home_black_font .menu-cover i,
 .home_black_font .block-x i,
-.home_black_font .text-logo {
+.home_black_font .logo_title {
     color:#FFFFFF !important;
 }
-.home_black_font .top-header-position .platform-logo i,
+.home_black_font .top-header-position .logo_cover i,
 .home_black_font .top-header-position .menu-cover i,
 .home_black_font .top-header-position .block-x i,
-.home_black_font .top-header-position .text-logo {
+.home_black_font .top-header-position .logo_title {
     color:#000000 !important;
 }
 
@@ -4357,15 +4363,6 @@ main {
     margin-bottom: 5px;
 }
 
-
-@media (hover: hover) {
-    .text-logo {
-        margin-bottom: -11px !important;
-    }
-    .platform-logo {
-        margin-bottom: 5px !important;
-    }
-}
 .new_list{
     position: relative;
     z-index: 9;
