@@ -19,7 +19,7 @@ $bgVideo = null;
 //Transaction Website
 $domain_cover = get_domain('m__cover');
 $domain_logo = ( substr_count($domain_cover, '"')>0 ? one_two_explode('"','"', $domain_cover) : $domain_cover );
-$is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !tring_is_icon($domain_logo) );
+$is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !string_is_icon($domain_logo) );
 
 
 //Generate Body Class String:
