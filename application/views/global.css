@@ -4059,6 +4059,8 @@ div.img {
 }
 .logo_cover i{
     font-size: 0.89em !important;
+    display: block;
+    margin-top: 2px;
 }
 
 
