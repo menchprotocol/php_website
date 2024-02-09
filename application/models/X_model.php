@@ -449,12 +449,12 @@ class X_model extends CI_Model
                 ), $member_e['e__id'], 42794);
             } else {
                 //Inserting new reaction:
-                $status = $this->X_model->create(array(
+                $status = count($this->X_model->create(array(
                     'x__creator' => $member_e['e__id'],
                     'x__following' => $member_e['e__id'],
                     'x__next' => $o__id,
                     'x__type' => $new_e__id,
-                ));
+                )));
             }
 
         } elseif($element_id==6177){
