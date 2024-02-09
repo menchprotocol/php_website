@@ -4052,13 +4052,14 @@ div.img {
     width:30px !important;
     height:30px !important;
     border-radius: 0px !important;
+    font-size: 2.1em !important;
 }
 .logo_cover img{
     margin:0 !important;
     border-radius: 50%;
 }
 .logo_cover i{
-    font-size: 1.55em !important;
+    font-size: 0.89em !important;
 }
 
 
