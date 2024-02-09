@@ -501,7 +501,7 @@ if(!$basic_header_footer){
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block logo_cover">'.view_cover($domain_logo).'</span>' : '') . '<b class="main__title logo_title">'.get_domain('m__title').'</b>'.'</a></div>';
+                    echo '<div class="left_nav top_nav"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block logo_cover">'.view_cover($domain_logo).'</span>' : '') . '</a>' . '<b class="main__title logo_title"><a href="/">'.get_domain('m__title').'</a></b>'.'</div>';
 
 
                     //SEARCH
