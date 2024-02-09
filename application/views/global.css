@@ -4387,7 +4387,8 @@ main {
     padding: 0;
 }
 .modal-content .creator_headline{
-    margin: 0 0 -21px 0;
+    margin: 0 0 -29px 0;
+    display: block;
 }
 
 .x__message_headline{
