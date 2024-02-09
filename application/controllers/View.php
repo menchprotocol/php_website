@@ -145,7 +145,7 @@ class View extends CI_Controller
         if(!$ui){
 
             //Prep view:
-            $raw_app = $this->load->view('views/app/'.$app_e__id, array(
+            $raw_app = $this->load->view('app/'.$app_e__id, array(
                 'app_e__id' => $app_e__id,
                 'x__creator' => $x__creator,
                 'member_e' => $member_e,
