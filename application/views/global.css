@@ -1159,6 +1159,7 @@ a.headline {
     max-height: 377px;
     overflow-x: hidden;
     overflow-y: auto;
+    padding-bottom: 8px;
 }
 .idea_list_previous .idea_response{
     border-left: 0 !important;

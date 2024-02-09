@@ -59,7 +59,7 @@ foreach($this->config->item('e___31890') as $x__type => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="+ @source">
+                               placeholder="+ Add @source">
                     </div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>';
 
         }
