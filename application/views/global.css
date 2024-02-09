@@ -3182,9 +3182,6 @@ a,
 .btn:hover{
     color: #000000;
 }
-.form-control:disabled {
-    background-color: #CCCCCC !important;
-}
 
 .btn-tiny{
     font-size: 0.69em !important;

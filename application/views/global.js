@@ -372,7 +372,7 @@ function set_hashtag_if_empty(x__type_hash){
 function toggle_pills(x__type_hash){
 
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
-        x__type = $('.handle_nav_'+x__type_hash).attr('x__type');
+        x__type = parseInt($('.handle_nav_'+x__type_hash).attr('x__type'));
     } else {
         console.log('ERROR: #'+x__type_hash+' is not a valid menu.');
         return false;
@@ -406,7 +406,7 @@ function toggle_pills(x__type_hash){
 
         //Set focus tab:
         console.log('focus_x__type Updated from '+focus_x__type+' to '+x__type);
-        focus_x__type = parseInt(x__type);
+        focus_x__type = x__type;
         if(!window.location.hash || window.location.hash!=$('.thepill' + x__type+' .nav-link').attr('href')) {
             window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
         }
