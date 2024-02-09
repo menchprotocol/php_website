@@ -193,7 +193,7 @@ h3{
 .idea_list_previous{
     border: 1px solid #999998;
     padding: 8px 1px;
-    margin: 3px 0 5px;
+    margin: 3px 0 5px 34px;
 }
 
 .section_subframe,
@@ -1161,7 +1161,8 @@ a.headline {
 }
 .idea_list_previous .idea_response{
     border-left: 0 !important;
-    margin-left: 18px; /* Since no 2px border */
+    margin-left: 0;
+    padding-left: 0;
     margin-right: 5px;
 }
 
