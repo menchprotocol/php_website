@@ -49,8 +49,24 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
                 if ($found_link_group > 0){
                     if(!$focus_link_group || $focus_link_group!=$found_link_group){
+
                         echo '<tr class="mobile-shrink">';
-                        echo '<td class="center" colspan="2" title="@'.$e___42263[$found_link_group]['m__handle'].'"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b></td>';
+                        echo '<td class="center" colspan="2" title="@'.$e___42263[$found_link_group]['m__handle'].'">';
+
+                        //Search for sibling if Has Family:
+                        if(in_array($e__id2, $this->config->item('n___42792'))){
+                            foreach($this->X_model->fetch(array(
+                                'x__following' => $found_link_group,
+                                'x__type' => 42570, //Family
+                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            ), array('x__follower'), 1) as $sibling){
+                                echo '<b class="main__title grey">'.$sibling['e__title'].'</b><span class="icon-block-xs">'.view_cover($sibling['e__cover']).'</span>';
+                            }
+                        }
+
+                        echo '<span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b>';
+
+                        echo '</td>';
                         echo '</tr>';
                         $focus_link_group = $found_link_group;
                     }
