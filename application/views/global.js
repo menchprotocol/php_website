@@ -1157,16 +1157,11 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         x__id = 0;
         $('#modal31911 .next_i__id').val(next_i__id);
         $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
-        $("#modal31911 .idea_list_next b, #modal31911 .idea_list_next span:not(.icon-block)").remove();
-
-        //$("#modal31911 .idea_list_next .line:not(.first_line)").addClass('hidden');
     } else if(previous_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
         $('#modal31911 .previous_i__id').val(previous_i__id);
         $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
-        $("#modal31911 .idea_list_next b, #modal31911 .idea_list_next span:not(.icon-block)").remove();
-        //$("#modal31911 .idea_list_previous .line:not(.first_line)").addClass('hidden');
     }
 
     if(i__id){

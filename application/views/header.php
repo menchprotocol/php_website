@@ -961,7 +961,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Idea Creator(s) -->
-                        <div class="creator_headline">
+                        <div class="creator_headline first_headline">
                             <?php
                             foreach($this->X_model->fetch(array(
                                 'x__follower' => $member_e['e__id'],
