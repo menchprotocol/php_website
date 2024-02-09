@@ -147,7 +147,6 @@ h3{
 }
 .modal-content h3 {
     padding: 8px 0 !important;
-    background-color: #FFFFFF;
     color: #999999;
     margin-bottom: 0;
 }
@@ -184,7 +183,6 @@ h3{
 }
 .inner_message {
     clear: both;
-    background-color: #FFFFFF;
     display: block;
     margin-left: 34px;
     padding: 3px 0 1px;
@@ -236,7 +234,6 @@ h3{
 }
 
 .dynamic_selector{
-    background-color: #ffffff;
     padding: 5px 0;
 }
 .block-menu .dropdown i {
@@ -772,7 +769,7 @@ label:focus,
 
 .nav-controller .active{
     margin-bottom: 0;
-    background-color: #FFFFFF;
+    background-color: #EFEFEF;
 }
 .nav-controller .active .nav-title{
     border-bottom: 1px solid #000000;
@@ -1895,7 +1892,7 @@ label {
 }
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
-    background-color: #FFFFFF;
+    background-color: #EFEFEF;
 }
 .list-radio-select .selection_preview.list-group-item.active {
     background-color: transparent;
@@ -3047,7 +3044,7 @@ h4.main__title{
 
 .nav-pills .nav-link.active {
     color: #000000 !important;
-    background-color: #FFFFFF !important;
+    background-color: #EFEFEF !important;
 }
 
 
@@ -3342,7 +3339,7 @@ a,
 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle,
 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:focus,
 .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:hover {
-    background-color: #FFFFFF;
+    background-color: #EFEFEF;
     color: #FC1B44;
 }
 .btn-6255 i,
@@ -4341,9 +4338,9 @@ main {
 }
 
 :root  {
-    --primary-color:  #000000;
-    --secondary-color:  #999999;
-    --background-color:  #FFFFFF;
+    --primary-color: #000000;
+    --secondary-color: #999999;
+    --background-color: #FFFFFF;
 }
 
 .form-control,
@@ -4452,7 +4449,6 @@ main {
 .list-adder{
     padding: 8px 0 0 !important;
     margin:0 0 0 !important;
-    background-color: #FFFFFF !important;
 }
 
 .url_truncate {
