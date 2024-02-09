@@ -770,6 +770,7 @@ label:focus,
 .nav-controller .active{
     margin-bottom: 0;
     background-color: #EFEFEF;
+    border-radius: 0;
 }
 .nav-controller .active .nav-title{
     border-bottom: 1px solid #000000;
@@ -1392,6 +1393,7 @@ label {
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
     background-color: #EFEFEF;
+    border-radius: 0;
 }
 .dropdown-item:focus,
 .dropdown-item:hover,
@@ -1894,6 +1896,7 @@ label {
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
     background-color: #EFEFEF;
+    border-radius: 0;
 }
 .list-radio-select .selection_preview.list-group-item.active {
     background-color: transparent;
