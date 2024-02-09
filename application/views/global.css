@@ -4028,10 +4028,9 @@ div.img {
     line-height: 151%;
     font-size: 1.21em;
     font-weight: bold;
-    width: calc(100% - 89px);
+    width: calc(100% - 121px);
     height: 36px;
     overflow: hidden;
-    background-color: #00CC00;
 }
 .logo_cover{
     position: absolute;
@@ -4043,7 +4042,6 @@ div.img {
     width:30px !important;
     height:30px !important;
     border-radius: 0px !important;
-    background-color: #FF0000;
 }
 .logo_cover img{
     margin:0 !important;
