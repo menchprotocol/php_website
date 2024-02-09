@@ -620,7 +620,7 @@ class Ajax extends CI_Controller
                 if(!strlen($dynamic_value)){
 
                     //Remove Link if we have one:
-                    if(count($values)){
+                    if(count($values) && $dynamic_e__id!=11035 /* HACK: Summary are key links that should not be removed */){
                         $this->X_model->update($values[0]['x__id'], array(
                             'x__privacy' => 6173, //Transaction Removed
                         ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
