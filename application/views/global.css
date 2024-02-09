@@ -4044,7 +4044,7 @@ div.img {
 }
 .logo_cover{
     position: absolute;
-    top: 5px;
+    top: 3px;
     left: 5px;
 
     display: block;
@@ -4055,7 +4055,7 @@ div.img {
     font-size: 1.89em !important;
 }
 .logo_cover img{
-    margin:0 !important;
+    margin:-5px 0 0 0 !important;
     border-radius: 50%;
 }
 .logo_cover i{
