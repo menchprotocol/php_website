@@ -1743,7 +1743,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     ), array('x__following')) as $creator){
 
         $follow_btn = null;
-        if($member_e){
+        if($member_e && $member_e['e__id']!=$creator['e__id']){
             $followings = $CI->X_model->fetch(array(
                 'x__following' => $creator['e__id'],
                 'x__follower' => $member_e['e__id'],
