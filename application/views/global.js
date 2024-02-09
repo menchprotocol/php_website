@@ -477,7 +477,7 @@ function toggle_pills(x__type_hash){
                     });
                 });
 
-                console.log('Detecting Sort loading needs....');
+                console.log('Detecting Sort loading needs for @'+x__type+'...');
                 if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
                     setTimeout(function () {
                         sort_i_load(x__type);
