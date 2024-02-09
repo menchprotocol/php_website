@@ -127,7 +127,7 @@ if(superpower_unlocked()) {
             //Watch for 4 digit code:
             $("#input_code").on("input", function() {
                 if($(this).val().length==4){
-                    contact_auth();
+                    e_contact_auth();
                 }
             });
 
@@ -165,9 +165,9 @@ if(superpower_unlocked()) {
                 //Watch for action keys:
                 if (e.keyCode==13) {
                     if(step_count==2){
-                        verify_contact();
+                        e_verify_contact();
                     } else if(step_count==3){
-                        contact_auth();
+                        e_contact_auth();
                     }
                 }
             });
@@ -189,7 +189,7 @@ if(superpower_unlocked()) {
 
 
         var verifying_contact = false;
-        function verify_contact(){
+        function e_verify_contact(){
 
             if(verifying_contact){
                 return false;
@@ -204,7 +204,7 @@ if(superpower_unlocked()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/e/verify_contact", {
+            $.post("/ajax/e_verify_contact", {
 
                 account_email_phone: account_email_phone,
                 sign_i__id: sign_i__id,
@@ -258,7 +258,7 @@ if(superpower_unlocked()) {
 
 
         var code_checking = false;
-        function contact_auth(){
+        function e_contact_auth(){
 
             if(code_checking){
                 return false;
@@ -270,7 +270,7 @@ if(superpower_unlocked()) {
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:
-            $.post("/e/contact_auth", {
+            $.post("/ajax/e_contact_auth", {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),
@@ -328,7 +328,7 @@ if(superpower_unlocked()) {
                 <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
 
                 <span id="step2buttons" class="<?= isset($_GET['account_email_phone']) ? '' : ' hidden ' ?>" >
-                    <a href="javascript:void(0)" onclick="verify_contact()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="e_verify_contact()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                     </span>
 
 
@@ -402,7 +402,7 @@ if(superpower_unlocked()) {
 
                 <div id="step3buttons">
                     <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" onclick="goto_step(2)" class="controller-nav round-btn pull-left" title="<?= $e___11035[12991]['m__title'] ?>"><?= $e___11035[12991]['m__cover'] ?></a>
-                    <a href="javascript:void(0)" onclick="contact_auth()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
+                    <a href="javascript:void(0)" onclick="e_contact_auth()" id="code_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
                 </div>
 
                 <div class="doclear">&nbsp;</div>

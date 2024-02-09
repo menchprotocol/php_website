@@ -20,7 +20,7 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
                 x__previous: <?= $i__id ?>,
             })){
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect('<?= ( isset($_GET['i__hashtag']) ? '/x/x_start/'.$_GET['i__hashtag'] : ( isset($_GET['url']) ? urldecode($_GET['url']) : '/' /* Home Page */ ) ) ?>');
+                js_redirect('<?= ( isset($_GET['i__hashtag']) ? '/ajax/x_start/'.$_GET['i__hashtag'] : ( isset($_GET['url']) ? urldecode($_GET['url']) : '/' /* Home Page */ ) ) ?>');
             }
 
         }

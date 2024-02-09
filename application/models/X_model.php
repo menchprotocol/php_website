@@ -382,7 +382,7 @@ class X_model extends CI_Model
     }
 
 
-    function update_instant_select($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__handle, $x__id = 0) {
+    function x_update_instant_select($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__handle, $x__id = 0) {
 
 
         //Authenticate Member:
@@ -969,7 +969,7 @@ class X_model extends CI_Model
 
 
 
-    function read_only_complete($x__creator, $top_i__id, $i, $x_data = array()){
+    function x_read_only_complete($x__creator, $top_i__id, $i, $x_data = array()){
 
         //Try to auto complete:
         $x__type = 0;
@@ -1057,7 +1057,7 @@ class X_model extends CI_Model
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 0) as $next_i){
                 //Mark as complete:
-                $this->X_model->read_only_complete($x_data['x__creator'], $top_i__id, $next_i, $x_data);
+                $this->X_model->x_read_only_complete($x_data['x__creator'], $top_i__id, $next_i, $x_data);
             }
         }
 

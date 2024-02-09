@@ -271,7 +271,7 @@ echo '</table>';
             $('.x__creator_' + modify_data['e__id'] + '_' + modify_data['x__creator']).html('<i class="far fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
-            $.post("/e/e_toggle_e", modify_data, function (data) {
+            $.post("/ajax/e_toggle_e", modify_data, function (data) {
 
                 if (data.status) {
 

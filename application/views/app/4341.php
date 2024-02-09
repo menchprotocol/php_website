@@ -169,18 +169,18 @@ $e___11035 = $this->config->item('e___11035'); //Summary
     $(document).ready(function () {
 
         //Load first page of transactions:
-        app_4341(x_filters, x_joined_by, 1);
+        x_4341(x_filters, x_joined_by, 1);
 
     });
 
 
-    function app_4341(x_filters, x_joined_by, page_num){
+    function x_4341(x_filters, x_joined_by, page_num){
 
         //Show spinner:
         $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
-        $.post("/app/app_4341", {
+        $.post("/ajax/x_4341", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
             x__message_find:x__message_find,

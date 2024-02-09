@@ -97,7 +97,7 @@ function htmlentitiesjs(rawStr){
 }
 
 
-function mass_apply_preview(apply_id, s__id){
+function x_mass_apply_preview(apply_id, s__id){
 
     //Select first:
     var first_id = $('#modal'+apply_id+' .mass_action_toggle option:first').val();
@@ -108,12 +108,12 @@ function mass_apply_preview(apply_id, s__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .mass_apply_preview').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
-    $.post("/x/mass_apply_preview", {
+    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
+    $.post("/ajax/x_mass_apply_preview", {
         apply_id: apply_id,
         s__id: s__id
     }, function (data) {
-        $('#modal'+apply_id+' .mass_apply_preview').html(data);
+        $('#modal'+apply_id+' .x_mass_apply_preview').html(data);
     });
 
 }
@@ -338,7 +338,7 @@ function sort_e_load(x__type) {
             draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
             handle: "#list-in-"+x__type+" .sort_e_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                sort_e_save(x__type);
+                e_sort_save(x__type);
             }
         });
     }, 377);
@@ -421,7 +421,7 @@ function toggle_pills(x__type_hash){
 
             if(focus_card==12273){
 
-                var loading_url = "/i/view_body_i";
+                var loading_url = "/ajax/i_view_body";
                 var loading_data = {
                     focus_card:focus_card,
                     x__type:x__type,
@@ -431,7 +431,7 @@ function toggle_pills(x__type_hash){
 
             } else if(focus_card==12274){
 
-                var loading_url = "/e/view_body_e";
+                var loading_url = "/ajax/e_view_body";
                 var loading_data = {
                     focus_card:focus_card,
                     x__type:x__type,
@@ -472,7 +472,7 @@ function toggle_pills(x__type_hash){
                     $win.scroll(function () {
                         //Download loading from bottom:
                         if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 377) {
-                            view_load_page();
+                            x_view_load_page();
                         }
                     });
                 });
@@ -480,7 +480,7 @@ function toggle_pills(x__type_hash){
                 console.log('Detecting Sort loading needs for @'+x__type+'...');
                 if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
                     setTimeout(function () {
-                        sort_i_load(x__type);
+                        i_sort_load(x__type);
                     }, 233);
                 } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
                     setTimeout(function () {
@@ -513,7 +513,7 @@ function toggle_pills(x__type_hash){
 function i_copy(i__id, do_recursive){
 
     //Go ahead and delete:
-    $.post("/i/i_copy", {
+    $.post("/ajax/i_copy", {
         i__id:i__id,
         do_recursive:do_recursive
     }, function (data) {
@@ -545,7 +545,7 @@ function e_copy(e__id){
     }
 
     //Go ahead and delete:
-    $.post("/e/e_copy", {
+    $.post("/ajax/e_copy", {
         e__id:e__id,
         copy_source_title:copy_source_title,
     }, function (data) {
@@ -602,7 +602,7 @@ function x_remove(x__id, x__type, i__hashtag){
     }
 
     //Save changes:
-    $.post("/x/x_remove", {
+    $.post("/ajax/x_remove", {
         x__id:x__id
     }, function (data) {
         //Update UI to confirm with member:
@@ -633,7 +633,7 @@ function x_remove(x__id, x__type, i__hashtag){
 
 function x_create(add_fields){
     return false;
-    return $.post("/x/x_create", add_fields);
+    return $.post("/ajax/x_create", add_fields);
 }
 
 
@@ -680,7 +680,7 @@ function e_load_cover(x__type, e__id, counter, first_segment){
 
     $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/e/e_load_cover", {
+    $.post("/ajax/e_load_cover", {
         x__type:x__type,
         e__id:e__id,
         counter:counter,
@@ -700,7 +700,7 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
 
     $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/i/i_load_cover", {
+    $.post("/ajax/i_load_cover", {
         x__type:x__type,
         i__id:i__id,
         counter:counter,
@@ -821,10 +821,10 @@ $(document).ready(function () {
         if (e.ctrlKey) {
             if(String.fromCharCode(e.which).toLowerCase() === 'i'){
                 //Add Idea
-                editor_load_i();
+                i_editor_load();
             } else if(String.fromCharCode(e.which).toLowerCase() === 's'){
                 //Add Source:
-                editor_load_e(0,0);
+                e_editor_load(0,0);
             } else if(String.fromCharCode(e.which).toLowerCase() === 'f' && search_enabled()){
                 //Finder:
                 toggle_finder();
@@ -1123,7 +1123,7 @@ function e_load_finder(x__type) {
 
 
 
-function editor_load_i(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0){
+function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1249,7 +1249,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
 
     var created_i__id = 0;
 
-    $.post("/i/editor_load_i", {
+    $.post("/ajax/i_editor_load", {
         i__id: i__id,
         x__id: x__id,
         current_i__type: current_i__type,
@@ -1353,14 +1353,14 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
 }
 
 var i_saving = false; //Prevent double saving
-function editor_save_i(){
+function i_editor_save(){
 
     if(i_saving){
         return false;
     }
 
     i_saving = true;
-    $(".editor_save_i").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".i_editor_save").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
@@ -1419,7 +1419,7 @@ function editor_save_i(){
     });
     if(!media_uploaded){
         i_saving = false;
-        $(".editor_save_i").html('SAVE');
+        $(".i_editor_save").html('SAVE');
         $("#modal31911 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Error: Media has not yet uploaded, please wait until upload is complete...');
         return false;
     }
@@ -1435,11 +1435,11 @@ function editor_save_i(){
         }
     }
 
-    $.post("/i/editor_save_i", modify_data, function (data) {
+    $.post("/ajax/i_editor_save", modify_data, function (data) {
 
         //Load Images:
         i_saving = false;
-        $(".editor_save_i").html('SAVE');
+        $(".i_editor_save").html('SAVE');
 
         if (!data.status) {
 
@@ -1808,7 +1808,7 @@ function cloudinary_preview_source(uploader_id, info_id, media_e__id, playback_c
 }
 
 
-function editor_load_e(e__id, x__id){
+function e_editor_load(e__id, x__id){
 
     //Activate Modal:
     $('#modal31912').modal('show');
@@ -1862,7 +1862,7 @@ function editor_load_e(e__id, x__id){
 
 
 
-    $.post("/e/editor_load_e", {
+    $.post("/ajax/e_editor_load", {
         e__id: e__id,
         x__id: x__id
     }, function (data) {
@@ -1933,7 +1933,7 @@ function editor_load_e(e__id, x__id){
 
             //Add a second save button at the bottom if we have too much data:
             if(index_i_content > 5){
-                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default editor_save_e post_button" onclick="editor_save_e()">SAVE</button>');
+                $("#modal31912 .modal-footer").html('<button type="button" class="btn btn-default e_editor_save post_button" onclick="e_editor_save()">SAVE</button>');
             } else {
                 $("#modal31912 .modal-footer").html('');
             }
@@ -1968,14 +1968,14 @@ function editor_load_e(e__id, x__id){
 }
 
 e_saving = false;
-function editor_save_e(){
+function e_editor_save(){
 
     if(e_saving){
         return false;
     }
 
     e_saving = true;
-    $(".editor_save_e").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".e_editor_save").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
@@ -1998,10 +1998,10 @@ function editor_save_e(){
         }
     }
 
-    $.post("/e/editor_save_e", modify_data, function (data) {
+    $.post("/ajax/e_editor_save", modify_data, function (data) {
 
         e_saving = false;
-        $(".editor_save_e").html('SAVE');
+        $(".e_editor_save").html('SAVE');
 
         if (!data.status) {
 
@@ -2083,7 +2083,7 @@ function editor_save_e(){
 
 var busy_loading = false;
 var current_page = [];
-function view_load_page() {
+function x_view_load_page() {
 
     if(!focus_x__type){
         return false;
@@ -2106,7 +2106,7 @@ function view_load_page() {
 
     current_page[focus_x__type]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__type);
-    $.post("/x/view_load_page", {
+    $.post("/ajax/x_view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
         focus_id: fetch_int_val('#focus_id'),
         x__type: focus_x__type,
@@ -2170,7 +2170,7 @@ function e__add(x__type, e_existing_id) {
     }
 
     //Add via Ajax:
-    $.post("/e/e__add", {
+    $.post("/ajax/e__add", {
 
         focus_card: fetch_int_val('#focus_card'),
         x__type: x__type,
@@ -2227,7 +2227,7 @@ function e_delete(x__id, x__type) {
 
     var r = confirm("Unlink this source?");
     if (r==true) {
-        $.post("/e/e_delete", {
+        $.post("/ajax/e_delete", {
 
             x__id: x__id,
 
@@ -2258,7 +2258,7 @@ function x_link_toggle(x__type, i__id){
 
     if(!x__id){
         //Add:
-        $.post("/x/x_link_toggle", {
+        $.post("/ajax/x_link_toggle", {
             x__type:x__type,
             i__id:i__id,
             top_i__id:$('#top_i__id').val(),
@@ -2273,7 +2273,7 @@ function x_link_toggle(x__type, i__id){
         });
     } else {
         //REMOVE
-        $.post("/x/x_remove", {
+        $.post("/ajax/x_remove", {
             x__id:x__id
         }, function (data) {
             //Update UI to confirm with member:
@@ -2379,7 +2379,7 @@ function x_set_text(this_grabr){
 
     //Grey background to indicate saving
     var target_element = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
-    $.post("/x/x_set_text", modify_data, function (data) {
+    $.post("/ajax/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -2426,7 +2426,7 @@ function set_autosize(theobject){
 
 
 
-function sort_i_load(x__type){
+function i_sort_load(x__type){
 
     console.log('Tring to load Idea Sort for @'+x__type);
     if(!js_n___4603.includes(x__type)){
@@ -2470,7 +2470,7 @@ function sort_i_load(x__type){
 
                 //Update order:
                 if(sort_rank > 0){
-                    $.post("/x/sort_i_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                    $.post("/ajax/i_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
                         //Update UI to confirm with member:
                         if (!data.status) {
                             //There was some sort of an error returned!
@@ -2498,7 +2498,7 @@ function remove_ui_class(item, index) {
     $('body').removeClass(the_class);
 }
 
-function select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id, right_i__id){
+function e_select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id, right_i__id){
 
     //Any warning needed?
     if(js_n___31780.includes(selected_e__id) && !confirm(js_e___31780[selected_e__id]['m__message'])){
@@ -2540,7 +2540,7 @@ function select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__id,
         $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active');
     }
 
-    $.post("/e/select_apply", {
+    $.post("/ajax/e_select_apply", {
         focus_id: focus_id,
         down_e__id: down_e__id,
         right_i__id: right_i__id,
@@ -2628,7 +2628,7 @@ function ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name){
 
 }
 
-function update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show_full_name = false){
+function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show_full_name = false){
 
     /*
     *
@@ -2687,7 +2687,7 @@ function update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show
     }
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/x/update_instant_select", {
+    $.post("/ajax/x_update_instant_select", {
         focus_id:fetch_int_val('#focus_id'),
         o__id: o__id,
         element_id: element_id,
@@ -2721,7 +2721,7 @@ function update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, show
 
             if( data.auto_open_i_editor_modal ){
                 //We need to show idea modal:
-                editor_load_i(o__id, $('.s__12273_'+o__id).attr('x__id'));
+                i_editor_load(o__id, $('.s__12273_'+o__id).attr('x__id'));
             }
 
         } else {
@@ -2747,14 +2747,14 @@ function e_reset_discoveries(e__id){
         $('.e_reset_discoveries').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">REMOVING ALL</b>');
 
         //Redirect:
-        js_redirect('/x/e_reset_discoveries/'+e__id);
+        js_redirect('/ajax/e_reset_discoveries/'+e__id);
     } else {
         return false;
     }
 }
 
 
-function sort_e_save(x__type) {
+function e_sort_save(x__type) {
 
     var new_x__weight = [];
     var sort_rank = 0;
@@ -2773,7 +2773,7 @@ function sort_e_save(x__type) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/e/sort_e_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
+        $.post("/ajax/e_sort_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -2785,7 +2785,7 @@ function sort_e_save(x__type) {
 
 
 
-function reset_sorting(){
+function x_reset_sorting(){
     var r = confirm("Reset sorting?");
     if (r==true) {
 
@@ -2795,7 +2795,7 @@ function reset_sorting(){
 
 
         //Update via call:
-        $.post("/x/reset_sorting", {
+        $.post("/ajax/x_reset_sorting", {
             focus_card: focus_card,
             focus_id: focus_id
         }, function (data) {

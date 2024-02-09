@@ -564,7 +564,7 @@ if(!$basic_header_footer){
 
                     //Always give option to ideate:
                     if($member_e){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="editor_load_i()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
                     }
 
 
@@ -603,7 +603,7 @@ if(!$basic_header_footer){
                         } elseif($x__type==42246 && $member_e) {
 
                             //Profile Edit
-                            $href = 'href="javascript:void(0);" onclick="editor_load_e('.$member_e['e__id'].',0)" ';
+                            $href = 'href="javascript:void(0);" onclick="e_editor_load('.$member_e['e__id'].',0)" ';
 
                         } elseif($x__type==28615){
 
@@ -836,7 +836,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             echo $input_options;
 
                             ?>
-                            <div class="mass_apply_preview"></div>
+                            <div class="x_mass_apply_preview"></div>
                         </div>
                 </div>
                 </form>
@@ -921,7 +921,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             echo $input_options;
 
                             ?>
-                            <div class="mass_apply_preview"></div>
+                            <div class="x_mass_apply_preview"></div>
                         </div>
                     </div>
                 </form>
@@ -943,7 +943,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <button type="button" class="btn btn-default editor_save_i post_button" onclick="editor_save_i()">SAVE</button>
+                        <button type="button" class="btn btn-default i_editor_save post_button" onclick="i_editor_save()">SAVE</button>
                     </div>
 
                     <div class="modal-body">
@@ -1056,7 +1056,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                     <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <button type="button" class="editor_save_e btn btn-default post_button" onclick="editor_save_e()">SAVE</button>
+                        <button type="button" class="e_editor_save btn btn-default post_button" onclick="e_editor_save()">SAVE</button>
                     </div>
 
                     <div class="modal-body">

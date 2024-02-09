@@ -277,7 +277,7 @@ if($top_i__hashtag){
 
     $tree_progress = $this->X_model->tree_progress($x__creator, $top_i);
     $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
-    $go_next_url = '/x/x_next/' . $top_i__hashtag . '/' . $focus_i['i__hashtag'];
+    $go_next_url = '/ajax/x_next/' . $top_i__hashtag . '/' . $focus_i['i__hashtag'];
 
     if($top_completed){
         echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
@@ -298,7 +298,7 @@ if($top_i__hashtag){
 
 } else {
 
-    $go_next_url = '/x/x_start/'.$focus_i['i__hashtag'];
+    $go_next_url = '/ajax/x_start/'.$focus_i['i__hashtag'];
 
 }
 
@@ -930,7 +930,7 @@ if($top_i__hashtag) {
 
 //NEXT IDEAS:
 //Append add new idea as a comment button at the end:
-$body_prepend = '<a href="javascript:void(0);" onclick="editor_load_i(0,0,30901,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
+$body_prepend = '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
 $body_prepend = '';
 if(!($top_i__hashtag && $is_or_7712)){
     echo view_i_list(6255, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_prepend);
@@ -1106,7 +1106,7 @@ if($top_i__hashtag){
             if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#top_i__id').val()) > 0) {
 
                 //READ:
-                return read_only_complete();
+                return x_read_only_complete();
 
             } else {
 
@@ -1120,7 +1120,7 @@ if($top_i__hashtag){
 
     function x_upload() {
 
-        $.post("/x/x_upload", {
+        $.post("/ajax/x_upload", {
             i__id:         fetch_int_val('#focus_id'),
             top_i__id:     $('#top_i__id').val()
         }, function (data) {
@@ -1134,7 +1134,7 @@ if($top_i__hashtag){
 
 
     function x_write(){
-        $.post("/x/x_write", {
+        $.post("/ajax/x_write", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
             x_write:$('#x_write').val(),
@@ -1153,8 +1153,8 @@ if($top_i__hashtag){
 
 
 
-    function read_only_complete(){
-        $.post("/x/read_only_complete", {
+    function x_read_only_complete(){
+        $.post("/ajax/x_read_only_complete", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
         }, function (data) {
@@ -1177,7 +1177,7 @@ if($top_i__hashtag){
             return false;
         }
 
-        $.post("/x/x_skip", {
+        $.post("/ajax/x_skip", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
         }, function (data) {
@@ -1194,7 +1194,7 @@ if($top_i__hashtag){
 
 
     function x_free_ticket(){
-        $.post("/x/x_free_ticket", {
+        $.post("/ajax/x_free_ticket", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
             paypal_quantity:$('#paypal_quantity').val(),
@@ -1223,7 +1223,7 @@ if($top_i__hashtag){
 
 
         //Show Loading:
-        $.post("/x/x_select", {
+        $.post("/ajax/x_select", {
             focus_id:fetch_int_val('#focus_id'),
             top_i__id:$('#top_i__id').val(),
             selection_i__id:selection_i__id,

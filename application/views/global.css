@@ -4099,8 +4099,9 @@ div.img {
     top:-34px !important;
 }
 
-
-
+input[type=datetime-local] {
+    max-width: 189px;
+}
 
 main {
     height: 100vh;

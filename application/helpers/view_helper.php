@@ -305,7 +305,7 @@ function view_more($href, $is_current, $x__type, $o__privacy, $o__type, $o__titl
 
 
 
-function view_body_e($x__type, $counter, $e__id){
+function e_view_body($x__type, $counter, $e__id){
 
 
 
@@ -373,7 +373,7 @@ function view_google_tag($google_analytics_code){
 </script>';
 }
 
-function view_body_i($x__type, $counter, $i__id){
+function i_view_body($x__type, $counter, $i__id){
 
     $CI =& get_instance();
 
@@ -850,7 +850,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         }
 
         if(!$access_locked){
-            $ui .= '<a href="javascript:void(0);" onclick="select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</a>';
         }
 
         if(!$selected){
@@ -962,7 +962,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<a class="dropdown-item drop_item_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
+                $ui .= '<a class="dropdown-item drop_item_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
             }
 
         }
@@ -1568,21 +1568,21 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 //Idea Edit
 
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==30901){
 
                 //Reply
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i(0,0,30901,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==42379){
 
                 //Reply Inverse
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i(0,0,30901,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==42260){
@@ -1628,7 +1628,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                         if($e__id_dropdown==12589 && $write_privacy_i){
 
                             //Mass Apply
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==30795 && !$discovery_mode){
 
@@ -1643,7 +1643,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                         } elseif($e__id_dropdown==13007){
 
                             //Reset Alphabetic order
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $write_privacy_i){
 
@@ -1674,7 +1674,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
                             //Delete Permanently
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" this_id="'.$i['i__privacy'].'" onclick="update_instant_select(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" this_id="'.$i['i__privacy'].'" onclick="x_update_instant_select(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(28727)){
 
@@ -2091,7 +2091,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Edit Source
 
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="editor_load_e('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==13006 && $has_sortable){
@@ -2132,7 +2132,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                         if($e__id_dropdown==4997){
 
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==6287 && $is_app_store){
 
@@ -2153,12 +2153,12 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                             //Delete Source
                             $action_buttons .= '<li><hr class="dropdown-divider"></li>';
-                            $action_buttons .= '<a href="javascript:void();" this_id="'.$e['e__privacy'].'" onclick="update_instant_select(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void();" this_id="'.$e['e__privacy'].'" onclick="x_update_instant_select(6177, 6178, '.$e['e__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_6177_'.$e['e__id'].'_'.$x__id.' main__title optiond_6178_'.$e['e__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
 
                             //Reset Alphabetic order
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==6415){
 
