@@ -315,6 +315,7 @@ function sort_e_load(x__type) {
 
     if(!js_n___13911.includes(x__type)){
         //Does not support sorting:
+        console.log(x__type+' is not sortable');
         return false;
     } else if(sort_item_count<1 || sort_item_count>parseInt(js_e___6404[11064]['m__message'])){
         return false;
@@ -406,7 +407,9 @@ function toggle_pills(x__type_hash){
         //Set focus tab:
         console.log('focus_x__type Updated from '+focus_x__type+' to '+x__type);
         focus_x__type = parseInt(x__type);
-        window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
+        if(!window.location.hash || window.location.hash!=$('.thepill' + x__type+' .nav-link').attr('href')) {
+            window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
+        }
 
         //Do we need to load data via ajax?
         if( !$('.headline_body_' + x__type + ' .tab_content').html().length ){
@@ -474,6 +477,7 @@ function toggle_pills(x__type_hash){
                     });
                 });
 
+                console.log('Detecting Sort loading needs....');
                 if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
                     setTimeout(function () {
                         sort_i_load(x__type);
@@ -2424,7 +2428,7 @@ function set_autosize(theobject){
 
 function sort_i_load(x__type){
 
-    console.log(x__type+' sort_i_load ATTEMPT');
+    console.log('Tring to load Idea Sort for @'+x__type);
     if(!js_n___4603.includes(x__type)){
         console.log(x__type+' is not sortable');
         return false;
