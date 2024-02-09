@@ -4386,6 +4386,9 @@ main {
     padding: 3px 5px 3px 0;
     padding: 0;
 }
+.modal-content .creator_headline{
+    margin: 0 0 -21px 0;
+}
 
 .x__message_headline{
     display: block;
