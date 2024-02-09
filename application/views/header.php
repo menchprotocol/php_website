@@ -968,11 +968,10 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 'x__type' => 41011, //PINNED FOLLOWER
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             ), array('x__following'), 0) as $x_pinned) {
-                                echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
+                                echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span></div>';
                             }
-
                             //Always append current user:
-                            echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span><b>'.$member_e['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$member_e['e__handle'].'</span></div>';
+                            echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span></div>';
                             ?>
                         </div>
 

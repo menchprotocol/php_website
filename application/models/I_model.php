@@ -18,10 +18,6 @@ class I_model extends CI_Model
     function create($add_fields, $x__creator = 14068)
     {
 
-        if(!isset($add_fields['i__message'])){
-            $add_fields['i__message'] = null;
-        }
-
         if(!isset($add_fields['i__type']) || !in_array($add_fields['i__type'], $this->config->item('n___4737'))){
             //Statement is the default idea type:
             $add_fields['i__type'] = 6677;
