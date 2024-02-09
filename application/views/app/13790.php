@@ -217,7 +217,7 @@ echo '</table>';
         cursor: ns-resize !important;
     }
     #sortable_table th, #sortable_table td{
-        border: 1px solid #000000 !important;
+        border: 1px solid #EFEFEE !important;
     }
 
     #sortable_table th:hover, #sortable_table th:active{
