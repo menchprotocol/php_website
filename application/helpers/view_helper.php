@@ -1550,7 +1550,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==4737){
 
                 //Idea Type
-
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(4737, $i['i__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
@@ -1558,7 +1557,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==31004 && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
 
                 //Idea Access
-
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $top_bar_ui .= '</div></td>';

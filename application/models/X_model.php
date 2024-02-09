@@ -439,6 +439,13 @@ class X_model extends CI_Model
                 'x__type' => $new_e__id,
             ), $member_e['e__id'], 28799);
 
+        } elseif($element_id==42260 && $x__id > 0){
+
+            //SOURCE/SOURCE LINK
+            $status = $this->X_model->update($x__id, array(
+                'x__type' => $new_e__id,
+            ), $member_e['e__id'], 28799);
+
         } elseif($element_id==6177){
 
             //SOURCE ACCESS
