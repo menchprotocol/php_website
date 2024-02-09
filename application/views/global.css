@@ -4030,7 +4030,7 @@ div.img {
 
 .logo_title {
     position: absolute;
-    top: 7px;
+    top: 6px;
     left: 39px;
 
     display: block;
@@ -4055,7 +4055,7 @@ div.img {
     font-size: 1.89em !important;
 }
 .logo_cover img{
-    margin:-8px 0 0 0 !important;
+    margin:-13px 0 0 0 !important;
     border-radius: 50%;
 }
 .logo_cover i{
