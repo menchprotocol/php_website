@@ -1483,7 +1483,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Top Bar
     $top_bar_ui = '';
-    $active_bars = 0;
     if(!$cache_app && !$discovery_mode && $write_privacy_i){
 
         //Determine Link Group
@@ -1524,13 +1523,11 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             if($x__type_top_bar==31770 && $link_type_ui && (!$discovery_mode || $write_privacy_i)){
 
                 //Links
-                $active_bars++;
                 $top_bar_ui .= $link_type_ui;
 
             } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0){
 
                 //Link Time:
-                $active_bars++;
                 $creator_details = '';
                 $time_diff = view_time_difference($i['x__time'], true);
                 $creator_name = '';
@@ -1553,7 +1550,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==4737){
 
                 //Idea Type
-                $active_bars++;
+
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(4737, $i['i__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
@@ -1561,7 +1558,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==31004 && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
 
                 //Idea Access
-                $active_bars++;
+
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
@@ -1569,7 +1566,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==31911 && $write_privacy_i){
 
                 //Idea Edit
-                $active_bars++;
+
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
@@ -1577,15 +1574,18 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==30901 && $write_privacy_i){
 
                 //Reply
-                $active_bars++;
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i(0,0,30901,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $top_bar_ui .= '</div></td>';
+
+                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i(0,0,30901,0,'.$i['i__id'].')" class="rotate180">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==42260){
 
                 //Reactions
-                $active_bars++;
+
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(42260, 0, $member_e, false, $i['i__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
@@ -1593,7 +1593,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
 
                 //Sort Idea
-                $active_bars++;
+
                 $top_bar_ui .= '<td class="sort_i_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
@@ -1696,7 +1696,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 if($action_buttons && $focus_dropdown>0){
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
-                    $active_bars++;
+
                     $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                     $top_bar_ui .= '<div class="dropdown inline-block">';
                     $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
@@ -1713,7 +1713,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     }
 
     //Top Bar:
-    $ui .= '<table class="card_covers active_bars_'.$active_bars.'"><tr>';
+    $ui .= '<table class="card_covers"><tr>';
     $ui .= $top_bar_ui;
     $ui .= '</tr></table>';
 
@@ -1773,12 +1773,11 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Bottom Bar
     if(!$cache_app && !$focus_card ){
-        $active_bars = 0;
         $bottom_bar_ui = '';
         foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
             $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
             if(strlen($coins_ui)){
-                $active_bars++;
+
                 $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
                 $bottom_bar_ui .= $coins_ui;
                 $bottom_bar_ui .= '</span>';
@@ -2046,7 +2045,6 @@ function view_card_e($x__type, $e, $extra_class = null)
 
         //Top Bar
         $top_bar_ui = '';
-        $active_bars = 0;
         foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
 
             //See if missing superpower?
@@ -2059,13 +2057,13 @@ function view_card_e($x__type, $e, $extra_class = null)
 
             if($x__type_top_bar==31770 && $x__id && superpower_unlocked(13422)){
 
-                $active_bars++;
+
                 $top_bar_ui .= $link_type_ui;
 
             } elseif($x__type_top_bar==6177 && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
-                $active_bars++;
+
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
@@ -2073,13 +2071,13 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==4362 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
 
                 //Creation Time:
-                $active_bars++;
+
                 $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).' | ID '.$e['x__id'].'">' . view_time_difference($e['x__time'], true) . '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
 
                 //Selector
-                $active_bars++;
+
                 $top_bar_ui .= '<td class="ignore-click"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<input class="form-check-input" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'" aria-label="...">';
                 $top_bar_ui .= '</div></td>';
@@ -2087,7 +2085,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==31912 && $write_privacy_e){
 
                 //Edit Source
-                $active_bars++;
+
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="editor_load_e('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
@@ -2095,7 +2093,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==13006 && $has_sortable){
 
                 //Sort Source
-                $active_bars++;
+
                 $top_bar_ui .= '<td class="sort_e_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
@@ -2181,7 +2179,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 if($action_buttons && $focus_dropdown>0){
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
-                    $active_bars++;
+
                     $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                     $top_bar_ui .= '<div class="dropdown inline-block">';
                     $top_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
@@ -2194,7 +2192,7 @@ function view_card_e($x__type, $e, $extra_class = null)
             }
         }
 
-        $ui .= '<table class="card_covers active_bars_'.$active_bars.'"><tr>';
+        $ui .= '<table class="card_covers"><tr>';
         $ui .= $top_bar_ui;
         $ui .= '</tr></table>';
 
