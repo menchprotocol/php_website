@@ -17,7 +17,7 @@ class View extends CI_Controller
     function index(){
         //Default Home Page:
         //TODO Can load a customized home page app per website...
-        $this->load(14565);
+        $this->app_load(14565);
     }
 
     function app_load($app_e__id = 14563 /* Error if none provided */){
