@@ -212,11 +212,6 @@ h3{
 .inner_message .dynamic_selector{
     padding: 0 !important;
 }
-.dynamic_editing_input textarea.form-control.save_i__message{
-    padding: 0 !important;
-    font-size: 1.3em;
-}
-
 .inner_message .dynamic_editing_input{
     display: inline-block;
     float: left;
@@ -2936,10 +2931,6 @@ h4.main__title{
 }
 
 @media (max-width:610px) {
-
-    .dynamic_editing_input textarea.form-control.save_i__message{
-        font-size: 1.1em;
-    }
 
     .mini-frame{
         max-width: 233px;
