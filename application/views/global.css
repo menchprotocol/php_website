@@ -3082,17 +3082,17 @@ h4.main__title{
 
 
 .light-bg {
-    background: rgba(239,239,239,0.89) !important;
+    background: rgba(255,255,254,0.89) !important;
 }
 .fixed-top{
-    background: rgba(239,239,239,1.00) !important;
+    background: rgba(255,255,254,1.00) !important;
 }
 
 .coin-6287 .cover-content,
 .coin-12274 .cover-content,
 .coin-12274.not-allowed .cover-content,
 .coin-6287.not-allowed .cover-content{
-    background: rgba(239,239,239,0.89) !important;
+    background: rgba(255,255,254,0.89) !important;
 }
 
 .search_bar,
