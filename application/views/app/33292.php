@@ -56,10 +56,10 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                         //Search for sibling if Has Family:
                         if(in_array($e__id2, $this->config->item('n___42792'))){
                             foreach($this->X_model->fetch(array(
-                                'x__following' => $found_link_group,
+                                'x__follower' => $found_link_group,
                                 'x__type' => 42570, //Family
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            ), array('x__follower'), 1) as $sibling){
+                            ), array('x__following'), 1) as $sibling){
                                 echo '<b class="main__title grey">'.$sibling['e__title'].'</b><span class="icon-block-xs">'.view_cover($sibling['e__cover']).'</span>';
                             }
                         }
