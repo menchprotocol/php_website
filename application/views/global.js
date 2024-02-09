@@ -1342,7 +1342,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
 
             }, 377);
 
-        } else {
+        } else if (data.message) {
 
             //Should not have an issue loading
             alert('ERROR:' + data.message);
