@@ -995,14 +995,14 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <!-- EMOJI -->
                             <div class="dynamic_editing_input no_padded float_right">
                                 <div class="dropdown emoji_selector">
-                                    <button type="button" class="btn no-left-padding no-right-padding icon-block-sm" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
+                                    <button type="button" class="btn no-left-padding no-right-padding icon-block-xs" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                     <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
                                 </div>
                             </div>
 
                             <!-- Upload -->
                             <div class="dynamic_editing_input no_padded float_right">
-                                <a class="uploader_13572 icon-block-sm" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+                                <a class="uploader_13572 icon-block-xs" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
                             </div>
 
                             <!-- Idea Privacy -->
