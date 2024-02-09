@@ -1400,7 +1400,7 @@ label {
 
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
-    background-color: #EFEFEF;
+    background-color: #FFFFFE;
 }
 .dropdown-item:focus,
 .dropdown-item:hover,
@@ -1414,7 +1414,7 @@ label {
 .dropdown-item.active,
 .dropdown-item:active {
     color: #000000 !important;
-    background-color: #EFEFEF !important;
+    background-color: #FFFFFE !important;
     cursor: default !important;
 }
 
@@ -2871,7 +2871,7 @@ h4.main__title{
     margin-left: 5px;
     margin-top: 5px;
     position: relative;
-    background-color: #EFEFEF;
+    background-color: #FFFFFE;
 }
 
 .media_frame .media_item span {
@@ -3118,7 +3118,7 @@ body,
 .chat-title span,
 div.dropdown-item
 {
-    background-color: #EFEFEF;
+    background-color: #FFFFFE;
     color: #000000;
 }
 
@@ -3128,7 +3128,7 @@ div.dropdown-item
 }
 .mid-text-line span
 {
-    background-color: #EFEFEF !important;
+    background-color: #FFFFFE !important;
     color: #000000;
 }
 .x-list,
@@ -3838,7 +3838,7 @@ a,
     background-color: transparent !important;
 }
 .grey-background:hover {
-    background-color: #EFEFEF !important;
+    background-color: #FFFFFE !important;
 }
 
 .cover-content .i_cache {
@@ -3895,7 +3895,7 @@ a,
     background-color: transparent;
 }
 .table-striped tbody tr:nth-of-type(even){
-    background-color: #EFEFEF;
+    background-color: #FFFFFE;
 }
 
 
