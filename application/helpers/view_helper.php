@@ -1588,7 +1588,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==42260){
 
                 //Reactions
-
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(42260, 0, $member_e, false, $i['i__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
@@ -1596,7 +1595,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
 
                 //Sort Idea
-
                 $top_bar_ui .= '<td class="sort_i_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
