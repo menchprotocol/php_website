@@ -4200,7 +4200,7 @@ main {
 .home_black_font .logo_cover i,
 .home_black_font .block-x i,
 .home_black_font .menu-cover i,
-.home_black_font .logo_title a {
+.home_black_font .logo_title {
     color:#000000;
 }
 .home_black_font h1 {
@@ -4212,7 +4212,7 @@ main {
 .home_white_font .logo_cover i,
 .home_white_font .block-x i,
 .home_white_font .menu-cover i,
-.home_white_font .logo_title a {
+.home_white_font .logo_title {
     color:#FFFFFF;
 }
 .home_white_font h1 {
@@ -4288,13 +4288,13 @@ main {
 .home_black_font .logo_cover i,
 .home_black_font .menu-cover i,
 .home_black_font .block-x i,
-.home_black_font .logo_title a {
+.home_black_font .logo_title {
     color:#FFFFFF !important;
 }
 .home_black_font .top-header-position .logo_cover i,
 .home_black_font .top-header-position .menu-cover i,
 .home_black_font .top-header-position .block-x i,
-.home_black_font .top-header-position .logo_title a {
+.home_black_font .top-header-position .logo_title {
     color:#000000 !important;
 }
 
