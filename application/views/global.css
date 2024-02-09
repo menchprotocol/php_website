@@ -3903,13 +3903,17 @@ h4.main__title{
     max-width: calc(100% - 10px) !important;
 }
 
+.logo_cover {
+    position:relative;
+}
+
 @media print
 {
 
     .fixed-top{
         background-color: transparent !important;
     }
-    .top_nav{
+    .logo_frame{
         display:none !important;
     }
 
@@ -4017,6 +4021,10 @@ div.img {
 .logo_cover.e_cover_mini div.img {
     width: 28px;
     height: 28px;
+}
+
+.logo_frame{
+    border-top:1px solid #000;
 }
 
 .logo_title {

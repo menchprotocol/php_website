@@ -499,9 +499,8 @@ if(!$basic_header_footer){
                     <?php
 
                     echo '<td>';
-                    echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block logo_cover">'.view_cover($domain_logo).'</span>' : '') . '</a>' . '<b class="main__title logo_title"><a href="/">'.get_domain('m__title').'</a></b>'.'</div>';
+                    echo '<div class="logo_frame">'.( strlen($domain_cover) ? '<a href="/" class="icon-block logo_cover">'.view_cover($domain_logo).'</a>' : '') . '<a href="/" class="main__title logo_title">'.get_domain('m__title').'</a>'.'</div>';
 
 
                     //SEARCH

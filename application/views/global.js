@@ -724,7 +724,7 @@ function toggle_finder(){
         //Turn OFF
         search_on = false; //Reverse
         $('.max_width').removeClass('search_bar');
-        $('.top_nav, .container_content').removeClass('hidden');
+        $('.logo_frame, .container_content').removeClass('hidden');
         $('.nav_finder, #container_finder').addClass('hidden');
 
     } else {
@@ -732,7 +732,7 @@ function toggle_finder(){
         //Turn ON
         search_on = true; //Reverse
         $('.max_width').addClass('search_bar');
-        $('.top_nav, .container_content').addClass('hidden');
+        $('.logo_frame, .container_content').addClass('hidden');
         $('.nav_finder, #container_finder').removeClass('hidden');
         $("#container_finder .row").html(''); //Reset results view
         $('#top_finder').focus();
