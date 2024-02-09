@@ -500,7 +500,7 @@ if(!$basic_header_footer){
 
                     echo '<td>';
 
-                    echo '<div class="logo_frame">'.( strlen($domain_cover) ? '<a href="/" class="icon-block logo_cover">'.view_cover($domain_logo).'</a>' : '') . '<a href="/" class="main__title logo_title">'.get_domain('m__title').'</a>'.'</div>';
+                    echo '<div class="logo_frame">'.( strlen($domain_cover) ? '<a href="/" class="logo_cover">'.view_cover($domain_logo).'</a>' : '') . '<a href="/" class="main__title logo_title">'.get_domain('m__title').'</a>'.'</div>';
 
 
                     //SEARCH
