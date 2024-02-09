@@ -1162,7 +1162,7 @@ a.headline {
 .idea_list_previous .idea_response{
     border-left: 0 !important;
     margin-left: 0;
-    padding-left: 0;
+    padding-left: 2px;
     margin-right: 5px;
 }
 
