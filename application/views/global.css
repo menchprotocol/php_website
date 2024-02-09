@@ -2138,7 +2138,6 @@ input.form-control {
 }
 .flip-content .card_cover.coinface-12273{
     border-top: 0;
-    padding:13px 0 !important;
 }
 .focus-cover.coinface-12273{
     border-top: 0px solid transparent;
@@ -4437,6 +4436,7 @@ main {
 .btn-large,
 .btn-6255 {
     border-radius: 0px !important;
+    border: 1px solid;
 }
 
 .card_frame{

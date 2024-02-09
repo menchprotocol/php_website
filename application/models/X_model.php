@@ -439,12 +439,23 @@ class X_model extends CI_Model
                 'x__type' => $new_e__id,
             ), $member_e['e__id'], 28799);
 
-        } elseif($element_id==42260 && $x__id > 0){
+        } elseif($element_id==42260 && $o__id > 0 && $new_e__id && $member_e){
 
-            //SOURCE/SOURCE LINK
-            $status = $this->X_model->update($x__id, array(
-                'x__type' => $new_e__id,
-            ), $member_e['e__id'], 28799);
+            //Reactions...
+            if($x__id > 0){
+                //Updating reaction:
+                $status = $this->X_model->update($x__id, array(
+                    'x__type' => $new_e__id,
+                ), $member_e['e__id'], 42794);
+            } else {
+                //Inserting new reaction:
+                $this->X_model->create(array(
+                    'x__creator' => $member_e['e__id'],
+                    'x__following' => $member_e['e__id'],
+                    'x__next' => $o__id,
+                    'x__type' => $new_e__id,
+                ));
+            }
 
         } elseif($element_id==6177){
 
