@@ -216,7 +216,7 @@ h3{
     display: inline-block;
     float: left;
     padding: 0;
-    margin: 0 !important;
+    margin: 0 -5px 0 0 !important;
 }
 .inner_message .dynamic_editing_input .btn{
     padding: 0;
