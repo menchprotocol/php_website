@@ -1716,9 +1716,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     }
 
     //Top Bar:
-    $ui .= '<table class="card_covers"><tr>';
-    $ui .= $top_bar_ui;
-    $ui .= '</tr></table>';
+    if($top_bar_ui){
+        $ui .= '<table class="card_covers"><tr>';
+        $ui .= $top_bar_ui;
+        $ui .= '</tr></table>';
+    }
+
 
 
 
@@ -2195,10 +2198,11 @@ function view_card_e($x__type, $e, $extra_class = null)
             }
         }
 
-        $ui .= '<table class="card_covers"><tr>';
-        $ui .= $top_bar_ui;
-        $ui .= '</tr></table>';
-
+        if($top_bar_ui){
+            $ui .= '<table class="card_covers"><tr>';
+            $ui .= $top_bar_ui;
+            $ui .= '</tr></table>';
+        }
 
     } else {
         //Add some space:
