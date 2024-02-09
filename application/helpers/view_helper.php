@@ -1586,11 +1586,11 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             } elseif($x__type_top_bar==42260 && $member_e){
 
                 //Reactions... Check to see if they have any?
-                $reactions = $this->X_model->fetch(array(
+                $reactions = $CI->X_model->fetch(array(
                     'x__following' => $member_e['e__id'],
                     'x__next' => $i['i__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___42260')) . ')' => null, //Reactions
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
