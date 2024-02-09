@@ -4037,8 +4037,7 @@ div.img {
     line-height: 151%;
     font-size: 1.21em;
     font-weight: bold;
-    width: calc(100% - 144px);
-    height: 36px;
+    height: 34px;
     overflow: hidden;
 }
 .logo_cover{
