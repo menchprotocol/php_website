@@ -1741,7 +1741,20 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
         'x__next' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__following')) as $creator){
-        $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span></div>';
+
+        $follow_btn = null;
+        if($member_e){
+            $followings = $CI->X_model->fetch(array(
+                'x__following' => $creator['e__id'],
+                'x__follower' => $member_e['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array(), 1, 0, array('x__weight' => 'ASC'));
+            $follow_btn = view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, true, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
+        }
+
+        $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a><span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span>'.$follow_btn.'</div>';
+
     }
 
     //Idea Location if any:
