@@ -1404,7 +1404,7 @@ label {
 .dropdown-item.active,
 .dropdown-item:active {
     color: #000000 !important;
-    background-color: #FFFFFE !important;
+    background-color: #EFEFEF !important;
     cursor: default !important;
 }
 
