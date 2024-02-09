@@ -1600,7 +1600,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
         autoMinimize: true,
         theme: 'minimal',
         tags: global_tags.concat(uploader_tags),
-        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash', 'google_drive', 'dropbox'],
+        sources: [ 'local', 'url', 'image_search', 'camera', 'unsplash'], //, 'google_drive', 'dropbox'
         defaultSource: 'local',
         styles:{
             palette: {
