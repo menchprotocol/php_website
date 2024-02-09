@@ -1578,7 +1578,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="editor_load_i(0,0,30901,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==42270){
+            } elseif($x__type_top_bar==42379){
 
                 //Reply Inverse
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
