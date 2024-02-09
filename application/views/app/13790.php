@@ -206,7 +206,7 @@ echo '</table>';
         -webkit-print-color-adjust:exact;
     }
     #sortable_table .table-striped td {
-        border-bottom: 1px dotted #000000 !important;
+        border-bottom: 1px dotted #EFEFEE !important;
         font-size: 1.15em;
     }
     .fa-filter, .fa-sort{
