@@ -10,38 +10,7 @@ class View extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        //See if we need to auto login?
-        @session_start();
-        date_default_timezone_set('America/Los_Angeles');
-        $first_segment = $this->uri->segment(1);
-        $member_e = superpower_unlocked();
-        $is_login_verified = isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
-
-        if(
-            !$member_e //User must not be logged in
-            && !array_key_exists($first_segment, $this->config->item('handle___14582'))
-            && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
-        ) {
-
-
-            if($is_login_verified){
-                foreach($this->E_model->fetch(array(
-                    'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-                )) as $e_user){
-
-                    //Login:
-                    $this->E_model->activate_session($e_user, true);
-
-                    //Log them in:
-                    header("Location: " . ( $_SERVER['REQUEST_URI'] ? $_SERVER['REQUEST_URI'] : view_app_link(4269) ), true, 307);
-                    exit;
-                }
-            }
-
-            header("Location: " . view_app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
-            exit;
-
-        }
+        auto_login();
 
     }
 
