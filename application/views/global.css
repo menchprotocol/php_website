@@ -2744,10 +2744,6 @@ h4.main__title{
     font-size: 1.55em;
     padding-bottom: 8px;
     line-height: 134%;
-    margin-bottom: 13px;
-}
-.modal-body .i_cache .first_line{
-    margin-bottom: 0px;
 }
 .edge-cover .i_cache .first_line{
     margin-bottom: 0;
@@ -2959,7 +2955,7 @@ h4.main__title{
     }
 
     .i_cache .first_line{
-        font-size: 1.5em;
+        font-size: 1.34em;
     }
 
     .info-td{
