@@ -860,13 +860,9 @@ p.menu_header {
 .fixed-top, .fixed-bottom {
     z-index: 999 !important;
 }
-.fixed-top {
-    background-color: #FFFFFF;
-}
+.fixed-top,
 .alert-default {
     background-color: #FFFFFF;
-    border-bottom: 1px solid #000000 !important;
-
 }
 
 .no-horizonal-margin{
