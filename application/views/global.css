@@ -4031,7 +4031,7 @@ div.img {
     width: calc(100% - 121px);
     height: 36px;
     overflow: hidden;
-    border-left:1px solid #000;
+    border-right:1px solid #000;
 }
 .logo_cover{
     position: absolute;
