@@ -2033,9 +2033,6 @@ function e_editor_save(){
             //Update Raw Cover:
             $('.ui_e__cover_'+modify_data['save_e__id']+':first').attr('raw_cover', modify_data['save_e__cover']);
 
-            //Update Mini Cover:
-            update_cover_mini(modify_data['save_e__cover'], '.mini_6197_'+modify_data['save_e__id']);
-
             //Update Main Cover:
             update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
 

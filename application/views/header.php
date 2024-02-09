@@ -19,15 +19,8 @@ $bgVideo = null;
 //Transaction Website
 $domain_cover = get_domain('m__cover');
 $domain_logo = ( substr_count($domain_cover, '"')>0 ? one_two_explode('"','"', $domain_cover) : $domain_cover );
-$is_emoji = false;
-if(filter_var($domain_logo, FILTER_VALIDATE_URL)){
-    $padding_hack = 1; //For URL
-} elseif(string_is_icon($domain_logo)){
-    $padding_hack = 2; //For Cover (4 before)
-} else {
-    $padding_hack = 2; //For Emoji
-    $is_emoji = true;
-}
+$is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !tring_is_icon($domain_logo) );
+
 
 //Generate Body Class String:
 $body_class = ' platform-'.$s__type; //Always append current coin
@@ -508,7 +501,7 @@ if(!$basic_header_footer){
                     echo '<td>';
                     echo '<div class="max_width">';
 
-                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block logo_cover e_cover e_cover_mini mini_6197_'.$website_id.'">'.view_cover($domain_logo).'</span>' : '<span style="float: left; width: 5px; display: block;">&nbsp;</span>') . '<b class="main__title logo_title text__6197_'.$website_id.'" style="padding-top:'.$padding_hack.'px;">'.get_domain('m__title').'</b>'.'</a></div>';
+                    echo '<div class="left_nav top_nav " style="text-align: left;"><a href="/">'.( strlen($domain_cover) ? '<span class="icon-block logo_cover">'.view_cover($domain_logo).'</span>' : '') . '<b class="main__title logo_title">'.get_domain('m__title').'</b>'.'</a></div>';
 
 
                     //SEARCH
