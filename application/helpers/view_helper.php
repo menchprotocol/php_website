@@ -1531,7 +1531,7 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
                 //Links
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($member_e && $member_e['e__id']==$i['x__creator']))){
+            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && $write_privacy_i){
 
                 //Link Time / Creator
                 $creator_details = '';
