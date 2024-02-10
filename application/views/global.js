@@ -1121,9 +1121,18 @@ function e_load_finder(x__type) {
 
 }
 
+function i_editor_switch(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1){
+    if(!next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type && !do_checks){
+        var r = confirm("Are you sure you want to unlink this idea?");
+        if (!(r==true)) {
+            return false;
+        }
+    }
+    //Will switch the nature/direction of the link:
+    return i_editor_load(i__id, x__id, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val());
+}
 
-
-function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1){
+function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = null){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1161,14 +1170,14 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         i__id = 0;
         x__id = 0;
         $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
-        $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_load('+i__id+','+x__id+','+link_x__type+',0,'+next_i__id+')');
+        $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+i__id+','+x__id+','+link_x__type+',0,'+next_i__id+')');
         $('.idea_unlink, .input___4486').removeClass('hidden');
         update_form_select(4486, link_x__type, 1, true);
     } else if(previous_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
         $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
-        $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_load('+i__id+','+x__id+','+link_x__type+','+previous_i__id+',0)');
+        $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+i__id+','+x__id+','+link_x__type+','+previous_i__id+',0)');
         $('.idea_unlink, .input___4486').removeClass('hidden');
         update_form_select(4486, link_x__type, 1, true);
     }
@@ -1206,17 +1215,20 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $('#modal31911 .hash_group').addClass('hidden');
 
         //See where we are at and append anything needed to the idea:
-        var autoload_message = '';
-        if(!next_i__id && !previous_i__id){
+        var insert_message = '';
+        if(load_message.length){
+            insert_message = load_message;
+        } else if(!next_i__id && !previous_i__id){
             var focus_card = fetch_int_val('#focus_card');
             if(focus_card==12273){
-                //autoload_message = '#'+$('#focus_handle').val()+' ';
+                //insert_message = '#'+$('#focus_handle').val()+' ';
             } else if (focus_card==12274 && fetch_int_val('#focus_id')!=js_pl_id){
-                autoload_message = '@'+$('#focus_handle').val()+' ';
+                insert_message = '@'+$('#focus_handle').val()+' ';
             }
         }
-        if(autoload_message.length){
-            $("#modal31911 .save_i__message").val(autoload_message);
+
+        if(insert_message.length){
+            $("#modal31911 .save_i__message").val(insert_message);
         }
 
     }

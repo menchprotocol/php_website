@@ -958,7 +958,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Unlink -->
                         <div class="dynamic_editing_input no_padded idea_unlink hidden">
-                            <a class="icon-block" href="javascript:void(0);" onclick="i_editor_load(0,0,0,0,0,0)" title="Unlink Idea / Publish a Standalone idea"><i class="fas fa-unlink"></i></a>
+                            <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch(0,0,0,0,0,0)" title="Unlink Idea / Publish a Standalone idea"><i class="fas fa-unlink"></i></a>
                         </div>
 
                         <!-- Toggle Direction -->
