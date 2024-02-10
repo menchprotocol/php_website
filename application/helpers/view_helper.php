@@ -1755,6 +1755,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
                 'x__following' => $creator['e__id'],
                 'x__follower' => $member_e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
+                'x__type !=' => 10673,
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1, 0, array('x__weight' => 'ASC'));
             $follow_btn = view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, true, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
@@ -2107,6 +2108,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__following' => $e['e__id'],
                     'x__follower' => $member_e['e__id'],
                     'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
+                    'x__type !=' => 10673,
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
 
