@@ -1166,7 +1166,10 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
                 previous_i__id = fetch_int_val('#focus_id');
                 link_x__type = 4228; //Sequence
             }
-        } else if(do_checks && !i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
+        }
+
+
+        if(!link_x__type && do_checks && !i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
             console.log('MATCH');
             next_i__id = fetch_int_val('#focus_id');
             link_x__type = 30901;
