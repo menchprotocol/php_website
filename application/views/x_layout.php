@@ -311,7 +311,12 @@ if($top_completed || $is_or_7712){
 echo '<div class="light-bg large-frame">';
 
 //Idea message:
-echo view_i_links($focus_i, true, true);
+//echo view_i_links($focus_i, true, true);
+
+//Focus Idea:
+echo '<div class="main_item row justify-content">';
+echo view_card_i(42288, 0, null, $focus_i);
+echo '</div>';
 
 
 $x_selects = array();
@@ -850,7 +855,7 @@ if($top_i__hashtag) {
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1, 0, array('x__weight' => 'ASC'));
 
-            //$control_btn = view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $focus_i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
+            $control_btn = view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $focus_i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
 
 
         } elseif($x__type==6255 && !$top_completed){
