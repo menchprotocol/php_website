@@ -1136,38 +1136,42 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
 
 function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
 
-    //Reset Fields:
-    $("#modal31911 .unsaved_warning").val('');
-    $("#modal31911 .dynamic_item, #modal31911 .save_x__frame, .idea_direction, .idea_unlink, .input___4486").addClass('hidden');
-    $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
-    $('#modal31911 .save_i__id, #modal31911 .save_x__id, #modal31911 .created_i__id').val(0);
-    $("#modal31911 .dynamic_item").attr('d__id','').attr('d_x__id','');
-    $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
+
 
     if(!passon_i__id){
+        //Reset Fields:
         has_unsaved_changes = false;
         $('#modal31911 .media_frame').html('');
+        $("#modal31911 .dynamic_item").attr('d__id','').attr('d_x__id','');
+        $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
+        $('#modal31911 .created_i__id').val(0);
+        $("#modal31911 .unsaved_warning").val('');
+        $("#modal31911 .dynamic_item, #modal31911 .save_x__frame, .idea_direction, .idea_unlink, .input___4486").addClass('hidden');
+        $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
+        $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
+
+        //Are we adding an idea for a target action tab?
+        console.log('i Modal loaded for '+focus_x__type);
+        if(do_checks && focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
+            if(js_n___42265.includes(focus_x__type)){
+                //Next idea group:
+                console.log('NEXT MATCH');
+                next_i__id = fetch_int_val('#focus_id');
+                link_x__type = 4228; //Sequence
+            } else if(js_n___42380.includes(focus_x__type)) {
+                //Previous idea group:
+                console.log('PREVIOUS MATCH');
+                previous_i__id = fetch_int_val('#focus_id');
+                link_x__type = 4228; //Sequence
+            }
+        } else if(do_checks && !i__id && !next_i__id && !previous_i__id && !link_x__type && fetch_int_val('#focus_card')==12273){
+            console.log('MATCH');
+            next_i__id = fetch_int_val('#focus_id');
+            link_x__type = 30901;
+        }
     }
 
-    //Are we adding an idea for a target action tab?
-    console.log('i Modal loaded for '+focus_x__type);
-    if(do_checks && focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
-        if(js_n___42265.includes(focus_x__type)){
-            //Next idea group:
-            console.log('NEXT MATCH');
-            next_i__id = fetch_int_val('#focus_id');
-            link_x__type = 4228; //Sequence
-        } else if(js_n___42380.includes(focus_x__type)) {
-            //Previous idea group:
-            console.log('PREVIOUS MATCH');
-            previous_i__id = fetch_int_val('#focus_id');
-            link_x__type = 4228; //Sequence
-        }
-    } else if(do_checks && !i__id && !next_i__id && !previous_i__id && !link_x__type && fetch_int_val('#focus_card')==12273){
-        console.log('MATCH');
-        next_i__id = fetch_int_val('#focus_id');
-        link_x__type = 30901;
-    }
+
 
 
     //Load Link addition info, if any:
@@ -1254,11 +1258,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     }
 
 
-    if(passon_i__id){
-
-        var created_i__id = load_i_dynamic(passon_i__id, x__id, current_i__type, false);
-
-    } else {
+    if(!passon_i__id){
 
         //Idea Privacy:
         update_form_select(31004, current_i__privacy, 1, true);
