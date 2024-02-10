@@ -1290,7 +1290,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     setTimeout(function () {
         //Focus on writing a message:
         $('#modal31911 .save_i__message').focus();
-    }, 987);
+    }, 1597);
 
 }
 
