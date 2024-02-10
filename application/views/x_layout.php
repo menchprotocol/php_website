@@ -846,6 +846,7 @@ if($top_i__hashtag) {
                 'x__following' => $member_e['e__id'],
                 'x__next' => $focus_i['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___42260')) . ')' => null, //Reactions
+                'x__type !=' => 42801,
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1, 0, array('x__weight' => 'ASC'));
 
