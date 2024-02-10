@@ -1138,7 +1138,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
 
     $(".idea_direction, .idea_unlink, .input___4486").addClass('hidden');
-    var focus_id = fetch_int_val('#focus_id');
+    var focus_i_id = ( fetch_int_val('#focus_card')==12273 ? fetch_int_val('#focus_id') : 0 );
 
     if(!passon_i__id){
 
@@ -1155,22 +1155,22 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
         //Are we adding an idea for a target action tab?
         console.log('i Modal loaded for '+focus_x__type);
-        if(focus_id && do_checks && focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
+        if(focus_i_id && do_checks && focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
             if(js_n___42265.includes(focus_x__type) || !js_session_superpowers_unlocked.includes(10939)){
                 //Next idea group:
-                next_i__id = focus_id;
+                next_i__id = focus_i_id;
                 link_x__type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             } else if(js_n___42380.includes(focus_x__type)) {
                 //Previous idea group:
-                previous_i__id = focus_id;
+                previous_i__id = focus_i_id;
                 link_x__type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             }
         }
 
 
-        if(!link_x__type && do_checks && !i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
+        if(!link_x__type && do_checks && !i__id && !next_i__id && !previous_i__id && focus_i_id){
             console.log('MATCH');
-            next_i__id = fetch_int_val('#focus_id');
+            next_i__id = focus_i_id;
             link_x__type = 30901;
         }
     }
