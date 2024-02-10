@@ -36,7 +36,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         echo '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id2.'" e__id="'.$e__id2.'">';
 
         echo '<div title="'.$m2['m__message'].'">';
-        echo '<div class="large_cover">'.$m2['m__cover'].'</div>';
+        echo '<a href="/@'.$m2['m__handle'].'" class="large_cover">'.$m2['m__cover'].'</a>';
         echo '<div class="main__title large_title"><b class="card_count_'.$e__id2.'"><i class="far fa-yin-yang fa-spin"></i></b></div>';
         echo '<div class="main__title large_title" title="@'.$m2['m__handle'].'">'.$m2['m__title'].'</div>';
         echo '</div>';
@@ -60,11 +60,11 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                                 'x__type' => 42570, //Family
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             ), array('x__following'), 1) as $sibling){
-                                echo '<b class="main__title grey">'.$sibling['e__title'].'</b><span class="icon-block-xs">'.view_cover($sibling['e__cover']).'</span>';
+                                echo '<b class="main__title grey">'.$sibling['e__title'].'</b><a href="/@'.$sibling['e__handle'].'" class="icon-block-xs">'.view_cover($sibling['e__cover']).'</a>';
                             }
                         }
 
-                        echo '<span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b>';
+                        echo '<a href="/@'.$e___42263[$found_link_group]['m__handle'].'" class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</a><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].':</b>';
 
                         echo '</td>';
                         echo '</tr>';
@@ -74,7 +74,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;" title="@'.$m3['m__handle'].'"><span class="icon-block-xs">'.$m3['m__cover'].'</span>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col points_frame hidden">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xx">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
+            echo '<td style="text-align: left;" title="@'.$m3['m__handle'].'"><a href="/@'.$m3['m__handle'].'" class="icon-block-xs">'.$m3['m__cover'].'</a>'.$m3['m__title'].'<span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col points_frame hidden">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xx">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
             echo '</tr>';
 
         }
