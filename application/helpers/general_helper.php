@@ -1082,10 +1082,6 @@ function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
 
 }
 
-function hide_if_missing_superpower($e__id){
-    return ( superpower_unlocked($e__id) ? '' : ' hidden ' );
-}
-
 function data_type_validate($data_type, $data_value, $data_title){
 
     $CI =& get_instance();

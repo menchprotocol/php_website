@@ -999,19 +999,18 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
 
-
                             <!-- Idea Privacy -->
                             <div class="dynamic_editing_input" style="margin: 0 !important;">
                                 <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, true); ?></div>
                             </div>
 
                             <!-- Idea Type -->
-                            <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
+                            <div class="dynamic_editing_input superpower__10939" style="margin: 0 !important;">
                                 <div class="dynamic_selector"><?= view_single_select_form(4737, 6677, false, true); ?></div>
                             </div>
 
                             <!-- Idea Links -->
-                            <div class="dynamic_editing_input <?= hide_if_missing_superpower(10939) ?>" style="margin: 0 !important;">
+                            <div class="dynamic_editing_input input___4486 hidden superpower__10939" style="margin: 0 !important;">
                                 <div class="dynamic_selector"><?= view_single_select_form(4486, 4228, false, true); ?></div>
                             </div>
 
@@ -1030,7 +1029,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
 
 
-                        <div class="<?= hide_if_missing_superpower(10939) ?>">
+                        <div class="superpower__10939">
                             <!-- Idea Hashtag -->
                             <div class="dynamic_editing_input hash_group">
                                 <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6201[32337]['m__cover'].'</span>'.$e___6201[32337]['m__title'].': ';  ?></h3>
