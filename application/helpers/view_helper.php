@@ -1743,11 +1743,11 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     ), array('x__following')) as $creator){
 
         $follow_btn = null;
-        if($member_e && $member_e['e__id']!=$creator['e__id']){
+        if($focus_card && $member_e && $member_e['e__id']!=$creator['e__id']){
             $followings = $CI->X_model->fetch(array(
                 'x__following' => $creator['e__id'],
                 'x__follower' => $member_e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
+                'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1, 0, array('x__weight' => 'ASC'));
             $follow_btn = view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, true, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
@@ -2294,6 +2294,19 @@ function view_card_e($x__type, $e, $extra_class = null)
         //Main description:
         $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . ( in_array($e['x__type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '">'.htmlentities($e['x__message']).'</div>';
     }
+
+
+    if($member_e && $member_e['e__id']!=$e['e__id']){
+        $followings = $CI->X_model->fetch(array(
+            'x__following' => $e['e__id'],
+            'x__follower' => $member_e['e__id'],
+            'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 1, 0, array('x__weight' => 'ASC'));
+        $ui .= view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, true, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
+    }
+
+
 
     $ui .= '</div>';
     //Icons were here before...
