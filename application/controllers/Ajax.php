@@ -683,14 +683,14 @@ class Ajax extends CI_Controller
 
 
         //Also have to add as a comment to another idea?
-        if(intval($_POST['next_i__id'])>0){
+        if(intval($_POST['next_i__id'])>0 && $_POST['save_x__type']>0){
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__previous' => $_POST['next_i__id'],
                 'x__next' => $is[0]['i__id'],
                 'x__type' => $_POST['save_x__type'],
             ));
-        } elseif(intval($_POST['previous_i__id'])>0){
+        } elseif(intval($_POST['previous_i__id'])>0 && $_POST['save_x__type']>0){
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__previous' => $is[0]['i__id'],
