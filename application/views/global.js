@@ -1161,6 +1161,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         i__id = 0;
         x__id = 0;
         $('#modal31911 .next_i__id').val(next_i__id);
+        $('#modal31911 .previous_i__id').val('');
         $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_load('+i__id+','+x__id+','+link_x__type+',0,'+next_i__id+')');
         $('.idea_unlink, .input___4486').removeClass('hidden');
@@ -1168,6 +1169,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     } else if(previous_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
+        $('#modal31911 .next_i__id').val('');
         $('#modal31911 .previous_i__id').val(previous_i__id);
         $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_load('+i__id+','+x__id+','+link_x__type+','+previous_i__id+',0)');
@@ -1384,7 +1386,7 @@ function i_editor_save(){
         save_x__id:         $('#modal31911 .save_x__id').val(),
         next_i__id:         $('#modal31911 .next_i__id').val(),
         previous_i__id:     $('#modal31911 .previous_i__id').val(),
-        save_x__type:       $('.dropd_form_4486').attr('selected_value').trim(),
+        save_x__type:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
         save_x__message:    $('#modal31911 .save_x__message').val().trim(),
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
