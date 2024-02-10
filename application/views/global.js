@@ -1135,11 +1135,8 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     $("#modal31911 .dynamic_item").attr('d__id','').attr('d_x__id','');
     $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
 
-    if(!i__id && !next_i__id && !previous_i__id){
-        var focus_card = fetch_int_val('#focus_card');
-        if(focus_card==12273){
-            next_i__id = parseInt($('#focus_handle').val());
-        }
+    if(!i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
+        next_i__id = parseInt($('#focus_id').val());
     }
 
     //Are we adding an idea for a target action tab?
