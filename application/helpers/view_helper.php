@@ -1490,7 +1490,7 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
 
     //Top Bar
     $top_bar_ui = '';
-    if(!$cache_app && !$discovery_mode && $write_privacy_i){
+    if(!$cache_app){
 
         //Determine Link Group
         $link_type_id = 4593; //Transaction Type
@@ -1527,12 +1527,12 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
             //Determine hover state:
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $link_type_ui && (!$discovery_mode || $write_privacy_i)){
+            if($x__type_top_bar==31770 && $write_privacy_i && $link_type_ui){
 
                 //Links
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0){
+            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui){
 
                 //Link Time:
                 $creator_details = '';
