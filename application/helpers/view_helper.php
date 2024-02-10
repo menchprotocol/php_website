@@ -2359,16 +2359,6 @@ function view_card_e($x__type, $e, $extra_class = null)
 
         $ui .= '<div class="card_covers hideIfEmpty">';
 
-        if($member_e && $member_e['e__id']!=$e['e__id']){
-            $followings = $CI->X_model->fetch(array(
-                'x__following' => $e['e__id'],
-                'x__follower' => $member_e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1, 0, array('x__weight' => 'ASC'));
-            $ui .= '<span>'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, $focus_card, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
-        }
-
         if(!$focus_card){
 
             $ui .= $featured_sources;
@@ -2382,6 +2372,16 @@ function view_card_e($x__type, $e, $extra_class = null)
                     $ui .= '</span>';
                 }
             }
+        }
+
+        if($member_e && $member_e['e__id']!=$e['e__id']){
+            $followings = $CI->X_model->fetch(array(
+                'x__following' => $e['e__id'],
+                'x__follower' => $member_e['e__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array(), 1, 0, array('x__weight' => 'ASC'));
+            $ui .= '<span>'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, true, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
         }
 
         $ui .= '</div>';
