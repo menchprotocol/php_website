@@ -1531,9 +1531,9 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
                 //Links
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui){
+            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($member_e && $member_e['e__id']==$i['x__creator']))){
 
-                //Link Time:
+                //Link Time / Creator
                 $creator_details = '';
                 $time_diff = view_time_difference($i['x__time'], true);
                 $creator_name = '';
@@ -1570,7 +1570,6 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
             } elseif($x__type_top_bar==31911 && $write_privacy_i){
 
                 //Idea Edit
-
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
@@ -1584,7 +1583,7 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
 
             } elseif($x__type_top_bar==42379){
 
-                //Reply Inverse
+                //Reply Inverse / Quote
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
@@ -2091,7 +2090,6 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==6177 && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
-
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
@@ -2112,13 +2110,13 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
 
-                $top_bar_ui .= '<td><div class="show-on-hover">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</div></td>';
-
+                if(count($followings) || !$has_any_lock){
+                    $top_bar_ui .= '<td><div class="show-on-hover">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e && !$has_any_lock, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</div></td>';
+                }
 
             } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
 
                 //Selector
-
                 $top_bar_ui .= '<td class="ignore-click"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<input class="form-check-input" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'" aria-label="...">';
                 $top_bar_ui .= '</div></td>';
@@ -2126,7 +2124,6 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==31912 && $write_privacy_e){
 
                 //Edit Source
-
                 $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
@@ -2134,7 +2131,6 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==13006 && $has_sortable){
 
                 //Sort Source
-
                 $top_bar_ui .= '<td class="sort_e_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab">'.$m_top_bar['m__cover'].'</span>';
                 $top_bar_ui .= '</div></td>';
