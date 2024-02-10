@@ -2095,8 +2095,9 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).' | ID '.$e['x__id'].'">' . view_time_difference($e['x__time'], true) . '</div></td>';
 
-            } elseif($x__type_top_bar==42795 && $member_e && $member_e['e__id']!=$e['e__id'] && (!$x__id || !(in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$member_e['e__id']))){
+            } elseif($x__type_top_bar==42795 && $member_e && $member_e['e__id']!=$e['e__id']){
 
+                // && (!$x__id || !(in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$member_e['e__id']))
                 $followings = $CI->X_model->fetch(array(
                     'x__following' => $e['e__id'],
                     'x__follower' => $member_e['e__id'],
