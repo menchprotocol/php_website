@@ -1122,17 +1122,19 @@ function e_load_finder(x__type) {
 }
 
 function i_editor_switch(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1){
-    if(!next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type && !do_checks){
-        var r = confirm("Are you sure you want to unlink this idea?");
+
+    if($('#modal31911 .save_i__message').val().length>0 || count(media_cache[13572])){
+        var r = confirm("Making this change will delete text media you have added... Continue");
         if (!(r==true)) {
             return false;
         }
     }
+
     //Will switch the nature/direction of the link:
-    return i_editor_load(i__id, x__id, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val());
+    return i_editor_load(i__id, x__id, link_x__type, next_i__id, previous_i__id, do_checks);
 }
 
-function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = ''){
+function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1216,9 +1218,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
         //See where we are at and append anything needed to the idea:
         var insert_message = '';
-        if(load_message.length){
-            insert_message = load_message;
-        } else if(!next_i__id && !previous_i__id){
+        if(!next_i__id && !previous_i__id){
             var focus_card = fetch_int_val('#focus_card');
             if(focus_card==12273){
                 //insert_message = '#'+$('#focus_handle').val()+' ';
