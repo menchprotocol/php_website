@@ -2043,7 +2043,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" e__privacy="' . $e['e__privacy'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" x__privacy="'.$e['x__privacy'].'" ' : '' ).' class="card_cover card_e_cover no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click_e col-sm-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
 
-    if(!$cache_app && !$is_app && superpower_unlocked(13422)) {
+    if(!$cache_app && !$is_app) {
 
         //Source Link Groups
         $link_type_id = 0;
@@ -2094,6 +2094,18 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Creation Time:
 
                 $top_bar_ui .= '<td><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).' | ID '.$e['x__id'].'">' . view_time_difference($e['x__time'], true) . '</div></td>';
+
+            } elseif($x__type_top_bar==42795 && $member_e && $member_e['e__id']!=$e['e__id']){
+
+                $followings = $CI->X_model->fetch(array(
+                    'x__following' => $e['e__id'],
+                    'x__follower' => $member_e['e__id'],
+                    'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                ), array(), 1, 0, array('x__weight' => 'ASC'));
+
+                $top_bar_ui .= '<td>'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, $focus_card, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</td>';
+
 
             } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
 
@@ -2372,21 +2384,6 @@ function view_card_e($x__type, $e, $extra_class = null)
                     $ui .= '</span>';
                 }
             }
-        }
-
-        if($member_e && $member_e['e__id']!=$e['e__id'] && count($CI->X_model->fetch(array(
-                'x__following' => 4430, //Must be a subscriber to follow
-                'x__follower' => $e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1))){
-            $followings = $CI->X_model->fetch(array(
-                'x__following' => $e['e__id'],
-                'x__follower' => $member_e['e__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1, 0, array('x__weight' => 'ASC'));
-            $ui .= '<span>'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, true, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
         }
 
         $ui .= '</div>';
