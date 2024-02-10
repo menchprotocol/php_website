@@ -1122,7 +1122,7 @@ function e_load_finder(x__type) {
 }
 
 function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 0){
-    console.log('SWITCHING TO '+link_x__type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks);
+    console.log('SWITCHING TO '+link_x__type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks+'/'+$('#modal31911 .save_i__message').val()+'/'+parseInt($('#modal31911 .save_i__id').val()));
 
     if(!next_i__id && !previous_i__id && !link_x__type && !do_checks){
         var r = confirm("Are you sure you want to unlink this idea?");
@@ -1174,6 +1174,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     if(next_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
+        $("#modal31911 .idea_list_previous").html('');
         $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+',0,'+next_i__id+',1)');
         $('.idea_unlink, .input___4486').removeClass('hidden');
@@ -1182,6 +1183,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         i__id = 0;
         x__id = 0;
         $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
+        $("#modal31911 .idea_list_next").html('');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+','+previous_i__id+',0,1)');
         $('.idea_unlink, .input___4486').removeClass('hidden');
         update_form_select(4486, link_x__type, 1, true);
