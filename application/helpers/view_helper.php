@@ -2374,7 +2374,12 @@ function view_card_e($x__type, $e, $extra_class = null)
             }
         }
 
-        if($member_e && $member_e['e__id']!=$e['e__id']){
+        if($member_e && $member_e['e__id']!=$e['e__id'] && count($CI->X_model->fetch(array(
+                'x__following' => 4430, //Must be a subscriber to follow
+                'x__follower' => $e['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array(), 1))){
             $followings = $CI->X_model->fetch(array(
                 'x__following' => $e['e__id'],
                 'x__follower' => $member_e['e__id'],
