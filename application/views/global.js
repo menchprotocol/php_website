@@ -1132,7 +1132,7 @@ function i_editor_switch(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0,
     return i_editor_load(i__id, x__id, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val());
 }
 
-function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = null){
+function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = ''){
 
     //Reset Fields:
     has_unsaved_changes = false;
