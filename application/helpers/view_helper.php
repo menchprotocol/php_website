@@ -1640,10 +1640,15 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
                             //Mass Apply
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(12589,'.$i['i__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==30795 && !$discovery_mode){
+                        } elseif($e__id_dropdown==30795 && !$discovery_mode && count($CI->X_model->fetch(array(
+                                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
+                                'x__next' => $i['i__id'],
+                                'x__following' => 4235,
+                            )))){
 
                             //Discover Idea
-                            $action_buttons .= '<a href="/'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="/'.$i['i__hashtag'].'/start" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==33286 && $discovery_mode && $write_privacy_i){
 
