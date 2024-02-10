@@ -225,7 +225,7 @@ class Ajax extends CI_Controller
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif(!isset($_POST['next_i__id']) || !isset($_POST['previous_i__id'])){
+        } elseif(!isset($_POST['next_i__id']) || !isset($_POST['previous_i__id']) || !isset($_POST['save_x__type'])){
 
             return view_json(array(
                 'status' => 0,
@@ -688,14 +688,14 @@ class Ajax extends CI_Controller
                 'x__creator' => $member_e['e__id'],
                 'x__previous' => $_POST['next_i__id'],
                 'x__next' => $is[0]['i__id'],
-                'x__type' => 30901, //Reply
+                'x__type' => $_POST['save_x__type'],
             ));
         } elseif(intval($_POST['previous_i__id'])>0){
             $this->X_model->create(array(
                 'x__creator' => $member_e['e__id'],
                 'x__previous' => $is[0]['i__id'],
                 'x__next' => $_POST['previous_i__id'],
-                'x__type' => 30901, //Reply
+                'x__type' => $_POST['save_x__type'],
             ));
         }
 
