@@ -442,6 +442,18 @@ class X_model extends CI_Model
 
         } elseif($element_id==42795 && $o__id > 0 && $new_e__id && $member_e){
 
+            if(!$x__id){
+                //Double check database as it may be updating newly selected value:
+                foreach($this->X_model->fetch(array(
+                    'x__following' => $o__id,
+                    'x__follower' => $member_e['e__id'],
+                    'x__type IN (' . join(',', $this->config->item('n___42795')) . ')' => null, //Follow
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                ), array(), 1) as $found_x){
+                    $x__id = $found_x['x__id'];
+                }
+            }
+
             //Follow
             if($x__id > 0){
                 //Updating reaction:
@@ -459,6 +471,19 @@ class X_model extends CI_Model
             }
 
         } elseif($element_id==42260 && $o__id > 0 && $new_e__id && $member_e){
+
+            //Check if current value?
+            if(!$x__id){
+                //Double check database as it may be updating newly selected value:
+                foreach($this->X_model->fetch(array(
+                    'x__following' => $member_e['e__id'],
+                    'x__next' => $o__id,
+                    'x__type IN (' . join(',', $this->config->item('n___42260')) . ')' => null, //Reactions
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                ), array(), 1) as $found_x){
+                    $x__id = $found_x['x__id'];
+                }
+            }
 
             //Reactions...
             if($x__id > 0){
