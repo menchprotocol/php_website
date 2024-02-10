@@ -494,10 +494,16 @@ class X_model extends CI_Model
 
             //Reactions...
             if($x__id > 0){
-                //Updating reaction:
-                $status = $this->X_model->update($x__id, array(
-                    'x__type' => $new_e__id,
-                ), $member_e['e__id'], 42794);
+                if($new_e__id==42801){
+                    $this->X_model->update($x__id, array(
+                        'x__privacy' => 6173, //Transaction Removed
+                    ), $member_e['e__id'], 10673); //Media Removed
+                } else {
+                    //Updating reaction:
+                    $status = $this->X_model->update($x__id, array(
+                        'x__type' => $new_e__id,
+                    ), $member_e['e__id'], 42794);
+                }
             } else {
                 //Inserting new reaction:
                 $status = count($this->X_model->create(array(
