@@ -1122,7 +1122,7 @@ function e_load_finder(x__type) {
 }
 
 function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 0){
-    console.log('SWITCHING TO '+link_x__type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks+'/'+$('#modal31911 .save_i__message').val()+'/'+parseInt($('#modal31911 .save_i__id').val()));
+    console.log('SWITCHING TO '+link_x__type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks+'/'+$('#modal31911 .save_i__message').val()+'/'+parseInt($('#modal31911 .created_i__id').val()));
 
     if(!next_i__id && !previous_i__id && !link_x__type && !do_checks){
         var r = confirm("Are you sure you want to unlink this idea?");
@@ -1131,7 +1131,7 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
         }
     }
     //Will switch the nature/direction of the link:
-    return i_editor_load(0, 0, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .save_i__id').val()));
+    return i_editor_load(0, 0, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .created_i__id').val()));
 }
 
 function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
@@ -1281,10 +1281,6 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         }, 987);
 
         var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
-        //Load dynamic data:
-        if(!i__id && created_i__id>0){
-            $('#modal31911 .save_i__id').val(created_i__id);
-        }
 
     }
 
