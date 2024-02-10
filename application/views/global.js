@@ -1122,6 +1122,7 @@ function e_load_finder(x__type) {
 }
 
 function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 0){
+    console.log('SWITCHING TO '+link_x__type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks);
 
     if(!next_i__id && !previous_i__id && !link_x__type && !do_checks){
         var r = confirm("Are you sure you want to unlink this idea?");
