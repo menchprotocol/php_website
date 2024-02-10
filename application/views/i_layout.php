@@ -15,8 +15,13 @@ $this->X_model->create(array(
 ));
 
 
-if($write_privacy_i){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-xs">'.$e___11035[30795]['m__cover'].'</span>You can discover this idea in <a href="/'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[30795]['m__title'].'</u></b></a></div>';
+if($write_privacy_i && count($this->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+        'x__next' => $focus_i['i__id'],
+        'x__following' => 4235,
+    )))){
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-xs">'.$e___11035[30795]['m__cover'].'</span>You can discover this idea in <a href="/'.$focus_i['i__hashtag'].'/start"><b><u>'.$e___11035[30795]['m__title'].'</u></b></a></div>';
 }
 
 //Focusing on a certain source?
