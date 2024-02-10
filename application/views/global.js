@@ -1162,7 +1162,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             previous_i__id = fetch_int_val('#focus_id');
             link_x__type = 4228; //Sequence
         }
-    } else if(do_checks && !i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
+    } else if(do_checks && !i__id && !next_i__id && !previous_i__id && !link_x__type && fetch_int_val('#focus_card')==12273){
         console.log('MATCH');
         next_i__id = fetch_int_val('#focus_id');
         link_x__type = 30901;
@@ -1209,6 +1209,10 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         });
         sort_media();
 
+    } else if(passon_i__id) {
+
+        $("#modal31911 .save_i__message").val(load_message);
+
     } else {
 
         //See the default passed to the form:
@@ -1220,9 +1224,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
         //See where we are at and append anything needed to the idea:
         var insert_message = '';
-        if(load_message.length){
-            insert_message = load_message;
-        } else if(!next_i__id && !previous_i__id){
+        if(!next_i__id && !previous_i__id){
             var focus_card = fetch_int_val('#focus_card');
             if(focus_card==12273){
                 //insert_message = '#'+$('#focus_handle').val()+' ';
@@ -1247,37 +1249,39 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         }
     }
 
-    //Idea Privacy:
-    update_form_select(31004, current_i__privacy, 1, true);
-
-    //Idea Type:
-    update_form_select(4737, current_i__type, 1, true);
-
-    //Activate Modal:
-    $('#modal31911').modal('show');
-
-    setTimeout(function () {
-        //Adjust sizes:
-        set_autosize($('#modal31911 .save_i__message'));
-        set_autosize($('#modal31911 .save_x__message'));
-    }, 233);
-
-    setTimeout(function () {
-        //Focus on writing a message:
-        $('#modal31911 .save_i__message').focus();
-    }, 987);
-
-
-
 
     if(passon_i__id){
+
         var created_i__id = load_i_dynamic(passon_i__id, x__id, current_i__type, false);
+
     } else {
+
+        //Idea Privacy:
+        update_form_select(31004, current_i__privacy, 1, true);
+
+        //Idea Type:
+        update_form_select(4737, current_i__type, 1, true);
+
+        //Activate Modal:
+        $('#modal31911').modal('show');
+
+        setTimeout(function () {
+            //Adjust sizes:
+            set_autosize($('#modal31911 .save_i__message'));
+            set_autosize($('#modal31911 .save_x__message'));
+        }, 233);
+
+        setTimeout(function () {
+            //Focus on writing a message:
+            $('#modal31911 .save_i__message').focus();
+        }, 987);
+
         var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
         //Load dynamic data:
         if(!i__id && created_i__id>0){
             $('#modal31911 .save_i__id').val(created_i__id);
         }
+
     }
 
 }
