@@ -2085,7 +2085,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $x__id && superpower_unlocked(13422)){
+            if($x__type_top_bar==31770 && $x__id && $write_privacy_e){
 
                 $top_bar_ui .= $link_type_ui;
 
