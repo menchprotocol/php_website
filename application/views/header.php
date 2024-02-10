@@ -1015,13 +1015,13 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
                             <!-- Toggle Direction -->
-                            <div class="dynamic_editing_input no_padde idea_direction hidden">
+                            <div class="dynamic_editing_input no_padde idea_direction hidden superpower__10939">
                                 <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="fas fa-arrow-up-arrow-down zq12273"></i></a>
                             </div>
 
                             <!-- Unlink -->
                             <div class="dynamic_editing_input no_padded idea_unlink hidden">
-                                <a class="icon-block" href="javascript:void(0);" onclick="i_editor_load(0,0,0,0,0,0)" title="Unlink Idea"><i class="fas fa-unlink"></i></a>
+                                <a class="icon-block" href="javascript:void(0);" onclick="i_editor_load(0,0,0,0,0,0)" title="Unlink Idea / Publish a Standalone idea"><i class="fas fa-unlink"></i></a>
                             </div>
 
                             <div class="doclear">&nbsp;</div>
