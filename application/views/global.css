@@ -4439,6 +4439,13 @@ main {
     border: 1px solid;
 }
 
+.dropdown_type_42795{
+    border: 1px solid #000;
+    padding: 3px 8px 3px 0;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
 .card_frame{
     border: 0;
     border-radius: 0px !important;
