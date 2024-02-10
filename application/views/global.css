@@ -2298,6 +2298,10 @@ input.form-control {
     display: inline-block;
     min-height: 21px;
 }
+
+.cover-content .inner-content .main__title.dropdown-item {
+    display: block;
+}
 .mini-cover .cover-content .inner-content .main__title {
     min-height: 13px;
 }
