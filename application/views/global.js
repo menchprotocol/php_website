@@ -2667,20 +2667,44 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
     //Deleting Anything?
     var main_object_type = 0;
     var main_object_update = false;
-    var migrate_s__handle = 0;
+    var migrate_s__handle = null;
     if(element_id==31004 && !(new_e__id in js_e___31871)){
 
         //Deleting Idea:
         main_object_type = 12273;
         main_object_update = 'i__privacy';
-        var migrate_s__handle = prompt("Are you sure you want to delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
+
+        if(js_session_superpowers_unlocked.includes(10939)){
+            var migrate_s__handle = prompt("Are you sure you want to permanently delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
+            if(migrate_s__handle.length<2){
+                return false;
+            }
+        } else {
+            //Confirm deletion:
+            var r = confirm("Are you sure you want to permanently delete this idea?");
+            if (!(r==true)) {
+                return false;
+            }
+        }
 
     } else if(element_id==6177 && !(new_e__id in js_e___7358)){
 
         //Deleting Source:
         main_object_type = 12274;
         main_object_update = 'e__privacy';
-        var migrate_s__handle = prompt("Are you sure you want to delete this source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
+
+        if(js_session_superpowers_unlocked.includes(10939)){
+            var migrate_s__handle = prompt("Are you sure you want to permanently delete this source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
+            if(migrate_s__handle.length<2){
+                return false;
+            }
+        } else {
+            //Confirm deletion:
+            var r = confirm("Are you sure you want to permanently delete this source?");
+            if (!(r==true)) {
+                return false;
+            }
+        }
 
     } else if(element_id==4737 && !(new_e__id in js_e___7358)){
 
