@@ -2104,7 +2104,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
 
-                $top_bar_ui .= '<td>'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</td>';
+                $top_bar_ui .= '<td class="'.( count($followings) ? '' : 'show-on-hover' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</td>';
 
 
             } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
