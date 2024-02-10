@@ -772,7 +772,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Statuses</option>';
                                     foreach($this->config->item('e___6177') /* Source Privacy */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
+                                        $input_options .= '<option value="'.$x__type3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
@@ -793,7 +793,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All</option>';
                                     foreach($this->config->item('e___6186') /* Interaction Privacy */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
+                                        $input_options .= '<option value="'.$x__type3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
@@ -813,7 +813,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Statuses</option>';
                                     foreach($this->config->item('e___32292') /* Source Links */ as $x__type3 => $m3){
-                                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
+                                        $input_options .= '<option value="'.$x__type3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
 
