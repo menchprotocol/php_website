@@ -811,7 +811,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
-                                    $input_options .= '<option value="*">Update All Statuses</option>';
+                                    $input_options .= '<option value="*">Update All Interaction Types</option>';
                                     foreach($this->config->item('e___32292') /* Source Links */ as $x__type3 => $m3){
                                         $input_options .= '<option value="'.$x__type3.'">Update Only If = '.$m3['m__title'].'</option>';
                                     }

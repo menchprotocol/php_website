@@ -79,9 +79,8 @@ echo '</ul>';
 echo $body_content;
 
 
-echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$e___26005[12840]['m__handle'].'\'); }); </script>';
+//echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$e___26005[12840]['m__handle'].'\'); }); </script>';
 
-/*
 $focus_tab = 0;
 foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
@@ -96,7 +95,6 @@ if(!$focus_tab){
         break;
     }
 }
-*/
 
 
 ?>
