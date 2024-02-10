@@ -1281,14 +1281,14 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             set_autosize($('#modal31911 .save_x__message'));
         }, 233);
 
-        setTimeout(function () {
-            //Focus on writing a message:
-            $('#modal31911 .save_i__message').focus();
-        }, 987);
-
         var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
 
     }
+
+    setTimeout(function () {
+        //Focus on writing a message:
+        $('#modal31911 .save_i__message').focus();
+    }, 987);
 
 }
 
