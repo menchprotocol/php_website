@@ -998,6 +998,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <a class="uploader_13572 icon-block" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
                             </div>
 
+                            <!-- Unlink -->
+                            <div class="dynamic_editing_input no_padded float_right idea_unlink hidden">
+                                <a class="icon-block" href="javascript:void(0);" onclick="i_editor_load(0,0,0,0,0,0)" title="Unlink Idea"><i class="fas fa-unlink"></i></a>
+                            </div>
+
                             <!-- Toggle Direction -->
                             <div class="dynamic_editing_input no_padded float_right idea_direction hidden">
                                 <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="fas fa-arrow-up-arrow-down"></i></a>

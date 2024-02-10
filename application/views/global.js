@@ -1123,7 +1123,7 @@ function e_load_finder(x__type) {
 
 
 
-function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0){
+function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1){
 
     //Reset Fields:
     has_unsaved_changes = false;
@@ -1137,7 +1137,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
     //Are we adding an idea for a target action tab?
     console.log('i Modal loaded for '+focus_x__type);
-    if(focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
+    if(do_checks && focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
         if(js_n___42265.includes(focus_x__type)){
             //Next idea group:
             console.log('NEXT MATCH');
@@ -1149,7 +1149,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             previous_i__id = fetch_int_val('#focus_id');
             link_x__type = 4228; //Sequence
         }
-    } else if(!i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
+    } else if(do_checks && !i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
         console.log('MATCH');
         next_i__id = fetch_int_val('#focus_id');
         link_x__type = 30901;
@@ -1162,15 +1162,19 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $('#modal31911 .next_i__id').val(next_i__id);
         $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_load('+i__id+','+x__id+','+link_x__type+',0,'+next_i__id+')');
+        $('.idea_unlink').removeClass('hidden');
     } else if(previous_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
         $('#modal31911 .previous_i__id').val(previous_i__id);
         $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_load('+i__id+','+x__id+','+link_x__type+','+previous_i__id+',0)');
+        $('.idea_unlink').removeClass('hidden');
     } else {
-        $('.idea_direction').addClass('hidden');
+        $('.idea_direction, .idea_unlink').addClass('hidden');
     }
+
+
 
     if(i__id){
 
