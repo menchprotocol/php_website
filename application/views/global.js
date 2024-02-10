@@ -1135,13 +1135,9 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     $("#modal31911 .dynamic_item").attr('d__id','').attr('d_x__id','');
     $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
 
-    if(!i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
-        next_i__id = parseInt($('#focus_id').val());
-    }
-
     //Are we adding an idea for a target action tab?
     console.log('i Modal loaded for '+focus_x__type);
-    if(!next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
+    if(focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
         if(js_n___42265.includes(focus_x__type)){
             //Next idea group:
             console.log('NEXT MATCH');
@@ -1153,6 +1149,9 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             previous_i__id = fetch_int_val('#focus_id');
             link_x__type = 4228; //Sequence
         }
+    } else if(!i__id && !next_i__id && !previous_i__id && fetch_int_val('#focus_card')==12273){
+        console.log('MATCH');
+        next_i__id = parseInt($('#focus_id').val());
     }
 
     //Load Link addition info, if any:
