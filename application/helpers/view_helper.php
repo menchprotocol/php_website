@@ -960,6 +960,13 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
                 continue; //Locked Dropdown
             }
 
+            //TODO place in proper groups later, for now a Hack to hide the unlink buttons for members not linked yet...
+            if($cache_e__id==42795 && $e__id==10673 && !$x__id){
+                continue;
+            } elseif($cache_e__id==42260 && $e__id==42801 && !$x__id){
+                continue;
+            }
+
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
                 $ui .= '<a class="dropdown-item drop_item_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-xs" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
