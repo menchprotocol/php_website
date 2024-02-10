@@ -1274,11 +1274,10 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         var created_i__id = load_i_dynamic(passon_i__id, x__id, current_i__type, false);
     } else {
         var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
-    }
-
-    //Load dynamic data:
-    if(!i__id && !passon_i__id && created_i__id>0){
-        $('#modal31911 .save_i__id').val(created_i__id);
+        //Load dynamic data:
+        if(!i__id && created_i__id>0){
+            $('#modal31911 .save_i__id').val(created_i__id);
+        }
     }
 
 }
