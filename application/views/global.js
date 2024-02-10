@@ -1129,10 +1129,10 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
         }
     }
     //Will switch the nature/direction of the link:
-    return i_editor_load(parseInt($('#modal31911 .save_i__id').val()), 0, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), true);
+    return i_editor_load(0, 0, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .save_i__id').val()));
 }
 
-function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', keep_media = false){
+function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
 
     //Reset Fields:
     $("#modal31911 .unsaved_warning").val('');
@@ -1142,7 +1142,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     $("#modal31911 .dynamic_item").attr('d__id','').attr('d_x__id','');
     $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
 
-    if(!keep_media){
+    if(!passon_i__id){
         has_unsaved_changes = false;
         $('#modal31911 .media_frame').html('');
     }
@@ -1267,11 +1267,13 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     }, 987);
 
 
-    //Load dynamic data:
-    var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
 
-    if(!i__id && created_i__id>0){
-        $('#modal31911 .save_i__id').val(created_i__id);
+    if(!passon_i__id){
+        //Load dynamic data:
+        var created_i__id = load_i_dynamic(i__id, x__id, current_i__type, true);
+        if(!i__id && created_i__id>0){
+            $('#modal31911 .save_i__id').val(created_i__id);
+        }
     }
 
 }
