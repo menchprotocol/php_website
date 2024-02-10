@@ -850,7 +850,7 @@ if($top_i__hashtag) {
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1, 0, array('x__weight' => 'ASC'));
 
-            $control_btn = view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $focus_i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
+            //$control_btn = view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $focus_i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
 
 
         } elseif($x__type==6255 && !$top_completed){
