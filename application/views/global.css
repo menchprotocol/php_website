@@ -2250,6 +2250,12 @@ input.form-control {
 
 .focus-cover.coin-6255 .inner-content,
 .focus-cover.coin-12273 .inner-content{
+    overflow-y: visible;
+    height: unset;
+}
+
+.focus-cover.coin-6255 .inner-content,
+.focus-cover.coin-12273 .inner-content{
     max-height: none;
 }
 .bottom-wrapper{
