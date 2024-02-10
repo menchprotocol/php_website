@@ -2675,7 +2675,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
 
         if(js_session_superpowers_unlocked.includes(10939)){
             var migrate_s__handle = prompt("Are you sure you want to permanently delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
-            if(migrate_s__handle.length<2){
+            if(migrate_s__handle === null){
                 return false;
             }
         } else {
@@ -2694,7 +2694,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
 
         if(js_session_superpowers_unlocked.includes(10939)){
             var migrate_s__handle = prompt("Are you sure you want to permanently delete this source?\nYou can reference @anotherSource to migrate to or leave blank to delete permanently...", "@");
-            if(migrate_s__handle.length<2){
+            if(migrate_s__handle === null){
                 return false;
             }
         } else {
