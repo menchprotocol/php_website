@@ -1417,7 +1417,7 @@ function view_featured_links($x__type, $location, $m = null, $focus_card){
 }
 
 
-function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $focus_e = false){
+function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $focus_e = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1428,7 +1428,6 @@ function view_card_i($x__type, $top_i__hashtag = 0, $previous_i = null, $i, $foc
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
 
     $e___11035 = $CI->config->item('e___11035'); //Summary
-    $e___13369 = $CI->config->item('e___13369'); //IDEA LIST
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
 

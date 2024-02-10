@@ -1132,12 +1132,19 @@ class E_model extends CI_Model
 
                 $applied_success++;
 
-            } elseif ($action_e__id==5865 && ($action_command1=='*' || $x['x__privacy']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Transaction Status */)) { //Update Matching Transaction Status
+            } elseif ($action_e__id==5865 && ($action_command1=='*' || $x['x__privacy']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Interaction Privacy */)) { //Update Matching Interaction Privacy
 
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => $action_command2,
                 ), $x__creator, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
 
+                $applied_success++;
+
+            } elseif ($action_e__id==42804 && ($action_command1=='*' || $x['x__type']==$action_command1) && in_array($action_command2, $this->config->item('n___32292') /* Source Link Types */)) { //Update Matching Interaction Type
+
+                $this->X_model->update($x['x__id'], array(
+                    'x__type' => $action_command2,
+                ), $x__creator, 42805);
                 $applied_success++;
 
             }

@@ -269,7 +269,7 @@ echo '<td><span class="mini-header">TRANSACTION ID:</span><input type="text" nam
 
 echo '<td><span class="mini-header">PARENT TRANSACTION:</span><input type="text" name="x__reference" value="' . ((isset($_GET['x__reference'])) ? $_GET['x__reference'] : '') . '" class="form-control border"></td>';
 
-echo '<td><span class="mini-header">TRANSACTION STATUS:</span><input type="text" name="x__privacy" value="' . ((isset($_GET['x__privacy'])) ? $_GET['x__privacy'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">Interaction Privacy:</span><input type="text" name="x__privacy" value="' . ((isset($_GET['x__privacy'])) ? $_GET['x__privacy'] : '') . '" class="form-control border"></td>';
 
 echo '</tr></table>';
 

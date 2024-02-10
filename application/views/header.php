@@ -787,12 +787,32 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 } elseif($action_e__id==5865){
 
-                                    //Transaction Status update:
+                                    //Transaction Privacy update:
+
+                                    //Find:
+                                    $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
+                                    $input_options .= '<option value="*">Update All</option>';
+                                    foreach($this->config->item('e___6186') /* Interaction Privacy */ as $x__type3 => $m3){
+                                        $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
+                                    }
+                                    $input_options .= '</select>';
+
+                                    //Replace:
+                                    $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
+                                    $input_options .= '<option value="">Set New</option>';
+                                    foreach($this->config->item('e___6186') /* Interaction Privacy */ as $x__type3 => $m3){
+                                        $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
+                                    }
+                                    $input_options .= '</select>';
+
+                                } elseif($action_e__id==42804){
+
+                                    //Transaction Type update:
 
                                     //Find:
                                     $input_options .= '<select name="mass_value1_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="*">Update All Statuses</option>';
-                                    foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
+                                    foreach($this->config->item('e___32292') /* Source Links */ as $x__type3 => $m3){
                                         $input_options .= '<option value="'.$x__type3.'">Update All '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';
@@ -800,7 +820,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Replace:
                                     $input_options .= '<select name="mass_value2_'.$action_e__id.'" class="form-control border">';
                                     $input_options .= '<option value="">Set New Status</option>';
-                                    foreach($this->config->item('e___6186') /* Transaction Status */ as $x__type3 => $m3){
+                                    foreach($this->config->item('e___32292') /* Source Links */ as $x__type3 => $m3){
                                         $input_options .= '<option value="'.$x__type3.'">Set to '.$m3['m__title'].'</option>';
                                     }
                                     $input_options .= '</select>';

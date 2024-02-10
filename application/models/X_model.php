@@ -301,7 +301,7 @@ class X_model extends CI_Model
                     //Now determine what type is this:
                     if($key=='x__privacy'){
 
-                        $e___6186 = $this->config->item('e___6186'); //Transaction Status
+                        $e___6186 = $this->config->item('e___6186'); //Interaction Privacy
                         $x__message .= view_db_field($key) . ' updated from [' . $e___6186[$before_data[0][$key]]['m__title'] . '] to [' . $e___6186[$value]['m__title'] . ']'."\n";
 
                     } elseif($key=='x__type'){
