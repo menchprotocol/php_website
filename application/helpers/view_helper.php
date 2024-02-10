@@ -2182,7 +2182,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Clone:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==10673 && $x__id > 0 && $write_privacy_e){
+                        } elseif($e__id_dropdown==10673 && $x__id > 0 && $write_privacy_e && superpower_unlocked(10939)){
 
                             //UNLINK
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
