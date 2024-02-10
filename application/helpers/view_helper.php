@@ -961,9 +961,9 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
             }
 
             //TODO place in proper groups later, for now a Hack to hide the unlink buttons for members not linked yet...
-            if($cache_e__id==42795 && $e__id==10673 && $e__id==$selected_e__id && !$x__id){
+            if($cache_e__id==42795 && $e__id==10673 && !$selected_e__id && !$x__id){
                 continue;
-            } elseif($cache_e__id==42260 && $e__id==42801 && $e__id==$selected_e__id && !$x__id){
+            } elseif($cache_e__id==42260 && $e__id==42801 && !$selected_e__id && !$x__id){
                 continue;
             }
 
