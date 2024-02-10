@@ -1137,8 +1137,10 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
 function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
 
 
+    $(".idea_direction, .idea_unlink, .input___4486").addClass('hidden');
 
     if(!passon_i__id){
+
         //Reset Fields:
         has_unsaved_changes = false;
         $('#modal31911 .media_frame').html('');
@@ -1146,7 +1148,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
         $('#modal31911 .created_i__id').val(0);
         $("#modal31911 .unsaved_warning").val('');
-        $("#modal31911 .dynamic_item, #modal31911 .save_x__frame, .idea_direction, .idea_unlink, .input___4486").addClass('hidden');
+        $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
         $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
         $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
 
@@ -1184,14 +1186,18 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+',0,'+next_i__id+',1)');
         $('.idea_unlink, .input___4486').removeClass('hidden');
-        update_form_select(4486, link_x__type, 1, true);
+        if(!passon_i__id){
+            update_form_select(4486, link_x__type, 1, true);
+        }
     } else if(previous_i__id && js_n___4486.includes(link_x__type)){
         i__id = 0;
         x__id = 0;
         $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
         $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+','+previous_i__id+',0,1)');
         $('.idea_unlink, .input___4486').removeClass('hidden');
-        update_form_select(4486, link_x__type, 1, true);
+        if(!passon_i__id){
+            update_form_select(4486, link_x__type, 1, true);
+        }
     }
 
     //Assign updates:
