@@ -36,7 +36,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         echo '<div class="card_frame dropdown_d'.$e__id1.' dropdown_'.$e__id2.'" e__id="'.$e__id2.'">';
 
         echo '<div title="'.$m2['m__message'].'">';
-        echo '<a href="/@'.$m2['m__handle'].'" class="large_cover">'.$m2['m__cover'].'</a>';
+        echo '<div class="large_cover">'.$m2['m__cover'].'</div>';
         echo '<div class="main__title large_title"><b class="card_count_'.$e__id2.'"><i class="far fa-yin-yang fa-spin"></i></b></div>';
         echo '<div class="main__title large_title" title="@'.$m2['m__handle'].'">'.$m2['m__title'].'</div>';
         echo '</div>';
