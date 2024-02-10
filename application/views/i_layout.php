@@ -77,8 +77,12 @@ foreach($this->config->item('e___31890') as $x__type => $m) {
 }
 echo '</ul>';
 echo $body_content;
-$focus_tab = 0;
 
+
+echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$e___26005[12840]['m__handle'].'\'); }); </script>';
+
+/*
+$focus_tab = 0;
 foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
@@ -88,12 +92,11 @@ foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
 }
 if(!$focus_tab){
     foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
-        $focus_tab = $x__type;
         echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
         break;
     }
 }
-
+*/
 
 
 ?>
