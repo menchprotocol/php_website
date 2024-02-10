@@ -2295,6 +2295,9 @@ function view_card_e($x__type, $e, $extra_class = null)
         $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . ( in_array($e['x__type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '">'.htmlentities($e['x__message']).'</div>';
     }
 
+    $ui .= '</div>';
+    //Icons were here before...
+
 
     if($member_e && $member_e['e__id']!=$e['e__id']){
         $followings = $CI->X_model->fetch(array(
@@ -2303,13 +2306,8 @@ function view_card_e($x__type, $e, $extra_class = null)
             'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1, 0, array('x__weight' => 'ASC'));
-        $ui .= view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, true, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
+        $ui .= view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, $focus_card, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
     }
-
-
-
-    $ui .= '</div>';
-    //Icons were here before...
 
 
 
