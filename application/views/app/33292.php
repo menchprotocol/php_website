@@ -60,7 +60,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                                 'x__type' => 42570, //Family
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             ), array('x__following'), 1) as $sibling){
-                                echo '<b class="main__title grey"><a href="/@'.$sibling['e__handle'].'"><span class="icon-block-xs">'.view_cover($sibling['e__cover']).'</span>'.$sibling['e__title'].'</a> & </b>';
+                                echo '<a href="/@'.$sibling['e__handle'].'"><span class="icon-block-xs">'.view_cover($sibling['e__cover']).'</span><b class="main__title grey">'.$sibling['e__title'].'</b></a><b class="main__title grey"> & </b></b>';
                             }
                         }
 
