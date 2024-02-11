@@ -60,11 +60,11 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                                 'x__type' => 42570, //Family
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             ), array('x__following'), 1) as $sibling){
-                                echo '<a href="/@'.$sibling['e__handle'].'"><span class="icon-block-xs">'.view_cover($sibling['e__cover']).'</span><b class="main__title grey">'.$sibling['e__title'].'</b></a><b class="main__title grey"> & </b></b>';
+                                echo '<a href="/@'.$sibling['e__handle'].'"><span class="icon-block-xs">'.view_cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
                             }
                         }
 
-                        echo '<a href="/@'.$e___42263[$found_link_group]['m__handle'].'"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey">'.$e___42263[$found_link_group]['m__title'].'</a>:</b>';
+                        echo '<a href="/@'.$e___42263[$found_link_group]['m__handle'].'"><span class="icon-block-xs">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey"><u>'.$e___42263[$found_link_group]['m__title'].'</u></a>:</b>';
 
                         echo '</td>';
                         echo '</tr>';
