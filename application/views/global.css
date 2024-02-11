@@ -1494,8 +1494,23 @@ label {
 
 
 
+.btn-grey,
+.btn-grey i,
+.mini-grey,
+.grey,
+.grey i,
+.grey a,
+.grey .zq12274,
+.grey .zq12273,
+.grey .zq6255,
+.grey .zq12273_12274 ,
+.grey .zq12274_12273 ,
+.grey .zq12273_6255 ,
+.grey .zq6255_12273,
+.grey .zq12274_6255,
+.grey .zq6255_12274
+{ color:#999999 !important; }
 
-.grey, .grey i, .grey a, .grey .zq12274, .grey .zq12273, .grey .zq6255, .btn-grey, .btn-grey i, .mini-grey { color:#999999 !important; }
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
 .nav-pills .nav-link{
