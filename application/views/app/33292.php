@@ -44,7 +44,11 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
         $focus_link_group = 0;
-        foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
+        $map_primary_links = map_primary_links($e__id2);
+        if(!$map_primary_links || !is_array($this->config->item('e___'.$map_primary_links)) || !count($this->config->item('e___'.$map_primary_links)) ){
+            continue;
+        }
+        foreach($this->config->item('e___'.$map_primary_links) as $e__id3 => $m3) {
 
             foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $headline_link){
                 if ($headline_link > 0){
