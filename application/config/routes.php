@@ -1,3 +1,7 @@
+
+MENCH
+Routes
+Copy/Paste the following code in routes.php
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
@@ -16,7 +20,7 @@ $route['contacts'] = "view/app_load/40947";
 $route['TreeLister'] = "view/app_load/40355";
 $route['signapp'] = "view/app_load/32603";
 $route['EmailImporter'] = "view/app_load/35983";
-$route['stats'] = "view/app_load/33292";
+$route['gameplay'] = "view/app_load/33292";
 $route['tree'] = "view/app_load/13900";
 $route['apps'] = "view/app_load/6287";
 $route['RegularExpressionRemove'] = "view/app_load/32103";
@@ -57,14 +61,12 @@ $route['reports'] = "view/app_load/12114";
 $route['weights'] = "view/app_load/12569";
 $route['or'] = "view/app_load/7712";
 $route['SourceRandomAvatars'] = "view/app_load/12738";
-$route['SourceIdeasSyncFix'] = "view/app_load/12736";
 $route['discoveryInfo'] = "view/app_load/12733";
 $route['SourceIdeaSyncPrivacy'] = "view/app_load/12732";
 $route['SourceSearchReplace'] = "view/app_load/12730";
 $route['InteractionMetadataView'] = "view/app_load/12722";
 $route['memory'] = "view/app_load/4527";
 $route['phpInfo'] = "view/app_load/12709";
-$route['IdeaSearchReplace'] = "view/app_load/7259";
 $route['IdeaOrphaned'] = "view/app_load/7260";
 $route['IdeaDuplicates'] = "view/app_load/7261";
 $route['icons'] = "view/app_load/7267";
@@ -76,3 +78,4 @@ $route['@([a-zA-Z0-9]+)'] = "view/e_layout/$1"; //Source
 $route['~([a-zA-Z0-9]+)'] = "view/i_layout/$1"; //Ideate
 $route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)'] = "view/x_layout/$1/$2"; //Discovery Sequence
 $route['([a-zA-Z0-9]+)'] = "view/x_layout/0/$1/0"; //Discovery Single
+

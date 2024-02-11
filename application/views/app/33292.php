@@ -46,17 +46,17 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         $focus_link_group = 0;
         foreach($this->config->item('e___'.map_primary_links($e__id2)) as $e__id3 => $m3) {
 
-            foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $found_link_group){
-                if ($found_link_group > 0){
-                    if(!$focus_link_group || $focus_link_group!=$found_link_group){
+            foreach(array_intersect($m3['m__following'], $this->config->item('n___42263')) as $headline_link){
+                if ($headline_link > 0){
+                    if(!$focus_link_group || $focus_link_group!=$headline_link){
 
                         echo '<tr class="mobile-shrink">';
-                        echo '<td class="center" colspan="2" title="@'.$e___42263[$found_link_group]['m__handle'].'">';
+                        echo '<td class="center" colspan="2" title="@'.$e___42263[$headline_link]['m__handle'].'">';
 
                         //Search for sibling if Has Family:
                         if(in_array($e__id2, $this->config->item('n___42792'))){
                             foreach($this->X_model->fetch(array(
-                                'x__follower' => $found_link_group,
+                                'x__follower' => $headline_link,
                                 'x__type' => 42570, //Family
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             ), array('x__following'), 1) as $sibling){
@@ -64,11 +64,11 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                             }
                         }
 
-                        echo '<a href="/@'.$e___42263[$found_link_group]['m__handle'].'"><span class="icon-block-xs grey">'.$e___42263[$found_link_group]['m__cover'].'</span><b class="main__title grey"><u>'.$e___42263[$found_link_group]['m__title'].'</u></a>:</b>';
+                        echo '<a href="/@'.$e___42263[$headline_link]['m__handle'].'"><span class="icon-block-xs grey">'.$e___42263[$headline_link]['m__cover'].'</span><b class="main__title grey"><u>'.$e___42263[$headline_link]['m__title'].'</u></a>:</b>';
 
                         echo '</td>';
                         echo '</tr>';
-                        $focus_link_group = $found_link_group;
+                        $focus_link_group = $headline_link;
                     }
                 }
             }
