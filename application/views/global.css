@@ -1511,7 +1511,7 @@ label {
 .grey .zq6255_12274
 { color:#999999 !important;
     --fa-primary-color:#999999 !important;
-    --fa-secondary-color:#999999 !important;}
+    --fa-secondary-color:#CCCCCC !important;}
 
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
