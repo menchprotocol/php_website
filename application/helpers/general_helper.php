@@ -107,7 +107,19 @@ function current_s__type(){
 }
 
 function map_primary_links($link_id){
-    return ( $link_id==12273 ? 4737 /* Idea Type */ : ( $link_id==12274 ? 7358 /* Source Active Access */ : $link_id /* Link It-self */ ) );
+
+    //See if it has any pinned:
+    $CI =& get_instance();
+    foreach($CI->X_model->fetch(array(
+        'x__following' => $link_id,
+        'x__type' => 41011, //PINNED FOLLOWER
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+    ), array(), 0) as $x_pinned) {
+        return intval($x_pinned['x__follower']);
+    }
+
+    //It must be itself:
+    return intval($link_id);
 }
 
 function int_hash($str){
