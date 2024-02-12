@@ -3068,6 +3068,11 @@ h4.main__title{
     height: 16px;
 }
 
+
+
+.platform-navigation .blue-bg {
+    width:39px;
+}
 .platform-navigation .blue-bg a {
     background-color: #007AFD;
 }
