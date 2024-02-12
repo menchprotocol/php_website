@@ -1548,8 +1548,13 @@ function i_editor_save(){
             //Insert idea into the page if new:
             console.log('START INSERTING');
             if(!current_i__id && created_i__id>0){
-                console.log('START ADD');
-                add_to_list(modify_data['save_x__type'], '.coinface-12273', data.return_i__cache_links, 1);
+
+                console.log('START ADD '+modify_data['save_x__type']);
+
+                adjust_counter(modify_data['save_x__type'], 1);
+
+                $("#list-in-" + modify_data['save_x__type']).append(view_s_js_cover(26011, data.return_i__cache_links, 0));
+
             } else {
                 //Update Cache otherwise:
                 $('.ui_i__cache_'+modify_data['save_i__id']).html(data.return_i__cache_links);
