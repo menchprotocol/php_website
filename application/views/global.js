@@ -1858,7 +1858,7 @@ function cloudinary_preview_source(uploader_id, info_id, media_e__id, playback_c
 }
 
 
-function e_editor_load(e__id, x__id){
+function e_editor_load(e__id = 0, x__id = 0){
 
     //Activate Modal:
     $('#modal31912').modal('show');
