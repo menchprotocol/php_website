@@ -1546,7 +1546,9 @@ function i_editor_save(){
             $('.ui_i__message_'+modify_data['save_i__id']).text(modify_data['save_i__message']);
 
             //Insert idea into the page if new:
-            if(!current_i__id && created_i__id>0 && !$('.ui_i__cache_'+modify_data['save_i__id'])){
+            console.log('START INSERTING');
+            if(!current_i__id && created_i__id>0){
+                console.log('START ADD');
                 add_to_list(modify_data['save_x__type'], '.coinface-12273', data.return_i__cache_links, 1);
             } else {
                 //Update Cache otherwise:
