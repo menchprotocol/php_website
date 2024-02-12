@@ -270,10 +270,71 @@ class Ajax extends CI_Controller
 
 
 
+        $has_media = (isset($_POST['save_media']) && is_array($_POST['save_media']) && count($_POST['save_media'])>0);
 
 
         //Might be new if pre-drafting:
         if( $is[0]['i__privacy']==42636 ){
+
+            //See if references only:
+            if(strlen($_POST['save_i__message']) && !$has_media && !strstr($_POST['save_i__message'], "\n") && intval($_POST['save_x__type']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
+                $all_hashtags = true;
+                $i_references = array();
+                foreach(preg_split(' ', trim($_POST['save_i__message'])) as $word){
+                    $found_hashtag = false;
+                    if(substr($word, 0, 1)=='#'){
+                        foreach($this->I_model->fetch(array(
+                            'LOWER(i__hashtag)' => strtolower(substr($word, 1)),
+                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                        )) as $i_found){
+                            $found_hashtag = true;
+                            array_push($i_references, $i_found['i__id']);
+                        }
+                    }
+                    if(!$found_hashtag){
+                        $all_hashtags = false;
+                        break; //It must be a hashtag only reference
+                    }
+                }
+                if($all_hashtags && count($i_references)){
+
+                    //Append all of these hashtags:
+                    foreach($i_references as $ref_i__id){
+                        if(intval($_POST['next_i__id'])>0 && $_POST['save_x__type']>0){
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__previous' => $_POST['next_i__id'],
+                                'x__next' => $ref_i__id,
+                                'x__type' => $_POST['save_x__type'],
+                            ));
+                        } elseif(intval($_POST['previous_i__id'])>0 && $_POST['save_x__type']>0){
+                            $this->X_model->create(array(
+                                'x__creator' => $member_e['e__id'],
+                                'x__previous' => $ref_i__id,
+                                'x__next' => $_POST['previous_i__id'],
+                                'x__type' => $_POST['save_x__type'],
+                            ));
+                        }
+                    }
+
+                    //Return success:
+                    foreach($this->I_model->fetch(array(
+                        'i__id' => ( intval($_POST['next_i__id'])>0 ? intval($_POST['next_i__id']) : intval($_POST['previous_i__id']) ),
+                    )) as $red_i){
+                        return view_json(array(
+                            'status' => 1,
+                            'return_i__cache' => '',
+                            'return_i__cache_links' => '',
+                            'redirect_idea' => '/~'.$red_i['i__hashtag'],
+                            'message' => count($i_references).' ideas linked.',
+                        ));
+                    }
+
+                }
+            }
+
+
+
             //Update new idea fields:
             $this->I_model->update($is[0]['i__id'], array(
                 'i__type' => $_POST['save_i__type'],
@@ -313,7 +374,7 @@ class Ajax extends CI_Controller
         //Fetch submitted media:
         $submitted_media_e__ids = array();
         $sort_count = 0; //Reset sorting to compare to submitted media...
-        if(isset($_POST['save_media']) && is_array($_POST['save_media']) && count($_POST['save_media'])>0){
+        if($has_media){
 
             //We have media to process:
             foreach($_POST['save_media'] as $submitted_media){
