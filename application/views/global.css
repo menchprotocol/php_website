@@ -4426,8 +4426,10 @@ main {
 .creator_headline{
     display: inline-block;
     line-height: 134%;
-    padding: 3px 5px 3px 0;
     padding: 0;
+}
+.idea_list_next .creator_headline{
+    padding: 3px 5px 3px 0;
 }
 .first_headline{
     margin: 5px 0 -29px 0;
