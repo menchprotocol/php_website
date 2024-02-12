@@ -279,14 +279,9 @@ class Ajax extends CI_Controller
             //See if references only:
             if(strlen($_POST['save_i__message']) && !$has_media && !substr_count($_POST['save_i__message'], "\n") && intval($_POST['save_x__type']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
 
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Match Check',
-                ));
-
                 $all_hashtags = true;
                 $i_references = array();
-                foreach(explode(trim($_POST['save_i__message']), ' ') as $word){
+                foreach(explode(' ', trim($_POST['save_i__message'])) as $word){
                     $found_hashtag = false;
                     if(substr($word, 0, 1)=='#'){
                         foreach($this->I_model->fetch(array(
