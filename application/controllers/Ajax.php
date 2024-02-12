@@ -280,7 +280,7 @@ class Ajax extends CI_Controller
             if(strlen($_POST['save_i__message']) && !$has_media && !strstr($_POST['save_i__message'], "\n") && intval($_POST['save_x__type']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
                 $all_hashtags = true;
                 $i_references = array();
-                foreach(preg_split(' ', trim($_POST['save_i__message'])) as $word){
+                foreach(explode(trim($_POST['save_i__message']), ' ') as $word){
                     $found_hashtag = false;
                     if(substr($word, 0, 1)=='#'){
                         foreach($this->I_model->fetch(array(
