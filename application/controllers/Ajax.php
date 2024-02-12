@@ -211,6 +211,13 @@ class Ajax extends CI_Controller
                 'message' => 'Missing Idea',
             ));
 
+        } elseif(!isset($_POST['focus_card']) || !isset($_POST['focus_id'])){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing focus Card/ID',
+            ));
+
         } elseif(!isset($_POST['save_i__hashtag'])){
 
             return view_json(array(
@@ -269,7 +276,7 @@ class Ajax extends CI_Controller
         }
 
 
-
+        $focus_card = ( $_POST['focus_card']==12273 && $_POST['focus_id']==$_POST['save_i__id'] );
         $has_media = (isset($_POST['save_media']) && is_array($_POST['save_media']) && count($_POST['save_media'])>0);
 
 
@@ -794,7 +801,7 @@ class Ajax extends CI_Controller
         return view_json(array(
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
-            'return_i__cache_links' => view_i_links($is[0]),
+            'return_i__cache_links' => view_i_links($is[0], $focus_card, $focus_card),
             'redirect_idea' => ( isset($is[0]['i__hashtag']) ? '/~'.$is[0]['i__hashtag'] : null ),
             'message' => $media_stats['total_current'].' current & '.$media_stats['total_submitted'].' submitted media: '.$media_stats['total_submitted'].' Created, '.$media_stats['adjust_updated'].' Updated & '.$media_stats['adjust_removed'].' Removed while detected '.$media_stats['adjust_duplicated'].' duplicate uploads. '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));

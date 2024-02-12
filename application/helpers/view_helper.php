@@ -1778,7 +1778,7 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '" show_cache_links="'.intval($focus_card).'">'.view_i_links($i, $focus_card, $focus_card).'</div>';
+    $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '">'.view_i_links($i, $focus_card, $focus_card).'</div>';
 
 
     //Raw Data:
