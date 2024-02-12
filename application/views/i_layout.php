@@ -25,7 +25,7 @@ if($write_privacy_i && count($this->X_model->fetch(array(
 }
 
 //Focusing on a certain source?
-if(isset($_GET['focus__e']) && superpower_unlocked(14005)){
+if(isset($_GET['focus__e']) && superpower_unlocked(12701)){
     //Filtered Specific Source:
     $e_filters = $this->E_model->fetch(array(
         'e__id' => intval($_GET['focus__e']),

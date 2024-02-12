@@ -203,7 +203,7 @@ $e___11035 = $this->config->item('e___11035'); //Summary
 
 <?php
 
-if(superpower_unlocked(14005)){
+if(superpower_unlocked(12701)){
     echo '<div class="inline-block margin-top-down" style="padding-left:7px;"><span class="icon-block">'.$e___11035[12707]['m__cover'].'</span><a href="javascript:void();" onclick="$(\'.show-filter\').toggleClass(\'hidden\');" class="main__title">'.$e___11035[12707]['m__title'].'</a></div>';
 }
 
@@ -287,7 +287,7 @@ echo '<span class="mini-header">TRANSACTION MESSAGE SEARCH:</span>';
 echo '<input type="text" name="x__message_find" value="' . ((isset($_GET['x__message_find'])) ? $_GET['x__message_find'] : '') . '" class="form-control border">';
 echo '</div></td>';
 
-if(isset($_GET['x__message_find']) && strlen($_GET['x__message_find']) > 0 && superpower_unlocked(14005)){
+if(isset($_GET['x__message_find']) && strlen($_GET['x__message_find']) > 0 && superpower_unlocked(12701)){
     //Give Option to Replace:
     echo '<td><div>';
     echo '<span class="mini-header">TRANSACTION MESSAGE REPLACE:</span>';
