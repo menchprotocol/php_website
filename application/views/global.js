@@ -1415,6 +1415,7 @@ function i_editor_save(){
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
     var created_i__id = parseInt($('#modal31911 .created_i__id').val());
     var uploader_id = 13572; //THis is for idea modal
+
     var modify_data = {
         focus_card:         fetch_int_val('#focus_card'),
         focus_id:           fetch_int_val('#focus_id'),
@@ -1544,8 +1545,14 @@ function i_editor_save(){
             //Update Idea Message:
             $('.ui_i__message_'+modify_data['save_i__id']).text(modify_data['save_i__message']);
 
-            //Update Cache:
-            $('.ui_i__cache_'+modify_data['save_i__id']).html(data.return_i__cache_links);
+            //Insert idea into the page if new:
+            if(!current_i__id && created_i__id>0 && !$('.ui_i__cache_'+modify_data['save_i__id'])){
+                add_to_list(modify_data['save_x__type'], '.sort_i_grab', data.return_i__cache_links, 1);
+            } else {
+                //Update Cache otherwise:
+                $('.ui_i__cache_'+modify_data['save_i__id']).html(data.return_i__cache_links);
+            }
+
             //Show more if on focus idea:
             if(on_focus_idea){
                 show_more(modify_data['save_i__id']);
