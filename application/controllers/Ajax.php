@@ -500,7 +500,7 @@ class Ajax extends CI_Controller
 
                                 //If not found create the child:
                                 if(!$child_id){
-                                    $added_child = $this->E_model->verify_create($target_variable, $member_e['e__id']);
+                                    $added_child = $this->E_model->verify_create($target_variable, 14068);
                                     if(!$added_child['status']){
                                         $this->X_model->create(array(
                                             'x__type' => 4246, //Platform Bug Reports
