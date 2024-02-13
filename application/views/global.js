@@ -2507,6 +2507,7 @@ function i_sort_load(x__type){
 
         //Make sure beow minimum sorting requirement:
         if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(fetch_int_val('#page_limit'))){
+            console.log(x__type+' has '+$("#list-in-"+x__type+" .sort_draggable").length+' items which is more than the page limit of '+fetch_int_val('#page_limit'));
             return false;
         }
 
@@ -2542,7 +2543,7 @@ function i_sort_load(x__type){
                 }
             }
         });
-    }, 377);
+    }, 610);
 
 }
 
