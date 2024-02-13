@@ -307,7 +307,9 @@ function toggle_headline(x__type){
 }
 
 
-function sort_e_load(x__type) {
+function e_sort_load(x__type) {
+
+    load_covers();
 
     console.log('Tring to load Source Sort for @'+x__type);
 
@@ -462,7 +464,6 @@ function toggle_pills(x__type_hash){
                 set_autosize($('.x_set_class_text'));
 
                 setTimeout(function () {
-                    load_covers();
                     $('[data-toggle="tooltip"]').tooltip();
                 }, 233);
 
@@ -484,11 +485,9 @@ function toggle_pills(x__type_hash){
                     }, 233);
                 } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
                     setTimeout(function () {
-                        sort_e_load(x__type);
+                        e_sort_load(x__type);
                     }, 233);
                 }
-
-                load_covers();
 
             });
 
@@ -1550,17 +1549,23 @@ function i_editor_save(){
             console.log('START INSERTING');
             if(!current_i__id && created_i__id>0 && focus_x__group>0){
 
-                console.log('START ADD '+modify_data['save_x__type']+' & x GROUP: '+focus_x__group);
-
-                adjust_counter(focus_x__group, 1);
+                console.log('ADD NEW '+modify_data['save_x__type']+' & x GROUP: '+focus_x__group);
 
                 $("#list-in-" + focus_x__group).append(data.return_i__cache_full);
 
-                i_sort_load(focus_x__group);
+                adjust_counter(focus_x__group, 1);
+
+                setTimeout(function () {
+                    i_sort_load(focus_x__group);
+                }, 987);
 
             } else {
+
+                console.log('UPDATE  '+modify_data['save_x__type']+' & x GROUP: '+focus_x__group);
+
                 //Update Cache otherwise:
                 $('.ui_i__cache_'+modify_data['save_i__id']).html(data.return_i__cache_links);
+
             }
 
             //Show more if on focus idea:
@@ -2276,15 +2281,12 @@ function e__add(x__type, e_existing_id) {
                     $("#list-in-" + x__type).prepend(data.e_new_echo);
                 }
 
-                //Tooltips:
-                $('[data-toggle="tooltip"]').tooltip();
-
                 //Allow inline editing if enabled:
                 x_set_start_text();
 
                 setTimeout(function () {
-                    sort_e_load(x__type);
-                    load_covers();
+                    $('[data-toggle="tooltip"]').tooltip();
+                    e_sort_load(x__type);
                 }, 987);
 
                 //Hide Coin:
@@ -2486,6 +2488,8 @@ function set_autosize(theobject){
 
 
 function i_sort_load(x__type){
+
+    load_covers();
 
     console.log('Tring to load Idea Sort for @'+x__type);
     if(!js_n___4603.includes(x__type)){
