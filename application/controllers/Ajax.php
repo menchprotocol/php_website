@@ -300,7 +300,7 @@ class Ajax extends CI_Controller
                             $valid_hashtag = true;
                             array_push($i_references, $i_found['i__id']);
                         }
-                        if(!$valid_hashtag){
+                        if(!$valid_hashtag && superpower_unlocked(10939)){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'ERROR: '.$word.' is not a valid/active Idea',
