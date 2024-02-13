@@ -2262,7 +2262,19 @@ function e__add(x__type, e_existing_id) {
                 //input.focus();
 
                 //Add new object to list:
-                add_to_list(x__type, '.coinface-12274', data.e_new_echo, 1);
+                adjust_counter(x__type, 1);
+
+                //See if we previously have a list in place?
+                if ($("#list-in-" + x__type + " .coinface-12274").length > 0) {
+                    //Downwards add to start"
+                    $("#list-in-" + x__type + " .coinface-12274:first").before(data.e_new_echo);
+                } else {
+                    //Raw list, add before input filed:
+                    $("#list-in-" + x__type).prepend(data.e_new_echo);
+                }
+
+                //Tooltips:
+                $('[data-toggle="tooltip"]').tooltip();
 
                 //Allow inline editing if enabled:
                 x_set_start_text();
@@ -2358,25 +2370,6 @@ function validURL(str) {
     return str && str.length && str.substring(0, 4)=='http';
 }
 
-
-function add_to_list(x__type, sort_i_grab, html_content, increment) {
-
-    adjust_counter(x__type, increment);
-
-    //See if we previously have a list in place?
-    if ($("#list-in-" + x__type + " " + sort_i_grab).length > 0) {
-        //Downwards add to start"
-        $("#list-in-" + x__type + " " + sort_i_grab + ":first").before(html_content);
-    } else {
-        //Raw list, add before input filed:
-        $("#list-in-" + x__type).prepend(html_content);
-    }
-
-
-    //Tooltips:
-    $('[data-toggle="tooltip"]').tooltip();
-
-}
 
 jQuery.fn.extend({
     insertAtCaret: function (myValue) {

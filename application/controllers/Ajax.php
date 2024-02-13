@@ -291,12 +291,20 @@ class Ajax extends CI_Controller
                 foreach(explode(' ', trim($_POST['save_i__message'])) as $word){
                     $found_hashtag = false;
                     if(substr($word, 0, 1)=='#'){
+                        $valid_hashtag = false;
                         foreach($this->I_model->fetch(array(
                             'LOWER(i__hashtag)' => strtolower(substr($word, 1)),
                             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                         )) as $i_found){
                             $found_hashtag = true;
+                            $valid_hashtag = true;
                             array_push($i_references, $i_found['i__id']);
+                        }
+                        if(!$valid_hashtag){
+                            return view_json(array(
+                                'status' => 0,
+                                'message' => 'ERROR: '.$word.' is not a valid/active Idea',
+                            ));
                         }
                     }
                     if(!$found_hashtag){
