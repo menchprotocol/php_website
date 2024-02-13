@@ -4244,7 +4244,7 @@ main {
 }
 
 .flip-content .source-info,
-.flip-content .sub_note{
+.flip-content .source-info .sub_note{
     color:#FFFFFF !important;
 }
 
