@@ -1556,7 +1556,9 @@ function i_editor_save(){
 
                 $("#list-in-" + focus_x__group).append(data.return_i__cache_full);
 
-                i_sort_load(focus_x__group);
+                setTimeout(function () {
+                    i_sort_load(focus_x__group);
+                }, 987);
 
             } else {
                 //Update Cache otherwise:
