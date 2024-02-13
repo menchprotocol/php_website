@@ -391,27 +391,37 @@ class I_model extends CI_Model
 
 
     function i_link($i, $x__type, $next_i, $x__creator){
+
         //Links ideas with the causality link ensuring not a duplicate:
         if($x__type==4228 && count($this->X_model->find_previous(0, $next_i['i__hashtag'], $i['i__id']))){
             return array(
                 'status' => 0,
                 'message' => 'Idea already added as next so it cannot be added as previous',
             );
-        } else {
-            //Adding PREVIOUS or NEXT Idea from Idea
-            $this->X_model->create(array(
-                'x__creator' => $x__creator,
-                'x__previous' => $i['i__id'],
-                'x__type' => $x__type,
-                'x__next' => $next_i['i__id'],
-                'x__weight' => 0,
-            ), true);
-
-            //Return result:
-            return array(
-                'status' => 1,
-            );
+        } elseif(count($this->X_model->fetch(array(
+            'x__previous' => $i['i__id'],
+            'x__type' => $x__type,
+            'x__next' => $next_i['i__id'],
+        )))){
+            //Make sure not a duplicate link:
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Idea is already linked here',
+            ));
         }
+
+        //Adding PREVIOUS or NEXT Idea from Idea
+        $this->X_model->create(array(
+            'x__creator' => $x__creator,
+            'x__previous' => $i['i__id'],
+            'x__type' => $x__type,
+            'x__next' => $next_i['i__id'],
+        ), true);
+
+        //Return result:
+        return array(
+            'status' => 1,
+        );
     }
 
 
