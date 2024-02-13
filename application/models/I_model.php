@@ -548,15 +548,13 @@ class I_model extends CI_Model
             'x__type' => 41011, //PINNED FOLLOWER
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x_pinned) {
-            if(!in_array($x_pinned['x__following'], $e_appended) ){
-                $this->X_model->create(array(
-                    'x__type' => 4250, //Lead Author
-                    'x__following' => $x_pinned['x__following'],
-                    'x__next' => $i_new['i__id'],
-                    'x__creator' => $x__creator,
-                ));
-                array_push($e_appended, $x_pinned['x__following']);
-            }
+            $this->X_model->create(array(
+                'x__type' => 4250, //Lead Author
+                'x__following' => $x_pinned['x__following'],
+                'x__next' => $i_new['i__id'],
+                'x__creator' => $x__creator,
+            ));
+            array_push($e_appended, $x_pinned['x__following']);
         }
 
         //Create Idea Transaction:
