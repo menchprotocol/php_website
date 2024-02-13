@@ -396,7 +396,7 @@ class I_model extends CI_Model
         if($x__type==4228 && count($this->X_model->find_previous(0, $next_i['i__hashtag'], $i['i__id']))){
             return array(
                 'status' => 0,
-                'message' => 'Idea already added as next so it cannot be added as previous',
+                'message' => 'Idea already added in the inverse direction, so it cannot be added here',
             );
         } elseif(count($this->X_model->fetch(array(
             'x__previous' => $i['i__id'],
