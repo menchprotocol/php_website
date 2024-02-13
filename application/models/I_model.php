@@ -404,10 +404,10 @@ class I_model extends CI_Model
             'x__next' => $next_i['i__id'],
         )))){
             //Make sure not a duplicate link:
-            return view_json(array(
+            return array(
                 'status' => 0,
                 'message' => 'Idea is already linked here',
-            ));
+            );
         }
 
         //Adding PREVIOUS or NEXT Idea from Idea
