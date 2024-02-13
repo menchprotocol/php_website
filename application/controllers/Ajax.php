@@ -327,6 +327,9 @@ class Ajax extends CI_Controller
                             } elseif(intval($_POST['previous_i__id'])>0){
                                 $status = $this->I_model->i_link($reference_i, $_POST['save_x__type'], $focus_i, $member_e['e__id']);
                             }
+                            if(!$status['status']){
+                                return view_json($status);
+                            }
                         }
 
                         //What to focus on depends on how many total ideas added:
