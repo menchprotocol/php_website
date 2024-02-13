@@ -1558,7 +1558,7 @@ function i_editor_save(){
 
                 setTimeout(function () {
                     i_sort_load(focus_x__group);
-                }, 987);
+                }, 1597);
 
             } else {
                 //Update Cache otherwise:
