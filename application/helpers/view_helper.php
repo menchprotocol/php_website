@@ -1543,7 +1543,7 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
                         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
                     )) as $creator){
                         $creator_name = 'Linked by '.$creator['e__title'].' @'.$creator['e__handle'].' on ';
-                        $creator_details = '<a href="/@'.$creator['e__handle'].'"><span class="icon-block-xs">'.view_cover($creator['e__cover']).'</span></a>';
+                        $creator_details = '<a href="/~'.$i['i__hashtag'].'"><span class="icon-block-xs">'.view_cover($creator['e__cover']).'</span></a>';
                     }
                 }
 
