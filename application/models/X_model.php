@@ -815,7 +815,7 @@ class X_model extends CI_Model
         $total_sent = 0;
         $x__website = ( $x__website>0 ? $x__website : ( isset($i['x__website']) ? $i['x__website'] : 0 ) );
         $subject_line = view_i_title($i, true);
-        $content_message = view_i_links($i, true); //Hide the show more content if any
+        $content_message = view_i__links($i, true); //Hide the show more content if any
         if(!(substr($subject_line, 0, 1)=='#' && !substr_count($subject_line, ' '))){
             //Let's remove the first line since it's used in the title:
             $content_message = delete_all_between('<div class="line hideIfEmpty first_line">','</div>', $content_message);

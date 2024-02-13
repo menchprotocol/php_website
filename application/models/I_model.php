@@ -36,43 +36,7 @@ class I_model extends CI_Model
             $add_fields['i__id'] = $this->db->insert_id();
         }
 
-        if ($add_fields['i__id'] > 0) {
-
-            //Log transaction new Idea:
-            $this->X_model->create(array(
-                'x__creator' => $x__creator,
-                'x__following' => $x__creator,
-                'x__next' => $add_fields['i__id'],
-                'x__type' => ( count($this->X_model->fetch(array(
-                    'x__follower' => $x__creator,
-                    'x__type' => 41011, //PINNED FOLLOWER
-                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                ))) ? 4983 : 4250 ), //New Idea Created
-            ));
-
-            //Log transaction new Idea hashtag:
-            $this->X_model->create(array(
-                'x__creator' => $x__creator,
-                'x__next' => $add_fields['i__id'],
-                'x__message' => $add_fields['i__hashtag'],
-                'x__type' => 42168, //Idea Generated Hashtag
-            ));
-
-            //Sync messages:
-            $view_sync_links = view_sync_links($add_fields['i__message'], true, $add_fields['i__id']);
-
-            //Fetch to return the complete source data:
-            $is = $this->I_model->fetch(array(
-                'i__id' => $add_fields['i__id'],
-            ));
-
-            //Update Search Index:
-            flag_for_search_indexing(12273, $add_fields['i__id']);
-
-            return $is[0];
-
-        } else {
-
+        if (!$add_fields['i__id']) {
             //Ooopsi, something went wrong!
             $this->X_model->create(array(
                 'x__message' => 'i->create() failed to create a new idea',
@@ -81,8 +45,72 @@ class I_model extends CI_Model
                 'x__metadata' => $add_fields,
             ));
             return false;
-
         }
+
+        //Log transaction new Idea hashtag:
+        $this->X_model->create(array(
+            'x__creator' => $x__creator,
+            'x__next' => $add_fields['i__id'],
+            'x__message' => $add_fields['i__hashtag'],
+            'x__type' => 42168, //Idea Generated Hashtag
+        ));
+
+        //Sync messages:
+        $view_sync_links = view_sync_links($add_fields['i__message'], true, $add_fields['i__id']);
+
+        //Fetch to return the complete source data:
+        $is = $this->I_model->fetch(array(
+            'i__id' => $add_fields['i__id'],
+        ));
+
+        //Update Search Index:
+        flag_for_search_indexing(12273, $add_fields['i__id']);
+
+
+        //Additional sources to be added? Start with creator
+        $e_appended = array($x__creator);
+        $pinned_followers = $this->X_model->fetch(array(
+            'x__follower' => $x__creator,
+            'x__type' => 41011, //PINNED FOLLOWER
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0);
+        $x__type = ( count($pinned_followers) ? 4983 : 4250 ); //If it has pinned, they would be primary author...
+
+        //Add if not added as the author:
+        if(!count($this->X_model->fetch(array(
+            'x__type' => $x__type,
+            'x__following' => $x__creator,
+            'x__next' => $add_fields['i__id'],
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        )))){
+            $this->X_model->create(array(
+                'x__type' => $x__type,
+                'x__creator' => $x__creator,
+                'x__following' => $x__creator,
+                'x__next' => $add_fields['i__id'],
+            ));
+        }
+
+        //Also append all pinned followers:
+        foreach($pinned_followers as $x_pinned) {
+            if(!in_array($x_pinned['x__following'], $e_appended) && !count($this->X_model->fetch(array(
+                    'x__type' => 4250, //Lead Author
+                    'x__following' => $x_pinned['x__following'],
+                    'x__next' => $add_fields['i__id'],
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                )))){
+                $this->X_model->create(array(
+                    'x__type' => 4250, //Lead Author
+                    'x__following' => $x_pinned['x__following'],
+                    'x__next' => $add_fields['i__id'],
+                    'x__creator' => $x__creator,
+                ));
+                array_push($e_appended, $x_pinned['x__following']);
+            }
+        }
+
+        return $is[0];
+
     }
 
     function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
@@ -320,6 +348,7 @@ class I_model extends CI_Model
         ), $x__creator);
 
         //Copy related transactions:
+        $links = 0;
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___27240')) . ')' => null, //COPY Transactions
@@ -336,6 +365,7 @@ class I_model extends CI_Model
                 'x__previous' => ( $i['i__id']==$x['x__previous'] ? $i_new['i__id'] : $x['x__previous'] ),
                 'x__next' => ( $i['i__id']==$x['x__next'] ? $i_new['i__id'] : $x['x__next'] ),
             )))){
+                $links++;
                 $this->X_model->create(array(
                     //Copy:
                     'x__type' => $x['x__type'],
@@ -355,274 +385,33 @@ class I_model extends CI_Model
 
         }
 
-        return $this->I_model->create_or_link(12273, 11019, '', $x__creator, $i_new['i__id'], $copy_to__id);
+        return $links;
 
     }
 
-    function create_or_link($focus_card, $x__type, $i__message, $x__creator, $focus_id, $next_i__id = 0)
-    {
 
-        /*
-         *
-         * The main idea creation function that would create
-         * appropriate transactions and return the idea view.
-         *
-         * Either creates an IDEA transaction between $focus_id & $next_i__id
-         * (IF $next_i__id>0) OR will create a new idea with outcome $i__message
-         * and transaction it to $focus_id (In this case $next_i__id will be 0)
-         *
-         *
-         * */
-
-        //Valid Idea Addition?
-        if(!in_array($focus_card, $this->config->item('n___12761')) || (!in_array($x__type, $this->config->item('n___11020')) && !in_array($x__type, $this->config->item('n___42261'))) || $focus_id < 1){
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'create_or_link(): Invalid Data',
-                'x__metadata' => array(
-                    '$focus_card' => $focus_card,
-                    '$x__type' => $x__type,
-                    '$i__message' => $i__message,
-                    '$x__creator' => $x__creator,
-                    '$focus_id' => $focus_id,
-                    '$next_i__id' => $next_i__id,
-                ),
-            ));
+    function i_link($i, $x__type, $next_i, $x__creator){
+        //Links ideas with the causality link ensuring not a duplicate:
+        if($x__type==4228 && count($this->X_model->find_previous(0, $next_i['i__hashtag'], $i['i__id']))){
             return array(
                 'status' => 0,
-                'message' => 'Invalid Data for @'.$focus_card.' & @'.$x__type,
+                'message' => 'Idea already added as next so it cannot be added as previous',
             );
-        }
-
-        $is_upwards = in_array($x__type, $this->config->item('n___14686'));
-        $focus_is_i = $focus_card==12273;
-        $focus_is_e = $focus_card==12274;
-        $adding_an_i = ($focus_is_i && in_array($x__type, $this->config->item('n___11020'))) || ($focus_is_e && in_array($x__type, $this->config->item('n___42261')));
-        //Validate Original idea
-        if($focus_is_i){
-
-            if ($focus_id > 0 && $next_i__id==$focus_id) {
-                //Make sure none of the followings are the same:
-                return array(
-                    'status' => 0,
-                    'message' => 'You cannot add idea to itself.',
-                );
-            }
-            $focus_i = $this->I_model->fetch(array(
-                'i__id' => intval($focus_id),
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ));
-            if (count($focus_i) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Focus Idea',
-                );
-            }
-
         } else {
-
-            //Were at a Source trying to add an Idea:
-            $focus_e = $this->E_model->fetch(array(
-                'e__id' => intval($focus_id),
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ));
-
-            if (count($focus_e) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Focus Source',
-                );
-            }
-
-        }
-
-
-        //Linking to Existing or Creating New?
-        if ($next_i__id > 0) {
-
-            //Linking to $next_i__id (NOT creating any new ideas)
-
-            //Fetch more details on the follower idea we're about to transaction:
-            $link_i = $this->I_model->fetch(array(
-                'i__id' => $next_i__id,
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ));
-            if (count($link_i) < 1) {
-                return array(
-                    'status' => 0,
-                    'message' => 'Invalid Link Idea',
-                );
-            }
-
-            //Determine which is followings Idea, and which is follower
-            if($focus_is_i){
-
-                //Must be adding idea to idea as PREVIOUS or NEXT
-
-                //Duplicate Check:
-                if (count($this->X_model->fetch(array(
-                        'x__previous' => ( $is_upwards ? $link_i[0]['i__id'] : $focus_i[0]['i__id'] ),
-                        'x__next' => ( $is_upwards ? $focus_i[0]['i__id'] : $link_i[0]['i__id'] ),
-                        'x__type IN (' . join(',', $this->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
-                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    ))) > 0) {
-                    return array(
-                        'status' => 0,
-                        'message' => 'Idea is already linked here.',
-                    );
-                }
-
-                //Tree Check if Next
-                if($x__type==12273 && count($this->X_model->find_previous(0, $link_i[0]['i__hashtag'], $focus_i[0]['i__id']))){
-                    return array(
-                        'status' => 0,
-                        'message' => 'Idea already added as previous so it cannot be added as next',
-                    );
-                } elseif($x__type==11019 && count($this->X_model->find_previous(0, $focus_i[0]['i__hashtag'], $link_i[0]['i__id']))){
-                    return array(
-                        'status' => 0,
-                        'message' => 'Idea already added as next so it cannot be added as previous',
-                    );
-                }
-
-            } else {
-
-                //Must be adding Idea to Source as References
-
-                //Duplicate Check:
-                if(count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__following' => $focus_e[0]['e__id'],
-                    'x__next' => $link_i[0]['i__id'],
-                )))){
-                    return array(
-                        'status' => 0,
-                        'message' => 'Idea already referenced to this source',
-                    );
-                }
-
-            }
-
-            //All good so far, continue with adding:
-            $i_new = $link_i[0];
-
-        } else {
-
-            //We are NOT adding an existing Idea, but instead, we're creating a new Idea
-
-
-            //Create new Idea:
-            $i_new = $this->I_model->create(array(
-                'i__type' => 6677, //New Default Ideas
-            ), $x__creator);
-
-            $view_sync_links = view_sync_links($i__message, true, $i_new['i__id']);
-
-
-        }
-
-
-        //Additional sources to be added? Start with creator
-        $e_appended = array($x__creator);
-
-        //Add if not added as the author:
-        if(!count($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-            'x__following' => $x__creator,
-            'x__next' => $i_new['i__id'],
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        )))){
-            $this->X_model->create(array(
-                'x__type' => 4983, //Co-Author
-                'x__creator' => $x__creator,
-                'x__following' => $x__creator,
-                'x__next' => $i_new['i__id'],
-            ));
-        }
-
-
-        //Also append all pinned followers:
-        foreach($this->X_model->fetch(array(
-            'x__follower' => $x__creator,
-            'x__type' => 41011, //PINNED FOLLOWER
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0) as $x_pinned) {
-            $this->X_model->create(array(
-                'x__type' => 4250, //Lead Author
-                'x__following' => $x_pinned['x__following'],
-                'x__next' => $i_new['i__id'],
-                'x__creator' => $x__creator,
-            ));
-            array_push($e_appended, $x_pinned['x__following']);
-        }
-
-        //Create Idea Transaction:
-        $new_i_html = null;
-
-        if($focus_is_i){
-
             //Adding PREVIOUS or NEXT Idea from Idea
-            $relation = $this->X_model->create(array(
+            $this->X_model->create(array(
                 'x__creator' => $x__creator,
-                'x__type' => ( !$is_upwards && count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__previous' => $focus_id,
-                ), array(), 1)) ? 33344 : 4228 ), //Drafting vs Sequenced idea
-                ( $is_upwards ? 'x__next' : 'x__previous' ) => $focus_id,
-                ( $is_upwards ? 'x__previous' : 'x__next' ) => $i_new['i__id'],
+                'x__previous' => $i['i__id'],
+                'x__type' => $x__type,
+                'x__next' => $next_i['i__id'],
                 'x__weight' => 0,
             ), true);
 
-            //Fetch and return full data to be properly shown on the UI
-            $new_i = $this->X_model->fetch(array(
-                ( $is_upwards ? 'x__next' : 'x__previous' ) => $focus_id,
-                ( $is_upwards ? 'x__previous' : 'x__next' ) => $i_new['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___12840')) . ')' => null, //IDEA LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ), array(($is_upwards ? 'x__previous' : 'x__next')), 1); //We did a limit to 1, but this should return 1 anyways since it's a specific/unique relation
-
-            $new_i_html = view_card_i($x__type, 0, ( $is_upwards ? null : $focus_i[0] ), $new_i[0]);
-
-        } else {
-
-            if(!in_array($focus_e[0]['e__id'], $e_appended) && !count($this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-                    'x__following' => $focus_e[0]['e__id'],
-                    'x__next' => $i_new['i__id'],
-                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                )))){
-                $this->X_model->create(array(
-                    'x__type' => 4983, //Co-Author
-                    'x__creator' => $x__creator,
-                    'x__following' => $focus_e[0]['e__id'],
-                    'x__next' => $i_new['i__id'],
-                ));
-                array_push($e_appended, $focus_e[0]['e__id']);
-            }
-
-            //Fetch Complete References:
-            $new_i = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                'x__following' => $focus_e[0]['e__id'],
-                'x__next' => $i_new['i__id'],
-            ), array('x__next'));
-
-            $new_i_html = view_card_i($x__type, 0, null, $new_i[0], $focus_e[0]);
-
+            //Return result:
+            return array(
+                'status' => 1,
+            );
         }
-
-        //Return result:
-        return array(
-            'status' => 1,
-            'new_i__hashtag' => $i_new['i__hashtag'],
-            'new_i__id' => $i_new['i__id'],
-            'new_i_html' => $new_i_html,
-        );
-
     }
 
 
@@ -956,9 +745,9 @@ class I_model extends CI_Model
                     if($action_e__id==27240){
 
                         //Copy
-                        $status = $this->I_model->duplicate($next_i, $i['i__id'], $x__creator);
+                        $link_count = $this->I_model->duplicate($next_i, $i['i__id'], $x__creator);
 
-                        if($status['status']){
+                        if($link_count > 0){
                             //Add Source since not there:
                             $applied_success++;
                         }
@@ -977,7 +766,7 @@ class I_model extends CI_Model
                         if(in_array($action_e__id, array(12611, 28801)) && !count($is_previous)){
 
                             //Link
-                            $status = $this->I_model->create_or_link(12273, 11019, '', $x__creator, $next_i['i__id'], $i['i__id']);
+                            $status = $this->I_model->i_link($i, 4228, $next_i, $x__creator);
 
                             if($status['status']){
 

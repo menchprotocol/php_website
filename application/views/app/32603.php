@@ -84,7 +84,7 @@ if(isset($_GET['i__hashtag'])){
         if(!$signed_i){
 
             //Allow users to sign:
-            echo view_i_links($i_sign);
+            echo view_i__links($i_sign);
 
             echo '<form method="POST" action="">';
             echo view_sign($i_sign, ( isset($_POST['x_write']) ? $_POST['x_write'] : '' ));

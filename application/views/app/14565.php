@@ -39,7 +39,7 @@ echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377p
 
 
 //Did we find any?
-$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_i_links($primary_i) . '</div>';
+$messages = '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_i__links($primary_i) . '</div>';
 
 
 
@@ -119,7 +119,7 @@ if($messages){
 //List Relevant Ideas in order:
 $secondary_i = '';
 foreach($secondary_i_list as $ref_i){
-    $secondary_i .= view_card_i(14565, 0, null, $ref_i);
+    $secondary_i .= view_card_i(14565,  $ref_i);
 }
 if(strlen($secondary_i)){
     echo '<div class="row justify-content flip-content">';

@@ -334,7 +334,7 @@ function e_view_body($x__type, $counter, $e__id){
         //Ideas:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
+            $ui .= view_card_i($x__type, $i, null, null, $focus_e);
         }
         $ui .= '</div>';
 
@@ -352,7 +352,7 @@ function e_view_body($x__type, $counter, $e__id){
         //Discoveries:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach ($list_results as $i) {
-            $ui .= view_card_i($x__type, 0, null, $i, $focus_e);
+            $ui .= view_card_i($x__type,  $i, null, null, $focus_e);
         }
         $ui .= '</div>';
 
@@ -396,7 +396,7 @@ function i_view_body($x__type, $counter, $i__id){
         //IDEA Link Groups Previous
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $previous_i) {
-            $ui .= view_card_i(11019, 0, null, $previous_i);
+            $ui .= view_card_i(11019, $previous_i);
         }
         $ui .= '</div>';
 
@@ -405,7 +405,7 @@ function i_view_body($x__type, $counter, $i__id){
         //IDEA Link Groups Next
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $next_i) {
-            $ui .= view_card_i($x__type, 0, $is[0], $next_i);
+            $ui .= view_card_i($x__type, $next_i, $is[0]);
         }
         $ui .= '</div>';
 
@@ -1000,7 +1000,7 @@ function view_i_list($x__type, $top_i__hashtag, $i, $next_is, $member_e, $body_p
     //Build Body UI:
     $body = '<div class="row justify-content">';
     foreach($next_is as $key => $next_i){
-        $body .= view_card_i($x__type, $top_i__hashtag, $i, $next_i, $member_e);
+        $body .= view_card_i($x__type, $next_i, $i, $top_i__hashtag, $member_e);
     }
     $body .= '</div>';
 
@@ -1130,7 +1130,7 @@ function view_valid_handle_reverse_i($string, $check_db = false){
 }
 
 
-function view_i_links($i, $replace_links = true, $focus_card = false){
+function view_i__links($i, $replace_links = true, $focus_card = false){
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
         view_i_media($i).
@@ -1417,7 +1417,7 @@ function view_featured_links($x__type, $location, $m = null, $focus_card){
 }
 
 
-function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $focus_e = false){
+function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $focus_e = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1778,7 +1778,7 @@ function view_card_i($x__type, $top_i__hashtag = null, $previous_i = null, $i, $
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '">'.view_i_links($i, $focus_card, $focus_card).'</div>';
+    $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus_card, $focus_card).'</div>';
 
 
     //Raw Data:

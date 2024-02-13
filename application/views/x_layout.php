@@ -311,11 +311,11 @@ if($top_completed || $is_or_7712){
 echo '<div class="light-bg large-frame">';
 
 //Idea message:
-//echo view_i_links($focus_i, true, true);
+//echo view_i__links($focus_i, true, true);
 
 //Focus Idea:
 echo '<div class="main_item row justify-content">';
-echo view_card_i(42288, 0, null, $focus_i);
+echo view_card_i(42288, $focus_i);
 echo '</div>';
 
 
@@ -922,7 +922,7 @@ if($top_i__hashtag) {
                 'i__id' => $top_id,
             )) as $top_start){
                 $pathways_count++;
-                $pathways .= view_card_i(6255, 0, null, $top_start);
+                $pathways .= view_card_i(6255,  $top_start);
             }
         }
         $pathways .= '</div>';

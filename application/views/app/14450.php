@@ -21,7 +21,7 @@ if(isset($_GET['i__hashtag']) && isset($_GET['top_i__hashtag'])){
             $find_previous = $this->X_model->find_previous($member_e['e__id'], $top_i['i__hashtag'], $i['i__id']);
             if(count($find_previous)){
                 foreach($find_previous as $i){
-                    echo view_card_i(6255, $top_i['i__hashtag'], null, $i);
+                    echo view_card_i(6255, $i, null, $top_i['i__hashtag']);
                 }
                 echo '<h1>' . view_i_title($i) . '</h1>';
             }

@@ -72,6 +72,7 @@ class Ajax extends CI_Controller
 
         }
 
+
         //Fetch dynamic data based on idea type:
         $return_inputs = array();
         $e___4737 = $this->config->item('e___4737'); // Idea Status
@@ -298,7 +299,7 @@ class Ajax extends CI_Controller
                         )) as $i_found){
                             $found_hashtag = true;
                             $valid_hashtag = true;
-                            array_push($i_references, $i_found['i__id']);
+                            array_push($i_references, $i_found);
                         }
                         if(!$valid_hashtag && superpower_unlocked(10939)){
                             return view_json(array(
@@ -312,40 +313,34 @@ class Ajax extends CI_Controller
                         break; //It must be a hashtag only reference
                     }
                 }
-                if($all_hashtags && count($i_references)){
 
-                    //Append all of these hashtags:
-                    foreach($i_references as $ref_i__id){
-                        if(intval($_POST['next_i__id'])>0 && $_POST['save_x__type']>0){
-                            $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
-                                'x__previous' => $_POST['next_i__id'],
-                                'x__next' => $ref_i__id,
-                                'x__type' => $_POST['save_x__type'],
-                            ));
-                        } elseif(intval($_POST['previous_i__id'])>0 && $_POST['save_x__type']>0){
-                            $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
-                                'x__previous' => $ref_i__id,
-                                'x__next' => $_POST['previous_i__id'],
-                                'x__type' => $_POST['save_x__type'],
-                            ));
-                        }
-                    }
-
+                if($all_hashtags && count($i_references) && $_POST['save_x__type']>0){
                     //Return success:
                     foreach($this->I_model->fetch(array(
                         'i__id' => ( intval($_POST['next_i__id'])>0 ? intval($_POST['next_i__id']) : intval($_POST['previous_i__id']) ),
-                    )) as $red_i){
+                    )) as $focus_i){
+
+                        //Append all of these hashtags:
+                        foreach($i_references as $reference_i){
+                            if(intval($_POST['next_i__id'])>0){
+                                $status = $this->I_model->i_link($focus_i, $_POST['save_x__type'], $reference_i, $member_e['e__id']);
+                            } elseif(intval($_POST['previous_i__id'])>0){
+                                $status = $this->I_model->i_link($reference_i, $_POST['save_x__type'], $focus_i, $member_e['e__id']);
+                            }
+                        }
+
+                        //What to focus on depends on how many total ideas added:
+                        $return_i = ( count($i_references)>=2 ? $focus_i : $reference_i );
+
                         return view_json(array(
                             'status' => 1,
                             'return_i__cache' => '',
                             'return_i__cache_links' => '',
-                            'redirect_idea' => '/~'.$red_i['i__hashtag'],
-                            'message' => count($i_references).' ideas linked.',
+                            'return_i__cache_full' => view_card_i($_POST['focus_x__group'], $return_i),
+                            'redirect_idea' => '/~'.$return_i['i__hashtag'],
+                            'message' => count($i_references).' ideas linked',
                         ));
                     }
-
                 }
             }
 
@@ -809,8 +804,8 @@ class Ajax extends CI_Controller
         return view_json(array(
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
-            'return_i__cache_links' => view_i_links($is[0], $focus_card, $focus_card),
-            'return_i__cache_full' => view_card_i($_POST['focus_x__group'], 0, null, $is[0]),
+            'return_i__cache_links' => view_i__links($is[0], $focus_card, $focus_card),
+            'return_i__cache_full' => view_card_i($_POST['focus_x__group'], $is[0]),
             'redirect_idea' => ( isset($is[0]['i__hashtag']) ? '/~'.$is[0]['i__hashtag'] : null ),
             'message' => $media_stats['total_current'].' current & '.$media_stats['total_submitted'].' submitted media: '.$media_stats['total_submitted'].' Created, '.$media_stats['adjust_updated'].' Updated & '.$media_stats['adjust_removed'].' Removed while detected '.$media_stats['adjust_duplicated'].' duplicate uploads. '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
@@ -2671,7 +2666,7 @@ class Ajax extends CI_Controller
                     $ids = array();
                     foreach($is_next as $i) {
                         array_push($ids, $i['i__id']);
-                        echo view_card_i(12273, 0, null, $i);
+                        echo view_card_i(12273, $i);
                     }
                     echo '</div>';
                     echo '<div class="dotransparent">'.join(',',$ids).'</div>';
@@ -2817,7 +2812,7 @@ class Ajax extends CI_Controller
                     echo view_card_e($_POST['x__type'], $s);
                     $success = true;
                 } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___42284')) || in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___11020'))) {
-                    echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
+                    echo view_card_i($_POST['x__type'], $s, $previous_i, null, $focus_e);
                     $success = true;
                 }
             }
@@ -2832,7 +2827,7 @@ class Ajax extends CI_Controller
 
             foreach(view_i_covers($_POST['x__type'], $_POST['focus_id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['x__type'], $this->config->item('n___11020'))) {
-                    echo view_card_i($_POST['x__type'], 0, $previous_i, $s, $focus_e);
+                    echo view_card_i($_POST['x__type'], $s, $previous_i, null, $focus_e);
                     $success = true;
                 } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___42284')) || in_array($_POST['x__type'], $this->config->item('n___11028'))) {
                     echo view_card_e($_POST['x__type'], $s);

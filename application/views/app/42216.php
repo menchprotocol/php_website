@@ -229,7 +229,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         $total_sent = 0;
         $list_settings = list_settings($i['i__hashtag']);
         $subject_line = view_i_title($i, true);
-        $content_message = view_i_links($i);
+        $content_message = view_i__links($i);
         if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
             //Let's remove the first line since it's used in the title:
             $content_message = delete_all_between('<div class="line hideIfEmpty first_line">', '</div>', $content_message);
