@@ -1000,7 +1000,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 'x__following' => $member_e['e__id'],
                                 'x__type' => 41011, //PINNED FOLLOWER
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array('x__follower'), 0) as $x_pinned) {
+                            ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
                                 echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }
