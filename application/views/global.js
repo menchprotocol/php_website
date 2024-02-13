@@ -1171,7 +1171,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         if(!link_x__type && do_checks && !i__id && !next_i__id && !previous_i__id && focus_i_id){
             console.log('MATCH');
             next_i__id = focus_i_id;
-            link_x__type = 30901;
+            link_x__type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
         }
     }
 
