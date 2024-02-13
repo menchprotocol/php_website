@@ -1181,25 +1181,36 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    if(next_i__id && js_n___4486.includes(link_x__type)){
+    var is_next = next_i__id && js_n___4486.includes(link_x__type);
+    var is_prev = previous_i__id && js_n___4486.includes(link_x__type);
+
+    if(is_next || is_prev){
+
         i__id = 0;
         x__id = 0;
-        $("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
-        $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+',0,'+next_i__id+',1)');
-        $('.idea_unlink, .input___4486').removeClass('hidden');
-        if(!passon_i__id){
-            update_form_select(4486, link_x__type, 1, true);
+
+        if(is_next){
+
+            //Generate content:
+            $("#modal31911 .idea_list_next").html('<div class="creator_headline"></div>');
+            $('.creator_frame_'+next_i__id+' .creator_headline>a').each(function () {
+                $("#modal31911 .idea_list_next .creator_headline").append($(this).html());
+            });
+            $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
+            //$("#modal31911 .idea_list_next").html($('.creator_frame_'+next_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
+            $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+',0,'+next_i__id+',1)');
+
+        } else if(is_prev){
+            $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
+            $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+','+previous_i__id+',0,1)');
         }
-    } else if(previous_i__id && js_n___4486.includes(link_x__type)){
-        i__id = 0;
-        x__id = 0;
-        $("#modal31911 .idea_list_previous").html($('.creator_frame_'+previous_i__id).html() + '<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
-        $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+','+previous_i__id+',0,1)');
+
         $('.idea_unlink, .input___4486').removeClass('hidden');
         if(!passon_i__id){
             update_form_select(4486, link_x__type, 1, true);
         }
     }
+
 
     //Assign updates:
     $('#modal31911 .next_i__id').val(next_i__id);
