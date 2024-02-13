@@ -1556,10 +1556,7 @@ function i_editor_save(){
 
                 $("#list-in-" + focus_x__group).append(data.return_i__cache_full);
 
-                setTimeout(function () {
-                    console.log('SORTING RELOADED');
-                    i_sort_load(focus_x__group);
-                }, 1597);
+                i_sort_load(focus_x__group);
 
             } else {
                 //Update Cache otherwise:
@@ -2543,7 +2540,7 @@ function i_sort_load(x__type){
                 }
             }
         });
-    }, 610);
+    }, 987);
 
 }
 
