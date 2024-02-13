@@ -43,7 +43,11 @@ class I_model extends CI_Model
                 'x__creator' => $x__creator,
                 'x__following' => $x__creator,
                 'x__next' => $add_fields['i__id'],
-                'x__type' => 4250, //New Idea Created
+                'x__type' => ( count($this->X_model->fetch(array(
+                    'x__follower' => $x__creator,
+                    'x__type' => 41011, //PINNED FOLLOWER
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                ))) ? 4983 : 4250 ), //New Idea Created
             ));
 
             //Log transaction new Idea hashtag:
