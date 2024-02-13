@@ -1554,7 +1554,7 @@ function i_editor_save(){
 
                 adjust_counter(focus_x__group, 1);
 
-                $("#list-in-" + focus_x__group).append(data.return_i__cache_links);
+                //$("#list-in-" + focus_x__group).append(data.return_i__cache_links);
 
             } else {
                 //Update Cache otherwise:
