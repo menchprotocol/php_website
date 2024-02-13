@@ -1556,6 +1556,8 @@ function i_editor_save(){
 
                 $("#list-in-" + focus_x__group).append(data.return_i__cache_full);
 
+                i_sort_load(focus_x__group);
+
             } else {
                 //Update Cache otherwise:
                 $('.ui_i__cache_'+modify_data['save_i__id']).html(data.return_i__cache_links);
