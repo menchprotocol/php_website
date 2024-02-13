@@ -4243,6 +4243,10 @@ main {
     width:21px !important;
 }
 
+.flip-content .source-info,
+.flip-content .sub_note{
+    color:#FFFFFF !important;
+}
 
 .home_black_font h1,
 .home_black_font .logo_cover i,
