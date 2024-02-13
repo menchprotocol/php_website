@@ -315,6 +315,7 @@ class Ajax extends CI_Controller
                 }
 
                 if($all_hashtags && count($i_references) && $_POST['save_x__type']>0){
+
                     //Return success:
                     foreach($this->I_model->fetch(array(
                         'i__id' => ( intval($_POST['next_i__id'])>0 ? intval($_POST['next_i__id']) : intval($_POST['previous_i__id']) ),
@@ -323,9 +324,9 @@ class Ajax extends CI_Controller
                         //Append all of these hashtags:
                         foreach($i_references as $reference_i){
                             if(intval($_POST['next_i__id'])>0){
-                                $status = $this->I_model->i_link($focus_i, $_POST['save_x__type'], $reference_i, $member_e['e__id']);
-                            } elseif(intval($_POST['previous_i__id'])>0){
                                 $status = $this->I_model->i_link($reference_i, $_POST['save_x__type'], $focus_i, $member_e['e__id']);
+                            } elseif(intval($_POST['previous_i__id'])>0){
+                                $status = $this->I_model->i_link($focus_i, $_POST['save_x__type'], $reference_i, $member_e['e__id']);
                             }
                             if(!$status['status']){
                                 return view_json($status);
