@@ -70,10 +70,10 @@ class I_model extends CI_Model
         //Additional sources to be added? Start with creator
         $e_appended = array($x__creator);
         $pinned_followers = $this->X_model->fetch(array(
-            'x__follower' => $x__creator,
+            'x__following' => $x__creator,
             'x__type' => 41011, //PINNED FOLLOWER
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0);
+        ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
         $x__type = ( count($pinned_followers) ? 4983 : 4250 ); //If it has pinned, they would be primary author...
 
         //Add if not added as the author:
@@ -92,20 +92,23 @@ class I_model extends CI_Model
         }
 
         //Also append all pinned followers:
+        $x__weight = 0;
         foreach($pinned_followers as $x_pinned) {
-            if(!in_array($x_pinned['x__following'], $e_appended) && !count($this->X_model->fetch(array(
+            if(!in_array($x_pinned['e__id'], $e_appended) && !count($this->X_model->fetch(array(
                     'x__type' => 4250, //Lead Author
-                    'x__following' => $x_pinned['x__following'],
+                    'x__following' => $x_pinned['e__id'],
                     'x__next' => $add_fields['i__id'],
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 $this->X_model->create(array(
                     'x__type' => 4250, //Lead Author
-                    'x__following' => $x_pinned['x__following'],
+                    'x__following' => $x_pinned['e__id'],
                     'x__next' => $add_fields['i__id'],
                     'x__creator' => $x__creator,
+                    'x__weight' => $x__weight,
                 ));
-                array_push($e_appended, $x_pinned['x__following']);
+                array_push($e_appended, $x_pinned['e__id']);
+                $x__weight++;
             }
         }
 

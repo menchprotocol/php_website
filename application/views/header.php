@@ -996,17 +996,22 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Creator(s) -->
                         <div class="creator_headline first_headline">
                             <?php
+                            $found_lead_authors = false;
                             foreach($this->X_model->fetch(array(
-                                'x__follower' => $member_e['e__id'],
+                                'x__following' => $member_e['e__id'],
                                 'x__type' => 41011, //PINNED FOLLOWER
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array('x__following'), 0) as $x_pinned) {
+                            ), array('x__follower'), 0) as $x_pinned) {
+                                $found_lead_authors = true;
                                 echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }
 
-                            //Always append current user:
-                            echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span></div>';
+                            if(!$found_lead_authors){
+                                //Always append current user:
+                                echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span></div>';
+                            }
+
                             ?>
                         </div>
 
