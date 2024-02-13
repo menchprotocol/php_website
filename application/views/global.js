@@ -2,7 +2,7 @@
 
 //Define some global variables:
 var has_unsaved_changes = false; //Tracks source/idea modal edits
-var focus_x__type = 0;
+var focus_x__group = 0;
 
 
 //Full Story
@@ -405,8 +405,8 @@ function toggle_pills(x__type_hash){
         $('.headline_body_' + x__type).removeClass('hidden');
 
         //Set focus tab:
-        console.log('focus_x__type Updated from '+focus_x__type+' to '+x__type);
-        focus_x__type = x__type;
+        console.log('focus_x__group Updated from '+focus_x__group+' to '+x__type);
+        focus_x__group = x__type;
         if(!window.location.hash || window.location.hash!=$('.thepill' + x__type+' .nav-link').attr('href')) {
             window.location.hash = $('.thepill' + x__type+' .nav-link').attr('href');
         }
@@ -1154,13 +1154,13 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
 
         //Are we adding an idea for a target action tab?
-        console.log('i Modal loaded for '+focus_x__type);
-        if(focus_i_id && do_checks && focus_x__type>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
-            if(js_n___42265.includes(focus_x__type) || !js_session_superpowers_unlocked.includes(10939)){
+        console.log('i Modal loaded for '+focus_x__group);
+        if(focus_i_id && do_checks && focus_x__group>0 && !next_i__id && !previous_i__id && !i__id && !x__id && !link_x__type){
+            if(js_n___42265.includes(focus_x__group) || !js_session_superpowers_unlocked.includes(10939)){
                 //Next idea group:
                 next_i__id = focus_i_id;
                 link_x__type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
-            } else if(js_n___42380.includes(focus_x__type)) {
+            } else if(js_n___42380.includes(focus_x__group)) {
                 //Previous idea group:
                 previous_i__id = focus_i_id;
                 link_x__type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
@@ -1424,6 +1424,7 @@ function i_editor_save(){
         next_i__id:         $('#modal31911 .next_i__id').val(),
         previous_i__id:     $('#modal31911 .previous_i__id').val(),
         save_x__type:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
+        focus_x__group:     focus_x__group,
         save_x__message:    $('#modal31911 .save_x__message').val().trim(),
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
@@ -1547,13 +1548,13 @@ function i_editor_save(){
 
             //Insert idea into the page if new:
             console.log('START INSERTING');
-            if(!current_i__id && created_i__id>0){
+            if(!current_i__id && created_i__id>0 && focus_x__group>0){
 
-                console.log('START ADD '+modify_data['save_x__type']);
+                console.log('START ADD '+modify_data['save_x__type']+' & x GROUP: '+focus_x__group);
 
-                adjust_counter(modify_data['save_x__type'], 1);
+                adjust_counter(focus_x__group, 1);
 
-                $("#list-in-" + modify_data['save_x__type']).append(view_s_js_cover(26011, data.return_i__cache_links, 0));
+                $("#list-in-" + focus_x__group).append(view_s_js_cover(26011, data.return_i__cache_links, 0));
 
             } else {
                 //Update Cache otherwise:
@@ -2148,16 +2149,16 @@ var busy_loading = false;
 var current_page = [];
 function x_view_load_page() {
 
-    if(!focus_x__type){
+    if(!focus_x__group){
         return false;
     }
 
-    if(current_page[focus_x__type] == undefined){
-        current_page[focus_x__type] = 1;
+    if(current_page[focus_x__group] == undefined){
+        current_page[focus_x__group] = 1;
     }
 
-    var current_total_count = parseInt($('.headline_body_' + focus_x__type).attr('read-counter')); //Total of that item
-    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[focus_x__type] );
+    var current_total_count = parseInt($('.headline_body_' + focus_x__group).attr('read-counter')); //Total of that item
+    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[focus_x__group] );
 
     if(!has_more_to_load){
         return false;
@@ -2167,13 +2168,13 @@ function x_view_load_page() {
     busy_loading = true;
 
 
-    current_page[focus_x__type]++; //Now we can increment current page
-    $('<div class="load-more"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__type);
+    current_page[focus_x__group]++; //Now we can increment current page
+    $('<div class="load-more"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
     $.post("/ajax/x_view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
         focus_id: fetch_int_val('#focus_id'),
-        x__type: focus_x__type,
-        current_page: current_page[focus_x__type],
+        x__type: focus_x__group,
+        current_page: current_page[focus_x__group],
     }, function (data) {
         $('.load-more').remove();
         if(data.length){
