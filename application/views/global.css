@@ -658,7 +658,7 @@ textarea.main__title {
     padding: 0;
     white-space: nowrap;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: visible;
 }
 .nav-item {
     margin: 0;
