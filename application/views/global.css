@@ -1630,6 +1630,10 @@ label {
                     { font-size: 1.34em !important; }
 
 
+.dynamic_editing_input.float_right .icon-block {
+    width:30px !important;
+}
+
 .i_cache .icon-block-xx{ width:18px !important; }
 .inner-content .center .main__title { font-size: 1.55em !important; }
 .focus-cover .inner-content .center .main__title { font-size: 2.1em !important; }
