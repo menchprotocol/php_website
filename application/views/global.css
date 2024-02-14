@@ -1326,8 +1326,9 @@ a.headline {
 }
 
 .card_cover:hover .show-on-hover, .card_cover.card_checked .show-on-hover{
-    display:block !important;
+    display:inline-block !important;
 }
+
 .list-group-item:hover .show-on-hover,
 .card_cover:hover .inline-on-hover,
 .list-group-item:hover .inline-on-hover{
@@ -2782,6 +2783,10 @@ h4.main__title{
 .card_covers>span {
     min-width: 34px;
     text-align: center;
+    display: inline-block !important;
+}
+
+.card_covers>span>div {
     display: inline-block !important;
 }
 
