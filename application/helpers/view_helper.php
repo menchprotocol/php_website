@@ -518,10 +518,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         );
 
         $joins_objects = array('x__next');
-
-        $order_columns = array();
-        $order_columns['x__weight'] = 'ASC';
-        $order_columns['x__time'] = 'DESC';
+        $order_columns = array('x__type = \'34513\' DESC' => null, 'x__weight' => 'ASC', 'x__time' => 'DESC');
 
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
@@ -625,9 +622,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'x__next' => $i__id,
         );
 
-        $order_columns = array();
-        $order_columns['x__weight'] = 'ASC';
-        $order_columns['x__time'] = 'DESC';
+        $order_columns = array('x__type = \'34513\' DESC' => null, 'x__weight' => 'ASC', 'x__time' => 'DESC');
 
     } elseif(in_array($x__type, $CI->config->item('n___42380'))){
 

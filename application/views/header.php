@@ -589,7 +589,7 @@ if(!$basic_header_footer){
 
                             //Profile View
                             $m['m__cover'] = view_cover($member_e['e__cover'], 1);
-                            $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em; margin-top: -16px;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__handle'].'</div>';
+                            $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.8em; margin:-16px 0 -8px;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__handle'].'</div>';
                             $href = 'href="/@'.$member_e['e__handle'].'" ';
 
                         } elseif($x__type==42246 && $member_e) {
