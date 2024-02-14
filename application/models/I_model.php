@@ -74,7 +74,7 @@ class I_model extends CI_Model
             'x__type' => 41011, //PINNED FOLLOWER
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-        $x__type = ( count($pinned_followers) ? 4983 : 4250 ); //If it has pinned, they would be primary author...
+        $x__type = ( count($pinned_followers) ? 4250 /* 4983 */ : 4250 ); //If it has pinned, they would be primary author...
 
         //Add if not added as the author:
         if(!count($this->X_model->fetch(array(
