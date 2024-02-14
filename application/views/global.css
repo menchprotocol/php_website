@@ -4471,7 +4471,8 @@ main {
     padding: 0;
 }
 
-.creator_frame .creator_headline{
+.creator_frame .creator_headline,
+.modal-body .creator_headline{
     display: block;
     line-height: 134%;
     padding: 0;
