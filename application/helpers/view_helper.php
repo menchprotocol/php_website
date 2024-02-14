@@ -1637,14 +1637,14 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==30901 && 0){
+            } elseif($x__type_top_bar==30901){
 
                 //Reply
                 $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==42379 && 0){
+            } elseif($x__type_top_bar==42379){
 
                 //Reply Inverse / Quote
                 $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
