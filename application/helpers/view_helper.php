@@ -1636,13 +1636,6 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==31911 && $write_privacy_i){
-
-                //Idea Edit
-                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
-                $bottom_bar_ui .= '</div></span>';
-
             } elseif($x__type_top_bar==30901){
 
                 //Reply
@@ -1729,6 +1722,11 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
+
+                        } elseif($e__id_dropdown==31911 && $write_privacy_i){
+
+                            //Idea Editor
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $write_privacy_i){
 
