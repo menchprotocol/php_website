@@ -1611,7 +1611,7 @@ label {
 .icon-block-xx{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block-xs{ width:30px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block, .focus-cover .icon-block-xs { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; }
-.icon-block i, .focus-cover .icon-block-xs i {
+.creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-xs i {
     margin-top: -2px;
 }
 .icon-block img{
