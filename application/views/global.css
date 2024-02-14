@@ -203,7 +203,7 @@ h3{
 .dynamic_item textarea.form-control,
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
-    padding: 5px 0 !important;
+    padding: 0 0 !important;
     margin-left: 40px !important;
     width: calc(100% - 34px) !important;
 }
@@ -2759,7 +2759,7 @@ h4.main__title{
 
 .section_subframe{
     background-color: #FFFFFF;
-    padding: 5px 0 0;
+    padding: 0 0 0;
 }
 
 .dropdown-menu {
