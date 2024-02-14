@@ -2733,7 +2733,7 @@ h4.main__title{
 }
 
 .card_covers .btn {
-    padding:1px !important;
+    padding:0 !important;
 }
 .i_cache .first_line{
     font-size: 1.55em;
