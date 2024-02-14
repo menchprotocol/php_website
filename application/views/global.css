@@ -2784,7 +2784,6 @@ h4.main__title{
 
 
 .card_covers>span {
-    min-width: 34px;
     text-align: center;
     display: inline-block !important;
 }
