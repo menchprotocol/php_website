@@ -960,12 +960,17 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
                 continue; //Locked Dropdown
             }
 
-            //TODO place in proper groups later, for now a Hack to hide the unlink buttons for members not linked yet...
-            if($cache_e__id==42795 && $e__id==10673 && !$selected_e__id && !$x__id){
+            //If this option is for a single-select delete option that must be available only when there is a selection:
+            if(in_array($cache_e__id, $CI->config->item('n___33331')) && in_array($e__id, $CI->config->item('n___42850')) && !$selected_e__id){
                 continue;
-            } elseif($cache_e__id==42260 && $e__id==42801 && !$selected_e__id && !$x__id){
-                continue;
+
+                if($cache_e__id==42795){ //10673
+                    continue;
+                } elseif($cache_e__id==42260){ //42801
+                    continue;
+                }
             }
+
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
@@ -1651,18 +1656,29 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==42260 && $member_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')))){
+            } elseif($x__type_top_bar==42260 && $member_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__creator']!=$member_e['e__id'])){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
                     'x__following' => $member_e['e__id'],
                     'x__next' => $i['i__id'],
                     'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
-                    'x__type !=' => 42801,
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
                 $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
+                $bottom_bar_ui .= '</div></span>';
+
+            } elseif($x__type_top_bar==4235 && count($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__next' => $i['i__id'],
+                    'x__following' => 4235,
+                )))){
+
+                //Reply Inverse / Quote
+                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){

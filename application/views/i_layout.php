@@ -104,7 +104,6 @@ if(!$focus_tab){
 
 ?>
 
-<div id="abc123"></div>
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
 <input type="hidden" id="focus_card" value="12273" />
 <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
@@ -112,6 +111,9 @@ if(!$focus_tab){
 <script>
 
     $(document).ready(function () {
+
+        $('.nav.nav12273').prepend($('.focus-cover .card_covers').html());
+        $('.focus-cover .card_covers').remove();
 
         show_more(<?= $focus_i['i__id'] ?>);
 

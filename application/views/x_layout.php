@@ -832,45 +832,7 @@ if($top_i__hashtag) {
 
     foreach($this->config->item('e___13289') as $x__type => $m2) {
 
-        $superpowers_required = array_intersect($this->config->item('n___10957'), $m2['m__following']);
-        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-            continue;
-        }
-
-        $control_btn = '';
-
-        if($x__type==12273 && !$is_or_7712 && count($is_next)){
-
-            //Ideas
-            $control_btn = '<a class="controller-nav round-btn" href="javascript:void(0);" onclick="toggle_headline(6255)">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.count($is_next).' '.$m2['m__title'].'</span>';
-
-        } elseif($x__type==42260 && $member_e){
-
-            //Reactions
-            $reactions = $this->X_model->fetch(array(
-                'x__following' => $member_e['e__id'],
-                'x__next' => $focus_i['i__id'],
-                'x__type IN (' . join(',', $this->config->item('n___42260')) . ')' => null, //Reactions
-                'x__type !=' => 42801,
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1, 0, array('x__weight' => 'ASC'));
-
-            //$control_btn = view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $focus_i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
-
-
-        } elseif($x__type==6255 && !$top_completed){
-
-            //Count total
-            $sub_counter = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__next' => $focus_i['i__id'],
-            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
-
-            //NEXT
-            $control_btn = '<div style="padding-left: 8px;" id="next_div"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.view_number($sub_counter[0]['totals']).' '.$m2['m__title'].'</span></div>';
-
-        } elseif($x__type==13495 && count($x_selects)){
+        if($x__type==13495 && count($x_selects)){
 
             //Edit response:
             $control_btn = '<div style="padding-left: 8px;" class="save_toggle_answer"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="$(\'.save_toggle_answer\').toggleClass(\'hidden\');">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';

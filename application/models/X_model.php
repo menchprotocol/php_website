@@ -457,7 +457,7 @@ class X_model extends CI_Model
             //Follow
             if($x__id > 0){
                 //Updating reaction:
-                if($new_e__id==10673){
+                if(in_array($new_e__id, $this->config->item('n___42850'))){
                     //Unsubscribe
                     $status = $this->X_model->update($x__id, array(
                         'x__privacy' => 6173, //Transaction Removed
@@ -494,7 +494,7 @@ class X_model extends CI_Model
 
             //Reactions...
             if($x__id > 0){
-                if($new_e__id==42801){
+                if(in_array($new_e__id, $this->config->item('n___42850'))){
                     $status = $this->X_model->update($x__id, array(
                         'x__privacy' => 6173, //Transaction Removed
                     ), $member_e['e__id'], 10673); //Media Removed
