@@ -113,7 +113,7 @@ if(!$focus_tab){
     $(document).ready(function () {
 
         $('.nav.nav12273').prepend($('.focus-cover .card_covers').html());
-        //$('.focus-cover .card_covers').remove();
+        $('.focus-cover .card_covers').addClass('hidden');
 
         show_more(<?= $focus_i['i__id'] ?>);
 
