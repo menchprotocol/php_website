@@ -44,6 +44,23 @@ echo view_card_i(42288,  $focus_i);
 echo '</div>';
 
 
+//Tab content:
+foreach($this->config->item('e___31890') as $x__type => $m) {
+    $can_add = $write_privacy_i && in_array($x__type, $CI->config->item('n___42262'));
+    echo '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="0">'.( $can_add ? '<div class="new_list new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick algolia_finder dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="+ Add @source">
+                    </div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>'.
+            '<script> $(document).ready(function () { load_finder(12273, '.$x__type.'); }); </script>' : '').'<div class="tab_content"></div></div>';
+
+}
+
+
+
+
 ?>
 
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />

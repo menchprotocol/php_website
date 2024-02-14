@@ -1817,36 +1817,10 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
             //echo '<ul class="nav nav-tabs nav12273">';
             foreach($CI->config->item('e___31890') as $x__type => $m) {
-
                 $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
-                if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
-                $can_add = $write_privacy_i && in_array($x__type, $CI->config->item('n___42262'));
-
-                $input_content = '';
-                if($can_add){
-
-                    if(in_array($x__type, $CI->config->item('n___42261'))){
-
-                        $input_content .= '<div class="new_list new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
-                    <div class="input-group border">
-                        <input type="text"
-                               class="form-control form-control-thick algolia_finder dotransparent add-input"
-                               maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="+ Add @source">
-                    </div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>';
-
-                    }
-
-                    $body_content .= '<script> $(document).ready(function () { load_finder(12273, '.$x__type.'); }); </script>';
-
-                }
-
-                if($can_add || $coins_count[$x__type]>0){
-                    $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
-
+                if($coins_count[$x__type]>0 || in_array($x__type, $CI->config->item('n___32172')) || ($write_privacy_i && in_array($x__type, $CI->config->item('n___42262')))){
                     $bottom_bar_ui .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
                 }
-
             }
             //echo '</ul>';
             $bottom_bar_ui .= $body_content;
@@ -1859,13 +1833,13 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
                 if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
                     $focus_tab = $x__type;
-                    echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
+                    $bottom_bar_ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
                     break;
                 }
             }
             if(!$focus_tab){
                 foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
-                    echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
+                    $bottom_bar_ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
                     break;
                 }
             }
