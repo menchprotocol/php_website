@@ -184,7 +184,7 @@ h3{
 .inner_message {
     clear: both;
     display: block;
-    margin-left: 34px;
+    margin-left: 40px;
     padding: 3px 0 1px;
 }
 .float_right{
@@ -689,7 +689,7 @@ textarea.main__title {
     line-height: 150%;
 }
 .message_content{
-    margin-left: 34px;
+    margin-left: 40px;
 }
 .i-footer .message_content{
     margin-left:0;
@@ -1019,7 +1019,7 @@ h4 .halfbg {
 }
 
 .dropdown-menu a {
-    margin-right: 34px;
+    margin-right: 40px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1205,7 +1205,7 @@ a.headline {
     margin-bottom: 21px;
 }
 .left-margin{
-    margin-left: 34px;
+    margin-left: 40px;
     display: inline-block;
 }
 .left-half-margin{
@@ -2861,7 +2861,7 @@ h4.main__title{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 34px;
+    margin-left: 40px;
 }
 .media_frame {
     clear: both;
@@ -3014,7 +3014,7 @@ h4.main__title{
     }
 
     .icon-tweak{ padding-left: 8px; }
-    .name-block{ margin-left: 34px; }
+    .name-block{ margin-left: 40px; }
 
 
     .title-block{
