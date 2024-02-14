@@ -1818,7 +1818,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             //echo '<ul class="nav nav-tabs nav12273">';
             foreach($CI->config->item('e___31890') as $x__type => $m) {
                 $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
-                if($coins_count[$x__type]>0 || in_array($x__type, $CI->config->item('n___32172')) || ($write_privacy_i && in_array($x__type, $CI->config->item('n___42262')))){
+                if($coins_count[$x__type]>0 || ($write_privacy_i && in_array($x__type, $CI->config->item('n___42262')))){
                     $bottom_bar_ui .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
                 }
             }
