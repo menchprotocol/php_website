@@ -1193,7 +1193,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
             //Generate content:
             $("#modal31911 .idea_list_next").html('<div class="creator_box"></div>');
-            $('.creator_frame_'+next_i__id+' .creator_box>a').each(function () {
+            $('.creator_frame_'+next_i__id+' .creator_headline>a').each(function () {
                 $("#modal31911 .idea_list_next .creator_box").append($(this).html());
             });
             $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
@@ -1205,7 +1205,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
             //Generate content:
             $("#modal31911 .idea_list_previous").html('<div class="creator_box"></div>');
-            $('.creator_frame_'+previous_i__id+' .creator_box>a').each(function () {
+            $('.creator_frame_'+previous_i__id+' .creator_headline>a').each(function () {
                 $("#modal31911 .idea_list_previous .creator_box").append($(this).html());
             });
             $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
