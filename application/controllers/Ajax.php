@@ -574,7 +574,7 @@ class Ajax extends CI_Controller
 
 
                         //Link to Source as Uploader:
-                        $link_type = ( $etag_detected ? 4230 : 42659 );
+                        $link_type = ( $etag_detected ? 42849 : 42659 );
                         if(!count($this->X_model->fetch(array(
                             'x__following' => $member_e['e__id'],
                             'x__follower' => $submitted_media['e__id'],
