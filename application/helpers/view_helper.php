@@ -1550,14 +1550,14 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
 
     //Bottom Bar
-    if(!$cache_app && !$focus_card ){
+    if(!$cache_app ){
 
         $bottom_bar_ui = '';
 
         //Determine Link Group
         $link_type_id = 4593; //Transaction Type
         $link_type_ui = '';
-        if($x__id){
+        if(!$focus_card && $x__id){
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
                     foreach($CI->X_model->fetch(array(
@@ -1781,15 +1781,18 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
         }
 
         //Bottom Bar menu
-        foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
-            $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
-            if(strlen($coins_ui)){
+        if(!$focus_card){
+            foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
+                $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
+                if(strlen($coins_ui)){
 
-                $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
-                $bottom_bar_ui .= $coins_ui;
-                $bottom_bar_ui .= '</span>';
+                    $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
+                    $bottom_bar_ui .= $coins_ui;
+                    $bottom_bar_ui .= '</span>';
+                }
             }
         }
+
 
         if($bottom_bar_ui){
             $ui .= '<div class="card_covers">';
