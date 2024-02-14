@@ -1696,7 +1696,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                             continue;
                         }
 
-                        $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
+                        $anchor = '<span class="icon-block-xs">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
                         if($e__id_dropdown==12589 && $write_privacy_i){
 
