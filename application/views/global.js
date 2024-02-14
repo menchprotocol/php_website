@@ -1136,7 +1136,7 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
 function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
 
 
-    $(".idea_direction, .idea_unlink, .input___4486").addClass('hidden');
+    $(".idea_link_direction, .idea_link_unlink, .idea_link_type").addClass('hidden');
     var focus_i_id = ( fetch_int_val('#focus_card')==12273 ? fetch_int_val('#focus_id') : 0 );
 
     if(!passon_i__id){
@@ -1199,7 +1199,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+',0,'+next_i__id+',1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+',0,'+next_i__id+',1)');
 
         } else if(is_prev){
 
@@ -1211,11 +1211,11 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+','+previous_i__id+',0,1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_x__type+','+previous_i__id+',0,1)');
 
         }
 
-        $('.idea_unlink, .input___4486').removeClass('hidden');
+        $('.idea_link_unlink, .idea_link_type').removeClass('hidden');
         if(!passon_i__id){
             update_form_select(4486, link_x__type, 1, true);
         }

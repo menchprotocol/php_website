@@ -962,17 +962,17 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                         <!-- Unlink -->
-                        <div class="dynamic_editing_input no_padded idea_unlink hidden">
+                        <div class="dynamic_editing_input no_padded idea_link_unlink hidden">
                             <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="fas fa-unlink"></i></a>
                         </div>
 
                         <!-- Toggle Direction -->
-                        <div class="dynamic_editing_input no_padde idea_direction hidden superpower__10939">
+                        <div class="dynamic_editing_input no_padde idea_link_direction hidden superpower__10939">
                             <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="fas fa-arrow-up-arrow-down"></i></a>
                         </div>
 
                         <!-- Idea Links -->
-                        <div class="dynamic_editing_input input___4486 hidden superpower__10939" style="margin: 0 !important;">
+                        <div class="dynamic_editing_input idea_link_type hidden superpower__10939" style="margin: 0 !important;">
                             <div class="dynamic_selector"><?= view_single_select_form(4486, 4228, false, true); ?></div>
                         </div>
 
