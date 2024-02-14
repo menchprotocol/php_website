@@ -963,12 +963,12 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                         <!-- Unlink -->
                         <div class="dynamic_editing_input no_padded idea_link_unlink hidden">
-                            <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="fas fa-unlink"></i></a>
+                            <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
                         </div>
 
                         <!-- Toggle Direction -->
                         <div class="dynamic_editing_input no_padde idea_link_direction hidden superpower__10939">
-                            <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="fas fa-arrow-up-arrow-down"></i></a>
+                            <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="far fa-arrow-up-arrow-down"></i></a>
                         </div>
 
                         <!-- Idea Links -->
@@ -994,21 +994,19 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Idea Creator(s) -->
-                        <div class="creator_headline first_headline">
-                            <?php
-                            foreach($this->X_model->fetch(array(
-                                'x__following' => $member_e['e__id'],
-                                'x__type' => 41011, //PINNED FOLLOWER
-                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
-                                echo '<div><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
-                                //TODO maybe give the option to remove?
-                            }
+                        <?php
+                        foreach($this->X_model->fetch(array(
+                            'x__following' => $member_e['e__id'],
+                            'x__type' => 41011, //PINNED FOLLOWER
+                            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
+                            echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
+                            //TODO maybe give the option to remove?
+                        }
 
-                            //Always append current user:
-                            echo '<div><span class="icon-block">'.view_cover($member_e['e__cover']).'</span></div>';
-                            ?>
-                        </div>
+                        //Always append current user:
+                        echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($member_e['e__cover']).'</span></div>';
+                        ?>
 
 
                         <!-- Idea Message -->
@@ -1137,11 +1135,11 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                     <td class="superpower__13758 fa_search hidden">
                                         <!-- Font Awesome Search -->
-                                        <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" target="_blank" title="Open New Window to Search on Font Awesome"><i class="fas fa-search-plus zq12274"></i></a>
+                                        <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus zq12274"></i></a>
                                     </td>
                                     <td class="superpower__13758">
                                         <!-- Font Awesome Insert -->
-                                        <a href="javascript:void(0);" onclick="update__cover('fas fa-icons');$('.fa_search').removeClass('hidden');" title="Add a Sample Font Awesome Icon to Get Started"><i class="fas fa-icons"></i></a>
+                                        <a href="javascript:void(0);" onclick="update__cover('far fa-icons');$('.fa_search').removeClass('hidden');" title="Add a Sample Font Awesome Icon to Get Started"><i class="far fa-icons"></i></a>
                                     </td>
                                     <td class="superpower__13758 cover_history_button">
                                         <!-- History -->
