@@ -4400,6 +4400,9 @@ main {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+.nav12274.nav-tabs {
+    text-align:center !important;
+}
 .nav-tabs::-webkit-scrollbar {
     display: none;
 }
