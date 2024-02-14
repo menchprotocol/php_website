@@ -1540,11 +1540,11 @@ function i_editor_save(){
 
             //Update Idea Type:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__type', modify_data['save_i__type']);
-            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_x__id'], true);
+            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_x__id'], false);
 
             //Update Idea Privacy:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__privacy', modify_data['save_i__privacy']);
-            ui_instant_select(31004, modify_data['save_i__privacy'], modify_data['save_i__id'], modify_data['save_x__id'], true);
+            ui_instant_select(31004, modify_data['save_i__privacy'], modify_data['save_i__id'], modify_data['save_x__id'], false);
 
             //Update Handle & Href links if needed:
             if(old_handle!=new_handle){
