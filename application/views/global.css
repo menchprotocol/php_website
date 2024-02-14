@@ -1135,8 +1135,8 @@ a.headline {
 }
 
 .space-content{
-    padding-left: 34px !important;
-    padding-right: 34px !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
     display: block;
     line-height: 150%;
 }
@@ -1609,7 +1609,7 @@ label {
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-xx{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block-xs{ width:26px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
-.icon-block { width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
+.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block img{
     line-height: 100%;
     width: 30px !important;
@@ -4096,7 +4096,7 @@ div.img {
 .logo_title {
     position: absolute;
     top: 5px;
-    left: 35px;
+    left: 40px;
 
     display: block;
     line-height: 151%;
@@ -4112,8 +4112,8 @@ div.img {
 
     display: block;
     line-height: 151%;
-    width:30px !important;
-    height:30px !important;
+    width:34px !important;
+    height:34px !important;
     border-radius: 0px !important;
     font-size: 2em !important;
 }
