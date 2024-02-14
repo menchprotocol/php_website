@@ -4437,9 +4437,15 @@ main {
     display: block !important;
 }
 .creator_headline{
-    display: inline-block;
+    display: block;
     line-height: 134%;
     padding: 0;
+}
+
+.creator_headline .dropdown{
+    margin: -8px 0;
+    height: 21px;
+    overflow: visible;
 }
 .idea_list_next .creator_headline{
     padding: 5px 5px 5px 0;
