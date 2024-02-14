@@ -1791,11 +1791,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             }
         }
 
-        if($bottom_bar_ui){
-            $ui .= '<div class="card_covers">';
-            $ui .= $bottom_bar_ui;
-            $ui .= '</div>';
-        }
+        $ui .= $bottom_bar_ui;
     }
 
 
