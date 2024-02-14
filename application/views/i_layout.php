@@ -113,7 +113,7 @@ if(!$focus_tab){
     $(document).ready(function () {
 
         $('.focus-cover .card_covers>span').each(function () {
-            $('.nav.nav12273').append('<span>'+$(this).html()+'</span>');
+            $('.nav.nav12273').prepend('<span>'+$(this).html()+'</span>');
         });
         $('.focus-cover .card_covers').addClass('hidden');
 
