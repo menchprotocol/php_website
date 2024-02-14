@@ -1569,7 +1569,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
                     ), array('x__creator')) as $linker){
-                        $link_type_ui .= '<span><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                        $link_type_ui .= '<span class="icon-block-xs"><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                         $link_type_ui .= view_single_select_instant($x__type1, $i['x__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                         $link_type_ui .= '</div></span>';
                     }
@@ -1578,7 +1578,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 }
             }
             if(!$link_type_ui){
-                $link_type_ui .= '<span><div class="show-on-hover">';
+                $link_type_ui .= '<span class="icon-block-xs"><div class="show-on-hover">';
                 $link_type_ui .= view_single_select_instant(4593, $i['x__type'], false, false, $i['i__id'], $x__id);
                 $link_type_ui .= '</div></span>';
             }
