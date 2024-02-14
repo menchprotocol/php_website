@@ -1616,7 +1616,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     }
                 }
 
-                $bottom_bar_ui .= '<span><div class="show-on-hover grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="show-on-hover grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
 
             } elseif($x__type_top_bar==41037 && $write_privacy_i && !$focus_card){
 
@@ -1625,35 +1625,35 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             } elseif($x__type_top_bar==4737){
 
                 //Idea Type
-                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==31004 && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
 
                 //Idea Access
-                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i){
 
                 //Idea Edit
-                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==30901){
 
                 //Reply
-                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==42379){
 
                 //Reply Inverse / Quote
-                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
@@ -1666,7 +1666,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
-                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
@@ -1678,14 +1678,14 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 )))){
 
                 //Reply Inverse / Quote
-                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-xs"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
 
                 //Sort Idea
-                $bottom_bar_ui .= '<span class="sort_i_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-xs"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab">'.$m_top_bar['m__cover'].'</span>';
                 $bottom_bar_ui .= '</div></span>';
 
@@ -1785,7 +1785,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
                     $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                     $bottom_bar_ui .= '<div class="dropdown inline-block">';
-                    $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
+                    $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title icon-block-xs" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                     $bottom_bar_ui .= $action_buttons;
                     $bottom_bar_ui .= '</div>';
