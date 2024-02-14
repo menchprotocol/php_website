@@ -1779,19 +1779,20 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
             }
         }
-    }
 
+        //Bottom Bar menu
+        foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
+            $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
+            if(strlen($coins_ui)){
 
-    //Bottom Bar menu
-    foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
-        $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
-        if(strlen($coins_ui)){
-
-            $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
-            $bottom_bar_ui .= $coins_ui;
-            $bottom_bar_ui .= '</span>';
+                $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
+                $bottom_bar_ui .= $coins_ui;
+                $bottom_bar_ui .= '</span>';
+            }
         }
     }
+
+
 
     if($bottom_bar_ui){
         $ui .= '<div class="card_covers">';
