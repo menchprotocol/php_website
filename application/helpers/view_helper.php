@@ -1847,9 +1847,11 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
         if($bottom_bar_ui){
             if($focus_card){
+                $ui .= '<div class="card_covers">';
                 $ui .= '<ul class="nav nav-tabs nav12273">';
                 $ui .= $bottom_bar_ui;
                 $ui .= '</ul>';
+                $ui .= '</div>';
             } else {
                 $ui .= '<div class="card_covers">';
                 $ui .= $bottom_bar_ui;
