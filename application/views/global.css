@@ -4263,9 +4263,7 @@ main {
 .source-info{
     padding: 2px 0;
 }
-.cover-content .source-info .icon-block{
-    width:21px !important;
-}
+
 
 .flip-content .source-info,
 .flip-content .source-info .sub_note{
