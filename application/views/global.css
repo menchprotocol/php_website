@@ -2796,6 +2796,11 @@ h4.main__title{
 .coin-6255.coinface-12273 .card_covers{
     padding: 0 34px;
 }
+
+.focus-cover.coin-12273 .card_covers{
+    padding: 0 0px;
+    text-align: left !important;
+}
 .mini-frame{
     max-width: 377px;
 }
@@ -4388,7 +4393,7 @@ main {
 }
 
 .nav-tabs {
-    text-align:center !important;
+    text-align:left !important;
     display: block !important;
     justify-content: center !important;
     flex-direction: row !important;
