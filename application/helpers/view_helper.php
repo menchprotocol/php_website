@@ -1554,6 +1554,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
     $ui .= '</div>';
 
 
+
     //Bottom Bar
     if(!$cache_app ){
 
@@ -1798,6 +1799,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
         //Bottom Bar menu
         if(!$focus_card){
+
             foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
                 $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
                 if(strlen($coins_ui)){
@@ -1806,6 +1808,68 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     $bottom_bar_ui .= '</span>';
                 }
             }
+
+        } else {
+
+            //Full version of the menu:
+            $coins_count = array();
+            $body_content = '';
+
+            //echo '<ul class="nav nav-tabs nav12273">';
+            foreach($CI->config->item('e___31890') as $x__type => $m) {
+
+                $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
+                if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
+                $can_add = $write_privacy_i && in_array($x__type, $CI->config->item('n___42262'));
+
+                $input_content = '';
+                if($can_add){
+
+                    if(in_array($x__type, $CI->config->item('n___42261'))){
+
+                        $input_content .= '<div class="new_list new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick algolia_finder dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="+ Add @source">
+                    </div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>';
+
+                    }
+
+                    $body_content .= '<script> $(document).ready(function () { load_finder(12273, '.$x__type.'); }); </script>';
+
+                }
+
+                if($can_add || $coins_count[$x__type]>0){
+                    $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
+
+                    $bottom_bar_ui .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+                }
+
+            }
+            //echo '</ul>';
+            $bottom_bar_ui .= $body_content;
+
+
+            //echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$e___26005[12840]['m__handle'].'\'); }); </script>';
+            $e___26005 = $CI->config->item('e___26005');
+
+            $focus_tab = 0;
+            foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
+                if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
+                    $focus_tab = $x__type;
+                    echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
+                    break;
+                }
+            }
+            if(!$focus_tab){
+                foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
+                    echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
+                    break;
+                }
+            }
+
         }
 
 
@@ -1817,41 +1881,6 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
     }
 
 
-
-
-
-
-    //Bottom Bar
-    /*
-    if(!$cache_app && !$focus_card ){
-
-        $bottom_bar_ui = '';
-        foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
-
-
-            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
-            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-                continue; //Does not have permission
-            }
-
-
-            $coins_count = view_i_covers($e__id_bottom_bar, $i['i__id'], 0, false);
-
-
-            $bottom_bar_ui .= '<span title="'.$m_bottom_bar['m__title'].'"><span class="icon-block">'.$m_bottom_bar['m__cover']. '</span>';
-            //'.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'
-            $bottom_bar_ui .= $coins_count;
-            $bottom_bar_ui .= '</span>';
-        }
-
-        if($bottom_bar_ui){
-            $ui .= '<div class="">'; //card_covers
-            $ui .= $bottom_bar_ui;
-            $ui .= '</div>';
-        }
-
-    }
-    */
 
 
     $ui .= '</div>';
