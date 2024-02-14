@@ -4405,6 +4405,8 @@ main {
 .nav>span {
     display: inline-block;
     width: 34px;
+    height: 29px;
+    text-align: center;
 }
 .nav12274.nav-tabs {
     text-align:center !important;
