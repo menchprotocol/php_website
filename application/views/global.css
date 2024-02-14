@@ -4402,6 +4402,10 @@ main {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+.nav>span {
+    display: inline-block;
+    width: 34px;
+}
 .nav12274.nav-tabs {
     text-align:center !important;
 }
