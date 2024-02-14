@@ -204,7 +204,7 @@ h3{
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
     padding: 5px 0 !important;
-    margin-left: 34px !important;
+    margin-left: 40px !important;
     width: calc(100% - 34px) !important;
 }
 .inner_message .dynamic_selector{
