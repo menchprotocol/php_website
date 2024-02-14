@@ -829,6 +829,7 @@ if($top_i__hashtag) {
 
     $buttons_found = 0;
     $buttons_ui = '';
+    $control_btn = '';
 
     foreach($this->config->item('e___13289') as $x__type => $m2) {
 
