@@ -2087,13 +2087,6 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $top_bar_ui .= '<input class="form-check-input" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'" aria-label="...">';
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==31912 && $write_privacy_e){
-
-                //Edit Source
-                $top_bar_ui .= '<td><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a title="'.$m_top_bar['m__title'].'" href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')">'.$m_top_bar['m__cover'].'</a>';
-                $top_bar_ui .= '</div></td>';
-
             } elseif($x__type_top_bar==13006 && $has_sortable){
 
                 //Sort Source
@@ -2137,6 +2130,11 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                             //App Store
                             $action_buttons .= '<a href="'.view_app_link($e['e__id']).'" class="dropdown-item main__title">'.$anchor.'</a>';
+
+                        } elseif($e__id_dropdown==31912 && $write_privacy_e){
+
+                            //Edit Source
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==29771){
 
