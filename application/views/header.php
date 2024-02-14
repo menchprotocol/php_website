@@ -994,6 +994,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Idea Creator(s) -->
+                        <div class="creator_box">
                         <?php
                         foreach($this->X_model->fetch(array(
                             'x__following' => $member_e['e__id'],
@@ -1007,7 +1008,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         //Always append current user:
                         echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($member_e['e__cover']).'</span></div>';
                         ?>
-
+                        </div>
 
                         <!-- Idea Message -->
                         <div class="dynamic_editing_input" style="margin: 0 !important;">
