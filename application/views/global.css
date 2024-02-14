@@ -661,10 +661,6 @@ textarea.main__title {
     overflow-y: hidden;
 }
 
-.nav-tabs.nav12273 {
-    overflow-x: visible;
-    overflow-y: visible;
-}
 .nav-item {
     margin: 0;
     display: inline-block;
@@ -4407,12 +4403,7 @@ main {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
-.nav>span {
-    display: inline-block;
-    width: 34px;
-    height: 29px;
-    text-align: center;
-}
+
 .nav12274.nav-tabs {
     text-align:center !important;
 }

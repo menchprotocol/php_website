@@ -1799,7 +1799,6 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
         //Bottom Bar menu
         if(!$focus_card){
-
             foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
                 $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
                 if(strlen($coins_ui)){
@@ -1808,55 +1807,13 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     $bottom_bar_ui .= '</span>';
                 }
             }
-
-        } else {
-
-            //Full version of the menu:
-            $coins_count = array();
-            $body_content = '';
-
-            foreach($CI->config->item('e___31890') as $x__type => $m) {
-                $coins_count[$x__type] = view_i_covers($x__type, $i['i__id'], 0, false);
-                if($coins_count[$x__type]>0 || ($write_privacy_i && in_array($x__type, $CI->config->item('n___42262')))){
-                    $bottom_bar_ui .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
-                }
-            }
-            $bottom_bar_ui .= $body_content;
-
-
-            //echo '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$e___26005[12840]['m__handle'].'\'); }); </script>';
-            $e___26005 = $CI->config->item('e___26005');
-
-            $focus_tab = 0;
-            foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
-                if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
-                    $focus_tab = $x__type;
-                    $bottom_bar_ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
-                    break;
-                }
-            }
-            if(!$focus_tab){
-                foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
-                    $bottom_bar_ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
-                    break;
-                }
-            }
-
         }
 
 
         if($bottom_bar_ui){
-            if($focus_card){
-                $ui .= '<div class="card_covers">';
-                $ui .= '<ul class="nav nav-tabs nav12273">';
-                $ui .= $bottom_bar_ui;
-                $ui .= '</ul>';
-                $ui .= '</div>';
-            } else {
-                $ui .= '<div class="card_covers">';
-                $ui .= $bottom_bar_ui;
-                $ui .= '</div>';
-            }
+            $ui .= '<div class="card_covers">';
+            $ui .= $bottom_bar_ui;
+            $ui .= '</div>';
         }
     }
 
