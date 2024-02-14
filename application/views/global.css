@@ -1610,7 +1610,7 @@ label {
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-xx{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block-xs{ width:30px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
-.icon-block, .focus-cover .icon-block-xs { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
+.icon-block, .focus-cover .icon-block-xs { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; }
 .icon-block img{
     line-height: 100%;
     width: 30px !important;
