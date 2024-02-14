@@ -4437,12 +4437,18 @@ main {
     display: block !important;
 }
 .creator_headline{
+    display: inline-block;
+    line-height: 134%;
+    padding: 0;
+}
+
+.creator_frame .creator_headline{
     display: block;
     line-height: 134%;
     padding: 0;
 }
 
-.creator_headline .dropdown{
+.creator_frame .creator_headline .dropdown{
     margin: -8px 0;
     height: 21px;
     overflow: visible;
