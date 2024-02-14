@@ -1592,7 +1592,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             }
 
             //Determine hover state:
-            $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
+            $always_see = $focus_card || in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
             if($x__type_top_bar==31770 && $write_privacy_i && $link_type_ui){
 
