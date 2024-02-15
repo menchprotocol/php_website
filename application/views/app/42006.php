@@ -26,6 +26,7 @@ echo "\n\n";
 //Fixed Application Logic:
 echo '$route[\'@([a-zA-Z0-9]+)\'] = "view/e_layout/$1"; //Source'."\n";
 echo '$route[\'~([a-zA-Z0-9]+)\'] = "view/i_layout/$1"; //Ideate'."\n";
+echo '$route[\'([a-zA-Z0-9]+)/start\'] = "view/x_layout/0/$1"; //Discovery Sequence'."\n";
 echo '$route[\'([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "view/x_layout/$1/$2"; //Discovery Sequence'."\n";
 echo '$route[\'([a-zA-Z0-9]+)\'] = "view/x_layout/0/$1/0"; //Discovery Single'."\n";
 
