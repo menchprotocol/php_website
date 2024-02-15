@@ -364,16 +364,18 @@ function set_hashtag_if_empty(x__type_hash){
 }
 
 
-var pills_loading = false;
+var pills_loading = null;
 var loaded_pills = [];
 function toggle_pills(x__type_hash){
 
-    if(pills_loading && !loaded_pills.includes(x__type_hash)){
+    if(pills_loading==x__type_hash){
+        return false;
+    } else if(pills_loading && !loaded_pills.includes(x__type_hash)){
         return false;
     }
 
     if(!loaded_pills.includes(x__type_hash)){
-        pills_loading = true;
+        pills_loading = x__type_hash;
     }
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
         x__type = parseInt($('.handle_nav_'+x__type_hash).attr('x__type'));
@@ -485,7 +487,7 @@ function toggle_pills(x__type_hash){
 
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    pills_loading = false;
+                    pills_loading = null;
 
                 }, 233);
 
@@ -1181,7 +1183,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         i__id = 0;
         x__id = 0;
 
-        if(is_next){
+        if(is_next || (is_prev && !js_session_superpowers_unlocked.includes(42817))){
 
             //Generate content:
             $("#modal31911 .idea_list_next").html('<div class="creator_box"></div>');
