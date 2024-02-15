@@ -371,8 +371,15 @@ function set_hashtag_if_empty(x__type_hash){
     }
 }
 
+
+var pills_loading = false;
 function toggle_pills(x__type_hash){
 
+    if(pills_loading){
+        return false;
+    }
+
+    pills_loading = true;
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
         x__type = parseInt($('.handle_nav_'+x__type_hash).attr('x__type'));
     } else {
@@ -455,18 +462,11 @@ function toggle_pills(x__type_hash){
                 //Add data to the page:
                 $('.headline_body_' + x__type + ' .tab_content').html(data);
 
-
-                $('[data-toggle="tooltip"]').tooltip();
                 load_card_clickers();
                 initiate_algolia();
                 load_editor();
                 x_set_start_text();
                 set_autosize($('.x_set_class_text'));
-
-                setTimeout(function () {
-                    $('[data-toggle="tooltip"]').tooltip();
-                }, 233);
-
 
                 $(function () {
                     var $win = $(window);
@@ -479,15 +479,20 @@ function toggle_pills(x__type_hash){
                 });
 
                 console.log('Detecting Sort loading needs for @'+x__type+'...');
-                if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
-                    setTimeout(function () {
+
+                setTimeout(function () {
+
+                    if(js_n___11020.includes(x__type) || (focus_card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
                         i_sort_load(x__type);
-                    }, 233);
-                } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
-                    setTimeout(function () {
+                    } else if(js_n___11028.includes(x__type) || (focus_card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
                         e_sort_load(x__type);
-                    }, 233);
-                }
+                    }
+
+                    $('[data-toggle="tooltip"]').tooltip();
+
+                    pills_loading = false;
+
+                }, 233);
 
             });
 
@@ -503,7 +508,6 @@ function toggle_pills(x__type_hash){
         });
 
     }
-
 
 }
 
