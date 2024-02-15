@@ -6,7 +6,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] = "view/index"; //Redirects to default app
 $route['404_override'] = 'view/app_load'; //Page not found
 
-$route['CheatSheet'] = "view/app_load/13450";
+$route['SignApp1'] = "view/app_load/42816";
 $route['uploader'] = "view/app_load/42363";
 $route['InteractionType'] = "view/app_load/4593";
 $route['reminder'] = "view/app_load/42216";
@@ -14,7 +14,6 @@ $route['routes'] = "view/app_load/42006";
 $route['ServerTime'] = "view/app_load/41286";
 $route['contacts'] = "view/app_load/40947";
 $route['TreeLister'] = "view/app_load/40355";
-$route['signapp'] = "view/app_load/32603";
 $route['EmailImporter'] = "view/app_load/35983";
 $route['gameplay'] = "view/app_load/33292";
 $route['tree'] = "view/app_load/13900";
@@ -75,4 +74,3 @@ $route['~([a-zA-Z0-9]+)'] = "view/i_layout/$1"; //Ideate
 $route['([a-zA-Z0-9]+)/start'] = "view/x_layout/0/$1"; //Discovery Sequence
 $route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)'] = "view/x_layout/$1/$2"; //Discovery Sequence
 $route['([a-zA-Z0-9]+)'] = "view/x_layout/0/$1/0"; //Discovery Single
-

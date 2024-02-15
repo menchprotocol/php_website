@@ -152,8 +152,8 @@ if(isset($_GET['delete'])){
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ), 0) as $e){
         $stats['scanned']++;
-        $validate_handle = validate_handle(generate_handle(12274, $e['e__title']), null, $e['e__id']);
-        if($validate_handle['status']){
+        $validate_update_handle = validate_update_handle(generate_handle(12274, $e['e__title']), null, $e['e__id']);
+        if($validate_update_handle['status']){
             $stats['updated']++;
         }
     }

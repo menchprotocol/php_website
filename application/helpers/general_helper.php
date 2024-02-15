@@ -1197,7 +1197,7 @@ function sort_by($e__id, $custom_sort = array()){
     }
 }
 
-function validate_handle($str, $i__id = null, $e__id = null){
+function validate_update_handle($str, $i__id = null, $e__id = null){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();

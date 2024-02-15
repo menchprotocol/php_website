@@ -730,11 +730,11 @@ class Ajax extends CI_Controller
 
         if(strlen($_POST['save_i__hashtag']) && $is[0]['i__hashtag']!==trim($_POST['save_i__hashtag'])){
 
-            $validate_handle = validate_handle($_POST['save_i__hashtag'], $is[0]['i__id'], null);
-            if(!$validate_handle['status']){
+            $validate_update_handle = validate_update_handle($_POST['save_i__hashtag'], $is[0]['i__id'], null);
+            if(!$validate_update_handle['status']){
                 return view_json(array(
                     'status' => 0,
-                    'message' => $validate_handle['message'],
+                    'message' => $validate_update_handle['message'],
                 ));
             }
 
@@ -1880,11 +1880,11 @@ class Ajax extends CI_Controller
 
         //Validate Source Handle & save if needed:
         if($es[0]['e__handle'] !== trim($_POST['save_e__handle'])){
-            $validate_handle = validate_handle(trim($_POST['save_e__handle']), null, $es[0]['e__id']);
-            if(!$validate_handle['status']){
+            $validate_update_handle = validate_update_handle(trim($_POST['save_e__handle']), null, $es[0]['e__id']);
+            if(!$validate_update_handle['status']){
                 return view_json(array(
                     'status' => 0,
-                    'message' => $validate_handle['message'],
+                    'message' => $validate_update_handle['message'],
                 ));
             }
         }
