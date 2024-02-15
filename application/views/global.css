@@ -1391,6 +1391,11 @@ label {
     background-color: #EFEFEF;
     border-radius: 0;
 }
+.dropdown-item.grey:hover,
+.dropdown-item.grey{
+    color: #FFFFFF;
+    background-color: #999999;
+}
 .dropdown-item:focus,
 .dropdown-item:hover,
 .dropdown-item:hover i,
