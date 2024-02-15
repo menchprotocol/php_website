@@ -6,7 +6,7 @@ $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 
 if(write_privacy_i($focus_i['i__hashtag']) && superpower_unlocked(10939)){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-xs">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
 //NEXT IDEAS
@@ -420,7 +420,7 @@ if($top_i__hashtag) {
 
         if(isset($_GET['process_pay']) && !count($x_completes)){
 
-            $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
+            $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
             //Referesh soon so we can check if completed or not
             js_php_redirect('/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
@@ -1064,7 +1064,7 @@ if($top_i__hashtag){
 
             }
         });
-        $('.file_save_result').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING</span>');
+        $('.file_save_result').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span><span class="main__title">UPLOADING</span>');
 
     }
 

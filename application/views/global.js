@@ -108,7 +108,7 @@ function x_mass_apply_preview(apply_id, s__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
+    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
     $.post("/ajax/x_mass_apply_preview", {
         apply_id: apply_id,
         s__id: s__id
@@ -208,7 +208,7 @@ function view_s_js_line(suggestion){
     if(suggestion.s__type==12273){
         return '<span class="grey">#' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     } else if(suggestion.s__type==12274){
-        return '<span class="icon-block-xx">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">@' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
+        return '<span class="icon-block-xs">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">@' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     }
 }
 
@@ -677,7 +677,7 @@ function e_load_cover(x__type, e__id, counter, first_segment){
        return false;
     }
 
-    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/e_load_cover", {
         x__type:x__type,
@@ -697,7 +697,7 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
         return false;
     }
 
-    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/i_load_cover", {
         x__type:x__type,
@@ -1429,7 +1429,7 @@ function i_editor_save(){
     }
 
     i_saving = true;
-    $(".i_editor_save").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".i_editor_save").html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
@@ -2070,7 +2070,7 @@ function e_editor_save(){
     }
 
     e_saving = true;
-    $(".e_editor_save").html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".e_editor_save").html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
@@ -2197,7 +2197,7 @@ function x_view_load_page() {
 
 
     current_page[focus_x__group]++; //Now we can increment current page
-    $('<div class="load-more"><span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
+    $('<div class="load-more"><span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
     $.post("/ajax/x_view_load_page", {
         focus_card: fetch_int_val('#focus_card'),
         focus_id: fetch_int_val('#focus_id'),
@@ -2795,7 +2795,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
         alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
         return false;
     }
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/x_update_instant_select", {
         focus_id:fetch_int_val('#focus_id'),
@@ -2854,7 +2854,7 @@ function e_reset_discoveries(e__id){
     //Confirm First:
     var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
     if (r==true) {
-        $('.e_reset_discoveries').html('<span class="icon-block-xx"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">REMOVING ALL</b>');
+        $('.e_reset_discoveries').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">REMOVING ALL</b>');
 
         //Redirect:
         js_redirect('/ajax/e_reset_discoveries/'+e__id);
