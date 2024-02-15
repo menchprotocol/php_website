@@ -207,6 +207,12 @@ h3{
     margin-left: 40px !important;
     width: calc(100% - 34px) !important;
 }
+.single_line {
+    margin: 0;
+}
+.single_line input.form-control {
+    margin-top: -21px;
+}
 .inner_message .dynamic_selector{
     padding: 0 !important;
 }
