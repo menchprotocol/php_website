@@ -296,14 +296,6 @@ function toggle_headline(x__type){
 
     }
 
-    //Log Transaction:
-    x_create({
-        x__creator: js_pl_id,
-        x__type: action_id,
-        x__following: x__type,
-        x__follower: x__follower,
-        x__next: x__next,
-    });
 }
 
 
@@ -500,15 +492,6 @@ function toggle_pills(x__type_hash){
             });
 
         }
-
-        //Log Transaction:
-        x_create({
-            x__creator: js_pl_id,
-            x__type: action_id,
-            x__following: x__type,
-            x__follower: x__follower,
-            x__next: x__next,
-        });
 
     }
 
