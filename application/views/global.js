@@ -1124,10 +1124,12 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
     console.log('SWITCHING TO '+link_x__type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks+'/'+$('#modal31911 .save_i__message').val()+'/'+parseInt($('#modal31911 .created_i__id').val()));
 
     if(!next_i__id && !previous_i__id && !link_x__type && !do_checks){
+        /*
         var r = confirm("Are you sure you want to unlink this idea?");
         if (!(r==true)) {
             return false;
         }
+        */
     }
     //Will switch the nature/direction of the link:
     return i_editor_load(0, 0, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .created_i__id').val()));
