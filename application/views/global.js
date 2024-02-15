@@ -1182,8 +1182,14 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
         i__id = 0;
         x__id = 0;
+        var force_next_simplify = is_prev && !js_session_superpowers_unlocked.includes(42817);
 
-        if(is_next || (is_prev && !js_session_superpowers_unlocked.includes(42817))){
+        if(is_next || force_next_simplify){
+
+            if(force_next_simplify){
+                next_i__id = previous_i__id;
+                previous_i__id = 0;
+            }
 
             //Generate content:
             $("#modal31911 .idea_list_next").html('<div class="creator_box"></div>');
