@@ -207,6 +207,9 @@ h3{
     margin-left: 40px !important;
     width: calc(100% - 40px) !important;
 }
+.single_line {
+    margin: 0 !important;
+}
 .modal-content .single_line h3 i {
     color: #000000;
 }
