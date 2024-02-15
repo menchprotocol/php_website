@@ -967,7 +967,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         </div>
 
                         <!-- Toggle Direction -->
-                        <div class="dynamic_editing_input no_padde idea_link_direction hidden superpower__10939">
+                        <div class="dynamic_editing_input no_padde idea_link_direction hidden superpower__42817">
                             <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="far fa-arrow-up-arrow-down"></i></a>
                         </div>
 
