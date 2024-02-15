@@ -1402,7 +1402,9 @@ label {
 .dropdown-item.intro_header:hover,
 .dropdown-item.intro_header:hover i,
 .dropdown-item.intro_header:hover .main__title,
-.dropdown-item.intro_header{
+.dropdown-item.intro_header i,
+.dropdown-item.intro_header .main__title,
+.dropdown-item.intro_header {
     color: #FFFFFF !important;
     background-color: #999999 !important;
 }
