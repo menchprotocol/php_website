@@ -1391,17 +1391,23 @@ label {
     background-color: #EFEFEF;
     border-radius: 0;
 }
-.dropdown-item.intro_header:hover,
-.dropdown-item.intro_header{
-    color: #FFFFFF;
-    background-color: #999999;
-}
+
 .dropdown-item:focus,
 .dropdown-item:hover,
 .dropdown-item:hover i,
 .dropdown-item:hover .main__title{
     color: #000000 !important;
 }
+
+.dropdown-item.intro_header:hover,
+.dropdown-item.intro_header:hover i,
+.dropdown-item.intro_header:hover .main__title,
+.dropdown-item.intro_header{
+    color: #FFFFFF;
+    background-color: #999999;
+}
+
+
 .dropdown-item, .dropdown-item {
     text-decoration: none;
 }
