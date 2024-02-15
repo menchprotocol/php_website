@@ -743,6 +743,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $CI =& get_instance();
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
     $e___11035 = $CI->config->item('e___11035'); //Summary
+    $e___4527 = $CI->config->item('e___4527'); //Memory
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
     $access_locked = in_array($focus_id, $CI->config->item('n___32145'));
@@ -776,6 +777,10 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $ui = '<div class="dynamic_selection">';
     $ui .= '<h3 class="mini-font grey-line grey-header">'.dynamic_headline($focus_id, $focus_select[$focus_id]).'</h3>';
     $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
+
+
+    $ui .= '<span class="list-group-item grey"><span class="icon-block">'.$e___4527[$focus_id]['m__cover'].'</span>'.$e___4527[$focus_id]['m__title'].( isset($e___11035[$focus_id]) && strlen($e___11035[$focus_id]['m__message']) ? '<span class="icon-block-sm float_right" title="'.$e___11035[$focus_id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</span>';
+
 
     if($down_e__id > 0){
 
