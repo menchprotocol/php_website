@@ -1451,7 +1451,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__hashtag && $focus_e && $discovery_mode;
 
     $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
-    $has_sortable = $x__id > 0 && !$focus_card && $write_privacy_i && in_array($x__type, $CI->config->item('n___4603'));
+    $has_sortable = $x__id > 0 && !$focus_card && $write_privacy_i && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
 
     if($discovery_mode || $cache_app) {
         if($link_creator && $top_i__hashtag){
