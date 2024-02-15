@@ -151,7 +151,15 @@ if(isset($_GET['delete'])){
         'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
     ), 0) as $e){
         $stats['scanned']++;
-        $new_handle = random_string(13);
+
+    }
+
+    foreach($this->E_model->fetch(array(
+        'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
+        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+    ), 0) as $e){
+        $stats['scanned']++;
+        $new_handle = generate_handle(12274, $e['e__title']);
         //Update:
         $stats['updated'] += $this->E_model->update($e['e__id'], array(
             'e__handle' => $new_handle,
@@ -159,18 +167,7 @@ if(isset($_GET['delete'])){
         sync_handle_references($e, $new_handle);
     }
 
-    /*
-     * foreach($this->E_model->fetch(array(
-        'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), 0) as $e){
-        $stats['scanned']++;
-        $validate_update_handle = validate_update_handle(generate_handle(12274, $e['e__title']), null, $e['e__id']);
-        if($validate_update_handle['status']){
-            $stats['updated']++;
-        }
-    }
-     * */
+
     echo print_r($stats, true);
 
 } elseif(isset($_GET['go2'])) {
