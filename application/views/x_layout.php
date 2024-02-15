@@ -149,9 +149,10 @@ if(isset($_GET['delete'])){
     );
     foreach($this->E_model->fetch(array(
         'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
+        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ), 0) as $e){
         $stats['scanned']++;
-        $validate_handle = validate_handle(random_string(13), null, $e['e__id']);
+        $validate_handle = validate_handle(generate_handle(12274, $e['e__title']), null, $e['e__id']);
         if($validate_handle['status']){
             $stats['updated']++;
         }
