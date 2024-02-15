@@ -373,13 +373,16 @@ function set_hashtag_if_empty(x__type_hash){
 
 
 var pills_loading = false;
+var loaded_pills = [];
 function toggle_pills(x__type_hash){
 
-    if(pills_loading){
+    if(pills_loading && !loaded_pills.includes(x__type_hash)){
         return false;
     }
 
-    pills_loading = true;
+    if(!loaded_pills.includes(x__type_hash)){
+        pills_loading = true;
+    }
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
         x__type = parseInt($('.handle_nav_'+x__type_hash).attr('x__type'));
     } else {
@@ -421,7 +424,7 @@ function toggle_pills(x__type_hash){
         }
 
         //Do we need to load data via ajax?
-        if( !$('.headline_body_' + x__type + ' .tab_content').html().length ){
+        if( !loaded_pills.includes(x__type_hash) ){
 
             $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
 
@@ -461,6 +464,8 @@ function toggle_pills(x__type_hash){
 
                 //Add data to the page:
                 $('.headline_body_' + x__type + ' .tab_content').html(data);
+
+                loaded_pills.push(x__type_hash);
 
                 load_card_clickers();
                 initiate_algolia();
