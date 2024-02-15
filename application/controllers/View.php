@@ -434,7 +434,6 @@ class View extends CI_Controller
             //Validate Hash:
             if($_GET['e__hash'] == view__hash($_GET['e__time'].$focus_es[0]['e__handle'])){
 
-
                 $this->X_model->x_read_only_complete($focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
                 $this->X_model->mark_complete(29393, $focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
 
@@ -453,15 +452,6 @@ class View extends CI_Controller
             }
         }
 
-
-
-        //Has the user discovered this?
-        $is_startable = count($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-            'x__next' => $focus_is[0]['i__id'],
-            'x__following' => 4235,
-        )));
 
         $x_completes = array();
         if(count($focus_es)) {
@@ -517,10 +507,9 @@ class View extends CI_Controller
 
         $this->load->view('x_layout', array(
             'focus_i' => $focus_is[0],
-            'top_i' => ( count($top_is) ? $top_is[0] : ( !$top_i__hashtag && $is_startable && count($x_completes) ? $focus_is[0] : array() ) ),
+            'top_i' => ( count($top_is) ? $top_is[0] : array() ),
             'member_e' => ( count($focus_es) ? $focus_es[0] : array() ),
             'x_completes' => $x_completes,
-            'is_startable' => $is_startable,
         ));
 
         $this->load->view('footer');

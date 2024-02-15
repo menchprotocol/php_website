@@ -596,60 +596,6 @@ class I_model extends CI_Model
 
 
 
-    function recursive_starting_points($i__id, $current_level = 0, $loop_breaker_ids = array()){
-
-        /*
-         *
-         * Returns integer if $first_discovery>0 or array otherwise
-         *
-         * */
-
-        if(count($loop_breaker_ids)>0 && in_array($i__id, $loop_breaker_ids)){
-            return array();
-        }
-        array_push($loop_breaker_ids, intval($i__id));
-
-        $recursive_i_ids = array();
-        $current_level++;
-
-        foreach($this->X_model->fetch(array(
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
-            'x__next' => $i__id,
-        ), array('x__previous')) as $prev_i){
-
-
-            $is_start = count($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__next' => $prev_i['i__id'],
-                'x__following' => 4235,
-            )));
-
-            if($is_start){
-                array_push($recursive_i_ids, intval($prev_i['i__id']));
-                continue;
-            }
-
-
-            $recursive_is = $this->I_model->recursive_starting_points($prev_i['i__id'], $current_level, $loop_breaker_ids);
-
-            //Add to current array if we found anything:
-            if(count($recursive_is) > 0){
-                $recursive_i_ids = array_merge($recursive_i_ids, $recursive_is);
-            }
-        }
-
-        if($current_level==1){
-            return array_unique($recursive_i_ids);
-        } else {
-            return $recursive_i_ids;
-        }
-
-    }
-
-
    function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__creator)
     {
 

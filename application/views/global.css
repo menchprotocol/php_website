@@ -3891,6 +3891,7 @@ a,
 .inner-content .main__title{
     text-align: left;
     padding: 5px 0 !important;
+    line-height: 121%;
 }
 .mini-cover .inner-content .main__title{
     padding: 0 !important;

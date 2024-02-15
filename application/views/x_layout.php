@@ -75,9 +75,7 @@ if(isset($_GET['delete'])){
 
     }
 
-}
-
-if(isset($_GET['go1'])){
+} elseif(isset($_GET['go1'])){
 
     boost_power();
 
@@ -134,9 +132,7 @@ if(isset($_GET['go1'])){
 
     echo '<hr />Edited ['.$edited.']['.$edited_sources.']<br />';
 
-}
-
-if(isset($_GET['go3'])) {
+} elseif(isset($_GET['go3'])) {
     foreach($this->I_model->fetch(array(
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'i__id' => 20895, //ACTIVE
@@ -144,9 +140,26 @@ if(isset($_GET['go3'])) {
         $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
     }
     echo 'donedone';
-}
 
-if(isset($_GET['go2'])) {
+} elseif(isset($_GET['go5'])) {
+
+    $stats = array(
+        'scanned' => 0,
+        'updated' => 0,
+    );
+    foreach($this->E_model->fetch(array(
+        'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
+    ), 0) as $e){
+        $stats['scanned']++;
+        continue;
+        $validate_handle = validate_handle(random_string(13), null, $e['e__id']);
+        if($validate_handle['status']){
+            $stats['updated']++;
+        }
+    }
+    echo print_r($stats, true);
+
+} elseif(isset($_GET['go2'])) {
 
     boost_power();
     foreach ($this->X_model->fetch(array(
@@ -308,10 +321,6 @@ if($top_completed || $is_or_7712){
 }
 
 
-echo '<div class="light-bg large-frame">';
-
-//Idea message:
-//echo view_i__links($focus_i, true, true);
 
 //Focus Idea:
 echo '<div class="main_item row justify-content">';
@@ -866,36 +875,6 @@ if($top_i__hashtag) {
         echo '</div>';
     }
 
-} else {
-
-    //NO TOP HASHTAH/Startable...
-
-    if($is_startable){
-
-        //Get Started
-        echo '<div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="go_next()">'.$e___11035[4235]['m__title'].' '.$e___11035[4235]['m__cover'].'</a></div>';
-        echo '<div class="doclear">&nbsp;</div>';
-
-    } else {
-
-        //Show Link to Top, if any:
-        $pathways = '<div class="row list-pathways">';
-        foreach($this->I_model->recursive_starting_points($focus_i['i__id']) as $top_id){
-            foreach($this->I_model->fetch(array(
-                'i__id' => $top_id,
-            )) as $top_start){
-                $pathways_count++;
-                $pathways .= view_card_i(6255,  $top_start);
-            }
-        }
-        $pathways .= '</div>';
-
-        if(!$pathways_count){
-            $_GET['open'] = true;
-        }
-
-    }
-
 }
 
 
@@ -923,37 +902,13 @@ if($top_i__hashtag && !$top_completed) {
     echo view_headline(40798, $pathways_count, $e___11035[40798], $pathways, true);
 }
 
-echo '</div>';
-
 if($top_i__hashtag){
     echo '</div>';
 }
 
 
-
-
-/*
- *
- * <!-- Example split danger button -->
-<div class="btn-group">
-    <button type="button" class="btn btn-danger">FOLLOW</button>
-    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-        OR
-    </button>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">MUTE</a></li>
-        <li><a class="dropdown-item" href="#">SUBSCRIBE</a></li>
-        <li><a class="dropdown-item" href="#">REPORT</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" href="#">Separated link</a></li>
-    </ul>
-</div>
-*/
 ?>
 
-
-
-<style> .headline_6255, .headline_13980 { display: none !important; } </style>
 <script>
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
