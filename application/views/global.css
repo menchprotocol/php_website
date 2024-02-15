@@ -1391,8 +1391,8 @@ label {
     background-color: #EFEFEF;
     border-radius: 0;
 }
-.dropdown-item.grey:hover,
-.dropdown-item.grey{
+.dropdown-item.intro_header:hover,
+.dropdown-item.intro_header{
     color: #FFFFFF;
     background-color: #999999;
 }
