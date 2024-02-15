@@ -1916,19 +1916,7 @@ class Ajax extends CI_Controller
         ), true, $member_e['e__id']);
 
 
-        if($es[0]['e__handle'] !== trim($_POST['save_e__handle'])){
-
-            //Update Handles everywhere they are referenced:
-            foreach ($this->X_model->fetch(array(
-                'x__following' => $es[0]['e__id'],
-                'x__type' => 31835, //Source Mention
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('x__next')) as $ref) {
-                view_sync_links(str_replace('@'.$es[0]['e__handle'], '@'.trim($_POST['save_e__handle']), $ref['i__message']), true, $ref['i__id']);
-            }
-            $es[0]['e__handle'] = trim($_POST['save_e__handle']);
-
-        }
+        $es[0]['e__handle'] = sync_handle_references($es[0], trim($_POST['save_e__handle']));
 
         //Do we have a link reference message that need to be saved?
         if($_POST['save_x__id']>0 && $_POST['save_x__message']!='IGNORE_INPUT'){

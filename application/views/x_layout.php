@@ -149,6 +149,19 @@ if(isset($_GET['delete'])){
     );
     foreach($this->E_model->fetch(array(
         'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
+    ), 0) as $e){
+        $stats['scanned']++;
+        $new_handle = random_string(13);
+        //Update:
+        $stats['updated'] += $this->E_model->update($e['e__id'], array(
+            'e__handle' => $new_handle,
+        ));
+        sync_handle_references($e, $new_handle);
+    }
+
+    /*
+     * foreach($this->E_model->fetch(array(
+        'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
     ), 0) as $e){
         $stats['scanned']++;
@@ -157,6 +170,7 @@ if(isset($_GET['delete'])){
             $stats['updated']++;
         }
     }
+     * */
     echo print_r($stats, true);
 
 } elseif(isset($_GET['go2'])) {

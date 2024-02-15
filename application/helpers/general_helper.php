@@ -1197,6 +1197,24 @@ function sort_by($e__id, $custom_sort = array()){
     }
 }
 
+function sync_handle_references($e, $new_handle_string){
+
+    if($e['e__handle']==$new_handle_string){
+        return false; //Nothing changed...
+    }
+
+    //Update Handles everywhere they are referenced:
+    $CI =& get_instance();
+    foreach ($CI->X_model->fetch(array(
+        'x__following' => $e['e__id'],
+        'x__type' => 31835, //Source Mention
+        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array('x__next')) as $ref) {
+        view_sync_links(str_replace('@'.$e['e__handle'], '@'.$new_handle_string, $ref['i__message']), true, $ref['i__id']);
+    }
+    return $new_handle_string;
+}
+
 function validate_update_handle($str, $i__id = null, $e__id = null){
 
     $CI =& get_instance();
@@ -1276,6 +1294,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
             }
         }
     } elseif($e__id>0){
+
         foreach($CI->E_model->fetch(array(
             'e__id !=' => $e__id,
             'LOWER(e__handle)' => strtolower($str),
@@ -1296,6 +1315,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
                 );
             }
         }
+
     }
 
 
