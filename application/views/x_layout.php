@@ -151,7 +151,6 @@ if(isset($_GET['delete'])){
         'e__id NOT IN (' . join(',', $this->config->item('n___42125')) . ')' => null, //Handle Lock
     ), 0) as $e){
         $stats['scanned']++;
-        continue;
         $validate_handle = validate_handle(random_string(13), null, $e['e__id']);
         if($validate_handle['status']){
             $stats['updated']++;
