@@ -869,6 +869,7 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
+    $e___4527 = $CI->config->item('e___4527'); //Memory
     $e___11035 = $CI->config->item('e___11035'); //Summary
 
     if(!$selected_e__id || !isset($e___this[$selected_e__id])){
@@ -885,6 +886,9 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
     $ui .= '</button>';
 
     $ui .= '<div class="dropdown-menu dropmenu_form_'.$cache_e__id.'" aria-labelledby="dropdown_form_'.$cache_e__id.'">';
+
+    $ui .= '<div class="dropdown-item grey"><span class="icon-block">'.$e___4527[$cache_e__id]['m__cover'].'</span>'.$e___4527[$cache_e__id]['m__title'].( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '<span class="icon-block-sm float_right" title="'.$e___11035[$cache_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</div>';
+
 
     foreach($e___this as $e__id => $m) {
 
