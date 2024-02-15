@@ -2789,6 +2789,9 @@ h4.main__title{
     table-layout: fixed;
     line-height: 169%;
 }
+.edge-cover .card_covers {
+    line-height: 121%;
+}
 .coin-12274 .card_covers{
     text-align: center;
 }
