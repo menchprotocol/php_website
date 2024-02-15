@@ -17,7 +17,7 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0) as $app) {
-    echo '$route[\''.$app['e__handle'].'\'] = "view/app_load/'.$app['e__id'].'";'."\n";
+    echo '$route[\'(?i)'.$app['e__handle'].'\'] = "view/app_load/'.$app['e__id'].'";'."\n";
 }
 
 echo "\n\n";
