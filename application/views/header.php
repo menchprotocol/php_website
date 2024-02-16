@@ -176,10 +176,12 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                         return view_s_js_line(suggestion);
                     },
                     replace: function (suggestion) {
-                        set_autosize($('#modal31911 .save_i__message'));
-                        insertText($(".save_i__message"), '@' + suggestion.s__handle + ' ');
-                        //return '@' + suggestion.s__handle + ' ';
-                        return '';
+                        return '@' + suggestion.s__handle + ' ';
+
+                        //set_autosize($('#modal31911 .save_i__message'));
+                        //insertText($(".save_i__message"), '@' + suggestion.s__handle + ' ');
+                        //
+                        //return '';
                     }
                 },
                 {
@@ -202,10 +204,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                         return view_s_js_line(suggestion);
                     },
                     replace: function (suggestion) {
-                        set_autosize($('#modal31911 .save_i__message'));
-                        insertText($(".save_i__message"), '#' + suggestion.s__handle + ' ');
-                        //return '#' + suggestion.s__handle + ' ';
-                        return '';
+                        return '#' + suggestion.s__handle + ' ';
+                        //set_autosize($('#modal31911 .save_i__message'));
+                        //insertText($(".save_i__message"), '#' + suggestion.s__handle + ' ');
+                        //
+                        //return '';
                     }
                 },
                 {
@@ -228,10 +231,11 @@ foreach($this->config->item('e___13890') as $e__id => $m){
                         return view_s_js_line(suggestion);
                     },
                     replace: function (suggestion) {
-                        set_autosize($('#modal31911 .save_i__message'));
-                        insertText($(".save_i__message"), '!#' + suggestion.s__handle + ' ');
+                        return '!#' + suggestion.s__handle + ' ';
+                        //set_autosize($('#modal31911 .save_i__message'));
+                        //insertText($(".save_i__message"), '!#' + suggestion.s__handle + ' ');
                         //return '!#' + suggestion.s__handle + ' ';
-                        return '';
+                        //return '';
                     }
                 },
             ]);
