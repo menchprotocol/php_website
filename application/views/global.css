@@ -1636,6 +1636,9 @@ label {
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;
 }
+.coin-12273 .icon-block-sm {
+    height: 27px;
+}
 .icon-block img{
     line-height: 100%;
     width: 30px !important;
