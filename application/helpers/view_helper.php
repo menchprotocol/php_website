@@ -1683,7 +1683,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             } elseif($x__type_top_bar==31911 && $write_privacy_i){
 
                 //Idea Editor
-                $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_top_bar['m__title'].'">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
