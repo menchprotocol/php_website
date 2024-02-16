@@ -892,6 +892,82 @@ $(document).ready(function () {
         }
     });
 
+    //Search that also has insert module:
+    if(search_enabled()){
+
+        $('#modal31911 .save_i__message').textcomplete([
+            {
+                match: /(^|\s)@(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    algolia_index.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12274' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    return ' @' + suggestion.s__handle + ' ';
+                }
+            },
+            {
+                match: /(^|\s)#(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    algolia_index.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12273' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    return ' #' + suggestion.s__handle + ' ';
+                }
+            },
+            {
+                match: /(^|\s)!#(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    algolia_index.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12273' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    return ' !#' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+    }
+
 
     //Load tooltips:
     $(function () {

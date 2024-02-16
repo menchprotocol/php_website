@@ -1600,7 +1600,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             //Determine hover state:
             $always_see = $focus_card || in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $write_privacy_i && $link_type_ui){
+            if($x__type_top_bar==31770 && $link_type_ui){
 
                 //Links
                 $bottom_bar_ui .= $link_type_ui;
@@ -2061,7 +2061,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $x__id && $write_privacy_e){
+            if($x__type_top_bar==31770 && $x__id){
 
                 $top_bar_ui .= $link_type_ui;
 
