@@ -1409,6 +1409,7 @@ label {
 .dropdown-item.intro_header .main__title,
 .dropdown-item.intro_header {
     color: #999999 !important;
+    background-color: #FFFFFF !important;
 }
 
 
