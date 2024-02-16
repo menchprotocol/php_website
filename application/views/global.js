@@ -2531,6 +2531,9 @@ function i_sort_load(x__type){
         if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(fetch_int_val('#page_limit'))){
             console.log(x__type+' has '+$("#list-in-"+x__type+" .sort_draggable").length+' items which is more than the page limit of '+fetch_int_val('#page_limit'));
             return false;
+        } else if($("#list-in-"+x__type+" .sort_draggable").length<2){
+            console.log('Less than 2 items to sort '+x__type);
+            return false;
         }
 
         $('.sort_i_frame').removeClass('hidden');
