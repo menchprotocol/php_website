@@ -1637,7 +1637,7 @@ label {
     margin-top: -1px;
 }
 .coin-12273 .icon-block-sm {
-    height: 27px;
+    height: 27px !important;
 }
 .icon-block img{
     line-height: 100%;
