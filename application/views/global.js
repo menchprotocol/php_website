@@ -2534,40 +2534,40 @@ function i_sort_load(x__type){
         } else if($("#list-in-"+x__type+" .sort_draggable").length<2){
             console.log('Less than 2 items to sort '+x__type);
             return false;
-        }
+        } else {
+            $('.sort_i_frame').removeClass('hidden');
+            console.log(x__type+' sorting load success');
 
-        $('.sort_i_frame').removeClass('hidden');
-        console.log(x__type+' sorting load success');
+            //Load sorter:
+            var sort = Sortable.create(theobject, {
+                animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
+                draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
+                handle: "#list-in-"+x__type+" .sort_i_grab", // Restricts sort start click/touch to the specified element
+                onUpdate: function (evt/**Event*/) {
 
-        //Load sorter:
-        var sort = Sortable.create(theobject, {
-            animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-"+x__type+" .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+x__type+" .sort_i_grab", // Restricts sort start click/touch to the specified element
-            onUpdate: function (evt/**Event*/) {
-
-                var sort_rank = 0;
-                var new_x_order = [];
-                $("#list-in-"+x__type+" .sort_draggable").each(function () {
-                    var x__id = parseInt($(this).attr('x__id'));
-                    if(x__id > 0){
-                        sort_rank++;
-                        new_x_order[sort_rank] = x__id;
-                    }
-                });
-
-                //Update order:
-                if(sort_rank > 0){
-                    $.post("/ajax/i_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
-                        //Update UI to confirm with member:
-                        if (!data.status) {
-                            //There was some sort of an error returned!
-                            alert(data.message);
+                    var sort_rank = 0;
+                    var new_x_order = [];
+                    $("#list-in-"+x__type+" .sort_draggable").each(function () {
+                        var x__id = parseInt($(this).attr('x__id'));
+                        if(x__id > 0){
+                            sort_rank++;
+                            new_x_order[sort_rank] = x__id;
                         }
                     });
+
+                    //Update order:
+                    if(sort_rank > 0){
+                        $.post("/ajax/i_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                            //Update UI to confirm with member:
+                            if (!data.status) {
+                                //There was some sort of an error returned!
+                                alert(data.message);
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
     }, 987);
 
 }
