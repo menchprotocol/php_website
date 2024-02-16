@@ -4631,4 +4631,5 @@ h1 i.fad{
     font-size:0.4em !important;
 }
 
+.card_covers>span.hidden,
 .hidden { display: none !important; }
