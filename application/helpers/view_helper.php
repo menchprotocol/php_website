@@ -1684,7 +1684,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
                 //Idea Editor
                 $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="dropdown-item main__title">'.'<span class="icon-block-sm">'.$m_top_bar['m__cover'].'</span>'.$m_top_bar['m__title'].'</a>';
+                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="dropdown-item icon-block-sm" title="'.$m_top_bar['m__title'].'">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
@@ -2096,7 +2096,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 //Edit Source
                 $top_bar_ui .= '<td class="ignore-click"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $top_bar_ui .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')" class="dropdown-item main__title">'.'<span class="icon-block-sm">'.$m_top_bar['m__cover'].'</span>'.$m_top_bar['m__title'].'</a>';
+                $top_bar_ui .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')" class="dropdown-item icon-block-sm" title="'.$m_top_bar['m__title'].'">'.$m_top_bar['m__cover'].'</a>';
                 $top_bar_ui .= '</div></td>';
 
             } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
