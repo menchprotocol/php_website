@@ -2011,7 +2011,7 @@ function update_algolia($s__type = null, $s__id = 0) {
                 $export_row['s__url'] = '/~' . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
                 $export_row['s__privacy'] = intval($s['i__privacy']);
                 $export_row['s__cover'] = '';
-                $export_row['s__title'] = view_i_title($s, true);
+                $export_row['s__title'] = $s['i__message'];
                 $export_row['s__cache'] = $s['i__cache'];
                 $export_row['s__weight'] = intval($s['i__weight']);
 
