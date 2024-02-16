@@ -2535,8 +2535,9 @@ function i_sort_load(x__type){
             console.log('Less than 2 items to sort '+x__type);
             return false;
         } else {
-            $('.sort_i_frame').removeClass('hidden');
+
             console.log(x__type+' sorting load success');
+            $('.sort_i_frame').removeClass('hidden');
 
             //Load sorter:
             var sort = Sortable.create(theobject, {
