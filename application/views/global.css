@@ -1626,7 +1626,6 @@ label {
 .inline-block{ display: inline-block !important; }
 .inline{ display: inline !important; }
 .block{ display: block !important; width: 100%; }
-.hidden { display: none !important; }
 .underline{ text-decoration: underline !important; }
 .nav>.nav-item>.nav-link>.icon-block { width:30px !important; }
 #searchFrontForm .icon-block { width:30px !important; }
@@ -4631,3 +4630,5 @@ h1 i.far,
 h1 i.fad{
     font-size:0.4em !important;
 }
+
+.hidden { display: none !important; }
