@@ -769,7 +769,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ), array('x__follower'), 0);
+    ), array('x__follower'), 0, 0, array('x__weight' => 'ASC'));
     foreach($selection_options as $list_item){
         array_push($selection_ids, $list_item['e__id']);
     }
@@ -839,7 +839,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
             $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
-        if(in_array($list_item['e__id'], $CI->config->item('n___11035'))){
+        if(in_array($list_item['e__id'], $CI->config->item('n___11035')) && strlen($e___11035[$list_item['e__id']]['m__message'])>0){
             $headline .= '<span class="icon-block-sm" title="'.$e___11035[$list_item['e__id']]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>';
         }
 
