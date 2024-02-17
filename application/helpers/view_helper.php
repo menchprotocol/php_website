@@ -834,7 +834,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             $overflow_reached = true;
         }
 
-        $headline = ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'];
+        $headline = ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'].( $selected ? '<span class="icon-block checked_icon"><i class="far fa-check"></i></span>' : '' );
 
         if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
             $headline .= '<span class="icon-block-sm float_right" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
