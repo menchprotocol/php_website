@@ -942,9 +942,6 @@ if($top_i__hashtag){
                 });
                 return '<span class="loader_pending">Loading...</span>';
 
-            },
-            title: function() {
-                return 'WOW2';
             }
         });
 

@@ -1592,6 +1592,8 @@ label {
 .dropdown-item .icon-block {
     height: 13px;
 }
+.popover-title { display: none; }
+
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;
 }
