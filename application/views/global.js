@@ -802,7 +802,7 @@ var algolia_index = false;
 $(document).ready(function () {
 
     $('[rel="tooltip"]').on('click', function () {
-        $(this).tooltip('hide')
+        $(this).tooltip('hide');
     });
 
     load_hashtag_menu();
@@ -2708,7 +2708,7 @@ function e_select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__i
         $('.radio-'+focus_id+' .item-'+selected_e__id).removeClass('active');
         $('.radio-'+focus_id+' .item-'+selected_e__id+' .checked_icon').remove();
     } else {
-        $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active').append('<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i></span>');
+        $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active').append('<span class="icon-block-sm checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i></span>');
     }
 
     $.post("/ajax/e_select_apply", {
