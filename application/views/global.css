@@ -163,7 +163,7 @@ h3{
 
 .dynamic_item, .dynamic_editing_input{
     border:0;
-    margin: 13px 0 0 0 !important;
+    margin:0 !important;
 }
 
 .modal-header .btn-close {
