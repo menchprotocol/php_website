@@ -938,7 +938,6 @@ if($top_i__hashtag){
                 console.log(input);
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
-                    handle_string2:input,
                 }, function (data) {
                     $('.popover-body').html(data);
                 });
