@@ -935,8 +935,7 @@ if($top_i__hashtag){
         $('[data-toggle="popover"]').popover({
             html: true,
             content: function () {
-                console.log($(this).attr('id'));
-                console.log($(this));
+                console.log(this.id);
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
