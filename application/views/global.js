@@ -803,7 +803,6 @@ $(document).ready(function () {
 
     $('[data-toggle="popover"]').popover({
         html: true,
-        trigger: "hover",
         content: function (inner_content) {
             $.post("/ajax/load_popover", {
                 handle_string:inner_content.innerText,
