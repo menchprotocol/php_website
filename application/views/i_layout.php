@@ -43,7 +43,7 @@ echo view_card_i(42288,  $focus_i);
 echo '</div>';
 
 
-echo view_i_nav($focus_i, $write_privacy_i);
+echo view_i_nav(false, $focus_i, $write_privacy_i);
 
 ?>
 

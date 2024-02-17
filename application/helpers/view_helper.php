@@ -1419,15 +1419,15 @@ function view_featured_links($x__type, $location, $m = null, $focus_card){
 }
 
 
-function view_i_nav($focus_i, $write_privacy_i){
+function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
 
     $CI =& get_instance();
     $coins_count = array();
     $body_content = '';
-    $e___26005 = $CI->config->item('e___26005');
+    $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273">';
-    foreach($CI->config->item('e___31890') as $x__type => $m) {
+    foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $x__type => $m) {
 
         $coins_count[$x__type] = view_i_covers($x__type, $focus_i['i__id'], 0, false);
         if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
@@ -1464,7 +1464,7 @@ function view_i_nav($focus_i, $write_privacy_i){
 
     
     $focus_tab = 0;
-    foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
+    foreach($e___loading_order as $x__type => $m) { //Load Focus Tab:
         if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
             $focus_tab = $x__type;
             $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
@@ -1472,7 +1472,7 @@ function view_i_nav($focus_i, $write_privacy_i){
         }
     }
     if(!$focus_tab){
-        foreach($e___26005 as $x__type => $m) { //Load Focus Tab:
+        foreach($e___loading_order as $x__type => $m) { //Load Focus Tab:
             $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\''.$m['m__handle'].'\'); }); </script>';
             break;
         }
@@ -1864,7 +1864,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
         //Bottom Bar menu
         if(!$focus_card){
-            foreach($CI->config->item('e___31890') as $e__id_bottom_bar => $m_bottom_bar) {
+            foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
                 $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
                 if(strlen($coins_ui)){
                     $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';

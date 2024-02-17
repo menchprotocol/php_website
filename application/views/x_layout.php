@@ -331,7 +331,7 @@ echo '<div class="main_item row justify-content">';
 echo view_card_i(42288, $focus_i);
 echo '</div>';
 
-echo view_i_nav($focus_i, write_privacy_i($focus_i['i__hashtag']));
+echo view_i_nav(true, $focus_i, write_privacy_i($focus_i['i__hashtag']));
 
 
 $x_selects = array();
