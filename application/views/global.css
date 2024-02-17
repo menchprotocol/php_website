@@ -1869,12 +1869,11 @@ label {
 
 
 .is_compact{
-    margin: -34px 0 0 0;
-    display: block;
-    float: left;
+    margin: 0;
 }
 .is_compact .itemsetting{
     margin-left: 0 !important;
+    width: auto;
 }
 
 .is_compact.list-radio-select .list-group-item {
