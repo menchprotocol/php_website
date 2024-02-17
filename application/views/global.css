@@ -1593,6 +1593,9 @@ label {
 .dropdown-item .icon-block {
     height: 13px;
 }
+.block-menu .dropdown-item .icon-block {
+    height: 30px;
+}
 
 .custom-popover {
     --bs-popover-max-width: 233px;
