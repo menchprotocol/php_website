@@ -1609,9 +1609,10 @@ label {
     --bs-popover-body-padding-y: 0;
 }
 .popover-body {
-    padding: 13px !important;
+    padding:0!important;
 }
 .popover-body>div {
+    padding: 13px !important;
     width: 100% !important;
 }
 
