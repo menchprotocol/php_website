@@ -926,7 +926,7 @@ if($top_i__hashtag){
 
 
 
-<span data-toggle="popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</span>
+<span data-toggle="popover">Dismissible popover</span>
 
 <script>
 
