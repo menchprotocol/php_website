@@ -814,12 +814,14 @@ function activate_popover(){
             return '<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>';
         }
     });
-
     $('body').on('click', function (e) {
         if ($(e.target).data('toggle') !== 'popover' && $(e.target).parents('[data-toggle="popover"]').length === 0
             && $(e.target).parents('.popover.in').length === 0) {
             (($('[data-toggle="popover"]').popover('hide').data('bs.popover') || {}).inState || {}).click = false;
         }
+    });
+    $('[data-toggle="popover"]').on('click', function (e) {
+        $('[data-toggle="popover"]').not(this).popover('hide');
     });
 }
 
