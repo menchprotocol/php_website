@@ -768,7 +768,7 @@ function add_media(result_info){
 function load_card_clickers(){
 
     $(".card_click_e, .card_click_i, .card_click_x").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover';
+    var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source';
 
     $( ".card_click_e" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
