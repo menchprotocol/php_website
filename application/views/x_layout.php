@@ -926,8 +926,7 @@ if($top_i__hashtag){
 
 
 
-<a href="#" tabindex="0" rel="details" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
-<span tabindex="0" rel="details" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</span>
+<span data-toggle="popover" data-trigger="focus" data-placement="top" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</span>
 
 <script>
 
