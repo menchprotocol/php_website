@@ -313,7 +313,7 @@ li a {
 
 
 .dropdown-item {
-    padding:5px 3px;
+    padding:0;
 }
 
 .dropdown-item .img {
