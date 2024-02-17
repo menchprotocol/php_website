@@ -3196,11 +3196,11 @@ class Ajax extends CI_Controller
 
         //Trying to Skip?
         if(!strlen($_POST['x_write'])){
-            if(count($this->X_model->fetch(array(
+            if(!count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
                 'x__next' => $_POST['i__id'],
-                'x__following' => 28239, //Can Skip
+                'x__following' => 28239, //Required
             )))){
                 //Log Skip:
                 $this->X_model->mark_complete(31022, $member_e['e__id'], intval($_POST['top_i__id']), $is[0], array(

@@ -1588,11 +1588,11 @@ class X_model extends CI_Model
         $is_single_selection = $is[0]['i__type']==6684;
 
         //Can they skip without selecting anything?
-        $can_skip = count($this->X_model->fetch(array(
+        $can_skip = !count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
             'x__next' => $focus_i__id,
-            'x__following' => 28239, //Can Skip
+            'x__following' => 28239, //Required
         )));
         if(!$can_skip && !count($answer_i__ids)){
             return array(

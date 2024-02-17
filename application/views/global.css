@@ -1886,7 +1886,7 @@ label {
     overflow-x: visible;
     white-space: normal;
     text-overflow: unset;
-    display: inline-block;
+    display: block;
 }
 
 
