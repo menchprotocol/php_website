@@ -151,7 +151,7 @@ class X_model extends CI_Model
 
                     //IDEA
                     foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                        $html_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').'/~' . $this_i['i__hashtag']."\n\n";
+                        $html_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').'/' . $this_i['i__hashtag']."\n\n";
                     }
 
                 } elseif (in_array(6160 , $m['m__following'])) {
@@ -583,7 +583,7 @@ class X_model extends CI_Model
                         'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
                         'x__next' => $o__id,
                     ), array('x__previous'), 1) as $previous_i) {
-                        $deletion_redirect = '/~'.$previous_i['i__hashtag'];
+                        $deletion_redirect = '/'.$previous_i['i__hashtag'];
                     }
 
                     //If not found, find active followings:
@@ -594,7 +594,7 @@ class X_model extends CI_Model
                             'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
                             'x__next' => $o__id,
                         ), array('x__previous'), 1) as $previous_i) {
-                            $deletion_redirect = '/~'.$previous_i['i__hashtag'];
+                            $deletion_redirect = '/'.$previous_i['i__hashtag'];
                         }
                     }
 
@@ -603,7 +603,7 @@ class X_model extends CI_Model
                         foreach($this->I_model->fetch(array(
                             'i__id' => $o__id,
                         )) as $i){
-                            $deletion_redirect = '/~'.$i['i__hashtag'];
+                            $deletion_redirect = '/'.$i['i__hashtag'];
                         }
                     }
 
@@ -1387,7 +1387,7 @@ class X_model extends CI_Model
 
                             $this->X_model->send_dm($watcher['x__following'], $es_discoverer[0]['e__title'].' Discovered: '.view_i_title($i, true),
                                 //Message Body:
-                                view_i_title($i, true).':'."\n".'https://'.$domain_url.'/~'.$i['i__hashtag']."\n\n".
+                                view_i_title($i, true).':'."\n".'https://'.$domain_url.'/'.$i['i__hashtag']."\n\n".
                                 ( strlen($x_data['x__message']) ? $x_data['x__message']."\n\n" : '' ).
                                 $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__handle']."\n\n".
                                 $discoverer_contact

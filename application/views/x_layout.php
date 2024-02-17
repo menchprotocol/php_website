@@ -6,7 +6,7 @@ $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 
 if(write_privacy_i($focus_i['i__hashtag']) && superpower_unlocked(10939)){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="/~'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="/'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
 //NEXT IDEAS
@@ -98,7 +98,7 @@ if(isset($_GET['delete'])){
         $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
 
         /*
-        echo '<a href="/~'.$i_fix['i__hashtag'].'">#'.$i_fix['i__hashtag'].'</a><br />';
+        echo '<a href="/'.$i_fix['i__hashtag'].'">#'.$i_fix['i__hashtag'].'</a><br />';
         echo nl2br(htmlentities($i_fix['i__message'])).'<br />';
 
         if(count($view_sync_links['replace_from'])){
@@ -309,7 +309,7 @@ if($top_i__hashtag){
                 'i__id' => $to_discover_id,
             ));
             $counter++;
-            echo '<p style="padding:2px;">'.$counter.') <a href="/~'.$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
+            echo '<p style="padding:2px;">'.$counter.') <a href="/'.$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
         }
     }
 

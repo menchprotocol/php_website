@@ -509,7 +509,7 @@ function i_copy(i__id, do_recursive){
         do_recursive:do_recursive
     }, function (data) {
         if(data.status){
-            js_redirect('/~'+data.new_i__hashtag);
+            js_redirect('/'+data.new_i__hashtag);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -778,7 +778,7 @@ function load_card_clickers(){
 
     $('.card_click_i').click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect('/~'+$(this).attr('i__hashtag'));
+            js_redirect('/'+$(this).attr('i__hashtag'));
         }
     });
 
@@ -1652,7 +1652,7 @@ function i_editor_save(){
             if(old_handle!=new_handle){
                 if(on_focus_idea){
                     //Refresh page since focus item handle changed:
-                    js_redirect('/~'+new_handle);
+                    js_redirect('/'+new_handle);
                 } else {
                     //Update Hashtag & Link:
                     $('.s__12273_'+modify_data['save_i__id']).attr('i__hashtag', new_handle);
@@ -3028,7 +3028,7 @@ function x_reset_sorting(){
 
                 //Refresh page:
                 if(focus_card==12273){
-                    js_redirect('/~' + focus_handle);
+                    js_redirect('/' + focus_handle);
                 } else if(focus_card==12274){
                     js_redirect('/@' + focus_handle);
                 }

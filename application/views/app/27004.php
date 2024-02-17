@@ -188,7 +188,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
         }
 
         $sale_type_content .= '<tr class="main__title">';
-        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_i_title($i).'</u></a>' : view_i_title($i) ).' <a href="/~'.$i['i__hashtag'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
+        $sale_type_content .= '<td>'.( $total_sales>0 ? '<a href="javascript:void(0)" onclick="$(\'.transactions_'.$i['i__id'].'\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.view_i_title($i).'</u></a>' : view_i_title($i) ).' <a href="/'.$i['i__hashtag'].'"><i class="fal fa-cog" style="font-size:1em !important;"></i></a></td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$total_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;" class="advance_columns hidden">/'.$available_transactions.'</td>';
         $sale_type_content .= '<td style="text-align: right;">'.( $total_sales>0 ? $total_sales.'&nbsp;x' : '&nbsp;' ).'</td>';

@@ -119,7 +119,7 @@ function view_card_x($x, $has_x__reference = false)
 
             //IDEA
             foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_i){
-                $ui .= '<div class="simple-line"><a href="/~'.$focus_i['i__hashtag'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="/'.$focus_i['i__hashtag'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
             }
 
 
@@ -1462,7 +1462,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             $href = '/'.$i['i__hashtag'];
         }
     } else {
-        $href = '/~'.$i['i__hashtag'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
+        $href = '/'.$i['i__hashtag'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
     }
 
     $has_discovered = false;
@@ -1609,7 +1609,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
                     )) as $creator){
                         $creator_name = 'Linked by '.$creator['e__title'].' @'.$creator['e__handle'].' on ';
-                        $creator_details = '<a href="/~'.$i['i__hashtag'].'"><span class="icon-block-sm">'.view_cover($creator['e__cover']).'</span></a>';
+                        $creator_details = '<a href="/'.$i['i__hashtag'].'"><span class="icon-block-sm">'.view_cover($creator['e__cover']).'</span></a>';
                     }
                 }
 
@@ -1669,7 +1669,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
                 //Reply Inverse / Quote
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="/'.$i['i__hashtag'].'/start">'.$m_top_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= '<a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i){
@@ -1720,7 +1720,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                         } elseif($e__id_dropdown==33286 && $discovery_mode && $write_privacy_i){
 
                             //Ideation Mode
-                            $action_buttons .= '<a href="/~'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="/'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
 
@@ -2176,7 +2176,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         } elseif($e__id_dropdown==13670 && substr($CI->uri->segment(1), 0, 1)=='~') {
 
                             //Filter applies only when browsing an idea
-                            $action_buttons .= '<a href="/~'.$CI->uri->segment(1). '?focus__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?focus__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
 

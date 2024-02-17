@@ -78,6 +78,6 @@ echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expi
 if(isset($filters['x__next'])){
     foreach($this->I_model->fetch(array('i__id' => $filters['x__next'])) as $i){
         //We were deleting a single item, redirect back:
-        js_php_redirect('/~'.$i['i__hashtag'], 0);
+        js_php_redirect('/'.$i['i__hashtag'], 0);
     }
 }

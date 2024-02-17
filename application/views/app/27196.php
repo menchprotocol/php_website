@@ -9,7 +9,7 @@ if ($_GET['focus_id']==12273 && superpower_unlocked(12700) && isset($_POST['s__i
     $this->session->set_flashdata('flash_message', '<div class="alert '.( $process_mass_action['status'] ? 'alert-warning' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$process_mass_action['message'].'</div>');
 
     foreach($this->I_model->fetch(array('i__id' => $_POST['s__id'])) as $i){
-        header("Location: /~" . $i['i__hashtag'] );
+        header("Location: /" . $i['i__hashtag'] );
     }
 
 } elseif ($_GET['focus_id']==12274 && superpower_unlocked(12703) && isset($_POST['s__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {

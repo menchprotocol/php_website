@@ -28,7 +28,7 @@ foreach($this->X_model->fetch(array(
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="/~'.$link_i['i__hashtag'].'">'.view_i_title($link_i).'</a></h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="/'.$link_i['i__hashtag'].'">'.view_i_title($link_i).'</a></h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     foreach($sub_list_settings['query_string'] as $x){
         echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';

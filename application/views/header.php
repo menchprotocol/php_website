@@ -311,7 +311,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     //Ideation Mode:
     $_GET['i__hashtag'] = $discovery_i__hashtag;
     $i_view = 30795;
-    $quick_href = '/~'.$discovery_i__hashtag;
+    $quick_href = '/'.$discovery_i__hashtag;
 
 } elseif(!strlen($first_segment) && superpower_unlocked(12703)) {
 
@@ -361,7 +361,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
 } elseif(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])) {
 
     //Ideation Mode:
-    $quick_href = '/~'.$_GET['i__hashtag'];
+    $quick_href = '/'.$_GET['i__hashtag'];
     $quick_id = 33286;
 
 }
