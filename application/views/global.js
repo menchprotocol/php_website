@@ -801,10 +801,6 @@ function random_animal(basic_style = false){
 var algolia_index = false;
 $(document).ready(function () {
 
-    $('[rel="tooltip"]').on('click', function () {
-        $(this).tooltip('hide');
-    });
-
     load_hashtag_menu();
 
     $('#modal31912 .save_e__cover').change(function () {
