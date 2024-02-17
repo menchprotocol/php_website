@@ -1024,7 +1024,6 @@ h4 .halfbg {
     overflow: hidden;
 }
 .dropdown-menu {
-
     padding:0;
     z-index: 9999999 !important;
 }
@@ -1610,7 +1609,7 @@ label {
     --bs-popover-body-padding-y: 0;
 }
 .popover-body {
-    padding: 0 !important;
+    padding: 13px !important;
 }
 .popover-body>div {
     width: 100% !important;
