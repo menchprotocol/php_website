@@ -924,20 +924,16 @@ if($top_i__hashtag){
 <input type="hidden" id="top_i__hashtag" value="<?= $top_i__hashtag ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
-<button type="button" class="btn btn-secondary popover-dismiss" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-    Popover on top
-</button>
+
+
+<a tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
 
 
 <script>
 
     $(document).ready(function () {
 
-        $(function () {
-            $('.popover-dismiss').popover({
-                trigger: 'focus'
-            });
-        });
+        $('[data-toggle="popover"]').popover();
 
         show_more(<?= $focus_i['i__id'] ?>);
 
