@@ -13,6 +13,31 @@ class Ajax extends CI_Controller
     }
 
 
+    function load_popover($handle_string){
+        if(substr($handle_string, 0, 1)=='#'){
+            foreach($this->I_model->fetch(array(
+                'LOWER(i__hashtag)' => strtolower(substr($handle_string, 1)),
+            )) as $i){
+                echo view_card_i(6255, $i);
+                return true;
+            }
+        } elseif(substr($handle_string, 0, 1)=='@'){
+            foreach($this->E_model->fetch(array(
+                'LOWER(e__handle)' => strtolower(substr($handle_string, 1)),
+            )) as $e){
+                echo view_card_e(12274, $e);
+                return true;
+            }
+        }
+
+        //Did not find, had error:
+        echo '<div class="alert alert-danger" role="alert">Could not find '.$handle_string.'</div>';
+        return false;
+    }
+
+    function e_popover($e__handle){
+
+    }
 
 
     function i_editor_load()

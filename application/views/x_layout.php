@@ -926,12 +926,26 @@ if($top_i__hashtag){
 
 
 
-<a tabindex="0" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
-
+<a href="#" tabindex="0" rel="details" class="btn btn-lg btn-danger" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
 
 <script>
 
     $(document).ready(function () {
+
+        var popover = $("[rel=details]").popover({
+            trigger: 'hover',
+            placement: 'top',
+            html: 'true'
+        }).on('show.bs.popover', function () {
+            //I saw an answer here  with 'show.bs.modal' it is wrong, this is the correct,
+            //also you can use   'shown.bs.popover to take actions AFTER the popover shown in screen.
+            $.ajax({
+                url: '/ajax/i_popover/',
+                success: function (html) {
+                    popover.attr('data-content', html);
+                }
+            });
+        });
 
         $('[data-toggle="popover"]').popover({
             trigger: 'focus'
