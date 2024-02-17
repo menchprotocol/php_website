@@ -821,11 +821,6 @@ function activate_popover(){
             (($('[data-toggle="popover"]').popover('hide').data('bs.popover') || {}).inState || {}).click = false;
         }
     });
-
-
-    $('[data-toggle="popover"]').on('click', function (e) {
-        $('[data-toggle="popover"]').not(this).popover('hide');
-    });
 }
 
 var algolia_index = false;
