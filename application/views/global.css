@@ -1591,7 +1591,7 @@ label {
 .icon-block-sm{ width:30px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block, .focus-cover.coin-12273 .icon-block-sm { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; }
 .dropdown-item .icon-block {
-    height: 13px;
+    height: 27px;
 }
 
 .custom-popover {
