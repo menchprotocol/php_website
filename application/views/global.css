@@ -1876,7 +1876,7 @@ label {
 .is_compact .itemsetting{
     margin-left: 0 !important;
     width: auto;
-    padding: 7px 0 0 !important;
+    padding: 8px 8px 0 0 !important;
     display: inline-block;
 }
 
