@@ -926,7 +926,7 @@ if($top_i__hashtag){
 
 
 
-<span data-toggle="popover">@shervin</span>
+<span data-toggle="popover" data-trigger="focus" data-placement="top" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</span>
 
 <script>
 
@@ -937,7 +937,6 @@ if($top_i__hashtag){
             placement : 'top',
             trigger : "focus",
             content: function () {
-                alert($(this).attr("popover-title"));
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
