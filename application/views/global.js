@@ -2701,8 +2701,9 @@ function e_select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__i
     //Enable currently selected:
     if((enable_mulitiselect || !field_required) && was_previously_selected){
         $('.radio-'+focus_id+' .item-'+selected_e__id).removeClass('active');
+        $('.radio-'+focus_id+' .item-'+selected_e__id+' .fa-check').remove();
     } else {
-        $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active');
+        $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active').append('<i class="far fa-check"></i>');
     }
 
     $.post("/ajax/e_select_apply", {
