@@ -1592,12 +1592,12 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             //Determine hover state:
             $always_see = $focus_card || in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $link_type_ui){
+            if($x__type_top_bar==31770 && !$discovery_mode && $link_type_ui){
 
                 //Links
                 $bottom_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($member_e && $member_e['e__id']==$i['x__creator']))){
+            } elseif($x__type_top_bar==4362 && !$discovery_mode && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($member_e && $member_e['e__id']==$i['x__creator']))){
 
                 //Link Time / Creator
                 $creator_details = '';
@@ -1615,18 +1615,18 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="show-on-hover grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
 
-            } elseif($x__type_top_bar==41037 && $write_privacy_i && !$focus_card){
+            } elseif($x__type_top_bar==41037 && !$discovery_mode && $write_privacy_i && !$focus_card){
 
                 //Selector
 
-            } elseif($x__type_top_bar==4737){
+            } elseif($x__type_top_bar==4737 && !$discovery_mode){
 
                 //Idea Type
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==31004 && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
+            } elseif($x__type_top_bar==31004 && !$discovery_mode && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
 
                 //Idea Access
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
@@ -1672,14 +1672,14 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 $bottom_bar_ui .= '<a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==31911 && $write_privacy_i){
+            } elseif($x__type_top_bar==31911 && $write_privacy_i && !$discovery_mode){
 
                 //Idea Editor
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_top_bar['m__title'].'">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable){
+            } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable && !$discovery_mode){
 
                 //Sort Idea
                 $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
@@ -1727,7 +1727,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==31911 && $write_privacy_i){
+                        } elseif($e__id_dropdown==31911 && $write_privacy_i && $discovery_mode){
 
                             //Idea Editor
                             $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="dropdown-item main__title">'.$anchor.'</a>';
