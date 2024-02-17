@@ -2873,6 +2873,12 @@ h4.main__title{
     table-layout: fixed;
     line-height: 169%;
 }
+
+.view_6255 .card_covers .icon-block-sm {
+    width: 55px !important;
+    font-size: 1.3em;
+}
+
 .edge-cover .card_covers {
     line-height: 121%;
 }

@@ -38,7 +38,7 @@ if(isset($_GET['focus__e']) && superpower_unlocked(12701)){
 
 
 //Focus Idea:
-echo '<div class="main_item row justify-content">';
+echo '<div class="main_item view_12273 row justify-content">';
 echo view_card_i(42288,  $focus_i);
 echo '</div>';
 
