@@ -813,6 +813,10 @@ $(document).ready(function () {
         }
     });
 
+    $('[data-toggle="popover"]').on('click', function (e) {
+        $('[data-toggle="popover"]').not(this).popover('hide');
+    });
+
     load_hashtag_menu();
 
     $('#modal31912 .save_e__cover').change(function () {
