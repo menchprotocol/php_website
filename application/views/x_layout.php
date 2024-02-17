@@ -926,7 +926,7 @@ if($top_i__hashtag){
 
 
 
-<span data-toggle="popover" data-popper-placement="top">@shervin</span>
+<span data-toggle="popover" title="@grumo" data-popper-placement="top">@shervin</span>
 
 <script>
 
@@ -934,8 +934,8 @@ if($top_i__hashtag){
 
         $('[data-toggle="popover"]').popover({
             html: true,
-            content: function () {
-                console.log(this);
+            content: function (inner_content) {
+                console.log(inner_content);
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
