@@ -2874,9 +2874,11 @@ h4.main__title{
     line-height: 169%;
 }
 
-.view_6255 .card_covers i {
+.view_6255 .card_covers .icon-block-sm {
     width: 55px !important;
-    font-size: 1.3em;
+}
+.view_6255 .card_covers i {
+    font-size: 3.4em;
 }
 
 .edge-cover .card_covers {
