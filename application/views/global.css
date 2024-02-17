@@ -1874,6 +1874,8 @@ label {
 .is_compact .itemsetting{
     margin-left: 0 !important;
     width: auto;
+    padding: 0 !important;
+    display: inline-block;
 }
 
 .is_compact.list-radio-select .list-group-item {
@@ -1882,6 +1884,7 @@ label {
     overflow-x: visible;
     white-space: normal;
     text-overflow: unset;
+    display: inline-block;
 }
 
 
