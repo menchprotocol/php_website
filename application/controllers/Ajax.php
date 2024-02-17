@@ -13,26 +13,33 @@ class Ajax extends CI_Controller
     }
 
 
-    function load_popover($handle_string){
-        if(substr($handle_string, 0, 1)=='#'){
-            foreach($this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower(substr($handle_string, 1)),
-            )) as $i){
-                echo view_card_i(6255, $i);
-                return true;
+    function load_popover(){
+        if(isset($_POST['handle_string']) && strlen($_POST['handle_string'])>1 && in_array(substr($_POST['handle_string'], 0, 1), array('#','@')) ){
+            if(substr($_POST['handle_string'], 0, 1)=='#'){
+                foreach($this->I_model->fetch(array(
+                    'LOWER(i__hashtag)' => strtolower(substr($_POST['handle_string'], 1)),
+                )) as $i){
+                    echo view_card_i(6255, $i);
+                    return true;
+                }
+            } elseif(substr($_POST['handle_string'], 0, 1)=='@'){
+                foreach($this->E_model->fetch(array(
+                    'LOWER(e__handle)' => strtolower(substr($_POST['handle_string'], 1)),
+                )) as $e){
+                    echo view_card_e(12274, $e);
+                    return true;
+                }
             }
-        } elseif(substr($handle_string, 0, 1)=='@'){
-            foreach($this->E_model->fetch(array(
-                'LOWER(e__handle)' => strtolower(substr($handle_string, 1)),
-            )) as $e){
-                echo view_card_e(12274, $e);
-                return true;
-            }
+
+            //Did not find, had error:
+            echo '<div class="alert alert-danger" role="alert">Could not find '.$_POST['handle_string'].'</div>';
+            return false;
         }
 
         //Did not find, had error:
-        echo '<div class="alert alert-danger" role="alert">Could not find '.$handle_string.'</div>';
+        echo '<div class="alert alert-danger" role="alert">Missing handle_string variable</div>';
         return false;
+
     }
 
     function e_popover($e__handle){
