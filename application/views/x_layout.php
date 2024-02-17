@@ -940,10 +940,9 @@ if($top_i__hashtag){
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
-                    $('.loader_pending').html(data);
+                    $('.popover-body').html(data);
                 });
-                return '<span class="loader_pending">Loading...</span>';
-
+                return 'Loading...';
             }
         });
 
