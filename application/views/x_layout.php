@@ -924,7 +924,7 @@ if($top_i__hashtag){
 <input type="hidden" id="top_i__hashtag" value="<?= $top_i__hashtag ?>" />
 <input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
-<button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+<button type="button" class="btn btn-secondary popover-dismiss" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
     Popover on top
 </button>
 
@@ -934,9 +934,9 @@ if($top_i__hashtag){
     $(document).ready(function () {
 
         $(function () {
-            $('.example-popover').popover({
-                container: 'body'
-            })
+            $('.popover-dismiss').popover({
+                trigger: 'focus'
+            });
         });
 
         show_more(<?= $focus_i['i__id'] ?>);
