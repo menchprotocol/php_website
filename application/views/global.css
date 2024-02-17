@@ -1592,7 +1592,15 @@ label {
 .dropdown-item .icon-block {
     height: 13px;
 }
-.popover-title { display: none; }
+
+.custom-popover {
+    --bs-popover-max-width: 233px;
+    --bs-popover-border-color: #999999;
+    --bs-popover-header-bg: #FFFFFF;
+    --bs-popover-header-color: #FFFFFF;
+    --bs-popover-body-padding-x: 0;
+    --bs-popover-body-padding-y: 0;
+}
 
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;

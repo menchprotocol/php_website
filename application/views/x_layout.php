@@ -932,6 +932,8 @@ if($top_i__hashtag){
 
     $(document).ready(function () {
 
+
+
         $('[data-toggle="popover"]').popover({
             html: true,
             content: function () {
