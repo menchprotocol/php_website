@@ -1119,7 +1119,6 @@ textarea.note-textarea{
     margin-bottom: 0;
 }
 
-.ref_source,
 .card_click_e, .card_click_i, .ignore-click, .card_click_x, a:hover, a:hover * {
     cursor: pointer !important;
 }
@@ -4674,6 +4673,9 @@ main {
     text-decoration: none !important;
 }
 
+.ref_source {
+    cursor: zoom-in;
+}
 
 h1 i,
 h1 i.fas,
