@@ -2696,6 +2696,7 @@ function e_select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__i
     if(!enable_mulitiselect){
         //Clear all selections:
         $('.radio-'+focus_id+' .list-group-item').removeClass('active');
+        $('.radio-'+focus_id+' .checked_icon').remove();
     }
 
     //Enable currently selected:
