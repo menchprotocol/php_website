@@ -2717,6 +2717,7 @@ function e_select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__i
     }, function (data) {
 
         $(notify_el).html(initial_icon);
+        $('[data-toggle="tooltip"]').tooltip();
 
         if (!data.status) {
             alert(data.message);
