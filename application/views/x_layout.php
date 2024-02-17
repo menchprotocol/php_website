@@ -934,8 +934,10 @@ if($top_i__hashtag){
     $(document).ready(function () {
 
         $(function () {
-            $('[data-toggle="popover"]').popover()
-        })
+            $('.example-popover').popover({
+                container: 'body'
+            })
+        });
 
         show_more(<?= $focus_i['i__id'] ?>);
 
