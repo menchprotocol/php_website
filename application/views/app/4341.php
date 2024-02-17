@@ -193,7 +193,7 @@ $e___11035 = $this->config->item('e___11035'); //Summary
             } else {
                 //Load Report:
                 $('#x_page_'+page_num).html(data.message);
-                $('[data-toggle="tooltip"]').tooltip();
+                activate_popover();
             }
         });
 
