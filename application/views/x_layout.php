@@ -939,6 +939,7 @@ if($top_i__hashtag){
             content: function (input) {
                 var input_string = toString(input);
                 var new_string = input_string.replace(/<\/?[^>]+(>|$)/g, "");
+                console.log(input);
                 console.log(input_string);
                 console.log(new_string);
                 $.post("/ajax/load_popover", {
