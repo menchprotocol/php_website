@@ -335,9 +335,7 @@ li a {
     line-height: 134%;
 }
 
-.is_compact{
-    margin: -21px 0 0 0;
-}
+
 
 .add-input{
     margin-bottom: 5px;
@@ -1391,6 +1389,17 @@ label {
     margin-top:0 !important;
     border-top-width:0 !important;
 }
+
+
+.is_compact{
+    margin: -34px 0 0 0;
+    display: block;
+    float: left;
+}
+.is_compact .itemsetting{
+    margin-left: 0 !important;
+}
+
 
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
