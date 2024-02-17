@@ -936,12 +936,13 @@ if($top_i__hashtag){
         $('[data-toggle="popover"]').popover({
             html: true,
             content: function () {
+                var popover_html = null;
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
-                    return data;
+                    popover_html = data;
                 });
-                return 'WOW WOW';
+                return popover_html;
             },
             title: function() {
                 return 'WOW2';
