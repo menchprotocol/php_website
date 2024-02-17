@@ -801,6 +801,18 @@ function random_animal(basic_style = false){
 var algolia_index = false;
 $(document).ready(function () {
 
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        content: function (inner_content) {
+            $.post("/ajax/load_popover", {
+                handle_string:inner_content.innerText,
+            }, function (data) {
+                $('.popover-body').html(data);
+            });
+            return '<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>';
+        }
+    });
+
     load_hashtag_menu();
 
     $('#modal31912 .save_e__cover').change(function () {

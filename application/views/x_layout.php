@@ -926,24 +926,9 @@ if($top_i__hashtag){
 
 
 
-<span data-toggle="popover">@shervin</span>
-
 <script>
 
     $(document).ready(function () {
-
-        $('[data-toggle="popover"]').popover({
-            html: true,
-            content: function (inner_content) {
-                $.post("/ajax/load_popover", {
-                    handle_string:inner_content.innerText,
-                }, function (data) {
-                    $('.popover-body').html(data);
-                });
-                return 'Loading...';
-            }
-        });
-
 
         show_more(<?= $focus_i['i__id'] ?>);
 
