@@ -936,11 +936,16 @@ if($top_i__hashtag){
         $('[data-toggle="popover"]').popover({
             html: true,
             content: function () {
-                return $.post("/ajax/load_popover", {
+                $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
-                    return data;
+                    setTimeout(function () {
+                        //Focus on writing a message:
+                        $('.loader_pending').html(data);
+                    }, 987);
                 });
+                return '<span class="loader_pending">Loading...</span>';
+
             },
             title: function() {
                 return 'WOW2';
