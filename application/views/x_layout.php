@@ -935,7 +935,7 @@ if($top_i__hashtag){
         $('[data-toggle="popover"]').popover({
             html: true,
             content: function () {
-                alert('titie:'+$(this).attr("title"));
+                alert('titie:'+$(this).attr("popover-title"));
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
