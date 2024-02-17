@@ -1195,9 +1195,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     $ui_template = array(
         4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
-        31834 => '<span href="/%s" data-toggle="popover" class="ref_idea">%s</span>',
-        42337 => '<span href="/%s" data-toggle="popover" class="ref_idea">%s</span>',
-        31835 => '<span href="/@%s" data-toggle="popover" class="ref_source">%s</span>',
+        31834 => '<span href="/%s" data-toggle="popover" data-trigger="focus" class="ref_idea">%s</span>',
+        42337 => '<span href="/%s" data-toggle="popover" data-trigger="focus" class="ref_idea">%s</span>',
+        31835 => '<span href="/@%s" data-toggle="popover" data-trigger="focus" class="ref_source">%s</span>',
     );
 
     $replace_from = array();
