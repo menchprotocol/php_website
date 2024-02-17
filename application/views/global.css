@@ -317,7 +317,7 @@ li a {
 }
 
 .dropdown-item .img {
-    margin-bottom: -17px;
+    margin-bottom: -15px;
 }
 
 /* FONTS */
@@ -335,6 +335,9 @@ li a {
     line-height: 134%;
 }
 
+.is_compact{
+    margin: -21px 0 0 0;
+}
 
 .add-input{
     margin-bottom: 5px;

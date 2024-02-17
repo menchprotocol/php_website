@@ -744,6 +744,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
     $e___11035 = $CI->config->item('e___11035'); //Summary
     $e___4527 = $CI->config->item('e___4527'); //Memory
+    $is_compact = in_array($focus_id, $CI->config->item('n___42191'));
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
     $access_locked = in_array($focus_id, $CI->config->item('n___32145'));
@@ -775,13 +776,10 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
-    $ui .= '<h3 class="mini-font grey-line grey-header">'.dynamic_headline($focus_id, $focus_select[$focus_id]).'</h3>';
-    $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.'">';
-
-
-    //Intro Header
-    //$ui .= '<span class="list-group-item main__title intro_header"><span class="icon-block">'.$e___4527[$focus_id]['m__cover'].'</span>'.$e___4527[$focus_id]['m__title'].( isset($e___11035[$focus_id]) && strlen($e___11035[$focus_id]['m__message']) ? '<span class="icon-block-sm float_right" title="'.$e___11035[$focus_id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</span>';
-
+    if(!$is_compact){
+        $ui .= '<h3 class="mini-font grey-line grey-header">'.dynamic_headline($focus_id, $focus_select[$focus_id]).'</h3>';
+    }
+    $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.( $is_compact ? ' is_compact ' : ''  ).'">';
 
     if($down_e__id > 0){
 
@@ -832,11 +830,11 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     foreach($selection_options as $list_item){
 
         $selected = in_array($list_item['e__id'], $already_selected);
-        if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected){
+        if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected && !$is_compact){
             $overflow_reached = true;
         }
 
-        $headline = ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'];
+        $headline = ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).( !$is_compact ? $list_item['e__title'] : '' );
 
         if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
             $headline .= '<span class="icon-block-sm float_right" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
@@ -922,6 +920,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
     $e___this = $CI->config->item('e___'.$cache_e__id);
     $member_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //Summary
+    $unselected_radio = in_array($cache_e__id, $CI->config->item('n___33331')) && !$selected_e__id;
 
     if($selected_e__id && !isset($e___this[$selected_e__id])){
 
@@ -965,21 +964,11 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
                 continue; //Locked Dropdown
             }
 
-            //If this option is for a single-select delete option that must be available only when there is a selection:
-            if(in_array($cache_e__id, $CI->config->item('n___33331')) && in_array($e__id, $CI->config->item('n___42850')) && !$selected_e__id){
-                continue;
-
-                if($cache_e__id==42795){ //10673
-                    continue;
-                } elseif($cache_e__id==42260){ //42801
-                    continue;
-                }
-            }
-
-
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            $removal_option = in_array($e__id, $CI->config->item('n___42850'));
+
             if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<a class="dropdown-item drop_item_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-sm" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
+                $ui .= '<a class="dropdown-item drop_item_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="icon-block-sm" title="'.$e___11035[$e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>' : '' ).'</a>';
             }
 
         }

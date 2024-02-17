@@ -375,7 +375,7 @@ if($top_i__hashtag) {
             if (count($x_selects) > 0) {
                 //MODIFY ANSWER
                 echo '<div class="save_toggle_answer">';
-                echo view_i_list(13980, $top_i__hashtag, $focus_i, $x_selects, $member_e);
+                echo view_i_list(6255, $top_i__hashtag, $focus_i, $x_selects, $member_e);
                 echo '</div>';
             }
 
