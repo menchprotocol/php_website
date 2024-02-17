@@ -941,6 +941,7 @@ if($top_i__hashtag){
                 }, function (data) {
                     return data;
                 });
+                return 'WOW WOW';
             },
             title: function() {
                 return 'WOW2';
