@@ -1611,7 +1611,8 @@ label {
 .popover-body {
     padding:0!important;
 }
-.popover-body>div {
+
+.popover-body>div.edge-cover {
     padding: 13px !important;
     width: 100% !important;
 }
