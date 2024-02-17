@@ -1029,8 +1029,8 @@ h4 .halfbg {
     z-index: 9999999 !important;
 }
 
-.block-menu .dropdown-menu {
-    padding:5px 0 0 0;
+.block-menu .dropdown-item {
+    padding:3px 0 0 0;
 }
 
 .dropdown-menu a {
