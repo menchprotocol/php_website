@@ -1601,6 +1601,12 @@ label {
     --bs-popover-body-padding-x: 0;
     --bs-popover-body-padding-y: 0;
 }
+.popover-body {
+    padding: 0 !important;
+}
+.popover-body>div {
+    width: 100% !important;
+}
 
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;
