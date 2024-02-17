@@ -933,7 +933,9 @@ if($top_i__hashtag){
 
     $(document).ready(function () {
 
-        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').popover({
+            trigger: 'focus'
+        });
 
         show_more(<?= $focus_i['i__id'] ?>);
 
