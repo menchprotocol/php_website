@@ -814,16 +814,15 @@ function activate_popover(){
             return '<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>';
         }
     });
+    $('[data-toggle="popover"]').on('click', function (e) {
+        $('[data-toggle="popover"]').not(this).popover('hide');
+    });
 }
 
 var algolia_index = false;
 $(document).ready(function () {
 
     activate_popover();
-
-    $('[data-toggle="popover"]').on('click', function (e) {
-        $('[data-toggle="popover"]').not(this).popover('hide');
-    });
 
     load_hashtag_menu();
 
