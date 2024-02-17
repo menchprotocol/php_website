@@ -944,6 +944,7 @@ if($top_i__hashtag){
                 console.log(new_string);
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
+                    handle_string2:input,
                 }, function (data) {
                     $('.popover-body').html(data);
                 });
