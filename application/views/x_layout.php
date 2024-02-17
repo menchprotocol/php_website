@@ -940,7 +940,7 @@ if($top_i__hashtag){
             //I saw an answer here  with 'show.bs.modal' it is wrong, this is the correct,
             //also you can use   'shown.bs.popover to take actions AFTER the popover shown in screen.
             $.ajax({
-                url: '/ajax/i_popover/',
+                url: '/ajax/load_popover/@shervin',
                 success: function (html) {
                     popover.attr('data-content', html);
                 }
