@@ -938,10 +938,7 @@ if($top_i__hashtag){
                 $.post("/ajax/load_popover", {
                     handle_string:'@shervin',
                 }, function (data) {
-                    setTimeout(function () {
-                        //Focus on writing a message:
-                        $('.loader_pending').html(data);
-                    }, 987);
+                    $('.loader_pending').html(data);
                 });
                 return '<span class="loader_pending">Loading...</span>';
 
