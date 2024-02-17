@@ -1870,6 +1870,8 @@ label {
 
 .is_compact{
     margin: -34px 0 0 0;
+    display: block;
+    clear: both;
 }
 .is_compact .itemsetting{
     margin-left: 0 !important;
