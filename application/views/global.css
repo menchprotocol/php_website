@@ -4737,6 +4737,7 @@ h1 i.fad{
 .edge-cover .card_covers a.btn-sm {
     padding: 3px 3px 1px 0px !important;
     margin-top: -8px !important;
+    margin-left: 6px !important;
 }
 .edge-cover .card_covers a.btn-sm .icon-block-sm{
     height: 21px !important;
