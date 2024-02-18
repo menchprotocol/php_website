@@ -799,6 +799,11 @@ function random_animal(basic_style = false){
 }
 
 function activate_popover(){
+    var glower = $('.glow-red');
+    window.setInterval(function() {
+        glower.toggleClass('active');
+    }, 987);
+
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover({
         html: true,

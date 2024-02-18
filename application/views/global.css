@@ -3080,6 +3080,22 @@ h4.main__title{
 }
 
 
+.glow-red {
+    background-color: #FFFFFF;
+    border: 1px solid transparent;
+    -webkit-transition: border 0.1s linear, box-shadow 0.1s linear;
+    -moz-transition: border 0.1s linear, box-shadow 0.1s linear;
+    transition: border 0.1s linear, box-shadow 0.1s linear;
+}
+
+.glow-red.active {
+    border-color: #FC1B44;
+    -webkit-box-shadow: 0 0 5px #FC1B44;
+    -moz-box-shadow: 0 0 5px #FC1B44;
+    box-shadow: 0 0 5px #FC1B44;
+}
+
+
 .card_covers a.btn-sm {
     padding: 5px 13px 0px 0px !important;
     border: 1px solid #000000 !important;
