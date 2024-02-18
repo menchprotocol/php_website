@@ -4736,6 +4736,9 @@ h1 i.fad{
 .card_covers a.btn-sm:hover {
     background-color: #EFEFEF !important;
 }
+.edge-cover .card_covers a.btn-sm:hover {
+    background-color: #FFFFFF !important;
+}
 
 .edge-cover .card_covers a.btn-sm {
     padding: 3px 8px 1px 0px !important;
