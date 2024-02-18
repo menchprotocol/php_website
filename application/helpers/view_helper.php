@@ -1711,10 +1711,8 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     'x__following' => 4235,
                 )))){
 
-                //Reply Inverse / Quote
-                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm"><span class="icon-block-sm">'.$m_top_bar['m__cover'].'</span>'.$m_top_bar['m__title'].'</a>';
-                $bottom_bar_ui .= '</div></span>';
+                //GET STARTED
+                $bottom_bar_ui .= '<span><a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm"><span class="icon-block-sm">'.$m_top_bar['m__cover'].'</span>'.$m_top_bar['m__title'].'</a></span>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i && !$discovery_mode){
 
