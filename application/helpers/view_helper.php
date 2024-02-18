@@ -1712,7 +1712,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 )))){
 
                 //GET STARTED
-                $bottom_bar_ui .= '<span><a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm">'.$m_top_bar['m__cover'].'</span><span class="show-max">'.$m_top_bar['m__title'].'</span></a></span>';
+                $bottom_bar_ui .= '<span><a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm">'.$m_top_bar['m__cover'].'</span><span class="'.( !$focus_card ? ' show-max ' : '' ).'">'.$m_top_bar['m__title'].'</span></a></span>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i && !$discovery_mode){
 
