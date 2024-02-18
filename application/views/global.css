@@ -4007,6 +4007,10 @@ a,
 .coin-6287 .inner-content .main__title{
     text-align: center;
 }
+.coin-12274 .inner-content .dropdown .main__title,
+.coin-6287 .inner-content .dropdown .main__title{
+    text-align: left;
+}
 .coin-12274 .cover-content,
 .coin-6287 .cover-content{
 
