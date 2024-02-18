@@ -777,7 +777,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
     if(!$is_compact){
-        $ui .= '<h3 class="mini-font grey-line grey-header">'.dynamic_headline($focus_id, $focus_select[$focus_id]).'</h3>';
+        $ui .= '<h3 class="mini-font grey">'.dynamic_headline($focus_id, $focus_select[$focus_id]).'</h3>';
     }
     $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.( $is_compact ? ' is_compact ' : ''  ).'">';
 
