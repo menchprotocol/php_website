@@ -1405,6 +1405,11 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
     $ui .= '<ul class="nav nav-tabs nav12273">';
     foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $x__type => $m) {
 
+        $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+            continue;
+        }
+
         $coins_count[$x__type] = view_i_covers($x__type, $focus_i['i__id'], 0, false);
         if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
         $can_add = $write_privacy_i && in_array($x__type, $CI->config->item('n___42262'));
@@ -1708,7 +1713,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
                 //Reply Inverse / Quote
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'">'.$m_top_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= '<a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm"><span class="icon-block-sm">'.$m_top_bar['m__cover'].'</span>'.$m_top_bar['m__title'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i && !$discovery_mode){
