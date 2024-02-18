@@ -1631,12 +1631,12 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             //Determine hover state:
             $always_see = $focus_card || in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && !$discovery_mode && $link_type_ui){
+            if($x__type_top_bar==31770 && !$discovery_mode && $link_type_ui && $member_e){
 
                 //Links
                 $bottom_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && !$discovery_mode && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($member_e && $member_e['e__id']==$i['x__creator']))){
+            } elseif($x__type_top_bar==4362 && !$discovery_mode && $member_e && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($member_e && $member_e['e__id']==$i['x__creator']))){
 
                 //Link Time / Creator
                 $creator_details = '';
@@ -1672,14 +1672,14 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==30901){
+            } elseif($x__type_top_bar==30901 && $member_e){
 
                 //Reply
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==42379){
+            } elseif($x__type_top_bar==42379 && $member_e){
 
                 //Reply Inverse / Quote
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
