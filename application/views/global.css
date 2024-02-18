@@ -4728,11 +4728,17 @@ h1 i.fad{
     font-size:0.4em !important;
 }
 
-
 .card_covers a.btn-sm {
     padding: 5px 13px 0px 0px !important;
     border: 1px solid #000000 !important;
     border-radius: 0 !important;
+}
+
+.edge-cover.card_covers a.btn-sm {
+    padding: 3px 3px 0px 0px !important;
+}
+.edge-cover.card_covers a.btn-sm .icon-block-sm{
+    height: 21px;
 }
 
 .card_covers>span.hidden,
