@@ -1606,7 +1606,6 @@ label {
 
 .custom-popover {
     --bs-popover-max-width: 233px;
-    --bs-popover-border-color: #999999;
     --bs-popover-header-bg: #FFFFFF;
     --bs-popover-header-color: #FFFFFF;
     --bs-popover-body-padding-x: 0;
@@ -1625,7 +1624,7 @@ label {
 }
 
 .popover-body>div.edge-cover {
-    padding: 13px 5px  !important;
+    padding: 13px 5px 21px  !important;
     width: 100% !important;
 }
 
