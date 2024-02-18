@@ -1614,6 +1614,7 @@ label {
 }
 .popover-body {
     padding:0!important;
+    width: 233px;
 }
 
 .popover-body>div.edge-cover {
@@ -3831,6 +3832,10 @@ a,
     top: 44% !important;
 }
 
+.popover .cover-link.coinType12274 .cover-btn,
+.popover .cover-link.coinType6287 .cover-btn {
+    top: 17% !important;
+}
 
 
 

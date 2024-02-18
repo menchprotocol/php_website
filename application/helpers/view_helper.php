@@ -986,30 +986,6 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 }
 
 
-function view_i_list($x__type, $top_i__hashtag, $i, $next_is, $member_e, $body_prepend = null){
-
-    //If no list just return the next step:
-    $CI =& get_instance();
-    if(!count($next_is)){
-        return false;
-    } elseif(!in_array($x__type, $CI->config->item('n___13369'))){
-        die('@'.$x__type.' NOT in @13369');
-        return false;
-    }
-
-    $e___13369 = $CI->config->item('e___13369'); //IDEA LISTS
-
-    //Build Body UI:
-    $body = '<div class="row justify-content">';
-    foreach($next_is as $key => $next_i){
-        $body .= view_card_i($x__type, $next_i, $i, $top_i__hashtag, $member_e);
-    }
-    $body .= '</div>';
-
-    return view_headline($x__type, count($next_is), $e___13369[$x__type], $body_prepend.$body, isset($_GET['open']));
-
-}
-
 
 function view_shuffle_message($e__id){
     $CI =& get_instance();
@@ -1983,18 +1959,6 @@ function view_i_media($i){
 
 }
 
-
-function view_headline($x__type, $counter, $m, $ui, $is_open = true, $left_pad = false){
-
-    if(!strlen($ui)){
-        return false;
-    }
-
-    $CI =& get_instance();
-    $e___26006 = $CI->config->item('e___26006'); //Toggle Headline
-    return '<a class="headline headline_'.$x__type.'" href="javascript:void(0);" onclick="toggle_headline('.$x__type.')"><span class="icon-block-xs grey">'.$m['m__cover'].'</span>' .$m['m__title'].':'.( !is_null($counter) ? ' [<span class="xtypecounter'.$x__type.'">'.number_format($counter, 0) . '</span>]' : '' ).'<span class="icon-block pull-right headline_titles headline_title_'.$x__type.'"><span class="icon_26007 '.( !$is_open ? ' hidden ' : '' ).'">'.$e___26006[26008]['m__cover'].'</span><span class="icon_26008 '.( $is_open ? ' hidden ' : '' ).'">'.$e___26006[26007]['m__cover'].'</span></span></a>'.'<div class="headlinebody pillbody '.( $left_pad ? ' leftPad  ' : '' ).' headline_body_'.$x__type.( !$is_open ? ' hidden ' : '' ).'">'.$ui.'</div>';
-
-}
 
 function convertURLs($string)
 {

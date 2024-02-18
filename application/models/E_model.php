@@ -231,7 +231,7 @@ class E_model extends CI_Model
         }
         */
 
-        return $e;
+        return $session_data;
 
     }
 

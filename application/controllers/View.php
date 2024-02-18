@@ -410,24 +410,6 @@ class View extends CI_Controller
             }
         }
 
-
-        //Validate Focus Idea:
-        if($focus_i__hashtag==view_memory(6404,4235)){
-            //This is the starting point:
-            $focus_i__hashtag = $top_i__hashtag;
-            $focus_is = $top_is;
-        } else {
-            $focus_is = $this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
-            ));
-            if ( !count($focus_is) ) {
-                return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid Hashtag #' . $focus_i__hashtag . '</div>');
-            } elseif(!in_array($focus_is[0]['i__privacy'], $this->config->item('n___31871')) && !write_privacy_i($focus_is[0]['i__hashtag'])){
-                return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not public and you are missing permission to access.</div>');
-            }
-        }
-
-
         //Log Link Click discovery if authenticated:
         if(
             isset($_GET['e__hash']) && isset($_GET['e__time'])
@@ -445,13 +427,46 @@ class View extends CI_Controller
 
                 //If not logged in, log them in:
                 if(!$member_e){
-                    $this->E_model->activate_session($focus_es[0], true);
+                    $session_data = $this->E_model->activate_session($focus_es[0], true);
+                    $member_e = $focus_es[0];
                 }
 
             } else {
 
                 $flash_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Invalid Hash: Idea could not be discovered at this time.</div>';
 
+            }
+        }
+
+
+        if(!$member_e) {
+            //Must login to continue:
+            return redirect_message(view_app_link(4269).'?url=/'.$top_i__hashtag.'/'.$focus_i__hashtag);
+        }
+
+        //Validate Focus Idea:
+        if($focus_i__hashtag==view_memory(6404,4235)){
+
+            //This is the starting point:
+            $focus_i__hashtag = $top_i__hashtag;
+            $focus_is = $top_is;
+
+            //See if they have already started or need to start?
+            if(1){
+
+            } else {
+                //Go to start:
+                return redirect_message('/ajax/x_start/'.$top_i__hashtag);
+            }
+
+        } else {
+            $focus_is = $this->I_model->fetch(array(
+                'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
+            ));
+            if ( !count($focus_is) ) {
+                return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid Hashtag #' . $focus_i__hashtag . '</div>');
+            } elseif(!in_array($focus_is[0]['i__privacy'], $this->config->item('n___31871')) && !write_privacy_i($focus_is[0]['i__hashtag'])){
+                return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not public and you are missing permission to access.</div>');
             }
         }
 

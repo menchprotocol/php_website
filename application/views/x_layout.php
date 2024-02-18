@@ -203,7 +203,7 @@ if(isset($_GET['delete'])){
 //Breadcrump for logged in users
 $breadcrum_content = null;
 
-if($x__creator && count($top_i) && $top_i__hashtag!=$focus_i['i__hashtag']){
+if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
 
     $find_previous = $this->X_model->find_previous($x__creator, $top_i__hashtag, $focus_i['i__id']);
     if(count($find_previous)){
@@ -288,41 +288,30 @@ if($breadcrum_content){
 
 
 
-if($top_i__hashtag){
 
-    echo '<div class="active_navigation">';
+echo '<div class="active_navigation">';
 
-    $tree_progress = $this->X_model->tree_progress($x__creator, $top_i);
-    $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
-    $go_next_url = '/ajax/x_next/' . $top_i__hashtag . '/' . $focus_i['i__hashtag'];
+$tree_progress = $this->X_model->tree_progress($x__creator, $top_i);
+$top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
+$go_next_url = '/ajax/x_next/' . $top_i__hashtag . '/' . $focus_i['i__hashtag'];
 
-    if($top_completed){
-        echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
-    }
-
-    if(isset($_GET['list'])){
-        //Secret list for debugging
-        echo '<p style="padding:10px;">'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Discovered:</p>';
-        $counter = 0;
-        foreach($tree_progress['list_total'] as $to_discover_id){
-            $is = $this->I_model->fetch(array(
-                'i__id' => $to_discover_id,
-            ));
-            $counter++;
-            echo '<p style="padding:2px;">'.$counter.') <a href="/'.$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
-        }
-    }
-
-} else {
-
-    $go_next_url = '/ajax/x_start/'.$focus_i['i__hashtag'];
-
+if($top_completed){
+    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
 }
 
-
-if($top_completed || $is_or_7712){
-    $_GET['open'] = true;
+if(isset($_GET['list'])){
+    //Secret list for debugging
+    echo '<p style="padding:10px;">'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Discovered:</p>';
+    $counter = 0;
+    foreach($tree_progress['list_total'] as $to_discover_id){
+        $is = $this->I_model->fetch(array(
+            'i__id' => $to_discover_id,
+        ));
+        $counter++;
+        echo '<p style="padding:2px;">'.$counter.') <a href="/'.$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
+    }
 }
+
 
 
 
@@ -334,84 +323,22 @@ echo '</div>';
 echo view_i_nav(true, $focus_i, write_privacy_i($focus_i['i__hashtag']));
 
 
+//Mark this as skipped since there is nothing to choose from:
+if (!count($is_next) && !count($this->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        'x__creator' => $x__creator,
+        'x__previous' => $focus_i['i__id'],
+    )))) {
+    //Skipped:
+    $this->X_model->mark_complete(31022, $x__creator, $top_i__id, $focus_i);
+}
+
+
 $x_selects = array();
 if($top_i__hashtag) {
 
-    if ($is_or_7712) {
-
-        //Has no options to choose from?
-        if (!count($is_next)) {
-
-            //Mark this as skipped since there is nothing to choose from:
-            if (!count($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $x__creator,
-                'x__previous' => $focus_i['i__id'],
-            )))) {
-                //Skipped:
-                $this->X_model->mark_complete(31022, $x__creator, $top_i__id, $focus_i);
-            }
-
-        } else {
-
-            //First fetch answers based on correct order:
-            foreach ($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-                'x__previous' => $focus_i['i__id'],
-            ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $x) {
-                //See if this answer was selected:
-                if (count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__previous' => $focus_i['i__id'],
-                    'x__next' => $x['i__id'],
-                    'x__creator' => $x__creator,
-                )))) {
-                    array_push($x_selects, $x);
-                }
-            }
-
-            if (count($x_selects) > 0) {
-                //MODIFY ANSWER
-                echo '<div class="save_toggle_answer">';
-                echo view_i_list(6255, $top_i__hashtag, $focus_i, $x_selects, $member_e);
-                echo '</div>';
-            }
-
-
-            //Open for list to be printed:
-            $select_answer = '<div class="row list-answers" i__type="' . $focus_i['i__type'] . '">';
-
-            //List next ideas to choose from:
-            foreach ($is_next as $key => $next_i) {
-
-                //Has this been previously selected?
-                $previously_selected = count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-                    'x__previous' => $focus_i['i__id'],
-                    'x__next' => $next_i['i__id'],
-                    'x__creator' => $x__creator,
-                )));
-
-                $select_answer .= view_card_x_select($next_i, $x__creator, $previously_selected);
-
-            }
-
-
-            $select_answer .= '</div>';
-
-            //HTML:
-            echo '<div class="save_toggle_answer ' . (count($x_selects) > 0 ? 'hidden' : '') . '">';
-            echo view_headline($focus_i['i__type'], null, $e___4737[$focus_i['i__type']], $select_answer, true);
-            echo '</div>';
-
-        }
-
-    } elseif ($focus_i['i__type']==26560) {
+    if ($focus_i['i__type']==26560) {
 
         //TICKET
         $ticket_ui = '';
@@ -890,22 +817,11 @@ if($top_i__hashtag) {
 
 
 
-//NEXT IDEAS:
-//Append add new idea as a comment button at the end:
-//$body_prepend = '<a href="javascript:void(0);" onclick="i_editor_load(0,0,30901,'.$focus_i['i__id'].')" style="margin-left: 0;">'.$e___11035[31772]['m__cover'].' '.$e___11035[31772]['m__title'].'</a></td>'; //TODO fix icon reference
-$body_prepend = '';
-if(!($top_i__hashtag && $is_or_7712)){
-    echo view_i_list(6255, $top_i__hashtag, $focus_i, $is_next, $member_e, $body_prepend);
-}
 
-
-
-if($top_i__hashtag && !$top_completed) {
+if(!$top_completed) {
     echo '<div style="padding: 0 5px;"><div class="progress">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div></div>';
-} elseif(!$top_i__hashtag && $pathways_count > 0){
-    echo view_headline(40798, $pathways_count, $e___11035[40798], $pathways, true);
 }
 
 if($top_i__hashtag){
