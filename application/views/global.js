@@ -818,7 +818,7 @@ function activate_popover(){
 
     $(document).click(function (e) {
         if (($('.popover').has(e.target).length == 0) || $(e.target).is('.close')) {
-            $('#popoverId').popover('hide');
+            $('[data-toggle="popover"]').popover('hide');
         }
     });
     /*
