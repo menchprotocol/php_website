@@ -1078,10 +1078,7 @@ h4 .halfbg {
     padding: .25rem 0;
 }
 
-.btn-sm {
-    padding: 5px;
-    border: 1px solid #000000;
-}
+
 
 
 
@@ -4729,6 +4726,11 @@ h1 i.fal,
 h1 i.far,
 h1 i.fad{
     font-size:0.4em !important;
+}
+
+a.btn-sm {
+    padding: 5px !important;
+    border: 1px solid #000000 !important;
 }
 
 .card_covers>span.hidden,
