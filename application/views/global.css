@@ -4732,11 +4732,11 @@ h1 i.fad{
     padding: 5px 13px 0px 0px !important;
     border: 1px solid #000000 !important;
     border-radius: 0 !important;
-    margin-top: -8px !important;
 }
 
 .edge-cover .card_covers a.btn-sm {
     padding: 3px 3px 1px 0px !important;
+    margin-top: -8px !important;
 }
 .edge-cover .card_covers a.btn-sm .icon-block-sm{
     height: 21px !important;
