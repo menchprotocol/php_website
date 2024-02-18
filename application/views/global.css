@@ -2256,7 +2256,7 @@ input.form-control {
 }
 .card_cover.coinface-12273{
     margin:0 0 !important;
-    padding:13px 0 !important;
+    padding:21px 0 !important;
     border-top: 1px solid #999998;
 }
 .flip-content .card_cover.coinface-12273{
@@ -3096,7 +3096,7 @@ h4.main__title{
 }
 
 .edge-cover .card_covers a.btn-sm {
-    padding: 2px 8px 0 0 !important;
+    padding: 3px 8px 0 0 !important;
     margin-top: -13px !important;
     margin-left: 6px !important;
 }
@@ -3111,7 +3111,7 @@ h4.main__title{
         margin-left: 3px !important;
     }
     .edge-cover .card_covers a.btn-sm {
-        padding: 2px 0 0 0 !important;
+        padding: 3px 0 0 0 !important;
     }
 
     .mini-frame{
