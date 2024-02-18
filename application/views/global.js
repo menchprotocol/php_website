@@ -823,6 +823,7 @@ function activate_popover(){
     });
     */
     $('[data-toggle="popover"]').on('click', function (e) {
+        e.preventDefault();
         $('[data-toggle="popover"]').not(this).popover('hide');
     });
 }
