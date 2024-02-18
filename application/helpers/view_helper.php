@@ -2178,9 +2178,9 @@ function view_card_e($x__type, $e, $extra_class = null)
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
                     ), array('x__creator')) as $linker){
-                        $link_type_ui .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'"><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($e['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                        $link_type_ui .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                         $link_type_ui .= view_single_select_instant($x__type1, $e['x__type'], $write_privacy_e, false, $e['e__id'], $x__id);
-                        $link_type_ui .= '</div></span>';
+                        $link_type_ui .= '</span>';
                     }
                     $link_type_id = $x__type1;
                     break;
@@ -2206,15 +2206,10 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_top_bar==6177 && $member_e && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'"><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                //( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' )
+                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                 $featured_sources .= view_single_select_instant(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id'], $x__id);
-                $featured_sources .= '</div></span>';
-
-            } elseif($x__type_top_bar==4362 && $member_e && isset($e['x__time']) && strtotime($e['x__time']) > 0){
-
-                //Creation Time:
-
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'"><div class="show-on-hover grey created_time" title="'.date("Y-m-d H:i:s", strtotime($e['x__time'])).' | ID '.$e['x__id'].'">' . view_time_difference($e['x__time'], true) . '</div></span>';
+                $featured_sources .= '</span>';
 
             } elseif($x__type_top_bar==42795 && $member_e && $member_e['e__id']!=$e['e__id'] && (!$x__id || !(superpower_unlocked(13422) && in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$member_e['e__id'] && $e['x__following']==$e['e__id']))){
 
@@ -2227,29 +2222,29 @@ function view_card_e($x__type, $e, $extra_class = null)
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
 
                 if(count($followings) || !$has_any_lock){
-                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'"><div class="show-on-hover">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e && !$has_any_lock, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</div></span>';
+                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e && !$has_any_lock, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
                 }
 
             } elseif($x__type_top_bar==31912 && $write_privacy_e){
 
                 //Edit Source
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' ignore-click"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                 $featured_sources .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_top_bar['m__title'].'">'.$m_top_bar['m__cover'].'</a>';
-                $featured_sources .= '</div></span>';
+                $featured_sources .= '</span>';
 
             } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
 
                 //Selector
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' ignore-click"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' ignore-click">';
                 $featured_sources .= '<input class="form-check-input" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'" aria-label="...">';
-                $featured_sources .= '</div></span>';
+                $featured_sources .= '</span>';
 
             } elseif($x__type_top_bar==13006 && $has_sortable){
 
                 //Sort Source
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' sort_e_frame hidden"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' sort_e_frame hidden">';
                 $featured_sources .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab">'.$m_top_bar['m__cover'].'</span>';
-                $featured_sources .= '</div></span>';
+                $featured_sources .= '</span>';
 
             } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
 
@@ -2338,14 +2333,14 @@ function view_card_e($x__type, $e, $extra_class = null)
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
 
-                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' ignore-click"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                     $featured_sources .= '<div class="dropdown inline-block">';
                     $featured_sources .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $featured_sources .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
                     $featured_sources .= $action_buttons;
                     $featured_sources .= '</div>';
                     $featured_sources .= '</div>';
-                    $featured_sources .= '</div></span>';
+                    $featured_sources .= '</span>';
                 }
             }
         }
