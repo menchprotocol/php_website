@@ -798,12 +798,18 @@ function random_animal(basic_style = false){
     return animals[Math.floor(Math.random()*animals.length)] + ' ' + ( basic_style ? ' fas ' : styles[Math.floor(Math.random()*styles.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)] );
 }
 
+var interval = null;
 function activate_popover(){
 
-    $('.glow-red').unbind();
-    window.setInterval(function() {
+    if(interval){
+        clearInterval(interval);
+    }
+
+    //Set Interval:
+    interval = window.setInterval(function() {
         $('.glow-red').toggleClass('active');
     }, 1597);
+
 
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover({
