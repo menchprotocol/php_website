@@ -4730,8 +4730,9 @@ h1 i.fad{
 
 
 .card_covers a.btn-sm {
-    padding: 5px !important;
+    padding: 5px 13px 0px 0px !important;
     border: 1px solid #000000 !important;
+    border-radius: 0 !important;
 }
 
 .card_covers>span.hidden,
