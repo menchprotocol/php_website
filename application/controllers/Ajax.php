@@ -1694,8 +1694,9 @@ class Ajax extends CI_Controller
         }
 
 
-        if(!count($return_inputs)){
-            //Add universal inputs only if missing any other input:
+
+        //Add universal inputs only if missing bio profiles:
+        if(!array_intersect($scanned_sources, $this->config->item('n___42885'))){
             foreach($this->E_model->fetch(array(
                 'e__id IN (' . join(',', $this->config->item('n___42776')) . ')' => null, //Universal Dynamic Inputs
             )) as $selected_e){
