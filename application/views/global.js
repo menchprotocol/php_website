@@ -801,7 +801,7 @@ function random_animal(basic_style = false){
 function activate_popover(){
     window.setInterval(function() {
         $('.glow-red').toggleClass('active');
-    }, 610);
+    }, 1597);
 
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover({
