@@ -799,6 +799,8 @@ function random_animal(basic_style = false){
 }
 
 function activate_popover(){
+
+    $('.glow-red').unbind();
     window.setInterval(function() {
         $('.glow-red').toggleClass('active');
     }, 1597);
