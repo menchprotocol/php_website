@@ -802,7 +802,7 @@ function activate_popover(){
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover({
         html: true,
-        title: '<a class="close" href="#"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Close</a>',
+        title: '<a class="close" href="#">Close<span class="icon-block"><i class="far fa-xmark fa-spin"></i></span></a>',
         content: function (inner_content) {
             $.post("/ajax/load_popover", {
                 handle_string:inner_content.innerText,
