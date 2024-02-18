@@ -1643,13 +1643,14 @@ label {
     font-weight: bold;
 }
 
-.icon-block-xs   i { font-size: 0.89em !important; }
 .block-x, i, .nav .icon-block i,
 .icon-block-sm   i { font-size: 1.21em !important; }
 .icon-block      i,
 .focus-cover .icon-block-sm      i
                     { font-size: 1.34em !important; }
 
+.icon-block-xs .icon-block-sm   i,
+.icon-block-xs .icon-block   i{ font-size: 0.89em !important; }
 
 .dynamic_editing_input.float_right .icon-block {
     width:30px !important;
