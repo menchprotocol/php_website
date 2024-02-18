@@ -1612,10 +1612,13 @@ label {
     --bs-popover-body-padding-x: 0;
     --bs-popover-body-padding-y: 0;
 }
+.popover {
+    border-radius: 0 !important;
+}
+
 .popover-body {
     padding:0!important;
     width: 233px;
-    border-radius: 0 !important;
 }
 
 .popover-body>div.edge-cover {
