@@ -1594,7 +1594,7 @@ label {
 .nav>.nav-item>.nav-link>.icon-block { width:30px !important; }
 #searchFrontForm .icon-block { width:30px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
-.icon-block-xs{ width:19px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
+.icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:19px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block-sm{ width:30px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .icon-block, .focus-cover.coin-12273 .icon-block-sm { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; }
 .dropdown-item .icon-block {
