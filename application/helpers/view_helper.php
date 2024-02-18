@@ -1477,7 +1477,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
     $user_input = $focus_e;
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
-    $discovery_mode = $CI->uri->segment(2); //DISCOVERY MODE
+    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
     $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
