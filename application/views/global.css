@@ -4734,10 +4734,10 @@ h1 i.fad{
     border-radius: 0 !important;
 }
 
-.edge-cover.card_covers a.btn-sm {
+.edge-cover .card_covers a.btn-sm {
     padding: 3px 3px 0px 0px !important;
 }
-.edge-cover.card_covers a.btn-sm .icon-block-sm{
+.edge-cover .card_covers a.btn-sm .icon-block-sm{
     height: 21px;
 }
 
