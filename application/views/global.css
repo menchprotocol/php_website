@@ -2098,7 +2098,7 @@ label {
     width: calc(100% - 10px) !important;
     position: relative;
     overflow-x: visible;
-    overflow-y: hidden;
+    overflow-y: visible;
     display: block;
     margin: 0 2px;
     max-height: 69%;
