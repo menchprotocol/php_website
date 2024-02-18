@@ -1625,7 +1625,7 @@ label {
 }
 
 .popover-body>div.edge-cover {
-    padding: 5px 5px 21px  !important;
+    padding: 21px 5px  !important;
     width: 100% !important;
 }
 
