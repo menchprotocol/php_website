@@ -2084,14 +2084,14 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                 $top_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==6177 && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
+            } elseif($x__type_top_bar==6177 && $member_e && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
                 $top_bar_ui .= '<td><div class="'.( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $top_bar_ui .= view_single_select_instant(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id'], $x__id);
                 $top_bar_ui .= '</div></td>';
 
-            } elseif($x__type_top_bar==4362 && isset($e['x__time']) && strtotime($e['x__time']) > 0){
+            } elseif($x__type_top_bar==4362 && $member_e && isset($e['x__time']) && strtotime($e['x__time']) > 0){
 
                 //Creation Time:
 
