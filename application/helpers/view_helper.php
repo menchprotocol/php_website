@@ -1836,10 +1836,6 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 }
 
             }
-            if(isset($_GET['load_popover'])){
-                //OPtion to close popover:
-
-            }
         }
 
         //Bottom Bar menu

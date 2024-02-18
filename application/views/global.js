@@ -802,6 +802,7 @@ function activate_popover(){
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover({
         html: true,
+        title: 'Popover Title<a class="close" href="#">&times;</a>',
         content: function (inner_content) {
             $.post("/ajax/load_popover", {
                 handle_string:inner_content.innerText,
@@ -812,6 +813,12 @@ function activate_popover(){
                 load_card_clickers();
             });
             return '<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>';
+        }
+    });
+
+    $(document).click(function (e) {
+        if (($('.popover').has(e.target).length == 0) || $(e.target).is('.close')) {
+            $('#popoverId').popover('hide');
         }
     });
     /*
