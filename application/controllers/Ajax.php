@@ -14,6 +14,7 @@ class Ajax extends CI_Controller
 
 
     function load_popover(){
+        $_GET['load_popover'] = 1;
         if(isset($_POST['handle_string']) && strlen($_POST['handle_string'])>1 && in_array(substr($_POST['handle_string'], 0, 1), array('#','@')) ){
             if(substr($_POST['handle_string'], 0, 1)=='#'){
                 foreach($this->I_model->fetch(array(
