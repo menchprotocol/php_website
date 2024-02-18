@@ -176,6 +176,7 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
 ?>
 
 <style>
+    .creator_frame,
     .mini_time {
         display: none !important;
     }
