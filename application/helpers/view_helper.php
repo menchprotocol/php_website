@@ -826,8 +826,17 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $has_selected = count($already_selected);
     $overflow_reached = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
+    $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
 
     foreach($selection_options as $list_item){
+
+        //Has superpower?
+        if(isset($e___42179[$list_item['e__id']]['m__following']) && count($e___42179[$list_item['e__id']]['m__following'])){
+            $superpowers_required = array_intersect($CI->config->item('n___10957'), $e___42179[$list_item['e__id']]['m__following']);
+            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+                continue;
+            }
+        }
 
         $selected = in_array($list_item['e__id'], $already_selected);
         if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected && !$is_compact){
@@ -902,6 +911,10 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
         if(in_array($e__id, $CI->config->item('n___32145'))){
             continue; //Locked Dropdown
         }
+        $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+            continue;
+        }
 
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
         if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
@@ -965,6 +978,10 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 
             if(in_array($e__id, $CI->config->item('n___32145'))){
                 continue; //Locked Dropdown
+            }
+            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+                continue;
             }
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
