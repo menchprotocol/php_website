@@ -845,16 +845,19 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         }
 
 
-        if(!$access_locked){
-            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( ( $has_selected && !$selected ) || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">';
-            $ui .= '<span class="inner_headline">'.( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'].(in_array($list_item['e__id'], $CI->config->item('n___32145')) ? '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>' : '').'</span>';
-            if($selected){
-                $ui .= '<span class="icon-block-sm checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>';
+        $headline = '<span class="inner_headline">';
+        $headline .= ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'];
+        if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
+            $headline .= '<span class="icon-block-xs float_right" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
+        }
+        $headline .= '</span>';
+
+        if($selected){
+            if($access_locked){
+                $ui .= '<span class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
+            } else {
+                $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</a>';
             }
-            if(isset($e___11035[$list_item['e__id']]) && strlen($e___11035[$list_item['e__id']]['m__message']) ){
-                $ui .= '<span class="doregular info_blob"><span>'.$e___11035[$list_item['e__id']]['m__message'].'</span></span>';
-            }
-            $ui .= '</a>';
         }
 
         if(!$selected){
