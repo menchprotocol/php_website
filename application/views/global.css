@@ -2878,6 +2878,9 @@ h4.main__title{
     padding: 0 1px;
     table-layout: fixed;
     line-height: 169%;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .view_6255 .card_covers .icon-block-sm {
