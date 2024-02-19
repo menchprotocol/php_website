@@ -2002,7 +2002,6 @@ label {
 }
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
-    background-color: #EFEFEF;
     border-radius: 0;
 }
 .list-radio-select .selection_preview.list-group-item.active {
