@@ -908,9 +908,9 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
     $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block">'.$e___4527[$cache_e__id]['m__cover'].'</span>'.$e___4527[$cache_e__id]['m__title'].( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '' /* '<span class="doregular info_blob">'.$e___11035[$cache_e__id]['m__message'].'</span>' */ : '' ).'</div>';
 
 
-    foreach($e___this as $cache_e__id => $m) {
+    foreach($e___this as $e__id => $m) {
 
-        if(in_array($cache_e__id, $CI->config->item('n___32145'))){
+        if(in_array($e__id, $CI->config->item('n___32145'))){
             continue; //Locked Dropdown
         }
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
@@ -918,7 +918,7 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
             continue;
         }
 
-        $ui .= '<a class="dropdown-item main__title optiond_'.$cache_e__id.' '.( $cache_e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$cache_e__id.'" onclick="update_form_select('.$cache_e__id.', '.$cache_e__id.', 0, '.intval($show_title).')"><span class="content_'.$cache_e__id.'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '' /* '<span class="doregular info_blob">'.$e___11035[$cache_e__id]['m__message'].'</span>' */ : '' ).'</a>';
+        $ui .= '<a class="dropdown-item main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.', 0, '.intval($show_title).')"><span class="content_'.$e__id.'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '' /* '<span class="doregular info_blob">'.$e___11035[$e__id]['m__message'].'</span>' */ : '' ).'</a>';
 
 
     }
@@ -974,9 +974,9 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 
         $ui .= '<div class="dropdown-menu dropmenu_instant_'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'" aria-labelledby="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'">';
 
-        foreach($e___this as $cache_e__id => $m) {
+        foreach($e___this as $e__id => $m) {
 
-            if(in_array($cache_e__id, $CI->config->item('n___32145'))){
+            if(in_array($e__id, $CI->config->item('n___32145'))){
                 continue; //Locked Dropdown
             }
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
@@ -985,10 +985,10 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
             }
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-            $removal_option = in_array($cache_e__id, $CI->config->item('n___42850'));
+            $removal_option = in_array($e__id, $CI->config->item('n___42850'));
 
             if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<a class="dropdown-item drop_item_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$cache_e__id.'_'.$o__id.'_'.$x__id.' '.( $cache_e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$cache_e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$cache_e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '' /* '<span class="doregular info_blob">'.$e___11035[$cache_e__id]['m__message'].'</span>' */ : '' ).'</a>';
+                $ui .= '<a class="dropdown-item drop_item_instant_'.$e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '' /* '<span class="doregular info_blob">'.$e___11035[$e__id]['m__message'].'</span>' */ : '' ).'</a>';
             }
 
         }
