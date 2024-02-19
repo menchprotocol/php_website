@@ -1674,8 +1674,8 @@ label {
 .focus-cover .inner-content .center .main__title { font-size: 2.1em !important; }
 
 .inner-content .center .main__title {
-    overflow-y: hidden;
-    display: block;
+    overflow-y: hidden !important;
+    display: block !important;
 }
 
 .icon-block-sm img{
