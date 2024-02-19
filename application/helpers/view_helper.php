@@ -742,6 +742,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
      * */
 
     $CI =& get_instance();
+    $focus__n = $CI->config->item('n___'.$focus_id);
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
     $e___11035 = $CI->config->item('e___11035'); //Summary
     $e___4527 = $CI->config->item('e___4527'); //Memory
@@ -764,16 +765,6 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     }
 
     $already_selected = array();
-    $selection_ids = array();
-    $selection_options = $CI->X_model->fetch(array(
-        'x__following' => $focus_id,
-        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ), array('x__follower'), 0, 0, array('x__weight' => 'ASC'));
-    foreach($selection_options as $list_item){
-        array_push($selection_ids, $list_item['e__id']);
-    }
 
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
@@ -785,9 +776,9 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     if($down_e__id > 0){
 
         //Source Focus:
-        if(count($selection_ids)){
+        if(count($focus__n)){
             foreach($CI->X_model->fetch(array(
-                'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+                'x__following IN (' . join(',', $focus__n) . ')' => null, //All possible answers
                 'x__follower' => $down_e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -799,7 +790,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         if(!count($already_selected) && $single_select && superpower_unlocked()){
             //FIND DEFAULT if set in session of this user:
             $var_id = @$CI->session->userdata('session_custom_ui_'.$focus_id);
-            foreach($selection_ids as $e__id2){
+            foreach($focus__n as $e__id2){
                 if($var_id==$e__id2){
                     $already_selected = array($e__id2);
                     break;
@@ -811,7 +802,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         //Idea focus:
         foreach($CI->X_model->fetch(array(
-            'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
+            'x__following IN (' . join(',', $focus__n) . ')' => null, //All possible answers
             'x__next' => $right_i__id,
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -829,29 +820,27 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
 
-    foreach($selection_options as $list_item){
+    foreach($CI->config->item('e___'.$focus_id) as $list_item_e__id => $m){
 
         //Has superpower?
-        if(isset($e___42179[$list_item['e__id']]['m__following']) && count($e___42179[$list_item['e__id']]['m__following'])){
-            $superpowers_required = array_intersect($CI->config->item('n___10957'), $e___42179[$list_item['e__id']]['m__following']);
-            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-                continue;
-            }
+        $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
+        if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+            continue;
         }
 
-        $selected = in_array($list_item['e__id'], $already_selected);
+        $selected = in_array($list_item_e__id, $already_selected);
         if(!$overflow_reached && $unselected_count>=$overflow_unselected_limit && !$selected && !$is_compact){
             $overflow_reached = true;
         }
 
-        $headline = ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'];
+        $headline = ( strlen($m['m__cover']) ? '<span class="icon-block change-results">'.$m['m__cover'].'</span>' : '' ).$m['m__title'];
 
-        if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
+        if(in_array($list_item_e__id, $CI->config->item('n___32145'))){
             //System Lock
             $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
         if(!$access_locked){
-            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'"><span class="inner_headline">'.$headline.'</span>'.( $selected ? '<span class="icon-block-sm checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>' : '' ).(isset($e___11035[$list_item['e__id']]) && strlen($e___11035[$list_item['e__id']]['m__message']) ? '<span class="doregular info_blob"><span>'.$e___11035[$list_item['e__id']]['m__message'].'</span></span>' : '').'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item_e__id.','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item_e__id.' '.$exclude_fonts.' item-'.$list_item_e__id.' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($m['m__title']).'"><span class="inner_headline">'.$headline.'</span>'.( $selected ? '<span class="icon-block-sm checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>' : '' ).(isset($e___11035[$list_item_e__id]) && strlen($e___11035[$list_item_e__id]['m__message']) ? '<span class="doregular info_blob"><span>'.$e___11035[$list_item_e__id]['m__message'].'</span></span>' : '').'</a>';
         }
 
         if(!$selected){
