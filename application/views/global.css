@@ -2892,6 +2892,7 @@ h4.main__title{
 .info_blob{
     font-size: 0.89em !important;
     color: #999999 !important;
+    padding-left: 5px;
 }
 
 .edge-cover .card_covers {
