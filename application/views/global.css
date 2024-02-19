@@ -2319,7 +2319,7 @@ input.form-control {
     padding: 0;
 }
 .mini-cover{
-    margin: 0 0 2px 0 !important;
+    margin:0 !important;
 }
 .focus-cover{
     margin:13px 0 0 !important;
