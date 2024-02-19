@@ -2892,11 +2892,11 @@ h4.main__title{
     height:21px !important;
 }
 .info_blob{
-    font-size: 0.89em !important;
+    font-size: 0.75em !important;
     color: #999999 !important;
     margin-left: 5px;
     display: inline;
-    border-bottom: 1px dotted #999999;
+    font-style: italic;
 }
 
 .edge-cover .card_covers {
