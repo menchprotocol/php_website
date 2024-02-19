@@ -2345,6 +2345,7 @@ input.form-control {
     background-color: #FFFFFF;
     font-weight: bold;
     line-height: 134%;
+    border-bottom: 1px dotted #999999 !important;
 }
 .coin-12274.mini-cover .inner-content {
     text-align: center !important;
