@@ -500,16 +500,19 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
 }
 
 
-function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
+function i_is_discoverable($i, $log_tnx, $check_inventory = true){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
     $double_check = 'if you believe you have this source then make sure to login with the same email address that we sent you the email.';
 
+    if(in_array($i['i__privacy'], $CI->config->item('n___42432'))){
+        //Public Ideas
+    }
     //Any Inclusion Any Requirements?
     $fetch_13865 = $CI->X_model->fetch(array(
-        'x__next' => $i__id,
+        'x__next' => $i['i__id'],
         'x__type' => 13865, //Must Include Any
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -536,13 +539,13 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
             }
         }
         if(!$meets_inc1_prereq && $x__creator > 0){
-            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 13865, $x__following);
+            return access_blocked($log_tnx, $excludes_message,$x__creator, $i['i__id'], 13865, $x__following);
         }
     }
 
     //Any Inclusion All Requirements?
     $fetch_27984 = $CI->X_model->fetch(array(
-        'x__next' => $i__id,
+        'x__next' => $i['i__id'],
         'x__type' => 27984, //Must Include All
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -575,13 +578,13 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, $excludes_message,$x__creator, $i__id, 27984, $x__following);
+            return access_blocked($log_tnx, $excludes_message,$x__creator, $i['i__id'], 27984, $x__following);
         }
     }
 
     //Any Exclusion All Requirements?
     $fetch_26600 = $CI->X_model->fetch(array(
-        'x__next' => $i__id,
+        'x__next' => $i['i__id'],
         'x__type' => 26600, //Must Exclude All
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
@@ -611,15 +614,15 @@ function i_is_discoverable($i__id, $log_tnx, $check_inventory = true){
         }
 
         if(!$excludes_all){
-            return access_blocked($log_tnx, $excludes_message, $x__creator, $i__id, 26600, $x__following);
+            return access_blocked($log_tnx, $excludes_message, $x__creator, $i['i__id'], 26600, $x__following);
         }
     }
 
 
     //Any Limits on Selection?
-    if($check_inventory && !i_spots_remaining($i__id)){
+    if($check_inventory && !i_spots_remaining($i['i__id'])){
         //Limit is reached, cannot complete this at this time:
-        return access_blocked($log_tnx, "You cannot discover this idea because there are no spots remaining.", $x__creator, $i__id, 26189, 0);
+        return access_blocked($log_tnx, "You cannot discover this idea because there are no spots remaining.", $x__creator, $i['i__id'], 26189, 0);
     }
     
 

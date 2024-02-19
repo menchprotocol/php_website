@@ -19,7 +19,7 @@ $is_next = $this->X_model->fetch(array(
 
 //Filter Next Ideas:
 foreach($is_next as $in_key => $in_value){
-    $i_is_discoverable = i_is_discoverable($in_value['i__id'], false);
+    $i_is_discoverable = i_is_discoverable($in_value, false);
     if(!$i_is_discoverable['status']){
         //Remove this option:
         unset($is_next[$in_key]);
@@ -228,7 +228,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
                 'x__previous' => $followings_i['i__id'],
             ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
             foreach($query_subset as $key=>$value){
-                $i_is_discoverable = i_is_discoverable($value['i__id'], false);
+                $i_is_discoverable = i_is_discoverable($value, false);
                 if(!$i_is_discoverable['status'] || !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
