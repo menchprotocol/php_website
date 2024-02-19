@@ -1258,6 +1258,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
     $(".idea_link_direction, .idea_link_unlink, .idea_link_type").addClass('hidden');
     var focus_i_id = ( fetch_int_val('#focus_card')==12273 ? fetch_int_val('#focus_id') : 0 );
+    $("#modal31911 .save_results").html('');
 
     if(!passon_i__id){
 
