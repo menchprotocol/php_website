@@ -1400,6 +1400,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
     $CI =& get_instance();
     $coins_count = array();
     $body_content = '';
+    $member_e = superpower_unlocked();
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273">';
@@ -1407,6 +1408,10 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
 
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
         if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+            continue;
+        }
+        if(in_array($x__type, $CI->config->item('n___42376')) && !$member_e){
+            //Private content without being a member, so dont even show the counters:
             continue;
         }
 
