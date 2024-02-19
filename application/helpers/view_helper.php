@@ -918,10 +918,8 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
             continue;
         }
 
-        $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
-        if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-            $ui .= '<a class="dropdown-item main__title optiond_'.$cache_e__id.' '.( $cache_e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$cache_e__id.'" onclick="update_form_select('.$cache_e__id.', '.$cache_e__id.', 0, '.intval($show_title).')"><span class="content_'.$cache_e__id.'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '' /* '<span class="doregular info_blob">'.$e___11035[$cache_e__id]['m__message'].'</span>' */ : '' ).'</a>';
-        }
+        $ui .= '<a class="dropdown-item main__title optiond_'.$cache_e__id.' '.( $cache_e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$cache_e__id.'" onclick="update_form_select('.$cache_e__id.', '.$cache_e__id.', 0, '.intval($show_title).')"><span class="content_'.$cache_e__id.'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '' /* '<span class="doregular info_blob">'.$e___11035[$cache_e__id]['m__message'].'</span>' */ : '' ).'</a>';
+
 
     }
 
