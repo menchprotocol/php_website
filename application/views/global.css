@@ -369,7 +369,7 @@ a.btn, .btn.dropdown-toggle, label.btn {
 }
 
 .dropdown .btn {
-    padding:5px 0 !important;
+    padding:0 !important;
 }
 
 .sign_text{
