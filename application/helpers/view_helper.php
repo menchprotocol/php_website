@@ -847,10 +847,13 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         $headline = '<span class="inner_headline">';
         $headline .= ( strlen($list_item['e__cover']) ? '<span class="icon-block change-results">'.view_cover($list_item['e__cover']).'</span>' : '' ).$list_item['e__title'];
+        $headline .= '</span>';
+        if($selected){
+            $headline .= '<span class="icon-block-sm checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>';
+        }
         if(in_array($list_item['e__id'], $CI->config->item('n___32145'))){
             $headline .= '<span class="icon-block-xs" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
-        $headline .= '</span>';
 
         if($access_locked){
             $ui .= '<span class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
