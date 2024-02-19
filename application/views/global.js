@@ -374,14 +374,16 @@ function toggle_pills(x__type_hash){
         return false;
     }
 
-    if(!loaded_pills.includes(x__type_hash)){
-        pills_loading = x__type_hash;
-    }
+
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
         x__type = parseInt($('.handle_nav_'+x__type_hash).attr('x__type'));
     } else {
         console.log('ERROR: #'+x__type_hash+' is not a valid menu.');
         return false;
+    }
+
+    if(!loaded_pills.includes(x__type_hash)){
+        pills_loading = x__type_hash;
     }
 
     var x__follower = 0;

@@ -200,7 +200,7 @@ if(isset($_GET['delete'])){
 
 
 
-//Breadcrump for logged in users
+//Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
 
 if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){

@@ -1170,7 +1170,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
     );
 
     $ui_template = array(
-        4256 => '<spanaa href="%s" target="_blank" class="ignore-click"><span class="url_truncate">%s</span></spanaa>',
+        4256 => '<spanaa href="%s" target="_blank"><span class="url_truncate">%s</span></spanaa>',
         31834 => '<spanaa href="/%s" data-toggle="popover" class="ref_idea">%s</spanaa>',
         42337 => '<spanaa href="/%s" data-toggle="popover" class="ref_idea">%s</spanaa>',
         31835 => '<spanaa href="/@%s" data-toggle="popover" class="ref_source">%s</spanaa>',

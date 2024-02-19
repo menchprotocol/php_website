@@ -606,18 +606,17 @@ class Ajax extends CI_Controller
 
 
                         //Link to Source as Uploader:
-                        $link_type = ( $etag_detected ? 42849 : 42659 );
                         if(!count($this->X_model->fetch(array(
                             'x__following' => $member_e['e__id'],
                             'x__follower' => $submitted_media['e__id'],
-                            'x__type' => $link_type,
+                            'x__type IN (' . join(',', $this->config->item('n___42657')) . ')' => null, //Uploads
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
                                 'x__creator' => $member_e['e__id'],
                                 'x__following' => $member_e['e__id'],
                                 'x__follower' => $submitted_media['e__id'],
-                                'x__type' => $link_type,
+                                'x__type' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
                                 'x__message' => $submitted_media['playback_code'],
                             ));
                         }
