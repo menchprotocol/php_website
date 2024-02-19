@@ -4469,10 +4469,10 @@ main {
     display: block;
 }
 
-.is_compact.list-radio-select .list-group-item,
-.is_compact.list-radio-select .list-group-item .zq6255,
-.is_compact.list-radio-select .list-group-item .zq12273,
-.is_compact.list-radio-select .list-group-item .zq12274{
+.is_compact.list-radio-select .list-group-item:not(.active),
+.is_compact.list-radio-select .list-group-item:not(.active) .zq6255,
+.is_compact.list-radio-select .list-group-item:not(.active) .zq12273,
+.is_compact.list-radio-select .list-group-item:not(.active) .zq12274{
     color:#999999 !important;
 }
 
