@@ -1269,7 +1269,6 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $('#modal31911 .created_i__id').val(0);
         $("#modal31911 .unsaved_warning").val('');
         $("#modal31911 .dynamic_item, #modal31911 .save_x__frame").addClass('hidden');
-        $("#modal31911 .dynamic_editing_loading").removeClass('hidden');
         $('#modal31911 .save_i__id, #modal31911 .save_x__id').val(0);
 
         //Are we adding an idea for a target action tab?
@@ -1442,6 +1441,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
 function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
 
+    $(".dynamic_editing_loading").removeClass('hidden');
     var created_i__id = 0;
 
     $.post("/ajax/i_editor_load", {
@@ -1450,7 +1450,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
         current_i__type: current_i__type,
     }, function (data) {
 
-        $("#modal31911 .dynamic_editing_loading").addClass('hidden');
+        $(".dynamic_editing_loading").addClass('hidden');
 
         if (data.status) {
 
@@ -2041,7 +2041,6 @@ function e_editor_load(e__id = 0, x__id = 0){
 
     $('#modal31912 .save_results').html('');
     $("#modal31912 .dynamic_item, #modal31912 .save_x__frame").addClass('hidden');
-    $("#modal31912 .dynamic_editing_loading").removeClass('hidden');
     $("#modal31912 .dynamic_item").attr('d__id','').attr('d_x__id','');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
@@ -2087,8 +2086,6 @@ function e_editor_load(e__id = 0, x__id = 0){
         e__id: e__id,
         x__id: x__id
     }, function (data) {
-
-        $("#modal31912 .dynamic_editing_loading").addClass('hidden');
 
         if (data.status) {
 
