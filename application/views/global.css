@@ -1926,10 +1926,9 @@ label {
     margin: 0;
     display: block;
     clear: both;
-    border-bottom: 1px solid #999999;
     border-radius: 0;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
+    margin-bottom: 13px;
+    padding-bottom: 13px;
 }
 .is_compact .itemsetting{
     margin-left: 0 !important;
