@@ -2787,6 +2787,8 @@ function isNormalInteger(str) {
 
 
 function update_form_select(element_id, new_e__id, initial_loading, show_title){
+    console.log('update_form_select: '+element_id);
+
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
     $('.dropd_form_' + element_id + ' .optiond_'+new_e__id).addClass('active');
@@ -2798,9 +2800,9 @@ function update_form_select(element_id, new_e__id, initial_loading, show_title){
         $('.dropd_form_' + element_id + ' .current_content span').html($('.dropd_form_' + element_id + ' .content_'+new_e__id+' span').html());
     }
     if(!initial_loading){
-        has_unsaved_changes = true;
         if(element_id==4737){
             //Changing idea type would re-load dynamic fields based on type:
+            has_unsaved_changes = true;
             console.log('Reloading: '+element_id+' with value: '+' NEW ID '+new_e__id+' / '+$('#modal31911 .created_i__id').val());
             load_i_dynamic($('#modal31911 .created_i__id').val(), 0, new_e__id, false);
         }
