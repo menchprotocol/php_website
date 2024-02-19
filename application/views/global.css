@@ -1937,6 +1937,7 @@ label {
     color: #000000 !important;
 }
 
+
 .dropdown-item.intro_header:hover,
 .dropdown-item.intro_header:hover i,
 .dropdown-item.intro_header:hover .main__title,
@@ -1945,6 +1946,9 @@ label {
 .dropdown-item.intro_header {
     color: #999999 !important;
     background-color: #FFFFFF !important;
+}
+.dropdown-item.intro_header {
+    border-bottom: 1px solid #999999;
 }
 
 
