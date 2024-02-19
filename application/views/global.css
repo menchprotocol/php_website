@@ -2872,15 +2872,12 @@ h4.main__title{
 
 .card_covers {
     width: 100%;
-    height: 48px;
+    min-height: 48px;
     text-align: left;
     margin: 0;
     padding: 0 1px;
     table-layout: fixed;
     line-height: 169%;
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
 }
 
 .view_6255 .card_covers .icon-block-sm {
