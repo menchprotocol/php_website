@@ -717,10 +717,6 @@ function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
 
     $headline = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].': ';
 
-    if(isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message'])){
-        //$headline .= '<span class="icon-block-sm" title="'.$e___11035[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>';
-        $headline .= '<span class="doregular info_blob"><span>'.$e___11035[$dynamic_e__id]['m__message'].'</span></span>';
-    }
     if(in_array($dynamic_e__id, $CI->config->item('n___42174'))){
         $headline .= '<span class="icon-block-sm" title="'.$e___11035[42174]['m__message'].'" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">'.$e___11035[42174]['m__cover'].'</span>';
     }
@@ -729,6 +725,10 @@ function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
     }
     if($selected_e && !in_array($selected_e['e__privacy'], $CI->config->item('n___33240'))){
         $headline .= '<span class="icon-block-sm" title="'.$e___6177[$selected_e['e__privacy']]['m__title'].'" data-toggle="tooltip" class="grey" data-placement="top">'.$e___6177[$selected_e['e__privacy']]['m__cover'].'</span>';
+    }
+
+    if(isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message'])){
+        $headline .= '<span class="doregular info_blob"><span>'.$e___11035[$dynamic_e__id]['m__message'].'</span></span>';
     }
 
     return $headline;
@@ -851,10 +851,9 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
         if(!$access_locked){
-            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.( $selected ? '<span class="icon-block-sm checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>' : '' ).'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.( $selected ? '<span class="icon-block-sm checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>' : '' ).(isset($e___11035[$list_item['e__id']]) && strlen($e___11035[$list_item['e__id']]['m__message']) ? '<span class="doregular info_blob"><span>'.$e___11035[$list_item['e__id']]['m__message'].'</span></span>' : '').'</a>';
         }
         if(in_array($list_item['e__id'], $CI->config->item('n___11035')) && strlen($e___11035[$list_item['e__id']]['m__message'])>0){
-            //$headline .= '<span class="icon-block-sm" title="'.$e___11035[$list_item['e__id']]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>';
             $headline .= '<span class="doregular info_blob"><span>'.$e___11035[$list_item['e__id']]['m__message'].'</span></span>';
         }
 
@@ -910,7 +909,6 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
         }
 
         $ui .= '<a class="dropdown-item main__title optiond_'.$e__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="update_form_select('.$cache_e__id.', '.$e__id.', 0, '.intval($show_title).')"><span class="content_'.$e__id.'"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</span>'.( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="doregular info_blob"><span>'.$e___11035[$e__id]['m__message'].'</span></span>' : '' ).'</a>';
-
 
     }
 
@@ -981,9 +979,8 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             $removal_option = in_array($e__id, $CI->config->item('n___42850'));
 
-            if(!count($superpowers_required) || superpower_unlocked(end($superpowers_required))){
-                $ui .= '<a class="dropdown-item drop_item_instant_'.$e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="doregular info_blob"><span>'.$e___11035[$e__id]['m__message'].'</span></span>' : '' ).'</a>';
-            }
+            $ui .= '<a class="dropdown-item drop_item_instant_'.$e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="doregular info_blob"><span>'.$e___11035[$e__id]['m__message'].'</span></span>' : '' ).'</a>';
+
 
         }
 
