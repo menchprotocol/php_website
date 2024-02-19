@@ -719,7 +719,7 @@ function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
 
     if(isset($e___11035[$dynamic_e__id]) && strlen($e___11035[$dynamic_e__id]['m__message'])){
         //$headline .= '<span class="icon-block-sm" title="'.$e___11035[$dynamic_e__id]['m__message'].'" data-toggle="tooltip" data-placement="top">'.@$e___11035[11035]['m__cover'].'</span>';
-        $headline .= '<span class="doregular info_blob">'.$e___11035[$dynamic_e__id]['m__message'].'</span>';
+        //$headline .= '<span class="doregular info_blob">'.$e___11035[$dynamic_e__id]['m__message'].'</span>';
     }
     if(in_array($dynamic_e__id, $CI->config->item('n___42174'))){
         $headline .= '<span class="icon-block-sm" title="'.$e___11035[42174]['m__message'].'" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">'.$e___11035[42174]['m__cover'].'</span>';
@@ -851,7 +851,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
         }
         if(in_array($list_item['e__id'], $CI->config->item('n___11035')) && strlen($e___11035[$list_item['e__id']]['m__message'])>0){
             //$headline .= '<span class="icon-block-sm" title="'.$e___11035[$list_item['e__id']]['m__message'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[11035]['m__cover'].'</span>';
-            $headline .= '<span class="doregular info_blob">'.$e___11035[$list_item['e__id']]['m__message'].'</span>';
+            //$headline .= '<span class="doregular info_blob">'.$e___11035[$list_item['e__id']]['m__message'].'</span>';
         }
 
         if($selected){
