@@ -183,7 +183,7 @@ echo '<div class="bottom_spacer">&nbsp;</div>';
     .container_content .line {
         color: #FFFFFF !important;
     }
-    .cover-content{
+    .cover-wrapper{
         background-color: #FFFFFF !important;
     }
 </style>
