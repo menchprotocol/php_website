@@ -2787,7 +2787,7 @@ function isNormalInteger(str) {
 
 
 function update_form_select(element_id, new_e__id, initial_loading, show_title){
-    console.log('update_form_select: '+element_id);
+    console.log('update_form_select: '+element_id+'/'+new_e__id);
 
     //Toggles UI for FORM Selector
     $('.dropd_form_' + element_id + ' .dropdown-item').removeClass('active');
