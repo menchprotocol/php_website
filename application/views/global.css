@@ -1673,6 +1673,11 @@ label {
 .inner-content .center .main__title { font-size: 1.55em !important; }
 .focus-cover .inner-content .center .main__title { font-size: 2.1em !important; }
 
+.inner-content .center .main__title {
+    overflow-y: hidden;
+    display: block;
+}
+
 .icon-block-sm img{
     line-height: 100%;
     width: 21px !important;
