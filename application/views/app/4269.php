@@ -150,15 +150,6 @@ if(superpower_unlocked()) {
 
         $(document).ready(function () {
 
-            //Watch for email address change:
-            $('#account_email_phone').on('input',function(e){
-                if($(this).length){
-                    $('#step2buttons').removeClass('hidden');
-                } else {
-                    $('#step2buttons').addClass('hidden');
-                }
-            });
-
             goto_step(2);
 
             $(document).keyup(function (e) {
@@ -327,9 +318,10 @@ if(superpower_unlocked()) {
 
                 <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
 
-                <span id="step2buttons" class="<?= isset($_GET['account_email_phone']) ? '' : ' hidden ' ?>" >
+
+                <span>
                     <a href="javascript:void(0)" onclick="e_verify_contact()" id="email_check_next" class="controller-nav round-btn pull-right" title="<?= $e___11035[26104]['m__title'] ?>"><?= $e___11035[26104]['m__cover'] ?></a>
-                    </span>
+                </span>
 
 
                 <div class="doclear">&nbsp;</div>
