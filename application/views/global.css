@@ -2345,7 +2345,7 @@ input.form-control {
     background-color: #FFFFFF;
     font-weight: bold;
     line-height: 134%;
-    border-bottom: 1px dotted #999999 !important;
+    border-bottom: 1px solid #999999 !important;
 }
 .coin-12274.mini-cover .inner-content {
     text-align: center !important;
@@ -2892,11 +2892,11 @@ h4.main__title{
     height:21px !important;
 }
 .info_blob{
-    font-size: 0.75em !important;
+    font-size: 0.89em !important;
     color: #999999 !important;
     margin-left: 5px;
     display: inline;
-    font-style: italic;
+    border-bottom: 1px dotted #999999;
 }
 
 .edge-cover .card_covers {
