@@ -1606,6 +1606,8 @@ label {
 .block-menu .dropdown-item .icon-block {
     height: 30px;
 }
+.dropdown span.icon-block-sm{ height: 28px !important; }
+
 
 .custom-popover {
     --bs-popover-max-width: 233px;
