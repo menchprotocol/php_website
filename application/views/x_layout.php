@@ -12,7 +12,7 @@ if(write_privacy_i($focus_i['i__hashtag']) && superpower_unlocked(10939)){
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
     'x__previous' => $focus_i['i__id'],
 ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
@@ -92,7 +92,7 @@ if(isset($_GET['delete'])){
     $edited = 0;
     $edited_sources = 0;
     foreach($this->I_model->fetch(array(
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ), 0) as $i_fix){
 
         $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
@@ -134,7 +134,7 @@ if(isset($_GET['delete'])){
 
 } elseif(isset($_GET['go3'])) {
     foreach($this->I_model->fetch(array(
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'i__id' => 20895, //ACTIVE
     ), 0) as $i_fix){
         $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
@@ -223,7 +223,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
             //Does this have a follower list?
             $query_subset = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
                 'x__previous' => $followings_i['i__id'],
             ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
@@ -265,7 +265,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
 if(!$breadcrum_content){
     //See if any visible top ideas:
     foreach($this->X_model->fetch(array(
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
         'x__next' => $focus_i['i__id'],

@@ -96,7 +96,7 @@ class Ajax extends CI_Controller
             $i_new = $this->I_model->create(array(
                 'i__message' => null,
                 'i__type' => $_POST['current_i__type'],
-                'i__privacy' => 42636, //Pre-drafting idea
+                'i__access' => 42636, //Pre-drafting idea
             ), $member_e['e__id']);
 
             $i__id = $i_new['i__id'];
@@ -284,7 +284,7 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid idea Type',
             ));
-        } elseif (!isset($_POST['save_i__privacy']) || !in_array($_POST['save_i__privacy'], $this->config->item('n___31004'))) {
+        } elseif (!isset($_POST['save_i__access']) || !in_array($_POST['save_i__access'], $this->config->item('n___31004'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid idea Privacy',
@@ -314,7 +314,7 @@ class Ajax extends CI_Controller
 
 
         //Might be new if pre-drafting:
-        if( $is[0]['i__privacy']==42636 ){
+        if( $is[0]['i__access']==42636 ){
 
             //See if references only:
             if(strlen($_POST['save_i__message']) && !$has_media && !substr_count($_POST['save_i__message'], "\n") && intval($_POST['save_x__type']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
@@ -327,7 +327,7 @@ class Ajax extends CI_Controller
                         $valid_hashtag = false;
                         foreach($this->I_model->fetch(array(
                             'LOWER(i__hashtag)' => strtolower(substr($word, 1)),
-                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                         )) as $i_found){
                             $found_hashtag = true;
                             $valid_hashtag = true;
@@ -385,10 +385,10 @@ class Ajax extends CI_Controller
             //Update new idea fields:
             $this->I_model->update($is[0]['i__id'], array(
                 'i__type' => $_POST['save_i__type'],
-                'i__privacy' => $_POST['save_i__privacy'],
+                'i__access' => $_POST['save_i__access'],
             ), true, $member_e['e__id']);
             $is[0]['i__type'] = trim($_POST['save_i__type']);
-            $is[0]['i__privacy'] = trim($_POST['save_i__privacy']);
+            $is[0]['i__access'] = trim($_POST['save_i__access']);
         }
 
 
@@ -2427,7 +2427,7 @@ class Ajax extends CI_Controller
         if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
             $referrer_i = $this->I_model->fetch(array(
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'i__id' => $_POST['sign_i__id'],
             ));
         } else {
@@ -2676,7 +2676,7 @@ class Ajax extends CI_Controller
                 //idea list:
                 $is_next = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                     'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                     'x__previous' => $_POST['s__id'],
                 ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
@@ -2712,7 +2712,7 @@ class Ajax extends CI_Controller
         //valid idea?
         $is = $this->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)){
             return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #'.$focus_i__hashtag.' is not active</div>');
@@ -2773,7 +2773,7 @@ class Ajax extends CI_Controller
         $member_e = superpower_unlocked();
         $is = $this->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
 
         if(!$member_e){
@@ -2894,7 +2894,7 @@ class Ajax extends CI_Controller
             $order = 0;
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                 'x__previous' => $_POST['focus_id'],
             ), array('x__next'), 0, 0, array('i__message' => 'ASC')) as $x) {
@@ -2968,7 +2968,7 @@ class Ajax extends CI_Controller
         //Validate Idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(count($is)<1){
             return view_json(array(
@@ -3028,7 +3028,7 @@ class Ajax extends CI_Controller
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(count($is) < 1){
             return view_json(array(
@@ -3079,7 +3079,7 @@ class Ajax extends CI_Controller
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
 
         //Log Skipped:
@@ -3105,7 +3105,7 @@ class Ajax extends CI_Controller
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         $member_e = superpower_unlocked();
 
@@ -3187,7 +3187,7 @@ class Ajax extends CI_Controller
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(count($is) < 1){
             return view_json(array(
@@ -3524,7 +3524,7 @@ class Ajax extends CI_Controller
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if (!count($is)) {
             return view_json(array(
@@ -3725,7 +3725,7 @@ class Ajax extends CI_Controller
                                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                                 'x__following' => $es[0]['e__id'],
                                 'i__type' => $x__type3,
-                                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
@@ -3733,7 +3733,7 @@ class Ajax extends CI_Controller
                             //See stats for this idea:
                             $sub_counter = $this->I_model->fetch(array(
                                 'i__type' => $x__type3,
-                                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                                 'i__id IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
                             ), 0, 0, array(), 'COUNT(i__id) as totals');
 
@@ -3741,7 +3741,7 @@ class Ajax extends CI_Controller
 
                             $sub_counter = $this->I_model->fetch(array(
                                 'i__type' => $x__type3,
-                                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             ), 0, 0, array(), 'COUNT(i__id) as totals');
 
                         }

@@ -14,7 +14,7 @@ foreach($this->I_model->fetch(array(
     //Fetch all followers for this OR:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
         'x__previous' => $in['i__id'],
     ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $down_or){

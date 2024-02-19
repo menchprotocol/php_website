@@ -11,7 +11,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
         //IDEAS
         $unique = $this->X_model->fetch(array(
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
         ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -64,7 +64,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
 
             //IDEAS
             $query = $this->X_model->fetch(array(
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $time_start,

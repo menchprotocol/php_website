@@ -192,7 +192,7 @@ class I_model extends CI_Model
                     $x__type = 10644; //Idea updated Outcome
                     $x__message = update_description($before_data[0][$key], $value);
 
-                } elseif($key=='i__privacy'){
+                } elseif($key=='i__access'){
 
                     $x__type = 41997; //Idea Access Updated
                     $e___31004 = $this->config->item('e___31004'); //Idea Access
@@ -266,7 +266,7 @@ class I_model extends CI_Model
             //Validate this migration ID:
             $is = $this->I_model->fetch(array(
                 'LOWER(i__hashtag)' => strtolower($migrate_s__handle),
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ));
 
             if(count($is)){
@@ -457,7 +457,7 @@ class I_model extends CI_Model
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         foreach($this->X_model->fetch(array(
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__previous' => $i['i__id'],
@@ -636,7 +636,7 @@ class I_model extends CI_Model
 
         $is_next = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__previous' => $i__id,
         ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));

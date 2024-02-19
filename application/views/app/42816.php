@@ -10,7 +10,7 @@ if(isset($_GET['i__hashtag'])){
     foreach($this->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
         'i__type' => 32603, //Sign Agreement
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     )) as $i_sign){
 
         $found_i = true;

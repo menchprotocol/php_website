@@ -23,7 +23,7 @@ $id_prefix = array(
 
 //Add Ideas:
 $is = $this->I_model->fetch(array(
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ));
 foreach($is as $in){
 
@@ -39,7 +39,7 @@ foreach($is as $in){
     //Fetch Next Ideas:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
         'x__previous' => $in['i__id'],
     ), array('x__next'), 0, 0) as $next_i){
