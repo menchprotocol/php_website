@@ -287,7 +287,7 @@ class E_model extends CI_Model
             'x__following' => $x__following,
             'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
         //Remove if not in the secondary group:

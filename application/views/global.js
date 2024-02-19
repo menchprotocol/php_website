@@ -1356,7 +1356,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     if(i__id){
 
         var current_i__type = $('.s__12273_'+i__id).attr('i__type');
-        var current_i__access = $('.s__12273_'+i__id).attr('i__access');
+        var current_i__privacy = $('.s__12273_'+i__id).attr('i__privacy');
 
         //Editig an existing idea:
         $('#modal31911 .save_i__id').val(i__id);
@@ -1379,7 +1379,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
         //See the default passed to the form:
         var current_i__type = 6677;
-        var current_i__access = 31005;
+        var current_i__privacy = 31005;
 
         //Hide hashtag:
         $('#modal31911 .hash_group').addClass('hidden');
@@ -1415,7 +1415,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     if(!passon_i__id){
 
         //Idea Privacy:
-        update_form_select(31004, current_i__access, 1, true);
+        update_form_select(31004, current_i__privacy, 1, true);
 
         //Idea Type:
         update_form_select(4737, current_i__type, 1, true);
@@ -1577,7 +1577,7 @@ function i_editor_save(){
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
         save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
-        save_i__access:    $('.dropd_form_31004').attr('selected_value').trim(),
+        save_i__privacy:    $('.dropd_form_31004').attr('selected_value').trim(),
         save_media:         [],
     };
 
@@ -1671,8 +1671,8 @@ function i_editor_save(){
             ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_x__id'], false);
 
             //Update Idea Privacy:
-            $('.s__12273_'+modify_data['save_i__id']).attr('i__access', modify_data['save_i__access']);
-            ui_instant_select(31004, modify_data['save_i__access'], modify_data['save_i__id'], modify_data['save_x__id'], false);
+            $('.s__12273_'+modify_data['save_i__id']).attr('i__privacy', modify_data['save_i__privacy']);
+            ui_instant_select(31004, modify_data['save_i__privacy'], modify_data['save_i__id'], modify_data['save_x__id'], false);
 
             //Update Handle & Href links if needed:
             if(old_handle!=new_handle){
@@ -2839,7 +2839,7 @@ function ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name){
     } else if(element_id==31004){
         //Idea Privacy:
         main_object_type = 12273;
-        main_object_update = 'i__access';
+        main_object_update = 'i__privacy';
     }
 
     if(main_object_type>0 && main_object_update){
@@ -2880,7 +2880,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
 
         //Deleting Idea:
         main_object_type = 12273;
-        main_object_update = 'i__access';
+        main_object_update = 'i__privacy';
 
         if(js_session_superpowers_unlocked.includes(10939)){
             var migrate_s__handle = prompt("Are you sure you want to permanently delete this idea?\nYou can reference #anotherIdea to migrate to or leave blank to delete permanently...", "#");
