@@ -1850,7 +1850,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     continue;
                 }
 
-                if(in_array($e__id_bottom_bar, $this->config->item('n___42376')) && !$member_e){
+                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$member_e){
                     //Private content without being a member, so dont even show the counters:
                     continue;
                 }
@@ -2380,14 +2380,18 @@ function view_card_e($x__type, $e, $extra_class = null)
             $ui .= $featured_sources;
 
             //Also Append bottom bar / main menu:
-            foreach($CI->config->item('e___31916') as $menu_id => $m_bottom_bar) {
+            foreach($CI->config->item('e___31916') as $e__id_bottom_bar => $m_bottom_bar) {
                 $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
                 if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                     continue;
                 }
+                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$member_e){
+                    //Private content without being a member, so dont even show the counters:
+                    continue;
+                }
 
-                $ui .= '<span class="hideIfEmpty '.( in_array($menu_id, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
-                $ui .= view_e_covers($menu_id,  $e['e__id']);
+                $ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
+                $ui .= view_e_covers($e__id_bottom_bar,  $e['e__id']);
                 $ui .= '</span>';
             }
         }
