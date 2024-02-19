@@ -2894,7 +2894,7 @@ h4.main__title{
     font-size: 0.89em !important;
     color: #999999 !important;
     margin-left: 5px;
-    display: inline-block;
+    display: inline;
     border-bottom: 1px dotted #999999;
 }
 
