@@ -362,9 +362,14 @@ li a {
 
 
 
+
 a.btn, .btn.dropdown-toggle, label.btn {
     padding:10px;
     text-decoration: none;
+}
+
+.dropdown .btn {
+    padding:5px 10px !important;
 }
 
 .sign_text{
