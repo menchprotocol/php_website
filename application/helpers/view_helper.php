@@ -1850,6 +1850,11 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     continue;
                 }
 
+                if(in_array($e__id_bottom_bar, $this->config->item('n___42376')) && !$member_e){
+                    //Private content without being a member, so dont even show the counters:
+                    continue;
+                }
+
                 $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
                 if(strlen($coins_ui)){
                     $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
