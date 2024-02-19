@@ -639,6 +639,11 @@ class X_model extends CI_Model
             $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
             foreach(array_intersect($this->config->item('n___'.$new_e__id), $this->config->item('n___42179')) as $dynamic_e__id){
 
+                $superpowers_required = array_intersect($this->config->item('n___10957'), $e___42179[$dynamic_e__id]['m__following']);
+                if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+                    continue;
+                }
+
                 //Let's determine the data type:
                 $data_types = array_intersect($e___42179[$dynamic_e__id]['m__following'], $this->config->item('n___4592'));
 
