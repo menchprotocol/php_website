@@ -1636,6 +1636,9 @@ label {
 .coin-12273 .icon-block-sm {
     height: 27px !important;
 }
+.focus-cover.coin-12273 .icon-block-sm {
+    height: 50px !important;
+}
 .icon-block img{
     line-height: 100%;
     width: 30px !important;
@@ -2889,7 +2892,7 @@ h4.main__title{
 }
 
 .view_6255 .card_covers .icon-block-sm {
-    width: 55px !important;
+    width: 44px !important;
 }
 .view_6255 .card_covers i {
     font-size: 2em !important;
