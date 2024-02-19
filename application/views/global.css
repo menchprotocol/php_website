@@ -3207,10 +3207,7 @@ h4.main__title{
 
     .show-max{display: none !important;}
     .show-min{display: inline-block !important;}
-    .info_blob{
-        display: block !important;
-        margin-left: 40px;
-    }
+
     .platform-navigation .block-sign-x{
         width:34px;
     }
