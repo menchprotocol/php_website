@@ -11,13 +11,13 @@ if($e__handle){
     foreach($this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($e__handle),
     )) as $e){
-        echo '<h2><a href="/@'.$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a></h2>';
+        echo '<h2 class="center"><a href="/@'.$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a> <a href="/'.$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif($i__hashtag){
     foreach($this->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower($i__hashtag),
     )) as $i){
-        echo '<h2><a href="/'.$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a></h2>';
+        echo '<h2 class="center"><a href="/'.$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a> <a href="/'.$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 }
 
