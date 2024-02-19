@@ -2161,48 +2161,8 @@ function view_card_e($x__type, $e, $extra_class = null)
     //Start with Link Note
     $featured_sources = '';
 
-    //Featured Sources
-    $e___14036 = $CI->config->item('e___14036');
-    $order_columns = array();
-    foreach($e___14036 as $x__sort_id => $sort) {
-        $order_columns['x__following = \''.$x__sort_id.'\' DESC'] = null;
-    }
-    foreach($CI->X_model->fetch(array(
-        'x__following IN (' . join(',', $CI->config->item('n___14036')) . ')' => null, //Featured Sources
-        'x__follower' => $e['e__id'],
-        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array(), 0, 0, $order_columns) as $social_link){
 
-        if(in_array($social_link['x__following'], $CI->config->item('n___32172'))){
-            if(strlen($social_link['x__message'])){
-                //Must always see, show content here:
-                $ui .= '<div class="source_bio grey center">'.$social_link['x__message'].'</div>';
-            }
-            continue;
-        }
-
-        //Determine link type:
-        $social_url = false;
-
-        if(in_array(4256 , $e___14036[$social_link['x__following']]['m__following'])){
-            //We made sure not the current website:
-            $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
-        } elseif(in_array(32097 , $e___14036[$social_link['x__following']]['m__following'])){
-            $social_url = 'href="mailto:'.$social_link['x__message'].'"';
-        } elseif(in_array(42181 , $e___14036[$social_link['x__following']]['m__following'])){
-            //Phone Number
-            $social_url = 'href="'.phone_href($social_link['x__following'], $social_link['x__message']).'"';
-        }
-
-        $info = ( strlen($social_link['x__message']) && !$social_url ? $e___14036[$social_link['x__following']]['m__title'].': '.$social_link['x__message'] : ( $social_url ? view_url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['x__following']]['m__title'] ) );
-
-        //Append to links:
-        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : ( $focus_card ? '<a href="/@'.$e___14036[$social_link['x__following']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</span>' ) ).'</span>';
-
-    }
-
-
+    //Start with top bar:
     if(!$cache_app && !$is_app) {
 
         //Source Link Groups
@@ -2380,6 +2340,48 @@ function view_card_e($x__type, $e, $extra_class = null)
                 }
             }
         }
+    }
+
+
+    //Featured Sources
+    $e___14036 = $CI->config->item('e___14036');
+    $order_columns = array();
+    foreach($e___14036 as $x__sort_id => $sort) {
+        $order_columns['x__following = \''.$x__sort_id.'\' DESC'] = null;
+    }
+    foreach($CI->X_model->fetch(array(
+        'x__following IN (' . join(',', $CI->config->item('n___14036')) . ')' => null, //Featured Sources
+        'x__follower' => $e['e__id'],
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array(), 0, 0, $order_columns) as $social_link){
+
+        if(in_array($social_link['x__following'], $CI->config->item('n___32172'))){
+            if(strlen($social_link['x__message'])){
+                //Must always see, show content here:
+                $ui .= '<div class="source_bio grey center">'.$social_link['x__message'].'</div>';
+            }
+            continue;
+        }
+
+        //Determine link type:
+        $social_url = false;
+
+        if(in_array(4256 , $e___14036[$social_link['x__following']]['m__following'])){
+            //We made sure not the current website:
+            $social_url = 'href="'.$social_link['x__message'].'" target="_blank"';
+        } elseif(in_array(32097 , $e___14036[$social_link['x__following']]['m__following'])){
+            $social_url = 'href="mailto:'.$social_link['x__message'].'"';
+        } elseif(in_array(42181 , $e___14036[$social_link['x__following']]['m__following'])){
+            //Phone Number
+            $social_url = 'href="'.phone_href($social_link['x__following'], $social_link['x__message']).'"';
+        }
+
+        $info = ( strlen($social_link['x__message']) && !$social_url ? $e___14036[$social_link['x__following']]['m__title'].': '.$social_link['x__message'] : ( $social_url ? view_url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['x__following']]['m__title'] ) );
+
+        //Append to links:
+        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : ( $focus_card ? '<a href="/@'.$e___14036[$social_link['x__following']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</span>' ) ).'</span>';
+
     }
 
     if($focus_card){
