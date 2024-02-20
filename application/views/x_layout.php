@@ -19,7 +19,7 @@ $is_next = $this->X_model->fetch(array(
 
 //Filter Next Ideas:
 foreach($is_next as $in_key => $in_value){
-    $i_is_discoverable = i_is_discoverable($in_value, false);
+    $i_is_discoverable = i_is_discoverable($in_value);
     if(!$i_is_discoverable['status']){
         //Remove this option:
         unset($is_next[$in_key]);
@@ -228,7 +228,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
                 'x__previous' => $followings_i['i__id'],
             ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
             foreach($query_subset as $key=>$value){
-                $i_is_discoverable = i_is_discoverable($value, false);
+                $i_is_discoverable = i_is_discoverable($value);
                 if(!$i_is_discoverable['status'] || !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -293,7 +293,6 @@ echo '<div class="active_navigation">';
 
 $tree_progress = $this->X_model->tree_progress($x__creator, $top_i);
 $top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
-$go_next_url = '/ajax/x_next/' . $top_i__hashtag . '/' . $focus_i['i__hashtag'];
 
 if($top_completed){
     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
@@ -840,7 +839,6 @@ if($top_i__hashtag){
 <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
 <input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
 <input type="hidden" id="top_i__hashtag" value="<?= $top_i__hashtag ?>" />
-<input type="hidden" id="go_next_url" value="<?= $go_next_url ?>" />
 
 
 
@@ -916,11 +914,8 @@ if($top_i__hashtag){
 
     }
 
-
-
     function go_next(){
 
-        var go_next_url = $('#go_next_url').val();
         var is_logged_in = (js_pl_id > 0);
 
         //Attempts to go next if no submissions:
@@ -956,7 +951,7 @@ if($top_i__hashtag){
 
             return x_free_ticket();
 
-        } else if(go_next_url && go_next_url.length > 0) {
+        } else {
 
             if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#top_i__id').val()) > 0) {
 
@@ -967,7 +962,7 @@ if($top_i__hashtag){
 
                 //Go Next:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(go_next_url);
+                js_redirect(next_url());
 
             }
         }
@@ -997,7 +992,7 @@ if($top_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect($('#go_next_url').val());
+                js_redirect(next_url());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1016,7 +1011,7 @@ if($top_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect($('#go_next_url').val());
+                js_redirect(next_url());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1039,7 +1034,7 @@ if($top_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect($('#go_next_url').val());
+                js_redirect(next_url());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1057,7 +1052,7 @@ if($top_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect($('#go_next_url').val());
+                js_redirect(next_url());
             } else {
                 //Show error:
                 alert(data.message);
@@ -1086,7 +1081,7 @@ if($top_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect($('#go_next_url').val());
+                js_redirect(next_url());
             } else {
                 //Show error:
                 alert(data.message);

@@ -2731,10 +2731,10 @@ class Ajax extends CI_Controller
         //Add this Idea to their read If not there:
         $next_i__hashtag = $focus_i__hashtag;
 
-        if(!in_array($is[0]['i__id'], $this->X_model->started_ids($member_e['e__id']))){
+        if(!$this->X_model->i_has_started($member_e['e__id'], $is[0]['i__hashtag'])){
 
             //is available?
-            $i_is_discoverable = i_is_discoverable($is[0], true);
+            $i_is_discoverable = i_is_discoverable($is[0]);
             if(!$i_is_discoverable['status']){
                 return redirect_message('/'.$i_is_discoverable['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_discoverable['message'].'</div>');
             }
@@ -2776,22 +2776,19 @@ class Ajax extends CI_Controller
     function x_next($top_i__hashtag, $focus_i__hashtag){
 
         $member_e = superpower_unlocked();
+        if(!$member_e){
+            return redirect_message(view_app_link(4269).'?i__hashtag='.$top_i__hashtag);
+        } elseif(!$this->X_model->i_has_started($member_e['e__id'], $top_i__hashtag)) {
+            return redirect_message('/'.$top_i__hashtag);
+        }
+
+
         $is = $this->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
-
-        if(!$member_e){
-            return redirect_message(view_app_link(4269).'?i__hashtag='.$top_i__hashtag);
-        } elseif(!$this->X_model->started_ids($member_e['e__id'], $top_i__hashtag)) {
-            return redirect_message('/'.$top_i__hashtag);
-        } elseif(!count($is)) {
+        if(!count($is)) {
             return redirect_message('/'.$top_i__hashtag, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$focus_i__hashtag.' is not currently active.</div>');
-        }
-
-        $i_is_discoverable = i_is_discoverable($is[0], true, false);
-        if(!$i_is_discoverable['status']){
-            return redirect_message('/'.$top_i__hashtag.'/'.$i_is_discoverable['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_discoverable['message'].'</div>');
         }
 
         //Go to Next Idea:

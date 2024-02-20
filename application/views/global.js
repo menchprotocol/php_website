@@ -2699,7 +2699,9 @@ function i_sort_load(x__type){
 }
 
 
-
+function next_url(){
+    return '/ajax/x_next/' + $('#top_i__hashtag').val() + '/' + $('#focus_handle').val();
+}
 
 
 

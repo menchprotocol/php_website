@@ -267,7 +267,7 @@ class View extends CI_Controller
             }
 
             return redirect_message(home_url());
-        } elseif($es[0]['e__handle']!==$e__handle){
+        } elseif(strlen($es[0]['e__handle']) && $es[0]['e__handle']!==$e__handle){
             //Adjust URL:
             return redirect_message('/@'.$es[0]['e__handle']);
         }
@@ -452,9 +452,7 @@ class View extends CI_Controller
             $focus_is = $top_is;
 
             //See if they have already started or need to start?
-            if(1){
-
-            } else {
+            if(!$this->X_model->i_has_started($member_e['e__id'], $top_i__hashtag)) {
                 //Go to start:
                 return redirect_message('/ajax/x_start/'.$top_i__hashtag);
             }

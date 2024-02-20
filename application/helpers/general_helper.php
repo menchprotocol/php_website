@@ -500,16 +500,17 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
 }
 
 
-function i_is_discoverable($i, $log_tnx, $check_inventory = true){
+function i_is_discoverable($i, $is_also_startable = false){
 
     $CI =& get_instance();
     $member_e = superpower_unlocked();
     $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
     $double_check = 'if you believe you have this source then make sure to login with the same email address that we sent you the email.';
 
-    if(in_array($i['i__privacy'], $CI->config->item('n___42432'))){
+    if($i['i__privacy']){
         //Public Ideas
     }
+
     //Any Inclusion Any Requirements?
     $fetch_13865 = $CI->X_model->fetch(array(
         'x__next' => $i['i__id'],
@@ -539,7 +540,7 @@ function i_is_discoverable($i, $log_tnx, $check_inventory = true){
             }
         }
         if(!$meets_inc1_prereq && $x__creator > 0){
-            return access_blocked($log_tnx, $excludes_message,$x__creator, $i['i__id'], 13865, $x__following);
+            return access_blocked(false, $excludes_message,$x__creator, $i['i__id'], 13865, $x__following);
         }
     }
 
@@ -578,7 +579,7 @@ function i_is_discoverable($i, $log_tnx, $check_inventory = true){
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked($log_tnx, $excludes_message,$x__creator, $i['i__id'], 27984, $x__following);
+            return access_blocked(false, $excludes_message,$x__creator, $i['i__id'], 27984, $x__following);
         }
     }
 
@@ -614,15 +615,15 @@ function i_is_discoverable($i, $log_tnx, $check_inventory = true){
         }
 
         if(!$excludes_all){
-            return access_blocked($log_tnx, $excludes_message, $x__creator, $i['i__id'], 26600, $x__following);
+            return access_blocked(false, $excludes_message, $x__creator, $i['i__id'], 26600, $x__following);
         }
     }
 
 
     //Any Limits on Selection?
-    if($check_inventory && !i_spots_remaining($i['i__id'])){
+    if(!i_spots_remaining($i['i__id'])){
         //Limit is reached, cannot complete this at this time:
-        return access_blocked($log_tnx, "You cannot discover this idea because there are no spots remaining.", $x__creator, $i['i__id'], 26189, 0);
+        return access_blocked(false, "You cannot discover this idea because there are no spots remaining.", $x__creator, $i['i__id'], 26189, 0);
     }
     
 

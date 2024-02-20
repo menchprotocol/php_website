@@ -1517,41 +1517,15 @@ class X_model extends CI_Model
     }
 
 
-    function started_ids($e__id, $i__hashtag = null){
-
-        //Simply returns all the idea IDs for a users starting points
-        if($i__hashtag){
-
-            if(!$e__id){
-                return false;
-            }
-
-            return count($this->X_model->fetch(array(
-                'x__previous = x__next' => NULL,
-                'LOWER(i__hashtag)' => strtolower($i__hashtag),
-                'x__creator' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__next')));
-
-        } else {
-
-            $u_x_ids = array();
-            if($e__id > 0){
-                foreach($this->X_model->fetch(array(
-                    'x__previous=x__next' => null,
-                    'x__creator' => $e__id,
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )) as $u_in){
-                    array_push($u_x_ids, intval($u_in['x__previous']));
-                }
-            }
-            return $u_x_ids;
-
-        }
+    function i_has_started($e__id, $i__hashtag){
+        return count($this->X_model->fetch(array(
+            'x__previous = x__next' => NULL,
+            'LOWER(i__hashtag)' => strtolower($i__hashtag),
+            'x__creator' => $e__id,
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array('x__next')));
     }
-
 
 
 
