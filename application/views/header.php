@@ -1042,7 +1042,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 <tr>
                                     <td>
                                         <!-- Upload Cover -->
-                                        <a class="uploader_42359" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
+                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
                                     </td>
                                     <td class="superpower__13758">
                                         <!-- EMOJI -->
