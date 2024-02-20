@@ -1604,9 +1604,11 @@ label {
     height: 13px;
 }
 
-.emoji_table .icon-block-sm,
 .block-menu .dropdown-item .icon-block {
     height: 30px;
+}
+.emoji_table .icon-block-sm {
+    height: 7px;
 }
 .focus-cover .dropdown span.icon-block-sm{ height: 28px !important; }
 
