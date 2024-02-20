@@ -1046,7 +1046,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                     <td class="superpower__13758">
                                         <!-- EMOJI -->
-                                        <div class="inline-block-sm">
+                                        <div class="icon-block-sm">
                                             <div class="dropdown emoji_selector" style="max-height: 21px; margin-top: -18px;">
                                                 <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
                                                 <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
@@ -1055,15 +1055,15 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </td>
                                     <td class="superpower__13758 fa_search hidden">
                                         <!-- Font Awesome Search -->
-                                        <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" class="inline-block-sm" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus zq12274"></i></a>
+                                        <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" class="icon-block-sm" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus zq12274"></i></a>
                                     </td>
                                     <td class="superpower__13758">
                                         <!-- Font Awesome Insert -->
-                                        <a href="javascript:void(0);" class="inline-block-sm" onclick="update__cover('far fa-icons');$('.fa_search').removeClass('hidden');" title="Add a Sample Font Awesome Icon to Get Started"><i class="far fa-icons"></i></a>
+                                        <a href="javascript:void(0);" class="icon-block-sm" onclick="update__cover('far fa-icons');$('.fa_search').removeClass('hidden');" title="Add a Sample Font Awesome Icon to Get Started"><i class="far fa-icons"></i></a>
                                     </td>
                                     <td class="superpower__13758 cover_history_button">
                                         <!-- History -->
-                                        <a href="javascript:void(0);" class="inline-block-sm" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
+                                        <a href="javascript:void(0);" class="icon-block-sm" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
                                     </td>
                                     <td>
                                         <!-- Ramdom Animal -->
