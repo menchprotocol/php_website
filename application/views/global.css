@@ -1603,6 +1603,8 @@ label {
 .dropdown-item .icon-block {
     height: 13px;
 }
+
+.emoji_table .icon-block-sm,
 .block-menu .dropdown-item .icon-block {
     height: 30px;
 }
