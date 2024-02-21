@@ -60,7 +60,7 @@ if(isset($_POST['payment_status'])){
 }
 
 
-if(isset($_POST['item_number']) && strlen($_POST['item_number']) && !$is_good && isset($_POST) && count($_POST)){
+if(!$is_good && isset($_POST) && count($_POST)){
     $this->X_model->create(array(
         'x__type' => 4246, //Platform Bug Reports
         'x__message' => 'Invalid item number',
