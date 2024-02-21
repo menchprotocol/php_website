@@ -755,7 +755,6 @@ class Ajax extends CI_Controller
                     //Update Link:
                     $this->X_model->update($values[0]['x__id'], array(
                         'x__message' => $dynamic_value,
-                        'x__weight' => number_x__weight($dynamic_value),
                     ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
                 }
@@ -824,7 +823,6 @@ class Ajax extends CI_Controller
                 if($this_x['x__message'] != trim($_POST['save_x__message'])){
                     $this->X_model->update($this_x['x__id'], array(
                         'x__message' => trim($_POST['save_x__message']),
-                        'x__weight' => number_x__weight(trim($_POST['save_x__message'])),
                     ), $member_e['e__id'], 42171);
                 }
             }
@@ -1906,7 +1904,6 @@ class Ajax extends CI_Controller
                 //Update Link:
                 $this->X_model->update($values[0]['x__id'], array(
                     'x__message' => $dynamic_value,
-                    'x__weight' => number_x__weight($dynamic_value),
                 ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
             }
@@ -1968,7 +1965,6 @@ class Ajax extends CI_Controller
                 if($this_x['x__message'] != trim($_POST['save_x__message'])){
                     $this->X_model->update($this_x['x__id'], array(
                         'x__message' => trim($_POST['save_x__message']),
-                        'x__weight' => number_x__weight(trim($_POST['save_x__message'])),
                     ), $member_e['e__id'], 42171);
                 }
             }
