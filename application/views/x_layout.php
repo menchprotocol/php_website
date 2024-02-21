@@ -6,7 +6,7 @@ $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 
 if(write_privacy_i($focus_i['i__hashtag']) && superpower_unlocked(10939)){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="/'.$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view_memory(42903,33286).$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
 //NEXT IDEAS
@@ -70,7 +70,7 @@ if(isset($_GET['delete'])){
 
         } else {
             //Issues:
-            echo '<div>Cannot delete <a href="/@'.$x['e__handle'].'">@'.$x['e__handle'].'</a>.</div>';
+            echo '<div>Cannot delete <a href="'.view_memory(42903,42902).$x['e__handle'].'">@'.$x['e__handle'].'</a>.</div>';
         }
 
     }
@@ -98,7 +98,7 @@ if(isset($_GET['delete'])){
         $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
 
         /*
-        echo '<a href="/'.$i_fix['i__hashtag'].'">#'.$i_fix['i__hashtag'].'</a><br />';
+        echo '<a href="'.view_memory(42903,33286).$i_fix['i__hashtag'].'">#'.$i_fix['i__hashtag'].'</a><br />';
         echo nl2br(htmlentities($i_fix['i__message'])).'<br />';
 
         if(count($view_sync_links['replace_from'])){
@@ -240,7 +240,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
             }
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="/'.$top_i__hashtag.'/'.$followings_i['i__hashtag'].'"><u>'.view_i_title($followings_i).'</u></a>';
+            $breadcrum_content .= '<a href="'.view_memory(42903,30795).$top_i__hashtag.'/'.$followings_i['i__hashtag'].'"><u>'.view_i_title($followings_i).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -251,7 +251,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_'.$followings_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
-                    $breadcrum_content .= '<a href="/'.$top_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
+                    $breadcrum_content .= '<a href="'.view_memory(42903,30795).$top_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
                 }
                 $breadcrum_content .= '</div>';
                 $breadcrum_content .= '</div>';
@@ -271,7 +271,7 @@ if(!$breadcrum_content){
         'x__next' => $focus_i['i__id'],
     ), array('x__previous')) as $prev_i){
         $breadcrum_content .= '<li class="breadcrumb-item breadcrumb-flat">';
-        $breadcrum_content .= '<a href="/'.$prev_i['i__hashtag'].'"><u>'.view_i_title($prev_i).'</u></a>';
+        $breadcrum_content .= '<a href="'.view_memory(42903,33286).$prev_i['i__hashtag'].'"><u>'.view_i_title($prev_i).'</u></a>';
         $breadcrum_content .= '</li>';
     }
 }
@@ -307,7 +307,7 @@ if(isset($_GET['list'])){
             'i__id' => $to_discover_id,
         ));
         $counter++;
-        echo '<p style="padding:2px;">'.$counter.') <a href="/'.$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
+        echo '<p style="padding:2px;">'.$counter.') <a href="'.view_memory(42903,33286).$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
     }
 }
 
@@ -351,7 +351,7 @@ if($top_i__hashtag) {
             $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
             //Referesh soon so we can check if completed or not
-            js_php_redirect('/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
+            js_php_redirect(view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
 
         } elseif(count($x_completes)){
 
@@ -370,7 +370,7 @@ if($top_i__hashtag) {
                         'e__id' => $x_complete['x__creator'],
                     )) as $e){
                         $ticket_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
-                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])).'</div>';
+                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])).'</div>';
                     }
                 }
 
@@ -488,7 +488,7 @@ if($top_i__hashtag) {
                             //Display UI:
                             echo '<h2 style="text-align: center;">'.view_i_title($is_top[0]).'</h2>';
                             echo '<h3 style="text-align: center;">'.view_i_title($is_discovery[0]).'</h3>';
-                            echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="/@'.$x[0]['e__handle'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.' Ticket'.view__s($quantity).'</b></h3>';
+                            echo '<h3 style="text-align: center;"><i class="fas fa-user"></i> <a href="'.view_memory(42903,42902).$x[0]['e__handle'].'"><u>'.$x[0]['e__title'].'</u></a>&nbsp;&nbsp;&nbsp;<i class="fas fa-ticket"></i> <b>'.$quantity.' Ticket'.view__s($quantity).'</b></h3>';
 
 
                             //Is Ticket Scanner Admin?
@@ -505,7 +505,7 @@ if($top_i__hashtag) {
 
                                     echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Ticket already checked-in!</div>';
 
-                                    echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Already Checked-In by <a href="/@'.$ticket_checked_in[0]['e__handle'].'">'.$ticket_checked_in[0]['e__title'].'</a> about <span class="underdot" title="'.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">' . view_time_difference($ticket_checked_in[0]['x__time']) . ' Ago</span>.</div>';
+                                    echo '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Ticket Already Checked-In by <a href="'.view_memory(42903,42902).$ticket_checked_in[0]['e__handle'].'">'.$ticket_checked_in[0]['e__title'].'</a> about <span class="underdot" title="'.substr($ticket_checked_in[0]['x__time'], 0, 19).' PST">' . view_time_difference($ticket_checked_in[0]['x__time']) . ' Ago</span>.</div>';
 
 
                                 } else {
@@ -532,7 +532,7 @@ if($top_i__hashtag) {
 
                                 } elseif(!count($ticket_checked_in)) {
 
-                                            $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).'/'.$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x[0]['e__handle']);
+                                            $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).view_memory(42903,33286).$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x[0]['e__handle']);
 
 
                                     //Give option for manual checkin:
@@ -569,8 +569,8 @@ if($top_i__hashtag) {
                 $ticket_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
                 $ticket_ui .= '<input type="hidden" name="no_shipping" value="1">';
                 $ticket_ui .= '<input type="hidden" name="notify_url" value="https://mench.com'.view_app_link(26595).'">';
-                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?cancel_pay=1">';
-                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').'/'.$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?cancel_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1">';
                 $ticket_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                 $ticket_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 

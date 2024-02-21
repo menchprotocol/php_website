@@ -39,7 +39,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])) {
             //Assign session & log transaction:
             $this->E_model->activate_session($es[0]);
 
-            js_php_redirect('/@'.$es[0]['e__handle']);
+            js_php_redirect(view_memory(42903,42902).$es[0]['e__handle']);
         }
 
 

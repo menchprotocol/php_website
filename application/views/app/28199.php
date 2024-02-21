@@ -60,7 +60,7 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
 
             if($deleted){
                 $links_deleted++;
-                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="/@'.$x_progress['e__handle'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="'.view_app_link(12722).'?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
+                echo '<div style="padding-left: 21px;">'.$links_deleted.') <a href="'.view_memory(42903,42902).$x_progress['e__handle'].'">'.$x_progress['e__title'].'</a>: '.$x_progress['x__time'].' ? '.$x_progress['x__message'].' / <a href="'.view_app_link(12722).'?x__id=' . $x_progress['x__id'] . '">'.$x_progress['x__id'].' / Answer: '.count($answer_completed).'</a> '.( !count($answer_completed) ? ( $seconds_left <= 0 ? ' DELETE ' : '['.$seconds_left.'] SEcs left' ) : '' ).' ('.intval( $expires['x__message']) .'+'. $buffer_time .'-'. time() .'-'. strtotime($x_progress['x__time'] ).' = '.$seconds_left.')</div>';
             }
 
 
@@ -78,6 +78,6 @@ echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expi
 if(isset($filters['x__next'])){
     foreach($this->I_model->fetch(array('i__id' => $filters['x__next'])) as $i){
         //We were deleting a single item, redirect back:
-        js_php_redirect('/'.$i['i__hashtag'], 0);
+        js_php_redirect(view_memory(42903,33286).$i['i__hashtag'], 0);
     }
 }

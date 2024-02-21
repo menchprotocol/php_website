@@ -311,12 +311,12 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     //Ideation Mode:
     $_GET['i__hashtag'] = $discovery_i__hashtag;
     $i_view = 30795;
-    $quick_href = '/'.$discovery_i__hashtag;
+    $quick_href = view_memory(42903,33286).$discovery_i__hashtag;
 
 } elseif(!strlen($first_segment) && superpower_unlocked(12703)) {
 
     //Edit Website Home Page:
-    $quick_href = '/@' . $e___14870[$website_id]['m__handle'];
+    $quick_href = view_memory(42903,42902). $e___14870[$website_id]['m__handle'];
     $quick_id = 33287;
 
 } elseif($e_segment && $e_segment==$e___14870[$website_id]['m__handle']) {
@@ -327,10 +327,10 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
 
 } elseif(substr($first_segment, 0, 1)=='~') {
 
-    //Discovery Mode:
+    //Ideation Mode:
     $_GET['i__hashtag'] = substr($first_segment, 1);
     $i_view = 33286;
-    $quick_href = '/' . $_GET['i__hashtag'];
+    $quick_href = view_memory(42903,33286) . $_GET['i__hashtag'];
 
 } elseif(array_key_exists($first_segment, $this->config->item('handle___6287'))) {
 
@@ -340,7 +340,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     } else {
         $quick_id = 33287;
     }
-    $quick_href = '/@' . $first_segment;
+    $quick_href = view_memory(42903,42902). $first_segment;
 
 } elseif($e_segment && array_key_exists($e_segment, $this->config->item('handle___6287'))) {
 
@@ -350,18 +350,18 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     } else {
         $quick_id = 6287;
     }
-    $quick_href = '/'.view_valid_handle_e($first_segment);
+    $quick_href = view_memory(42903,6287).view_valid_handle_e($first_segment);
 
 } elseif(isset($_GET['e__handle']) && strlen($_GET['e__handle'])) {
 
     //Source Mode:
-    $quick_href = '/@' . $_GET['e__handle'];
+    $quick_href = view_memory(42903,42902). $_GET['e__handle'];
     $quick_id = 33287;
 
 } elseif(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])) {
 
     //Ideation Mode:
-    $quick_href = '/'.$_GET['i__hashtag'];
+    $quick_href = view_memory(42903,33286).$_GET['i__hashtag'];
     $quick_id = 33286;
 
 }
@@ -415,7 +415,7 @@ if(!$basic_header_footer){
 
                     echo '<td>';
 
-                    echo '<div class="logo_frame">'.( strlen($domain_cover) ? '<a href="/" class="icon-block logo_cover">'.view_cover($domain_logo).'</a>' : '') . '<a href="/" class="main__title logo_title">'.get_domain('m__title').'</a>'.'</div>';
+                    echo '<div class="logo_frame">'.( strlen($domain_cover) ? '<a href="'.view_memory(42903,14565).'" class="icon-block logo_cover">'.view_cover($domain_logo).'</a>' : '') . '<a href="'.view_memory(42903,14565).'" class="main__title logo_title">'.get_domain('m__title').'</a>'.'</div>';
 
 
                     //SEARCH
@@ -505,7 +505,7 @@ if(!$basic_header_footer){
                             //Profile View
                             $m['m__cover'] = view_cover($member_e['e__cover'], 1);
                             $m['m__title'] = $member_e['e__title'].'<div class="grey" style="font-size: 0.89em; margin:-13px 0;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__handle'].'</div>';
-                            $href = 'href="/@'.$member_e['e__handle'].'" ';
+                            $href = 'href="'.view_memory(42903,42902).$member_e['e__handle'].'" ';
 
                         } elseif($x__type==42246 && $member_e) {
 

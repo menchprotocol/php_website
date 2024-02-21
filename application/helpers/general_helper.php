@@ -250,11 +250,11 @@ function format_percentage($percent){
 function new_member_redirect($e__id, $sign_i__hashtag){
     //Is there a redirect app?
     if(strlen($sign_i__hashtag)) {
-        return '/' . $sign_i__hashtag;
+        return view_memory(42903,33286) . $sign_i__hashtag;
     } elseif(isset($_GET['url'])) {
         return $_GET['url'];
     } else {
-        return '/';
+        return home_url();
     }
 }
 
@@ -969,7 +969,7 @@ function count_link_groups($x__type, $x__time_start = null, $x__time_end = null)
 function home_url(){
     $CI =& get_instance();
     $member_e = superpower_unlocked();
-    return ( $member_e ? '/@'.$member_e['e__handle'] : '/' );
+    return ( $member_e ? view_memory(42903,42902).$member_e['e__handle'] : view_memory(42903,14565) );
 }
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
@@ -1003,7 +1003,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = '/@'.$member_e['e__handle'];
+            $goto_url = view_memory(42903,42902).$member_e['e__handle'];
         } else {
             $goto_url = view_app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' );
         }
@@ -1431,7 +1431,7 @@ function email_ticket($x__id, $i__hashtag, $x__creator){
     )) as $e){
         $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket'.$additional_info,
             'Upon arrival have your QR code ready to be scanned:'.
-            "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).'/'.$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
+            "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).view_memory(42903,33286).$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
     }
 
 }
@@ -2012,7 +2012,7 @@ function update_algolia($s__type = null, $s__id = 0) {
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__handle'] = $s['i__hashtag'];
-                $export_row['s__url'] = '/' . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
+                $export_row['s__url'] = view_memory(42903,33286) . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
                 $export_row['s__privacy'] = intval($s['i__privacy']);
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['i__message'];
@@ -2068,7 +2068,7 @@ function update_algolia($s__type = null, $s__id = 0) {
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['e__id']);
                 $export_row['s__handle'] = $s['e__handle'];
-                $export_row['s__url'] = '/@' . $s['e__handle'];
+                $export_row['s__url'] = view_memory(42903,42902). $s['e__handle'];
                 $export_row['s__privacy'] = intval($s['e__privacy']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];

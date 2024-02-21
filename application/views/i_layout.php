@@ -20,7 +20,7 @@ if($write_privacy_i && count($this->X_model->fetch(array(
         'x__next' => $focus_i['i__id'],
         'x__following' => 4235,
     )))){
-    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[30795]['m__cover'].'</span>You can discover this idea in <a href="/'.$focus_i['i__hashtag'].'/'.view_memory(6404,4235).'"><b><u>'.$e___11035[30795]['m__title'].'</u></b></a></div>';
+    echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[30795]['m__cover'].'</span>You can discover this idea in <a href="'.view_memory(42903,30795).$focus_i['i__hashtag'].'/'.view_memory(6404,4235).'"><b><u>'.$e___11035[30795]['m__title'].'</u></b></a></div>';
 }
 
 //Focusing on a certain source?

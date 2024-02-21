@@ -83,7 +83,7 @@ foreach($list_settings['query_string'] as $x){
 
     $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
 
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['e__cover'], true).'</span><a href="/@'.$x['e__handle'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$name.$plus_info.'</td>';
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view_cover($x['e__cover'], true).'</span><a href="'.view_memory(42903,42902).$x['e__handle'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$name.$plus_info.'</td>';
 
 
 
@@ -155,7 +155,7 @@ echo '<tr style="font-weight:bold; vertical-align: baseline;">';
 echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
 foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
-    echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xs">'.$e___6177[$e['e__privacy']]['m__cover'].'</span></div><a class="icon-block-xs" href="/@'.$e['e__handle'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
+    echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xs">'.$e___6177[$e['e__privacy']]['m__cover'].'</span></div><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['e__handle'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
 }
 foreach($list_settings['column_i'] as $i2){
 
@@ -170,7 +170,7 @@ foreach($list_settings['column_i'] as $i2){
 
     array_push($table_sortable, '#th_i_'.$i2['i__id']);
 
-    echo '<th id="th_i_'.$i2['i__id'].'"><div></div><a class="icon-block-xs" href="/'.$i2['i__hashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : view_i_title($i2, true) ).'</span></th>';
+    echo '<th id="th_i_'.$i2['i__id'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$i2['i__hashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : view_i_title($i2, true) ).'</span></th>';
 
 }
 echo '</tr>';

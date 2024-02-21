@@ -114,7 +114,7 @@ if(isset($_GET['i__hashtag'])){
             ));
         }
 
-        js_php_redirect(( $login_i__hashtag ? '/'.$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() ) ), 13);
+        js_php_redirect(( $login_i__hashtag ? view_memory(42903,33286).$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() ) ), 13);
 
     }
 

@@ -52,7 +52,7 @@ if(isset($_GET['e__handle'])){
                 $prev_title = $en['e__title'];
             }
 
-            echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__privacy']]['m__title'].': '.$e___6177[$en['e__privacy']]['m__message'].'">' . $e___6177[$en['e__privacy']]['m__cover'] . '</span> <a href="/@' . $en['e__handle'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
+            echo '<span data-toggle="tooltip" data-placement="right" title="'.$e___6177[$en['e__privacy']]['m__title'].': '.$e___6177[$en['e__privacy']]['m__message'].'">' . $e___6177[$en['e__privacy']]['m__cover'] . '</span> <a href="'.view_memory(42903,42902) . $en['e__handle'] . '"><b>' . $en['e__title'] . '</b></a> @' . $en['e__id'] . '<br />';
         }
 
     } else {

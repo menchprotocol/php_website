@@ -73,7 +73,7 @@ if(isset($_GET['i__hashtag'])){
                     ));
                 }
 
-                echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show your ID at the door to enter'.( isset($map_user['e__id']) ? '<a href="/@'.$map_user['e__handle'].'" style="text-decoration: none;">.</a>' : '.' ).'</div>';
+                echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show your ID at the door to enter'.( isset($map_user['e__id']) ? '<a href="'.view_memory(42903,42902).$map_user['e__handle'].'" style="text-decoration: none;">.</a>' : '.' ).'</div>';
 
             }
 

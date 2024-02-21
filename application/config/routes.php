@@ -71,4 +71,5 @@ $route['(?i)SourceOrphaned'] = "view/app_load/7269";
 
 $route['@([a-zA-Z0-9]+)']               = "view/e_layout/$1"; //Source
 $route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)'] = "view/x_layout/$1/$2"; //Discovery
+$route['~([a-zA-Z0-9]+)']                = "view/i_layout/$1"; //Ideation
 $route['([a-zA-Z0-9]+)']                = "view/i_layout/$1"; //Ideation

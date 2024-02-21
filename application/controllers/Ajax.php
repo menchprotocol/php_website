@@ -378,7 +378,7 @@ class Ajax extends CI_Controller
                             'return_i__cache' => '',
                             'return_i__cache_links' => '',
                             'return_i__cache_full' => view_card_i($_POST['focus_x__group'], $return_i),
-                            'redirect_idea' => '/'.$return_i['i__hashtag'],
+                            'redirect_idea' => view_memory(42903,33286).$return_i['i__hashtag'],
                             'message' => count($i_references).' ideas linked',
                         ));
                     }
@@ -846,7 +846,7 @@ class Ajax extends CI_Controller
             'return_i__cache' => $view_sync_links['i__cache'],
             'return_i__cache_links' => view_i__links($is[0], $focus_card, $focus_card),
             'return_i__cache_full' => view_card_i($_POST['focus_x__group'], $is[0]),
-            'redirect_idea' => ( isset($is[0]['i__hashtag']) ? '/'.$is[0]['i__hashtag'] : null ),
+            'redirect_idea' => ( isset($is[0]['i__hashtag']) ? view_memory(42903,33286).$is[0]['i__hashtag'] : null ),
             'message' => $media_stats['total_current'].' current & '.$media_stats['total_submitted'].' submitted media: '.$media_stats['total_submitted'].' Created, '.$media_stats['adjust_updated'].' Updated & '.$media_stats['adjust_removed'].' Removed while detected '.$media_stats['adjust_duplicated'].' duplicate uploads. '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
         ));
 
@@ -900,7 +900,7 @@ class Ajax extends CI_Controller
                     $current_e__handle = view_valid_handle_e($_POST['first_segment']);
                     foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $e_e) {
                         if(isset($e_e['e__id'])){
-                            $ui .= view_card('/@'.$e_e['e__handle'], $current_e__handle && $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__privacy'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
+                            $ui .= view_card(view_memory(42903,42902).$e_e['e__handle'], $current_e__handle && $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__privacy'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
                             $listed_items++;
                         }
                     }
@@ -914,7 +914,7 @@ class Ajax extends CI_Controller
 
                     foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view_card('/'.$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
+                            $ui .= view_card(view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                             $listed_items++;
                         }
                     }
@@ -926,7 +926,7 @@ class Ajax extends CI_Controller
                     foreach($this->I_model->fetch(array(
                         'i__id' => $_POST['i__id'],
                     )) as $i){
-                        $ui .= view_more('/'.$i['i__hashtag'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                        $ui .= view_more(view_memory(42903,33286).$i['i__hashtag'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
                     }
                 }
 
@@ -1031,7 +1031,7 @@ class Ajax extends CI_Controller
 
                     foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $e_e) {
                         if(isset($e_e['e__id'])){
-                            $ui .= view_card('/@'.$e_e['e__handle'], $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__privacy'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
+                            $ui .= view_card(view_memory(42903,42902).$e_e['e__handle'], $e_e['e__handle']==$current_e__handle, $e_e['x__type'], $e_e['e__privacy'], view_cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['x__message']);
                             $listed_items++;
                         }
                     }
@@ -1045,7 +1045,7 @@ class Ajax extends CI_Controller
 
                     foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view_card('/'.$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
+                            $ui .= view_card(view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                             $listed_items++;
                         }
                     }
@@ -1057,7 +1057,7 @@ class Ajax extends CI_Controller
                     foreach($this->E_model->fetch(array(
                         'e__id' => $_POST['e__id'],
                     )) as $e_this){
-                        $ui .= view_more('/@'.$e_this['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                        $ui .= view_more(view_memory(42903,42902).$e_this['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
                     }
                 }
 
@@ -1566,7 +1566,7 @@ class Ajax extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             ), array('x__following'), 0, 0, $order_42145) as $e_template) {
 
-                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'<a href="/@'.$e_group['e__handle'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow '.$e_group['e__title'].'... Click to Open in a New Window"><span class="icon-block-sm">'.view_cover($e_group['e__cover']).'</span></a></div>';
+                $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'<a href="'.view_memory(42903,42902).$e_group['e__handle'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow '.$e_group['e__title'].'... Click to Open in a New Window"><span class="icon-block-sm">'.view_cover($e_group['e__cover']).'</span></a></div>';
 
 
                 //Load template:
@@ -2295,7 +2295,7 @@ class Ajax extends CI_Controller
 
 
         //Set default sign in URL:
-        $sign_url = '/@'.$es[0]['e__handle'];
+        $sign_url = view_memory(42903,42902).$es[0]['e__handle'];
 
         //See if we can find a better one:
         if (intval($_POST['sign_i__id']) > 0) {
@@ -2554,7 +2554,7 @@ class Ajax extends CI_Controller
 
         //Show basic UI for now:
         foreach($this->E_model->fetch(array('e__id' => $e__id)) as $e){
-            return redirect_message('/@'.$e['e__handle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+            return redirect_message(view_memory(42903,42902).$e['e__handle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
         }
 
     }
@@ -2720,7 +2720,7 @@ class Ajax extends CI_Controller
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)){
-            return redirect_message('/', '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #'.$focus_i__hashtag.' is not active</div>');
+            return redirect_message(view_memory(42903,14565), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #'.$focus_i__hashtag.' is not active</div>');
         }
 
         //Check to see if added to read for logged-in members:
@@ -2736,7 +2736,7 @@ class Ajax extends CI_Controller
             //is available?
             $i_is_discoverable = i_is_discoverable($is[0]);
             if(!$i_is_discoverable['status']){
-                return redirect_message('/'.$i_is_discoverable['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_discoverable['message'].'</div>');
+                return redirect_message(view_memory(42903,33286).$i_is_discoverable['return_i__hashtag'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.$i_is_discoverable['message'].'</div>');
             }
 
             //Is startable?
@@ -2746,7 +2746,7 @@ class Ajax extends CI_Controller
                 'x__next' => $is[0]['i__id'],
                 'x__following' => 4235,
             )))){
-                return redirect_message('/'.$focus_i__hashtag, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not startable.</div>');
+                return redirect_message(view_memory(42903,33286).$focus_i__hashtag, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>This idea is not startable.</div>');
             }
 
             //Add Starting Point:
@@ -2769,7 +2769,7 @@ class Ajax extends CI_Controller
         }
 
         //Go to this newly added idea:
-        return redirect_message('/'.$focus_i__hashtag.'/'.$next_i__hashtag);
+        return redirect_message(view_memory(42903,30795).$focus_i__hashtag.'/'.$next_i__hashtag);
 
     }
 
@@ -2779,7 +2779,7 @@ class Ajax extends CI_Controller
         if(!$member_e){
             return redirect_message(view_app_link(4269).'?i__hashtag='.$top_i__hashtag);
         } elseif(!$this->X_model->i_has_started($member_e['e__id'], $top_i__hashtag)) {
-            return redirect_message('/'.$top_i__hashtag);
+            return redirect_message(view_memory(42903,33286).$top_i__hashtag);
         }
 
 
@@ -2788,14 +2788,14 @@ class Ajax extends CI_Controller
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         if(!count($is)) {
-            return redirect_message('/'.$top_i__hashtag, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$focus_i__hashtag.' is not currently active.</div>');
+            return redirect_message(view_memory(42903,33286).$top_i__hashtag, '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>Idea #'.$focus_i__hashtag.' is not currently active.</div>');
         }
 
         //Go to Next Idea:
         $next_i__hashtag = $this->X_model->find_next($member_e['e__id'], $is[0]['i__hashtag'], $is[0]);
         if($next_i__hashtag){
 
-            return redirect_message('/'.$top_i__hashtag.'/'.$next_i__hashtag );
+            return redirect_message(view_memory(42903,30795).$top_i__hashtag.'/'.$next_i__hashtag );
 
         } else {
 
@@ -2807,7 +2807,7 @@ class Ajax extends CI_Controller
                 //TODO Maybe log additional details like total ideas, time, etc
             ));
 
-            return redirect_message('/'.$top_i__hashtag);
+            return redirect_message(view_memory(42903,33286).$top_i__hashtag);
 
             //TODO Go to Rating or Checkout App since the entire tree is discovered
 

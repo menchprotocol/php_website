@@ -16,7 +16,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             foreach($this->I_model->fetch(array(
                 'i__id' => $x['x__next'],
             )) as $i_from){
-                echo '<h1><a href="/'.$i_from['i__hashtag'].'"><u>' . view_i_title($i_from, true) . '</u></a></h1>';
+                echo '<h1><a href="'.view_memory(42903,33286).$i_from['i__hashtag'].'"><u>' . view_i_title($i_from, true) . '</u></a></h1>';
             }
 
             if(isset($_GET['submit'])){
@@ -31,7 +31,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 foreach($this->I_model->fetch(array(
                     'i__id' => $x['x__previous'],
                 )) as $i_go){
-                    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="/'.$i_go['i__hashtag'].'">'.view_i_title($i_go, true).'</a>.</div>';
+                    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="'.view_memory(42903,33286).$i_go['i__hashtag'].'">'.view_i_title($i_go, true).'</a>.</div>';
                 }
 
             } else {
@@ -136,7 +136,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                             "\n".$i['i__message'].
                             "\n".'Start Time: '.date("D M j G:i:s T", $time_starts).
                             ( count($time_ends) && strtotime($time_ends[0]['x__message']) ? "\n".'End Time: '.date("D M j G:i:s T", strtotime($time_ends[0]['x__message'])) : '' ).
-                            "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).'/'.$i['i__hashtag'].
+                            "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view_memory(42903,33286).$i['i__hashtag'].
                             "\n".
                             "\n".'If you cannot attend this event please inform us by cancelling here:'.
                             "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view_app_link(42216).'?x__id='.$x['x__id'].'&e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']);
@@ -257,7 +257,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     ));
                     //Has this user discovered this idea or no?
                     $html_message .= view_i_title($down_or, true) . ":\n";
-                    $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . '/' . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view__hash(time().$x['e__handle']) : '') . "\n\n";
+                    $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . view_memory(42903,33286) . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view__hash(time().$x['e__handle']) : '') . "\n\n";
 
                 }
 

@@ -151,14 +151,14 @@ class X_model extends CI_Model
 
                     //IDEA
                     foreach($this->I_model->fetch(array( 'i__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_i){
-                        $html_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').'/' . $this_i['i__hashtag']."\n\n";
+                        $html_message .= $m['m__title'] . ': '.view_i_title($this_i, true).':'."\n".$this->config->item('base_url').view_memory(42903,33286) . $this_i['i__hashtag']."\n\n";
                     }
 
                 } elseif (in_array(6160 , $m['m__following'])) {
 
                     //SOURCE
                     foreach($this->E_model->fetch(array( 'e__id' => $add_fields[$e___32088[$e__id]['m__message']] )) as $this_e){
-                        $html_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').'/@' . $this_e['e__handle'] . "\n\n";
+                        $html_message .= $m['m__title'] . ': '.$this_e['e__title']."\n".$this->config->item('base_url').view_memory(42903,42902). $this_e['e__handle'] . "\n\n";
                     }
 
                 } elseif (in_array(4367 , $m['m__following'])) {
@@ -531,13 +531,13 @@ class X_model extends CI_Model
                         'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                         'x__follower' => $o__id,
                     ), array('x__following'), 1, 0, array('e__title' => 'DESC')) as $up_e) {
-                        $deletion_redirect = '/@'.$up_e['e__handle'];
+                        $deletion_redirect = view_memory(42903,42902).$up_e['e__handle'];
                     }
 
                     //If still not found, go to main page if no followings found:
                     if(!$deletion_redirect){
                         foreach($this->E_model->fetch(array('e__id' => $o__id)) as $e2){
-                            $deletion_redirect = '/@'.e2['e__handle'];
+                            $deletion_redirect = view_memory(42903,42902).e2['e__handle'];
                         }
                     }
 
@@ -583,7 +583,7 @@ class X_model extends CI_Model
                         'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
                         'x__next' => $o__id,
                     ), array('x__previous'), 1) as $previous_i) {
-                        $deletion_redirect = '/'.$previous_i['i__hashtag'];
+                        $deletion_redirect = view_memory(42903,33286).$previous_i['i__hashtag'];
                     }
 
                     //If not found, find active followings:
@@ -594,7 +594,7 @@ class X_model extends CI_Model
                             'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //IDEA LINKS
                             'x__next' => $o__id,
                         ), array('x__previous'), 1) as $previous_i) {
-                            $deletion_redirect = '/'.$previous_i['i__hashtag'];
+                            $deletion_redirect = view_memory(42903,33286).$previous_i['i__hashtag'];
                         }
                     }
 
@@ -603,7 +603,7 @@ class X_model extends CI_Model
                         foreach($this->I_model->fetch(array(
                             'i__id' => $o__id,
                         )) as $i){
-                            $deletion_redirect = '/'.$i['i__hashtag'];
+                            $deletion_redirect = view_memory(42903,33286).$i['i__hashtag'];
                         }
                     }
 
@@ -855,7 +855,7 @@ class X_model extends CI_Model
                 foreach($children as $down_or){
                     //Has this user discovered this idea or no?
                     $html_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
-                    $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).'/'.$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']).'</div>';
+                    $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).view_memory(42903,33286).$down_or['i__hashtag'].'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']).'</div>';
                 }
 
                 $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$html_message, array(
@@ -1174,7 +1174,7 @@ class X_model extends CI_Model
                         ));
 
                         //New link:
-                        $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $x_data['x__creator']).'/'.$result['new_i__hashtag']."\n\n";
+                        $clone_urls .= $new_title.':'."\n".'https://'.get_domain('m__message', $x_data['x__creator']).view_memory(42903,33286).$result['new_i__hashtag']."\n\n";
                     }
 
                 } elseif($clone_i['x__type']==32304){
@@ -1392,9 +1392,9 @@ class X_model extends CI_Model
 
                             $this->X_model->send_dm($watcher['x__following'], $es_discoverer[0]['e__title'].' Discovered: '.view_i_title($i, true),
                                 //Message Body:
-                                view_i_title($i, true).':'."\n".'https://'.$domain_url.'/'.$i['i__hashtag']."\n\n".
+                                view_i_title($i, true).':'."\n".'https://'.$domain_url.view_memory(42903,33286).$i['i__hashtag']."\n\n".
                                 ( strlen($x_data['x__message']) ? $x_data['x__message']."\n\n" : '' ).
-                                $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.'/@'.$es_discoverer[0]['e__handle']."\n\n".
+                                $es_discoverer[0]['e__title'].':'."\n".'https://'.$domain_url.view_memory(42903,42902).$es_discoverer[0]['e__handle']."\n\n".
                                 $discoverer_contact
                             );
                         }

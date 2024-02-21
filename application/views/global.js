@@ -36,7 +36,7 @@ if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user 
         FS.identify(js_pl_id, {
             displayName: js_pl_name,
             uid: js_pl_id,
-            profileURL: base_url+'/@'+js_pl_handle
+            profileURL: base_url+js_e___42903[42902]['m__message']+js_pl_handle
         });
     }
 
@@ -511,7 +511,7 @@ function i_copy(i__id, do_recursive){
         do_recursive:do_recursive
     }, function (data) {
         if(data.status){
-            js_redirect('/'+data.new_i__hashtag);
+            js_redirect(js_e___42903[33286]['m__message']+data.new_i__hashtag);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -543,7 +543,7 @@ function e_copy(e__id){
         copy_source_title:copy_source_title,
     }, function (data) {
         if(data.status){
-            js_redirect('/@'+data.new_e__handle);
+            js_redirect(js_e___42903[42902]['m__message']+data.new_e__handle);
         } else {
             alert('ERROR:' + data.message);
         }
@@ -774,19 +774,19 @@ function load_card_clickers(){
 
     $( ".card_click_e" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect('/@'+$(this).attr('e__handle'));
+            js_redirect(js_e___42903[42902]['m__message']+$(this).attr('e__handle'));
         }
     });
 
     $('.card_click_i').click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect('/'+$(this).attr('i__hashtag'));
+            js_redirect(js_e___42903[33286]['m__message']+$(this).attr('i__hashtag'));
         }
     });
 
     $('.card_click_x').click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect('/'+$(this).attr('i__hashtag'));
+            js_redirect(js_e___42903[33286]['m__message']+$(this).attr('i__hashtag'));
         }
     });
 
@@ -1678,7 +1678,7 @@ function i_editor_save(){
             if(old_handle!=new_handle){
                 if(on_focus_idea){
                     //Refresh page since focus item handle changed:
-                    js_redirect('/'+new_handle);
+                    js_redirect(js_e___42903[33286]['m__message']+new_handle);
                 } else {
                     //Update Hashtag & Link:
                     $('.s__12273_'+modify_data['save_i__id']).attr('i__hashtag', new_handle);
@@ -2236,7 +2236,7 @@ function e_editor_save(){
             if(old_handle!=new_handle){
                 if(fetch_int_val('#focus_card')==12274 && modify_data['save_e__id']==fetch_int_val('#focus_id')){
                     //Refresh page since focus item handle changed:
-                    return js_redirect('/@'+new_handle);
+                    return js_redirect(js_e___42903[42902]['m__message']+new_handle);
                 } else {
                     //Make adjustments to current page:
                     $('.s__12274_'+modify_data['save_e__id']).attr('e__handle', new_handle);
@@ -2274,7 +2274,7 @@ function e_editor_save(){
             //Do we need to refresh the page?
             if(fetch_int_val('#focus_card')==12274 && fetch_int_val('#focus_id')==modify_data['save_e__id']){
                 //Refresh page since source edited their own profile:
-                js_redirect('/@'+$('#focus_handle').val());
+                js_redirect(js_e___42903[42902]['m__message']+$('#focus_handle').val());
             }
 
         }
@@ -3040,7 +3040,6 @@ function x_reset_sorting(){
         var focus_id = fetch_int_val('#focus_id');
         var focus_handle = fetch_int_val('#focus_handle');
 
-
         //Update via call:
         $.post("/ajax/x_reset_sorting", {
             focus_card: focus_card,
@@ -3056,9 +3055,11 @@ function x_reset_sorting(){
 
                 //Refresh page:
                 if(focus_card==12273){
-                    js_redirect('/' + focus_handle);
+                    //Ideation
+                    js_redirect(js_e___42903[33286]['m__message'] + focus_handle);
                 } else if(focus_card==12274){
-                    js_redirect('/@' + focus_handle);
+                    //Sourcing
+                    js_redirect(js_e___42903[42902]['m__message'] + focus_handle);
                 }
 
             }

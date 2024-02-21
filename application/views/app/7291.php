@@ -36,7 +36,7 @@ if($client_id && $client_secret && $server_name){
 
 } else {
 
-    js_php_redirect('/', 987);
+    js_php_redirect(view_memory(42903,14565), 987);
 
 }
 

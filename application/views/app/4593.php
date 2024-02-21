@@ -22,7 +22,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     $table_body .= '<tr class="panel-title down-border" style="font-weight:bold !important;">';
     $table_body .= '<td style="text-align: left; font-family: monospace, monospace;">'.str_pad($total_count, 3, '0', STR_PAD_LEFT).'</td>';
     $table_body .= '<td style="text-align: left; width:21px; text-align: center">'.$m['m__cover'].'</td>';
-    $table_body .= '<td style="text-align: left;"><a href="/@'.$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
+    $table_body .= '<td style="text-align: left;"><a href="'.view_memory(42903,42902).$m['m__handle'].'"><u>'.$m['m__title'].'</u></a></td>';
     $table_body .= '<td style="text-align: left;">'.$x__type.'</td>';
 
     //List all statuses:

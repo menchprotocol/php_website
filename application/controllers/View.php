@@ -59,7 +59,7 @@ class View extends CI_Controller
         //Validate App
         if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
             foreach($this->E_model->fetch(array('e__id' => $app_e__id)) as $e){
-                return redirect_message('/@'.$e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$e['e__handle'].' Is not an APP, yet 🤫</div>');
+                return redirect_message(view_memory(42903,42902).$e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$e['e__handle'].' Is not an APP, yet 🤫</div>');
             }
         }
 
@@ -91,7 +91,7 @@ class View extends CI_Controller
         //MEMBER REDIRECT?
         if($member_e && in_array($app_e__id, $this->config->item('n___14639'))){
             //Should redirect them:
-            return redirect_message('/@'.$member_e['e__handle']);
+            return redirect_message(view_memory(42903,42902).$member_e['e__handle']);
         } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
             return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
@@ -262,14 +262,14 @@ class View extends CI_Controller
                 foreach ($this->E_model->fetch(array(
                     'e__id' => $e__handle,
                 )) as $e_redirect){
-                    return redirect_message('/@'.$e_redirect['e__handle']);
+                    return redirect_message(view_memory(42903,42902).$e_redirect['e__handle']);
                 }
             }
 
             return redirect_message(home_url());
         } elseif(strlen($es[0]['e__handle']) && $es[0]['e__handle']!==$e__handle){
             //Adjust URL:
-            return redirect_message('/@'.$es[0]['e__handle']);
+            return redirect_message(view_memory(42903,42902).$es[0]['e__handle']);
         }
 
         $member_e = superpower_unlocked();
@@ -305,7 +305,7 @@ class View extends CI_Controller
                 foreach($this->I_model->fetch(array(
                     'i__id' => $i__hashtag,
                 )) as $go){
-                    return redirect_message('/'.$go['i__hashtag']);
+                    return redirect_message(view_memory(42903,33286).$go['i__hashtag']);
                 }
             }
 
@@ -317,7 +317,7 @@ class View extends CI_Controller
         /*
         if(!$member_e){
             if(in_array($is[0]['i__privacy'], $this->config->item('n___31871'))){
-                return redirect_message('/'.$i__hashtag);
+                return redirect_message(view_memory(42903,33286).$i__hashtag);
             } else {
                 return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__hashtag . ' is not published yet.</div>');
             }
@@ -441,7 +441,7 @@ class View extends CI_Controller
 
         if(!$member_e) {
             //Must login to continue:
-            return redirect_message(view_app_link(4269).'?url=/'.$top_i__hashtag.'/'.$focus_i__hashtag);
+            return redirect_message(view_app_link(4269).'?url='.view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i__hashtag);
         }
 
         //Validate Focus Idea:
@@ -462,9 +462,9 @@ class View extends CI_Controller
                 'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             ));
             if ( !count($focus_is) ) {
-                return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid Hashtag #' . $focus_i__hashtag . '</div>');
+                return redirect_message( ( $top_i__hashtag ? view_memory(42903,33286).$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid Hashtag #' . $focus_i__hashtag . '</div>');
             } elseif(!in_array($focus_is[0]['i__privacy'], $this->config->item('n___31871')) && !write_privacy_i($focus_is[0]['i__hashtag'])){
-                return redirect_message( ( $top_i__hashtag ? '/'.$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not public and you are missing permission to access.</div>');
+                return redirect_message( ( $top_i__hashtag ? view_memory(42903,33286).$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not public and you are missing permission to access.</div>');
             }
         }
 
@@ -494,13 +494,13 @@ class View extends CI_Controller
                 if($this_discovery){
                     //We have a discovery here, make sure its not the same as the starting point:
                     if($this_discovery!=$focus_i__hashtag){
-                        return redirect_message('/'.$this_discovery.'/'.$focus_i__hashtag);
+                        return redirect_message(view_memory(42903,30795).$this_discovery.'/'.$focus_i__hashtag);
                     }
                 } else {
                     //No discovery here, let's see if we can find any above:
                     $top_x_i__hashtag = $this->X_model->find_previous_discovered($focus_is[0]['i__id'], $focus_es[0]['e__id']);
                     if($top_x_i__hashtag){
-                        return redirect_message('/'.$top_x_i__hashtag.'/'.$focus_i__hashtag);
+                        return redirect_message(view_memory(42903,30795).$top_x_i__hashtag.'/'.$focus_i__hashtag);
                     }
                 }
             }

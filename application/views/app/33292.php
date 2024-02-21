@@ -11,13 +11,13 @@ if($e__handle){
     foreach($this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($e__handle),
     )) as $e){
-        echo '<h2 class="center"><a href="/@'.$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a> <a href="/'.$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="'.view_memory(42903,42902).$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif($i__hashtag){
     foreach($this->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower($i__hashtag),
     )) as $i){
-        echo '<h2 class="center"><a href="/'.$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a> <a href="/'.$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
+        echo '<h2 class="center"><a href="'.view_memory(42903,33286).$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 }
 
@@ -64,11 +64,11 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                                 'x__type' => 42570, //Family
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             ), array('x__following'), 1) as $sibling){
-                                echo '<a href="/@'.$sibling['e__handle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
+                                echo '<a href="'.view_memory(42903,42902).$sibling['e__handle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
                             }
                         }
 
-                        echo '<a href="/@'.$e___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$e___42263[$headline_link]['m__cover'].'</span><b class="main__title grey"><u>'.$e___42263[$headline_link]['m__title'].'</u></a>:</b>';
+                        echo '<a href="'.view_memory(42903,42902).$e___42263[$headline_link]['m__handle'].'"><span class="icon-block-sm grey">'.$e___42263[$headline_link]['m__cover'].'</span><b class="main__title grey"><u>'.$e___42263[$headline_link]['m__title'].'</u></a>:</b>';
 
                         echo '</td>';
                         echo '</tr>';
@@ -78,7 +78,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;" title="@'.$m3['m__handle'].'"><a href="/@'.$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col points_frame hidden">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xs">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
+            echo '<td style="text-align: left;" title="@'.$m3['m__handle'].'"><a href="'.view_memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col points_frame hidden">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xs">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
             echo '</tr>';
 
         }

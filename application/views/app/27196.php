@@ -21,7 +21,7 @@ if ($_GET['focus_id']==12273 && superpower_unlocked(12700) && isset($_POST['s__i
     $this->session->set_flashdata('flash_message', '<div class="alert '.( $process_mass_action['status'] ? 'alert-info' : 'alert-danger' ).'" role="alert"><span class="icon-block"><i class="fas fa-info-circle"></i></span>'.$process_mass_action['message'].'</div>');
 
     foreach($this->E_model->fetch(array('e__id' => $_POST['s__id'])) as $e){
-        header("Location: /@" . $e['e__handle'] );
+        header("Location: " . view_memory(42903,42902) . $e['e__handle'] );
     }
 
 } else {

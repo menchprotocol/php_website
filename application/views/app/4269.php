@@ -6,7 +6,7 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     ));
 }
-$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? '/' . $sign_i[0]['i__hashtag'] : home_url()) );
+$next_url = ( isset($_GET['url']) ? urldecode($_GET['url']) : ( count($sign_i) ? view_memory(42903,33286) . $sign_i[0]['i__hashtag'] : home_url()) );
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 
 //Check to see if they are previously logged in?
@@ -301,7 +301,7 @@ if(superpower_unlocked()) {
                 //Back only if coming from an idea:
                 $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
                 if (count($sign_i)) {
-                    $intro_message = str_replace('%s','<br /><a href="/' . $sign_i[0]['i__hashtag'] . '"><u>'.view_i_title($sign_i[0]).'</u></a>', $e___4269[7560]['m__message']);
+                    $intro_message = str_replace('%s','<br /><a href="' . view_memory(42903,33286). $sign_i[0]['i__hashtag'] . '"><u>'.view_i_title($sign_i[0]).'</u></a>', $e___4269[7560]['m__message']);
                 }
                 ?>
                 <div class="doclear">&nbsp;</div>

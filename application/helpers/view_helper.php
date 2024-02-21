@@ -112,14 +112,14 @@ function view_card_x($x, $has_x__reference = false)
 
             //SOURCE
             foreach($CI->E_model->fetch(array('e__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_e){
-                $ui .= '<div class="simple-line"><a href="/@'.$focus_e['e__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover($focus_e['e__cover'], true). '</span>'.$focus_e['e__title'].'</a></div>';
+                $ui .= '<div class="simple-line"><a href="'.view_memory(42903,42902).$focus_e['e__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span>'.'<span class="icon-block">'.view_cover($focus_e['e__cover'], true). '</span>'.$focus_e['e__title'].'</a></div>';
             }
 
         } elseif(in_array(6202 , $m['m__following']) && intval($x[$e___32088[$e__id]['m__message']])>0){
 
             //IDEA
             foreach($CI->I_model->fetch(array('i__id' => $x[$e___32088[$e__id]['m__message']])) as $focus_i){
-                $ui .= '<div class="simple-line"><a href="/'.$focus_i['i__hashtag'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
+                $ui .= '<div class="simple-line"><a href="'.view_memory(42903,33286).$focus_i['i__hashtag'].'" data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].'" class="main__title"><span class="icon-block">'.$m['m__cover']. '</span><span class="icon-block">'.view_cache(4737 /* Idea Type */, $focus_i['i__type'], true, 'right', $focus_i['i__id']).'</span>'.view_i_title($focus_i).'</a></div>';
             }
 
 
@@ -224,7 +224,7 @@ function view_time_difference($t, $micro = false)
 }
 
 function view_app_link($app_id){
-    return '/'.view_memory(6287, $app_id, 'm__handle');
+    return view_memory(42903,6287).view_memory(6287, $app_id, 'm__handle');
 }
 
 function view_memory($following, $follower, $filed = 'm__message'){
@@ -1045,7 +1045,7 @@ function view_time_hours($total_seconds, $hide_hour = false){
 function view__focus__e($e){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035');
-    return '<div class="alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'] . '</span><span class="icon-block-sm">' . view_cover($e['e__handle'], true) . '</span><a href="/@'.$e['e__handle'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="/'.$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
+    return '<div class="alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'] . '</span><span class="icon-block-sm">' . view_cover($e['e__handle'], true) . '</span><a href="'.view_memory(42903,42902).$e['e__handle'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="'.view_memory(42903,33286).$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
 }
 
 
@@ -1188,9 +1188,9 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
     $ui_template = array(
         4256 => '<spanaa href="%s" target="_blank"><span class="url_truncate">%s</span></spanaa>',
-        31834 => '<spanaa href="/%s" data-toggle="popover" class="ref_idea">%s</spanaa>',
-        42337 => '<spanaa href="/%s" data-toggle="popover" class="ref_idea">%s</spanaa>',
-        31835 => '<spanaa href="/@%s" data-toggle="popover" class="ref_source">%s</spanaa>',
+        31834 => '<spanaa href="'.view_memory(42903,33286).'%s" data-toggle="popover" class="ref_idea">%s</spanaa>', //Ideation
+        42337 => '<spanaa href="'.view_memory(42903,33286).'%s" data-toggle="popover" class="ref_idea">%s</spanaa>', //Ideation
+        31835 => '<spanaa href="'.view_memory(42903,42902).'%s" data-toggle="popover" class="ref_source">%s</spanaa>', //Sourcing
     );
 
     $replace_from = array();
@@ -1408,7 +1408,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 function view_featured_links($x__type, $location, $m = null, $focus_card){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //Summary
-    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'>'.( $focus_card ? '<a href="/@'.$location['e__handle'].'">' : '' ).'<span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xs' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus_card ? '</a>' : '' ).'</div>';
+    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'>'.( $focus_card ? '<a href="'.view_memory(42903,42902).$location['e__handle'].'">' : '' ).'<span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xs' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus_card ? '</a>' : '' ).'</div>';
 }
 
 
@@ -1523,12 +1523,12 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
     if($discovery_mode || $cache_app) {
         if($link_creator && $top_i__hashtag){
-            $href = '/'.$top_i__hashtag.'/'.$i['i__hashtag'];
+            $href = view_memory(42903,30795).$top_i__hashtag.'/'.$i['i__hashtag'];
         } else {
-            $href = '/'.$i['i__hashtag'];
+            $href = view_memory(42903,33286).$i['i__hashtag'];
         }
     } else {
-        $href = '/'.$i['i__hashtag'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
+        $href = view_memory(42903,33286).$i['i__hashtag'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
     }
 
     $has_discovered = false;
@@ -1579,7 +1579,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             $follow_btn = view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, false, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
         }
 
-        $ui .= '<div class="creator_headline"><a href="/@'.$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a>'.( !in_array($creator['e__id'], $CI->config->item('n___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span>' : '' ).$follow_btn.'</div>';
+        $ui .= '<div class="creator_headline"><a href="'.view_memory(42903,42902).$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a>'.( !in_array($creator['e__id'], $CI->config->item('n___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span>' : '' ).$follow_btn.'</div>';
 
     }
 
@@ -1675,7 +1675,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
                     )) as $creator){
                         $creator_name = 'Linked by '.$creator['e__title'].' @'.$creator['e__handle'].' on ';
-                        $creator_details = '<a href="/'.$i['i__hashtag'].'"><span class="icon-block-sm">'.view_cover($creator['e__cover']).'</span></a>';
+                        $creator_details = '<a href="'.view_memory(42903,33286).$i['i__hashtag'].'"><span class="icon-block-sm">'.view_cover($creator['e__cover']).'</span></a>';
                     }
                 }
 
@@ -1734,7 +1734,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 )))){
 
                 //GET STARTED
-                $bottom_bar_ui .= '<span><a href="/'.$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm" style="height: 21px !important;">'.$m_top_bar['m__cover'].'</span><span class="'.( !$focus_card ? ' show-max ' : '' ).'">'.$m_top_bar['m__title'].'</span></a></span>';
+                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm" style="height: 21px !important;">'.$m_top_bar['m__cover'].'</span><span class="'.( !$focus_card ? ' show-max ' : '' ).'">'.$m_top_bar['m__title'].'</span></a></span>';
 
             } elseif($x__type_top_bar==31911 && $write_privacy_i && !$discovery_mode){
 
@@ -1784,7 +1784,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                         } elseif($e__id_dropdown==33286 && $discovery_mode && $write_privacy_i){
 
                             //Ideation Mode
-                            $action_buttons .= '<a href="/'.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007){
 
@@ -2013,7 +2013,7 @@ function view_pill($focus_card, $x__type, $counter, $m, $ui = null, $is_open = t
 function view_e_line($e)
 {
 
-    $ui = '<a href="/@'.$e['e__handle'].'" class="doblock">';
+    $ui = '<a href="'.view_memory(42903,42902).$e['e__handle'].'" class="doblock">';
     $ui .= '<span class="icon-block">'.view_cover($e['e__cover'], true).'</span>';
     $ui .= '<span class="main__title">'.$e['e__title'].'<span class="grey" style="padding-left:8px;">' . view_time_difference($e['x__time']) . ' Ago</span></span>';
     $ui .= '</a>';
@@ -2064,7 +2064,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $is_app = $x__type==6287;
 
-    $href = ( $is_app ? '/'.$e['e__handle'] : '/@'.$e['e__handle'] );
+    $href = ( $is_app ? view_app_link($e['e__id']) : view_memory(42903,42902).$e['e__handle'] );
     $focus_e__handle = ( view_valid_handle_e($CI->uri->segment(1)) ? substr($CI->uri->segment(1), 1) : false );
     $has_x_progress = ( $x__id > 0 && (in_array($e['x__type'], $CI->config->item('n___6255')) || $write_privacy_e));
     $has_valid_url = filter_var($e['e__cover'], FILTER_VALIDATE_URL);
@@ -2313,7 +2313,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         } elseif($e__id_dropdown==13670 && substr($CI->uri->segment(1), 0, 1)=='~') {
 
                             //Filter applies only when browsing an idea
-                            $action_buttons .= '<a href="/'.$CI->uri->segment(1). '?focus__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view_memory(42903,33286).$CI->uri->segment(1). '?focus__e=' . $e['e__id'] . '" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
 
@@ -2380,7 +2380,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         $info = ( strlen($social_link['x__message']) && !$social_url ? $e___14036[$social_link['x__following']]['m__title'].': '.$social_link['x__message'] : ( $social_url ? view_url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['x__following']]['m__title'] ) );
 
         //Append to links:
-        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : ( $focus_card ? '<a href="/@'.$e___14036[$social_link['x__following']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</span>' ) ).'</span>';
+        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : ( $focus_card ? '<a href="'.view_memory(42903,42902).$e___14036[$social_link['x__following']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</span>' ) ).'</span>';
 
     }
 
