@@ -60,16 +60,20 @@ if(isset($_POST['payment_status'])){
 }
 
 
-if(!$is_good && isset($_POST) && count($_POST)){
-    $this->X_model->create(array(
-        'x__type' => 4246, //Platform Bug Reports
-        'x__message' => 'Invalid item number',
-        'x__metadata' => array(
-            'new_x' => $new_x,
-            'post' => $_POST,
-        ),
-    ));
-    echo 'Invalid inputs';
+if(!$is_good){
+
+    echo '<div class="alert alert-danger" role="alert">Missing Paypal API Variables.</div>';
+
+    if(isset($_POST) && count($_POST)){
+        $this->X_model->create(array(
+            'x__type' => 4246, //Platform Bug Reports
+            'x__message' => 'Invalid item number',
+            'x__metadata' => array(
+                'new_x' => $new_x,
+                'post' => $_POST,
+            ),
+        ));
+    }
 }
 
 
