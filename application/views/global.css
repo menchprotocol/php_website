@@ -1622,18 +1622,18 @@ label {
 }
 
 .dropdown_type_26105 {
-    padding: 5px 0 !important;
+    padding: 8px 0 !important;
 }
 .dropdown_type_26105 .type_head {
     margin:0;
     position: absolute;
-    top: 13px;
+    top: 5px;
     left: 40px;
 }
 
 .dropdown_type_26105 .type_handle {
     position: absolute;
-    top: 34px;
+    top: 21px;
     left: 40px;
     font-size:0.89em;
 }
