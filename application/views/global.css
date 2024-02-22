@@ -1620,9 +1620,24 @@ label {
     --bs-popover-body-padding-x: 0;
     --bs-popover-body-padding-y: 0;
 }
+
 .dropdown_type_26105 {
     padding: 5px 0 !important;
 }
+.dropdown_type_26105 .type_head {
+    margin:0;
+    position: absolute;
+    top: 13px;
+    left: 40px;
+}
+
+.dropdown_type_26105 .type_handle {
+    position: absolute;
+    top: 34px;
+    left: 40px;
+    font-size:0.89em;
+}
+
 .popover {
     border-radius: 0 !important;
 }
