@@ -3241,10 +3241,12 @@ h4.main__title{
 
     .show-max{display: none !important;}
     .show-min{display: inline-block !important;}
+    /*
     .short_blob{
         display: block !important;
         margin-left: 40px;
     }
+     */
     .platform-navigation .block-sign-x{
         width:34px;
     }
