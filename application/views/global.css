@@ -495,7 +495,7 @@ img.no-frame {
     float:left;
 }
 .adjust-left{
-    font-size: 0.89em;
+    font-size: 0.80em;
     text-shadow: 1px 1px 1px #FFFFFF;
 }
 
@@ -1009,7 +1009,7 @@ textarea.form-control, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     padding: 21px 0 3px;
     font-weight: bold;
     text-align: left;
-    font-size: 0.89em !important;
+    font-size: 0.80em !important;
 }
 .low-title:first-of-type{
     padding-top: 8px;
@@ -1429,7 +1429,7 @@ label {
     display: block;
     white-space: unset;
     text-align: left;
-    font-size: 0.89em;
+    font-size: 0.80em;
 }
 
 .btn.dropdown-toggle{
@@ -1637,7 +1637,7 @@ label {
     position: absolute;
     top: 21px;
     left: 40px;
-    font-size:0.89em !important;
+    font-size:0.80em !important;
     font-weight: normal;
     width: 115px;
     overflow: hidden;
@@ -1688,7 +1688,7 @@ label {
 
 .icon-block-xs i,
 .icon-block-xs .icon-block-sm   i,
-.icon-block-xs .icon-block   i{ font-size: 0.89em !important; }
+.icon-block-xs .icon-block   i{ font-size: 0.80em !important; }
 
 .dynamic_editing_input.float_right .icon-block {
     width:28px !important;
@@ -2008,7 +2008,7 @@ label {
     border-bottom: 3px solid #000000;
     padding: 8px;
     margin:34px -13px 13px -5px;
-    font-size: 0.89em;
+    font-size: 0.80em;
 }
 .list-radio-select .list-group-item.active {
     color:#000000 !important;
@@ -2723,7 +2723,7 @@ textarea {
     resize: none;
 }
 .wide_author{ text-align: left; padding-left: 13px; }
-.wide_author .grey{ font-size: 0.89em; font-weight: bold; }
+.wide_author .grey{ font-size: 0.80em; font-weight: bold; }
 .created_time{ font-size: 0.69em; width: 100%; text-align: center; }
 
 
@@ -2882,7 +2882,7 @@ h4.main__title{
 .points_frame {
     color: #FC1B44 !important;
     font-style: italic;
-    font-size: 0.89em;
+    font-size: 0.80em;
 }
 
 .section_subframe{
@@ -2926,7 +2926,7 @@ h4.main__title{
     height:21px !important;
 }
 .info_blob{
-    font-size: 0.89em !important;
+    font-size: 0.80em !important;
     color: #999999 !important;
     display: block !important;
     margin-left: 40px;
@@ -2986,7 +2986,7 @@ h4.main__title{
 }
 .edge-cover.coin-12274 .source_bio{
     padding: 0 0 5px;
-    font-size: 0.89em;
+    font-size: 0.80em;
     max-height: 55px;
 }
 
@@ -2995,7 +2995,7 @@ h4.main__title{
 }
 
 .edge-cover.coin-12274 .creator_headline{
-    font-size: 0.89em;
+    font-size: 0.80em;
     padding: 0;
     height: 18px;
     overflow: visible;
@@ -3038,11 +3038,11 @@ h4.main__title{
     line-height: 113%;
     z-index: 1005;
     color: #FFFFFF;
-    background-color: rgba(0,0,0,0.89) !important;
+    background-color: rgba(0,0,0,0.80) !important;
     overflow: hidden;
     text-align: center;
     padding: 2px;
-    font-size: 0.89em;
+    font-size: 0.80em;
     border: 0;
 }
 .media_frame .media_item {
@@ -3061,7 +3061,7 @@ h4.main__title{
     height: 21px;
     border-radius: 50%;
     padding: 0px 2px;
-    background-color: rgba(0,0,0,0.89) !important;
+    background-color: rgba(0,0,0,0.80) !important;
     z-index: 1002;
     text-align: center;
     cursor: move;
@@ -3110,13 +3110,13 @@ h4.main__title{
     height: 21px;
     border-radius: 50%;
     padding: 0px 5px;
-    background-color: rgba(0,0,0,0.89) !important;
+    background-color: rgba(0,0,0,0.80) !important;
     z-index: 1002;
 }
 .media_frame .media_item span i,
 .media_frame .media_item a i{
     color: #FFFFFF;
-    font-size: 0.89em !important;
+    font-size: 0.80em !important;
 }
 
 .mobile-shrink {
@@ -3303,7 +3303,7 @@ h4.main__title{
 
 
 .light-bg {
-    background: rgba(255,255,254,0.89) !important;
+    background: rgba(255,255,254,0.80) !important;
 }
 .fixed-top{
     background: rgba(255,255,254,1.00) !important;
@@ -3313,7 +3313,7 @@ h4.main__title{
 .coin-12274 .cover-content,
 .coin-12274.not-allowed .cover-content,
 .coin-6287.not-allowed .cover-content{
-    background: rgba(255,255,254,0.89) !important;
+    background: rgba(255,255,254,0.80) !important;
 }
 
 .search_bar,
@@ -4006,11 +4006,11 @@ a,
 /* SMALL */
 .custom_ui_13491_13492 .i_cache,
 .custom_ui_13491_13492 .regtext {
-    font-size:0.89em;
+    font-size:0.80em;
 }
 .custom_ui_13491_13492 .i_cache i,
 .custom_ui_13491_13492 .regtext i {
-    font-size:0.89em;
+    font-size:0.80em;
 }
 
 
@@ -4333,7 +4333,7 @@ div.img {
     border-radius: 50%;
 }
 .logo_cover i{
-    font-size: 0.89em !important;
+    font-size: 0.80em !important;
     display: block;
     margin-top: 3px;
 }
@@ -4593,7 +4593,7 @@ main {
 .emoji_table td {
     text-align: center;
     width: 34px !important;
-    font-size: 0.89em;
+    font-size: 0.80em;
 }
 
 .home_black_font .logo_cover i,
@@ -4728,7 +4728,7 @@ main {
     display: block;
     line-height: 108%;
     padding: 0 2px;
-    font-size: 0.89em;
+    font-size: 0.80em;
     max-height: 55px;
     overflow-x: hidden;
     overflow-y: auto;
