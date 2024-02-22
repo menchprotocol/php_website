@@ -1637,7 +1637,8 @@ label {
     position: absolute;
     top: 21px;
     left: 40px;
-    font-size:0.89em;
+    font-size:0.89em !important;
+    font-weight: normal;
     width: 115px;
     overflow: hidden;
 }
