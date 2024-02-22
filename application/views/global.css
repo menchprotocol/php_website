@@ -1620,6 +1620,9 @@ label {
     --bs-popover-body-padding-x: 0;
     --bs-popover-body-padding-y: 0;
 }
+.dropdown_type_26105 {
+    padding: 5px 0 !important;
+}
 .popover {
     border-radius: 0 !important;
 }

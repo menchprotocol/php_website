@@ -504,7 +504,7 @@ if(!$basic_header_footer){
 
                             //Profile View
                             $m['m__cover'] = view_cover($member_e['e__cover'], 1);
-                            $m['m__title'] = '<div style="margin:0; position: absolute; top: 5px; left: 40px;">'.$member_e['e__title'].'</div><div class="grey" style="position: absolute; top: 20px; left: 0;"><span class="icon-block">&nbsp;</span>@'.$member_e['e__handle'].'</div>';
+                            $m['m__title'] = '<div style="margin:0; position: absolute; top: 5px; left: 40px;">'.$member_e['e__title'].'</div><div class="grey" style="position: absolute; top: 21px; left: 40px; font-size:0.89em; ">@'.$member_e['e__handle'].'</div>';
                             $href = 'href="'.view_memory(42903,42902).$member_e['e__handle'].'" ';
 
                         } elseif($x__type==42246 && $member_e) {
@@ -543,7 +543,7 @@ if(!$basic_header_footer){
                         }
 
                         //Navigation
-                        echo '<a '.$href.' x__type="'.$x__type.'" class="dropdown-item main__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
+                        echo '<a '.$href.' x__type="'.$x__type.'" class="dropdown-item dropdown_type_'.$x__type.' main__title '.$extra_class.'"><span class="icon-block">'.$m['m__cover'].'</span><span class="'.$text_class.'">'.$m['m__title'].'</span></a>';
 
                     }
 
