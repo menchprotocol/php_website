@@ -1629,6 +1629,8 @@ label {
     position: absolute;
     top: 5px;
     left: 40px;
+    width: 115px;
+    overflow: hidden;
 }
 
 .dropdown_type_26105 .type_handle {
@@ -1636,6 +1638,8 @@ label {
     top: 21px;
     left: 40px;
     font-size:0.89em;
+    width: 115px;
+    overflow: hidden;
 }
 
 .popover {
