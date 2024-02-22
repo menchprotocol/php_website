@@ -59,27 +59,6 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
 
     echo '<hr />Edited ['.$edited.']['.$edited_sources.']<br />';
 
-} elseif(isset($_GET['action']) && $_GET['action']=='link_update') {
-
-    $count = 0;
-    foreach($this->X_model->fetch(array(
-        //'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 42243,
-    ), array('x__previous'), 0) as $prev_i){
-        if($prev_i['i__privacy']!=42626 || $prev_i['x__type']!=4228){
-            $count++;
-            $this->X_model->update($prev_i['x__id'], array(
-                'x__type' => 4228,
-            ));
-            $this->I_model->update($prev_i['i__id'], array(
-                'i__privacy' => 42626,
-            ));
-        }
-        echo '<div>'.view_i_title($prev_i).' @'.$prev_i['i__privacy'].'</div>';
-    }
-    echo $count;
-
 } else {
 
     //SHow list of actions:

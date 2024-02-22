@@ -118,7 +118,7 @@ if(superpower_unlocked()) {
     <script>
 
         function load_away(){
-            $('.login-content').html('<div class="center"><span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span></div>');
+            $('.login-content').html('<div class="center"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>');
         }
 
         //Disable social login for Instagram as it has a bug within auth0
@@ -189,7 +189,7 @@ if(superpower_unlocked()) {
             //Lock fields:
             verifying_contact = true;
             var account_email_phone = $('#account_email_phone').val();
-            $('#email_check_next').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
+            $('#email_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
             $('#account_email_phone').prop('disabled', true);
             $('#sign_code_errors').html('');
             $('#flash_message').html(''); //Delete previous errors, if any
@@ -257,7 +257,7 @@ if(superpower_unlocked()) {
 
             //Lock fields:
             code_checking = true;
-            $('#code_check_next').html('<span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>');
+            $('#code_check_next').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:

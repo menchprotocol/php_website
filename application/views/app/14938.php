@@ -15,4 +15,4 @@ if($member_e['e__id']){
 
 }
 
-echo '<div class="center"><span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span></div>';
+echo '<div class="center"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span></div>';

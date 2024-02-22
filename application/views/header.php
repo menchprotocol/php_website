@@ -978,7 +978,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="superpower__10939">
 
                             <!-- Dynamic Loader -->
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
+                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
 
                             <!-- Dynamic Inputs -->
                             <div class="dynamic_frame"><?= $dynamic_edit ?></div>
@@ -1100,7 +1100,7 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
                         <!-- Dynamic Loader -->
-                        <div class="dynamic_editing_loading hidden"><span class="icon-block-xs"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
+                        <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
 
                         <!-- Dynamic Inputs -->
                         <div class="dynamic_frame"><?= $dynamic_edit ?></div>
