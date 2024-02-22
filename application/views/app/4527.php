@@ -23,6 +23,11 @@ if($memory_detected){
 
 }
 
+$total_nodes = 0;
+$biggest_source_count = 0;
+$biggest_source_handle = '';
+
+
 //CONFIG VARS
 foreach($this->X_model->fetch(array(
     'x__following' => 4527,
@@ -39,6 +44,12 @@ foreach($this->X_model->fetch(array(
         'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
     ), array('x__follower'), 0, 0, sort__e());
 
+
+    $total_nodes += (1 + count($down__e));
+    if(count($down__e)>$biggest_source_count){
+        $biggest_source_count = count($down__e);
+        $biggest_source_handle = '@'.$en['e__handle'];
+    }
 
     //Generate raw IDs:
     $down_ids = array();
@@ -110,7 +121,7 @@ fwrite($myfile, $memory_text);
 fclose($myfile);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated memory & removed '.reset_cache($x__creator).' cached pages.</div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated '.$total_nodes.' Sources ('.$biggest_source_handle.' Biggest with '.$biggest_source_count.' Sources) & removed '.reset_cache($x__creator).' cached pages.</div></div>';
 
 
 //Show:
