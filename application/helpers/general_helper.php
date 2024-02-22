@@ -676,10 +676,14 @@ function cookie_delete(){
     setcookie('auth_cookie', null, -1, '/');
 }
 
+function auto_loading(){
+    date_default_timezone_set('America/Los_Angeles');
+}
+
 function auto_login() {
 
+    auto_loading();
     @session_start();
-    date_default_timezone_set('America/Los_Angeles');
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $member_e = superpower_unlocked();

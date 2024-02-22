@@ -11,7 +11,6 @@ class View extends CI_Controller
         $this->output->enable_profiler(FALSE);
 
         auto_login();
-
     }
 
     function index(){
