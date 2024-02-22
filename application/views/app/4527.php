@@ -23,6 +23,7 @@ if($memory_detected){
 
 }
 
+$start_time = date("Y-m-d H:i:s");
 $total_nodes = 0;
 $biggest_source_count = 0;
 $biggest_source_handle = '';
@@ -114,6 +115,8 @@ $memory_text .= "\n"."\n";
 $memory_text .= '$config[\'cache_time\'] = \''.time().'\';'."\n";
 $memory_text .= '$config[\'cache_buster\'] = \''.md5($memory_text).'\';'."\n";
 
+$save_time = date("Y-m-d H:i:s");
+
 //Now Save File:
 $file_location = "application/config/mench_memory.php";
 $myfile = fopen($file_location, "w+") or die("Unable to open file: ".$file_location);
@@ -121,7 +124,7 @@ fwrite($myfile, $memory_text);
 fclose($myfile);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully updated '.$total_nodes.' Sources ('.$biggest_source_handle.' Biggest with '.$biggest_source_count.' Sources) & removed '.reset_cache($x__creator).' cached pages.</div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated '.$total_nodes.' Sources ('.$biggest_source_handle.' Biggest with '.$biggest_source_count.' Sources) & removed '.reset_cache($x__creator).' cached pages.</div><div>'.$start_time.' / '.$save_time.' / '.date("Y-m-d H:i:s").'</div></div>';
 
 
 //Show:
