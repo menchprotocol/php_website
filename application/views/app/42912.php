@@ -4,7 +4,7 @@
 //Various Ledger cleanup functions
 
 
-if(isset($_GET['action']) && $_GET['action']==42913){
+if(isset($_GET['action']) && $_GET['action']=='i_messages'){
 
     //Sync Ideas & Sources
     $stats = array(
@@ -59,13 +59,19 @@ if(isset($_GET['action']) && $_GET['action']==42913){
 
     echo '<hr />Edited ['.$edited.']['.$edited_sources.']<br />';
 
+} elseif(isset($_GET['action']) && $_GET['action']=='link_update') {
+
+    foreach($this->X_model->fetch(array(
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 42243,
+    ), array('x__previous')) as $prev_i){
+        echo '<div>'.$prev_i['i__title'].' @'.$prev_i['i__privacy'].'</div>';
+    }
+
 } else {
 
     //SHow list of actions:
-    foreach($this->config->item('e___4593') /* DISCOVERY Types */ as $e__id => $m){
-        //Echo drop down:
-        echo '<div><a href="'.view_app_link(4269).'?action='.$e__id.'"><span class="icon-block">'.$m['m__cover']. '</span><u>'.$m['m__title']. '</a></div>';
-    }
-
+    echo 'Enter GET action value to process...';
 
 }
