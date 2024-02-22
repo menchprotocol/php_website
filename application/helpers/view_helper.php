@@ -717,8 +717,8 @@ function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
 
     $headline = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].': ';
 
-    if(in_array($dynamic_e__id, $CI->config->item('n___42174'))){
-        $headline .= '<span class="icon-block-sm" title="'.$e___11035[42174]['m__message'].'" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">'.$e___11035[42174]['m__cover'].'</span>';
+    if(in_array($dynamic_e__id, $CI->config->item('n___28239'))){
+        $headline .= '<span class="icon-block-sm" title="'.$e___11035[28239]['m__message'].'" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">'.$e___11035[28239]['m__cover'].'</span>';
     }
     if(in_array($dynamic_e__id, $CI->config->item('n___32145'))){
         $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';

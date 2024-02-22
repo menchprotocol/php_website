@@ -16,7 +16,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__follower'), 0) as $app) {
+), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
     echo '$route[\'(?i)'.$app['e__handle'].'\'] = "view/app_load/'.$app['e__id'].'";'."\n";
 }
 
