@@ -66,7 +66,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 42243,
     ), array('x__previous')) as $prev_i){
-        echo '<div>'.$prev_i['i__title'].' @'.$prev_i['i__privacy'].'</div>';
+        echo '<div>'.view_i_title($prev_i).' @'.$prev_i['i__privacy'].'</div>';
     }
 
 } else {
