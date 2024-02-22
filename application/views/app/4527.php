@@ -1,9 +1,9 @@
 <?php
 
-$update_time = date("Y-m-d H:i:s");
+$start_time = date("Y-m-d H:i:s");
 $memory_text = '';
 $memory_text .= "<?php\n\n";
-$memory_text .= '//UPDATED: '.$update_time."\n\n";
+$memory_text .= '//UPDATED: '.$start_time."\n\n";
 $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'."\n\n";
 
 
@@ -23,7 +23,6 @@ if($memory_detected){
 
 }
 
-$start_time = date("Y-m-d H:i:s");
 $total_nodes = 0;
 $biggest_source_count = 0;
 $biggest_source_handle = '';
