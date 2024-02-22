@@ -504,7 +504,7 @@ if(!$basic_header_footer){
 
                             //Profile View
                             $m['m__cover'] = view_cover($member_e['e__cover'], 1);
-                            $m['m__title'] = '<div class="type_head">'.$member_e['e__title'].'</div><div class="grey type_handle">@'.$member_e['e__handle'].'</div>';
+                            $m['m__title'] = '<div class="type_head main__title">'.$member_e['e__title'].'</div><div class="grey type_handle">@'.$member_e['e__handle'].'</div>';
                             $href = 'href="'.view_memory(42903,42902).$member_e['e__handle'].'" ';
 
                         } elseif($x__type==42246 && $member_e) {
