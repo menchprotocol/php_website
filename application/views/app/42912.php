@@ -67,11 +67,14 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type' => 42243,
     ), array('x__previous'), 0) as $prev_i){
-        if($prev_i['i__privacy']!=42626){
+        if($prev_i['i__privacy']!=42626 || $prev_i['x__type']!=4228){
             $count++;
-            $status = $this->I_model->update($prev_i['i__id'], array(
+            $this->X_model->update($prev_i['x__id'], array(
+                'x__type' => 4228,
+            ));
+            $this->I_model->update($prev_i['i__id'], array(
                 'i__privacy' => 42626,
-            ), true, $member_e['e__id']);
+            ));
         }
         echo '<div>'.view_i_title($prev_i).' @'.$prev_i['i__privacy'].'</div>';
     }
