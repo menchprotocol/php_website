@@ -141,7 +141,7 @@ foreach($this->X_model->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-), array('x__follower'), 0, 0, array('e__title' => 'DESC')) as $app) {
+), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
     $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
 
