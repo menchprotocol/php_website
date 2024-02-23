@@ -1,11 +1,14 @@
 <?php
 
 
+
+
 $start_time = date("Y-m-d H:i:s");
 $memory_text = '';
 $memory_text .= "<?php\n\n";
 $memory_text .= '//UPDATED: '.$start_time."\n\n";
 $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'."\n\n";
+$routes_text = $memory_text;
 
 
 if(is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'))){
@@ -117,15 +120,80 @@ $memory_text .= '$config[\'cache_buster\'] = \''.md5($memory_text).'\';'."\n";
 
 $save_time = date("Y-m-d H:i:s");
 
-//Now Save File:
-$file_location = "application/config/mench_memory.php";
-$myfile = fopen($file_location, "w+") or die("Unable to open file: ".$file_location);
-fwrite($myfile, $memory_text);
-fclose($myfile);
+//Save Memory:
+$memory_location = "application/config/mench_memory.php";
+$memory_file = fopen($memory_location, "w+") or die("Unable to open file: ".$memory_location);
+fwrite($memory_file, $memory_text);
+fclose($memory_file);
+
+
+//Now generate Routes file:
+$routes_text .= '$route[\'translate_uri_dashes\'] = FALSE;'."\n";
+$routes_text .= '$route[\'default_controller\'] = "app/index"; //Home'."\n";
+$routes_text .= '$route[\'404_override\'] = \'app/load\'; //Error'."\n";
+$routes_text .= "\n";
+
+$special_route_text = '';
+$routes_text .= '//APPS:'."\n\n";
+foreach($this->X_model->fetch(array(
+    'x__following' => 6287, //Apps
+    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
+), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
+
+    if(in_array($app['e__id'], $this->config->item('n___42922'))){
+        //No Inputs
+        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+        }
+    }
+    if(in_array($app['e__id'], $this->config->item('n___42905'))){
+        //Source Input
+        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+        }
+    }
+    if(in_array($app['e__id'], $this->config->item('n___42911'))){
+        //Idea Input
+        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+        }
+    }
+    if(in_array($app['e__id'], $this->config->item('n___42923'))){
+        //Discoveries Input
+        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+        }
+    }
+
+}
+
+$routes_text .= '//Special Routing:'."\n\n";
+$routes_text .= $special_route_text;
+
+
+//Save Routes:
+$routes_location = "application/config/routes.php";
+$routes_file = fopen($routes_location, "w+") or die("Unable to open file: ".$routes_location);
+fwrite($routes_file, $routes_text);
+fclose($routes_file);
 
 
 echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated '.$total_nodes.' Sources ('.$biggest_source_handle.' Biggest with '.$biggest_source_count.' Sources) & removed '.reset_cache($x__player).' cached pages.</div><div>'.$start_time.' / '.$save_time.' / '.date("Y-m-d H:i:s").'</div></div>';
 
 
+//$route['(?i)Memory'] = "app/load/4527";
+
 //Show:
 echo '<textarea class="mono-space" style="background-color: #FFFFFF; color:#000000 !important; padding:20px; font-size:0.8em; height:377px; width: 100%; border-radius: 0px;">'.$memory_text.'</textarea>';
+
+echo '<textarea class="mono-space" style="background-color: #FFFFFF; color:#000000 !important; padding:20px; font-size:0.8em; height:233px; width: 100%; border-radius: 0px;">'.$routes_text.'</textarea>';
