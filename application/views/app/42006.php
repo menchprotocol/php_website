@@ -6,8 +6,8 @@ echo '<textarea class="mono-space" readonly style="background-color: #FFFFFF; co
 echo '<?php'."\n\n";
 echo 'defined(\'BASEPATH\') or exit(\'No direct script access allowed\');'."\n"."\n";
 echo '$route[\'translate_uri_dashes\'] = FALSE;'."\n";
-echo '$route[\'default_controller\'] = "view/index"; //Redirects to default app'."\n";
-echo '$route[\'404_override\'] = \'view/app_load\'; //Page not found'."\n";
+echo '$route[\'default_controller\'] = "app/index"; //Redirects to default app'."\n";
+echo '$route[\'404_override\'] = \'app/app_load\'; //Page not found'."\n";
 echo "\n";
 
 //Custom Apps:
@@ -17,16 +17,16 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
-    echo '$route[\'(?i)'.$app['e__handle'].'\'] = "view/app_load/'.$app['e__id'].'";'."\n";
+    echo '$route[\'(?i)'.$app['e__handle'].'\'] = "app/app_load/'.$app['e__id'].'";'."\n";
 }
 
 echo "\n\n";
 
 //Fixed Application Logic:
-echo '$route[\'@([a-zA-Z0-9]+)\']           = "view/e_layout/$1"; //Source
-$route[\'([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\']   = "view/x_layout/$1/$2"; //Discovery
-$route[\'([a-zA-Z0-9]+)\']                  = "view/i_layout/$1"; //Ideation
-$route[\'~([a-zA-Z0-9]+)\']                  = "view/i_layout/$1"; //Ideation
+echo '$route[\'@([a-zA-Z0-9]+)\']           = "app/e_layout/$1"; //Source
+$route[\'([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\']   = "app/x_layout/$1/$2"; //Discovery
+$route[\'([a-zA-Z0-9]+)\']                  = "app/i_layout/$1"; //Ideation
+$route[\'~([a-zA-Z0-9]+)\']                  = "app/i_layout/$1"; //Ideation
 ';
 
 echo '</textarea>';

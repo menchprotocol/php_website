@@ -311,7 +311,7 @@ function e_view_body($x__type, $counter, $e__id){
 
     $CI =& get_instance();
     $limit = view_memory(6404,11064);
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
 
     //Check Permission:
     if(in_array($x__type, $CI->config->item('n___42376')) && !write_privacy_e(null, $e__id)){
@@ -319,7 +319,7 @@ function e_view_body($x__type, $counter, $e__id){
     }
 
     $list_results = view_e_covers($x__type, $e__id, 1);
-    $focus_e = ($e__id==$member_e['e__id'] ? $member_e : false);
+    $focus_e = ($e__id==$player_e['e__id'] ? $player_e : false);
     $es = $CI->E_model->fetch(array(
         'e__id' => $e__id,
     ));
@@ -435,7 +435,7 @@ function i_view_body($x__type, $counter, $i__id){
 function view_sign($i, $previous_response = null){
 
     $CI =& get_instance();
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
     $e___4737 = $CI->config->item('e___4737'); //Idea Status
 
     //Sign Agreement
@@ -713,7 +713,7 @@ function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
 
     $CI =& get_instance();
     $e___6177 = $CI->config->item('e___6177'); //Source Privacy
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
 
     $headline = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].': ';
 
@@ -743,7 +743,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     $CI =& get_instance();
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $e___4527 = $CI->config->item('e___4527'); //Memory
     $is_compact = in_array($focus_id, $CI->config->item('n___42191'));
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
@@ -825,7 +825,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $unselected_count = 0;
     $overflow_unselected_limit = 5;
     $has_selected = count($already_selected);
-    $has_multiple = $has_selected>1;
+    $has_multiple = count($selection_options)>1;
     $overflow_reached = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
@@ -892,7 +892,7 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
     $e___4527 = $CI->config->item('e___4527'); //Memory
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
 
     if(!$selected_e__id || !isset($e___this[$selected_e__id])){
         return false;
@@ -936,8 +936,8 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
-    $member_e = superpower_unlocked();
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $player_e = superpower_unlocked();
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $unselected_radio = in_array($cache_e__id, $CI->config->item('n___33331')) && !$selected_e__id;
     $e___4527 = $CI->config->item('e___4527'); //Memory
 
@@ -946,12 +946,12 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $write_privac
         return false;
 
         /*
-    } elseif(!$selected_e__id && $write_privacy_i && $member_e){
+    } elseif(!$selected_e__id && $write_privacy_i && $player_e){
 
         //See if this user has any of these options:
         foreach($CI->X_model->fetch(array(
             'x__following IN (' . join(',', $CI->config->item('n___'.$cache_e__id)) . ')' => null, //SOURCE LINKS
-            'x__follower' => $member_e['e__id'],
+            'x__follower' => $player_e['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $x) {
@@ -1058,7 +1058,7 @@ function view_card_x_select($i, $x__creator, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
     $spots_remaining = i_spots_remaining($i['i__id']);
 
 
@@ -1145,8 +1145,8 @@ function idea_author($i__id){
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__following'];
     }
-    $member_e = superpower_unlocked();
-    return ( $member_e ? $member_e['e__id'] : 14068 );
+    $player_e = superpower_unlocked();
+    return ( $player_e ? $player_e['e__id'] : 14068 );
 }
 
 function idea_creation_time($i__id){
@@ -1300,7 +1300,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
         //Save Found references to remove the ones who exist in DB:
         $references_add_to_db = $i__references;
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
         foreach($CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4736')) . ')' => null, //Idea Message Links 3x
@@ -1313,7 +1313,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 //Not valid, must be removed:
                 $CI->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Removed
-                ), $member_e['e__id'], 10673 /* Member Transaction Unpublished */);
+                ), $player_e['e__id'], 10673 /* Member Transaction Unpublished */);
 
                 $sync_stats['old_links_removed']++;
 
@@ -1372,7 +1372,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 $CI->X_model->create(array(
                     'x__time' => idea_creation_time($save_i__id),
                     'x__type' => $x__type,
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__message' => $x__message,
                     'x__next' => $save_i__id,
                     'x__previous' => $x__previous,
@@ -1388,7 +1388,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         $CI->I_model->update($save_i__id, array(
             'i__message' => trim($str),
             'i__cache' => $i__cache,
-        ), true, $member_e['e__id']);
+        ), true, $player_e['e__id']);
 
     }
 
@@ -1411,7 +1411,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
 function view_featured_links($x__type, $location, $m = null, $focus_card){
     $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'>'.( $focus_card ? '<a href="'.view_memory(42903,42902).$location['e__handle'].'">' : '' ).'<span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xs' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus_card ? '</a>' : '' ).'</div>';
 }
 
@@ -1421,7 +1421,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
     $CI =& get_instance();
     $coins_count = array();
     $body_content = '';
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273">';
@@ -1431,7 +1431,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
         if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
             continue;
         }
-        if(in_array($x__type, $CI->config->item('n___42376')) && !$member_e){
+        if(in_array($x__type, $CI->config->item('n___42376')) && !$player_e){
             //Private content without being a member, so dont even show the counters:
             continue;
         }
@@ -1499,11 +1499,11 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
 
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
 
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
     $write_privacy_i = ( $cache_app || $access_locked ? false : write_privacy_i($i['i__hashtag']) );
     $user_input = $focus_e;
 
@@ -1511,13 +1511,13 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
-    $has_self = $member_e && $focus_e && $member_e['e__id']==$focus_e['e__id'];
+    $has_self = $player_e && $focus_e && $player_e['e__id']==$focus_e['e__id'];
     $focus_e__handle = ( view_valid_handle_e($CI->uri->segment(1)) ? substr($CI->uri->segment(1), 1) : false );
-    $focus_source = ( $x__id && isset($i['x__creator']) ? $i['x__creator'] : ( $focus_e__handle ? $focus_e__handle : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $member_e && $member_e['e__id'] ? $member_e['e__id'] : 0 ) ) ) );
-    $link_creator = isset($i['x__creator']) && $i['x__creator']==$member_e['e__id'];
+    $focus_source = ( $x__id && isset($i['x__creator']) ? $i['x__creator'] : ( $focus_e__handle ? $focus_e__handle : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) ) );
+    $link_creator = isset($i['x__creator']) && $i['x__creator']==$player_e['e__id'];
 
     if(!$focus_e){
-        $focus_e = $member_e;
+        $focus_e = $player_e;
     }
 
     $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__hashtag && $focus_e && $discovery_mode;
@@ -1572,15 +1572,15 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
     ), array('x__following')) as $creator){
 
         $follow_btn = null;
-        if($focus_card && $member_e && $member_e['e__id']!=$creator['e__id']){
+        if($focus_card && $player_e && $player_e['e__id']!=$creator['e__id']){
             $followings = $CI->X_model->fetch(array(
                 'x__following' => $creator['e__id'],
-                'x__follower' => $member_e['e__id'],
+                'x__follower' => $player_e['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
                 'x__type !=' => 10673,
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 1, 0, array('x__weight' => 'ASC'));
-            $follow_btn = view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e, false, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
+            $follow_btn = view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $player_e, false, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
         }
 
         $ui .= '<div class="creator_headline"><a href="'.view_memory(42903,42902).$creator['e__handle'].'"><span class="icon-block">'.view_cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a>'.( !in_array($creator['e__id'], $CI->config->item('n___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view_time_difference($creator['x__time'], true).'</span>' : '' ).$follow_btn.'</div>';
@@ -1662,12 +1662,12 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             //Determine hover state:
             $always_see = $focus_card || in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && !$discovery_mode && $link_type_ui && $member_e){
+            if($x__type_top_bar==31770 && !$discovery_mode && $link_type_ui && $player_e){
 
                 //Links
                 $bottom_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && !$discovery_mode && $member_e && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($member_e && $member_e['e__id']==$i['x__creator']))){
+            } elseif($x__type_top_bar==4362 && !$discovery_mode && $player_e && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($player_e && $player_e['e__id']==$i['x__creator']))){
 
                 //Link Time / Creator
                 $creator_details = '';
@@ -1703,31 +1703,31 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==30901 && $member_e){
+            } elseif($x__type_top_bar==30901 && $player_e){
 
                 //Reply
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==42379 && $member_e){
+            } elseif($x__type_top_bar==42379 && $player_e){
 
                 //Reply Inverse / Quote
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).',0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==42260 && $member_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__creator']!=$member_e['e__id'])){
+            } elseif($x__type_top_bar==42260 && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__creator']!=$player_e['e__id'])){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
-                    'x__following' => $member_e['e__id'],
+                    'x__following' => $player_e['e__id'],
                     'x__next' => $i['i__id'],
                     'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $member_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
+                $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_top_bar==4235 && !$discovery_mode && count($CI->X_model->fetch(array(
@@ -1876,7 +1876,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                     continue;
                 }
 
-                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$member_e){
+                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$player_e){
                     //Private content without being a member, so dont even show the counters:
                     continue;
                 }
@@ -2055,8 +2055,8 @@ function view_card_e($x__type, $e, $extra_class = null)
     $access_public = in_array($e['e__privacy'], $CI->config->item('n___33240'));
 
     $write_privacy_e = ( $access_locked ? false :  write_privacy_e($e['e__handle']) );
-    $member_e = superpower_unlocked();
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $player_e = superpower_unlocked();
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
@@ -2088,7 +2088,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $ui .= '<div class="bottom-wrapper">';
 
-    $grant_privacy = $write_privacy_e || $access_public || ($x__id>0 && $member_e && ($member_e['e__id']==$e['x__following'] || $member_e['e__id']==$e['x__follower']));
+    $grant_privacy = $write_privacy_e || $access_public || ($x__id>0 && $player_e && ($player_e['e__id']==$e['x__following'] || $player_e['e__id']==$e['x__follower']));
 
     $ui .= '</div>';
 
@@ -2199,11 +2199,11 @@ function view_card_e($x__type, $e, $extra_class = null)
 
             $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $x__id && $member_e){
+            if($x__type_top_bar==31770 && $x__id && $player_e){
 
                 $featured_sources .= $link_type_ui;
 
-            } elseif($x__type_top_bar==6177 && $member_e && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
+            } elseif($x__type_top_bar==6177 && $player_e && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
                 //( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' )
@@ -2211,18 +2211,18 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $featured_sources .= view_single_select_instant(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id'], $x__id);
                 $featured_sources .= '</span>';
 
-            } elseif($x__type_top_bar==42795 && $member_e && $member_e['e__id']!=$e['e__id'] && (!$x__id || !(superpower_unlocked(13422) && in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$member_e['e__id'] && $e['x__following']==$e['e__id']))){
+            } elseif($x__type_top_bar==42795 && $player_e && $player_e['e__id']!=$e['e__id'] && (!$x__id || !(superpower_unlocked(13422) && in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$player_e['e__id'] && $e['x__following']==$e['e__id']))){
 
                 $followings = $CI->X_model->fetch(array(
                     'x__following' => $e['e__id'],
-                    'x__follower' => $member_e['e__id'],
+                    'x__follower' => $player_e['e__id'],
                     'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
                     'x__type !=' => 10673,
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
 
                 if(count($followings) || !$has_any_lock){
-                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $member_e && !$has_any_lock, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
+                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $player_e && !$has_any_lock, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
                 }
 
             } elseif($x__type_top_bar==31912 && $write_privacy_e){
@@ -2413,7 +2413,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                     continue;
                 }
-                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$member_e){
+                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$player_e){
                     //Private content without being a member, so dont even show the counters:
                     continue;
                 }

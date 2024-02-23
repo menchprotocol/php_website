@@ -1,8 +1,8 @@
 <?php
 
-if($member_e){
+if($player_e){
     //Remove all Active Cache:
-    echo '<div class="alert alert-warning" role="alert">Deleted '.reset_cache($member_e['e__id']).' active caches</div>';
+    echo '<div class="alert alert-warning" role="alert">Deleted '.reset_cache($player_e['e__id']).' active caches</div>';
 }
 
 

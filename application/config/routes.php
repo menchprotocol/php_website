@@ -6,7 +6,6 @@ $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] = "view/index"; //Redirects to default app
 $route['404_override'] = 'view/app_load'; //Page not found
 
-$route['(?i)hi'] = "view/app_load/42912?e__handle=shervin";
 $route['(?i)GraphCleanup'] = "view/app_load/42912";
 $route['(?i)Sourcing'] = "view/app_load/42902";
 $route['(?i)Discovery'] = "view/app_load/30795";
@@ -73,7 +72,7 @@ $route['(?i)SourceDuplicates'] = "view/app_load/7268";
 $route['(?i)SourceOrphaned'] = "view/app_load/7269";
 
 
-$route['@([a-zA-Z0-9]+)']           = "view/e_layout/$1"; //Source
-$route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)']   = "view/x_layout/$1/$2"; //Discovery
-$route['([a-zA-Z0-9]+)']                  = "view/i_layout/$1"; //Ideation
-$route['~([a-zA-Z0-9]+)']                  = "view/i_layout/$1"; //Ideation
+$route['@([a-zA-Z0-9]+)']                 = "view/app_load/42902/@$1"; //Source
+$route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)']   = "view/app_load/30795/$1/$2"; //Discovery
+$route['([a-zA-Z0-9]+)']                  = "view/app_load/33286/$1"; //Ideation
+$route['~([a-zA-Z0-9]+)']                  = "view/app_load/33286/$1"; //Ideation

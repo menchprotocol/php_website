@@ -2,15 +2,12 @@
 
 //Just Viewing:
 $limit = view_memory(6404,11064);
-$new_order = ( $this->session->userdata('session_page_count') + 1 );
-$this->session->set_userdata('session_page_count', $new_order);
-$e___11035 = $this->config->item('e___11035'); //Summary
+$e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $write_privacy_i = write_privacy_i($focus_i['i__hashtag']);
 $this->X_model->create(array(
-    'x__creator' => $member_e['e__id'],
+    'x__creator' => $player_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
     'x__next' => $focus_i['i__id'],
-    'x__weight' => $new_order,
 ));
 
 

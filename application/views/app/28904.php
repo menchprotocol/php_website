@@ -2,7 +2,7 @@
 
 
 
-$e__handle = ( isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'] ? $_GET['e__handle'] : $member_e['e__handle'] );
+$e__handle = ( isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'] ? $_GET['e__handle'] : $player_e['e__handle'] );
 
 if(strlen($e__handle)){
 

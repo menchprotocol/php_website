@@ -1,7 +1,7 @@
 <?php
 
 //Calculates the weekly coins issued:
-$e___11035 = $this->config->item('e___11035'); //Summary
+$e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $last_x_days = 7;
 
 $x__time_start_timestamp = mktime(0, 0, 0, date("n"), date("j")-$last_x_days, date("Y"));
@@ -53,7 +53,7 @@ if($is_u_request && !isset($_GET['email_trigger'])){
 
     //Should we limit the scope?
     if($is_u_request){
-        $subscriber_filters['x__follower'] = $member_e['e__id'];
+        $subscriber_filters['x__follower'] = $player_e['e__id'];
     }
 
 

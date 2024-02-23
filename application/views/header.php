@@ -1,12 +1,10 @@
 <?php
-$member_e = superpower_unlocked();
+$player_e = superpower_unlocked();
 $first_segment = $this->uri->segment(1);
 $e_segment = view_valid_handle_e($first_segment);
 $second_segment = $this->uri->segment(2);
-$e___11035 = $this->config->item('e___11035'); //Summary
+$e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $e___14870 = $this->config->item('e___14870'); //Website Partner
-$e___6201 = $this->config->item('e___6201'); //IDEA Cache
-$e___6206 = $this->config->item('e___6206'); //Source Cache
 $handle___40904 = $this->config->item('handle___40904');
 $s__type = current_s__type();
 $website_id = website_setting(0);
@@ -25,7 +23,7 @@ $is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !string_is_icon(
 //Generate Body Class String:
 $body_class = ' platform-'.$s__type; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
-    if($member_e){
+    if($player_e){
         //Look at their session:
         $body_class .= ' custom_ui_'.$e__id.'_'.$this->session->userdata('session_custom_ui_'.$e__id).' ';
     } else {
@@ -98,13 +96,13 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo '<script> ';
     //JS VARIABLES
 
-    echo ' var js_pl_id = ' . ( $member_e ? $member_e['e__id'] : '0' ) . '; ';
-    echo ' var js_pl_handle = \'' . ( $member_e ? $member_e['e__handle'] : '' ) . '\'; ';
-    echo ' var js_pl_name = \'' . ( $member_e ? str_replace('\'','\\\'',trim($member_e['e__title'])) : '' ) . '\'; ';
-    echo ' var base_url = \'' . $this->config->item('base_url') . '\'; ';
+    echo ' var js_pl_id = ' . ( $player_e ? $player_e['e__id'] : '0' ) . '; ';
+    echo ' var js_pl_handle = \'' . ( $player_e ? $player_e['e__handle'] : '' ) . '\'; ';
+    echo ' var js_pl_name = \'' . ( $player_e ? str_replace('\'','\\\'',trim($player_e['e__title'])) : '' ) . '\'; ';
+    echo ' var js_request_uri = \'' . $_SERVER['REQUEST_URI'] . '\'; ';
     echo ' var universal_search_enabled = ' . intval($this->config->item('universal_search_enabled')) . '; ';
     echo ' var website_id = "' . $website_id . '"; ';
-    echo ' var js_session_superpowers_unlocked = ' . json_encode(($member_e ? $this->session->userdata('session_superpowers_unlocked') : array())) . ';';
+    echo ' var js_session_superpowers_unlocked = ' . json_encode(($player_e ? $this->session->userdata('session_superpowers_unlocked') : array())) . ';';
     echo ' var search_and_filter = ( js_session_superpowers_unlocked.includes(12701) ? \'\' : \' AND ( _tags:public_index \' + ( js_pl_id > 0 ? \'OR _tags:z_\' + js_pl_id : \'\' ) + \') \' ); ';
 
     //JAVASCRIPT PLATFORM MEMORY
@@ -376,7 +374,7 @@ if(strlen($live_chat_page_id)>10){
     <!-- Messenger Chat Plugin Code -->
     <div id="fb-root"></div>
     <!-- Your Chat Plugin code -->
-    <div id="fb-customer-chat" class="fb-customerchat" ref="<?= ( $member_e ? $member_e['e__id'] : '' ) ?>">
+    <div id="fb-customer-chat" class="fb-customerchat" ref="<?= ( $player_e ? $player_e['e__id'] : '' ) ?>">
     </div>
     <script>
         var chatbox = document.getElementById('fb-customer-chat');
@@ -463,26 +461,26 @@ if(!$basic_header_footer){
                     */
 
 
-                    if(search_enabled() && $member_e && $member_e['e__id']==1){
+                    if(search_enabled() && $player_e && $player_e['e__id']==1){
                         echo '<td class="block-x icon_finder '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
                         echo '<td class="block-x icon_finder hidden"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }
 
 
                     //Always give option to ideate:
-                    if($member_e){
+                    if($player_e){
                         echo '<td class="block-x blue-bg"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>'; //Add New Idea
                     }
 
 
 
                     //MENU
-                    $menu_type = ( $member_e ? 12500 : 14372 );
+                    $menu_type = ( $player_e ? 12500 : 14372 );
                     echo '<td class="block-menu">';
 
                     echo '<div class="dropdown inline-block">';
                     echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $member_e && strlen($member_e['e__cover']) ? view_cover($member_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
+                    echo '<span class="e_cover e_cover_mini menu-cover">' . ( $player_e && strlen($player_e['e__cover']) ? view_cover($player_e['e__cover'], 1) : $e___11035[$menu_type]['m__cover'] ) .'</span>';
                     echo '</button>';
                     echo '<div class="dropdown-menu">';
                     foreach($this->config->item('e___'.$menu_type) as $x__type => $m) {
@@ -500,17 +498,17 @@ if(!$basic_header_footer){
                         $extra_class = null;
                         $text_class = null;
 
-                        if($x__type==26105 && $member_e) {
+                        if($x__type==26105 && $player_e) {
 
                             //Profile View
-                            $m['m__cover'] = view_cover($member_e['e__cover'], 1);
-                            $m['m__title'] = '<div class="type_head main__title">'.$member_e['e__title'].'</div><div class="grey type_handle">@'.$member_e['e__handle'].'</div>';
-                            $href = 'href="'.view_memory(42903,42902).$member_e['e__handle'].'" ';
+                            $m['m__cover'] = view_cover($player_e['e__cover'], 1);
+                            $m['m__title'] = '<div class="type_head main__title">'.$player_e['e__title'].'</div><div class="grey type_handle">@'.$player_e['e__handle'].'</div>';
+                            $href = 'href="'.view_memory(42903,42902).$player_e['e__handle'].'" ';
 
-                        } elseif($x__type==42246 && $member_e) {
+                        } elseif($x__type==42246 && $player_e) {
 
                             //Profile Edit
-                            $href = 'href="javascript:void(0);" onclick="e_editor_load('.$member_e['e__id'].',0)" ';
+                            $href = 'href="javascript:void(0);" onclick="e_editor_load('.$player_e['e__id'].',0)" ';
 
                         } elseif($x__type==28615){
 
@@ -596,16 +594,16 @@ if(strlen($flash_message) > 0) {
 
 
 
-$member_e = superpower_unlocked();
+$player_e = superpower_unlocked();
 
-if($member_e){
+if($player_e){
     //For profile editing only:
     echo '<div class="hidden">';
-    echo view_card_e(42287, $member_e, null);
+    echo view_card_e(42287, $player_e, null);
     echo '</div>';
 }
 
-if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
+if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     $dynamic_edit = '';
     for ($p = 1; $p <= view_memory(6404,42206); $p++) {
@@ -863,260 +861,20 @@ if($member_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <?php
     }
 
-    if($member_e){
+    if($player_e){
 
-        ?>
+        $this->load->view('app/31911', array(
+            'dynamic_edit' => $dynamic_edit,
+            'player_e' => $player_e,
+        ));
 
-        <!-- Edit Idea Modal -->
-        <div class="i_footer_note hidden">Idea saved. <a href=""><b>View</b></a></div>
-        <div class="modal fade" id="modal31911" tabindex="-1" role="dialog" aria-labelledby="modal31911Label" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content slim_flat">
-
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                        <!-- Unlink -->
-                        <div class="dynamic_editing_input no_padded idea_link_unlink hidden">
-                            <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
-                        </div>
-
-                        <!-- Toggle Direction -->
-                        <div class="dynamic_editing_input no_padde idea_link_direction hidden superpower__42817">
-                            <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="far fa-arrow-up-arrow-down"></i></a>
-                        </div>
-
-                        <!-- Idea Links -->
-                        <div class="dynamic_editing_input idea_link_type hidden superpower__10939" style="margin: 0 !important;">
-                            <div class="dynamic_selector"><?= view_single_select_form(4486, 4228, false, true); ?></div>
-                        </div>
-
-                        <button type="button" class="btn btn-default i_editor_save post_button" onclick="i_editor_save()">SAVE</button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
-
-                        <input type="hidden" class="created_i__id" value="0" />
-                        <input type="hidden" class="save_i__id" value="0" />
-                        <input type="hidden" class="save_x__id" value="0" />
-                        <input type="hidden" class="next_i__id" value="0" />
-                        <input type="hidden" class="previous_i__id" value="0" />
-
-                        <div class="idea_list_next cover-text hideIfEmpty"></div>
-                        <div class="doclear">&nbsp;</div>
-
-
-                        <!-- Idea Creator(s) -->
-                        <div class="creator_box">
-                        <?php
-                        foreach($this->X_model->fetch(array(
-                            'x__following' => $member_e['e__id'],
-                            'x__type' => 41011, //PINNED FOLLOWER
-                            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
-                            echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
-                            //TODO maybe give the option to remove?
-                        }
-
-                        //Always append current user:
-                        echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($member_e['e__cover']).'</span></div>';
-                        ?>
-                        </div>
-
-                        <!-- Idea Message -->
-                        <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning save_i__message" placeholder="<?= ( strlen($e___6201[4736]['m__message']) ? $e___6201[4736]['m__message'] : $e___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                            <div class="media_outer_frame hideIfEmpty">
-                                <div id="media_frame" class="media_frame hideIfEmpty"></div>
-                                <div class="doclear">&nbsp;</div>
-                            </div>
-                        </div>
-
-                        <div class="inner_message">
-                            <div class="idea_list_previous hideIfEmpty"></div>
-                        </div>
-
-                        <div class="inner_message">
-
-                            <!-- EMOJI -->
-                            <div class="dynamic_editing_input no_padded float_right">
-                                <div class="dropdown emoji_selector">
-                                    <button type="button" class="btn no-left-padding no-right-padding icon-block" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
-                                    <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
-                                </div>
-                            </div>
-
-                            <!-- Upload -->
-                            <div class="dynamic_editing_input no_padded float_right">
-                                <a class="uploader_13572 icon-block" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
-                            </div>
-
-
-                            <!-- Idea Privacy -->
-                            <div class="dynamic_editing_input" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, true); ?></div>
-                            </div>
-
-                            <!-- Idea Type -->
-                            <div class="dynamic_editing_input superpower__10939" style="margin: 0 !important;">
-                                <div class="dynamic_selector"><?= view_single_select_form(4737, 6677, false, true); ?></div>
-                            </div>
-
-                            <div class="doclear">&nbsp;</div>
-
-                        </div>
-
-                        <!-- Idea Hashtag -->
-                        <div class="dynamic_editing_input single_line hash_group" title="<?= $e___6201[32337]['m__title'] ?>">
-                            <h3 class="mini-font"><span class="icon-block"><?= $e___6201[32337]['m__cover']  ?></span></h3>
-                            <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
-                        </div>
-
-
-                        <div class="superpower__10939">
-
-                            <!-- Dynamic Loader -->
-                            <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
-
-                            <!-- Dynamic Inputs -->
-                            <div class="dynamic_frame"><?= $dynamic_edit ?></div>
-
-                            <!-- Link Note -->
-                            <div class="dynamic_editing_input save_x__frame hidden">
-                                <h3 class="mini-font"><?= '<span class="icon-block">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                                <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <!-- Edit Source Modal -->
-        <div class="modal fade" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content slim_flat">
-
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <button type="button" class="e_editor_save btn btn-default post_button" onclick="e_editor_save()">SAVE</button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
-
-                        <input type="hidden" class="save_e__id" value="0" />
-                        <input type="hidden" class="save_x__id" value="0" />
-
-
-                        <!-- Source Title -->
-                        <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6197]['m__cover'].'</span>'.$e___6206[6197]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control unsaved_warning save_e__title main__title" placeholder="..." style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                        </div>
-
-
-                        <!-- Source Handle -->
-                        <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[32338]['m__cover'].'</span>'.$e___6206[32338]['m__title'].': ';  ?></h3>
-                            <input type="text" class="form-control unsaved_warning save_e__handle" placeholder="...">
-                        </div>
-
-                        <!-- Source Privacy -->
-                        <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6177]['m__cover'].'</span>'.$e___6206[6177]['m__title'].': ';  ?></h3>
-                            <div class="dynamic_selector"><?= view_single_select_form(6177, 6181, true, true); ?></div>
-                        </div>
-
-                        <!-- SOURCE COVER -->
-                        <div class="message_controllers">
-                            <table class="emoji_table">
-                                <tr>
-                                    <td>
-                                        <!-- Upload Cover -->
-                                        <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
-                                    </td>
-                                    <td class="superpower__13758">
-                                        <!-- EMOJI -->
-                                        <div class="icon-block-sm">
-                                            <div class="dropdown emoji_selector" style="max-height: 21px; margin-top: -18px;">
-                                                <button type="button" class="btn no-left-padding no-right-padding" id="emoji_e" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
-                                                <div class="dropdown-menu emoji_e" aria-labelledby="emoji_e"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="superpower__13758 fa_search hidden">
-                                        <!-- Font Awesome Search -->
-                                        <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" class="icon-block-sm" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus zq12274"></i></a>
-                                    </td>
-                                    <td class="superpower__13758">
-                                        <!-- Font Awesome Insert -->
-                                        <a href="javascript:void(0);" class="icon-block-sm" onclick="update__cover('far fa-icons');$('.fa_search').removeClass('hidden');" title="Add a Sample Font Awesome Icon to Get Started"><i class="far fa-icons"></i></a>
-                                    </td>
-                                    <td class="superpower__13758 cover_history_button">
-                                        <!-- History -->
-                                        <a href="javascript:void(0);" class="icon-block-sm" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
-                                    </td>
-                                    <td>
-                                        <!-- Ramdom Animal -->
-                                        <a href="javascript:void(0);" class="random_animal" onclick="update__cover('deleted '+random_animal())" title="Set a random animal"></a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="dynamic_editing_input">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': ';  ?></h3>
-                            <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
-                            <input type="text" class="form-control unsaved_warning save_e__cover superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
-                            <div>
-                                <!-- Cover Settings/Selectors -->
-                                <div class="icons_small font_awesome hidden section_subframe">
-                                    <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
-                                </div>
-                                <div class="icons_small cover_history_content hidden section_subframe"></div>
-                                <!-- Cover Demo -->
-                                <div class="section_demo">
-                                    <div class="card_cover demo_cover">
-                                        <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Link Note -->
-                        <div class="dynamic_editing_input save_x__frame hidden">
-                            <h3 class="mini-font"><?= '<span class="icon-block">'.$e___11035[4372]['m__cover'].'</span>'.$e___11035[4372]['m__title'].': ';  ?></h3>
-                            <textarea class="form-control border unsaved_warning save_x__message" data-lpignore="true" placeholder="..."></textarea>
-                        </div>
-
-
-                        <!-- Dynamic Loader -->
-                        <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
-
-                        <!-- Dynamic Inputs -->
-                        <div class="dynamic_frame"><?= $dynamic_edit ?></div>
-
-                    </div>
-                    <div class="modal-footer hideIfEmpty"></div>
-                </div>
-            </div>
-        </div>
-
-        <?php
+        $this->load->view('app/31912', array(
+            'dynamic_edit' => $dynamic_edit,
+            'player_e' => $player_e,
+        ));
 
     }
 
 }
-
-
 
 ?>

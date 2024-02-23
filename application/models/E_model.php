@@ -39,7 +39,7 @@ class E_model extends CI_Model
         //Add to Subscriber:
         $this->X_model->create(array(
             'x__following' => 4430, //Subscriber
-            'x__type' => 4230,
+            'x__type' => 4251,
             'x__creator' => $e__id,
             'x__follower' => $e__id,
             'x__website' => $x__website,
@@ -79,7 +79,7 @@ class E_model extends CI_Model
         if($resubscribed > 0){
             //Add Back to Subscribers:
             $this->X_model->create(array(
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__following' => 4430, //Active Member
                 'x__creator' => $e['e__id'],
                 'x__follower' => $e['e__id'],
@@ -98,9 +98,6 @@ class E_model extends CI_Model
                 setcookie('auth_cookie', $cookie_val, ($cookie_time + ( 86400 * view_memory(6404,14031))), "/");
 
             }
-
-            //Append stats variables:
-            $session_data['session_page_count'] = 0;
 
             $this->X_model->create(array(
                 'x__creator' => $e['e__id'],
@@ -222,7 +219,7 @@ class E_model extends CI_Model
         if($unsubscribed_time){
             //Add to subscribed again:
             $this->X_model->create(array(
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__following' => 4430, //Active Member
                 'x__creator' => $e['e__id'],
                 'x__follower' => $e['e__id'],
@@ -247,7 +244,7 @@ class E_model extends CI_Model
         )))){
             $this->X_model->create(array(
                 'x__creator' => $x__follower, //Belongs to this Member
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__message' => $x__message,
                 'x__following' => $x__following,
                 'x__follower' => $x__follower,
@@ -336,7 +333,7 @@ class E_model extends CI_Model
         //Add email?
         if($email){
             $this->X_model->create(array(
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__message' => trim(strtolower($email)),
                 'x__following' => 3288, //Email
                 'x__creator' => $added_e['new_e']['e__id'],
@@ -349,7 +346,7 @@ class E_model extends CI_Model
         if($phone_number){
             $this->X_model->create(array(
                 'x__following' => 4783, //Phone
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__message' => $phone_number,
                 'x__creator' => $added_e['new_e']['e__id'],
                 'x__follower' => $added_e['new_e']['e__id'],
@@ -366,7 +363,7 @@ class E_model extends CI_Model
             //Add to anonymous:
             $this->X_model->create(array(
                 'x__following' => 14938, //Guest
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__creator' => $added_e['new_e']['e__id'],
                 'x__follower' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
@@ -759,7 +756,7 @@ class E_model extends CI_Model
                 'x__creator' => $x__creator,
                 'x__follower' => $x__creator,
                 'x__following' => $set_e_down_id,
-                'x__type' => 4230,
+                'x__type' => 4251,
                 'x__reference' => $x_update_id,
             ));
         }
@@ -1016,7 +1013,7 @@ class E_model extends CI_Model
 
                         $add_fields = array(
                             'x__creator' => $x__creator,
-                            'x__type' => 4230,
+                            'x__type' => 4251,
                             'x__follower' => $x['e__id'], //This follower source
                             'x__following' => $e['e__id'],
                         );
@@ -1058,7 +1055,7 @@ class E_model extends CI_Model
                                 //Add as a followings because it meets the condition
                                 $this->X_model->create(array(
                                     'x__creator' => $x__creator,
-                                    'x__type' => 4230,
+                                    'x__type' => 4251,
                                     'x__follower' => $x['e__id'], //This follower source
                                     'x__following' => $e['e__id'],
                                 ));

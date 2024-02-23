@@ -2,7 +2,7 @@
 
 $e__handle = ( isset($_GET['e__handle']) ? $_GET['e__handle'] : null );
 $i__hashtag = ( !$e__handle && isset($_GET['i__hashtag']) ? $_GET['i__hashtag'] : null );
-$e___11035 = $this->config->item('e___11035'); //Summary
+$e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $e___42225 = $this->config->item('e___42225'); //MENCH Points
 $e___42263 = $this->config->item('e___42263'); //Link Groups
 
@@ -103,6 +103,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         $.post("/ajax/x_33292", {
             e__handle: '<?= $e__handle ?>',
             i__hashtag: '<?= $i__hashtag ?>',
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
 
             //Update stats numbers:

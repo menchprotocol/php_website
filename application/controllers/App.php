@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class View extends CI_Controller
+class App extends CI_Controller
 {
 
     function __construct()
@@ -14,12 +14,13 @@ class View extends CI_Controller
     }
 
     function index(){
+        //TODO Can load a customized home page app per website here?
+
         //Default Home Page:
-        //TODO Can load a customized home page app per website...
         $this->app_load(14565);
     }
 
-    function app_load($app_e__id = 14563 /* Error if none provided */){
+    function app_load($app_e__id = 14563 /* Error if none provided */, $input_handle = null, $discovery_hashtag = null){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
@@ -29,10 +30,30 @@ class View extends CI_Controller
 
         //Any ideas passed?
         $warning_alerts = '';
-        $i = null;
-        $e = null;
+        $e = null; //Sourcing
+        $i = null; //Ideation/Discovery
+        $i2 = null; //Discovery
 
-        if(isset($_GET['i__hashtag'])){
+        if(strlen($input_handle)){
+            if(substr($input_handle, 0, 1)=='@'){
+                $_GET['e__handle'] = substr($input_handle, 1);
+            } else {
+                $_GET['i__hashtag'] = $input_handle;
+            }
+        }
+
+        if(strlen($discovery_hashtag)){
+            foreach($this->I_model->fetch(array(
+                'LOWER(i__hashtag)' => strtolower($discovery_hashtag),
+            )) as $i_found){
+                $i2 = $i_found;
+            }
+            if(!$i){
+                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤫</div>';
+            }
+        }
+
+        if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
             foreach($this->I_model->fetch(array(
                 'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
             )) as $i_found){
@@ -53,17 +74,38 @@ class View extends CI_Controller
                     $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤫</div>';
                 }
             }
+            if($input_handle && $i && $i['i__hashtag']!==$_GET['i__hashtag']){
+                //Adjust URL Case Sensitive:
+                return redirect_message(view_memory(42903,33286).$i['i__hashtag']);
+            }
         }
 
         
-        if(isset($_GET['e__handle'])){
+        if(isset($_GET['e__handle']) && strlen($_GET['e__handle'])){
             foreach($this->E_model->fetch(array(
                 'LOWER(e__handle)' => strtolower($_GET['e__handle']),
             )) as $e_found){
                 $e = $e_found;
             }
             if(!$e){
-                $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤫</div>';
+
+                //See if we need to lookup the ID:
+                if(is_numeric($_GET['e__handle'])){
+                    //Maybe its an ID?
+                    foreach ($this->E_model->fetch(array(
+                        'e__id' => $_GET['e__handle'],
+                    )) as $e_found){
+                        $e = $e_found;
+                    }
+                }
+
+                if(!$e){
+                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤫</div>';
+                }
+            }
+            if($input_handle && $e && $e['e__handle']!==$_GET['e__handle']){
+                //Adjust URL Case Sensitive:
+                return redirect_message(view_memory(42903,42902).$e['e__handle']);
             }
         }
 
@@ -77,18 +119,20 @@ class View extends CI_Controller
 
 
         //Run App
-        boost_power();
-        $member_e = false;
+        $player_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
-        $e___11035 = $this->config->item('e___11035'); //Summary
+
+        if(in_array($app_e__id, $this->config->item('n___7358'))){
+            boost_power();
+        }
 
         if($memory_detected && $is_u_request){
             //Needs superpowers?
-            $member_e = superpower_unlocked();
+            $player_e = superpower_unlocked();
             $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
             if($is_u_request && count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-                if(!$member_e){
+                if(!$player_e){
                     //No user, maybe they can login to get it:
                     return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to gain access.</div>');
                 } else {
@@ -97,14 +141,14 @@ class View extends CI_Controller
             }
         }
 
-        $x__creator = ( $is_u_request ? ( $member_e ? $member_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+        $x__creator = ( $is_u_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
 
 
         //MEMBER REDIRECT?
-        if($member_e && in_array($app_e__id, $this->config->item('n___14639'))){
+        if($player_e && in_array($app_e__id, $this->config->item('n___14639'))){
             //Should redirect them:
-            return redirect_message(view_memory(42903,42902).$member_e['e__handle']);
-        } elseif(!$member_e && in_array($app_e__id, $this->config->item('n___14740'))){
+            return redirect_message(view_memory(42903,42902).$player_e['e__handle']);
+        } elseif(!$player_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
             return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
         }
@@ -123,8 +167,7 @@ class View extends CI_Controller
             $es = $this->E_model->fetch(array(
                 'e__id' => $app_e__id,
             ));
-            $e___6287 = $this->config->item('e___6287'); //APP
-            $title = $e___6287[$app_e__id]['m__title'].( public_app($es[0]) ? ' | '.$e___11035[6287]['m__title'] : '' );
+            $title = $e___6287[$app_e__id]['m__title'];
 
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
 
@@ -160,7 +203,7 @@ class View extends CI_Controller
             $raw_app = $this->load->view('app/'.$app_e__id, array(
                 'app_e__id' => $app_e__id,
                 'x__creator' => $x__creator,
-                'member_e' => $member_e,
+                'player_e' => $player_e,
                 'is_u_request' => $is_u_request,
                 'memory_detected' => $memory_detected,
             ), true);
@@ -262,32 +305,11 @@ class View extends CI_Controller
     function e_layout($e__handle)
     {
 
-        //Validate source ID and fetch data:
-        $es = $this->E_model->fetch(array(
-            'LOWER(e__handle)' => strtolower($e__handle),
-        ));
-        if (count($es) < 1) {
 
-            //See if we need to lookup the ID:
-            if(is_numeric($e__handle)){
-                //Maybe its an ID?
-                foreach ($this->E_model->fetch(array(
-                    'e__id' => $e__handle,
-                )) as $e_redirect){
-                    return redirect_message(view_memory(42903,42902).$e_redirect['e__handle']);
-                }
-            }
-
-            return redirect_message(home_url());
-        } elseif(strlen($es[0]['e__handle']) && $es[0]['e__handle']!==$e__handle){
-            //Adjust URL:
-            return redirect_message(view_memory(42903,42902).$es[0]['e__handle']);
-        }
-
-        $member_e = superpower_unlocked(null, true);
+        $player_e = superpower_unlocked(null, true);
         //Make sure not a private source:
         if(!in_array($es[0]['e__privacy'], $this->config->item('n___33240') /* PUBLIC/GUEST Access */) && !write_privacy_e($es[0]['e__handle'])){
-            $member_e = superpower_unlocked(13422, true);
+            $player_e = superpower_unlocked(13422, true);
         }
 
         $e___14874 = $this->config->item('e___14874'); //Mench Cards
@@ -298,7 +320,7 @@ class View extends CI_Controller
         ));
         $this->load->view('e_layout', array(
             'e' => $es[0],
-            'member_e' => $member_e,
+            'player_e' => $player_e,
         ));
         $this->load->view('footer');
 
@@ -308,7 +330,7 @@ class View extends CI_Controller
 
 
 
-        $member_e = superpower_unlocked(); //Idea Pen?
+        $player_e = superpower_unlocked(); //Idea Pen?
 
         //Load views:
         $this->load->view('header', array(
@@ -317,7 +339,7 @@ class View extends CI_Controller
         ));
         $this->load->view('i_layout', array(
             'focus_i' => $is[0],
-            'member_e' => $member_e,
+            'player_e' => $player_e,
         ));
         $this->load->view('footer');
 
@@ -334,7 +356,7 @@ class View extends CI_Controller
          * */
 
         $flash_message = null;
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
         $focus_es = array();
 
         if(isset($_GET['e__handle'])){
@@ -344,8 +366,8 @@ class View extends CI_Controller
             if(!count($focus_es)){
                 return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid User Handler</div>');
             }
-        } elseif($member_e){
-            $focus_es[0] = $member_e;
+        } elseif($player_e){
+            $focus_es[0] = $player_e;
         }
 
         //Validate Top Idea:
@@ -375,9 +397,9 @@ class View extends CI_Controller
                 $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Idea has been discovered</div>';
 
                 //If not logged in, log them in:
-                if(!$member_e){
+                if(!$player_e){
                     $session_data = $this->E_model->activate_session($focus_es[0], true);
-                    $member_e = $focus_es[0];
+                    $player_e = $focus_es[0];
                 }
 
             } else {
@@ -388,7 +410,7 @@ class View extends CI_Controller
         }
 
 
-        if(!$member_e) {
+        if(!$player_e) {
             //Must login to continue:
             return redirect_message(view_app_link(4269).'?url='.view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i__hashtag);
         }
@@ -401,7 +423,7 @@ class View extends CI_Controller
             $focus_is = $top_is;
 
             //See if they have already started or need to start?
-            if(!$this->X_model->i_has_started($member_e['e__id'], $top_i__hashtag)) {
+            if(!$this->X_model->i_has_started($player_e['e__id'], $top_i__hashtag)) {
                 //Go to start:
                 return redirect_message('/ajax/x_start/'.$top_i__hashtag);
             }
@@ -473,7 +495,7 @@ class View extends CI_Controller
         $this->load->view('x_layout', array(
             'focus_i' => $focus_is[0],
             'top_i' => ( count($top_is) ? $top_is[0] : array() ),
-            'member_e' => ( count($focus_es) ? $focus_es[0] : array() ),
+            'player_e' => ( count($focus_es) ? $focus_es[0] : array() ),
             'x_completes' => $x_completes,
         ));
 

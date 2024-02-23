@@ -18,7 +18,7 @@ if(isset($_GET['i__hashtag']) && isset($_GET['top_i__hashtag'])){
             'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
         )) as $i){
             echo '<div class="row justify-content">';
-            $find_previous = $this->X_model->find_previous($member_e['e__id'], $top_i['i__hashtag'], $i['i__id']);
+            $find_previous = $this->X_model->find_previous($player_e['e__id'], $top_i['i__hashtag'], $i['i__id']);
             if(count($find_previous)){
                 foreach($find_previous as $i){
                     echo view_card_i(6255, $i, null, $top_i['i__hashtag']);

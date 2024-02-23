@@ -7,7 +7,7 @@ if(!isset($_GET['i__hashtag'])){
 
 //Define the user to fetch their discoveries for this idea:
 if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
-    $_GET['e__handle'] = $member_e['e__handle'];
+    $_GET['e__handle'] = $player_e['e__handle'];
 }
 
 

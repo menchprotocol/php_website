@@ -53,9 +53,9 @@ if(isset($_GET['i__hashtag'])){
                 if(!count($map_users)){
                     //TODO will get full notification and login! needs to be adjusted...
 
-                    //$member_result = $this->E_model->add_member($_POST['x_write'], $email, $phone, null, 0);
-                    if($member_result['status']) {
-                        $map_users[0] = $member_result['e'];
+                    //$player_result = $this->E_model->add_member($_POST['x_write'], $email, $phone, null, 0);
+                    if($player_result['status']) {
+                        $map_users[0] = $player_result['e'];
                     }
                 }
 

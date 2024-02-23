@@ -387,8 +387,8 @@ class X_model extends CI_Model
 
         //Authenticate Member:
         $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='@' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
             return array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -423,30 +423,30 @@ class X_model extends CI_Model
             //IDEA LINK TYPE
             $status = $this->X_model->update($x__id, array(
                 'x__type' => $new_e__id,
-            ), $member_e['e__id'], 13962);
+            ), $player_e['e__id'], 13962);
 
         } elseif($element_id==13550 && $x__id > 0){
 
             //SOURCE LINK TYPE
             $status = $this->X_model->update($x__id, array(
                 'x__type' => $new_e__id,
-            ), $member_e['e__id'], 28799);
+            ), $player_e['e__id'], 28799);
 
         } elseif($element_id==32292 && $x__id > 0){
 
             //SOURCE/SOURCE LINK
             $status = $this->X_model->update($x__id, array(
                 'x__type' => $new_e__id,
-            ), $member_e['e__id'], 28799);
+            ), $player_e['e__id'], 28799);
 
 
-        } elseif($element_id==42795 && $o__id > 0 && $new_e__id && $member_e){
+        } elseif($element_id==42795 && $o__id > 0 && $new_e__id && $player_e){
 
             if(!$x__id){
                 //Double check database as it may be updating newly selected value:
                 foreach($this->X_model->fetch(array(
                     'x__following' => $o__id,
-                    'x__follower' => $member_e['e__id'],
+                    'x__follower' => $player_e['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___42795')) . ')' => null, //Follow
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1) as $found_x){
@@ -461,29 +461,29 @@ class X_model extends CI_Model
                     //Unsubscribe
                     $status = $this->X_model->update($x__id, array(
                         'x__privacy' => 6173, //Transaction Removed
-                    ), $member_e['e__id'], 10673); //Media Removed
+                    ), $player_e['e__id'], 10673); //Media Removed
                 } else {
                     $status = $this->X_model->update($x__id, array(
                         'x__type' => $new_e__id,
-                    ), $member_e['e__id'], 42796);
+                    ), $player_e['e__id'], 42796);
                 }
             } else {
                 //Inserting new reaction:
                 $status = count($this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__following' => $o__id,
-                    'x__follower' => $member_e['e__id'],
+                    'x__follower' => $player_e['e__id'],
                     'x__type' => $new_e__id,
                 )));
             }
 
-        } elseif($element_id==42260 && $o__id > 0 && $new_e__id && $member_e){
+        } elseif($element_id==42260 && $o__id > 0 && $new_e__id && $player_e){
 
             //Check if current value?
             if(!$x__id){
                 //Double check database as it may be updating newly selected value:
                 foreach($this->X_model->fetch(array(
-                    'x__following' => $member_e['e__id'],
+                    'x__following' => $player_e['e__id'],
                     'x__next' => $o__id,
                     'x__type IN (' . join(',', $this->config->item('n___42260')) . ')' => null, //Reactions
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -497,18 +497,18 @@ class X_model extends CI_Model
                 if(in_array($new_e__id, $this->config->item('n___42850'))){
                     $status = $this->X_model->update($x__id, array(
                         'x__privacy' => 6173, //Transaction Removed
-                    ), $member_e['e__id'], 10673); //Media Removed
+                    ), $player_e['e__id'], 10673); //Media Removed
                 } else {
                     //Updating reaction:
                     $status = $this->X_model->update($x__id, array(
                         'x__type' => $new_e__id,
-                    ), $member_e['e__id'], 42794);
+                    ), $player_e['e__id'], 42794);
                 }
             } else {
                 //Inserting new reaction:
                 $status = count($this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
-                    'x__following' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
+                    'x__following' => $player_e['e__id'],
                     'x__next' => $o__id,
                     'x__type' => $new_e__id,
                 )));
@@ -549,7 +549,7 @@ class X_model extends CI_Model
                 }
 
                 //Delete all transactions:
-                $links_removed = $this->E_model->remove($o__id, $member_e['e__id'], $migrate_s__handle);
+                $links_removed = $this->E_model->remove($o__id, $player_e['e__id'], $migrate_s__handle);
 
             }
 
@@ -560,7 +560,7 @@ class X_model extends CI_Model
                 )))){
                 $status = $this->E_model->update($o__id, array(
                     'e__privacy' => $new_e__id,
-                ), true, $member_e['e__id']);
+                ), true, $player_e['e__id']);
             }
 
             //Update Search Index:
@@ -615,14 +615,14 @@ class X_model extends CI_Model
                 }
 
                 //Delete all transactions:
-                $links_removed = $this->I_model->remove($o__id , $member_e['e__id'], $migrate_s__handle);
+                $links_removed = $this->I_model->remove($o__id , $player_e['e__id'], $migrate_s__handle);
 
             }
 
             //Update Idea:
             $status = $this->I_model->update($o__id, array(
                 'i__privacy' => $new_e__id,
-            ), true, $member_e['e__id']);
+            ), true, $player_e['e__id']);
 
             //Update Search Index:
             flag_for_search_indexing(12273,  $o__id);
@@ -632,7 +632,7 @@ class X_model extends CI_Model
             //IDEA TYPE
             $status = $this->I_model->update($o__id, array(
                 'i__type' => $new_e__id,
-            ), true, $member_e['e__id']);
+            ), true, $player_e['e__id']);
 
             //See if we need to popup the idea edit modal here:
 
@@ -1091,8 +1091,8 @@ class X_model extends CI_Model
             ));
         }
 
-        $member_e = superpower_unlocked();
-        $x_data['x__creator'] = ( $x__creator ? $x__creator : $member_e['e__id'] );
+        $player_e = superpower_unlocked();
+        $x_data['x__creator'] = ( $x__creator ? $x__creator : $player_e['e__id'] );
         $x_data['x__type'] = $x__type;
         $x_data['x__previous'] = $i['i__id'];
 
@@ -1303,7 +1303,7 @@ class X_model extends CI_Model
                         //Create transaction:
                         $x_added++;
                         $this->X_model->create(array(
-                            'x__type' => 4230, //Follow Source
+                            'x__type' => 4251, //Follow Source
                             'x__message' => $x_data['x__message'],
                             'x__creator' => $x_data['x__creator'],
                             'x__following' => $x_tag['x__following'],
@@ -1322,7 +1322,7 @@ class X_model extends CI_Model
                     }
 
                     //See if Session needs to be updated:
-                    if($member_e && $member_e['e__id']==$x_data['x__creator'] && ($x_added>0 || $x_edited>0 || $x_deleted>0)){
+                    if($player_e && $player_e['e__id']==$x_data['x__creator'] && ($x_added>0 || $x_edited>0 || $x_deleted>0)){
                         $this->E_model->activate_session($es_creator[0], true);
                     }
                 }
@@ -1349,7 +1349,7 @@ class X_model extends CI_Model
                     ), $x_data['x__creator'], 12197 /* Following Removed */);
 
                     //See if Session needs to be updated:
-                    if($member_e && $member_e['e__id']==$x_data['x__creator']){
+                    if($player_e && $player_e['e__id']==$x_data['x__creator']){
                         //Yes, update session:
                         $this->E_model->activate_session($es_creator[0], true);
                     }
@@ -1531,8 +1531,8 @@ class X_model extends CI_Model
 
     function x_select($top_i__id, $focus_i__id, $answer_i__ids){
 
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
             return array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1544,7 +1544,7 @@ class X_model extends CI_Model
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
         $es = $this->E_model->fetch(array(
-            'e__id' => $member_e['e__id'],
+            'e__id' => $player_e['e__id'],
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ));
         if (!count($is)) {
@@ -1626,13 +1626,13 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY ANSWERED
-            'x__creator' => $member_e['e__id'],
+            'x__creator' => $player_e['e__id'],
             'x__previous' => $is[0]['i__id'],
         ), array('x__next')) as $x_selection){
 
             $this->X_model->update($x_selection['x__id'], array(
                 'x__privacy' => 6173, //Transaction Deleted
-            ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
+            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
 
             if(!in_array($x_selection['i__type'], $this->config->item('n___41055'))){
 
@@ -1641,12 +1641,12 @@ class X_model extends CI_Model
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__previous' => $x_selection['i__id'],
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                 ), array(), 0) as $x_discovery){
 
                     $this->X_model->update($x_discovery['x__id'], array(
                         'x__privacy' => 6173, //Transaction Deleted
-                    ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
+                    ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
 
                 }
             }
@@ -1659,7 +1659,7 @@ class X_model extends CI_Model
                 $answers_newly_added++;
                 $this->X_model->create(array(
                     'x__type' => 12336, //Link Selection
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__previous' => $is[0]['i__id'],
                     'x__next' => $answer_i__id,
                 ));
@@ -1667,7 +1667,7 @@ class X_model extends CI_Model
         }
 
         //Issue DISCOVERY/IDEA COIN:
-        $this->X_model->mark_complete(( count($answer_i__ids) ? ( $is_single_selection ? 6157 : 41940 ) : 31022 /* Skipped */ ), $member_e['e__id'], $top_i__id, $is[0]);
+        $this->X_model->mark_complete(( count($answer_i__ids) ? ( $is_single_selection ? 6157 : 41940 ) : 31022 /* Skipped */ ), $player_e['e__id'], $top_i__id, $is[0]);
 
         //All good, something happened:
         return array(

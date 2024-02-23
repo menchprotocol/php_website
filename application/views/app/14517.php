@@ -30,7 +30,7 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
 //Give them options to choose from:
 foreach($this->config->item('e___14517') as $x__type => $m) {
     if(in_array($x__type, $this->config->item('n___33331')) || in_array($x__type, $this->config->item('n___33332'))){
-        echo view_instant_select($x__type, $member_e['e__id']);
+        echo view_instant_select($x__type, $player_e['e__id']);
     }
 }
 

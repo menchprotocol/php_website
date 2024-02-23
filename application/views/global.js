@@ -111,7 +111,8 @@ function x_mass_apply_preview(apply_id, s__id){
     $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
     $.post("/ajax/x_mass_apply_preview", {
         apply_id: apply_id,
-        s__id: s__id
+        s__id: s__id,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         $('#modal'+apply_id+' .x_mass_apply_preview').html(data);
     });
@@ -434,7 +435,8 @@ function toggle_pills(x__type_hash){
                     focus_card:focus_card,
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('read-counter'),
-                    i__id:fetch_int_val('#focus_id')
+                    i__id:fetch_int_val('#focus_id'),
+                    js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
             } else if(focus_card==12274){
@@ -444,7 +446,8 @@ function toggle_pills(x__type_hash){
                     focus_card:focus_card,
                     x__type:x__type,
                     counter:$('.headline_body_'+x__type).attr('read-counter'),
-                    e__id:fetch_int_val('#focus_id')
+                    e__id:fetch_int_val('#focus_id'),
+                    js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
             } else {
@@ -508,7 +511,8 @@ function i_copy(i__id, do_recursive){
     //Go ahead and delete:
     $.post("/ajax/i_copy", {
         i__id:i__id,
-        do_recursive:do_recursive
+        do_recursive:do_recursive,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
             js_redirect(js_e___42903[33286]['m__message']+data.new_i__hashtag);
@@ -541,6 +545,7 @@ function e_copy(e__id){
     $.post("/ajax/e_copy", {
         e__id:e__id,
         copy_source_title:copy_source_title,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if(data.status){
             js_redirect(js_e___42903[42902]['m__message']+data.new_e__handle);
@@ -596,7 +601,8 @@ function x_remove(x__id, x__type, i__hashtag){
 
     //Save changes:
     $.post("/ajax/x_remove", {
-        x__id:x__id
+        x__id:x__id,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         //Update UI to confirm with member:
         if (!data.status) {
@@ -678,6 +684,7 @@ function e_load_cover(x__type, e__id, counter, first_segment){
         e__id:e__id,
         counter:counter,
         first_segment:first_segment,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         $('.coins_e_'+e__id+'_'+x__type).html(data);
     });
@@ -698,6 +705,7 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
         i__id:i__id,
         counter:counter,
         first_segment:first_segment,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         $('.coins_i_'+i__id+'_'+x__type).html(data);
     });
@@ -820,6 +828,7 @@ function activate_popover(){
         content: function (inner_content) {
             $.post("/ajax/load_popover", {
                 handle_string:inner_content.innerText,
+                js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
                 $('.popover-body').html(data);
                 load_covers();
@@ -1450,6 +1459,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
         i__id: i__id,
         x__id: x__id,
         current_i__type: current_i__type,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
         $(".dynamic_editing_loading").addClass('hidden');
@@ -1579,6 +1589,7 @@ function i_editor_save(){
         save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
         save_i__privacy:    $('.dropd_form_31004').attr('selected_value').trim(),
         save_media:         [],
+        js_request_uri:     js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Media:
@@ -2086,7 +2097,8 @@ function e_editor_load(e__id = 0, x__id = 0){
 
     $.post("/ajax/e_editor_load", {
         e__id: e__id,
-        x__id: x__id
+        x__id: x__id,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
         if (data.status) {
@@ -2206,6 +2218,7 @@ function e_editor_save(){
         save_x__id:         $('#modal31912 .save_x__id').val(),
         save_x__message:    $('#modal31912 .save_x__message').val().trim(),
         save_e__privacy:    $('.dropd_form_6177').attr('selected_value').trim(),
+        js_request_uri:     js_request_uri, //Always append to AJAX Calls
     };
 
     //Append Dynamic Data:
@@ -2328,6 +2341,7 @@ function x_view_load_page() {
         focus_id: fetch_int_val('#focus_id'),
         x__type: focus_x__group,
         current_page: current_page[focus_x__group],
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         $('.load-more').remove();
         if(data.length){
@@ -2394,6 +2408,7 @@ function e__add(x__type, e_existing_id) {
         focus_id: fetch_int_val('#focus_id'),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
 
     }, function (data) {
 
@@ -2456,6 +2471,7 @@ function e_delete(x__id, x__type) {
         $.post("/ajax/e_delete", {
 
             x__id: x__id,
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
 
         }, function (data) {
             if (data.status) {
@@ -2488,6 +2504,7 @@ function x_link_toggle(x__type, i__id){
             x__type:x__type,
             i__id:i__id,
             top_i__id:$('#top_i__id').val(),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (!data.status) {
                 alert(data.message);
@@ -2500,7 +2517,8 @@ function x_link_toggle(x__type, i__id){
     } else {
         //REMOVE
         $.post("/ajax/x_remove", {
-            x__id:x__id
+            x__id:x__id,
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
@@ -2575,7 +2593,8 @@ function x_set_text(this_grabr){
     var modify_data = {
         s__id: parseInt($(this_grabr).attr('s__id')),
         cache_e__id: parseInt($(this_grabr).attr('cache_e__id')),
-        new_i__message: $(this_grabr).val().trim()
+        new_i__message: $(this_grabr).val().trim(),
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     };
 
     //See if anything changes:
@@ -2683,7 +2702,11 @@ function i_sort_load(x__type){
 
                     //Update order:
                     if(sort_rank > 0){
-                        $.post("/ajax/i_sort_load", { new_x_order:new_x_order, x__type:x__type }, function (data) {
+                        $.post("/ajax/i_sort_load", {
+                            new_x_order:new_x_order,
+                            x__type:x__type,
+                            js_request_uri: js_request_uri, //Always append to AJAX Calls
+                        }, function (data) {
                             //Update UI to confirm with member:
                             if (!data.status) {
                                 //There was some sort of an error returned!
@@ -2766,6 +2789,7 @@ function e_select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__i
         selected_e__id: selected_e__id,
         enable_mulitiselect: enable_mulitiselect,
         was_previously_selected: was_previously_selected,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
         $(notify_el).html(initial_icon);
@@ -2940,7 +2964,8 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
         element_id: element_id,
         new_e__id: new_e__id,
         migrate_s__handle: migrate_s__handle,
-        x__id: x__id
+        x__id: x__id,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
@@ -3020,7 +3045,12 @@ function e_sort_save(x__type) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/ajax/e_sort_save", {e__id: fetch_int_val('#focus_id'), x__type:x__type, new_x__weight: new_x__weight}, function (data) {
+        $.post("/ajax/e_sort_save", {
+            e__id: fetch_int_val('#focus_id'),
+            x__type:x__type,
+            new_x__weight: new_x__weight,
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
+        }, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
@@ -3043,7 +3073,8 @@ function x_reset_sorting(){
         //Update via call:
         $.post("/ajax/x_reset_sorting", {
             focus_card: focus_card,
-            focus_id: focus_id
+            focus_id: focus_id,
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
 
             if (!data.status) {

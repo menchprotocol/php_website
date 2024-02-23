@@ -1,6 +1,6 @@
 <?php
 
-$e___11035 = $this->config->item('e___11035'); //Summary
+$e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
@@ -26,7 +26,7 @@ foreach($is_next as $in_key => $in_value){
     }
 }
 
-$x__creator = ( $member_e ? $member_e['e__id'] : 0 );
+$x__creator = ( $player_e ? $player_e['e__id'] : 0 );
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $pathways_count = 0;
 $top_i__id = ( count($top_i) ? $top_i['i__id'] : 0 );
@@ -357,7 +357,7 @@ if($top_i__hashtag) {
                                     $this->X_model->create(array(
                                         'x__type' => 32016,
                                         'x__creator' => $x[0]['e__id'], //Ticket Buyer
-                                        'x__following' => $member_e['e__id'], //Ticket Scanner
+                                        'x__following' => $player_e['e__id'], //Ticket Scanner
                                         'x__weight' => $quantity, //Tickets Checked-in (They can check-in in multiple rounds)
                                         'x__next' => $x[0]['x__next'],
                                         'x__previous' => $x[0]['x__previous'],
@@ -375,7 +375,7 @@ if($top_i__hashtag) {
 
                                 } elseif(!count($ticket_checked_in)) {
 
-                                            $qr_link = 'https://'.get_domain('m__message', ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 )).view_memory(42903,33286).$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x[0]['e__handle']);
+                                            $qr_link = 'https://'.get_domain('m__message', ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 )).view_memory(42903,33286).$focus_i['i__hashtag'].'?e__handle='.$x[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x[0]['e__handle']);
 
 
                                     //Give option for manual checkin:
@@ -815,7 +815,8 @@ if($top_i__hashtag){
 
         $.post("/ajax/x_upload", {
             i__id:         fetch_int_val('#focus_id'),
-            top_i__id:     $('#top_i__id').val()
+            top_i__id:     $('#top_i__id').val(),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if(data.status){
 
@@ -831,6 +832,7 @@ if($top_i__hashtag){
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
             x_write:$('#x_write').val(),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -850,6 +852,7 @@ if($top_i__hashtag){
         $.post("/ajax/x_read_only_complete", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -873,6 +876,7 @@ if($top_i__hashtag){
         $.post("/ajax/x_skip", {
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -891,6 +895,7 @@ if($top_i__hashtag){
             top_i__id:$('#top_i__id').val(),
             i__id:fetch_int_val('#focus_id'),
             paypal_quantity:$('#paypal_quantity').val(),
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
@@ -920,6 +925,7 @@ if($top_i__hashtag){
             focus_id:fetch_int_val('#focus_id'),
             top_i__id:$('#top_i__id').val(),
             selection_i__id:selection_i__id,
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:

@@ -247,7 +247,7 @@ function format_percentage($percent){
 }
 
 
-function new_member_redirect($e__id, $sign_i__hashtag){
+function new_player_redirect($e__id, $sign_i__hashtag){
     //Is there a redirect app?
     if(strlen($sign_i__hashtag)) {
         return view_memory(42903,33286) . $sign_i__hashtag;
@@ -355,7 +355,7 @@ function i_unlockable($i){
 function i_spots_remaining($i__id){
 
     $CI =& get_instance();
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
@@ -373,9 +373,9 @@ function i_spots_remaining($i__id){
             'x__type IN (' . join(',', $CI->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__previous' => $i__id,
         );
-        if($member_e){
+        if($player_e){
             //Do not count current user to give them option to edit & resubmit:
-            $query_filters['x__creator !='] = $member_e['e__id'];
+            $query_filters['x__creator !='] = $player_e['e__id'];
         }
 
         //Navigation?
@@ -503,8 +503,8 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
 function i_is_discoverable($i, $is_also_startable = false){
 
     $CI =& get_instance();
-    $member_e = superpower_unlocked();
-    $x__creator = ( $member_e ? $member_e['e__id'] : 0 );
+    $player_e = superpower_unlocked();
+    $x__creator = ( $player_e ? $player_e['e__id'] : 0 );
     $double_check = 'if you believe you have this source then make sure to login with the same email address that we sent you the email.';
 
     if($i['i__privacy']){
@@ -526,7 +526,7 @@ function i_is_discoverable($i, $is_also_startable = false){
 
         if($x__creator > 0){
             foreach($fetch_13865 as $e_pre){
-                if(( $member_e && $member_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                if(( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__following' => $e_pre['x__following'],
@@ -561,7 +561,7 @@ function i_is_discoverable($i, $is_also_startable = false){
 
         if($x__creator > 0){
             foreach($fetch_27984 as $e_pre){
-                if($x__creator && (( $member_e && $member_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                if($x__creator && (( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__following' => $e_pre['x__following'],
@@ -597,7 +597,7 @@ function i_is_discoverable($i, $is_also_startable = false){
         $excludes_message = 'Unknown Error @26600';
         if($x__creator > 0){
             foreach($fetch_26600 as $e_pre){
-                if(( $member_e && $member_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                if(( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__following' => $e_pre['x__following'],
@@ -640,7 +640,7 @@ function redirect_message($url, $message = null, $log_error = false)
     //An error handling function that would redirect member to $url with optional $message
     //Do we have a Message?
     $CI =& get_instance();
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
 
     if ($message) {
         $CI->session->set_flashdata('flash_message', $message);
@@ -651,7 +651,7 @@ function redirect_message($url, $message = null, $log_error = false)
         $CI->X_model->create(array(
             'x__message' => $url.' '.stripslashes($message),
             'x__type' => 4246, //Platform Bug Reports
-            'x__creator' => ( $member_e ? $member_e['e__id'] : 0 ),
+            'x__creator' => ( $player_e ? $player_e['e__id'] : 0 ),
         ));
     }
 
@@ -686,11 +686,11 @@ function auto_login() {
     @session_start();
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
     $is_login_verified = isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
 
     if(
-        !$member_e //User must not be logged in
+        !$player_e //User must not be logged in
         && !array_key_exists($first_segment, $CI->config->item('handle___14582'))
         && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
     ) {
@@ -727,7 +727,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
     $CI =& get_instance();
     $e___6287 = $CI->config->item('e___6287'); //APP
-    $e___11035 = $CI->config->item('e___11035'); //Summary
+    $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $e___40946 = $CI->config->item('e___40946'); //Source List Controllers
     $list_config = array(); //To compile the settings of this sheet:
     $column_e = array();
@@ -917,12 +917,12 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
 
        //Append Navigation:
-       foreach($column_i as $key => $i2){
+       foreach($column_i as $key => $i_var){
            $must_follow = array();
            foreach($CI->X_model->fetch(array(
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type' => 32235, //Navigation
-               'x__next' => $i2['i__id'],
+               'x__next' => $i_var['i__id'],
            )) as $follow){
                array_push($must_follow, $follow['x__following']);
            }
@@ -972,8 +972,8 @@ function count_link_groups($x__type, $x__time_start = null, $x__time_end = null)
 
 function home_url(){
     $CI =& get_instance();
-    $member_e = superpower_unlocked();
-    return ( $member_e ? view_memory(42903,42902).$member_e['e__handle'] : view_memory(42903,14565) );
+    $player_e = superpower_unlocked();
+    return ( $player_e ? view_memory(42903,42902).$player_e['e__handle'] : view_memory(42903,14565) );
 }
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
@@ -981,19 +981,19 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
-    $member_e = $CI->session->userdata('session_up');
-    $has_session = ( is_array($member_e) && count($member_e) > 0 && $member_e );
+    $player_e = $CI->session->userdata('session_up');
+    $has_session = ( is_array($player_e) && count($player_e) > 0 && $player_e );
 
     //Let's start checking various ways we can give member access:
     if ($has_session && !$superpower_e__id) {
 
         //No minimum level required, grant access IF member is logged in:
-        return $member_e;
+        return $player_e;
 
     } elseif ($has_session && in_array($superpower_e__id, $CI->session->userdata('session_superpowers_unlocked'))) {
 
         //They are part of one of the levels assigned to them:
-        return $member_e;
+        return $player_e;
 
     }
 
@@ -1007,7 +1007,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
 
         //Block access:
         if($has_session){
-            $goto_url = view_memory(42903,42902).$member_e['e__handle'];
+            $goto_url = view_memory(42903,42902).$player_e['e__handle'];
         } else {
             $goto_url = view_app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' );
         }
@@ -1226,7 +1226,7 @@ function sync_handle_references($e, $new_handle_string){
 function validate_update_handle($str, $i__id = null, $e__id = null){
 
     $CI =& get_instance();
-    $member_e = superpower_unlocked();
+    $player_e = superpower_unlocked();
 
     //Validate:
     if(($i__id && $e__id) || (!$i__id && !$e__id)){
@@ -1286,12 +1286,12 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
             'LOWER(i__hashtag)' => strtolower($str),
         ), 0) as $matched){
             //Is it active?
-            if(!in_array($matched['i__privacy'], $CI->config->item('n___31871')) && $member_e){
+            if(!in_array($matched['i__privacy'], $CI->config->item('n___31871')) && $player_e){
 
                 //Since not active we can replace this:
                 $CI->I_model->update($matched['i__id'], array(
                     'i__hashtag' => change_handle($matched['i__hashtag']),
-                ), true, $member_e['e__id']);
+                ), true, $player_e['e__id']);
 
             } else {
                 return array(
@@ -1308,12 +1308,12 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
             'LOWER(e__handle)' => strtolower($str),
         ), 0) as $matched){
             //Is it active?
-            if(!in_array($matched['e__privacy'], $CI->config->item('n___7358')) && $member_e){
+            if(!in_array($matched['e__privacy'], $CI->config->item('n___7358')) && $player_e){
 
                 //Since not active we can replace this:
                 $CI->E_model->update($matched['e__id'], array(
                     'e__handle' => change_handle($matched['e__handle']),
-                ), true, $member_e['e__id']);
+                ), true, $player_e['e__id']);
 
             } else {
                 return array(
@@ -1679,9 +1679,9 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
     $e_id = 0; //Assume no domain unless found below
 
     if(!$initiator_e__id){
-        $member_e = superpower_unlocked();
-        if($member_e && $member_e['e__id']>0){
-            $initiator_e__id = $member_e['e__id'];
+        $player_e = superpower_unlocked();
+        if($player_e && $player_e['e__id']>0){
+            $initiator_e__id = $player_e['e__id'];
         }
     }
 
@@ -1737,8 +1737,8 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 function write_privacy_e($e__handle, $e__id = 0){
 
 
-    $member_e = superpower_unlocked();
-    if(!$member_e || (!strlen($e__handle) && !intval($e__id))){
+    $player_e = superpower_unlocked();
+    if(!$player_e || (!strlen($e__handle) && !intval($e__id))){
         //No input
         return false;
     }
@@ -1748,7 +1748,7 @@ function write_privacy_e($e__handle, $e__id = 0){
     $filters = array(
         'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__following' => $member_e['e__id'],
+        'x__following' => $player_e['e__id'],
     );
     if(strlen($e__handle)){
         $filters['LOWER(e__handle)'] = strtolower($e__handle);
@@ -1762,7 +1762,7 @@ function write_privacy_e($e__handle, $e__id = 0){
         superpower_unlocked(13422)
 
         //Member is the source
-        || ($member_e && ($e__handle==$member_e['e__handle'] || $e__id==$member_e['e__id']))
+        || ($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id']))
 
         //If Source Follows this Member
         || count($CI->X_model->fetch($filters, array('x__follower')))
@@ -1773,8 +1773,8 @@ function write_privacy_e($e__handle, $e__id = 0){
 
 function write_privacy_i($i__hashtag, $i__id = 0){
 
-    $member_e = superpower_unlocked();
-    if(!$member_e || (!strlen($i__hashtag) && !intval($i__id))){
+    $player_e = superpower_unlocked();
+    if(!$player_e || (!strlen($i__hashtag) && !intval($i__id))){
         return false;
     }
 
@@ -1783,7 +1783,7 @@ function write_privacy_i($i__hashtag, $i__id = 0){
     $filters = array( //IDEA SOURCE
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-        'x__following' => $member_e['e__id'],
+        'x__following' => $player_e['e__id'],
     );
 
     if(strlen($i__hashtag)){

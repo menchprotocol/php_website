@@ -34,10 +34,10 @@ foreach($list_settings['query_string'] as $x){
     $i_content = '';
     $this_quantity = 1;
     $name = '';
-    foreach($list_settings['column_i'] as $i2){
+    foreach($list_settings['column_i'] as $i_var){
 
         $discoveries = $this->X_model->fetch(array(
-            'x__previous' => $i2['i__id'],
+            'x__previous' => $i_var['i__id'],
             'x__creator' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -54,24 +54,24 @@ foreach($list_settings['query_string'] as $x){
                 $this_quantity = $discoveries[0]['x__weight'];
             }
 
-            if($i2['i__id']==15736){
+            if($i_var['i__id']==15736){
                 $name = $discoveries[0]['x__message'];
             }
         }
 
-        $i_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_i_title($i2, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_i_title($i2, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_i_title($i2, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
+        $i_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
 
 
-        if(count($discoveries) && (!count($i2['must_follow']) || count($i2['must_follow'])!=count($this->X_model->fetch(array(
+        if(count($discoveries) && (!count($i_var['must_follow']) || count($i_var['must_follow'])!=count($this->X_model->fetch(array(
                     'x__follower' => $x['e__id'],
-                    'x__following IN (' . join(',', $i2['must_follow']) . ')' => null,
+                    'x__following IN (' . join(',', $i_var['must_follow']) . ')' => null,
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ))))){
-            if(!isset($count_totals['i'][$i2['i__id']])){
-                $count_totals['i'][$i2['i__id']] = 0;
+            if(!isset($count_totals['i'][$i_var['i__id']])){
+                $count_totals['i'][$i_var['i__id']] = 0;
             }
-            $count_totals['i'][$i2['i__id']]++;
+            $count_totals['i'][$i_var['i__id']]++;
         }
 
     }
@@ -157,20 +157,20 @@ foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
     echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xs">'.$e___6177[$e['e__privacy']]['m__cover'].'</span></div><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['e__handle'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="fas fa-sort"></i>'.$e['e__title'].'</span></th>';
 }
-foreach($list_settings['column_i'] as $i2){
+foreach($list_settings['column_i'] as $i_var){
 
     $max_available = $this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-        'x__next' => $i2['i__id'],
+        'x__next' => $i_var['i__id'],
         'x__following' => 26189,
     ), array(), 1);
-    $current_x = ( isset($count_totals['i'][$i2['i__id']]) ? $count_totals['i'][$i2['i__id']] : 0 );
+    $current_x = ( isset($count_totals['i'][$i_var['i__id']]) ? $count_totals['i'][$i_var['i__id']] : 0 );
     $max_limit = (count($max_available) && is_numeric($max_available[0]['x__message']) && intval($max_available[0]['x__message'])>0 ? intval($max_available[0]['x__message']) : 0 );
 
-    array_push($table_sortable, '#th_i_'.$i2['i__id']);
+    array_push($table_sortable, '#th_i_'.$i_var['i__id']);
 
-    echo '<th id="th_i_'.$i2['i__id'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$i2['i__hashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i2['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i2['x__message']) ? $i2['x__message'] : view_i_title($i2, true) ).'</span></th>';
+    echo '<th id="th_i_'.$i_var['i__id'].'"><div></div><a class="icon-block-xs" href="'.view_memory(42903,33286).$i_var['i__hashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i_var['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="fas fa-sort"></i>'.( strlen($i_var['x__message']) ? $i_var['x__message'] : view_i_title($i_var, true) ).'</span></th>';
 
 }
 echo '</tr>';
@@ -266,6 +266,7 @@ echo '</table>';
                 x__id: $(this).attr('x__id'),
                 input_modal: input_modal,
                 modal_value: modal_value,
+                js_request_uri: js_request_uri, //Always append to AJAX Calls
             };
 
             $('.x__creator_' + modify_data['e__id'] + '_' + modify_data['x__creator']).html('<i class="far fa-yin-yang fa-spin"></i>');

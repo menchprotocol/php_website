@@ -54,7 +54,7 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
                 $deleted = true;
                 $this->X_model->update($delete['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
-                ), $member_e['e__id'], 29085); //Time Expired
+                ), $player_e['e__id'], 29085); //Time Expired
 
             }
 

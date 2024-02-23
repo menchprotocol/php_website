@@ -52,8 +52,8 @@ class Ajax extends CI_Controller
     function i_editor_load()
     {
 
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -99,7 +99,7 @@ class Ajax extends CI_Controller
                 'i__message' => null,
                 'i__type' => $_POST['current_i__type'],
                 'i__privacy' => 42636, //Pre-drafting idea
-            ), $member_e['e__id']);
+            ), $player_e['e__id']);
 
             $i__id = $i_new['i__id'];
             $created_i__id = $i__id;
@@ -111,7 +111,7 @@ class Ajax extends CI_Controller
         $return_inputs = array();
         $e___4737 = $this->config->item('e___4737'); // Idea Status
         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Fields
-        $e___11035 = $this->config->item('e___11035'); //Summary
+        $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
         foreach(array_intersect($this->config->item('n___'.$i__type), $this->config->item('n___42179')) as $dynamic_e__id){
 
@@ -126,8 +126,9 @@ class Ajax extends CI_Controller
             if(count($data_types)!=1) {
                 //This is strange, we are expecting 1 match only report this:
                 $this->X_model->create(array(
+                    'x__app' => 31911,
                     'x__type' => 4246, //Platform Bug Reports
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__following' => 42179, //Dynamic Input Fields
                     'x__follower' => $dynamic_e__id,
                     'x__next' => $i__id,
@@ -163,7 +164,7 @@ class Ajax extends CI_Controller
                 $e___4592 = $this->config->item('e___4592'); //Data types
                 $e___6177 = $this->config->item('e___6177'); //Source Privacy
                 $e___42179 = $this->config->item('e___42179'); //Dynamic Input Field
-                $e___11035 = $this->config->item('e___11035'); //Summary
+                $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
                 //Fetch the current value:
                 $counted = 0;
@@ -220,7 +221,7 @@ class Ajax extends CI_Controller
 
         //Log Modal View:
         $this->X_model->create(array(
-            'x__creator' => $member_e['e__id'],
+            'x__creator' => $player_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
             'x__following' => 31911, //Edit Idea
             'x__next' => $i__id,
@@ -236,8 +237,8 @@ class Ajax extends CI_Controller
     function i_editor_save(){
 
 
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -363,9 +364,9 @@ class Ajax extends CI_Controller
                         //Append all of these hashtags:
                         foreach($i_references as $reference_i){
                             if(intval($_POST['next_i__id'])>0){
-                                $status = $this->I_model->i_link($focus_i, $_POST['save_x__type'], $reference_i, $member_e['e__id']);
+                                $status = $this->I_model->i_link($focus_i, $_POST['save_x__type'], $reference_i, $player_e['e__id']);
                             } elseif(intval($_POST['previous_i__id'])>0){
-                                $status = $this->I_model->i_link($reference_i, $_POST['save_x__type'], $focus_i, $member_e['e__id']);
+                                $status = $this->I_model->i_link($reference_i, $_POST['save_x__type'], $focus_i, $player_e['e__id']);
                             }
                             if(!$status['status']){
                                 return view_json($status);
@@ -393,7 +394,7 @@ class Ajax extends CI_Controller
             $this->I_model->update($is[0]['i__id'], array(
                 'i__type' => $_POST['save_i__type'],
                 'i__privacy' => $_POST['save_i__privacy'],
-            ), true, $member_e['e__id']);
+            ), true, $player_e['e__id']);
             $is[0]['i__type'] = trim($_POST['save_i__type']);
             $is[0]['i__privacy'] = trim($_POST['save_i__privacy']);
         }
@@ -443,7 +444,7 @@ class Ajax extends CI_Controller
                         $adjust_updated = true;
                         $this->X_model->update($full_media[$submitted_media['e__id']]['x__id'], array(
                             'x__weight' => $sort_count,
-                        ), $member_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
+                        ), $player_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                     }
 
                     //Update the source title?
@@ -452,7 +453,7 @@ class Ajax extends CI_Controller
                         $adjust_updated = true;
                         $this->E_model->update($submitted_media['e__id'], array(
                             'e__title' => trim($submitted_media['e__title']),
-                        ), true, $member_e['e__id']);
+                        ), true, $player_e['e__id']);
                     }
 
                     if($adjust_updated){
@@ -482,7 +483,7 @@ class Ajax extends CI_Controller
                     if(!$submitted_media['e__id']){
 
                         //Create Source for this new media:
-                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $member_e['e__id'], ( $submitted_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'fas fa-volume-up' : $submitted_media['e__cover'] ), true);
+                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $player_e['e__id'], ( $submitted_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'fas fa-volume-up' : $submitted_media['e__cover'] ), true);
                         if(!$added_e['status']){
                             $this->X_model->create(array(
                                 'x__type' => 4246, //Platform Bug Reports
@@ -554,10 +555,10 @@ class Ajax extends CI_Controller
 
                                     //Add links for this new source:
                                     $this->X_model->create(array(
-                                        'x__creator' => $member_e['e__id'],
+                                        'x__creator' => $player_e['e__id'],
                                         'x__following' => $x__type,
                                         'x__follower' => $added_child['new_e']['e__id'],
-                                        'x__type' => 4230,
+                                        'x__type' => 4251,
                                     ));
 
                                     //Assign child source:
@@ -568,10 +569,10 @@ class Ajax extends CI_Controller
                                 if($child_id){
                                     //Child source found, simply link:
                                     $this->X_model->create(array(
-                                        'x__creator' => $member_e['e__id'],
+                                        'x__creator' => $player_e['e__id'],
                                         'x__following' => $child_id,
                                         'x__follower' => $submitted_media['e__id'],
-                                        'x__type' => 4230,
+                                        'x__type' => 4251,
                                     ));
                                 }
 
@@ -579,11 +580,11 @@ class Ajax extends CI_Controller
 
                                 //Save variable as is:
                                 $this->X_model->create(array(
-                                    'x__creator' => $member_e['e__id'],
+                                    'x__creator' => $player_e['e__id'],
                                     'x__following' => $x__type,
                                     'x__follower' => $submitted_media['e__id'],
                                     'x__message' => $target_variable,
-                                    'x__type' => 4230,
+                                    'x__type' => 4251,
                                 ));
 
                             }
@@ -602,7 +603,7 @@ class Ajax extends CI_Controller
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
+                                'x__creator' => $player_e['e__id'],
                                 'x__next' => $is[0]['i__id'],
                                 'x__following' => $submitted_media['e__id'],
                                 'x__type' => $submitted_media['media_e__id'],
@@ -614,14 +615,14 @@ class Ajax extends CI_Controller
 
                         //Link to Source as Uploader:
                         if(!count($this->X_model->fetch(array(
-                            'x__following' => $member_e['e__id'],
+                            'x__following' => $player_e['e__id'],
                             'x__follower' => $submitted_media['e__id'],
                             'x__type IN (' . join(',', $this->config->item('n___42657')) . ')' => null, //Uploads
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
-                                'x__following' => $member_e['e__id'],
+                                'x__creator' => $player_e['e__id'],
+                                'x__following' => $player_e['e__id'],
                                 'x__follower' => $submitted_media['e__id'],
                                 'x__type' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
                                 'x__message' => $submitted_media['playback_code'],
@@ -633,14 +634,14 @@ class Ajax extends CI_Controller
                         if(!count($this->X_model->fetch(array(
                             'x__following' => $submitted_media['media_e__id'],
                             'x__follower' => $submitted_media['e__id'],
-                            'x__type' => 4230,
+                            'x__type' => 4251,
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
-                                'x__creator' => $member_e['e__id'],
+                                'x__creator' => $player_e['e__id'],
                                 'x__following' => $submitted_media['media_e__id'],
                                 'x__follower' => $submitted_media['e__id'],
-                                'x__type' => 4230,
+                                'x__type' => 4251,
                                 'x__metadata' => $submitted_media,
                             ));
                         }
@@ -661,7 +662,7 @@ class Ajax extends CI_Controller
             $media_stats['adjust_removed']++;
             $this->X_model->update($full_media[$deleted_media_e__id]['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
-            ), $member_e['e__id'], 42694); //Media Removed
+            ), $player_e['e__id'], 42694); //Media Removed
         }
 
 
@@ -737,14 +738,14 @@ class Ajax extends CI_Controller
                     if(count($values) && $dynamic_e__id!=11035 /* HACK: Summary are key links that should not be removed */){
                         $this->X_model->update($values[0]['x__id'], array(
                             'x__privacy' => 6173, //Transaction Removed
-                        ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+                        ), $player_e['e__id'], 42175 /* Dynamic Link Content Removed */);
                     }
 
                 } elseif(!count($values)){
 
                     //Create New Link:
                     $this->X_model->create(array(
-                        'x__creator' => $member_e['e__id'],
+                        'x__creator' => $player_e['e__id'],
                         'x__type' => 4983, //Co-Author
                         'x__following' => $dynamic_e__id,
                         'x__next' => $is[0]['i__id'],
@@ -757,7 +758,7 @@ class Ajax extends CI_Controller
                     //Update Link:
                     $this->X_model->update($values[0]['x__id'], array(
                         'x__message' => $dynamic_value,
-                    ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
+                    ), $player_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
                 }
             }
@@ -778,7 +779,7 @@ class Ajax extends CI_Controller
             //Save hashtag since changed:
             $this->I_model->update($is[0]['i__id'], array(
                 'i__hashtag' => trim($_POST['save_i__hashtag']),
-            ), true, $member_e['e__id']);
+            ), true, $player_e['e__id']);
 
             //Now Handles everywhere they are referenced:
             foreach ($this->X_model->fetch(array(
@@ -798,14 +799,14 @@ class Ajax extends CI_Controller
         //Also have to add as a comment to another idea?
         if(intval($_POST['next_i__id'])>0 && $_POST['save_x__type']>0){
             $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+                'x__creator' => $player_e['e__id'],
                 'x__previous' => $_POST['next_i__id'],
                 'x__next' => $is[0]['i__id'],
                 'x__type' => $_POST['save_x__type'],
             ));
         } elseif(intval($_POST['previous_i__id'])>0 && $_POST['save_x__type']>0){
             $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+                'x__creator' => $player_e['e__id'],
                 'x__previous' => $is[0]['i__id'],
                 'x__next' => $_POST['previous_i__id'],
                 'x__type' => $_POST['save_x__type'],
@@ -825,7 +826,7 @@ class Ajax extends CI_Controller
                 if($this_x['x__message'] != trim($_POST['save_x__message'])){
                     $this->X_model->update($this_x['x__id'], array(
                         'x__message' => trim($_POST['save_x__message']),
-                    ), $member_e['e__id'], 42171);
+                    ), $player_e['e__id'], 42171);
                 }
             }
         }
@@ -855,9 +856,9 @@ class Ajax extends CI_Controller
     function i_copy(){
 
         //Auth member and check required variables:
-        $member_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939);
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'messagCloe' => view_unauthorized_message(10939),
@@ -874,7 +875,7 @@ class Ajax extends CI_Controller
             ));
         }
 
-        return view_json($this->I_model->recursive_clone(intval($_POST['i__id']), intval($_POST['do_recursive']), $member_e['e__id']));
+        return view_json($this->I_model->recursive_clone(intval($_POST['i__id']), intval($_POST['do_recursive']), $player_e['e__id']));
 
     }
 
@@ -946,9 +947,9 @@ class Ajax extends CI_Controller
          *
          * */
 
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -972,7 +973,7 @@ class Ajax extends CI_Controller
                 //Update order of this transaction:
                 if($this->X_model->update(intval($x__id), array(
                     'x__weight' => $x__weight,
-                ), $member_e['e__id'], 4603)){
+                ), $player_e['e__id'], 4603)){
                     $updated++;
                 }
             }
@@ -1071,8 +1072,8 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $member_e = superpower_unlocked(10939);
-        if (!$member_e) {
+        $player_e = superpower_unlocked(10939);
+        if (!$player_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -1123,7 +1124,7 @@ class Ajax extends CI_Controller
                 foreach($_POST['new_x__weight'] as $rank => $x__id) {
                     $this->X_model->update($x__id, array(
                         'x__weight' => intval($rank),
-                    ), $member_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
+                    ), $player_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
                 //Display message:
@@ -1138,9 +1139,9 @@ class Ajax extends CI_Controller
     function e_delete(){
 
         //Auth member and check required variables:
-        $member_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939);
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -1155,7 +1156,7 @@ class Ajax extends CI_Controller
         //Archive Transaction:
         $this->X_model->update($_POST['x__id'], array(
             'x__privacy' => 6173,
-        ), $member_e['e__id'], 10673 /* IDEA NOTES Unpublished */);
+        ), $player_e['e__id'], 10673 /* IDEA NOTES Unpublished */);
 
         return view_json(array(
             'status' => 1,
@@ -1166,9 +1167,9 @@ class Ajax extends CI_Controller
     function e_copy(){
 
         //Auth member and check required variables:
-        $member_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939);
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -1201,7 +1202,7 @@ class Ajax extends CI_Controller
 
 
         //Create:
-        $added_e = $this->E_model->verify_create($_POST['copy_source_title'], $member_e['e__id'], $fetch_o[0]['e__cover']);
+        $added_e = $this->E_model->verify_create($_POST['copy_source_title'], $player_e['e__id'], $fetch_o[0]['e__cover']);
         if(!$added_e['status']){
             //We had an error, return it:
             return view_json($added_e);
@@ -1228,7 +1229,7 @@ class Ajax extends CI_Controller
                 'x__metadata' => $x['x__metadata'],
             )))){
                 $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__weight' => $x['x__weight'],
 
                     'x__type' => $x['x__type'],
@@ -1259,7 +1260,7 @@ class Ajax extends CI_Controller
                 'x__privacy' => $x['x__privacy'],
             )))){
                 $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__weight' => $x['x__weight'],
 
                     'x__type' => $x['x__type'],
@@ -1291,7 +1292,7 @@ class Ajax extends CI_Controller
                 'x__privacy' => $x['x__privacy'],
             )))){
                 $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__weight' => $x['x__weight'],
 
                     'x__type' => $x['x__type'],
@@ -1319,9 +1320,9 @@ class Ajax extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $member_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939);
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
@@ -1411,7 +1412,7 @@ class Ajax extends CI_Controller
         } else {
 
             //We are creating a new source:
-            $added_e = $this->E_model->verify_create($_POST['e_new_string'], $member_e['e__id']);
+            $added_e = $this->E_model->verify_create($_POST['e_new_string'], $player_e['e__id']);
             if(!$added_e['status']){
                 //We had an error, return it:
                 return view_json($added_e);
@@ -1438,7 +1439,7 @@ class Ajax extends CI_Controller
 
             //Add Reference:
             $ur2 = $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+                'x__creator' => $player_e['e__id'],
                 'x__type' => 4983, //Co-Author
                 'x__following' => $focus_e['e__id'],
                 'x__next' => $fetch_o[0]['i__id'],
@@ -1483,7 +1484,7 @@ class Ajax extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 $ur2 = $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__type' => 4251,
                     'x__message' => $x__message,
                     'x__follower' => $x__follower,
@@ -1506,11 +1507,11 @@ class Ajax extends CI_Controller
     function e_editor_load()
     {
 
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
         $e___11035 = $this->config->item('e___11035');
         $e___42776 = $this->config->item('e___42776');
         $e___4592 = $this->config->item('e___4592'); //Data types
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1601,7 +1602,7 @@ class Ajax extends CI_Controller
                         //This is strange, we are expecting 1 match only report this:
                         $this->X_model->create(array(
                             'x__type' => 4246, //Platform Bug Reports
-                            'x__creator' => $member_e['e__id'],
+                            'x__creator' => $player_e['e__id'],
                             'x__following' => 31912, //Edit Source
                             'x__follower' => $dynamic_e__id,
                             'x__reference' => $_POST['x__id'],
@@ -1613,7 +1614,7 @@ class Ajax extends CI_Controller
                         //Monitor if we ever reach the maximum:
                         $this->X_model->create(array(
                             'x__type' => 4246, //Platform Bug Reports
-                            'x__creator' => $member_e['e__id'],
+                            'x__creator' => $player_e['e__id'],
                             'x__following' => 42179, //Dynamic Input Fields
                             'x__follower' => $dynamic_e__id,
                             'x__next' => $_POST['e__id'],
@@ -1649,7 +1650,7 @@ class Ajax extends CI_Controller
                         $this_data_type = $this->config->item('e___'.$data_type);
                         $e___6177 = $this->config->item('e___6177'); //Source Privacy
                         $e___42179 = $this->config->item('e___42179'); //Dynamic Input Field
-                        $e___11035 = $this->config->item('e___11035'); //Summary
+                        $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
                         //Fetch the current value(s):
                         $counted = 0;
@@ -1758,7 +1759,7 @@ class Ajax extends CI_Controller
 
         //Log Modal View:
         $this->X_model->create(array(
-            'x__creator' => $member_e['e__id'],
+            'x__creator' => $player_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
             'x__following' => 31912, //Edit Source
             'x__follower' => $es[0]['e__id'],
@@ -1774,8 +1775,8 @@ class Ajax extends CI_Controller
     function e_editor_save()
     {
 
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -1886,15 +1887,15 @@ class Ajax extends CI_Controller
                 if(count($values) && $dynamic_e__id!=11035 /* HACK: Summary are key links that should not be removed */){
                     $this->X_model->update($values[0]['x__id'], array(
                         'x__privacy' => 6173, //Transaction Removed
-                    ), $member_e['e__id'], 42175 /* Dynamic Link Content Removed */);
+                    ), $player_e['e__id'], 42175 /* Dynamic Link Content Removed */);
                 }
 
             } elseif (!count($values)) {
 
                 //Create Link:
                 $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
-                    'x__type' => 4230,
+                    'x__creator' => $player_e['e__id'],
+                    'x__type' => 4251,
                     'x__following' => $dynamic_e__id,
                     'x__follower' => $es[0]['e__id'],
                     'x__message' => $dynamic_value,
@@ -1906,7 +1907,7 @@ class Ajax extends CI_Controller
                 //Update Link:
                 $this->X_model->update($values[0]['x__id'], array(
                     'x__message' => $dynamic_value,
-                ), $member_e['e__id'], 42176 /* Dynamic Link Content Updated */);
+                ), $player_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
             }
         }
@@ -1949,7 +1950,7 @@ class Ajax extends CI_Controller
             'e__cover' => trim($_POST['save_e__cover']),
             'e__handle' => trim($_POST['save_e__handle']),
             'e__privacy' => $_POST['save_e__privacy'],
-        ), true, $member_e['e__id']);
+        ), true, $player_e['e__id']);
 
 
         $es[0]['e__handle'] = sync_handle_references($es[0], trim($_POST['save_e__handle']));
@@ -1967,14 +1968,14 @@ class Ajax extends CI_Controller
                 if($this_x['x__message'] != trim($_POST['save_x__message'])){
                     $this->X_model->update($this_x['x__id'], array(
                         'x__message' => trim($_POST['save_x__message']),
-                    ), $member_e['e__id'], 42171);
+                    ), $player_e['e__id'], 42171);
                 }
             }
         }
 
 
         //Reset member session data if this data belongs to the logged-in member:
-        if ($_POST['save_e__id']==$member_e['e__id']) {
+        if ($_POST['save_e__id']==$player_e['e__id']) {
             $this->E_model->activate_session($es[0], true);
         }
 
@@ -1995,8 +1996,8 @@ class Ajax extends CI_Controller
          *
          * */
 
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -2047,7 +2048,7 @@ class Ajax extends CI_Controller
                         'x__next' => $i['i__id'], //Is this the template?
                     )))){
                         //Found the email template to send:
-                        $total_sent = $this->X_model->send_i_dm(array($member_e), $i, website_setting(0), false);
+                        $total_sent = $this->X_model->send_i_dm(array($player_e), $i, website_setting(0), false);
                         break; //Just the first template match
                     }
                 }
@@ -2059,7 +2060,7 @@ class Ajax extends CI_Controller
                 //Add special transaction to monitor unsubscribes:
                 if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
                     $this->X_model->create(array(
-                        'x__creator' => $member_e['e__id'],
+                        'x__creator' => $player_e['e__id'],
                         'x__type' => 29648, //Communication Downgraded
                         'x__following' => $_POST['focus_id'],
                         'x__follower' => $_POST['selected_e__id'],
@@ -2116,7 +2117,7 @@ class Ajax extends CI_Controller
                 //Should usually delete a single option:
                 $this->X_model->update($delete['x__id'], array(
                     'x__privacy' => 6173, //Transaction Removed
-                ), $member_e['e__id'], 6224 /* Member Account Updated */);
+                ), $player_e['e__id'], 6224 /* Member Account Updated */);
             }
 
         }
@@ -2126,9 +2127,9 @@ class Ajax extends CI_Controller
             if($_POST['down_e__id']){
                 $stats['added']++;
                 $this->X_model->create(array(
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__following' => $_POST['selected_e__id'],
-                    'x__type' => 4230,
+                    'x__type' => 4251,
                     'x__follower' => $_POST['down_e__id'],
                 ));
             } elseif($_POST['right_i__id']){
@@ -2141,7 +2142,7 @@ class Ajax extends CI_Controller
                 )))){
                     $stats['added']++;
                     $this->X_model->create(array(
-                        'x__creator' => $member_e['e__id'],
+                        'x__creator' => $player_e['e__id'],
                         'x__type' => 4983, //Co-Author
                         'x__following' => $_POST['selected_e__id'],
                         'x__next' => $_POST['right_i__id'],
@@ -2153,8 +2154,8 @@ class Ajax extends CI_Controller
 
 
         //Update Session:
-        if($_POST['down_e__id'] && count($member_e)){
-            $this->E_model->activate_session($member_e, true);
+        if($_POST['down_e__id'] && count($player_e)){
+            $this->E_model->activate_session($player_e, true);
         }
 
 
@@ -2282,12 +2283,12 @@ class Ajax extends CI_Controller
             $is_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
 
             //Prep inputs & validate further:
-            $member_result = $this->E_model->add_member($_POST['new_username'], ( $is_email ? $_POST['account_email_phone'] : $_POST['new_account_email'] ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
-            if (!$member_result['status']) {
-                return view_json($member_result);
+            $player_result = $this->E_model->add_member($_POST['new_username'], ( $is_email ? $_POST['account_email_phone'] : $_POST['new_account_email'] ), ( !$is_email ? $_POST['account_email_phone'] : '' ));
+            if (!$player_result['status']) {
+                return view_json($player_result);
             }
 
-            $es[0] = $member_result['e'];
+            $es[0] = $player_result['e'];
 
         }
 
@@ -2315,8 +2316,8 @@ class Ajax extends CI_Controller
 
     function e_toggle_e(){
 
-        $member_e = superpower_unlocked(28714);
-        if(!$member_e){
+        $player_e = superpower_unlocked(28714);
+        if(!$player_e){
 
             return view_json(array(
                 'status' => 0,
@@ -2357,7 +2358,7 @@ class Ajax extends CI_Controller
                     //Already exists, let's remove:
                     $this->X_model->update($already_added[0]['x__id'], array(
                         'x__privacy' => 6173, //Transaction Deleted
-                    ), $member_e['e__id'], 10673 /* Member Transaction Unpublished */);
+                    ), $player_e['e__id'], 10673 /* Member Transaction Unpublished */);
 
                     return view_json(array(
                         'status' => 1,
@@ -2376,9 +2377,9 @@ class Ajax extends CI_Controller
                     $this->X_model->create(array(
                         'x__following' => $_POST['e__id'],
                         'x__follower' => $_POST['x__creator'],
-                        'x__creator' => $member_e['e__id'],
+                        'x__creator' => $player_e['e__id'],
                         'x__message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : null ),
-                        'x__type' => 4230,
+                        'x__type' => 4251,
                     ));
 
                     return view_json(array(
@@ -2406,7 +2407,7 @@ class Ajax extends CI_Controller
         }
 
         //Cleanup input email:
-        $e___11035 = $this->config->item('e___11035'); //Summary
+        $e___11035 = $this->config->item('e___11035'); //Encyclopedia
         $_POST['account_email_phone'] = trim(strtolower($_POST['account_email_phone']));
         $valid_email = filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL);
         if(!$valid_email && strlen($_POST['account_email_phone'])>=10){
@@ -2513,8 +2514,8 @@ class Ajax extends CI_Controller
 
     function e_reset_discoveries($e__id = 0){
 
-        $member_e = superpower_unlocked(null, true);
-        $e__id = ( $e__id > 0 || !$member_e ? $e__id : $member_e['e__id'] );
+        $player_e = superpower_unlocked(null, true);
+        $e__id = ( $e__id > 0 || !$player_e ? $e__id : $player_e['e__id'] );
 
         //Fetch their current progress transactions:
         $progress_x = $this->X_model->fetch(array(
@@ -2568,10 +2569,10 @@ class Ajax extends CI_Controller
     function x_set_text(){
 
         //Authenticate Member:
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
         $e___12112 = $this->config->item('e___12112');
 
-        if (!$member_e) {
+        if (!$player_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -2612,10 +2613,10 @@ class Ajax extends CI_Controller
             //All good, go ahead and update:
             $this->E_model->update($es[0]['e__id'], array(
                 'e__title' => $validate_e__title['e__title_clean'],
-            ), true, $member_e['e__id']);
+            ), true, $player_e['e__id']);
 
             //Reset member session data if this data belongs to the logged-in member:
-            if ($es[0]['e__id']==$member_e['e__id']) {
+            if ($es[0]['e__id']==$player_e['e__id']) {
                 //Re-activate Session with new data:
                 $es[0]['e__title'] = $validate_e__title['e__title_clean'];
                 $this->E_model->activate_session($es[0], true);
@@ -2644,9 +2645,9 @@ class Ajax extends CI_Controller
         }
 
         //Log Modal View
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
         $this->X_model->create(array(
-            'x__creator' => ( isset($member_e['e__id']) ? $member_e['e__id'] : 0 ),
+            'x__creator' => ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 ),
             'x__type' => 14576, //MODAL VIEWED
             'x__following' => $_POST['apply_id'],
             'x__follower' => ( $_POST['apply_id']==4997 ? $_POST['s__id'] : 0 ),
@@ -2709,8 +2710,8 @@ class Ajax extends CI_Controller
 
         //Adds Idea to the Members read
 
-        $member_e = superpower_unlocked();
-        $e___11035 = $this->config->item('e___11035'); //Summary
+        $player_e = superpower_unlocked();
+        $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
         //valid idea?
         $is = $this->I_model->fetch(array(
@@ -2722,14 +2723,14 @@ class Ajax extends CI_Controller
         }
 
         //Check to see if added to read for logged-in members:
-        if(!$member_e){
+        if(!$player_e){
             return redirect_message(view_app_link(4269).'?i__hashtag='.$focus_i__hashtag);
         }
 
         //Add this Idea to their read If not there:
         $next_i__hashtag = $focus_i__hashtag;
 
-        if(!$this->X_model->i_has_started($member_e['e__id'], $is[0]['i__hashtag'])){
+        if(!$this->X_model->i_has_started($player_e['e__id'], $is[0]['i__hashtag'])){
 
             //is available?
             $i_is_discoverable = i_is_discoverable($is[0]);
@@ -2749,17 +2750,17 @@ class Ajax extends CI_Controller
 
             //Add Starting Point:
             $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+                'x__creator' => $player_e['e__id'],
                 'x__type' => 4235, //Get started
                 'x__next' => $is[0]['i__id'],
                 'x__previous' => $is[0]['i__id'],
             ));
 
             //Mark as complete:
-            $this->X_model->x_read_only_complete($member_e['e__id'], $is[0]['i__id'], $is[0]);
+            $this->X_model->x_read_only_complete($player_e['e__id'], $is[0]['i__id'], $is[0]);
 
             //Now return next idea:
-            $next_i__hashtag = $this->X_model->find_next($member_e['e__id'], $is[0]['i__hashtag'], $is[0]);
+            $next_i__hashtag = $this->X_model->find_next($player_e['e__id'], $is[0]['i__hashtag'], $is[0]);
             if(!$next_i__hashtag){
                 //Failed to add to read:
                 return redirect_message(home_url());
@@ -2773,10 +2774,10 @@ class Ajax extends CI_Controller
 
     function x_next($top_i__hashtag, $focus_i__hashtag){
 
-        $member_e = superpower_unlocked();
-        if(!$member_e){
+        $player_e = superpower_unlocked();
+        if(!$player_e){
             return redirect_message(view_app_link(4269).'?i__hashtag='.$top_i__hashtag);
-        } elseif(!$this->X_model->i_has_started($member_e['e__id'], $top_i__hashtag)) {
+        } elseif(!$this->X_model->i_has_started($player_e['e__id'], $top_i__hashtag)) {
             return redirect_message(view_memory(42903,33286).$top_i__hashtag);
         }
 
@@ -2790,7 +2791,7 @@ class Ajax extends CI_Controller
         }
 
         //Go to Next Idea:
-        $next_i__hashtag = $this->X_model->find_next($member_e['e__id'], $is[0]['i__hashtag'], $is[0]);
+        $next_i__hashtag = $this->X_model->find_next($player_e['e__id'], $is[0]['i__hashtag'], $is[0]);
         if($next_i__hashtag){
 
             return redirect_message(view_memory(42903,30795).$top_i__hashtag.'/'.$next_i__hashtag );
@@ -2799,7 +2800,7 @@ class Ajax extends CI_Controller
 
             //Mark as Complete
             $this->X_model->create(array(
-                'x__creator' => $member_e['e__id'],
+                'x__creator' => $player_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
                 'x__next' => $is[0]['i__id'],
                 //TODO Maybe log additional details like total ideas, time, etc
@@ -2870,9 +2871,9 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $member_e = superpower_unlocked(13422);
+        $player_e = superpower_unlocked(13422);
 
-        if (!$member_e) {
+        if (!$player_e) {
             view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(13422),
@@ -2901,7 +2902,7 @@ class Ajax extends CI_Controller
                 $order++;
                 $this->X_model->update($x['x__id'], array(
                     'x__weight' => $order,
-                ), $member_e['e__id'], 13007 /* SOURCE SORT RESET */);
+                ), $player_e['e__id'], 13007 /* SOURCE SORT RESET */);
             }
         } elseif($_POST['focus_card']==12274){
             //Sources reset order
@@ -2913,7 +2914,7 @@ class Ajax extends CI_Controller
             ), array('x__follower'), 0, 0, array()) as $x) {
                 $this->X_model->update($x['x__id'], array(
                     'x__weight' => 0,
-                ), $member_e['e__id'], 13007 /* SOURCE SORT RESET */);
+                ), $player_e['e__id'], 13007 /* SOURCE SORT RESET */);
             }
         }
 
@@ -2928,8 +2929,8 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -2941,7 +2942,7 @@ class Ajax extends CI_Controller
             //Log this error!
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => $member_e['e__id'],
+                'x__creator' => $player_e['e__id'],
                 'x__message' => 'x_upload() Missing POST ERROR',
                 'x__metadata' => array(
                     'post' => $_POST,
@@ -2983,20 +2984,20 @@ class Ajax extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__previous' => $is[0]['i__id'],
-            'x__creator' => $member_e['e__id'],
+            'x__creator' => $player_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
-            ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
+            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
         }
 
         //Save new answer:
-        $this->X_model->mark_complete(12117, $member_e['e__id'], $_POST['top_i__id'], $is[0], array(
+        $this->X_model->mark_complete(12117, $player_e['e__id'], $_POST['top_i__id'], $is[0], array(
             'x__message' => '', //TODO Needs URL
         ));
 
         //All good:
-        $e___11035 = $this->config->item('e___11035'); //Summary
+        $e___11035 = $this->config->item('e___11035'); //Encyclopedia
         return view_json(array(
             'status' => 1,
             'message' => '', //TODO Needs URL
@@ -3007,9 +3008,9 @@ class Ajax extends CI_Controller
     function x_read_only_complete(){
 
         //Validate/Fetch idea:
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -3039,7 +3040,7 @@ class Ajax extends CI_Controller
 
 
         //Mark as complete?
-        if($this->X_model->x_read_only_complete($member_e['e__id'], $_POST['top_i__id'], $is[0])){
+        if($this->X_model->x_read_only_complete($player_e['e__id'], $_POST['top_i__id'], $is[0])){
             //All good:
             return view_json(array(
                 'status' => 1,
@@ -3059,8 +3060,8 @@ class Ajax extends CI_Controller
 
 
         //Validate/Fetch idea:
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -3083,7 +3084,7 @@ class Ajax extends CI_Controller
         ));
 
         //Log Skipped:
-        $this->X_model->mark_complete(31022, $member_e['e__id'], intval($_POST['top_i__id']), $is[0]);
+        $this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['top_i__id']), $is[0]);
 
         //All good:
         return view_json(array(
@@ -3107,9 +3108,9 @@ class Ajax extends CI_Controller
             'i__id' => $_POST['i__id'],
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -3140,11 +3141,11 @@ class Ajax extends CI_Controller
         if(!count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Tickets
-            'x__creator' => $member_e['e__id'],
+            'x__creator' => $player_e['e__id'],
             'x__previous' => $is[0]['i__id'],
         )))){
             //Free Ticket:
-            $this->X_model->mark_complete(42332, $member_e['e__id'], $_POST['top_i__id'], $is[0], array(
+            $this->X_model->mark_complete(42332, $player_e['e__id'], $_POST['top_i__id'], $is[0], array(
                 'x__weight' => $_POST['paypal_quantity'],
             ));
         }
@@ -3160,8 +3161,8 @@ class Ajax extends CI_Controller
 
     function x_write(){
 
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -3216,7 +3217,7 @@ class Ajax extends CI_Controller
                 //Log preg removal
                 $this->X_model->create(array(
                     'x__type' => 32103, //Preg Remove
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__message' => '['.$_POST['x_write'].'] Transformed to ['.$new_form.']',
                     'x__previous' => $_POST['top_i__id'],
                     'x__next' => $_POST['i__id'],
@@ -3235,7 +3236,7 @@ class Ajax extends CI_Controller
                 'x__following' => 28239, //Required
             )))){
                 //Log Skip:
-                $this->X_model->mark_complete(31022, $member_e['e__id'], intval($_POST['top_i__id']), $is[0], array(
+                $this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['top_i__id']), $is[0], array(
                     'x__message' => $_POST['x_write'],
                 ));
                 //All good:
@@ -3391,7 +3392,7 @@ class Ajax extends CI_Controller
                 //Log preg match failure
                 $this->X_model->create(array(
                     'x__type' => 30998, //Preg Match Error Message
-                    'x__creator' => $member_e['e__id'],
+                    'x__creator' => $player_e['e__id'],
                     'x__message' => $error_message,
                     'x__previous' => $_POST['top_i__id'],
                     'x__next' => $_POST['i__id'],
@@ -3412,15 +3413,15 @@ class Ajax extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__previous' => $is[0]['i__id'],
-            'x__creator' => $member_e['e__id'],
+            'x__creator' => $player_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
-            ), $member_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
+            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
         }
 
         //Save new answer:
-        $this->X_model->mark_complete($x__type, $member_e['e__id'], intval($_POST['top_i__id']), $is[0], array(
+        $this->X_model->mark_complete($x__type, $player_e['e__id'], intval($_POST['top_i__id']), $is[0], array(
             'x__message' => $_POST['x_write'],
         ));
 
@@ -3491,8 +3492,8 @@ class Ajax extends CI_Controller
     function x_link_toggle(){
 
         //Authenticate Member:
-        $member_e = superpower_unlocked();
-        if (!$member_e) {
+        $player_e = superpower_unlocked();
+        if (!$player_e) {
 
             return view_json(array(
                 'status' => 0,
@@ -3535,8 +3536,8 @@ class Ajax extends CI_Controller
 
         //Save IDEA:
         $x = $this->X_model->create(array(
-            'x__creator' => $member_e['e__id'],
-            'x__following' => $member_e['e__id'],
+            'x__creator' => $player_e['e__id'],
+            'x__following' => $player_e['e__id'],
             'x__previous' => $_POST['top_i__id'],
             'x__next' => $_POST['i__id'],
             'x__type' => $_POST['x__type'],
@@ -3561,9 +3562,9 @@ class Ajax extends CI_Controller
          *
          * */
 
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
 
-        if (!$member_e) {
+        if (!$player_e) {
             return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(),
@@ -3578,7 +3579,7 @@ class Ajax extends CI_Controller
         //Remove Idea
         $this->X_model->update($_POST['x__id'], array(
             'x__privacy' => 6173, //DELETED
-        ), $member_e['e__id'], 10673);
+        ), $player_e['e__id'], 10673);
 
         return view_json(array(
             'status' => 1,
@@ -3598,7 +3599,7 @@ class Ajax extends CI_Controller
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*view_memory(6404,11064));
-        $member_e = superpower_unlocked();
+        $player_e = superpower_unlocked();
 
         $message = '';
 
@@ -3625,13 +3626,13 @@ class Ajax extends CI_Controller
 
                 $message .= view_card_x($x);
 
-                if($member_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_find'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_find'])>0){
+                if($player_e && strlen($x['x__message'])>0 && strlen($_POST['x__message_find'])>0 && strlen($_POST['x__message_replace'])>0 && substr_count($x['x__message'], $_POST['x__message_find'])>0){
 
                     $new_content = str_replace($_POST['x__message_find'],trim($_POST['x__message_replace']),$x['x__message']);
 
                     $this->X_model->update($x['x__id'], array(
                         'x__message' => $new_content,
-                    ), $member_e['e__id'], 12360, update_description($x['x__message'], $new_content));
+                    ), $player_e['e__id'], 12360, update_description($x['x__message'], $new_content));
 
                     $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_find'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 

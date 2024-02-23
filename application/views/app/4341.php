@@ -178,7 +178,7 @@ if(isset($_GET['x__type'])){
 
 $has_filters = ( count($_GET) > 0 );
 
-$e___11035 = $this->config->item('e___11035'); //Summary
+$e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
 ?>
 
@@ -209,6 +209,7 @@ $e___11035 = $this->config->item('e___11035'); //Summary
             x__message_find:x__message_find,
             x__message_replace:x__message_replace,
             page_num: page_num,
+            js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (!data.status) {
                 //Show Error:

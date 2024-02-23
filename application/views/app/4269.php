@@ -70,7 +70,7 @@ if(superpower_unlocked()) {
 
 
     $e___4269 = $this->config->item('e___4269');
-    $e___11035 = $this->config->item('e___11035'); //Summary
+    $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
     $this_attempt = array(
         'x__type' => ( count($sign_i) ? 7560 : 7561 ),
@@ -199,6 +199,7 @@ if(superpower_unlocked()) {
 
                 account_email_phone: account_email_phone,
                 sign_i__id: sign_i__id,
+                js_request_uri: js_request_uri, //Always append to AJAX Calls
 
             }, function (data) {
 
@@ -269,6 +270,7 @@ if(superpower_unlocked()) {
                 input_code: $('#input_code').val(),
                 referrer_url: referrer_url,
                 sign_i__id: sign_i__id,
+                js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
                 if (data.status) {
 

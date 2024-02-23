@@ -73,7 +73,7 @@ if($icon_keyword){
             if(isset($_GET['do_replace']) && isset($_GET['replace_with'])){
                 $replaced += $this->E_model->update($en['e__id'], array(
                     'e__cover' => str_ireplace($icon_keyword, $_GET['replace_with'], $en['e__cover']),
-                ), false, $member_e['e__id']);
+                ), false, $player_e['e__id']);
 
             }
 

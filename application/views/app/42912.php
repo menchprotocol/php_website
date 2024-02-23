@@ -86,11 +86,11 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
                     //Add source link:
                     $completed++;
                     $this->X_model->create(array(
-                        'x__creator' => ($member_e ? $member_e['e__id'] : $x['x__creator']),
+                        'x__creator' => ($player_e ? $player_e['e__id'] : $x['x__creator']),
                         'x__following' => $e_append['e__id'],
                         'x__follower' => $x['x__creator'],
                         'x__message' => $x['x__message'],
-                        'x__type' => 4230,
+                        'x__type' => 4251,
                     ));
                 }
             }

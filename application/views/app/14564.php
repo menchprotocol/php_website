@@ -3,15 +3,16 @@
 if(isset($_GET['i__hashtag'])){
 
     //New account to be created:
-    $member_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0));
-    if(!$member_result['status']) {
+    $player_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0));
+    if(!$player_result['status']) {
         $this->X_model->create(array(
+            'x__app' => 14564,
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'auth0_callback() Failed to create new member: '.$member_result['message'],
+            'x__message' => 'auth0_callback() Failed to create new member: '.$player_result['message'],
         ));
         echo 'ERROR Creating New Account! Admin is notified';
     } else {
-        js_php_redirect(new_member_redirect($member_result['e']['e__id'], $_GET['i__hashtag']), 13);
+        js_php_redirect(new_player_redirect($player_result['e']['e__id'], $_GET['i__hashtag']), 13);
     }
 
 } else {
@@ -62,7 +63,7 @@ if(isset($_GET['i__hashtag'])){
     if($userInfo && isset($userInfo['email'])){
 
         //We have their email already?
-        $member_emails = $this->X_model->fetch(array(
+        $player_emails = $this->X_model->fetch(array(
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -80,18 +81,19 @@ if(isset($_GET['i__hashtag'])){
         }
 
         $this->X_model->create(array(
+            'x__app' => 14564,
             'x__type' => 14436, //Social Sign in
-            'x__creator' => ( count($member_emails) ? $member_emails[0]['e__id'] : 0 ),
+            'x__creator' => ( count($player_emails) ? $player_emails[0]['e__id'] : 0 ),
             'x__following' => $signin_method,
             'x__metadata' => array(
                 'auth0_getUser' => $userInfo,
             ),
         ));
 
-        if(count($member_emails)){
+        if(count($player_emails)){
 
             //Activate Session:
-            $this->E_model->activate_session($member_emails[0], true);
+            $this->E_model->activate_session($player_emails[0], true);
             js_php_redirect(( $login_i__hashtag ? '/ajax/x_start/'.$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() )), 13);
 
         } else {
@@ -106,6 +108,7 @@ if(isset($_GET['i__hashtag'])){
         if(strlen($userInfo)) {
             //Log this error:
             $this->X_model->create(array(
+                'x__app' => 14564,
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'APP @14564 Failed to fetch data from server',
                 'x__metadata' => array(

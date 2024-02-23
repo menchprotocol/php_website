@@ -46,7 +46,7 @@ if($search_for_set){
                     //Update idea:
                     $res = $this->E_model->update($en['e__id'], array(
                         'e__title' => $en['e__title'],
-                    ), true, $member_e['e__id']);
+                    ), true, $player_e['e__id']);
                     $replaced++;
                 }
             }
