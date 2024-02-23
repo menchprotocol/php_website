@@ -130,7 +130,7 @@ fclose($memory_file);
 //Now generate Routes file:
 $routes_text .= '$route[\'translate_uri_dashes\'] = FALSE;'."\n";
 $routes_text .= '$route[\'default_controller\'] = "app/index"; //Home'."\n";
-$routes_text .= '$route[\'404_override\'] = \'app/load\'; //Error'."\n";
+$routes_text .= '$route[\'404_override\'] = "app/load"; //Error'."\n";
 $routes_text .= "\n";
 
 $special_route_text = '';
@@ -142,6 +142,30 @@ foreach($this->X_model->fetch(array(
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
+    if(in_array($app['e__id'], $this->config->item('n___42905'))){
+        //Source Input
+        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+        }
+    }
+    if(in_array($app['e__id'], $this->config->item('n___42923'))){
+        //Discoveries Input
+        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+        }
+    }
+    if(in_array($app['e__id'], $this->config->item('n___42911'))){
+        //Idea Input
+        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+        } else {
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+        }
+    }
     if(in_array($app['e__id'], $this->config->item('n___42922'))){
         //No Inputs
         if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
@@ -150,30 +174,7 @@ foreach($this->X_model->fetch(array(
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
         }
     }
-    if(in_array($app['e__id'], $this->config->item('n___42905'))){
-        //Source Input
-        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
-            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
-        } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
-        }
-    }
-    if(in_array($app['e__id'], $this->config->item('n___42911'))){
-        //Idea Input
-        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
-            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
-        } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
-        }
-    }
-    if(in_array($app['e__id'], $this->config->item('n___42923'))){
-        //Discoveries Input
-        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
-            $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
-        } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
-        }
-    }
+
 
 }
 
