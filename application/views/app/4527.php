@@ -142,9 +142,11 @@ foreach($this->X_model->fetch(array(
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
+    $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message']);
+
     if(in_array($app['e__id'], $this->config->item('n___42905'))){
         //Source Input
-        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+        if($special_routes){
             $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
@@ -152,7 +154,7 @@ foreach($this->X_model->fetch(array(
     }
     if(in_array($app['e__id'], $this->config->item('n___42923'))){
         //Discoveries Input
-        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+        if($special_routes){
             $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
@@ -160,7 +162,7 @@ foreach($this->X_model->fetch(array(
     }
     if(in_array($app['e__id'], $this->config->item('n___42911'))){
         //Idea Input
-        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+        if($special_routes){
             $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
@@ -168,7 +170,7 @@ foreach($this->X_model->fetch(array(
     }
     if(in_array($app['e__id'], $this->config->item('n___42922'))){
         //No Inputs
-        if(in_array($app['e__id'], $this->config->item('n___42921')) && strlen($app['x__message'])){
+        if($special_routes){
             $special_route_text .= '$route[\''.$app['x__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
@@ -178,9 +180,9 @@ foreach($this->X_model->fetch(array(
 
 }
 
+$routes_text .= "\n\n";
 $routes_text .= '//Special Routing:'."\n\n";
 $routes_text .= $special_route_text;
-
 
 //Save Routes:
 $routes_location = "application/config/routes.php";
