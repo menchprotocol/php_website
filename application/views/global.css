@@ -166,8 +166,13 @@ h3{
     margin:0 !important;
 }
 
+.modal-header .dynamic_editing_input{
+    min-width: 144px;
+    text-align: center;
+}
 .initial_header{
     width: 100% !important;
+    display: flex;
 }
 
 .modal-header .btn-close {
