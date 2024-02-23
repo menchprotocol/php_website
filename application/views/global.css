@@ -166,6 +166,10 @@ h3{
     margin:0 !important;
 }
 
+.modal-header .dynamic_editing_input{
+    min-width: 144px;
+}
+
 .modal-header .btn-close {
     color: #000000 !important;
 }

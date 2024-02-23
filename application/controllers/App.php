@@ -292,22 +292,23 @@ class App extends CI_Controller
         }
 
 
+        $view_input = array(
+            'app_e__id' => $app_e__id,
+            'x__player' => $x__player,
+            'player_e' => $player_e,
+            'is_u_request' => $is_u_request,
+            'memory_detected' => $memory_detected,
+            'focus_e' => $focus_e,
+            'focus_i' => $focus_i,
+            'target_i' => $target_i,
+            'title' => $title,
+            'x_completes' => $x_completes,
+            'flash_message' => $flash_message,
+        );
 
         if(!$ui){
-
             //Prep view:
-            $raw_app = $this->load->view('app/'.$app_e__id, array(
-                'app_e__id' => $app_e__id,
-                'x__player' => $x__player,
-                'player_e' => $player_e,
-                'is_u_request' => $is_u_request,
-                'memory_detected' => $memory_detected,
-                'focus_e' => $focus_e,
-                'focus_i' => $focus_i,
-                'target_i' => $target_i,
-                'x_completes' => $x_completes,
-            ), true);
-
+            $raw_app = $this->load->view('app/'.$app_e__id, $view_input, true);
             $ui .= $raw_app;
         }
 
@@ -388,21 +389,12 @@ class App extends CI_Controller
 
             } else {
 
-                $basic_header = intval(in_array($app_e__id, $this->config->item('n___14562')));
-
                 //Regular UI:
                 //Load App:
-                echo $this->load->view('header', array(
-                    'title' => $title,
-                    'basic_header_footer' => $basic_header,
-                    'app_e__id' => $app_e__id,
-                    'flash_message' => $flash_message,
-                ), true);
+                echo $this->load->view('header', $view_input, true);
                 echo $ui;
                 echo $cache_x__time;
-                echo $this->load->view('footer', array(
-                    'basic_header_footer' => $basic_header,
-                ), true);
+                echo $this->load->view('footer', array(), true);
 
             }
         }
