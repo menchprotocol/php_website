@@ -1494,7 +1494,7 @@ label {
 .grey a,
 .grey .zq12274,
 .grey .zq12273,
-.grey .zq6255,
+.grey .zq6255:not(.fa-asterisk),
 .grey .zq12273_12274 ,
 .grey .zq12274_12273 ,
 .grey .zq12273_6255 ,
