@@ -39,17 +39,7 @@ class App extends CI_Controller
             $_GET['i__hashtag'] = $focus_hashtag;
         }
 
-        if($target_hashtag && strlen($target_hashtag)){
-            //Verify:
-            foreach($this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($target_hashtag),
-            )) as $i_found){
-                $target_i = $i_found;
-            }
-            if(!$focus_i){
-                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
-            }
-        }
+
 
         if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
             foreach($this->I_model->fetch(array(
@@ -107,6 +97,34 @@ class App extends CI_Controller
             }
         }
 
+
+
+        if($target_hashtag && strlen($target_hashtag)){
+
+            //Validate Focus Idea:
+            if($target_hashtag==view_memory(6404,4235) && strlen($_GET['i__hashtag'])){
+
+                //This is the starting point:
+                $target_hashtag = $_GET['i__hashtag'];
+
+            } else {
+
+
+
+            }
+
+
+
+            //Verify:
+            foreach($this->I_model->fetch(array(
+                'LOWER(i__hashtag)' => strtolower($target_hashtag),
+            )) as $i_found){
+                $target_i = $i_found;
+            }
+            if(!$focus_i){
+                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
+            }
+        }
 
 
         //Validate App
@@ -232,25 +250,14 @@ class App extends CI_Controller
             }
         }
 
-        //Validate Focus Idea:
-        if(0 && $focus_hashtag==view_memory(6404,4235)){
 
-            if($player_e){
-                //See if they have already started or need to start?
-                if(!$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])) {
-                    //Go to start:
-                    return redirect_message('/ajax/x_start/'.$target_i['i__hashtag']);
-                }
-            } else {
-                //Force login?
 
-            }
 
-            //This is the starting point:
-            $focus_hashtag = $target_hashtag;
-
+        //Has already started?
+        if($target_i && $target_i['i__hashtag']==$_GET['i__hashtag'] && $player_e && !$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])){
+            //Go to start:
+            return redirect_message('/ajax/x_start/'.$target_i['i__hashtag']);
         }
-
 
 
         //Cache App?

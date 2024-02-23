@@ -3012,20 +3012,6 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
 
 
 
-function e_reset_discoveries(e__id){
-    //Confirm First:
-    var r = confirm("DANGER WARNING!!! You are about to delete your ENTIRE discovery history. This action cannot be undone and you will lose all your discovery coins.");
-    if (r==true) {
-        $('.e_reset_discoveries').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span><b class="main__title">REMOVING ALL</b>');
-
-        //Redirect:
-        js_redirect('/ajax/e_reset_discoveries/'+e__id);
-    } else {
-        return false;
-    }
-}
-
-
 function e_sort_save(x__type) {
 
     var new_x__weight = [];

@@ -96,7 +96,7 @@ if(isset($_GET['i__hashtag'])){
 
         } else {
 
-            js_php_redirect(view_app_link(14564).'?i__hashtag='.$login_i__hashtag.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
+            js_php_redirect(view_app_link(14564).view_memory(42903,33286).$login_i__hashtag.'&name='.urlencode($userInfo['name']).'&email='.urlencode($userInfo['email']).'&image_url='.urlencode($userInfo['picture']).'&url='.urlencode($redirect_url), 13);
 
         }
 

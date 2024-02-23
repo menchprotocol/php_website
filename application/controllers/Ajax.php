@@ -2506,53 +2506,6 @@ class Ajax extends CI_Controller
 
     }
 
-    function e_reset_discoveries($e__id = 0){
-
-        $player_e = superpower_unlocked(null, true);
-        $e__id = ( $e__id > 0 || !$player_e ? $e__id : $player_e['e__id'] );
-
-        //Fetch their current progress transactions:
-        $progress_x = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
-            'x__player' => $e__id,
-        ), array(), 0);
-
-        if(count($progress_x) > 0){
-
-            //Yes they did have some:
-            $message = 'Deleted all '.count($progress_x).' discoveries';
-
-            //Log transaction:
-            $clear_all_x = $this->X_model->create(array(
-                'x__message' => $message,
-                'x__type' => 6415,
-                'x__player' => $e__id,
-            ));
-
-            //Delete all progressions:
-            foreach($progress_x as $progress_x){
-                $this->X_model->update($progress_x['x__id'], array(
-                    'x__privacy' => 6173, //Transaction Removed
-                    'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
-                ), $e__id, 6415 /* Reset All discoveries */);
-            }
-
-        } else {
-
-            //Nothing to do:
-            $message = 'Nothing found to be removed';
-
-        }
-
-        //Show basic UI for now:
-        foreach($this->E_model->fetch(array('e__id' => $e__id)) as $e){
-            return redirect_message(view_memory(42903,42902).$e['e__handle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
-        }
-
-    }
-
-
 
 
 
@@ -2718,7 +2671,7 @@ class Ajax extends CI_Controller
 
         //Check to see if added to read for logged-in members:
         if(!$player_e){
-            return redirect_message(view_app_link(4269).'?i__hashtag='.$focus_i__hashtag);
+            return redirect_message(view_app_link(4269).view_memory(42903,33286).$focus_i__hashtag);
         }
 
         //Add this Idea to their read If not there:
@@ -2770,7 +2723,7 @@ class Ajax extends CI_Controller
 
         $player_e = superpower_unlocked();
         if(!$player_e){
-            return redirect_message(view_app_link(4269).'?i__hashtag='.$target_i__hashtag);
+            return redirect_message(view_app_link(4269).view_memory(42903,33286).$target_i__hashtag);
         } elseif(!$this->X_model->i_has_started($player_e['e__id'], $target_i__hashtag)) {
             return redirect_message(view_memory(42903,33286).$target_i__hashtag);
         }

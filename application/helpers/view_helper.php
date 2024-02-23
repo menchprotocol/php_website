@@ -1813,7 +1813,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         } elseif($e__id_dropdown==33292){
 
                             //Stats
-                            $action_buttons .= '<a href="'.view_app_link(33292).'?i__hashtag='.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view_app_link(33292).view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==29771 && $write_privacy_i){
 
@@ -1842,7 +1842,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
 
                             //Standard button
-                            $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).'?i__hashtag='.$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         }
                     }
@@ -2278,10 +2278,12 @@ function view_card_e($x__type, $e, $extra_class = null)
 
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_mass_apply_preview(4997,'.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==6287 && $is_app_store){
+                        } elseif($e__id_dropdown==6287){
 
                             //App Store
-                            $action_buttons .= '<a href="'.view_app_link($e['e__id']).'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            if($is_app_store){
+                                $action_buttons .= '<a href="'.view_app_link($e['e__id']).'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            }
 
                         } elseif($e__id_dropdown==31912 && $write_privacy_e){
 
@@ -2309,11 +2311,6 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==6415){
-
-                            //Reset my discoveries
-                            $action_buttons .= '<a href="javascript:void(0);" onclick="e_reset_discoveries('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
-
                         } elseif($e__id_dropdown==13670 && substr($CI->uri->segment(1), 0, 1)=='~') {
 
                             //Filter applies only when browsing an idea
@@ -2322,7 +2319,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                         } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
 
                             //Standard button
-                            $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).'?e__handle='.$e['e__handle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).view_memory(42903,42902).$e['e__handle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         }
                     }

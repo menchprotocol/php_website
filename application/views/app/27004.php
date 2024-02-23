@@ -20,7 +20,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
     
     echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
     foreach($this->E_model->fetch_recursive(11029, $player_e['e__id'], array(27004)) as $e){
-        echo '<div><a href="'.view_app_link(27004).'?e__handle='.$e['e__handle'].'" class="main__title">'.$e['e__title'].'</a></div>';
+        echo '<div><a href="'.view_app_link(27004).view_memory(42903,42902).$e['e__handle'].'" class="main__title">'.$e['e__title'].'</a></div>';
     }
 
 } else {

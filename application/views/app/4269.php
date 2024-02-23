@@ -347,7 +347,7 @@ if(superpower_unlocked()) {
                 if(intval(view_memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';
                     echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_link(14938).'?i__hashtag=' . $sign_i[0]['i__hashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
+                    echo '<div class="full-width-btn center top-margin"><a href="'.view_app_link(14938).view_memory(42903,33286) . $sign_i[0]['i__hashtag'] . '" onclick="load_away()" class="btn btn-large btn-default">';
                     echo $e___11035[14938]['m__title'].' '.$e___11035[14938]['m__cover'];
                     echo ( strlen($e___11035[14938]['m__message']) ? ': '.$e___11035[14938]['m__message'] : '' );
                     echo '</a></div>';
