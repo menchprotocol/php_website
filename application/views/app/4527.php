@@ -196,6 +196,8 @@ echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><s
 
 
 //Show:
+echo '<div>'.$memory_location.':</div>';
 echo '<textarea class="mono-space table_frame">'.$memory_text.'</textarea>';
 
+echo '<div>'.$routes_location.':</div>';
 echo '<textarea class="mono-space table_frame">'.$routes_text.'</textarea>';
