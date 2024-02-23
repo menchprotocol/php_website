@@ -2,6 +2,7 @@
 
 
 //Various Ledger cleanup functions
+echo @$_GET['e__handle'];
 
 
 if(isset($_GET['action']) && $_GET['action']=='i_messages'){
@@ -58,6 +59,45 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
     }
 
     echo '<hr />Edited ['.$edited.']['.$edited_sources.']<br />';
+
+
+} elseif(isset($_GET['action']) && $_GET['action']=='import_discovery') {
+
+
+    //Import Discoveries?
+    $flash_message = '';
+    if(isset($_GET['e__handle'])){
+        foreach($this->E_model->fetch(array(
+            'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+        )) as $e_append){
+            $completed = 0;
+            foreach($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__previous' => $is[0]['i__id'],
+            ), array(), 0) as $x){
+                if(!count($this->X_model->fetch(array(
+                    'x__following' => $e_append['e__id'],
+                    'x__follower' => $x['x__creator'],
+                    'x__message' => $x['x__message'],
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                )))){
+                    //Add source link:
+                    $completed++;
+                    $this->X_model->create(array(
+                        'x__creator' => ($member_e ? $member_e['e__id'] : $x['x__creator']),
+                        'x__following' => $e_append['e__id'],
+                        'x__follower' => $x['x__creator'],
+                        'x__message' => $x['x__message'],
+                        'x__type' => 4230,
+                    ));
+                }
+            }
+
+            $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$e_append['e__handle'].'</div>';
+        }
+    }
 
 } elseif(isset($_GET['action']) && $_GET['action']=='link_update') {
 

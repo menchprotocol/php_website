@@ -39,9 +39,22 @@ class View extends CI_Controller
                 $i = $i_found;
             }
             if(!$i){
-                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤫</div>';
+
+                //See if we can find via ID?
+                if(is_numeric($_GET['i__hashtag'])){
+                    foreach($this->I_model->fetch(array(
+                        'i__id' => $_GET['i__hashtag'],
+                    )) as $i_found){
+                        $i = $i_found;
+                    }
+                }
+
+                if(!$i){
+                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤫</div>';
+                }
             }
         }
+
         
         if(isset($_GET['e__handle'])){
             foreach($this->E_model->fetch(array(
@@ -271,7 +284,7 @@ class View extends CI_Controller
             return redirect_message(view_memory(42903,42902).$es[0]['e__handle']);
         }
 
-        $member_e = superpower_unlocked();
+        $member_e = superpower_unlocked(null, true);
         //Make sure not a private source:
         if(!in_array($es[0]['e__privacy'], $this->config->item('n___33240') /* PUBLIC/GUEST Access */) && !write_privacy_e($es[0]['e__handle'])){
             $member_e = superpower_unlocked(13422, true);
@@ -293,76 +306,13 @@ class View extends CI_Controller
 
     function i_layout($i__hashtag){
 
-        //Validate/fetch Idea:
-        $is = $this->I_model->fetch(array(
-            'LOWER(i__hashtag)' => strtolower($i__hashtag),
-        ));
-        if ( count($is) < 1) {
 
-            //See if we can find via ID?
-            if(is_numeric($i__hashtag)){
-                foreach($this->I_model->fetch(array(
-                    'i__id' => $i__hashtag,
-                )) as $go){
-                    return redirect_message(view_memory(42903,33286).$go['i__hashtag']);
-                }
-            }
-
-            return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>IDEA #' . $i__hashtag . ' Not Found</div>');
-
-        }
 
         $member_e = superpower_unlocked(); //Idea Pen?
-        /*
-        if(!$member_e){
-            if(in_array($is[0]['i__privacy'], $this->config->item('n___31871'))){
-                return redirect_message(view_memory(42903,33286).$i__hashtag);
-            } else {
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>IDEA #' . $i__hashtag . ' is not published yet.</div>');
-            }
-        }
-        */
-
-        //Import Discoveries?
-        $flash_message = '';
-        if(isset($_GET['e__handle'])){
-            foreach($this->E_model->fetch(array(
-                'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-            )) as $e_append){
-                $completed = 0;
-                foreach($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__previous' => $is[0]['i__id'],
-                ), array(), 0) as $x){
-                    if(!count($this->X_model->fetch(array(
-                        'x__following' => $e_append['e__id'],
-                        'x__follower' => $x['x__creator'],
-                        'x__message' => $x['x__message'],
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    )))){
-                        //Add source link:
-                        $completed++;
-                        $this->X_model->create(array(
-                            'x__creator' => ($member_e ? $member_e['e__id'] : $x['x__creator']),
-                            'x__following' => $e_append['e__id'],
-                            'x__follower' => $x['x__creator'],
-                            'x__message' => $x['x__message'],
-                            'x__type' => 4230,
-                        ));
-                    }
-                }
-
-                $flash_message = '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> '.$completed.' sources who played this idea added to @'.$e_append['e__handle'].'</div>';
-            }
-        }
-
-        $e___14874 = $this->config->item('e___14874'); //Mench Cards
 
         //Load views:
         $this->load->view('header', array(
-            'title' => view_i_title($is[0], true).' | '.$e___14874[12273]['m__title'],
+            'title' => view_i_title($is[0], true),
             'flash_message' => $flash_message,
         ));
         $this->load->view('i_layout', array(

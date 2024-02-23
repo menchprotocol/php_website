@@ -6,6 +6,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] = "view/index"; //Redirects to default app
 $route['404_override'] = 'view/app_load'; //Page not found
 
+$route['(?i)hi'] = "view/app_load/42912?e__handle=shervin";
 $route['(?i)GraphCleanup'] = "view/app_load/42912";
 $route['(?i)Sourcing'] = "view/app_load/42902";
 $route['(?i)Discovery'] = "view/app_load/30795";
