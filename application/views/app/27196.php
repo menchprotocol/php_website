@@ -1,5 +1,7 @@
 <?php
 
+//TODO RETIRE
+
 if ($_GET['focus__id']==12273 && superpower_unlocked(12700) && isset($_POST['s__id']) && isset($_POST['mass_action_toggle']) && isset($_POST['mass_value1_'.$_POST['mass_action_toggle']]) && isset($_POST['mass_value2_'.$_POST['mass_action_toggle']])) {
 
     //Process mass action:

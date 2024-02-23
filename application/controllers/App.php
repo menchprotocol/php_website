@@ -308,9 +308,6 @@ class App extends CI_Controller
                 'x_completes' => $x_completes,
             ), true);
 
-            if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
-                $ui .= '<h1>' . $e___6287[$app_e__id]['m__title'] . '</h1>';
-            }
             $ui .= $raw_app;
         }
 

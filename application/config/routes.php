@@ -71,7 +71,6 @@ $route['(?i)IconSearch'] = "app/load/7267";
 $route['(?i)SourceDuplicates'] = "app/load/7268";
 $route['(?i)SourceOrphaned'] = "app/load/7269";
 
-
 $route['@([a-zA-Z0-9]+)']                 = "app/load/42902/$1"; //Source
 $route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)']   = "app/load/30795/0/$2/$1"; //Target Idea / Discovery
 $route['([a-zA-Z0-9]+)']                  = "app/load/33286/0/$1"; //Focus Idea / Ideation
