@@ -166,8 +166,8 @@ h3{
     margin:0 !important;
 }
 
-.modal-header .dynamic_editing_input{
-    min-width: 144px;
+.initial_header{
+    width: 100% !important;
 }
 
 .modal-header .btn-close {

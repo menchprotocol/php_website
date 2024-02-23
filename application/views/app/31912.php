@@ -9,7 +9,9 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
         <div class="modal-content slim_flat">
 
             <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="initial_header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <button type="button" class="e_editor_save btn btn-default post_button" onclick="e_editor_save()">SAVE</button>
             </div>
 
