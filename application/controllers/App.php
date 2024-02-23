@@ -126,6 +126,7 @@ class App extends CI_Controller
 
 
         //Run App
+        $flash_message = false;
         $player_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP

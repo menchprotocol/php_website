@@ -3,22 +3,22 @@
 //Log source view:
 $limit = view_memory(6404,11064);
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
-$write_privacy_e = write_privacy_e($e['e__handle']);
+$write_privacy_e = write_privacy_e($focus_e['e__handle']);
 $this->X_model->create(array(
     'x__player' => $player_e['e__id'],
     'x__type' => 4994, //Member Viewed Source
-    'x__follower' => $e['e__id'],
+    'x__follower' => $focus_e['e__id'],
 ));
 
 
 
 //Focus Source:
 echo '<div class="main_item view_12274 row justify-content">';
-echo view_card_e(42287, $e, null);
+echo view_card_e(42287, $focus_e, null);
 echo '</div>';
 
 
-$focus_menu = ( in_array($e['e__id'], $this->config->item('n___4527')) ? 'e___34649' : 'e___32596' );
+$focus_menu = ( in_array($focus_e['e__id'], $this->config->item('n___4527')) ? 'e___34649' : 'e___32596' );
 $e___focus = $this->config->item($focus_menu);
 
 $coins_count = array();
@@ -33,7 +33,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
         continue;
     }
 
-    $coins_count[$x__type] = view_e_covers($x__type, $e['e__id'], 0, false);
+    $coins_count[$x__type] = view_e_covers($x__type, $focus_e['e__id'], 0, false);
     if(!$coins_count[$x__type] && in_array($x__type, $this->config->item('n___12144'))){ continue; }
     $can_add = superpower_unlocked(10939) && in_array($x__type, $this->config->item('n___42262'));
 
@@ -91,9 +91,9 @@ if(!$focus_tab){
 
 
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
-<input type="hidden" id="focus_handle" value="<?= $e['e__handle'] ?>" />
+<input type="hidden" id="focus_handle" value="<?= $focus_e['e__handle'] ?>" />
 <input type="hidden" id="focus__card" value="12274" />
-<input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
+<input type="hidden" id="focus__id" value="<?= $focus_e['e__id'] ?>" />
 <script>
 
     $(document).ready(function () {
