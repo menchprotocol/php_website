@@ -14,7 +14,7 @@ class App extends CI_Controller
     }
 
 
-    function load($app_e__id, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
+    function load($app_e__id = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
