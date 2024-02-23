@@ -2721,10 +2721,7 @@ class Ajax extends CI_Controller
 
     function x_next($target_i__hashtag, $focus_i__hashtag){
 
-        $player_e = superpower_unlocked();
-        if(!$player_e){
-            return redirect_message(view_app_link(4269).view_memory(42903,33286).$target_i__hashtag);
-        } elseif(!$this->X_model->i_has_started($player_e['e__id'], $target_i__hashtag)) {
+        if(!$this->X_model->i_has_started($player_e['e__id'], $target_i__hashtag)) {
             return redirect_message(view_memory(42903,33286).$target_i__hashtag);
         }
 
