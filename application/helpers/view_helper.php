@@ -748,6 +748,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $is_compact = in_array($focus_id, $CI->config->item('n___42191'));
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
+    $access_locked = in_array($focus_id, $CI->config->item('n___32145'));
     $focus_select = $CI->config->item( $single_select ? 'e___33331' : 'e___33332');
 
     if(!$single_select && !$multi_select){
@@ -773,8 +774,6 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     foreach($selection_options as $list_item){
         array_push($selection_ids, $list_item['e__id']);
     }
-
-    $access_locked = in_array($focus_id, $CI->config->item('n___32145')) && count($selection_options)>1;
 
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
@@ -826,6 +825,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $unselected_count = 0;
     $overflow_unselected_limit = 5;
     $has_selected = count($already_selected);
+    $has_multiple = $has_selected>1;
     $overflow_reached = false;
     $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
@@ -858,12 +858,12 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             if($access_locked){
                 $ui .= '<span class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
             } else {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'<span class="icon-block-sm"><i class="fal fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.( $has_multiple ? '<span class="icon-block-sm"><i class="fal fa-pen-to-square"></i></span>' : '' ).'</a>';
             }
         }
 
         if(!$access_locked){
-            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( $has_selected || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.( $selected ? '<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>' : '' ).'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( ( $has_selected && $has_multiple ) || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.( $selected ? '<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>' : '' ).'</a>';
         }
 
 
