@@ -13,6 +13,10 @@ class App extends CI_Controller
         auto_login();
     }
 
+    function index(){
+        //Default Home Page:
+        $this->load(14565);
+    }
 
     function load($app_e__id = 14563 /* Error if none provided */, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 

@@ -3,7 +3,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 $route['translate_uri_dashes'] = FALSE;
-$route['default_controller'] = "app/load/14565"; //Redirects to default app
+$route['default_controller'] = "app/index"; //Redirects to default app
 $route['404_override'] = 'app/load'; //Page not found
 
 $route['(?i)GraphCleanup'] = "app/load/42912";
