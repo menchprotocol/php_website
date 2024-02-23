@@ -1,5 +1,6 @@
 <?php
 
+
 $start_time = date("Y-m-d H:i:s");
 $memory_text = '';
 $memory_text .= "<?php\n\n";
@@ -7,7 +8,7 @@ $memory_text .= '//UPDATED: '.$start_time."\n\n";
 $memory_text .= 'defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');'."\n\n";
 
 
-if($memory_detected){
+if(is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'))){
 
     //EASY:
     $n___7357 = $this->config->item('n___7357'); //LIMITED ACCESS

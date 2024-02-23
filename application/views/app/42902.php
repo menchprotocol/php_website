@@ -92,12 +92,12 @@ if(!$focus_tab){
 
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
 <input type="hidden" id="focus_handle" value="<?= $e['e__handle'] ?>" />
-<input type="hidden" id="focus_card" value="12274" />
-<input type="hidden" id="focus_id" value="<?= $e['e__id'] ?>" />
+<input type="hidden" id="focus__card" value="12274" />
+<input type="hidden" id="focus__id" value="<?= $e['e__id'] ?>" />
 <script>
 
     $(document).ready(function () {
-        set_autosize($('.text__6197_'+fetch_int_val('#focus_id')));
+        set_autosize($('.text__6197_'+fetch_int_val('#focus__id')));
     });
 
 </script>

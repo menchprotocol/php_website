@@ -4661,10 +4661,10 @@ main {
 }
 
 
-.platform-12273 .media-content, .platform-12273 .x__message video {
+.media-content, .x__message video {
     max-width:610px;
 }
-.platform-6255 .x__message img, .platform-6255 .i_content img, .platform-6255 .content-image {
+.x__message img, .i_content img, .content-image {
     margin: 0;
     max-width: 100%;
     border-radius: 0px;

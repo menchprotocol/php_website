@@ -45,9 +45,9 @@ echo view_i_nav(false, $focus_i, $write_privacy_i);
 ?>
 
 <input type="hidden" id="page_limit" value="<?= $limit ?>" />
-<input type="hidden" id="focus_card" value="12273" />
+<input type="hidden" id="focus__card" value="12273" />
 <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
-<input type="hidden" id="focus_id" value="<?= $focus_i['i__id'] ?>" />
+<input type="hidden" id="focus__id" value="<?= $focus_i['i__id'] ?>" />
 <script>
 
     $(document).ready(function () {

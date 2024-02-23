@@ -14,13 +14,11 @@ class App extends CI_Controller
     }
 
     function index(){
-        //TODO Can load a customized home page app per website here?
-
         //Default Home Page:
-        $this->app_load(14565);
+        $this->load(14565);
     }
 
-    function app_load($app_e__id = 14563 /* Error if none provided */, $input_handle = null, $discovery_hashtag = null){
+    function load($app_e__id, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
@@ -31,25 +29,25 @@ class App extends CI_Controller
         //Any ideas passed?
         $warning_alerts = '';
         $e = null; //Sourcing
-        $i = null; //Ideation/Discovery
-        $i2 = null; //Discovery
+        $focus_i = null; //Ideation/Discovery
+        $target_i = null; //Discovery
 
-        if(strlen($input_handle)){
-            if(substr($input_handle, 0, 1)=='@'){
-                $_GET['e__handle'] = substr($input_handle, 1);
-            } else {
-                $_GET['i__hashtag'] = $input_handle;
-            }
+        if($focus_handle && strlen($focus_handle) && !isset($_GET['e__handle'])){
+            $_GET['e__handle'] = $focus_handle;
+        }
+        if($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['i__hashtag'])){
+            $_GET['i__hashtag'] = $focus_hashtag;
         }
 
-        if(strlen($discovery_hashtag)){
+        if($target_hashtag && strlen($target_hashtag)){
+            //Verify:
             foreach($this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($discovery_hashtag),
+                'LOWER(i__hashtag)' => strtolower($target_hashtag),
             )) as $i_found){
-                $i2 = $i_found;
+                $target_i = $i_found;
             }
-            if(!$i){
-                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤫</div>';
+            if(!$focus_i){
+                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
             }
         }
 
@@ -57,26 +55,26 @@ class App extends CI_Controller
             foreach($this->I_model->fetch(array(
                 'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
             )) as $i_found){
-                $i = $i_found;
+                $focus_i = $i_found;
             }
-            if(!$i){
+            if(!$focus_i){
 
                 //See if we can find via ID?
                 if(is_numeric($_GET['i__hashtag'])){
                     foreach($this->I_model->fetch(array(
                         'i__id' => $_GET['i__hashtag'],
                     )) as $i_found){
-                        $i = $i_found;
+                        $focus_i = $i_found;
                     }
                 }
 
-                if(!$i){
-                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤫</div>';
+                if(!$focus_i){
+                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
                 }
             }
-            if($input_handle && $i && $i['i__hashtag']!==$_GET['i__hashtag']){
+            if($app_e__id==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
                 //Adjust URL Case Sensitive:
-                return redirect_message(view_memory(42903,33286).$i['i__hashtag']);
+                return redirect_message(view_memory(42903,33286).$focus_i['i__hashtag']);
             }
         }
 
@@ -100,22 +98,31 @@ class App extends CI_Controller
                 }
 
                 if(!$e){
-                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤫</div>';
+                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤔</div>';
                 }
             }
-            if($input_handle && $e && $e['e__handle']!==$_GET['e__handle']){
+            if($app_e__id==42902 && $e && $e['e__handle']!==$_GET['e__handle']){
                 //Adjust URL Case Sensitive:
                 return redirect_message(view_memory(42903,42902).$e['e__handle']);
             }
         }
 
 
+
         //Validate App
         if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
             foreach($this->E_model->fetch(array('e__id' => $app_e__id)) as $e){
-                return redirect_message(view_memory(42903,42902).$e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$e['e__handle'].' Is not an APP, yet 🤫</div>');
+                return redirect_message(view_memory(42903,42902).$e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$e['e__handle'].' Is not an APP, yet 🤔</div>');
             }
         }
+
+
+        //Access Levels
+        if ( $focus_i && !in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !write_privacy_i($focus_i['i__hashtag'])){
+            return redirect_message( ( $target_i ? view_memory(42903,33286).$target_i['i__hashtag'] : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_hashtag . ' is not public and you are missing permission to access.</div>');
+        }
+
+
 
 
         //Run App
@@ -123,13 +130,41 @@ class App extends CI_Controller
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
 
-        if(in_array($app_e__id, $this->config->item('n___7358'))){
+        if(in_array($app_e__id, $this->config->item('n___42920'))){
             boost_power();
         }
 
         if($memory_detected && $is_u_request){
+
             //Needs superpowers?
             $player_e = superpower_unlocked();
+
+            //Auto Login?
+            if(isset($_GET['e__hash']) && isset($_GET['e__time']) && $e){
+
+                //Validate Hash:
+                if($_GET['e__hash'] == view__hash($_GET['e__time'].$e['e__handle'])){
+
+                    $this->X_model->x_read_only_complete($e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
+                    $this->X_model->mark_complete(29393, $e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
+
+                    //Inform user of changes:
+                    $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Idea has been discovered</div>';
+
+                    //If not logged in, log them in:
+                    if(!$player_e){
+                        $session_data = $this->E_model->activate_session($player_e, true);
+                    }
+
+                } else {
+
+                    $flash_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Invalid Hash: Idea could not be discovered at this time.</div>';
+
+                }
+            }
+
+
+
             $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
             if($is_u_request && count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 if(!$player_e){
@@ -139,6 +174,10 @@ class App extends CI_Controller
                     die(view_unauthorized_message(end($superpowers_required)));
                 }
             }
+
+
+
+
         }
 
         $x__creator = ( $is_u_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
@@ -154,8 +193,67 @@ class App extends CI_Controller
         }
 
 
+
+        $x_completes = array();
+        if($player_e && $app_e__id==30795) {
+
+            //Fetch discovery
+            $x_completes = $this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__creator' => $player_e['e__id'],
+                'x__previous' => $focus_i['i__id'],
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            ), array('x__next'));
+
+            //Missing focus Idea?
+            if(!$target_i) {
+
+                //Do we have a direct discovery?
+                $this_discovery = null;
+                foreach($x_completes as $x){
+                    $this_discovery = $x['i__hashtag'];
+                    break;
+                }
+
+                if($this_discovery){
+                    //We have a discovery here, make sure its not the same as the starting point:
+                    if($this_discovery!=$focus_hashtag){
+                        return redirect_message(view_memory(42903,30795).$this_discovery.'/'.$focus_hashtag);
+                    }
+                } else {
+                    //No discovery here, let's see if we can find any above:
+                    $target_x_i__hashtag = $this->X_model->find_previous_discovered($focus_i['i__id'], $player_e['e__id']);
+                    if($target_x_i__hashtag){
+                        return redirect_message(view_memory(42903,30795).$target_x_i__hashtag.'/'.$focus_hashtag);
+                    }
+                }
+            }
+        }
+
+        //Validate Focus Idea:
+        if($focus_hashtag==view_memory(6404,4235)){
+
+            if($player_e){
+                //See if they have already started or need to start?
+                if(!$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])) {
+                    //Go to start:
+                    return redirect_message('/ajax/x_start/'.$target_i['i__hashtag']);
+                }
+            } else {
+                //Force login?
+
+            }
+
+            //This is the starting point:
+            $focus_hashtag = $target_hashtag;
+
+        }
+
+
+
         //Cache App?
-        $x__previous = ( $i ? $i['i__id'] : 0 );
+        $x__previous = ( $focus_i ? $focus_i['i__id'] : 0 );
         $x__follower = ( $e ? $e['e__id'] : 0 );
         $title = null;
         $ui = null;
@@ -206,6 +304,11 @@ class App extends CI_Controller
                 'player_e' => $player_e,
                 'is_u_request' => $is_u_request,
                 'memory_detected' => $memory_detected,
+                'e' => $e,
+                'focus_i' => $focus_i,
+                'target_i' => $target_i,
+                'x_completes' => $x_completes,
+
             ), true);
 
             if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
@@ -258,16 +361,14 @@ class App extends CI_Controller
             if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
                 foreach($this->I_model->fetch(array(
                     'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
-                )) as $i){
-                    $log_data['x__previous'] = $i['i__id'];
-                    $title = view_i_title($i, true).' | '.$title;
+                )) as $i_this){
+                    $log_data['x__previous'] = $i_this['i__id'];
+                    $title = view_i_title($i_this, true).' | '.$title;
                 }
             }
         }
 
         $x = $this->X_model->create($log_data);
-
-
 
         //Delivery App
         if(!$memory_detected){
@@ -291,6 +392,7 @@ class App extends CI_Controller
                     'title' => $title,
                     'basic_header_footer' => $basic_header,
                     'app_e__id' => $app_e__id,
+                    'flash_message' => $flash_message,
                 ), true);
                 echo $ui;
                 echo $cache_x__time;
@@ -301,206 +403,4 @@ class App extends CI_Controller
             }
         }
     }
-
-    function e_layout($e__handle)
-    {
-
-
-        $player_e = superpower_unlocked(null, true);
-        //Make sure not a private source:
-        if(!in_array($es[0]['e__privacy'], $this->config->item('n___33240') /* PUBLIC/GUEST Access */) && !write_privacy_e($es[0]['e__handle'])){
-            $player_e = superpower_unlocked(13422, true);
-        }
-
-        $e___14874 = $this->config->item('e___14874'); //Mench Cards
-
-        //Load views:
-        $this->load->view('header', array(
-            'title' => $es[0]['e__title'].' @'.$es[0]['e__handle'].' | '.$e___14874[12274]['m__title'],
-        ));
-        $this->load->view('e_layout', array(
-            'e' => $es[0],
-            'player_e' => $player_e,
-        ));
-        $this->load->view('footer');
-
-    }
-
-    function i_layout($i__hashtag){
-
-
-
-        $player_e = superpower_unlocked(); //Idea Pen?
-
-        //Load views:
-        $this->load->view('header', array(
-            'title' => view_i_title($is[0], true),
-            'flash_message' => $flash_message,
-        ));
-        $this->load->view('i_layout', array(
-            'focus_i' => $is[0],
-            'player_e' => $player_e,
-        ));
-        $this->load->view('footer');
-
-    }
-
-    function x_layout($top_i__hashtag, $focus_i__hashtag)
-    {
-
-        /*
-         *
-         * Enables a Member to DISCOVER an IDEA
-         * on the public web
-         *
-         * */
-
-        $flash_message = null;
-        $player_e = superpower_unlocked();
-        $focus_es = array();
-
-        if(isset($_GET['e__handle'])){
-            $focus_es = $this->E_model->fetch(array(
-                'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-            ));
-            if(!count($focus_es)){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid User Handler</div>');
-            }
-        } elseif($player_e){
-            $focus_es[0] = $player_e;
-        }
-
-        //Validate Top Idea:
-        $top_is = array();
-        if($top_i__hashtag && count($focus_es)){
-            $top_is = $this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($top_i__hashtag),
-            ));
-            if ( !count($top_is) ) {
-                return redirect_message(home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Top Idea #' . $top_i__hashtag . ' not found</div>');
-            }
-        }
-
-        //Log Link Click discovery if authenticated:
-        if(
-            isset($_GET['e__hash']) && isset($_GET['e__time'])
-            && count($focus_es) //We have a user
-        ){
-
-            //Validate Hash:
-            if($_GET['e__hash'] == view__hash($_GET['e__time'].$focus_es[0]['e__handle'])){
-
-                $this->X_model->x_read_only_complete($focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
-                $this->X_model->mark_complete(29393, $focus_es[0]['e__id'], ( count($top_is) ? $top_is[0]['i__id'] : 0 ), $focus_is[0]);
-
-                //Inform user of changes:
-                $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Idea has been discovered</div>';
-
-                //If not logged in, log them in:
-                if(!$player_e){
-                    $session_data = $this->E_model->activate_session($focus_es[0], true);
-                    $player_e = $focus_es[0];
-                }
-
-            } else {
-
-                $flash_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Invalid Hash: Idea could not be discovered at this time.</div>';
-
-            }
-        }
-
-
-        if(!$player_e) {
-            //Must login to continue:
-            return redirect_message(view_app_link(4269).'?url='.view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i__hashtag);
-        }
-
-        //Validate Focus Idea:
-        if($focus_i__hashtag==view_memory(6404,4235)){
-
-            //This is the starting point:
-            $focus_i__hashtag = $top_i__hashtag;
-            $focus_is = $top_is;
-
-            //See if they have already started or need to start?
-            if(!$this->X_model->i_has_started($player_e['e__id'], $top_i__hashtag)) {
-                //Go to start:
-                return redirect_message('/ajax/x_start/'.$top_i__hashtag);
-            }
-
-        } else {
-            $focus_is = $this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
-            ));
-            if ( !count($focus_is) ) {
-                return redirect_message( ( $top_i__hashtag ? view_memory(42903,33286).$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Invalid Hashtag #' . $focus_i__hashtag . '</div>');
-            } elseif(!in_array($focus_is[0]['i__privacy'], $this->config->item('n___31871')) && !write_privacy_i($focus_is[0]['i__hashtag'])){
-                return redirect_message( ( $top_i__hashtag ? view_memory(42903,33286).$top_i__hashtag : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_i__hashtag . ' is not public and you are missing permission to access.</div>');
-            }
-        }
-
-
-        $x_completes = array();
-        if(count($focus_es)) {
-
-            //Fetch discovery
-            $x_completes = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $focus_es[0]['e__id'],
-                'x__previous' => $focus_is[0]['i__id'],
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ), array('x__next'));
-
-            //Missing focus Idea?
-            if(!$top_i__hashtag) {
-
-                //Do we have a direct discovery?
-                $this_discovery = null;
-                foreach($x_completes as $x){
-                    $this_discovery = $x['i__hashtag'];
-                    break;
-                }
-
-                if($this_discovery){
-                    //We have a discovery here, make sure its not the same as the starting point:
-                    if($this_discovery!=$focus_i__hashtag){
-                        return redirect_message(view_memory(42903,30795).$this_discovery.'/'.$focus_i__hashtag);
-                    }
-                } else {
-                    //No discovery here, let's see if we can find any above:
-                    $top_x_i__hashtag = $this->X_model->find_previous_discovered($focus_is[0]['i__id'], $focus_es[0]['e__id']);
-                    if($top_x_i__hashtag){
-                        return redirect_message(view_memory(42903,30795).$top_x_i__hashtag.'/'.$focus_i__hashtag);
-                    }
-                }
-            }
-        }
-
-
-        //VIEW DISCOVERY
-        $this->X_model->create(array(
-            'x__creator' => ( count($focus_es) ? $focus_es[0]['e__id'] : 14068 ), //Guest Member
-            'x__type' => 7610, //MEMBER VIEWED DISCOVERY
-            'x__previous' => ( count($top_is) ? $top_is[0]['i__id'] : 0 ),
-            'x__next' => $focus_is[0]['i__id'],
-        ));
-
-        $this->load->view('header', array(
-            'title' => view_i_title($focus_is[0], true).( count($top_is) ? ' > '.view_i_title($top_is[0],  true) : '' ),
-            'flash_message' => $flash_message,
-        ));
-
-
-        $this->load->view('x_layout', array(
-            'focus_i' => $focus_is[0],
-            'top_i' => ( count($top_is) ? $top_is[0] : array() ),
-            'player_e' => ( count($focus_es) ? $focus_es[0] : array() ),
-            'x_completes' => $x_completes,
-        ));
-
-        $this->load->view('footer');
-
-    }
-
 }

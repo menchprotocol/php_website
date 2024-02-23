@@ -6,12 +6,11 @@ $second_segment = $this->uri->segment(2);
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 $handle___40904 = $this->config->item('handle___40904');
-$s__type = current_s__type();
 $website_id = website_setting(0);
 $website_favicon = website_setting(31887);
 $basic_header_footer = isset($basic_header_footer) && intval($basic_header_footer);
 $domain_link = one_two_explode("\"","\"",get_domain('m__cover'));
-$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : '/img/'.$s__type.'.png' ));
+$logo = ( $website_favicon ? $website_favicon : ( filter_var($domain_link, FILTER_VALIDATE_URL) ? $domain_link : 'https://s3foundation.s3.us-west-2.amazonaws.com/yin-yang-solid.svg' ));
 $bgVideo = null;
 
 //Transaction Website
@@ -21,7 +20,7 @@ $is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !string_is_icon(
 
 
 //Generate Body Class String:
-$body_class = ' platform-'.$s__type; //Always append current coin
+$body_class = ''; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     if($player_e){
         //Look at their session:
@@ -417,7 +416,7 @@ if(!$basic_header_footer){
 
 
                     //SEARCH
-                    echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block-sm">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_finder" type="search" id="top_finder" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
+                    echo '<div class="left_nav nav_finder hidden"><form id="searchFrontForm"><span class="icon-block-sm">'.$e___11035[7256]['m__cover'].'</span><input class="form-control algolia_finder" type="search" id="website_finder" data-lpignore="true" placeholder="'.$e___11035[7256]['m__title'].'"></form></div>';
 
 
 
@@ -623,7 +622,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
-                    <form method="POST" action="<?= view_app_link(27196) ?>?focus_id=12274">
+                    <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12274">
                         <div class="modal-header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             <button type="submit" class="btn btn-default">APPLY</button>
@@ -783,7 +782,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
             <div class="modal-dialog" role="document">
                 <div class="modal-content slim_flat">
 
-                    <form method="POST" action="<?= view_app_link(27196) ?>?focus_id=12273">
+                    <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12273">
 
                         <div class="modal-header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

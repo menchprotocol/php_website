@@ -29,10 +29,10 @@ foreach($is_next as $in_key => $in_value){
 $x__creator = ( $player_e ? $player_e['e__id'] : 0 );
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $pathways_count = 0;
-$top_i__id = ( count($top_i) ? $top_i['i__id'] : 0 );
-    $top_i__id = ( count($top_i) && $x__creator ? $top_i['i__id'] : 0 );
-    $top_i__hashtag = ( count($top_i) && $x__creator ? $top_i['i__hashtag'] : null );
-$top_completed = false; //Assume main intent not yet completed, unless proven otherwise
+$target_i__id = ( count($target_i) ? $target_i['i__id'] : 0 );
+    $target_i__id = ( count($target_i) && $x__creator ? $target_i['i__id'] : 0 );
+    $target_i__hashtag = ( count($target_i) && $x__creator ? $target_i['i__hashtag'] : null );
+$target_completed = false; //Assume main intent not yet completed, unless proven otherwise
 $can_skip = !count($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
@@ -46,9 +46,9 @@ $can_skip = !count($this->X_model->fetch(array(
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
 
-if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
+if($x__creator && $target_i__hashtag!=$focus_i['i__hashtag']){
 
-    $find_previous = $this->X_model->find_previous($x__creator, $top_i__hashtag, $focus_i['i__id']);
+    $find_previous = $this->X_model->find_previous($x__creator, $target_i__hashtag, $focus_i['i__id']);
     if(count($find_previous)){
 
         $nav_list = array();
@@ -83,7 +83,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
             }
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="'.view_memory(42903,30795).$top_i__hashtag.'/'.$followings_i['i__hashtag'].'"><u>'.view_i_title($followings_i).'</u></a>';
+            $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.$followings_i['i__hashtag'].'"><u>'.view_i_title($followings_i).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -94,7 +94,7 @@ if($x__creator && $top_i__hashtag!=$focus_i['i__hashtag']){
                 $breadcrum_content .= '</button>';
                 $breadcrum_content .= '<div class="dropdown-menu" aria-labelledby="dropdown_instant_'.$followings_i['i__id'].'">';
                 foreach ($query_subset as $i_subset) {
-                    $breadcrum_content .= '<a href="'.view_memory(42903,30795).$top_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
+                    $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
                 }
                 $breadcrum_content .= '</div>';
                 $breadcrum_content .= '</div>';
@@ -134,10 +134,10 @@ if($breadcrum_content){
 
 echo '<div class="active_navigation">';
 
-$tree_progress = $this->X_model->tree_progress($x__creator, $top_i);
-$top_completed = $tree_progress['fixed_completed_percentage'] >= 100;
+$tree_progress = $this->X_model->tree_progress($x__creator, $target_i);
+$target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
 
-if($top_completed){
+if($target_completed){
     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
 }
 
@@ -173,12 +173,12 @@ if (!count($is_next) && !count($this->X_model->fetch(array(
         'x__previous' => $focus_i['i__id'],
     )))) {
     //Skipped:
-    $this->X_model->mark_complete(31022, $x__creator, $top_i__id, $focus_i);
+    $this->X_model->mark_complete(31022, $x__creator, $target_i__id, $focus_i);
 }
 
 
 $x_selects = array();
-if($top_i__hashtag) {
+if($target_i__hashtag) {
 
     if ($focus_i['i__type']==26560) {
 
@@ -194,7 +194,7 @@ if($top_i__hashtag) {
             $ticket_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
             //Referesh soon so we can check if completed or not
-            js_php_redirect(view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
+            js_php_redirect(phpview_memory(42903, 30795) . $target_i__hashtag .'/'.$focus_i['i__hashtag'].'?process_pay=1', 987);
 
         } elseif(count($x_completes)){
 
@@ -213,7 +213,7 @@ if($top_i__hashtag) {
                         'e__id' => $x_complete['x__creator'],
                     )) as $e){
                         $ticket_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
-                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])).'</div>';
+                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).view_memory(42903,30795).$target_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(phptime() . $e['e__handle'])).'</div>';
                     }
                 }
 
@@ -406,14 +406,14 @@ if($top_i__hashtag) {
                 $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
                 $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.view_i_title($focus_i, true).'">';
-                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$top_i__id.'-'.$focus_i['i__id'].'-0-'.$x__creator.'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$target_i__id.'-'.$focus_i['i__id'].'-0-'.$x__creator.'">';
 
                 $ticket_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $ticket_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
                 $ticket_ui .= '<input type="hidden" name="no_shipping" value="1">';
                 $ticket_ui .= '<input type="hidden" name="notify_url" value="https://mench.com'.view_app_link(26595).'">';
-                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?cancel_pay=1">';
-                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').view_memory(42903,30795).$top_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').view_memory(42903,30795).$target_i__hashtag.'/'.$focus_i['i__hashtag'].'?cancel_pay=1">';
+                $ticket_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').view_memory(42903,30795).$target_i__hashtag.'/'.$focus_i['i__hashtag'].'?process_pay=1">';
                 $ticket_ui .= '<input type="hidden" name="cmd" value="_xclick">';
                 $ticket_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
 
@@ -624,12 +624,12 @@ if($top_i__hashtag) {
 
             $control_btn .= '<div style="padding-left: 8px;" class="save_toggle_answer hidden"><a class="controller-nav round-btn main-next" href="javascript:void(0);" onclick="$(\'.save_toggle_answer\').toggleClass(\'hidden\');">'.$e___11035[40639]['m__cover'].'</a><span class="nav-title main__title">'.$e___11035[40639]['m__title'].'</span></div>';
 
-        } elseif($x__type==14422 && $top_completed && in_array($focus_i['i__type'], $this->config->item('n___34849'))){
+        } elseif($x__type==14422 && $target_completed && in_array($focus_i['i__type'], $this->config->item('n___34849'))){
 
             //Save Response
             $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
-        } elseif($x__type==31022 && $can_skip && !$top_completed && !count($x_completes)){
+        } elseif($x__type==31022 && $can_skip && !$target_completed && !count($x_completes)){
 
             //SKIP
             $control_btn = '<div style="padding-left: 13px;" class="save_toggle_answer"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="x_skip()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
@@ -660,13 +660,13 @@ if($top_i__hashtag) {
 
 
 
-if(!$top_completed) {
+if(!$target_completed) {
     echo '<div style="padding: 0 5px;"><div class="progress">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div></div>';
 }
 
-if($top_i__hashtag){
+if($target_i__hashtag){
     echo '</div>';
 }
 
@@ -677,11 +677,11 @@ if($top_i__hashtag){
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
 </script>
-<input type="hidden" id="focus_card" value="12273" />
-<input type="hidden" id="focus_id" value="<?= $focus_i['i__id'] ?>" />
+<input type="hidden" id="focus__card" value="12273" />
+<input type="hidden" id="focus__id" value="<?= $focus_i['i__id'] ?>" />
 <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
-<input type="hidden" id="top_i__id" value="<?= $top_i__id ?>" />
-<input type="hidden" id="top_i__hashtag" value="<?= $top_i__hashtag ?>" />
+<input type="hidden" id="target_i__id" value="<?= $target_i__id ?>" />
+<input type="hidden" id="target_i__hashtag" value="<?= $target_i__hashtag ?>" />
 
 
 
@@ -796,7 +796,7 @@ if($top_i__hashtag){
 
         } else {
 
-            if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#top_i__id').val()) > 0) {
+            if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#target_i__id').val()) > 0) {
 
                 //READ:
                 return x_read_only_complete();
@@ -814,8 +814,8 @@ if($top_i__hashtag){
     function x_upload() {
 
         $.post("/ajax/x_upload", {
-            i__id:         fetch_int_val('#focus_id'),
-            top_i__id:     $('#top_i__id').val(),
+            i__id:         fetch_int_val('#focus__id'),
+            target_i__id:     $('#target_i__id').val(),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if(data.status){
@@ -829,8 +829,8 @@ if($top_i__hashtag){
 
     function x_write(){
         $.post("/ajax/x_write", {
-            top_i__id:$('#top_i__id').val(),
-            i__id:fetch_int_val('#focus_id'),
+            target_i__id:$('#target_i__id').val(),
+            i__id:fetch_int_val('#focus__id'),
             x_write:$('#x_write').val(),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -850,8 +850,8 @@ if($top_i__hashtag){
 
     function x_read_only_complete(){
         $.post("/ajax/x_read_only_complete", {
-            top_i__id:$('#top_i__id').val(),
-            i__id:fetch_int_val('#focus_id'),
+            target_i__id:$('#target_i__id').val(),
+            i__id:fetch_int_val('#focus__id'),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
@@ -874,8 +874,8 @@ if($top_i__hashtag){
         }
 
         $.post("/ajax/x_skip", {
-            top_i__id:$('#top_i__id').val(),
-            i__id:fetch_int_val('#focus_id'),
+            target_i__id:$('#target_i__id').val(),
+            i__id:fetch_int_val('#focus__id'),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
@@ -892,8 +892,8 @@ if($top_i__hashtag){
 
     function x_free_ticket(){
         $.post("/ajax/x_free_ticket", {
-            top_i__id:$('#top_i__id').val(),
-            i__id:fetch_int_val('#focus_id'),
+            target_i__id:$('#target_i__id').val(),
+            i__id:fetch_int_val('#focus__id'),
             paypal_quantity:$('#paypal_quantity').val(),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -922,8 +922,8 @@ if($top_i__hashtag){
 
         //Show Loading:
         $.post("/ajax/x_select", {
-            focus_id:fetch_int_val('#focus_id'),
-            top_i__id:$('#top_i__id').val(),
+            focus__id:fetch_int_val('#focus__id'),
+            target_i__id:$('#target_i__id').val(),
             selection_i__id:selection_i__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {

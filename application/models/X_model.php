@@ -382,7 +382,7 @@ class X_model extends CI_Model
     }
 
 
-    function x_update_instant_select($focus_id, $o__id, $element_id, $new_e__id, $migrate_s__handle, $x__id = 0) {
+    function x_update_instant_select($focus__id, $o__id, $element_id, $new_e__id, $migrate_s__handle, $x__id = 0) {
 
 
         //Authenticate Member:
@@ -522,7 +522,7 @@ class X_model extends CI_Model
             if(!in_array($new_e__id, $this->config->item('n___7358'))){
 
                 //Determine what to do after deleted:
-                if($o__id==$focus_id){
+                if($o__id==$focus__id){
 
                     //Find Published Followings:
                     foreach($this->X_model->fetch(array(
@@ -574,7 +574,7 @@ class X_model extends CI_Model
             if(!in_array($new_e__id, $this->config->item('n___31871'))){
 
                 //Determine what to do after deleted:
-                if($o__id==$focus_id){
+                if($o__id==$focus__id){
 
                     //Find Published Followings:
                     foreach($this->X_model->fetch(array(
@@ -871,7 +871,7 @@ class X_model extends CI_Model
     }
 
 
-    function find_previous($e__id, $top_i__hashtag, $focus_i__id, $loop_breaker_ids = array())
+    function find_previous($e__id, $target_i__hashtag, $focus_i__id, $loop_breaker_ids = array())
     {
 
         if(count($loop_breaker_ids)>0 && in_array($focus_i__id, $loop_breaker_ids)){
@@ -903,15 +903,15 @@ class X_model extends CI_Model
             }
 
             //Did we find it?
-            if($i_previous['i__hashtag']==$top_i__hashtag){
+            if($i_previous['i__hashtag']==$target_i__hashtag){
                 return array($i_previous);
             }
 
             //Keep looking:
-            $top_finder = $this->X_model->find_previous($e__id, $top_i__hashtag, $i_previous['i__id'], $loop_breaker_ids);
-            if(count($top_finder)){
-                array_push($top_finder, $i_previous);
-                return $top_finder;
+            $website_finder = $this->X_model->find_previous($e__id, $target_i__hashtag, $i_previous['i__id'], $loop_breaker_ids);
+            if(count($website_finder)){
+                array_push($website_finder, $i_previous);
+                return $website_finder;
             }
         }
 
@@ -967,7 +967,7 @@ class X_model extends CI_Model
 
 
 
-    function find_next($e__id, $top_i__hashtag, $i, $find_after_i__id = 0, $search_up = true, $top_completed = false, $loop_breaker_ids = array())
+    function find_next($e__id, $target_i__hashtag, $i, $find_after_i__id = 0, $search_up = true, $target_completed = false, $loop_breaker_ids = array())
     {
 
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
@@ -1008,7 +1008,7 @@ class X_model extends CI_Model
 
 
             //Return this if everything is completed, or if this is incomplete:
-            if($top_completed || !count($this->X_model->fetch(array(
+            if($target_completed || !count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__creator' => $e__id,
@@ -1018,19 +1018,19 @@ class X_model extends CI_Model
             }
 
             //Keep looking deeper:
-            $next_i__hashtag = $this->X_model->find_next($e__id, $top_i__hashtag, $next_i, 0, false, $top_completed, $loop_breaker_ids);
+            $next_i__hashtag = $this->X_model->find_next($e__id, $target_i__hashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
             if ($next_i__hashtag) {
                 return $next_i__hashtag;
             }
 
         }
 
-        if ($search_up && $top_i__hashtag!=$i['i__hashtag']) {
+        if ($search_up && $target_i__hashtag!=$i['i__hashtag']) {
             //Check Previous/Up
             $current_previous = $i['i__id'];
-            foreach (array_reverse($this->X_model->find_previous($e__id, $top_i__hashtag, $i['i__id'])) as $p_i) {
+            foreach (array_reverse($this->X_model->find_previous($e__id, $target_i__hashtag, $i['i__id'])) as $p_i) {
                 //Find the next siblings:
-                $next_i__hashtag = $this->X_model->find_next($e__id, $top_i__hashtag, $p_i, $current_previous, false, $top_completed);
+                $next_i__hashtag = $this->X_model->find_next($e__id, $target_i__hashtag, $p_i, $current_previous, false, $target_completed);
                 if ($next_i__hashtag) {
                     return $next_i__hashtag;
                 }
@@ -1049,7 +1049,7 @@ class X_model extends CI_Model
 
 
 
-    function x_read_only_complete($x__creator, $top_i__id, $i, $x_data = array()){
+    function x_read_only_complete($x__creator, $target_i__id, $i, $x_data = array()){
 
         //Try to auto complete:
         $x__type = 0;
@@ -1068,7 +1068,7 @@ class X_model extends CI_Model
         }
 
         if($x__type > 0){
-            return $this->X_model->mark_complete($x__type, $x__creator, $top_i__id, $i, $x_data);
+            return $this->X_model->mark_complete($x__type, $x__creator, $target_i__id, $i, $x_data);
         } else {
             return false;
         }
@@ -1076,7 +1076,7 @@ class X_model extends CI_Model
     }
 
 
-    function mark_complete($x__type, $x__creator, $top_i__id, $i, $x_data = array()) {
+    function mark_complete($x__type, $x__creator, $target_i__id, $i, $x_data = array()) {
 
         if(!in_array($x__type, $this->config->item('n___31777'))){
             $this->X_model->create(array(
@@ -1084,7 +1084,7 @@ class X_model extends CI_Model
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'mark_complete() Invalid x__type @'.$x__type.' missing in @31777',
                 'x__metadata' => array(
-                    '$top_i__id' => $top_i__id,
+                    '$target_i__id' => $target_i__id,
                     '$i' => $i,
                     '$x_data' => $x_data,
                 ),
@@ -1097,8 +1097,8 @@ class X_model extends CI_Model
         $x_data['x__previous'] = $i['i__id'];
 
         //Always add Idea to x__previous
-        if($top_i__id>0 && (!isset($x_data['x__next']) || !intval($x_data['x__next']))){
-            $x_data['x__next'] = $top_i__id;
+        if($target_i__id>0 && (!isset($x_data['x__next']) || !intval($x_data['x__next']))){
+            $x_data['x__next'] = $target_i__id;
         }
 
         if (!isset($x_data['x__message'])) {
@@ -1137,7 +1137,7 @@ class X_model extends CI_Model
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 0) as $next_i){
                 //Mark as complete:
-                $this->X_model->x_read_only_complete($x_data['x__creator'], $top_i__id, $next_i, $x_data);
+                $this->X_model->x_read_only_complete($x_data['x__creator'], $target_i__id, $next_i, $x_data);
             }
         }
 
@@ -1529,7 +1529,7 @@ class X_model extends CI_Model
 
 
 
-    function x_select($top_i__id, $focus_i__id, $answer_i__ids){
+    function x_select($target_i__id, $focus_i__id, $answer_i__ids){
 
         $player_e = superpower_unlocked();
         if (!$player_e) {
@@ -1667,7 +1667,7 @@ class X_model extends CI_Model
         }
 
         //Issue DISCOVERY/IDEA COIN:
-        $this->X_model->mark_complete(( count($answer_i__ids) ? ( $is_single_selection ? 6157 : 41940 ) : 31022 /* Skipped */ ), $player_e['e__id'], $top_i__id, $is[0]);
+        $this->X_model->mark_complete(( count($answer_i__ids) ? ( $is_single_selection ? 6157 : 41940 ) : 31022 /* Skipped */ ), $player_e['e__id'], $target_i__id, $is[0]);
 
         //All good, something happened:
         return array(

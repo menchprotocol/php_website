@@ -7,7 +7,7 @@ echo '<?php'."\n\n";
 echo 'defined(\'BASEPATH\') or exit(\'No direct script access allowed\');'."\n"."\n";
 echo '$route[\'translate_uri_dashes\'] = FALSE;'."\n";
 echo '$route[\'default_controller\'] = "app/index"; //Redirects to default app'."\n";
-echo '$route[\'404_override\'] = \'app/app_load\'; //Page not found'."\n";
+echo '$route[\'404_override\'] = \'app/load\'; //Page not found'."\n";
 echo "\n";
 
 //Custom Apps:
@@ -17,7 +17,7 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
-    echo '$route[\'(?i)'.$app['e__handle'].'\'] = "app/app_load/'.$app['e__id'].'";'."\n";
+    echo '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
 }
 
 echo "\n\n";

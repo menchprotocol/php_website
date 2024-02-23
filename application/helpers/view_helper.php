@@ -735,7 +735,7 @@ function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
 }
 
 
-function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
+function view_instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
 
     /*
      * Either single or multi select UI elements...
@@ -745,18 +745,18 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $e___4527 = $CI->config->item('e___4527'); //Memory
-    $is_compact = in_array($focus_id, $CI->config->item('n___42191'));
-    $single_select = in_array($focus_id, $CI->config->item('n___33331'));
-    $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
-    $access_locked = in_array($focus_id, $CI->config->item('n___32145'));
+    $is_compact = in_array($focus__id, $CI->config->item('n___42191'));
+    $single_select = in_array($focus__id, $CI->config->item('n___33331'));
+    $multi_select = in_array($focus__id, $CI->config->item('n___33332'));
+    $access_locked = in_array($focus__id, $CI->config->item('n___32145'));
     $focus_select = $CI->config->item( $single_select ? 'e___33331' : 'e___33332');
 
     if(!$single_select && !$multi_select){
         //Must be either:
         $CI->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'view_instant_select() @'.$focus_id.' not in single select @33331 or multi select 33332',
-            'x__following' => $focus_id,
+            'x__message' => 'view_instant_select() @'.$focus__id.' not in single select @33331 or multi select 33332',
+            'x__following' => $focus__id,
             'x__follower' => $down_e__id,
             'x__next' => $right_i__id,
         ));
@@ -766,7 +766,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $already_selected = array();
     $selection_ids = array();
     $selection_options = $CI->X_model->fetch(array(
-        'x__following' => $focus_id,
+        'x__following' => $focus__id,
         'x__type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
@@ -778,9 +778,9 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
     if(!$is_compact){
-        $ui .= '<h3 class="mini-font grey">'.dynamic_headline($focus_id, $focus_select[$focus_id]).'</h3>';
+        $ui .= '<h3 class="mini-font grey">'.dynamic_headline($focus__id, $focus_select[$focus__id]).'</h3>';
     }
-    $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus_id.( $is_compact ? ' is_compact ' : ''  ).'">';
+    $ui .= '<div class="list-group list-radio-select grey-line radio-'.$focus__id.( $is_compact ? ' is_compact ' : ''  ).'">';
 
     if($down_e__id > 0){
 
@@ -798,7 +798,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         if(!count($already_selected) && $single_select && superpower_unlocked()){
             //FIND DEFAULT if set in session of this user:
-            $var_id = @$CI->session->userdata('session_custom_ui_'.$focus_id);
+            $var_id = @$CI->session->userdata('session_custom_ui_'.$focus__id);
             foreach($selection_ids as $e__id2){
                 if($var_id==$e__id2){
                     $already_selected = array($e__id2);
@@ -827,7 +827,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $has_selected = count($already_selected);
     $has_multiple = count($selection_options)>1;
     $overflow_reached = false;
-    $exclude_fonts = ( in_array($focus_id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
+    $exclude_fonts = ( in_array($focus__id, $CI->config->item('n___42417')) ? 'exclude_fonts' : '' );
     $e___42179 = $CI->config->item('e___42179'); //Dynamic Input Fields
 
     foreach($selection_options as $list_item){
@@ -859,14 +859,14 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
         if($selected){
             if($access_locked){
-                $ui .= '<span class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
+                $ui .= '<span class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview_'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
             } elseif($has_multiple) {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus_id.' selection_preview selection_preview_'.$focus_id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'<span class="icon-block-sm"><i class="fal fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview_'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'<span class="icon-block-sm"><i class="fal fa-pen-to-square"></i></span></a>';
             }
         }
 
         if(!$access_locked){
-            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus_id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus_id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus_id.' selection_item_'.$focus_id.( ( $has_selected && $has_multiple ) || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</a>';
+            $ui .= '<a href="javascript:void(0);" onclick="e_select_apply('.$focus__id.','.$list_item['e__id'].','.( $multi_select ? 1 : 0 ).','.$down_e__id.','.$right_i__id.')" class="list-group-item itemsetting custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' item-'.$list_item['e__id'].' itemsetting_'.$focus__id.' selection_item_'.$focus__id.( ( $has_selected && $has_multiple ) || $overflow_reached ? ' hidden' : '' ).( $selected ? ' active ' : '' ).'" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</a>';
         }
 
 
@@ -877,7 +877,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
 
     if($overflow_reached && !$has_selected && !$access_locked){
         //We show this only if non are selected and has too many options:
-        $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus_id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus_id.'\').addClass(\'hidden\');" class="list-group-item itemsetting selection_preview selection_preview_'.$focus_id.'"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show More...</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item itemsetting selection_preview selection_preview_'.$focus__id.'"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show More...</a>';
     }
 
     $ui .= '</div>';
@@ -1129,11 +1129,11 @@ function view_valid_handle_reverse_i($string, $check_db = false){
 }
 
 
-function view_i__links($i, $replace_links = true, $focus_card = false){
+function view_i__links($i, $replace_links = true, $focus__card = false){
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
         view_i_media($i).
-        ( $focus_card || !substr_count($i['i__cache'], 'show_more_line') ? view_list_e($i, !$replace_links) : '' );
+        ( $focus__card || !substr_count($i['i__cache'], 'show_more_line') ? view_list_e($i, !$replace_links) : '' );
 }
 
 function idea_author($i__id){
@@ -1409,10 +1409,10 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
 
 
 
-function view_featured_links($x__type, $location, $m = null, $focus_card){
+function view_featured_links($x__type, $location, $m = null, $focus__card){
     $CI =& get_instance();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
-    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'>'.( $focus_card ? '<a href="'.view_memory(42903,42902).$location['e__handle'].'">' : '' ).'<span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xs' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus_card ? '</a>' : '' ).'</div>';
+    return '<div class="creator_headline" '.( is_array($m) ? ' data-toggle="tooltip" data-placement="top" title="'.$m['m__title'].( strlen($m['m__message']) ? ': '.$m['m__message'] : ' @'.$location['e__handle'] ).( strlen($location['x__message']) ? ': '.$location['x__message'] : '' ).'" ' : '' ).'>'.( $focus__card ? '<a href="'.view_memory(42903,42902).$location['e__handle'].'">' : '' ).'<span class="grey '.( $x__type==41949 ? 'icon-block' : 'icon-block-xs' ).'">'.$e___11035[$x__type]['m__cover'].'</span><span class="grey mini-frame '.( $x__type==41949 ? 'mini-font' : '' ).'">'.$location['e__title'].'</span>'.( $focus__card ? '</a>' : '' ).'</div>';
 }
 
 
@@ -1489,7 +1489,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
     
 }
 
-function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $focus_e = false){
+function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null, $focus_e = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1509,7 +1509,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
+    $focus__card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
     $has_self = $player_e && $focus_e && $player_e['e__id']==$focus_e['e__id'];
     $focus_e__handle = ( view_valid_handle_e($CI->uri->segment(1)) ? substr($CI->uri->segment(1), 1) : false );
@@ -1520,14 +1520,14 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
         $focus_e = $player_e;
     }
 
-    $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $top_i__hashtag && $focus_e && $discovery_mode;
+    $load_completion = in_array($x__type, $CI->config->item('n___14501')) && $target_i__hashtag && $focus_e && $discovery_mode;
 
     $followings_is_or = ( $discovery_mode && $previous_i && in_array($previous_i['i__type'], $CI->config->item('n___7712')) );
-    $has_sortable = $x__id > 0 && !$focus_card && $write_privacy_i && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
+    $has_sortable = $x__id > 0 && !$focus__card && $write_privacy_i && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
 
     if($discovery_mode || $cache_app) {
-        if($link_creator && $top_i__hashtag){
-            $href = view_memory(42903,30795).$top_i__hashtag.'/'.$i['i__hashtag'];
+        if($link_creator && $target_i__hashtag){
+            $href = view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
         } else {
             $href = view_memory(42903,33286).$i['i__hashtag'];
         }
@@ -1553,7 +1553,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" class="card_cover card_i_cover '.( $focus_card ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" class="card_cover card_i_cover '.( $focus__card ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).( $followings_is_or ? ' doborderless ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 card_click_x ' : ' coin-12273 card_click_i ' ).' coinface-12273 s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
@@ -1572,7 +1572,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
     ), array('x__following')) as $creator){
 
         $follow_btn = null;
-        if($focus_card && $player_e && $player_e['e__id']!=$creator['e__id']){
+        if($focus__card && $player_e && $player_e['e__id']!=$creator['e__id']){
             $followings = $CI->X_model->fetch(array(
                 'x__following' => $creator['e__id'],
                 'x__follower' => $player_e['e__id'],
@@ -1594,7 +1594,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__following')) as $location){
-        $ui .= view_featured_links(41949, $location, null, $focus_card);
+        $ui .= view_featured_links(41949, $location, null, $focus__card);
     }
 
     //Link Message if any:
@@ -1606,13 +1606,13 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus_card ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus_card, $focus_card).'</div>';
+    $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus__card ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus__card, $focus__card).'</div>';
 
 
     //Raw Data:
     $ui .= '<div class="ui_i__message_' . $i['i__id'] . '
      hidden">'.$i['i__message'].'</div>';
-    $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode || !$focus_card ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
+    $ui .= '<div class="sub__handle space-content grey '.( $discovery_mode || !$focus__card ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span></div>';
 
 
 
@@ -1630,7 +1630,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
         //Determine Link Group
         $link_type_id = 4593; //Transaction Type
         $link_type_ui = '';
-        if(!$focus_card && $x__id){
+        if(!$focus__card && $x__id){
             foreach($CI->config->item('e___31770') as $x__type1 => $m1){
                 if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
                     foreach($CI->X_model->fetch(array(
@@ -1651,23 +1651,23 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
             }
         }
 
-        foreach($CI->config->item('e___31904') as $x__type_top_bar => $m_top_bar) {
+        foreach($CI->config->item('e___31904') as $x__type_target_bar => $m_target_bar) {
 
             //See if missing superpower?
-            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_top_bar['m__following']);
+            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_target_bar['m__following']);
             if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 continue;
             }
 
             //Determine hover state:
-            $always_see = $focus_card || in_array($x__type_top_bar, $CI->config->item('n___32172'));
+            $always_see = $focus__card || in_array($x__type_target_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && !$discovery_mode && $link_type_ui && $player_e){
+            if($x__type_target_bar==31770 && !$discovery_mode && $link_type_ui && $player_e){
 
                 //Links
                 $bottom_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_top_bar==4362 && !$discovery_mode && $player_e && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($player_e && $player_e['e__id']==$i['x__creator']))){
+            } elseif($x__type_target_bar==4362 && !$discovery_mode && $player_e && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($player_e && $player_e['e__id']==$i['x__creator']))){
 
                 //Link Time / Creator
                 $creator_details = '';
@@ -1685,39 +1685,39 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
 
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="show-on-hover grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
 
-            } elseif($x__type_top_bar==41037 && !$discovery_mode && $write_privacy_i && !$focus_card){
+            } elseif($x__type_target_bar==41037 && !$discovery_mode && $write_privacy_i && !$focus__card){
 
                 //Selector
 
-            } elseif($x__type_top_bar==4737 && !$discovery_mode){
+            } elseif($x__type_target_bar==4737 && !$discovery_mode){
 
                 //Idea Type
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==31004 && !$discovery_mode && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
+            } elseif($x__type_target_bar==31004 && !$discovery_mode && (!in_array($i['i__privacy'], $CI->config->item('n___31871')) || ($write_privacy_i && !in_array(31004, $CI->config->item('n___32145'))))){
 
                 //Idea Access
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $write_privacy_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==30901 && $player_e){
+            } elseif($x__type_target_bar==30901 && $player_e){
 
                 //Reply
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==42379 && $player_e){
+            } elseif($x__type_target_bar==42379 && $player_e){
 
                 //Reply Inverse / Quote
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).',0,'.$i['i__id'].')">'.$m_top_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).',0,'.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==42260 && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__creator']!=$player_e['e__id'])){
+            } elseif($x__type_target_bar==42260 && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__creator']!=$player_e['e__id'])){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
@@ -1730,7 +1730,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==4235 && !$discovery_mode && count($CI->X_model->fetch(array(
+            } elseif($x__type_target_bar==4235 && !$discovery_mode && count($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
@@ -1738,23 +1738,23 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
                 )))){
 
                 //GET STARTED
-                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm" style="height: 21px !important;">'.$m_top_bar['m__cover'].'</span><span class="'.( !$focus_card ? ' show-max ' : '' ).'">'.$m_top_bar['m__title'].'</span></a></span>';
+                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span><span class="'.( !$focus__card ? ' show-max ' : '' ).'">'.$m_target_bar['m__title'].'</span></a></span>';
 
-            } elseif($x__type_top_bar==31911 && $write_privacy_i && !$discovery_mode){
+            } elseif($x__type_target_bar==31911 && $write_privacy_i && !$discovery_mode){
 
                 //Idea Editor
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_top_bar['m__title'].'">'.$m_top_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==13909 && $write_privacy_i && $has_sortable && !$discovery_mode){
+            } elseif($x__type_target_bar==13909 && $write_privacy_i && $has_sortable && !$discovery_mode){
 
                 //Sort Idea
                 $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<span title="'.$m_top_bar['m__title'].'" class="sort_i_grab">'.$m_top_bar['m__cover'].'</span>';
+                $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" class="sort_i_grab">'.$m_target_bar['m__cover'].'</span>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
+            } elseif($x__type_target_bar==14980 && !$cache_app && !$access_locked){
 
                 //Drop Down
                 $action_buttons = null;
@@ -1868,7 +1868,7 @@ function view_card_i($x__type, $i, $previous_i = null, $top_i__hashtag = null, $
         }
 
         //Bottom Bar menu
-        if(!$focus_card){
+        if(!$focus__card){
             foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
 
                 $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
@@ -2007,7 +2007,7 @@ function convertURLs($string)
 
 
 
-function view_pill($focus_card, $x__type, $counter, $m, $ui = null, $is_open = true){
+function view_pill($focus__card, $x__type, $counter, $m, $ui = null, $is_open = true){
 
     return '<script> $(\'.nav-tabs\').append(\'<li class="nav-item thepill'.$x__type.'"><a class="nav-link" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.number_format($counter, 0).' '.$m['m__title'].( strlen($m['m__message']) ? ': '.str_replace('\'','',str_replace('"','',$m['m__message'])) : '' ).'"><span class="icon-block-xs">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($counter) . '</span></a></li>\') </script>' .
         '<div class="headlinebody pillbody hidden headline_body_'.$x__type.'" read-counter="'.$counter.'">'.$ui.'</div>';
@@ -2058,7 +2058,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $player_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
-    $focus_card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
+    $focus__card = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $is_cache = in_array($x__type, $CI->config->item('n___14599'));
     $is_app_store = in_array($e['e__id'], $CI->config->item('n___6287'));
@@ -2084,7 +2084,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $show_text_editor = $write_privacy_e && !$has_any_lock && !$is_cache;
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" e__privacy="' . $e['e__privacy'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" x__privacy="'.$e['x__privacy'].'" ' : '' ).' class="card_cover card_e_cover no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus_card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click_e col-sm-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" e__privacy="' . $e['e__privacy'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" x__privacy="'.$e['x__privacy'].'" ' : '' ).' class="card_cover card_e_cover no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus__card ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click_e col-sm-4 col-6 ' ).( $show_text_editor ? ' doedit ' : '' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).( $has_soft_lock ? ' not-allowed ' : '' ).'">';
 
     $ui .= '<div class="bottom-wrapper">';
 
@@ -2097,9 +2097,9 @@ function view_card_e($x__type, $e, $extra_class = null)
     $ui .= '<div class="cover-wrapper">';
 
     //Coin Cover
-    $ui .= ( !$focus_card ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['e__id'].' coinType12274 '.( !$write_privacy_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
+    $ui .= ( !$focus__card ? '<a href="'.$href.'"' : '<div' ).' class="handle_href_e_'.$e['e__id'].' coinType12274 '.( !$write_privacy_e ? ' ready-only ' : '' ).' black-background-obs cover-link" '.( $has_valid_url ? 'style="background-image:url(\''.$e['e__cover'].'\');"' : '' ).'>';
     $ui .= '<div class="cover-btn ui_e__cover_'.$e['e__id'].'" raw_cover="'.$e['e__cover'].'">'.($show_custom_image ? view_cover($e['e__cover'], true) : '' ).'</div>';
-    $ui .= ( !$focus_card ? '</a>' : '</div>' );
+    $ui .= ( !$focus__card ? '</a>' : '</div>' );
 
     $ui .= '</div>';
 
@@ -2146,7 +2146,7 @@ function view_card_e($x__type, $e, $extra_class = null)
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__following'), 0, 0, $order_columns) as $location){
-        $ui .= view_featured_links($location['x__type'], $location, $e___42777[$location['x__type']], $focus_card);
+        $ui .= view_featured_links($location['x__type'], $location, $e___42777[$location['x__type']], $focus__card);
     }
 
 
@@ -2178,7 +2178,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
                     ), array('x__creator')) as $linker){
-                        $link_type_ui .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
+                        $link_type_ui .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                         $link_type_ui .= view_single_select_instant($x__type1, $e['x__type'], $write_privacy_e, false, $e['e__id'], $x__id);
                         $link_type_ui .= '</span>';
                     }
@@ -2189,29 +2189,29 @@ function view_card_e($x__type, $e, $extra_class = null)
         }
 
         //Top Bar
-        foreach($CI->config->item('e___31963') as $x__type_top_bar => $m_top_bar) {
+        foreach($CI->config->item('e___31963') as $x__type_target_bar => $m_target_bar) {
 
             //See if missing superpower?
-            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_top_bar['m__following']);
+            $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_target_bar['m__following']);
             if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 continue;
             }
 
-            $always_see = in_array($x__type_top_bar, $CI->config->item('n___32172'));
+            $always_see = in_array($x__type_target_bar, $CI->config->item('n___32172'));
 
-            if($x__type_top_bar==31770 && $x__id && $player_e){
+            if($x__type_target_bar==31770 && $x__id && $player_e){
 
                 $featured_sources .= $link_type_ui;
 
-            } elseif($x__type_top_bar==6177 && $player_e && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
+            } elseif($x__type_target_bar==6177 && $player_e && ($write_privacy_e || $access_locked || $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')))){
 
                 //Source Privacy
                 //( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' )
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
+                $featured_sources .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                 $featured_sources .= view_single_select_instant(6177, $e['e__privacy'], $write_privacy_e, false, $e['e__id'], $x__id);
                 $featured_sources .= '</span>';
 
-            } elseif($x__type_top_bar==42795 && $player_e && $player_e['e__id']!=$e['e__id'] && (!$x__id || !(superpower_unlocked(13422) && in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$player_e['e__id'] && $e['x__following']==$e['e__id']))){
+            } elseif($x__type_target_bar==42795 && $player_e && $player_e['e__id']!=$e['e__id'] && (!$x__id || !(superpower_unlocked(13422) && in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$player_e['e__id'] && $e['x__following']==$e['e__id']))){
 
                 $followings = $CI->X_model->fetch(array(
                     'x__following' => $e['e__id'],
@@ -2222,31 +2222,31 @@ function view_card_e($x__type, $e, $extra_class = null)
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
 
                 if(count($followings) || !$has_any_lock){
-                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $player_e && !$has_any_lock, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
+                    $featured_sources .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $player_e && !$has_any_lock, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
                 }
 
-            } elseif($x__type_top_bar==31912 && $write_privacy_e){
+            } elseif($x__type_target_bar==31912 && $write_privacy_e){
 
                 //Edit Source
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
-                $featured_sources .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_top_bar['m__title'].'">'.$m_top_bar['m__cover'].'</a>';
+                $featured_sources .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
+                $featured_sources .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</a>';
                 $featured_sources .= '</span>';
 
-            } elseif($x__type_top_bar==41037 && $write_privacy_e && !$focus_card){
+            } elseif($x__type_target_bar==41037 && $write_privacy_e && !$focus__card){
 
                 //Selector
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' ignore-click">';
+                $featured_sources .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).' ignore-click">';
                 $featured_sources .= '<input class="form-check-input" type="checkbox" value="" e__id="'.$e['e__id'].'" id="selector_e_'.$e['e__id'].'" aria-label="...">';
                 $featured_sources .= '</span>';
 
-            } elseif($x__type_top_bar==13006 && $has_sortable){
+            } elseif($x__type_target_bar==13006 && $has_sortable){
 
                 //Sort Source
-                $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).' sort_e_frame hidden">';
-                $featured_sources .= '<span title="'.$m_top_bar['m__title'].'" class="sort_e_grab">'.$m_top_bar['m__cover'].'</span>';
+                $featured_sources .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).' sort_e_frame hidden">';
+                $featured_sources .= '<span title="'.$m_target_bar['m__title'].'" class="sort_e_grab">'.$m_target_bar['m__cover'].'</span>';
                 $featured_sources .= '</span>';
 
-            } elseif($x__type_top_bar==14980 && !$cache_app && !$access_locked){
+            } elseif($x__type_target_bar==14980 && !$cache_app && !$access_locked){
 
                 $action_buttons = null;
 
@@ -2333,7 +2333,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
 
-                    $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
+                    $featured_sources .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                     $featured_sources .= '<div class="dropdown inline-block">';
                     $featured_sources .= '<button type="button" class="btn no-left-padding no-right-padding main__title" id="action_menu_e_'.$e['e__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $featured_sources .= '<div class="dropdown-menu" aria-labelledby="action_menu_e_'.$e['e__id'].'">';
@@ -2384,11 +2384,11 @@ function view_card_e($x__type, $e, $extra_class = null)
         $info = ( strlen($social_link['x__message']) && !$social_url ? $e___14036[$social_link['x__following']]['m__title'].': '.$social_link['x__message'] : ( $social_url ? view_url_clean(one_two_explode('href="','"',$social_url)) : $e___14036[$social_link['x__following']]['m__title'] ) );
 
         //Append to links:
-        $featured_sources .= '<span class="'.( $focus_card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus_card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : ( $focus_card ? '<a href="'.view_memory(42903,42902).$e___14036[$social_link['x__following']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</span>' ) ).'</span>';
+        $featured_sources .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).'">'.( $social_url && $focus__card ? '<a '.$social_url.' data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : ( $focus__card ? '<a href="'.view_memory(42903,42902).$e___14036[$social_link['x__following']]['m__handle'].'" data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</a>' : '<span data-toggle="tooltip" data-placement="top" title="'.$info.'">'.$e___14036[$social_link['x__following']]['m__cover'].'</span>' ) ).'</span>';
 
     }
 
-    if($focus_card){
+    if($focus__card){
         $ui .= '<div class="center-block" style="padding-top: 13px;">';
         $ui .= $featured_sources;
         $ui .= '</div>';
@@ -2403,7 +2403,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
         $ui .= '<div class="card_covers hideIfEmpty">';
 
-        if(!$focus_card){
+        if(!$focus__card){
 
             $ui .= $featured_sources;
 

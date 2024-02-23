@@ -67,44 +67,6 @@ function is_valid_date($str)
     }
 }
 
-function current_s__type(){
-
-    /*
-     *
-     * Detects which of the coins
-     * coins is focused on based on
-     * the URL which reflects the
-     * logic in routes.php
-     *
-     * */
-
-    $CI =& get_instance();
-    $first_segment = $CI->uri->segment(1);
-    $first_letter = substr($first_segment, 0, 1);
-
-    if($first_letter=='~'){
-
-        //IDEATION
-        return 12273;
-
-    } elseif($first_letter=='@'){
-
-        //IDEATION
-        return 12274;
-
-    } elseif(strlen($first_segment) && !array_key_exists($first_segment, $CI->config->item('handle___6287'))){
-
-        //DISCOVERY
-        return 6255;
-
-    } else {
-
-        //Source/App:
-        return 12274;
-
-    }
-
-}
 
 function map_primary_links($link_id){
 
@@ -479,7 +441,7 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
             $return_i__id = $x_progress['x__previous'];
 
             //We can only handle 1 question for now
-            //TODO If multiple questions found, see which one is within top_i__id
+            //TODO If multiple questions found, see which one is within target_i__id
             break;
 
         }
@@ -1049,7 +1011,7 @@ function js_reload($timer = 1){
 }
 
 
-function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
+function generate_handle($focus__card, $str, $suggestion = null, $increment = 1){
     //Generates a Suitable Handle from the title:
 
     //Previous suggestion did not work, let's tweak and try again:
@@ -1081,17 +1043,17 @@ function generate_handle($s__type, $str, $suggestion = null, $increment = 1){
     }
 
     if(strlen($suggestion)<4 || is_numeric($suggestion)){
-        $suggestion = ( $s__type==12273 ? 'Idea' : 'Source' ).$suggestion;
+        $suggestion = ( $focus__card==12273 ? 'Idea' : 'Source' ).$suggestion;
     }
 
 
     //Make sure no duplicates:
     $CI =& get_instance();
-    if($s__type==12273 && count($CI->I_model->fetch(array(
+    if($focus__card==12273 && count($CI->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($suggestion),
         )))){
         return generate_handle(12273, $str, $suggestion, $increment);
-    } elseif($s__type==12274 && count($CI->E_model->fetch(array(
+    } elseif($focus__card==12274 && count($CI->E_model->fetch(array(
             'LOWER(e__handle)' => strtolower($suggestion),
         )))){
         return generate_handle(12274, $str, $suggestion, $increment);
@@ -1425,8 +1387,8 @@ function email_ticket($x__id, $i__hashtag, $x__creator){
     $additional_info = '';
     foreach($CI->X_model->fetch(array(
         'x__id' => $x__id,
-    ), array('x__next')) as $top_i){
-        $additional_info = ' for '.view_i_title($top_i, true);
+    ), array('x__next')) as $target_i){
+        $additional_info = ' for '.view_i_title($target_i, true);
         break;
     }
 
@@ -1813,28 +1775,28 @@ function public_app($e){
     $CI =& get_instance();
     return in_array($e['e__privacy'], $CI->config->item('n___7357')) && !in_array($e['e__id'], $CI->config->item('n___32141'));
 }
-function flag_for_search_indexing($s__type = null, $s__id = 0) {
+function flag_for_search_indexing($focus__card = null, $s__id = 0) {
 
     $CI =& get_instance();
 
-    if($s__type && !in_array($s__type , $CI->config->item('n___12761'))){
+    if($focus__card && !in_array($focus__card , $CI->config->item('n___12761'))){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($s__type && !$s__id) || ($s__id && !$s__type)){
+    } elseif(($focus__card && !$s__id) || ($s__id && !$focus__card)){
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
         );
     }
 
-    if($s__type==12273){
+    if($focus__card==12273){
         //Update idea flag
         $CI->I_model->update($s__id, array(
             'i__flag' => true,
         ));
-    } elseif($s__type==12274){
+    } elseif($focus__card==12274){
         //Update idea flag
         $CI->E_model->update($s__id, array(
             'e__flag' => true,
@@ -1849,7 +1811,7 @@ function search_enabled(){
 }
 
 
-function update_algolia($s__type = null, $s__id = 0) {
+function update_algolia($focus__card = null, $s__id = 0) {
 
     if(!search_enabled()){
         console.log("Search engine is disabled!");
@@ -1864,12 +1826,12 @@ function update_algolia($s__type = null, $s__id = 0) {
      *
      * */
 
-    if($s__type && !in_array($s__type , $CI->config->item('n___12761'))){
+    if($focus__card && !in_array($focus__card , $CI->config->item('n___12761'))){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($s__type && !$s__id) || ($s__id && !$s__type)){
+    } elseif(($focus__card && !$s__id) || ($s__id && !$focus__card)){
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
@@ -1884,10 +1846,10 @@ function update_algolia($s__type = null, $s__id = 0) {
     $limits = array();
 
 
-    if($s__type==12273){
+    if($focus__card==12273){
         $focus_field_id = 'i__id';
         $focus_field_privacy = 'i__privacy';
-    } elseif($s__type==12274 || $s__type==6287){
+    } elseif($focus__card==12274 || $focus__card==6287){
         $focus_field_id = 'e__id';
         $focus_field_privacy = 'e__privacy';
     }
@@ -1899,10 +1861,10 @@ function update_algolia($s__type = null, $s__id = 0) {
 
 
     //Which objects are we fetching?
-    if ($s__type) {
+    if ($focus__card) {
 
         //We'll only fetch a specific type:
-        $fetch_objects = array($s__type);
+        $fetch_objects = array($focus__card);
 
     } else {
 
@@ -1973,16 +1935,16 @@ function update_algolia($s__type = null, $s__id = 0) {
             //Update Weight if single update:
             if($s__id){
                 //Update weight before updating this object:
-                if($s__type==12273){
+                if($focus__card==12273){
                     i__weight_calculator($s);
-                } elseif($s__type==12274){
+                } elseif($focus__card==12274){
                     e__weight_calculator($s);
                 }
             }
 
 
             //Attempt to fetch Algolia object ID from object Metadata:
-            if($s__type){
+            if($focus__card){
 
                 if (intval($s['algolia__id']) > 0) {
                     //We found it! Let's just update existing algolia record
@@ -2164,7 +2126,7 @@ function update_algolia($s__type = null, $s__id = 0) {
     }
 
     //Now let's see what to do with the index (Update, Create or delete)
-    if ($s__type) {
+    if ($focus__card) {
 
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on
 
@@ -2203,11 +2165,11 @@ function update_algolia($s__type = null, $s__id = 0) {
                 //Now update local database with the new objectIDs:
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs'])==1 ) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        if ($s__type==12273) {
+                        if ($focus__card==12273) {
                             $CI->I_model->update($all_db_rows[$key][$focus_field_id], array(
                                 'algolia__id' => $algolia_id,
                             ));
-                        } elseif ($s__type==12274) {
+                        } elseif ($focus__card==12274) {
                             $CI->E_model->update($all_db_rows[$key][$focus_field_id], array(
                                 'algolia__id' => $algolia_id,
                             ));
