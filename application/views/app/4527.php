@@ -198,6 +198,6 @@ echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><s
 //$route['(?i)Memory'] = "app/load/4527";
 
 //Show:
-echo '<textarea class="mono-space" style="background-color: #FFFFFF; color:#000000 !important; padding:20px; font-size:0.8em; height:377px; width: 100%; border-radius: 0px;">'.$memory_text.'</textarea>';
+echo '<textarea class="mono-space table_frame">'.$memory_text.'</textarea>';
 
-echo '<textarea class="mono-space" style="background-color: #FFFFFF; color:#000000 !important; padding:20px; font-size:0.8em; height:233px; width: 100%; border-radius: 0px;">'.$routes_text.'</textarea>';
+echo '<textarea class="mono-space table_frame">'.$routes_text.'</textarea>';
