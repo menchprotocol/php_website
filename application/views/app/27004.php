@@ -59,7 +59,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__previous' => $i['i__id'],
-        ), array(), 0, 0, array('x__creator' => 'ASC')) as $x){
+        ), array(), 0, 0, array('x__player' => 'ASC')) as $x){
 
             $x__metadata = unserialize($x['x__metadata']);
             $total_transactions++;
@@ -121,7 +121,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
             }
 
             $item_parts = explode('-',$x__metadata['item_number']);
-            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__creator'] );
+            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__player'] );
             array_push($all_e, $this_e);
             $es = $this->E_model->fetch(array(
                 'e__id' => $this_e,

@@ -6,7 +6,6 @@ if(isset($_GET['i__hashtag'])){
     $player_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0));
     if(!$player_result['status']) {
         $this->X_model->create(array(
-            'x__app' => 14564,
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'auth0_callback() Failed to create new member: '.$player_result['message'],
         ));
@@ -81,9 +80,8 @@ if(isset($_GET['i__hashtag'])){
         }
 
         $this->X_model->create(array(
-            'x__app' => 14564,
             'x__type' => 14436, //Social Sign in
-            'x__creator' => ( count($player_emails) ? $player_emails[0]['e__id'] : 0 ),
+            'x__player' => ( count($player_emails) ? $player_emails[0]['e__id'] : 0 ),
             'x__following' => $signin_method,
             'x__metadata' => array(
                 'auth0_getUser' => $userInfo,
@@ -108,7 +106,6 @@ if(isset($_GET['i__hashtag'])){
         if(strlen($userInfo)) {
             //Log this error:
             $this->X_model->create(array(
-                'x__app' => 14564,
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'APP @14564 Failed to fetch data from server',
                 'x__metadata' => array(

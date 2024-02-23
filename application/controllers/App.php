@@ -18,17 +18,17 @@ class App extends CI_Controller
         $this->load(14565);
     }
 
-    function load($app_e__id, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
+    function load($x__app, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
             //Since we don't have the memory created we must load the app that does so:
-            $app_e__id = 4527;
+            $x__app = 4527;
         }
 
         //Any ideas passed?
         $warning_alerts = '';
-        $e = null; //Sourcing
+        $focus_e = null; //Sourcing
         $focus_i = null; //Ideation/Discovery
         $target_i = null; //Discovery
 
@@ -72,7 +72,7 @@ class App extends CI_Controller
                     $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
                 }
             }
-            if($app_e__id==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
+            if($x__app==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
                 //Adjust URL Case Sensitive:
                 return redirect_message(view_memory(42903,33286).$focus_i['i__hashtag']);
             }
@@ -83,9 +83,9 @@ class App extends CI_Controller
             foreach($this->E_model->fetch(array(
                 'LOWER(e__handle)' => strtolower($_GET['e__handle']),
             )) as $e_found){
-                $e = $e_found;
+                $focus_e = $e_found;
             }
-            if(!$e){
+            if(!$focus_e){
 
                 //See if we need to lookup the ID:
                 if(is_numeric($_GET['e__handle'])){
@@ -93,26 +93,26 @@ class App extends CI_Controller
                     foreach ($this->E_model->fetch(array(
                         'e__id' => $_GET['e__handle'],
                     )) as $e_found){
-                        $e = $e_found;
+                        $focus_e = $e_found;
                     }
                 }
 
-                if(!$e){
+                if(!$focus_e){
                     $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤔</div>';
                 }
             }
-            if($app_e__id==42902 && $e && $e['e__handle']!==$_GET['e__handle']){
+            if($x__app==42902 && $focus_e && $focus_e['e__handle']!==$_GET['e__handle']){
                 //Adjust URL Case Sensitive:
-                return redirect_message(view_memory(42903,42902).$e['e__handle']);
+                return redirect_message(view_memory(42903,42902).$focus_e['e__handle']);
             }
         }
 
 
 
         //Validate App
-        if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
-            foreach($this->E_model->fetch(array('e__id' => $app_e__id)) as $e){
-                return redirect_message(view_memory(42903,42902).$e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$e['e__handle'].' Is not an APP, yet 🤔</div>');
+        if($memory_detected && !in_array($x__app, $this->config->item('n___6287'))){
+            foreach($this->E_model->fetch(array('e__id' => $x__app)) as $this_e){
+                return redirect_message(view_memory(42903,42902).$this_e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$this_e['e__handle'].' Is not an APP, yet 🤔</div>');
             }
         }
 
@@ -130,7 +130,7 @@ class App extends CI_Controller
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
 
-        if(in_array($app_e__id, $this->config->item('n___42920'))){
+        if(in_array($x__app, $this->config->item('n___42920'))){
             boost_power();
         }
 
@@ -140,13 +140,13 @@ class App extends CI_Controller
             $player_e = superpower_unlocked();
 
             //Auto Login?
-            if(isset($_GET['e__hash']) && isset($_GET['e__time']) && $e){
+            if(isset($_GET['e__hash']) && isset($_GET['e__time']) && $focus_e){
 
                 //Validate Hash:
-                if($_GET['e__hash'] == view__hash($_GET['e__time'].$e['e__handle'])){
+                if($_GET['e__hash'] == view__hash($_GET['e__time'].$focus_e['e__handle'])){
 
-                    $this->X_model->x_read_only_complete($e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
-                    $this->X_model->mark_complete(29393, $e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
+                    $this->X_model->x_read_only_complete($focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
+                    $this->X_model->mark_complete(29393, $focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
 
                     //Inform user of changes:
                     $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Idea has been discovered</div>';
@@ -165,7 +165,7 @@ class App extends CI_Controller
 
 
 
-            $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
+            $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$x__app]['m__following']);
             if($is_u_request && count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 if(!$player_e){
                     //No user, maybe they can login to get it:
@@ -180,28 +180,28 @@ class App extends CI_Controller
 
         }
 
-        $x__creator = ( $is_u_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+        $x__player = ( $is_u_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
 
 
         //MEMBER REDIRECT?
-        if($player_e && in_array($app_e__id, $this->config->item('n___14639'))){
+        if($player_e && in_array($x__app, $this->config->item('n___14639'))){
             //Should redirect them:
             return redirect_message(view_memory(42903,42902).$player_e['e__handle']);
-        } elseif(!$player_e && in_array($app_e__id, $this->config->item('n___14740'))){
+        } elseif(!$player_e && in_array($x__app, $this->config->item('n___14740'))){
             //Should redirect them:
-            return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
+            return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$x__app]['m__title'].'</b></div>');
         }
 
 
 
         $x_completes = array();
-        if($player_e && $app_e__id==30795) {
+        if($player_e && $x__app==30795) {
 
             //Fetch discovery
             $x_completes = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $player_e['e__id'],
+                'x__player' => $player_e['e__id'],
                 'x__previous' => $focus_i['i__id'],
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ), array('x__next'));
@@ -254,27 +254,24 @@ class App extends CI_Controller
 
         //Cache App?
         $x__previous = ( $focus_i ? $focus_i['i__id'] : 0 );
-        $x__follower = ( $e ? $e['e__id'] : 0 );
+        $x__follower = ( $focus_e ? $focus_e['e__id'] : 0 );
         $title = null;
         $ui = null;
         $new_cache = false;
         $cache_x__id = 0;
         $cache_x__time = null;
         if($memory_detected){
+            
+            $title = $e___6287[$x__app]['m__title'];
 
-            $es = $this->E_model->fetch(array(
-                'e__id' => $app_e__id,
-            ));
-            $title = $e___6287[$app_e__id]['m__title'];
-
-            if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
+            if(in_array($x__app, $this->config->item('n___14599')) && !in_array($x__app, $this->config->item('n___12741'))){
 
                 if(!isset($_GET['reset_cache'])){
                     //Fetch Most Recent Cache:
                     foreach($this->X_model->fetch(array(
                         'x__website' => website_setting(0),
                         'x__type' => 14599, //Cache App
-                        'x__following' => $app_e__id,
+                        'x__following' => $x__app,
                         'x__previous' => $x__previous,
                         'x__follower' => $x__follower,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
@@ -298,62 +295,70 @@ class App extends CI_Controller
         if(!$ui){
 
             //Prep view:
-            $raw_app = $this->load->view('app/'.$app_e__id, array(
-                'app_e__id' => $app_e__id,
-                'x__creator' => $x__creator,
+            $raw_app = $this->load->view('app/'.$x__app, array(
+                'app_e__id' => $x__app,
+                'x__player' => $x__player,
                 'player_e' => $player_e,
                 'is_u_request' => $is_u_request,
                 'memory_detected' => $memory_detected,
-                'e' => $e,
+                'focus_e' => $focus_e,
                 'focus_i' => $focus_i,
                 'target_i' => $target_i,
                 'x_completes' => $x_completes,
-
             ), true);
 
-            if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
-                $ui .= '<h1>' . $e___6287[$app_e__id]['m__title'] . '</h1>';
+            if($memory_detected && !in_array($x__app, $this->config->item('n___14597'))){
+                $ui .= '<h1>' . $e___6287[$x__app]['m__title'] . '</h1>';
             }
             $ui .= $raw_app;
         }
 
         if($new_cache){
             $cache_x = $this->X_model->create(array(
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__type' => 14599, //Cache App
-                'x__following' => $app_e__id,
+                'x__following' => $x__app,
                 'x__message' => $ui,
                 'x__previous' => $x__previous,
                 'x__follower' => $x__follower,
             ));
             $cache_x__id = $cache_x['x__id'];
         }
-
-
+        
 
         //Log App Load:
-        $log_data = array(
-            'x__creator' => $x__creator,
-            'x__type' => 14067, //APP LOADED
-            'x__following' => $app_e__id,
+        $interaction = array(
+            'x__player' => $x__player,
+            'x__type' => 14067, //APP LOADED $x__app
+            'x__following' => $x__app,
             'x__reference' => $cache_x__id,
             'x__metadata' => array(
                 '$_GET' => $_GET,
                 '$_POST' => $_POST,
+                'REQUEST' => $_REQUEST,
             ),
         );
+
+        //Called when the paypal payment is complete:
+        $this->X_model->create(array(
+            'x__type' => 27901,
+            'x__metadata' => array(
+                'POST' => $_POST,
+                'GET' => $_GET,
+            ),
+        ));
 
         //Append additional info for members:
         if($is_u_request){
 
-            $log_data['x__message'] = current_link();
+            $interaction['x__message'] = current_link();
 
             //Any more data to append?
             if(isset($_GET['e__handle']) && strlen($_GET['e__handle'])){
                 foreach($this->E_model->fetch(array(
                     'LOWER(e__handle)' => strtolower($_GET['e__handle']),
                 )) as $e){
-                    $log_data['x__follower'] = $e['e__id'];
+                    $interaction['x__follower'] = $e['e__id'];
                     $title = $e['e__title'].' | '.$title;
                 }
             }
@@ -362,13 +367,14 @@ class App extends CI_Controller
                 foreach($this->I_model->fetch(array(
                     'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
                 )) as $i_this){
-                    $log_data['x__previous'] = $i_this['i__id'];
+                    $interaction['x__previous'] = $i_this['i__id'];
                     $title = view_i_title($i_this, true).' | '.$title;
                 }
             }
         }
 
-        $x = $this->X_model->create($log_data);
+        //Log Interaction:
+        $this->X_model->create($interaction);
 
         //Delivery App
         if(!$memory_detected){
@@ -377,21 +383,21 @@ class App extends CI_Controller
 
         } else {
 
-            if(in_array($app_e__id, $this->config->item('n___12741'))){
+            if(in_array($x__app, $this->config->item('n___12741'))){
 
                 //Raw UI:
                 echo $raw_app;
 
             } else {
 
-                $basic_header = intval(in_array($app_e__id, $this->config->item('n___14562')));
+                $basic_header = intval(in_array($x__app, $this->config->item('n___14562')));
 
                 //Regular UI:
                 //Load App:
                 echo $this->load->view('header', array(
                     'title' => $title,
                     'basic_header_footer' => $basic_header,
-                    'app_e__id' => $app_e__id,
+                    'app_e__id' => $x__app,
                     'flash_message' => $flash_message,
                 ), true);
                 echo $ui;

@@ -10,7 +10,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__id' => $_GET['x__id'],
             'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-        ), array('x__creator'), 0) as $x){
+        ), array('x__player'), 0) as $x){
 
             //Show Header:
             foreach($this->I_model->fetch(array(
@@ -116,7 +116,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'x__previous' => $i['i__id'],
-                    ), array('x__creator'), 0) as $x){
+                    ), array('x__player'), 0) as $x){
 
                         //Make sure this member qualified:
                         if(count($must_follow)>0 && count($must_follow)!=count($this->X_model->fetch(array(
@@ -240,7 +240,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             //Send to everyone who has not received an email yet:
             if (!count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],
-                'x__creator' => $x['e__id'],
+                'x__player' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))) {
@@ -252,7 +252,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     $discoveries = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__creator' => $x['e__id'],
+                        'x__player' => $x['e__id'],
                         'x__previous' => $down_or['i__id'],
                     ));
                     //Has this user discovered this idea or no?

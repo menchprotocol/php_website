@@ -29,14 +29,14 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansions
         'x__previous' => $expires['i__id'],
-    ), array('x__creator'), 0) as $x_progress){
+    ), array('x__player'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
             'x__previous' => $x_progress['x__next'],
-            'x__creator' => $x_progress['e__id'],
+            'x__player' => $x_progress['e__id'],
         ));
         $seconds_left = intval( intval( $expires['x__message']) + $buffer_time - (time() - strtotime($x_progress['x__time'])));
 
@@ -48,7 +48,7 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
                 'x__previous' => $expires['i__id'],
-                'x__creator' => $x_progress['e__id'],
+                'x__player' => $x_progress['e__id'],
             ), array(), 0) as $delete){
 
                 $deleted = true;

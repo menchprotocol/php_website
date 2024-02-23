@@ -78,7 +78,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
             ), array(), 0) as $x){
                 if(!count($this->X_model->fetch(array(
                     'x__following' => $e_append['e__id'],
-                    'x__follower' => $x['x__creator'],
+                    'x__follower' => $x['x__player'],
                     'x__message' => $x['x__message'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -86,9 +86,9 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
                     //Add source link:
                     $completed++;
                     $this->X_model->create(array(
-                        'x__creator' => ($player_e ? $player_e['e__id'] : $x['x__creator']),
+                        'x__player' => ($player_e ? $player_e['e__id'] : $x['x__player']),
                         'x__following' => $e_append['e__id'],
-                        'x__follower' => $x['x__creator'],
+                        'x__follower' => $x['x__player'],
                         'x__message' => $x['x__message'],
                         'x__type' => 4251,
                     ));

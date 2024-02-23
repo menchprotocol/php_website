@@ -67,7 +67,7 @@ if(isset($_GET['i__hashtag'])){
 
                     //Log transaction:
                     $this->X_model->create(array(
-                        'x__creator' => $map_user['e__id'],
+                        'x__player' => $map_user['e__id'],
                         'x__type' => 32603,
                         'x__previous' => $i_sign['i__id'],
                     ));

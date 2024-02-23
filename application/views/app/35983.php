@@ -35,7 +35,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
                     $added_emails++;
                     $this->X_model->create(array(
                         'x__type' => 4251,
-                        'x__creator' => $player_e['e__id'],
+                        'x__player' => $player_e['e__id'],
                         'x__following' => $_POST['import_e__id'],
                         'x__follower' => $e_data['x__follower'],
                     ));

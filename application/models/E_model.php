@@ -40,7 +40,7 @@ class E_model extends CI_Model
         $this->X_model->create(array(
             'x__following' => 4430, //Subscriber
             'x__type' => 4251,
-            'x__creator' => $e__id,
+            'x__player' => $e__id,
             'x__follower' => $e__id,
             'x__website' => $x__website,
         ));
@@ -81,7 +81,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__type' => 4251,
                 'x__following' => 4430, //Active Member
-                'x__creator' => $e['e__id'],
+                'x__player' => $e['e__id'],
                 'x__follower' => $e['e__id'],
             ));
         }
@@ -100,7 +100,7 @@ class E_model extends CI_Model
             }
 
             $this->X_model->create(array(
-                'x__creator' => $e['e__id'],
+                'x__player' => $e['e__id'],
                 'x__type' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* MEMBER SIGN */ ),
             ));
 
@@ -221,7 +221,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__type' => 4251,
                 'x__following' => 4430, //Active Member
-                'x__creator' => $e['e__id'],
+                'x__player' => $e['e__id'],
                 'x__follower' => $e['e__id'],
             ));
             $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
@@ -243,7 +243,7 @@ class E_model extends CI_Model
             'x__message' => $x__message,
         )))){
             $this->X_model->create(array(
-                'x__creator' => $x__follower, //Belongs to this Member
+                'x__player' => $x__follower, //Belongs to this Member
                 'x__type' => 4251,
                 'x__message' => $x__message,
                 'x__following' => $x__following,
@@ -336,7 +336,7 @@ class E_model extends CI_Model
                 'x__type' => 4251,
                 'x__message' => trim(strtolower($email)),
                 'x__following' => 3288, //Email
-                'x__creator' => $added_e['new_e']['e__id'],
+                'x__player' => $added_e['new_e']['e__id'],
                 'x__follower' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
             ));
@@ -348,7 +348,7 @@ class E_model extends CI_Model
                 'x__following' => 4783, //Phone
                 'x__type' => 4251,
                 'x__message' => $phone_number,
-                'x__creator' => $added_e['new_e']['e__id'],
+                'x__player' => $added_e['new_e']['e__id'],
                 'x__follower' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
             ));
@@ -364,7 +364,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__following' => 14938, //Guest
                 'x__type' => 4251,
-                'x__creator' => $added_e['new_e']['e__id'],
+                'x__player' => $added_e['new_e']['e__id'],
                 'x__follower' => $added_e['new_e']['e__id'],
                 'x__website' => $x__website,
             ));
@@ -416,11 +416,11 @@ class E_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__creator = 14068, $skip_creator_link = false)
+    function create($add_fields, $x__player = 14068, $skip_creator_link = false)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('e__title'), $x__creator)) {
+        if (detect_missing_columns($add_fields, array('e__title'), $x__player)) {
             return false;
         }
 
@@ -442,7 +442,7 @@ class E_model extends CI_Model
         if ($add_fields['e__id'] > 0) {
 
             //Log transaction new source:
-            $creator = ($x__creator > 0 ? $x__creator : $add_fields['e__id']);
+            $creator = ($x__player > 0 ? $x__player : $add_fields['e__id']);
             if(!$skip_creator_link && $creator!=$add_fields['e__id'] && !count($this->X_model->fetch(array(
                     'x__following' => $creator,
                     'x__follower' => $add_fields['e__id'],
@@ -450,7 +450,7 @@ class E_model extends CI_Model
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 $this->X_model->create(array(
-                    'x__creator' => $creator,
+                    'x__player' => $creator,
                     'x__following' => $creator,
                     'x__follower' => $add_fields['e__id'],
                     'x__type' => 4251, //New Source Created
@@ -460,7 +460,7 @@ class E_model extends CI_Model
 
             //Log transaction new Idea hashtag:
             $this->X_model->create(array(
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__next' => $add_fields['e__id'],
                 'x__message' => $add_fields['e__handle'],
                 'x__type' => 42169, //Source Generated Handle
@@ -480,10 +480,10 @@ class E_model extends CI_Model
 
             //Ooopsi, something went wrong!
             $this->X_model->create(array(
-                'x__following' => $x__creator,
+                'x__following' => $x__player,
                 'x__message' => 'create() failed to create a new source',
                 'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__metadata' => $add_fields,
             ));
             return false;
@@ -599,7 +599,7 @@ class E_model extends CI_Model
         return $flat_items;
     }
 
-    function update($id, $update_columns, $external_sync = false, $x__creator = 0, $x__type = 0)
+    function update($id, $update_columns, $external_sync = false, $x__player = 0, $x__type = 0)
     {
 
         $id = intval($id);
@@ -608,7 +608,7 @@ class E_model extends CI_Model
         }
 
         //Fetch current source filed values so we can compare later on after we've updated it:
-        if($x__creator > 0){
+        if($x__player > 0){
             $before_data = $this->E_model->fetch(array('e__id' => $id));
         }
 
@@ -618,7 +618,7 @@ class E_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $x__creator > 0) {
+        if ($affected_rows > 0 && $x__player > 0) {
 
             if($external_sync){
                 //Sync algolia:
@@ -667,7 +667,7 @@ class E_model extends CI_Model
 
                 //Value has changed, log transaction:
                 $this->X_model->create(array(
-                    'x__creator' => ($x__creator > 0 ? $x__creator : $id),
+                    'x__player' => ($x__player > 0 ? $x__player : $id),
                     'x__type' => $x__type,
                     'x__follower' => $id,
                     'x__message' => $x__message,
@@ -687,7 +687,7 @@ class E_model extends CI_Model
             $this->X_model->create(array(
                 'x__follower' => $id,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__message' => 'update() Failed to update',
                 'x__metadata' => array(
                     'input' => $update_columns,
@@ -700,14 +700,14 @@ class E_model extends CI_Model
     }
 
 
-    function radio_set($e_up_bucket_id, $set_e_down_id, $x__creator)
+    function radio_set($e_up_bucket_id, $set_e_down_id, $x__player)
     {
 
         /*
          * Treats an source follower group as a drop down menu where:
          *
          *  $e_up_bucket_id is the followings of the drop down
-         *  $x__creator is the member source ID that one of the followers of $e_up_bucket_id should be assigned (like a drop down)
+         *  $x__player is the member source ID that one of the followers of $e_up_bucket_id should be assigned (like a drop down)
          *  $set_e_down_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like Member communication levels
@@ -729,7 +729,7 @@ class E_model extends CI_Model
         $previously_assigned = ($set_e_down_id < 1);
         $x_update_id = 0;
         foreach($this->X_model->fetch(array(
-            'x__follower' => $x__creator,
+            'x__follower' => $x__player,
             'x__following IN (' . join(',', $followers) . ')' => null, //Current followers
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), view_memory(6404,11064)) as $x) {
@@ -743,7 +743,7 @@ class E_model extends CI_Model
                 //Do not log update transaction here as we would log it further below:
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
-                ), $x__creator, 6224 /* Member Account Updated */);
+                ), $x__player, 6224 /* Member Account Updated */);
             }
 
         }
@@ -753,8 +753,8 @@ class E_model extends CI_Model
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->X_model->create(array(
-                'x__creator' => $x__creator,
-                'x__follower' => $x__creator,
+                'x__player' => $x__player,
+                'x__follower' => $x__player,
                 'x__following' => $set_e_down_id,
                 'x__type' => 4251,
                 'x__reference' => $x_update_id,
@@ -792,7 +792,7 @@ class E_model extends CI_Model
                 $duplicates_removed++;
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173,
-                ), $x['x__creator'], 29331); //Duplicate Link Removed
+                ), $x['x__player'], 29331); //Duplicate Link Removed
             } else {
                 //Add it to main list:
                 array_push($current_up, array(
@@ -810,7 +810,7 @@ class E_model extends CI_Model
     }
 
 
-    function remove($e__id, $x__creator = 0, $migrate_s__handle = null){
+    function remove($e__id, $x__player = 0, $migrate_s__handle = null){
 
         if($e__id<1){
             return 0;
@@ -833,7 +833,7 @@ class E_model extends CI_Model
 
                 //Migrate Transactions:
                 foreach($this->X_model->fetch(array( //Idea Transactions
-                    '(x__following = '.$e__id.' OR x__follower = '.$e__id.' OR x__creator = '.$e__id.')' => null,
+                    '(x__following = '.$e__id.' OR x__follower = '.$e__id.' OR x__player = '.$e__id.')' => null,
                 ), array(), 0) as $x){
 
                     //Make sure not duplicate, if so, delete:
@@ -856,9 +856,9 @@ class E_model extends CI_Model
                         $filters['x__follower'] = $es[0]['e__id'];
                         $update_filter['x__follower'] = $es[0]['e__id'];
                     }
-                    if($x['x__creator']==$e__id){
-                        $filters['x__creator'] = $es[0]['e__id'];
-                        $update_filter['x__creator'] = $es[0]['e__id'];
+                    if($x['x__player']==$e__id){
+                        $filters['x__player'] = $es[0]['e__id'];
+                        $update_filter['x__player'] = $es[0]['e__id'];
                     }
 
                     if(0 && count($this->X_model->fetch($filters))){
@@ -866,12 +866,12 @@ class E_model extends CI_Model
                         //There is a duplicate of this, no point to migrate! Just Remove:
                         $this->X_model->update($x['x__id'], array(
                             'x__privacy' => 6173,
-                        ), $x__creator, 31784 /* Source Link Migrated */);
+                        ), $x__player, 31784 /* Source Link Migrated */);
 
                     } else {
 
                         //Always Migrate for now
-                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__creator, 31784 /* Source Link Migrated */);
+                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__player, 31784 /* Source Link Migrated */);
 
                     }
 
@@ -892,9 +892,9 @@ class E_model extends CI_Model
                         ));
                     }
 
-                    if($x['x__creator']==$e__id){
+                    if($x['x__player']==$e__id){
                         $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__creator' => $es[0]['e__id'],
+                            'x__player' => $es[0]['e__id'],
                         ));
                     }
 
@@ -911,12 +911,12 @@ class E_model extends CI_Model
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'x__type !=' => 10673, //Member Transaction Unpublished
-                '(x__follower = ' . $e__id . ' OR x__following = ' . $e__id . ' OR x__creator = ' . $e__id . ')' => null,
+                '(x__follower = ' . $e__id . ' OR x__following = ' . $e__id . ' OR x__player = ' . $e__id . ')' => null,
             ), array(), 0) as $adjust_tr){
                 //Delete this transaction:
                 $x_adjusted += $this->X_model->update($adjust_tr['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
-                ), $x__creator, 10673 /* Member Transaction Unpublished */);
+                ), $x__player, 10673 /* Member Transaction Unpublished */);
             }
 
         }
@@ -925,7 +925,7 @@ class E_model extends CI_Model
     }
 
 
-    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $x__creator)
+    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $x__player)
     {
 
         //Alert: Has a twin function called i_mass_update()
@@ -982,7 +982,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $action_command1 . $x['e__title'],
-                ), true, $x__creator);
+                ), true, $x__player);
 
                 $applied_success++;
 
@@ -990,7 +990,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => $x['e__title'] . $action_command1,
-                ), true, $x__creator);
+                ), true, $x__player);
 
                 $applied_success++;
 
@@ -1012,7 +1012,7 @@ class E_model extends CI_Model
                     if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0)){
 
                         $add_fields = array(
-                            'x__creator' => $x__creator,
+                            'x__player' => $x__player,
                             'x__type' => 4251,
                             'x__follower' => $x['e__id'], //This follower source
                             'x__following' => $e['e__id'],
@@ -1032,7 +1032,7 @@ class E_model extends CI_Model
                             //Since we're migrating we should remove from here:
                             $this->X_model->update($x['x__id'], array(
                                 'x__privacy' => 6173, //Transaction Deleted
-                            ), $x__creator, 10673 /* Member Transaction Unpublished  */);
+                            ), $x__player, 10673 /* Member Transaction Unpublished  */);
                         }
 
                     } elseif(in_array($action_e__id, array(5982, 11956)) && count($down_up_e) > 0){
@@ -1043,7 +1043,7 @@ class E_model extends CI_Model
                             foreach($down_up_e as $delete_tr){
                                 $this->X_model->update($delete_tr['x__id'], array(
                                     'x__privacy' => 6173, //Transaction Deleted
-                                ), $x__creator, 10673 /* Member Transaction Unpublished  */);
+                                ), $x__player, 10673 /* Member Transaction Unpublished  */);
                                 $applied_success++;
                             }
 
@@ -1054,7 +1054,7 @@ class E_model extends CI_Model
                             )) as $e){
                                 //Add as a followings because it meets the condition
                                 $this->X_model->create(array(
-                                    'x__creator' => $x__creator,
+                                    'x__player' => $x__player,
                                     'x__type' => 4251,
                                     'x__follower' => $x['e__id'], //This follower source
                                     'x__following' => $e['e__id'],
@@ -1069,7 +1069,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
-                ), true, $x__creator);
+                ), true, $x__player);
 
                 $applied_success++;
 
@@ -1077,7 +1077,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => $action_command1,
-                ), true, $x__creator);
+                ), true, $x__player);
 
                 $applied_success++;
 
@@ -1085,7 +1085,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),
-                ), true, $x__creator);
+                ), true, $x__player);
 
                 $applied_success++;
 
@@ -1093,7 +1093,7 @@ class E_model extends CI_Model
 
                 $this->E_model->update($x['e__id'], array(
                     'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),
-                ), true, $x__creator);
+                ), true, $x__player);
 
                 $applied_success++;
 
@@ -1103,7 +1103,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $new_message,
-                ), $x__creator, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                ), $x__player, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
 
@@ -1111,7 +1111,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__message' => $action_command1,
-                ), $x__creator, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                ), $x__player, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
 
@@ -1119,13 +1119,13 @@ class E_model extends CI_Model
 
                 //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
-                    $this->E_model->remove($x['e__id'], $x__creator);
+                    $this->E_model->remove($x['e__id'], $x__player);
                 }
 
                 //Update Matching Member Status:
                 $this->E_model->update($x['e__id'], array(
                     'e__privacy' => $action_command2,
-                ), true, $x__creator);
+                ), true, $x__player);
 
                 $applied_success++;
 
@@ -1133,7 +1133,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => $action_command2,
-                ), $x__creator, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
+                ), $x__player, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
 
                 $applied_success++;
 
@@ -1141,7 +1141,7 @@ class E_model extends CI_Model
 
                 $this->X_model->update($x['x__id'], array(
                     'x__type' => $action_command2,
-                ), $x__creator, 42805);
+                ), $x__player, 42805);
                 $applied_success++;
 
             }
@@ -1149,7 +1149,7 @@ class E_model extends CI_Model
 
         //Log mass source edit transaction:
         $this->X_model->create(array(
-            'x__creator' => $x__creator,
+            'x__player' => $x__player,
             'x__type' => $action_e__id,
             'x__follower' => $e__id,
             'x__metadata' => array(
@@ -1170,7 +1170,7 @@ class E_model extends CI_Model
     }
 
 
-    function verify_create($e__title, $x__creator = 0, $e__cover = null, $skip_creator_link = false){
+    function verify_create($e__title, $x__player = 0, $e__cover = null, $skip_creator_link = false){
 
         //Validate Title
         $validate_e__title = validate_e__title($e__title);
@@ -1182,7 +1182,7 @@ class E_model extends CI_Model
         $focus_e = $this->E_model->create(array(
             'e__title' => $validate_e__title['e__title_clean'],
             'e__cover' => $e__cover,
-        ), $x__creator, $skip_creator_link);
+        ), $x__player, $skip_creator_link);
 
         //Return success:
         return array(

@@ -49,12 +49,12 @@ if(isset($_GET['x__privacy']) && strlen($_GET['x__privacy']) > 0){
     }
 }
 
-if(isset($_GET['x__creator']) && strlen($_GET['x__creator']) > 0){
-    if (substr_count($_GET['x__creator'], ',') > 0) {
+if(isset($_GET['x__player']) && strlen($_GET['x__player']) > 0){
+    if (substr_count($_GET['x__player'], ',') > 0) {
         //This is multiple:
-        $query_filters['( x__creator IN (' . $_GET['x__creator'] . '))'] = null;
-    } elseif (intval($_GET['x__creator']) > 0) {
-        $query_filters['x__creator'] = $_GET['x__creator'];
+        $query_filters['( x__player IN (' . $_GET['x__player'] . '))'] = null;
+    } elseif (intval($_GET['x__player']) > 0) {
+        $query_filters['x__player'] = $_GET['x__player'];
     }
 }
 
@@ -115,7 +115,7 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0){
 
 if($input_e){
     //We need to look for both following/follower
-    $query_filters['( x__follower = ' . $focus_e['e__id'] . ' OR x__following = ' . $focus_e['e__id'] . ' OR x__creator = ' . $focus_e['e__id'] . $followings_tr_filter . ' )'] = null;
+    $query_filters['( x__follower = ' . $focus_e['e__id'] . ' OR x__following = ' . $focus_e['e__id'] . ' OR x__player = ' . $focus_e['e__id'] . $followings_tr_filter . ' )'] = null;
 }
 
 
@@ -269,7 +269,7 @@ echo '<span class="mini-header">ANY SOURCE:</span>';
 echo '<input type="text" name="e__handle" value="' . ( $input_e ? $_GET['e__handle'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
-echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__creator" value="' . ((isset($_GET['x__creator'])) ? $_GET['x__creator'] : '') . '" class="form-control border"></td>';
+echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__player" value="' . ((isset($_GET['x__player'])) ? $_GET['x__player'] : '') . '" class="form-control border"></td>';
 
 echo '<td><span class="mini-header">SOURCE PROFILE:</span><input type="text" name="x__following" value="' . ((isset($_GET['x__following'])) ? $_GET['x__following'] : '') . '" class="form-control border"></td>';
 
@@ -355,7 +355,7 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
 
     echo '<select class="form-control border" name="x__type" id="x__type" class="border" style="width: 100% !important;">';
 
-    if(isset($_GET['x__creator'])) {
+    if(isset($_GET['x__player'])) {
 
         //Fetch details for this member:
         $all_x_count = 0;

@@ -126,9 +126,8 @@ class Ajax extends CI_Controller
             if(count($data_types)!=1) {
                 //This is strange, we are expecting 1 match only report this:
                 $this->X_model->create(array(
-                    'x__app' => 31911,
                     'x__type' => 4246, //Platform Bug Reports
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__following' => 42179, //Dynamic Input Fields
                     'x__follower' => $dynamic_e__id,
                     'x__next' => $i__id,
@@ -221,7 +220,7 @@ class Ajax extends CI_Controller
 
         //Log Modal View:
         $this->X_model->create(array(
-            'x__creator' => $player_e['e__id'],
+            'x__player' => $player_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
             'x__following' => 31911, //Edit Idea
             'x__next' => $i__id,
@@ -555,7 +554,7 @@ class Ajax extends CI_Controller
 
                                     //Add links for this new source:
                                     $this->X_model->create(array(
-                                        'x__creator' => $player_e['e__id'],
+                                        'x__player' => $player_e['e__id'],
                                         'x__following' => $x__type,
                                         'x__follower' => $added_child['new_e']['e__id'],
                                         'x__type' => 4251,
@@ -569,7 +568,7 @@ class Ajax extends CI_Controller
                                 if($child_id){
                                     //Child source found, simply link:
                                     $this->X_model->create(array(
-                                        'x__creator' => $player_e['e__id'],
+                                        'x__player' => $player_e['e__id'],
                                         'x__following' => $child_id,
                                         'x__follower' => $submitted_media['e__id'],
                                         'x__type' => 4251,
@@ -580,7 +579,7 @@ class Ajax extends CI_Controller
 
                                 //Save variable as is:
                                 $this->X_model->create(array(
-                                    'x__creator' => $player_e['e__id'],
+                                    'x__player' => $player_e['e__id'],
                                     'x__following' => $x__type,
                                     'x__follower' => $submitted_media['e__id'],
                                     'x__message' => $target_variable,
@@ -603,7 +602,7 @@ class Ajax extends CI_Controller
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
-                                'x__creator' => $player_e['e__id'],
+                                'x__player' => $player_e['e__id'],
                                 'x__next' => $is[0]['i__id'],
                                 'x__following' => $submitted_media['e__id'],
                                 'x__type' => $submitted_media['media_e__id'],
@@ -621,7 +620,7 @@ class Ajax extends CI_Controller
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
-                                'x__creator' => $player_e['e__id'],
+                                'x__player' => $player_e['e__id'],
                                 'x__following' => $player_e['e__id'],
                                 'x__follower' => $submitted_media['e__id'],
                                 'x__type' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
@@ -638,7 +637,7 @@ class Ajax extends CI_Controller
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         )))){
                             $this->X_model->create(array(
-                                'x__creator' => $player_e['e__id'],
+                                'x__player' => $player_e['e__id'],
                                 'x__following' => $submitted_media['media_e__id'],
                                 'x__follower' => $submitted_media['e__id'],
                                 'x__type' => 4251,
@@ -745,7 +744,7 @@ class Ajax extends CI_Controller
 
                     //Create New Link:
                     $this->X_model->create(array(
-                        'x__creator' => $player_e['e__id'],
+                        'x__player' => $player_e['e__id'],
                         'x__type' => 4983, //Co-Author
                         'x__following' => $dynamic_e__id,
                         'x__next' => $is[0]['i__id'],
@@ -799,14 +798,14 @@ class Ajax extends CI_Controller
         //Also have to add as a comment to another idea?
         if(intval($_POST['next_i__id'])>0 && $_POST['save_x__type']>0){
             $this->X_model->create(array(
-                'x__creator' => $player_e['e__id'],
+                'x__player' => $player_e['e__id'],
                 'x__previous' => $_POST['next_i__id'],
                 'x__next' => $is[0]['i__id'],
                 'x__type' => $_POST['save_x__type'],
             ));
         } elseif(intval($_POST['previous_i__id'])>0 && $_POST['save_x__type']>0){
             $this->X_model->create(array(
-                'x__creator' => $player_e['e__id'],
+                'x__player' => $player_e['e__id'],
                 'x__previous' => $is[0]['i__id'],
                 'x__next' => $_POST['previous_i__id'],
                 'x__type' => $_POST['save_x__type'],
@@ -1229,7 +1228,7 @@ class Ajax extends CI_Controller
                 'x__metadata' => $x['x__metadata'],
             )))){
                 $this->X_model->create(array(
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__weight' => $x['x__weight'],
 
                     'x__type' => $x['x__type'],
@@ -1260,7 +1259,7 @@ class Ajax extends CI_Controller
                 'x__privacy' => $x['x__privacy'],
             )))){
                 $this->X_model->create(array(
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__weight' => $x['x__weight'],
 
                     'x__type' => $x['x__type'],
@@ -1292,7 +1291,7 @@ class Ajax extends CI_Controller
                 'x__privacy' => $x['x__privacy'],
             )))){
                 $this->X_model->create(array(
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__weight' => $x['x__weight'],
 
                     'x__type' => $x['x__type'],
@@ -1439,7 +1438,7 @@ class Ajax extends CI_Controller
 
             //Add Reference:
             $ur2 = $this->X_model->create(array(
-                'x__creator' => $player_e['e__id'],
+                'x__player' => $player_e['e__id'],
                 'x__type' => 4983, //Co-Author
                 'x__following' => $focus_e['e__id'],
                 'x__next' => $fetch_o[0]['i__id'],
@@ -1484,7 +1483,7 @@ class Ajax extends CI_Controller
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 $ur2 = $this->X_model->create(array(
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__type' => 4251,
                     'x__message' => $x__message,
                     'x__follower' => $x__follower,
@@ -1602,7 +1601,7 @@ class Ajax extends CI_Controller
                         //This is strange, we are expecting 1 match only report this:
                         $this->X_model->create(array(
                             'x__type' => 4246, //Platform Bug Reports
-                            'x__creator' => $player_e['e__id'],
+                            'x__player' => $player_e['e__id'],
                             'x__following' => 31912, //Edit Source
                             'x__follower' => $dynamic_e__id,
                             'x__reference' => $_POST['x__id'],
@@ -1614,7 +1613,7 @@ class Ajax extends CI_Controller
                         //Monitor if we ever reach the maximum:
                         $this->X_model->create(array(
                             'x__type' => 4246, //Platform Bug Reports
-                            'x__creator' => $player_e['e__id'],
+                            'x__player' => $player_e['e__id'],
                             'x__following' => 42179, //Dynamic Input Fields
                             'x__follower' => $dynamic_e__id,
                             'x__next' => $_POST['e__id'],
@@ -1759,7 +1758,7 @@ class Ajax extends CI_Controller
 
         //Log Modal View:
         $this->X_model->create(array(
-            'x__creator' => $player_e['e__id'],
+            'x__player' => $player_e['e__id'],
             'x__type' => 14576, //MODAL VIEWED
             'x__following' => 31912, //Edit Source
             'x__follower' => $es[0]['e__id'],
@@ -1894,7 +1893,7 @@ class Ajax extends CI_Controller
 
                 //Create Link:
                 $this->X_model->create(array(
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__type' => 4251,
                     'x__following' => $dynamic_e__id,
                     'x__follower' => $es[0]['e__id'],
@@ -2060,7 +2059,7 @@ class Ajax extends CI_Controller
                 //Add special transaction to monitor unsubscribes:
                 if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
                     $this->X_model->create(array(
-                        'x__creator' => $player_e['e__id'],
+                        'x__player' => $player_e['e__id'],
                         'x__type' => 29648, //Communication Downgraded
                         'x__following' => $_POST['focus__id'],
                         'x__follower' => $_POST['selected_e__id'],
@@ -2127,7 +2126,7 @@ class Ajax extends CI_Controller
             if($_POST['down_e__id']){
                 $stats['added']++;
                 $this->X_model->create(array(
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__following' => $_POST['selected_e__id'],
                     'x__type' => 4251,
                     'x__follower' => $_POST['down_e__id'],
@@ -2142,7 +2141,7 @@ class Ajax extends CI_Controller
                 )))){
                     $stats['added']++;
                     $this->X_model->create(array(
-                        'x__creator' => $player_e['e__id'],
+                        'x__player' => $player_e['e__id'],
                         'x__type' => 4983, //Co-Author
                         'x__following' => $_POST['selected_e__id'],
                         'x__next' => $_POST['right_i__id'],
@@ -2324,7 +2323,7 @@ class Ajax extends CI_Controller
                 'message' => view_unauthorized_message(28714),
             ));
 
-        } elseif(!isset($_POST['x__creator']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
+        } elseif(!isset($_POST['x__player']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
 
             return view_json(array(
                 'status' => 0,
@@ -2335,7 +2334,7 @@ class Ajax extends CI_Controller
 
             $already_added = $this->X_model->fetch(array(
                 'x__following' => $_POST['e__id'],
-                'x__follower' => $_POST['x__creator'],
+                'x__follower' => $_POST['x__player'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array('x__following'));
@@ -2376,8 +2375,8 @@ class Ajax extends CI_Controller
                     //Does not exist, Add:
                     $this->X_model->create(array(
                         'x__following' => $_POST['e__id'],
-                        'x__follower' => $_POST['x__creator'],
-                        'x__creator' => $player_e['e__id'],
+                        'x__follower' => $_POST['x__player'],
+                        'x__player' => $player_e['e__id'],
                         'x__message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : null ),
                         'x__type' => 4251,
                     ));
@@ -2440,7 +2439,7 @@ class Ajax extends CI_Controller
 
 
         //Search for email/phone to see if it exists
-        $x__creator = 0;
+        $x__player = 0;
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
@@ -2449,7 +2448,7 @@ class Ajax extends CI_Controller
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
         ), array('x__follower')) as $map_e){
             $u = $map_e;
-            $x__creator = $map_e['e__id'];
+            $x__player = $map_e['e__id'];
             break;
         }
 
@@ -2467,12 +2466,12 @@ class Ajax extends CI_Controller
         if($valid_email) {
 
             //Email:
-            send_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $x__creator, array(), 0, 0, false);
+            send_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $x__player, array(), 0, 0, false);
 
 
             //Log new key:
             $this->X_model->create(array(
-                'x__creator' => $x__creator, //Member making request
+                'x__player' => $x__player, //Member making request
                 'x__previous' => intval($_POST['sign_i__id']),
                 'x__type' => 32078, //Sign In Key
                 'x__privacy' => 6175, //Pending until used (if used)
@@ -2489,7 +2488,7 @@ class Ajax extends CI_Controller
 
             //Log new key:
             $this->X_model->create(array(
-                'x__creator' => $x__creator, //Member making request
+                'x__player' => $x__player, //Member making request
                 'x__previous' => intval($_POST['sign_i__id']),
                 'x__type' => 32078, //Sign In Key
                 'x__privacy' => 6175, //Pending until used (if used)
@@ -2504,9 +2503,9 @@ class Ajax extends CI_Controller
 
         return view_json(array(
             'status' => 1,
-            'account_id' => $x__creator,
+            'account_id' => $x__player,
             'valid_email' => ( $valid_email ? 1 : 0 ),
-            'account_preview' => ( $x__creator ? '<span class="icon-block">'.view_cover($u['e__cover'], true). '</span>'.$u['e__title'] : '' ),
+            'account_preview' => ( $x__player ? '<span class="icon-block">'.view_cover($u['e__cover'], true). '</span>'.$u['e__title'] : '' ),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
@@ -2521,7 +2520,7 @@ class Ajax extends CI_Controller
         $progress_x = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
-            'x__creator' => $e__id,
+            'x__player' => $e__id,
         ), array(), 0);
 
         if(count($progress_x) > 0){
@@ -2533,7 +2532,7 @@ class Ajax extends CI_Controller
             $clear_all_x = $this->X_model->create(array(
                 'x__message' => $message,
                 'x__type' => 6415,
-                'x__creator' => $e__id,
+                'x__player' => $e__id,
             ));
 
             //Delete all progressions:
@@ -2647,7 +2646,7 @@ class Ajax extends CI_Controller
         //Log Modal View
         $player_e = superpower_unlocked();
         $this->X_model->create(array(
-            'x__creator' => ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 ),
+            'x__player' => ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 ),
             'x__type' => 14576, //MODAL VIEWED
             'x__following' => $_POST['apply_id'],
             'x__follower' => ( $_POST['apply_id']==4997 ? $_POST['s__id'] : 0 ),
@@ -2750,7 +2749,7 @@ class Ajax extends CI_Controller
 
             //Add Starting Point:
             $this->X_model->create(array(
-                'x__creator' => $player_e['e__id'],
+                'x__player' => $player_e['e__id'],
                 'x__type' => 4235, //Get started
                 'x__next' => $is[0]['i__id'],
                 'x__previous' => $is[0]['i__id'],
@@ -2800,7 +2799,7 @@ class Ajax extends CI_Controller
 
             //Mark as Complete
             $this->X_model->create(array(
-                'x__creator' => $player_e['e__id'],
+                'x__player' => $player_e['e__id'],
                 'x__type' => 14730, //COMPLETED 100%
                 'x__next' => $is[0]['i__id'],
                 //TODO Maybe log additional details like total ideas, time, etc
@@ -2942,7 +2941,7 @@ class Ajax extends CI_Controller
             //Log this error!
             $this->X_model->create(array(
                 'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => $player_e['e__id'],
+                'x__player' => $player_e['e__id'],
                 'x__message' => 'x_upload() Missing POST ERROR',
                 'x__metadata' => array(
                     'post' => $_POST,
@@ -2984,7 +2983,7 @@ class Ajax extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__previous' => $is[0]['i__id'],
-            'x__creator' => $player_e['e__id'],
+            'x__player' => $player_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
@@ -3141,7 +3140,7 @@ class Ajax extends CI_Controller
         if(!count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Tickets
-            'x__creator' => $player_e['e__id'],
+            'x__player' => $player_e['e__id'],
             'x__previous' => $is[0]['i__id'],
         )))){
             //Free Ticket:
@@ -3217,7 +3216,7 @@ class Ajax extends CI_Controller
                 //Log preg removal
                 $this->X_model->create(array(
                     'x__type' => 32103, //Preg Remove
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__message' => '['.$_POST['x_write'].'] Transformed to ['.$new_form.']',
                     'x__previous' => $_POST['target_i__id'],
                     'x__next' => $_POST['i__id'],
@@ -3392,7 +3391,7 @@ class Ajax extends CI_Controller
                 //Log preg match failure
                 $this->X_model->create(array(
                     'x__type' => 30998, //Preg Match Error Message
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__message' => $error_message,
                     'x__previous' => $_POST['target_i__id'],
                     'x__next' => $_POST['i__id'],
@@ -3413,7 +3412,7 @@ class Ajax extends CI_Controller
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__previous' => $is[0]['i__id'],
-            'x__creator' => $player_e['e__id'],
+            'x__player' => $player_e['e__id'],
         )) as $x_progress){
             $this->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
@@ -3536,7 +3535,7 @@ class Ajax extends CI_Controller
 
         //Save IDEA:
         $x = $this->X_model->create(array(
-            'x__creator' => $player_e['e__id'],
+            'x__player' => $player_e['e__id'],
             'x__following' => $player_e['e__id'],
             'x__previous' => $_POST['target_i__id'],
             'x__next' => $_POST['i__id'],
@@ -3782,7 +3781,7 @@ class Ajax extends CI_Controller
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
-                                '( x__follower = ' . $es[0]['e__id'] . ' OR x__following = ' . $es[0]['e__id'] . ' OR x__creator = ' . $es[0]['e__id'] . ' )' => null,
+                                '( x__follower = ' . $es[0]['e__id'] . ' OR x__following = ' . $es[0]['e__id'] . ' OR x__player = ' . $es[0]['e__id'] . ' )' => null,
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 

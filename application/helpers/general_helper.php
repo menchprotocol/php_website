@@ -21,7 +21,7 @@ function load_algolia($index_name)
     return $client->initIndex($index_name);
 }
 
-function detect_missing_columns($add_fields, $required_columns, $x__creator)
+function detect_missing_columns($add_fields, $required_columns, $x__player)
 {
     //A function used to review and require certain fields when inserting new rows in DB
     foreach($required_columns as $req_field) {
@@ -140,7 +140,7 @@ function e__weight_calculator($e){
     $CI =& get_instance();
     $count_x = $CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-        '(x__follower='.$e['e__id'].' OR x__following='.$e['e__id'].' OR x__creator='.$e['e__id'].')' => null,
+        '(x__follower='.$e['e__id'].' OR x__following='.$e['e__id'].' OR x__player='.$e['e__id'].')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
@@ -262,7 +262,7 @@ function prefix_common_words($strs) {
 }
 
 
-function reset_cache($x__creator){
+function reset_cache($x__player){
     $CI =& get_instance();
     $count = 0;
     foreach($CI->X_model->fetch(array(
@@ -274,7 +274,7 @@ function reset_cache($x__creator){
         //Delete email:
         $count += $CI->X_model->update($delete_cahce['x__id'], array(
             'x__privacy' => 6173, //Transaction Removed
-        ), $x__creator, 14600 /* Delete Cache */);
+        ), $x__player, 14600 /* Delete Cache */);
     }
     return $count;
 }
@@ -337,7 +337,7 @@ function i_spots_remaining($i__id){
         );
         if($player_e){
             //Do not count current user to give them option to edit & resubmit:
-            $query_filters['x__creator !='] = $player_e['e__id'];
+            $query_filters['x__player !='] = $player_e['e__id'];
         }
 
         //Navigation?
@@ -355,7 +355,7 @@ function i_spots_remaining($i__id){
             //We must qualify each discovery individually:
             foreach($CI->X_model->fetch($query_filters) as $e){
                 if(count($must_follow)==count($CI->X_model->fetch(array(
-                        'x__follower' => $e['x__creator'],
+                        'x__follower' => $e['x__player'],
                         'x__following IN (' . join(',', $must_follow) . ')' => null,
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -378,7 +378,7 @@ function i_spots_remaining($i__id){
     return $spots_remaining;
 }
 
-function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__following, $x__follower){
+function access_blocked($log_tnx, $log_message, $x__player, $i__id, $x__following, $x__follower){
 
     $return_i__id = $i__id;
     $CI =& get_instance();
@@ -387,8 +387,8 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
     if($log_tnx){
 
         $access_blocked = $CI->X_model->create(array(
-            'x__type' => ( $x__creator>0 ? 29737 : 30341 ), //Access Blocked
-            'x__creator' => $x__creator,
+            'x__type' => ( $x__player>0 ? 29737 : 30341 ), //Access Blocked
+            'x__player' => $x__player,
             'x__previous' => $i__id,
             'x__following' => $x__following,
             'x__follower' => $x__follower,
@@ -407,7 +407,7 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
             foreach($CI->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__previous' => $x_progress['x__previous'],
             ), array(), 0) as $x){
 
@@ -420,14 +420,14 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
                     $CI->X_model->update($x2['x__id'], array(
                         'x__privacy' => 6173, //Transaction Removed
                         'x__reference' => $access_blocked['x__id'],
-                    ), $x__creator, 29782 );
+                    ), $x__player, 29782 );
                 }
 
                 //Delete question discovery so the user can re-select:
                 $CI->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Removed
                     'x__reference' => $access_blocked['x__id'],
-                ), $x__creator, 29782 );
+                ), $x__player, 29782 );
 
             }
 
@@ -435,7 +435,7 @@ function access_blocked($log_tnx, $log_message, $x__creator, $i__id, $x__followi
             $CI->X_model->update($x_progress['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
                 'x__reference' => $access_blocked['x__id'],
-            ), $x__creator, 29782 );
+            ), $x__player, 29782 );
 
             //Guide them back to the top:
             $return_i__id = $x_progress['x__previous'];
@@ -466,7 +466,7 @@ function i_is_discoverable($i, $is_also_startable = false){
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
-    $x__creator = ( $player_e ? $player_e['e__id'] : 0 );
+    $x__player = ( $player_e ? $player_e['e__id'] : 0 );
     $double_check = 'if you believe you have this source then make sure to login with the same email address that we sent you the email.';
 
     if($i['i__privacy']){
@@ -486,13 +486,13 @@ function i_is_discoverable($i, $is_also_startable = false){
         $x__following = 0;
         $excludes_message = 'Unknown Error @13865';
 
-        if($x__creator > 0){
+        if($x__player > 0){
             foreach($fetch_13865 as $e_pre){
                 if(( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__following' => $e_pre['x__following'],
-                        'x__follower' => $x__creator,
+                        'x__follower' => $x__player,
                     )))){
                     $meets_inc1_prereq = true;
                     $x__following = ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
@@ -501,8 +501,8 @@ function i_is_discoverable($i, $is_also_startable = false){
                 }
             }
         }
-        if(!$meets_inc1_prereq && $x__creator > 0){
-            return access_blocked(false, $excludes_message,$x__creator, $i['i__id'], 13865, $x__following);
+        if(!$meets_inc1_prereq && $x__player > 0){
+            return access_blocked(false, $excludes_message,$x__player, $i['i__id'], 13865, $x__following);
         }
     }
 
@@ -521,13 +521,13 @@ function i_is_discoverable($i, $is_also_startable = false){
         $x__following = 0;
         $excludes_message = 'Unknown Error @27984';
 
-        if($x__creator > 0){
+        if($x__player > 0){
             foreach($fetch_27984 as $e_pre){
-                if($x__creator && (( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                if($x__player && (( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__following' => $e_pre['x__following'],
-                        'x__follower' => $x__creator,
+                        'x__follower' => $x__player,
                     ))))){
                     $meets_inc2_prereq++;
                 } else {
@@ -536,12 +536,12 @@ function i_is_discoverable($i, $is_also_startable = false){
                 }
 
                 $x__following = ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
-                $excludes_message = "You cannot discover this idea because you are ".( $x__creator ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check;
+                $excludes_message = "You cannot discover this idea because you are ".( $x__player ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check;
             }
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked(false, $excludes_message,$x__creator, $i['i__id'], 27984, $x__following);
+            return access_blocked(false, $excludes_message,$x__player, $i['i__id'], 27984, $x__following);
         }
     }
 
@@ -557,13 +557,13 @@ function i_is_discoverable($i, $is_also_startable = false){
         $x__following = 0;
         $excludes_all = false;
         $excludes_message = 'Unknown Error @26600';
-        if($x__creator > 0){
+        if($x__player > 0){
             foreach($fetch_26600 as $e_pre){
                 if(( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
                         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__following' => $e_pre['x__following'],
-                        'x__follower' => $x__creator,
+                        'x__follower' => $x__player,
                     )))){
                     //Found an exclusion, so skip this:
                     $excludes_all = false;
@@ -577,7 +577,7 @@ function i_is_discoverable($i, $is_also_startable = false){
         }
 
         if(!$excludes_all){
-            return access_blocked(false, $excludes_message, $x__creator, $i['i__id'], 26600, $x__following);
+            return access_blocked(false, $excludes_message, $x__player, $i['i__id'], 26600, $x__following);
         }
     }
 
@@ -585,7 +585,7 @@ function i_is_discoverable($i, $is_also_startable = false){
     //Any Limits on Selection?
     if(!i_spots_remaining($i['i__id'])){
         //Limit is reached, cannot complete this at this time:
-        return access_blocked(false, "You cannot discover this idea because there are no spots remaining.", $x__creator, $i['i__id'], 26189, 0);
+        return access_blocked(false, "You cannot discover this idea because there are no spots remaining.", $x__player, $i['i__id'], 26189, 0);
     }
     
 
@@ -613,7 +613,7 @@ function redirect_message($url, $message = null, $log_error = false)
         $CI->X_model->create(array(
             'x__message' => $url.' '.stripslashes($message),
             'x__type' => 4246, //Platform Bug Reports
-            'x__creator' => ( $player_e ? $player_e['e__id'] : 0 ),
+            'x__player' => ( $player_e ? $player_e['e__id'] : 0 ),
         ));
     }
 
@@ -746,7 +746,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__previous IN (' . join(',', $list_config[40791]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-           ), array('x__creator'), 1000, 0, array('x__id' => 'DESC'));
+           ), array('x__player'), 1000, 0, array('x__id' => 'DESC'));
        } elseif(count($list_config[27984])>0){
            $query_string = $CI->X_model->fetch(array(
                'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
@@ -758,7 +758,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__previous' => $i['i__id'],
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-           ), array('x__creator'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+           ), array('x__player'), 1000, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
        }
 
        //Clean list:
@@ -781,7 +781,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
            } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
                    'x__previous IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
-                   'x__creator' => $x['e__id'],
+                   'x__player' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                )))) {
@@ -1363,26 +1363,26 @@ function delete_all_between($beginning, $end, $string) {
     return delete_all_between($beginning, $end, str_replace($textToDelete, '', $string)); // recursion to ensure all occurrences are replaced
 }
 
-function user_website($x__creator){
+function user_website($x__player){
     $CI =& get_instance();
     foreach($CI->X_model->fetch(array(
-        'x__follower' => $x__creator,
+        'x__follower' => $x__player,
         'x__type' => 4251, //New Source Created
     ), array(), 1) as $e_created){
         return $e_created['x__website'];
     }
     foreach($CI->X_model->fetch(array(
-        'x__creator' => $x__creator,
+        'x__player' => $x__player,
     ), array(), 1) as $e_created){
         return $e_created['x__website'];
     }
     return 0;
 }
 
-function email_ticket($x__id, $i__hashtag, $x__creator){
+function email_ticket($x__id, $i__hashtag, $x__player){
 
     $CI =& get_instance();
-    $user_website = user_website($x__creator);
+    $user_website = user_website($x__player);
 
     $additional_info = '';
     foreach($CI->X_model->fetch(array(
@@ -1393,11 +1393,11 @@ function email_ticket($x__id, $i__hashtag, $x__creator){
     }
 
     foreach($CI->E_model->fetch(array(
-        'e__id' => $x__creator,
+        'e__id' => $x__player,
     )) as $e){
-        $CI->X_model->send_dm($x__creator, get_domain('m__title', $x__creator, $user_website).' QR Ticket'.$additional_info,
+        $CI->X_model->send_dm($x__player, get_domain('m__title', $x__player, $user_website).' QR Ticket'.$additional_info,
             'Upon arrival have your QR code ready to be scanned:'.
-            "\n\n".'https://'.get_domain('m__message', $x__creator, $user_website).view_memory(42903,33286).$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
+            "\n\n".'https://'.get_domain('m__message', $x__player, $user_website).view_memory(42903,33286).$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
     }
 
 }
@@ -1432,7 +1432,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
             $CI->X_model->create(array(
                 'x__message' => 'send_sms() missing either: '.$twilio_account_sid.' / '.$twilio_auth_token.' / '.$twilio_from_number,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => $e__id,
+                'x__player' => $e__id,
                 'x__website' => $x__website,
                 'x__metadata' => array(
                     '$to_phone' => $to_phone,
@@ -1472,7 +1472,7 @@ function send_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $te
     if($log_tr){
         $CI->X_model->create(array_merge($x_data, array(
             'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
-            'x__creator' => $e__id,
+            'x__player' => $e__id,
             'x__message' => $single_message,
             'x__next' => $template_i__id,
             'x__metadata' => array(
@@ -1609,7 +1609,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
         $CI->X_model->create(array_merge($x_data, array(
             'x__type' => 29399,
             'x__next' => $template_i__id,
-            'x__creator' => $e__id,
+            'x__player' => $e__id,
             'x__message' => $subject."\n\n".$email_message,
             'x__metadata' => array(
                 'to' => $to_emails,
@@ -2069,8 +2069,8 @@ function update_algolia($focus__card = null, $s__id = 0) {
                 foreach($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___29133')) . ')' => null, //Written Responses
-                    'x__creator' => $s['e__id'], //This follower source
-                ), array('x__creator'), 0, 0, array('x__time' => 'DESC')) as $x){
+                    'x__player' => $s['e__id'], //This follower source
+                ), array('x__player'), 0, 0, array('x__time' => 'DESC')) as $x){
                     $export_row['s__keywords'] .= $x['x__message'] . ' ';
                 }
 
@@ -2231,7 +2231,7 @@ function update_algolia($focus__card = null, $s__id = 0) {
 
 }
 
-function x__metadata_update($x__id, $new_fields, $x__creator = 0)
+function x__metadata_update($x__id, $new_fields, $x__player = 0)
 {
 
     $CI =& get_instance();

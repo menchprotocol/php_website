@@ -26,12 +26,12 @@ foreach($is_next as $in_key => $in_value){
     }
 }
 
-$x__creator = ( $player_e ? $player_e['e__id'] : 0 );
+$x__player = ( $player_e ? $player_e['e__id'] : 0 );
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
 $pathways_count = 0;
 $target_i__id = ( count($target_i) ? $target_i['i__id'] : 0 );
-    $target_i__id = ( count($target_i) && $x__creator ? $target_i['i__id'] : 0 );
-    $target_i__hashtag = ( count($target_i) && $x__creator ? $target_i['i__hashtag'] : null );
+    $target_i__id = ( count($target_i) && $x__player ? $target_i['i__id'] : 0 );
+    $target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
 $target_completed = false; //Assume main intent not yet completed, unless proven otherwise
 $can_skip = !count($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -46,9 +46,9 @@ $can_skip = !count($this->X_model->fetch(array(
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
 
-if($x__creator && $target_i__hashtag!=$focus_i['i__hashtag']){
+if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
-    $find_previous = $this->X_model->find_previous($x__creator, $target_i__hashtag, $focus_i['i__id']);
+    $find_previous = $this->X_model->find_previous($x__player, $target_i__hashtag, $focus_i['i__id']);
     if(count($find_previous)){
 
         $nav_list = array();
@@ -75,7 +75,7 @@ if($x__creator && $target_i__hashtag!=$focus_i['i__hashtag']){
                 if(!$i_is_discoverable['status'] || !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__creator' => $x__creator,
+                        'x__player' => $x__player,
                         'x__previous' => $value['i__id'],
                     )))){
                     unset($query_subset[$key]);
@@ -134,7 +134,7 @@ if($breadcrum_content){
 
 echo '<div class="active_navigation">';
 
-$tree_progress = $this->X_model->tree_progress($x__creator, $target_i);
+$tree_progress = $this->X_model->tree_progress($x__player, $target_i);
 $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
 
 if($target_completed){
@@ -169,11 +169,11 @@ echo view_i_nav(true, $focus_i, write_privacy_i($focus_i['i__hashtag']));
 if (!count($is_next) && !count($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__creator' => $x__creator,
+        'x__player' => $x__player,
         'x__previous' => $focus_i['i__id'],
     )))) {
     //Skipped:
-    $this->X_model->mark_complete(31022, $x__creator, $target_i__id, $focus_i);
+    $this->X_model->mark_complete(31022, $x__player, $target_i__id, $focus_i);
 }
 
 
@@ -210,10 +210,10 @@ if($target_i__hashtag) {
                 if(in_array($x_complete['x__type'], $this->config->item('n___40986'))){
                     //Successful discovery Show QR Code:
                     foreach($this->E_model->fetch(array(
-                        'e__id' => $x_complete['x__creator'],
+                        'e__id' => $x_complete['x__player'],
                     )) as $e){
                         $ticket_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
-                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__creator).view_memory(42903,30795).$target_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(phptime() . $e['e__handle'])).'</div>';
+                        $ticket_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__player).view_memory(42903,30795).$target_i__hashtag.'/'.$focus_i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(phptime() . $e['e__handle'])).'</div>';
                     }
                 }
 
@@ -282,7 +282,7 @@ if($target_i__hashtag) {
                 //Break down amount & currency
                 $unit_currency = $e___26661[$currency_types[0]['x__following']]['m__message'];
                 $unit_price = doubleval($total_dues[0]['x__message']);
-                $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__creator)) + doubleval(website_setting(27017, $x__creator)))/100 ), 2, ".", "");
+                $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__player)) + doubleval(website_setting(27017, $x__player)))/100 ), 2, ".", "");
 
                 //Append information to cart:
                 $info_append .= '<div class="sub_note">';
@@ -356,7 +356,7 @@ if($target_i__hashtag) {
                                     //All good to check-in:
                                     $this->X_model->create(array(
                                         'x__type' => 32016,
-                                        'x__creator' => $x[0]['e__id'], //Ticket Buyer
+                                        'x__player' => $x[0]['e__id'], //Ticket Buyer
                                         'x__following' => $player_e['e__id'], //Ticket Scanner
                                         'x__weight' => $quantity, //Tickets Checked-in (They can check-in in multiple rounds)
                                         'x__next' => $x[0]['x__next'],
@@ -406,7 +406,7 @@ if($target_i__hashtag) {
                 $ticket_ui .= '<input type="hidden" id="paypal_handling" name="handling" value="'.$unit_fee.'">';
                 $ticket_ui .= '<input type="hidden" id="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
                 $ticket_ui .= '<input type="hidden" id="paypal_item_name" name="item_name" value="'.view_i_title($focus_i, true).'">';
-                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$target_i__id.'-'.$focus_i['i__id'].'-0-'.$x__creator.'">';
+                $ticket_ui .= '<input type="hidden" id="paypal_item_number" name="item_number" value="'.$target_i__id.'-'.$focus_i['i__id'].'-0-'.$x__player.'">';
 
                 $ticket_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                 $ticket_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
@@ -484,7 +484,7 @@ if($target_i__hashtag) {
 
         //Do we have a text response from before?
         $previous_response = '';
-        if($x__creator){
+        if($x__player){
             //Does this have any append sources?
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -494,7 +494,7 @@ if($target_i__hashtag) {
                 //Does the user have this source with any values?
                 foreach($this->X_model->fetch(array(
                     'x__following' => $append_e['x__following'],
-                    'x__follower' => $x__creator,
+                    'x__follower' => $x__player,
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 ), array(), 0, 0) as $up_appended) {

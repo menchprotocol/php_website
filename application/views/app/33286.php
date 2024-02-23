@@ -5,7 +5,7 @@ $limit = view_memory(6404,11064);
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $write_privacy_i = write_privacy_i($focus_i['i__hashtag']);
 $this->X_model->create(array(
-    'x__creator' => $player_e['e__id'],
+    'x__player' => $player_e['e__id'],
     'x__type' => 4993, //Member Opened Idea
     'x__next' => $focus_i['i__id'],
 ));

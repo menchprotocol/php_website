@@ -15,7 +15,7 @@ class I_model extends CI_Model
     }
 
 
-    function create($add_fields, $x__creator = 14068)
+    function create($add_fields, $x__player = 14068)
     {
 
         if(!isset($add_fields['i__type']) || !in_array($add_fields['i__type'], $this->config->item('n___4737'))){
@@ -41,7 +41,7 @@ class I_model extends CI_Model
             $this->X_model->create(array(
                 'x__message' => 'i->create() failed to create a new idea',
                 'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__metadata' => $add_fields,
             ));
             return false;
@@ -49,7 +49,7 @@ class I_model extends CI_Model
 
         //Log transaction new Idea hashtag:
         $this->X_model->create(array(
-            'x__creator' => $x__creator,
+            'x__player' => $x__player,
             'x__next' => $add_fields['i__id'],
             'x__message' => $add_fields['i__hashtag'],
             'x__type' => 42168, //Idea Generated Hashtag
@@ -68,9 +68,9 @@ class I_model extends CI_Model
 
 
         //Additional sources to be added? Start with creator
-        $e_appended = array($x__creator);
+        $e_appended = array($x__player);
         $pinned_followers = $this->X_model->fetch(array(
-            'x__following' => $x__creator,
+            'x__following' => $x__player,
             'x__type' => 41011, //PINNED FOLLOWER
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
@@ -79,14 +79,14 @@ class I_model extends CI_Model
         //Add if not added as the author:
         if(!count($this->X_model->fetch(array(
             'x__type' => $x__type,
-            'x__following' => $x__creator,
+            'x__following' => $x__player,
             'x__next' => $add_fields['i__id'],
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )))){
             $this->X_model->create(array(
                 'x__type' => $x__type,
-                'x__creator' => $x__creator,
-                'x__following' => $x__creator,
+                'x__player' => $x__player,
+                'x__following' => $x__player,
                 'x__next' => $add_fields['i__id'],
             ));
         }
@@ -104,7 +104,7 @@ class I_model extends CI_Model
                     'x__type' => 4250, //Lead Author
                     'x__following' => $x_pinned['e__id'],
                     'x__next' => $add_fields['i__id'],
-                    'x__creator' => $x__creator,
+                    'x__player' => $x__player,
                     'x__weight' => $x__weight,
                 ));
                 array_push($e_appended, $x_pinned['e__id']);
@@ -143,7 +143,7 @@ class I_model extends CI_Model
     }
 
 
-    function update($id, $update_columns, $external_sync = false, $x__creator = 0, $x__type = 0)
+    function update($id, $update_columns, $external_sync = false, $x__player = 0, $x__type = 0)
     {
 
         $id = intval($id);
@@ -152,7 +152,7 @@ class I_model extends CI_Model
         }
 
         //Fetch current Idea filed values so we can compare later on after we've updated it:
-        if($x__creator > 0){
+        if($x__player > 0){
             $before_data = $this->I_model->fetch(array('i__id' => $id));
         }
 
@@ -162,7 +162,7 @@ class I_model extends CI_Model
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $x__creator > 0) {
+        if ($affected_rows > 0 && $x__player > 0) {
 
             //Unlike source modification, we require a member source ID to log the modification transaction:
             //Log modification transaction for every field changed:
@@ -217,7 +217,7 @@ class I_model extends CI_Model
 
                 //Value has changed, log transaction:
                 $this->X_model->create(array(
-                    'x__creator' => $x__creator,
+                    'x__player' => $x__player,
                     'x__type' => $x__type,
                     'x__next' => $id,
                     'x__follower' => $x__follower,
@@ -244,7 +244,7 @@ class I_model extends CI_Model
             $this->X_model->create(array(
                 'x__next' => $id,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__message' => 'update() Failed to update',
                 'x__metadata' => array(
                     'input' => $update_columns,
@@ -256,7 +256,7 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function remove($i__id, $x__creator = 0, $migrate_s__handle = null){
+    function remove($i__id, $x__player = 0, $migrate_s__handle = null){
 
         $x_adjusted = 0;
         if(strlen($migrate_s__handle)>1){
@@ -286,7 +286,7 @@ class I_model extends CI_Model
                         'x__reference' => $x['x__reference'],
                         //'LOWER(x__message)' => strtolower($x['x__message']),
 
-                        'x__creator' => $x['x__creator'],
+                        'x__player' => $x['x__player'],
                         'x__following' => $x['x__following'],
                         'x__follower' => $x['x__follower'],
                     );
@@ -303,12 +303,12 @@ class I_model extends CI_Model
                         //There is a duplicate of this, no point to migrate! Just Remove:
                         $this->X_model->update($x['x__id'], array(
                             'x__privacy' => 6173,
-                        ), $x__creator, 26785 /* Idea Link Migrated */);
+                        ), $x__player, 26785 /* Idea Link Migrated */);
 
                     } else {
 
                         //Always merge for now
-                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__creator, 26785 /* Idea Link Migrated */);
+                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__player, 26785 /* Idea Link Migrated */);
 
                     }
 
@@ -326,7 +326,7 @@ class I_model extends CI_Model
                 //Delete this transaction:
                 $x_adjusted += $this->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
-                ), $x__creator, 13579 /* Idea Transaction Unpublished */);
+                ), $x__player, 13579 /* Idea Transaction Unpublished */);
             }
 
         }
@@ -342,13 +342,13 @@ class I_model extends CI_Model
 
 
 
-    function duplicate($i, $copy_to__id, $x__creator)
+    function duplicate($i, $copy_to__id, $x__player)
     {
 
         $i_new = $this->I_model->create(array(
             'i__message' => $i['i__message'],
             'i__type' => $i['i__type'],
-        ), $x__creator);
+        ), $x__player);
 
         //Copy related transactions:
         $links = 0;
@@ -380,7 +380,7 @@ class I_model extends CI_Model
                     'x__follower' => $x['x__follower'],
                     'x__reference' => $x['x__reference'],
                     //Change:
-                    'x__creator' => $x__creator,
+                    'x__player' => $x__player,
                     'x__previous' => ( $i['i__id']==$x['x__previous'] ? $i_new['i__id'] : $x['x__previous'] ),
                     'x__next' => ( $i['i__id']==$x['x__next'] ? $i_new['i__id'] : $x['x__next'] ),
                 ));
@@ -393,7 +393,7 @@ class I_model extends CI_Model
     }
 
 
-    function i_link($i, $x__type, $next_i, $x__creator){
+    function i_link($i, $x__type, $next_i, $x__player){
 
         //Links ideas with the causality link ensuring not a duplicate:
         if($x__type==4228 && count($this->X_model->find_previous(0, $next_i['i__hashtag'], $i['i__id']))){
@@ -415,7 +415,7 @@ class I_model extends CI_Model
 
         //Adding PREVIOUS or NEXT Idea from Idea
         $this->X_model->create(array(
-            'x__creator' => $x__creator,
+            'x__player' => $x__player,
             'x__previous' => $i['i__id'],
             'x__type' => $x__type,
             'x__next' => $next_i['i__id'],
@@ -489,7 +489,7 @@ class I_model extends CI_Model
 
     }
 
-    function recursive_clone($i__id, $do_recursive, $x__creator, $previous_i = null, $clone_title = null) {
+    function recursive_clone($i__id, $do_recursive, $x__player, $previous_i = null, $clone_title = null) {
 
         //Create Clone -or- Link & move-on?
         //Validate Idea:
@@ -508,7 +508,7 @@ class I_model extends CI_Model
         $i_new = $this->I_model->create(array(
             'i__message' => ( $clone_title ? $clone_title : "Copy Of ".$this_i[0]['i__message'] ),
             'i__type' => $this_i[0]['i__type'],
-        ), $x__creator);
+        ), $x__player);
 
         //Always Link Sources:
         $filters = array(
@@ -519,7 +519,7 @@ class I_model extends CI_Model
 
         foreach($this->X_model->fetch($filters, array(), 0) as $x){
             $this->X_model->create(array(
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__type' => $x['x__type'],
                 'x__next' => $i_new['i__id'],
                 'x__following' => $x['x__following'],
@@ -541,7 +541,7 @@ class I_model extends CI_Model
             'x__next' => $i__id,
         ), array('x__previous'), 0) as $x){
             $this->X_model->create(array(
-                'x__creator' => $x__creator,
+                'x__player' => $x__player,
                 'x__type' => $x['x__type'],
                 'x__next' => $i_new['i__id'],
                 'x__previous' => $x['i__id'],
@@ -568,11 +568,11 @@ class I_model extends CI_Model
                     'x__following' => 42208, //No-Clone Idea
                 )))){
                 //Clone Followers Recursively:
-                $this->I_model->recursive_clone($x['i__id'], $do_recursive, $x__creator, $this_i[0]);
+                $this->I_model->recursive_clone($x['i__id'], $do_recursive, $x__player, $this_i[0]);
             } else {
                 //Link Followers:
                 $this->X_model->create(array(
-                    'x__creator' => $x__creator,
+                    'x__player' => $x__player,
                     'x__type' => $x['x__type'],
                     'x__previous' => $i_new['i__id'],
                     'x__next' => $x['i__id'],
@@ -596,7 +596,7 @@ class I_model extends CI_Model
 
 
 
-   function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__creator)
+   function mass_update($i__id, $action_e__id, $action_command1, $action_command2, $x__player)
     {
 
         //Alert: Has a twin function called e_mass_update()
@@ -674,7 +674,7 @@ class I_model extends CI_Model
 
                         //Missing & Must be Added:
                         $this->X_model->create(array(
-                            'x__creator' => $x__creator,
+                            'x__player' => $x__player,
                             'x__following' => $e['e__id'],
                             'x__type' => $e_mapper[$action_e__id],
                             'x__next' => $next_i['i__id'],
@@ -688,7 +688,7 @@ class I_model extends CI_Model
                         //Has and must be deleted:
                         $this->X_model->update($i_has_e[0]['x__id'], array(
                             'x__privacy' => 6173,
-                        ), $x__creator, 10673 /* IDEA NOTES Unpublished */);
+                        ), $x__player, 10673 /* IDEA NOTES Unpublished */);
 
                         $applied_success++;
 
@@ -704,7 +704,7 @@ class I_model extends CI_Model
                     if($action_e__id==27240){
 
                         //Copy
-                        $link_count = $this->I_model->duplicate($next_i, $i['i__id'], $x__creator);
+                        $link_count = $this->I_model->duplicate($next_i, $i['i__id'], $x__player);
 
                         if($link_count > 0){
                             //Add Source since not there:
@@ -725,7 +725,7 @@ class I_model extends CI_Model
                         if(in_array($action_e__id, array(12611, 28801)) && !count($is_previous)){
 
                             //Link
-                            $status = $this->I_model->i_link($i, 4228, $next_i, $x__creator);
+                            $status = $this->I_model->i_link($i, 4228, $next_i, $x__player);
 
                             if($status['status']){
 
@@ -733,7 +733,7 @@ class I_model extends CI_Model
                                     //Also remove old link:
                                     $this->X_model->update($next_i['x__id'], array(
                                         'x__privacy' => 6173, //Transaction Deleted
-                                    ), $x__creator, 10673 /* Member Transaction Unpublished  */);
+                                    ), $x__player, 10673 /* Member Transaction Unpublished  */);
                                 }
 
                                 //Add Source since not there:
@@ -746,7 +746,7 @@ class I_model extends CI_Model
                             //Unlink
                             $this->X_model->update($is_previous[0]['x__id'], array(
                                 'x__privacy' => 6173,
-                            ), $x__creator, 13579 /* IDEA NOTES Unpublished */);
+                            ), $x__player, 13579 /* IDEA NOTES Unpublished */);
 
                             $applied_success++;
                         }
@@ -761,7 +761,7 @@ class I_model extends CI_Model
 
         //Log mass source edit transaction:
         $this->X_model->create(array(
-            'x__creator' => $x__creator,
+            'x__player' => $x__player,
             'x__type' => $action_e__id,
             'x__next' => $i__id,
             'x__metadata' => array(

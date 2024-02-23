@@ -20,14 +20,14 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
                 //Remove from Snooze:
                 $this->X_model->update($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Removed
-                ), $x['x__creator'], 28917 /* Unsnooze */);
+                ), $x['x__player'], 28917 /* Unsnooze */);
 
                 //Add to subscribers:
                 $this->X_model->create(array(
                     'x__type' => 4251,
                     'x__following' => 4430, //Active Member
-                    'x__creator' => $x['x__creator'],
-                    'x__follower' => $x['x__creator'],
+                    'x__player' => $x['x__player'],
+                    'x__follower' => $x['x__player'],
                 ));
 
                 $unsnooze_members++;

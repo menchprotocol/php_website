@@ -15,7 +15,7 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
         function complete_setup(){
             //Log transaction:
             if(x_create({
-                x__creator: js_pl_id,
+                x__player: js_pl_id,
                 x__type: 14517,
                 x__previous: <?= $i__id ?>,
             })){

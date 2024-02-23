@@ -920,7 +920,7 @@ $(document).ready(function () {
         var x__type = parseInt($(this).attr('x__type'));
         $('#modal'+x__type).modal('show');
         x_create({
-            x__creator: js_pl_id,
+            x__player: js_pl_id,
             x__type: 14576, //MODAL VIEWED
             x__following: x__type,
         });

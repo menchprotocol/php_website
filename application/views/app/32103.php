@@ -66,7 +66,7 @@ if(isset($_GET['i__hashtag'])){
                                     foreach($apply_to as $apply_e__id){
                                         foreach($this->X_model->fetch(array(
                                             'x__following' => $apply_e__id,
-                                            'x__follower' => $x['x__creator'],
+                                            'x__follower' => $x['x__player'],
                                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                         ), array(), 0) as $follow_appended) {
@@ -93,7 +93,7 @@ if(isset($_GET['i__hashtag'])){
                                     foreach($apply_to as $apply_e__id){
                                         foreach($this->X_model->fetch(array(
                                             'x__following' => $apply_e__id,
-                                            'x__follower' => $x['x__creator'],
+                                            'x__follower' => $x['x__player'],
                                             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                         ), array(), 0) as $follow_appended) {
@@ -107,7 +107,7 @@ if(isset($_GET['i__hashtag'])){
                                 }
                             }
 
-                            echo 'Source ID '.$x['x__creator'].' ['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
+                            echo 'Source ID '.$x['x__player'].' ['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
                         }
                     }
                 }
@@ -148,7 +148,7 @@ if(isset($_GET['i__hashtag'])){
                             foreach($apply_to as $apply_e__id){
                                 foreach($this->X_model->fetch(array(
                                     'x__following' => $apply_e__id,
-                                    'x__follower' => $x['x__creator'],
+                                    'x__follower' => $x['x__player'],
                                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 ), array(), 0) as $follow_appended) {
@@ -174,7 +174,7 @@ if(isset($_GET['i__hashtag'])){
                             foreach($apply_to as $apply_e__id){
                                 foreach($this->X_model->fetch(array(
                                     'x__following' => $apply_e__id,
-                                    'x__follower' => $x['x__creator'],
+                                    'x__follower' => $x['x__player'],
                                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 ), array(), 0) as $follow_appended) {
@@ -188,7 +188,7 @@ if(isset($_GET['i__hashtag'])){
                         }
                     }
 
-                    echo 'Source ID '.$x['x__creator'].' ['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
+                    echo 'Source ID '.$x['x__player'].' ['.$x['x__message'].'] transforms to ['.$new_form.']<hr />';
                 }
             }
 

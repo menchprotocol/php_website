@@ -38,7 +38,7 @@ foreach($list_settings['query_string'] as $x){
 
         $discoveries = $this->X_model->fetch(array(
             'x__previous' => $i_var['i__id'],
-            'x__creator' => $x['e__id'],
+            'x__player' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1);
@@ -122,7 +122,7 @@ foreach($list_settings['query_string'] as $x){
         }
 
 
-        $body_content .= '<td class="'.( superpower_unlocked(28714) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__creator_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__creator="'.$x['e__id'].'" input_modal="'.( $input_modal ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td class="'.( superpower_unlocked(28714) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__player_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__player="'.$x['e__id'].'" input_modal="'.( $input_modal ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
@@ -256,20 +256,20 @@ echo '</table>';
             var input_modal = parseInt($(this).attr('input_modal'));
             var modal_value = '';
             if(input_modal){
-                modal_value = prompt("Enter value:", $('.x__creator_' + $(this).attr('e__id') + '_' + $(this).attr('x__creator')).text());
+                modal_value = prompt("Enter value:", $('.x__player_' + $(this).attr('e__id') + '_' + $(this).attr('x__player')).text());
             }
 
             var modify_data = {
                 i__id: $(this).attr('i__id'),
                 e__id: $(this).attr('e__id'),
-                x__creator: $(this).attr('x__creator'),
+                x__player: $(this).attr('x__player'),
                 x__id: $(this).attr('x__id'),
                 input_modal: input_modal,
                 modal_value: modal_value,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             };
 
-            $('.x__creator_' + modify_data['e__id'] + '_' + modify_data['x__creator']).html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.x__player_' + modify_data['e__id'] + '_' + modify_data['x__player']).html('<i class="far fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
             $.post("/ajax/e_toggle_e", modify_data, function (data) {
@@ -277,7 +277,7 @@ echo '</table>';
                 if (data.status) {
 
                     //Update source id IF existed previously:
-                    $('.x__creator_' + modify_data['e__id'] + '_' + modify_data['x__creator']).html(data.message);
+                    $('.x__player_' + modify_data['e__id'] + '_' + modify_data['x__player']).html(data.message);
 
                 } else {
                     alert('ERROR:' + data.message);

@@ -536,7 +536,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         //DISCOVERIES
         $joins_objects = array('x__previous');
         $query_filters = array(
-            'x__creator' => $e__id,
+            'x__player' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERY GROUP
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -652,14 +652,14 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
         //DISCOVERIES
         $order_columns = array('x__id' => 'DESC');
-        $joins_objects = array('x__creator');
+        $joins_objects = array('x__player');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
             'x__previous' => $i__id,
         );
         if(isset($_GET['focus__e'])){
-            $query_filters['x__creator'] = intval($_GET['focus__e']);
+            $query_filters['x__player'] = intval($_GET['focus__e']);
         }
 
     } else {
@@ -1054,7 +1054,7 @@ function view__focus__e($e){
 
 
 
-function view_card_x_select($i, $x__creator, $previously_selected){
+function view_card_x_select($i, $x__player, $previously_selected){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1372,7 +1372,7 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
                 $CI->X_model->create(array(
                     'x__time' => idea_creation_time($save_i__id),
                     'x__type' => $x__type,
-                    'x__creator' => $player_e['e__id'],
+                    'x__player' => $player_e['e__id'],
                     'x__message' => $x__message,
                     'x__next' => $save_i__id,
                     'x__previous' => $x__previous,
@@ -1513,8 +1513,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $step_by_step = in_array($x__type, $CI->config->item('n___14742'));
     $has_self = $player_e && $focus_e && $player_e['e__id']==$focus_e['e__id'];
     $focus_e__handle = ( view_valid_handle_e($CI->uri->segment(1)) ? substr($CI->uri->segment(1), 1) : false );
-    $focus_source = ( $x__id && isset($i['x__creator']) ? $i['x__creator'] : ( $focus_e__handle ? $focus_e__handle : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) ) );
-    $link_creator = isset($i['x__creator']) && $i['x__creator']==$player_e['e__id'];
+    $focus_source = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e__handle ? $focus_e__handle : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) ) );
+    $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
 
     if(!$focus_e){
         $focus_e = $player_e;
@@ -1541,7 +1541,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $discoveries = $CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__creator' => $focus_source,
+            'x__player' => $focus_source,
             'x__previous' => $i['i__id'],
         ));
         $has_discovered = count($discoveries);
@@ -1635,7 +1635,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 if(in_array($i['x__type'], $CI->config->item('n___'.$x__type1))){
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
-                    ), array('x__creator')) as $linker){
+                    ), array('x__player')) as $linker){
                         $link_type_ui .= '<span class="icon-block-sm"><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                         $link_type_ui .= view_single_select_instant($x__type1, $i['x__type'], $write_privacy_i, false, $i['i__id'], $x__id);
                         $link_type_ui .= '</div></span>';
@@ -1667,15 +1667,15 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 //Links
                 $bottom_bar_ui .= $link_type_ui;
 
-            } elseif($x__type_target_bar==4362 && !$discovery_mode && $player_e && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($player_e && $player_e['e__id']==$i['x__creator']))){
+            } elseif($x__type_target_bar==4362 && !$discovery_mode && $player_e && isset($i['x__time']) && strtotime($i['x__time']) > 0 && $link_type_ui && ($write_privacy_i || ($player_e && $player_e['e__id']==$i['x__player']))){
 
                 //Link Time / Creator
                 $creator_details = '';
                 $time_diff = view_time_difference($i['x__time'], true);
                 $creator_name = '';
-                if($i['x__creator'] > 0){
+                if($i['x__player'] > 0){
                     foreach($CI->E_model->fetch(array(
-                        'e__id' => $i['x__creator'],
+                        'e__id' => $i['x__player'],
                         'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
                     )) as $creator){
                         $creator_name = 'Linked by '.$creator['e__title'].' @'.$creator['e__handle'].' on ';
@@ -1717,7 +1717,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $write_privacy_i ? 4228 : 30901 ).',0,'.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==42260 && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__creator']!=$player_e['e__id'])){
+            } elseif($x__type_target_bar==42260 && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__player']!=$player_e['e__id'])){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
@@ -2177,7 +2177,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 if(in_array($e['x__type'], $CI->config->item('n___'.$x__type1))){
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
-                    ), array('x__creator')) as $linker){
+                    ), array('x__player')) as $linker){
                         $link_type_ui .= '<span class="'.( $focus__card ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                         $link_type_ui .= view_single_select_instant($x__type1, $e['x__type'], $write_privacy_e, false, $e['e__id'], $x__id);
                         $link_type_ui .= '</span>';
