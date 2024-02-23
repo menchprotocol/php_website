@@ -232,7 +232,7 @@ class App extends CI_Controller
         }
 
         //Validate Focus Idea:
-        if($focus_hashtag==view_memory(6404,4235)){
+        if(0 && $focus_hashtag==view_memory(6404,4235)){
 
             if($player_e){
                 //See if they have already started or need to start?
