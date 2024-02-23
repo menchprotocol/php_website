@@ -748,7 +748,6 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     $is_compact = in_array($focus_id, $CI->config->item('n___42191'));
     $single_select = in_array($focus_id, $CI->config->item('n___33331'));
     $multi_select = in_array($focus_id, $CI->config->item('n___33332'));
-    $access_locked = in_array($focus_id, $CI->config->item('n___32145'));
     $focus_select = $CI->config->item( $single_select ? 'e___33331' : 'e___33332');
 
     if(!$single_select && !$multi_select){
@@ -774,6 +773,8 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
     foreach($selection_options as $list_item){
         array_push($selection_ids, $list_item['e__id']);
     }
+
+    $access_locked = in_array($focus_id, $CI->config->item('n___32145')) && count($selection_options)>1;
 
     //UI for Single select or multi?
     $ui = '<div class="dynamic_selection">';
