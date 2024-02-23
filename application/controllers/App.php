@@ -14,7 +14,7 @@ class App extends CI_Controller
     }
 
     function index(){
-        //Default Home Page:
+        //Home:
         $this->load(14565);
     }
 

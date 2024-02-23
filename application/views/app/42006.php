@@ -10,17 +10,32 @@ echo '$route[\'default_controller\'] = "app/index"; //Redirects to default app'.
 echo '$route[\'404_override\'] = \'app/load\'; //Page not found'."\n";
 echo "\n";
 
-//Custom Apps:
+
 foreach($this->X_model->fetch(array(
     'x__following' => 6287, //Apps
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
-    echo '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+
+    $special_routing = in_array($app['e__id'], $this->config->item('n___42921'));
+    $e_require = in_array($app['e__id'], $this->config->item('n___42921'));
+    $e_support = in_array($app['e__id'], $this->config->item('n___42921'));
+    $i_require = in_array($app['e__id'], $this->config->item('n___42921'));
+    $i_support = in_array($app['e__id'], $this->config->item('n___42921'));
+
+    echo '$route[\''.( $special_routing && strlen($app['x__message']) ? $app['x__message'] : '(?i)'.$app['e__handle'] ).'\'] = "app/load/'.$app['e__id'].'";'."\n";
 }
 
+
+echo '//APPS:'."\n\n";
 echo "\n\n";
+
+
+echo '//Special Routing:'."\n\n";
+echo "\n\n";
+
+
 
 //Fixed Application Logic:
 echo '$route[\'@([a-zA-Z0-9]+)\']           = "app/e_layout/$1"; //Source

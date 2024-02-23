@@ -48,7 +48,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     //Points Total
     $points = $this->X_model->fetch(array(
         'x__type' => $x__type,
-    ), array(), 0, 0, array(), 'SUM(x__points) as totals');
+    ), array(), 0, 0, array(), 'SUM(x__diamonds) as totals');
     $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($points[0]['totals'], $pad_length, '0', STR_PAD_LEFT).'</td>';
     $total_points += $points[0]['totals'];
 
