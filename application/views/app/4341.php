@@ -4,8 +4,39 @@
 $query_filters = array();
 $joined_by = array();
 
-//We have a special OR filter when combined with any_e__id & any_i__id
-$any_i_e_set = ( ( isset($_GET['any_e__id']) && $_GET['any_e__id'] > 0 ) || ( isset($_GET['any_i__id']) && $_GET['any_i__id'] > 0 ) );
+//We have a special OR filter when combined with e__handle & i__hashtag
+$input_e = ( isset($_GET['e__handle']) && strlen($_GET['e__handle']) > 0 );
+$focus_e = false;
+$input_i = ( isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag']) > 0 );
+$focus_i = false;
+
+if($input_e){
+    foreach($this->E_model->fetch(array(
+        'LOWER(e__handle)' => strtolower($_GET['e__handle']),
+    )) as $e_found){
+        $focus_e = $e_found;
+        $_GET['e__handle'] = $e_found['e__handle'];
+    }
+    if(!$focus_e){
+        //Invalid input!
+        $input_e = false;
+    }
+}
+
+if($input_i){
+    foreach($this->I_model->fetch(array(
+        'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
+    )) as $i_found){
+        $focus_i = $i_found;
+        $_GET['i__hashtag'] = $i_found['i__hashtag'];
+    }
+    if(!$focus_i){
+        //Invalid input!
+        $input_i = false;
+    }
+}
+
+$any_i_e_set = $input_i || $input_e;
 $followings_tr_filter = ( isset($_GET['x__reference']) && $_GET['x__reference'] > 0 ? ' OR x__reference = '.$_GET['x__reference'].' ' : false );
 
 
@@ -82,24 +113,16 @@ if(isset($_GET['x__id']) && strlen($_GET['x__id']) > 0){
     }
 }
 
-if(isset($_GET['any_e__id']) && strlen($_GET['any_e__id']) > 0){
+if($input_e){
     //We need to look for both following/follower
-    if (substr_count($_GET['any_e__id'], ',') > 0) {
-        //This is multiple:
-        $query_filters['( x__follower IN (' . $_GET['any_e__id'] . ') OR x__following IN (' . $_GET['any_e__id'] . ') OR x__creator IN (' . $_GET['any_e__id'] . ') ' . $followings_tr_filter . ' )'] = null;
-    } elseif (intval($_GET['any_e__id']) > 0) {
-        $query_filters['( x__follower = ' . $_GET['any_e__id'] . ' OR x__following = ' . $_GET['any_e__id'] . ' OR x__creator = ' . $_GET['any_e__id'] . $followings_tr_filter . ' )'] = null;
-    }
+    $query_filters['( x__follower = ' . $focus_e['e__id'] . ' OR x__following = ' . $focus_e['e__id'] . ' OR x__creator = ' . $focus_e['e__id'] . $followings_tr_filter . ' )'] = null;
 }
 
-if(isset($_GET['any_i__id']) && strlen($_GET['any_i__id']) > 0){
+
+if($input_i){
     //We need to look for both following/follower
-    if (substr_count($_GET['any_i__id'], ',') > 0) {
-        //This is multiple:
-        $query_filters['( x__next IN (' . $_GET['any_i__id'] . ') OR x__previous IN (' . $_GET['any_i__id'] . ') ' . $followings_tr_filter . ' )'] = null;
-    } elseif (intval($_GET['any_i__id']) > 0) {
-        $query_filters['( x__next = ' . $_GET['any_i__id'] . ' OR x__previous = ' . $_GET['any_i__id'] . $followings_tr_filter . ')'] = null;
-    }
+    $query_filters['( x__next = ' . $focus_i['i__id'] . ' OR x__previous = ' . $focus_i['i__id'] . $followings_tr_filter . ')'] = null;
+
 }
 
 if(isset($_GET['any_x__id']) && strlen($_GET['any_x__id']) > 0){
@@ -222,7 +245,7 @@ echo '<table class="table table-sm maxout"><tr>';
 //ANY IDEA
 echo '<td><div>';
 echo '<span class="mini-header">ANY IDEA:</span>';
-echo '<input type="text" name="any_i__id" value="' . ((isset($_GET['any_i__id'])) ? $_GET['any_i__id'] : '') . '" class="form-control border">';
+echo '<input type="text" name="i__hashtag" value="' . ( $input_i ? $_GET['i__hashtag'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
 echo '<td><span class="mini-header">IDEA PREVIOUS:</span><input type="text" name="x__previous" value="' . ((isset($_GET['x__previous'])) ? $_GET['x__previous'] : '') . '" class="form-control border"></td>';
@@ -242,7 +265,7 @@ echo '<table class="table table-sm maxout"><tr>';
 //ANY SOURCE
 echo '<td><div>';
 echo '<span class="mini-header">ANY SOURCE:</span>';
-echo '<input type="text" name="any_e__id" value="' . ((isset($_GET['any_e__id'])) ? $_GET['any_e__id'] : '') . '" class="form-control border">';
+echo '<input type="text" name="e__handle" value="' . ( $input_e ? $_GET['e__handle'] : '' ) . '" class="form-control border">';
 echo '</div></td>';
 
 echo '<td><span class="mini-header">SOURCE CREATOR:</span><input type="text" name="x__creator" value="' . ((isset($_GET['x__creator'])) ? $_GET['x__creator'] : '') . '" class="form-control border"></td>';
