@@ -176,7 +176,14 @@ h3{
 }
 
 .table_frame{
-    background-color: #FFFFFF; color:#000000 !important; padding:20px; font-size:0.8em; height:233px; width: 100%; border-radius: 0px;
+    background-color: #FFFFFF;
+    color:#000000 !important;
+    padding:8px;
+    font-size:0.89em;
+    height:233px;
+    width: 100%;
+    border-radius: 0px;
+    margin-bottom: 8px;
 }
 
 .modal-header .btn-close {

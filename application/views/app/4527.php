@@ -17,7 +17,7 @@ if(is_array($this->config->item('n___6287')) && count($this->config->item('n___6
     $n___7357 = $this->config->item('n___7357'); //LIMITED ACCESS
     $n___7359 = $this->config->item('n___7359');
     $n___33337 = $this->config->item('n___33337');
-    $n___42921 = $this->config->item('n___42921');
+    $e___42921 = $this->config->item('e___42921');
 
 } else {
 
@@ -143,12 +143,12 @@ foreach($this->X_model->fetch(array(
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
-    $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($n___42921[$app['e__id']]['m__message']) && strlen($n___42921[$app['e__id']]['m__message']);
+    $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
 
     if(in_array($app['e__id'], $this->config->item('n___42905'))){
         //Source Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$n___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
         }
@@ -156,7 +156,7 @@ foreach($this->X_model->fetch(array(
     if(in_array($app['e__id'], $this->config->item('n___42923'))){
         //Discoveries Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$n___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         }
@@ -164,7 +164,7 @@ foreach($this->X_model->fetch(array(
     if(in_array($app['e__id'], $this->config->item('n___42911'))){
         //Idea Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$n___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         }
@@ -172,7 +172,7 @@ foreach($this->X_model->fetch(array(
     if(in_array($app['e__id'], $this->config->item('n___42922'))){
         //No Inputs
         if($special_routes){
-            $special_route_text .= '$route[\''.$n___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
         }
@@ -194,8 +194,6 @@ fclose($routes_file);
 
 echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated '.$total_nodes.' Sources ('.$biggest_source_handle.' Biggest with '.$biggest_source_count.' Sources) & removed '.reset_cache($x__player).' cached pages.</div><div>'.$start_time.' / '.$save_time.' / '.date("Y-m-d H:i:s").'</div></div>';
 
-
-//$route['(?i)Memory'] = "app/load/4527";
 
 //Show:
 echo '<textarea class="mono-space table_frame">'.$memory_text.'</textarea>';
