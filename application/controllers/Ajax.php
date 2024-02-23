@@ -44,11 +44,6 @@ class Ajax extends CI_Controller
 
     }
 
-    function e_popover($e__handle){
-
-    }
-
-
     function i_editor_load()
     {
 

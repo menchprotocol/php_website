@@ -13,17 +13,13 @@ class App extends CI_Controller
         auto_login();
     }
 
-    function index(){
-        //Default Home Page:
-        $this->load(14565);
-    }
 
-    function load($x__app, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
+    function load($app_e__id, $focus_handle = 0, $focus_hashtag = 0, $target_hashtag = 0){
 
         $memory_detected = is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'));
         if(!$memory_detected){
             //Since we don't have the memory created we must load the app that does so:
-            $x__app = 4527;
+            $app_e__id = 4527;
         }
 
         //Any ideas passed?
@@ -72,7 +68,7 @@ class App extends CI_Controller
                     $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
                 }
             }
-            if($x__app==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
+            if($app_e__id==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
                 //Adjust URL Case Sensitive:
                 return redirect_message(view_memory(42903,33286).$focus_i['i__hashtag']);
             }
@@ -101,7 +97,7 @@ class App extends CI_Controller
                     $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤔</div>';
                 }
             }
-            if($x__app==42902 && $focus_e && $focus_e['e__handle']!==$_GET['e__handle']){
+            if($app_e__id==42902 && $focus_e && $focus_e['e__handle']!==$_GET['e__handle']){
                 //Adjust URL Case Sensitive:
                 return redirect_message(view_memory(42903,42902).$focus_e['e__handle']);
             }
@@ -110,8 +106,8 @@ class App extends CI_Controller
 
 
         //Validate App
-        if($memory_detected && !in_array($x__app, $this->config->item('n___6287'))){
-            foreach($this->E_model->fetch(array('e__id' => $x__app)) as $this_e){
+        if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
+            foreach($this->E_model->fetch(array('e__id' => $app_e__id)) as $this_e){
                 return redirect_message(view_memory(42903,42902).$this_e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$this_e['e__handle'].' Is not an APP, yet 🤔</div>');
             }
         }
@@ -131,7 +127,7 @@ class App extends CI_Controller
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
 
-       // if(in_array($x__app, $this->config->item('n___42920'))){
+       // if(in_array($app_e__id, $this->config->item('n___42920'))){
             //boost_power();
        // }
 
@@ -166,7 +162,7 @@ class App extends CI_Controller
 
 
 
-            $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$x__app]['m__following']);
+            $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
             if($is_u_request && count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 if(!$player_e){
                     //No user, maybe they can login to get it:
@@ -185,18 +181,18 @@ class App extends CI_Controller
 
 
         //MEMBER REDIRECT?
-        if($player_e && in_array($x__app, $this->config->item('n___14639'))){
+        if($player_e && in_array($app_e__id, $this->config->item('n___14639'))){
             //Should redirect them:
             return redirect_message(view_memory(42903,42902).$player_e['e__handle']);
-        } elseif(!$player_e && in_array($x__app, $this->config->item('n___14740'))){
+        } elseif(!$player_e && in_array($app_e__id, $this->config->item('n___14740'))){
             //Should redirect them:
-            return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$x__app]['m__title'].'</b></div>');
+            return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
         }
 
 
 
         $x_completes = array();
-        if($player_e && $x__app==30795) {
+        if($player_e && $app_e__id==30795) {
 
             //Fetch discovery
             $x_completes = $this->X_model->fetch(array(
@@ -263,16 +259,16 @@ class App extends CI_Controller
         $cache_x__time = null;
         if($memory_detected){
             
-            $title = $e___6287[$x__app]['m__title'];
+            $title = $e___6287[$app_e__id]['m__title'];
 
-            if(in_array($x__app, $this->config->item('n___14599')) && !in_array($x__app, $this->config->item('n___12741'))){
+            if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
 
                 if(!isset($_GET['reset_cache'])){
                     //Fetch Most Recent Cache:
                     foreach($this->X_model->fetch(array(
                         'x__website' => website_setting(0),
                         'x__type' => 14599, //Cache App
-                        'x__following' => $x__app,
+                        'x__following' => $app_e__id,
                         'x__previous' => $x__previous,
                         'x__follower' => $x__follower,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
@@ -296,8 +292,8 @@ class App extends CI_Controller
         if(!$ui){
 
             //Prep view:
-            $raw_app = $this->load->view('app/'.$x__app, array(
-                'app_e__id' => $x__app,
+            $raw_app = $this->load->view('app/'.$app_e__id, array(
+                'app_e__id' => $app_e__id,
                 'x__player' => $x__player,
                 'player_e' => $player_e,
                 'is_u_request' => $is_u_request,
@@ -308,8 +304,8 @@ class App extends CI_Controller
                 'x_completes' => $x_completes,
             ), true);
 
-            if($memory_detected && !in_array($x__app, $this->config->item('n___14597'))){
-                $ui .= '<h1>' . $e___6287[$x__app]['m__title'] . '</h1>';
+            if($memory_detected && !in_array($app_e__id, $this->config->item('n___14597'))){
+                $ui .= '<h1>' . $e___6287[$app_e__id]['m__title'] . '</h1>';
             }
             $ui .= $raw_app;
         }
@@ -318,7 +314,7 @@ class App extends CI_Controller
             $cache_x = $this->X_model->create(array(
                 'x__player' => $x__player,
                 'x__type' => 14599, //Cache App
-                'x__following' => $x__app,
+                'x__following' => $app_e__id,
                 'x__message' => $ui,
                 'x__previous' => $x__previous,
                 'x__follower' => $x__follower,
@@ -330,8 +326,8 @@ class App extends CI_Controller
         //Log App Load:
         $interaction = array(
             'x__player' => $x__player,
-            'x__type' => 14067, //APP LOADED $x__app
-            'x__following' => $x__app,
+            'x__type' => 14067, //APP LOADED $app_e__id
+            'x__following' => $app_e__id,
             'x__reference' => $cache_x__id,
             'x__metadata' => array(
                 '$_GET' => $_GET,
@@ -384,21 +380,21 @@ class App extends CI_Controller
 
         } else {
 
-            if(in_array($x__app, $this->config->item('n___12741'))){
+            if(in_array($app_e__id, $this->config->item('n___12741'))){
 
                 //Raw UI:
                 echo $raw_app;
 
             } else {
 
-                $basic_header = intval(in_array($x__app, $this->config->item('n___14562')));
+                $basic_header = intval(in_array($app_e__id, $this->config->item('n___14562')));
 
                 //Regular UI:
                 //Load App:
                 echo $this->load->view('header', array(
                     'title' => $title,
                     'basic_header_footer' => $basic_header,
-                    'app_e__id' => $x__app,
+                    'app_e__id' => $app_e__id,
                     'flash_message' => $flash_message,
                 ), true);
                 echo $ui;

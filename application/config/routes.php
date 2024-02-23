@@ -1,10 +1,7 @@
 <?php
 
 defined('BASEPATH') or exit('No direct script access allowed');
-
 $route['translate_uri_dashes'] = FALSE;
-$route['default_controller'] = "app/index"; //Redirects to default app
-$route['404_override'] = 'app/load'; //Page not found
 
 
 $route['(?i)GraphCleanup'] = "app/load/42912";
@@ -76,3 +73,5 @@ $route['(?i)SourceOrphaned'] = "app/load/7269";
 $route['@([a-zA-Z0-9]+)']                 = "app/load/42902/$1"; //Source
 $route['([a-zA-Z0-9]+)/([a-zA-Z0-9]+)']   = "app/load/30795/0/$2/$1"; //Target Idea / Discovery
 $route['([a-zA-Z0-9]+)']                  = "app/load/33286/0/$1"; //Focus Idea / Ideation
+$route['default_controller'] = "app/index/14565"; //Redirects to default app
+$route['404_override'] = 'app/load'; //Page not found

@@ -4,11 +4,6 @@
 $limit = view_memory(6404,11064);
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $write_privacy_e = write_privacy_e($focus_e['e__handle']);
-$this->X_model->create(array(
-    'x__player' => $player_e['e__id'],
-    'x__type' => 4994, //Member Viewed Source
-    'x__follower' => $focus_e['e__id'],
-));
 
 
 
