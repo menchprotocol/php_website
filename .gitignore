@@ -1,6 +1,8 @@
 .DS_Store
 
 application/config/database.php
+application/config/credentials.php
+application/config/routes.php
 application/config/mench_memory.php
 
 application/cache/*
