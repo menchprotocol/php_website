@@ -850,7 +850,7 @@ function view_instant_select($focus_id, $down_e__id = 0, $right_i__id = 0){
             $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
         if($selected){
-            $headline .= '<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>';
+            $headline .= '<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i></span>';
         }
         if(in_array($list_item['e__id'], $CI->config->item('n___11035')) && strlen($e___11035[$list_item['e__id']]['m__message'])>0){
             $headline .= '<span class="doregular info_blob '.( strlen($e___11035[$list_item['e__id']]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$list_item['e__id']]['m__message'].'</span></span>';

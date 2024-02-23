@@ -2756,7 +2756,7 @@ function e_select_apply(focus_id, selected_e__id, enable_mulitiselect, down_e__i
         $('.radio-'+focus_id+' .item-'+selected_e__id+' .checked_icon').remove();
     } else {
         $('.radio-'+focus_id+' .item-'+selected_e__id).addClass('active');
-        $('.radio-'+focus_id+' .item-'+selected_e__id+' .inner_headline').after('<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check-circle"></i></span>');
+        $('.radio-'+focus_id+' .item-'+selected_e__id+' .inner_headline').after('<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i></span>');
     }
 
     $.post("/ajax/e_select_apply", {
