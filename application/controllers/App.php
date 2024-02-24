@@ -146,11 +146,11 @@ class App extends CI_Controller
         //Missing inputs?
         if(!in_array($app_e__id, $this->config->item('n___42922'))){
             if(in_array($app_e__id, $this->config->item('n___42905')) && !$focus_e){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: @'.$_GET['e__handle'].' is not a valid Source.</div>');
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: @'.$_GET['e__handle'].' must be a valid source handle.</div>');
             } elseif(in_array($app_e__id, $this->config->item('n___42923')) && (!$focus_i || !$target_i)){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: #'.$_GET['i__hashtag'].' & #'.$target_hashtag.' are not a valid Discovery.</div>');
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: Both #'.$_GET['i__hashtag'].' & #'.$target_hashtag.' must be valid discovery hashtags.</div>');
             } elseif(in_array($app_e__id, $this->config->item('n___42911')) && !$focus_i){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: #'.$_GET['i__hashtag'].' is not a valid Idea.</div>');
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: #'.$_GET['i__hashtag'].' must be a valid idea hashtag.</div>');
             }
         }
 
