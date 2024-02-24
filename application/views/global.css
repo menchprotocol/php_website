@@ -167,7 +167,7 @@ h3{
 }
 
 .modal-header .dynamic_editing_input{
-    min-width: 144px;
+    min-width: 89px;
     text-align: center;
 }
 .initial_header{
@@ -2865,6 +2865,9 @@ h4.main__title{
 
 
 .slim_flat{
+    margin-bottom: 233px !important;
+}
+.long_flat{
     margin-bottom: 987px !important;
 }
 

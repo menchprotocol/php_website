@@ -621,7 +621,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         ?>
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content slim_flat">
+                <div class="modal-content long_flat">
                     <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12274">
                         <div class="modal-header">
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -780,7 +780,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         ?>
         <div class="modal fade" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content slim_flat">
+                <div class="modal-content long_flat">
 
                     <form method="POST" action="<?= view_app_link(27196) ?>?focus__id=12273">
 

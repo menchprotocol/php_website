@@ -6,7 +6,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 <!-- Edit Source Modal -->
 <div class="modal fade" id="modal31912" tabindex="-1" role="dialog" aria-labelledby="modal31912Label" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content slim_flat">
+        <div class="modal-content long_flat">
 
             <div class="modal-header">
                 <div class="initial_header">
