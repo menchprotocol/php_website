@@ -4565,6 +4565,7 @@ main {
 
 .fa_search{
     margin-top: -21px;
+    font-size: 0.89em !important;
     float: right;
     width: 34px;
 }
