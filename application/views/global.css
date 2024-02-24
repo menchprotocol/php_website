@@ -4546,6 +4546,8 @@ main {
     display: inline-block;
     line-height: 134%;
     padding: 0;
+    max-width: 100%;
+    overflow-y: hidden !important;
 }
 
 .creator_frame .creator_headline,
