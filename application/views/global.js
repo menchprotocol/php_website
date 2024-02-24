@@ -883,6 +883,7 @@ $(document).ready(function () {
 
     $('#modal31912 .save_e__cover').change(function () {
 
+        console.log('change detexted:'+$(this).val());
         watch_cover_change($(this).val());
 
     }).on('paste', function (e) {
