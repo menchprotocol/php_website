@@ -59,13 +59,9 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                                     </div>
                                 </div>
                             </td>
-                            <td class="superpower__13758 fa_search hidden">
-                                <!-- Font Awesome Search -->
-                                <a href="https://fontawesome.com/search?q=circle&o=r&s=solid" class="icon-block-sm" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus zq12274"></i></a>
-                            </td>
                             <td class="superpower__13758">
                                 <!-- Font Awesome Insert -->
-                                <a href="javascript:void(0);" class="icon-block-sm" onclick="update__cover('far fa-icons');$('.fa_search').removeClass('hidden');" title="Add a Sample Font Awesome Icon to Get Started"><i class="far fa-icons"></i></a>
+                                <a href="javascript:void(0);" class="icon-block-sm" onclick="open_fontawesome()" title="Use Font Awesome"><i class="far fa-icons"></i></a>
                             </td>
                             <td class="superpower__13758 cover_history_button">
                                 <!-- History -->
@@ -80,20 +76,28 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                 </div>
                 <div class="dynamic_editing_input">
                     <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': ';  ?></h3>
+
                     <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
                     <input type="text" class="form-control unsaved_warning save_e__cover superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
+
+                    <!-- Font Awesome Search -->
+                    <div class="superpower__13758 fa_search hidden">
+                        <a href="https://fontawesome.com/search" class="icon-block-sm" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus"></i></a>
+                    </div>
+                    <div class="doclear">&nbsp;</div>
+
                     <div>
+
                         <!-- Cover Settings/Selectors -->
-                        <div class="icons_small font_awesome hidden section_subframe">
-                            <div><a href="https://fontawesome.com/search" target="_blank">Search FontAwesome <i class="far fa-external-link"></i></a></div>
-                        </div>
                         <div class="icons_small cover_history_content hidden section_subframe"></div>
+
                         <!-- Cover Demo -->
                         <div class="section_demo">
                             <div class="card_cover demo_cover">
                                 <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 

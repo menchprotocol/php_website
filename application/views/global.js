@@ -97,6 +97,26 @@ function htmlentitiesjs(rawStr){
 }
 
 
+function open_fontawesome(){
+    update__cover('fas fa-icons');
+    $('.fa_search').removeClass('hidden');
+    $('#modal'+apply_id+' .mass_action_toggle').attr('href','https://fontawesome.com/search?q=circle&o=r&s=solid');
+}
+
+function watch_cover_change(new_cover){
+    if(new_cover.includes('<i class="fa-')){
+        //User pasted Font Awesome HTML code, simplify:
+        var split_cover_arr = new_cover.split('<i class="fa-');
+        var split_cover_arr2 = split_cover_arr[1].split('"');
+        $('#modal31912 .save_e__cover').val(split_cover_arr2[0]).removeClass('hidden');
+    } else if(new_cover.includes('fa-')){
+        //This is font awesome, show:
+        $('#modal31912 .save_e__cover').removeClass('hidden');
+    } else {
+        $('#modal31912 .save_e__cover').addClass('hidden');
+    }
+}
+
 function x_mass_apply_preview(apply_id, s__id){
 
     //Select first:
@@ -637,19 +657,11 @@ function x_create(add_fields){
 
 
 
-function toggle__cover(new_cover){
-    if(new_cover.slice(0, 2)=='fa'){
-        //This is font awesome, show:
-        $('#modal31912 .save_e__cover').removeClass('hidden');
-    } else {
-        $('#modal31912 .save_e__cover').addClass('hidden');
-    }
-}
 
 function update__cover(new_cover, changed = true){
     $('#modal31912 .save_e__cover').val( new_cover );
     update_cover_main(new_cover, '.demo_cover');
-    toggle__cover(new_cover);
+    watch_cover_change(new_cover);
     if(changed){
         has_unsaved_changes = true;
     }
@@ -866,7 +878,7 @@ $(document).ready(function () {
     load_hashtag_menu();
 
     $('#modal31912 .save_e__cover').change(function () {
-        toggle__cover($(this).val());
+        watch_cover_change($(this).val());
     });
 
     $(document).on('keydown', function ( e ) {
