@@ -107,7 +107,7 @@ function clean_font_awesome_paste(new_cover){
 }
 
 function watch_cover_change(new_cover){
-    if(new_cover.substr(0, 3)=='fa-'){
+    if(new_cover.substr(0, 2)=='fa' && new_cover.includes('fa-')){
         //Update font awesome:
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
