@@ -4,10 +4,10 @@
 if(!isset($_GET['confirm'])){
 
     //Asl user to confirm:
-    echo '<div>You are about to delete all discoveries for @'.$focus_e['e__handle'].'... Are you sure you want to continue?</div>';
+    echo '<div class="alert alert-warning" role="alert">You are about to delete all discoveries for @'.$focus_e['e__handle'].'... Are you sure you want to continue?</div>';
     echo '<a href="'.view_app_link(6415).view_memory(42903,42902).$focus_e['e__handle'].'?confirm=1" class="btn btn-default">Confirm</a>';
     echo ' - OR - ';
-    echo '<a href="'.view_memory(42903,42902).$focus_e['e__handle'].'" class="btn btn-default">@'.$focus_e['e__handle'].'</a>';
+    echo '<a href="'.view_memory(42903,42902).$focus_e['e__handle'].'" class="btn btn-default">Cancel & Return to @'.$focus_e['e__handle'].'</a>';
 
 } else {
 

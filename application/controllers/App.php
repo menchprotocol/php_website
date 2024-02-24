@@ -27,7 +27,7 @@ class App extends CI_Controller
         }
 
         //Any ideas passed?
-        $warning_alerts = '';
+        $flash_message = false;
         $focus_e = null; //Sourcing
         $focus_i = null; //Ideation/Discovery
         $target_i = null; //Discovery
@@ -59,7 +59,7 @@ class App extends CI_Controller
                 }
 
                 if(!$focus_i){
-                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
+                    $flash_message .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
                 }
             }
             if($app_e__id==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
@@ -88,7 +88,7 @@ class App extends CI_Controller
                 }
 
                 if(!$focus_e){
-                    $warning_alerts .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤔</div>';
+                    $flash_message .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤔</div>';
                 }
             }
             if($app_e__id==42902 && $focus_e && $focus_e['e__handle']!==$_GET['e__handle']){
@@ -122,7 +122,7 @@ class App extends CI_Controller
                 $target_i = $i_found;
             }
             if(!$focus_i){
-                $warning_alerts .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
+                $flash_message .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
             }
         }
 
@@ -144,14 +144,13 @@ class App extends CI_Controller
 
 
         //Run App
-        $flash_message = false;
         $player_e = false;
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
 
-       // if(in_array($app_e__id, $this->config->item('n___42920'))){
-            //boost_power();
-       // }
+        if(in_array($app_e__id, $this->config->item('n___42920'))){
+            boost_power();
+        }
 
         if($memory_detected && $is_u_request){
 
