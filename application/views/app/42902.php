@@ -48,7 +48,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
 
         }
 
-        $body_content .= '<script> $(document).ready(function () { load_finder(12274, '.$x__type.'); }); </script>';
+        $body_content .= '<script> $(document).ready(function () { load_smart_filter(12274, '.$x__type.'); }); </script>';
 
     }
 

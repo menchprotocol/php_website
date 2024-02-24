@@ -1225,16 +1225,16 @@ function update_cover_mini(cover_code, target_css){
 
 
 
-function load_finder(focus__card, x__type){
+function load_smart_filter(focus__card, x__type){
     if(js_n___11028.includes(x__type) || (focus__card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
-        e_load_finder(x__type);
+        e_load_smart_filter(x__type);
     }
 }
 
 
-function e_load_finder(x__type) {
+function e_load_smart_filter(x__type) {
 
-    console.log(x__type + " e_load_finder()");
+    console.log(x__type + " e_load_smart_filter()");
 
     //Load Search:
     var icons_listed = [];

@@ -1455,7 +1455,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
 
             }
 
-            $body_content .= '<script> $(document).ready(function () { load_finder(12273, '.$x__type.'); }); </script>';
+            $body_content .= '<script> $(document).ready(function () { load_smart_filter(12273, '.$x__type.'); }); </script>';
 
         }
 
@@ -1469,7 +1469,11 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
     $ui .= '</ul>';
     $ui .= $body_content;
 
-    if(!$can_add){
+    if($write_privacy_i){
+        //Focus on next:
+        $focus_tab = 12840;
+        $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\'Next\'); }); </script>';
+    } else {
         $focus_tab = 0;
         foreach($e___loading_order as $x__type => $m) { //Load Focus Tab:
             if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
@@ -1484,10 +1488,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
                 break;
             }
         }
-    } else {
-        //Focus on next:
-        $focus_tab = 12840;
-        $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\'Next\'); }); </script>';
+
     }
     
 
