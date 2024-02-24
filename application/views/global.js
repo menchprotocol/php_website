@@ -870,6 +870,7 @@ function clean_font_awesome_paste(text){
         var split_cover_arr2 = split_cover_arr[1].split('"');
         text = ( split_cover_arr2[0].length ? split_cover_arr2[0] : text );
     }
+    return text;
 }
 
 var algolia_index = false;
