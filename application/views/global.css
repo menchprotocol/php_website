@@ -2126,7 +2126,6 @@ label {
 .mini-frame{
     overflow: hidden;
     line-height: 134%;
-    margin-bottom: -6px;
     white-space: nowrap;
     text-overflow: clip;
 }
