@@ -4564,8 +4564,9 @@ main {
     overflow: visible;
 }
 .first_headline{
-    margin: 7px 0 -29px 0;
+    margin: 0px 0 -29px 0;
     display: block;
+    padding-top: 7px !important;
 }
 
 .x__message_headline{
