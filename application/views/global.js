@@ -2779,7 +2779,7 @@ function e_select_apply(focus__id, selected_e__id, enable_mulitiselect, down_e__
         $('.radio-'+focus__id+' .item-'+selected_e__id+' .checked_icon').remove();
     } else {
         $('.radio-'+focus__id+' .item-'+selected_e__id).addClass('active');
-        $('.radio-'+focus__id+' .item-'+selected_e__id+' .inner_headline').after('<span class="icon-block checked_icon" title="Selected" data-toggle="tooltip" data-placement="top"><i class="fas fa-check"></i></span>');
+        $('.radio-'+focus__id+' .item-'+selected_e__id+' .inner_headline').after('<span class="icon-block checked_icon"><i class="fas fa-check"></i></span>');
     }
 
     $.post("/ajax/e_select_apply", {
