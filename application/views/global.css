@@ -490,16 +490,8 @@ img.no-frame {
     /* max-height: 29px;
     overflow-y: auto;*/
 }
-.algolia_pad_finder{
-    text-align: center;
-    margin: 0px 5px 21px;
-    border-bottom:1px dashed transparent;
-    width: auto;
-}
 
-.algolia_pad_finder:empty{
-    display: none !important;
-}
+
 .gateway{
     color:transparent !important;
     width: 25px;

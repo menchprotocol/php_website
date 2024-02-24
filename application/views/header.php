@@ -189,7 +189,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             .custom_ui_14506_'.$e__id.' .first_line,
             .custom_ui_14506_'.$e__id.' .headline,
             .custom_ui_14506_'.$e__id.' .btn,
-            .custom_ui_14506_'.$e__id.' .algolia_pad_finder,
             .custom_ui_14506_'.$e__id.' .mid-text-line span,
             .custom_ui_14506_'.$e__id.' .texttype__lg,
             .custom_ui_14506_'.$e__id.' .texttype__lg::placeholder,

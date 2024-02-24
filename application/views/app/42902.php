@@ -44,11 +44,9 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                                class="form-control form-control-thick algolia_finder dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="+ Add @source">
-                    </div></div></div><div class="algolia_pad_finder row justify-content dropdown_'.$x__type.'"></div></div>';
+                    </div></div></div></div>';
 
         }
-
-        $body_content .= '<script> $(document).ready(function () { load_smart_filter(12274, '.$x__type.'); }); </script>';
 
     }
 
