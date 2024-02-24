@@ -138,7 +138,7 @@ $special_route_text = '';
 $routes_text .= '//APPS:'."\n\n";
 foreach($this->X_model->fetch(array(
     'x__following' => 6287, //Apps
-    'x__follower NOT IN (' . join(',', $this->config->item('n___42927')) . ')' => null, //Hide App
+    //'x__follower NOT IN (' . join(',', $this->config->item('n___42927')) . ')' => null, //Hide App
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
