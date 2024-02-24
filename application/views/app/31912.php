@@ -69,7 +69,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                             </td>
                             <td>
                                 <!-- Ramdom Animal -->
-                                <a href="javascript:void(0);" class="random_animal" onclick="update__cover('deleted '+random_animal())" title="Set a random animal"></a>
+                                <a href="javascript:void(0);" class="random_animal" onclick="update__cover('hidden '+random_animal())" title="Set a random animal"></a>
                             </td>
                         </tr>
                     </table>
