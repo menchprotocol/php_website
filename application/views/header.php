@@ -460,7 +460,7 @@ if(!$basic_header_footer){
                     */
 
 
-                    if(search_enabled() && $player_e && $player_e['e__id']==1){
+                    if(search_enabled() && $player_e){
                         echo '<td class="block-x icon_finder '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
                         echo '<td class="block-x icon_finder hidden"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }
