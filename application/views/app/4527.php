@@ -196,6 +196,19 @@ fclose($routes_file);
 echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated '.$total_nodes.' Sources ('.$biggest_source_handle.' Biggest with '.$biggest_source_count.' Sources) & removed '.reset_cache($x__player).' cached pages.</div><div>'.$start_time.' / '.$save_time.' / '.date("Y-m-d H:i:s").'</div></div>';
 
 
+//Append Roattion CSS:
+$routes_location = '';
+for($i=1;$i<360;$i++){
+    $routes_location .= ' .rotate'.$i.' {
+    -webkit-transform: rotate('.$i.'deg); /* Chrome and other webkit browsers */
+    -moz-transform: rotate('.$i.'deg); /* FF */
+    -o-transform: rotate('.$i.'deg); /* Opera */
+    -ms-transform: rotate('.$i.'deg); /* IE9 */
+    transform: rotate('.$i.'deg); /* W3C compliant browsers */
+} ';
+}
+
+
 //Show:
 echo '<div>'.$memory_location.':</div>';
 echo '<textarea class="mono-space table_frame">'.$memory_text.'</textarea>';

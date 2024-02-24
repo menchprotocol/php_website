@@ -1236,7 +1236,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 1,
-            'message' => 'Hashtag '.$str.' already in use!',
+            'message' => 'Hashtag "'.$str.'" already in use.',
         );
 
     }
@@ -1259,7 +1259,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
                 return array(
                     'status' => 0,
                     'db_duplicate' => 1,
-                    'message' => 'Hashtag '.$str.' already in use!',
+                    'message' => 'Hashtag "'.$str.'" already in use.',
                 );
             }
         }
@@ -1281,7 +1281,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
                 return array(
                     'status' => 0,
                     'db_duplicate' => 1,
-                    'message' => 'Hashtag '.$str.' already in use!',
+                    'message' => 'Hashtag "'.$str.'" already in use.',
                 );
             }
         }
