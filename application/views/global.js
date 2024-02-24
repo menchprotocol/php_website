@@ -36,7 +36,7 @@ if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user 
         FS.identify(js_pl_id, {
             displayName: js_pl_name,
             uid: js_pl_id,
-            //profileURL: base_url+js_e___42903[42902]['m__message']+js_pl_handle
+            profileURL: js_request_uri+js_e___42903[42902]['m__message']+js_pl_handle
         });
     }
 
