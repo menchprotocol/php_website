@@ -99,19 +99,18 @@ function htmlentitiesjs(rawStr){
 
 function watch_cover_change(new_cover){
     if(new_cover.includes('<i class="fa-')){
-        //Extract FA code:
+        //Extract font awesome code:
         var split_cover_arr = new_cover.split('<i class="fa-');
         var split_cover_arr2 = split_cover_arr[1].split('"');
         //Update:
         $('#modal31912 .save_e__cover').val(split_cover_arr2[0]);
         watch_cover_change(split_cover_arr2[0]);
     } else if(new_cover.includes('fa-')){
-        //Show valid font awesome:
+        //Update font awesome:
+        var split_cover_2arr = new_cover.split('fa-');
+        var split_cover_2arr2 = split_cover_2arr[1].split(' ');
+        $('#modal31912 .fa_search').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(split_cover_2arr2[0])+'&o=r&s=solid').removeClass('hidden');
         $('#modal31912 .save_e__cover').removeClass('hidden');
-        //Update Search:
-        var split_cover_arr = new_cover.split('fa-');
-        var split_cover_arr2 = split_cover_arr[1].split(' ');
-        $('#modal31912 .fa_search').attr('href','https://fontawesome.com/search?q='+split_cover_arr2[0]+'&o=r&s=solid').removeClass('hidden');
     } else {
         $('#modal31912 .save_e__cover').addClass('hidden');
     }
