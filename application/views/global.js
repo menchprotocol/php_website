@@ -868,7 +868,7 @@ function clean_font_awesome_paste(text){
         //Extract font awesome code:
         var split_cover_arr = text.split('<i class="fa-');
         var split_cover_arr2 = split_cover_arr[1].split('"');
-        text = ( split_cover_arr2[0].length ? split_cover_arr2[0] : text );
+        text = ( split_cover_arr2[0].length ? 'fa-'+split_cover_arr2[0] : text );
     }
     return text;
 }
