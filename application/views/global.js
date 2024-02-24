@@ -117,6 +117,8 @@ function watch_cover_change(new_cover){
     } else {
         $('#modal31912 .save_e__cover, #modal31912 .fa_search').addClass('hidden');
     }
+    //Reactivate:
+    activate_cover_watch();
 }
 
 function x_mass_apply_preview(apply_id, s__id){
@@ -872,15 +874,7 @@ function activate_popover(){
     });
 }
 
-
-
-var algolia_index = false;
-$(document).ready(function () {
-
-    activate_popover();
-
-    load_hashtag_menu();
-
+function activate_cover_watch(){
     $('#modal31912 .save_e__cover').change(function () {
 
         console.log('change detexted:'+$(this).val());
@@ -911,6 +905,17 @@ $(document).ready(function () {
         }
         watch_cover_change(text);
     });
+
+}
+
+var algolia_index = false;
+$(document).ready(function () {
+
+    activate_popover();
+
+    load_hashtag_menu();
+
+    activate_cover_watch();
 
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
