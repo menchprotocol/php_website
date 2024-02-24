@@ -4548,7 +4548,9 @@ main {
     max-width: 100%;
     overflow-y: hidden !important;
 }
-
+.creator_headline span.mini-frame.grey{
+    margin-bottom: -6px;
+}
 .creator_frame .creator_headline,
 .modal-body .creator_headline{
     display: block;
