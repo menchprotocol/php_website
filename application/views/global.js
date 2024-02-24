@@ -109,10 +109,9 @@ function watch_cover_change(new_cover){
         //Show valid font awesome:
         $('#modal31912 .save_e__cover').removeClass('hidden');
         //Update Search:
-
-        $('.fa_search').removeClass('hidden');
-        $('#modal'+apply_id+' .mass_action_toggle').attr('href','https://fontawesome.com/search?q=circle&o=r&s=solid');
-
+        var split_cover_arr = new_cover.split('fa-');
+        var split_cover_arr2 = split_cover_arr[1].split(' ');
+        $('#modal31912 .fa_search').attr('href','https://fontawesome.com/search?q='+split_cover_arr2[0]+'&o=r&s=solid').removeClass('hidden');
     } else {
         $('#modal31912 .save_e__cover').addClass('hidden');
     }
