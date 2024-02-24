@@ -148,9 +148,9 @@ class App extends CI_Controller
         $is_u_request = isset($_SERVER['SERVER_NAME']);
         $e___6287 = $this->config->item('e___6287'); //APP
 
-        if(in_array($app_e__id, $this->config->item('n___42920'))){
-            boost_power();
-        }
+        //if(in_array($app_e__id, $this->config->item('n___42920'))){
+            //boost_power();
+        //}
 
         if($memory_detected && $is_u_request){
 
