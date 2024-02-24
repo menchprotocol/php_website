@@ -19,12 +19,12 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                     </div>
 
                     <!-- Toggle Direction -->
-                    <div class="dynamic_editing_input no_padde idea_link_direction hidden superpower__42817">
+                    <div class="dynamic_editing_input no_padde idea_link_direction hidden hidden_superpower__42817">
                         <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="far fa-arrow-up-arrow-down"></i></a>
                     </div>
 
                     <!-- Idea Links -->
-                    <div class="dynamic_editing_input idea_link_type hidden superpower__10939" style="margin: 0 !important;">
+                    <div class="dynamic_editing_input idea_link_type hidden hidden_superpower__10939" style="margin: 0 !important;">
                         <div class="dynamic_selector"><?= view_single_select_form(4486, 4228, false, true); ?></div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                     </div>
 
                     <!-- Idea Type -->
-                    <div class="dynamic_editing_input superpower__10939" style="margin: 0 !important;">
+                    <div class="dynamic_editing_input hidden_superpower__10939" style="margin: 0 !important;">
                         <div class="dynamic_selector"><?= view_single_select_form(4737, 6677, false, true); ?></div>
                     </div>
 
@@ -112,7 +112,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                 </div>
 
 
-                <div class="superpower__10939">
+                <div class="hidden_superpower__10939">
 
                     <!-- Dynamic Loader -->
                     <div class="dynamic_editing_loading hidden"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>

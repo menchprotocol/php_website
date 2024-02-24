@@ -50,7 +50,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                                 <!-- Upload Cover -->
                                 <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
                             </td>
-                            <td class="superpower__13758">
+                            <td class="hidden_superpower__13758">
                                 <!-- EMOJI -->
                                 <div class="icon-block-sm">
                                     <div class="dropdown emoji_selector" style="max-height: 21px; margin-top: -18px;">
@@ -59,11 +59,11 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                                     </div>
                                 </div>
                             </td>
-                            <td class="superpower__13758">
+                            <td class="hidden_superpower__13758">
                                 <!-- Font Awesome Insert -->
                                 <a href="javascript:void(0);" class="icon-block-sm" onclick="update__cover('fas fa-icons')" title="Use Font Awesome"><i class="far fa-icons"></i></a>
                             </td>
-                            <td class="superpower__13758 cover_history_button">
+                            <td class="hidden_superpower__13758 cover_history_button">
                                 <!-- History -->
                                 <a href="javascript:void(0);" class="icon-block-sm" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
                             </td>
@@ -78,10 +78,10 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                     <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': ';  ?></h3>
 
                     <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
-                    <input type="text" class="form-control unsaved_warning save_e__cover superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
+                    <input type="text" class="form-control unsaved_warning save_e__cover hidden_superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
 
                     <!-- Font Awesome Search -->
-                    <div class="superpower__13758 fa_search hidden">
+                    <div class="hidden_superpower__13758 fa_search hidden">
                         <a href="https://fontawesome.com/search" class="icon-block-sm" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus"></i></a>
                     </div>
                     <div class="doclear">&nbsp;</div>
