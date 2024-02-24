@@ -118,7 +118,41 @@ function watch_cover_change(new_cover){
         $('#modal31912 .save_e__cover, #modal31912 .fa_search').addClass('hidden');
     }
     //Reactivate:
-    activate_cover_watch();
+    //activate_cover_watch();
+}
+
+function activate_cover_watch(){
+    $('#modal31912 .save_e__cover').change(function () {
+
+        console.log('change detexted:'+$(this).val());
+        watch_cover_change($(this).val());
+
+    }).on('paste', function (e) {
+        e.preventDefault();
+        var text;
+        var clp = (e.originalEvent || e).clipboardData;
+        if (clp === undefined || clp === null) {
+            text = window.clipboardData.getData("text") || "";
+            if (text !== "") {
+                text = clean_font_awesome_paste(text);
+                if (window.getSelection) {
+                    var newNode = document.createElement("span");
+                    newNode.innerHTML = text;
+                    window.getSelection().getRangeAt(0).insertNode(newNode);
+                } else {
+                    document.selection.createRange().pasteHTML(text);
+                }
+            }
+        } else {
+            text = clp.getData('text/plain') || "";
+            if (text !== "") {
+                text = clean_font_awesome_paste(text);
+                document.execCommand('insertText', false, text);
+            }
+        }
+        watch_cover_change(text);
+    });
+
 }
 
 function x_mass_apply_preview(apply_id, s__id){
@@ -874,38 +908,7 @@ function activate_popover(){
     });
 }
 
-function activate_cover_watch(){
-    $('#modal31912 .save_e__cover').change(function () {
 
-        console.log('change detexted:'+$(this).val());
-        watch_cover_change($(this).val());
-
-    }).on('paste', function (e) {
-        e.preventDefault();
-        var text;
-        var clp = (e.originalEvent || e).clipboardData;
-        if (clp === undefined || clp === null) {
-            text = window.clipboardData.getData("text") || "";
-            if (text !== "") {
-                text = clean_font_awesome_paste(text);
-                if (window.getSelection) {
-                    var newNode = document.createElement("span");
-                    newNode.innerHTML = text;
-                    window.getSelection().getRangeAt(0).insertNode(newNode);
-                } else {
-                    document.selection.createRange().pasteHTML(text);
-                }
-            }
-        } else {
-            text = clp.getData('text/plain') || "";
-            if (text !== "") {
-                text = clean_font_awesome_paste(text);
-                document.execCommand('insertText', false, text);
-            }
-        }
-    });
-
-}
 
 var algolia_index = false;
 $(document).ready(function () {
