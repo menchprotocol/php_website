@@ -61,7 +61,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                             </td>
                             <td class="superpower__13758">
                                 <!-- Font Awesome Insert -->
-                                <a href="javascript:void(0);" class="icon-block-sm" onclick="open_fontawesome()" title="Use Font Awesome"><i class="far fa-icons"></i></a>
+                                <a href="javascript:void(0);" class="icon-block-sm" onclick="update__cover('fas fa-icons')" title="Use Font Awesome"><i class="far fa-icons"></i></a>
                             </td>
                             <td class="superpower__13758 cover_history_button">
                                 <!-- History -->

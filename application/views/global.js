@@ -97,21 +97,22 @@ function htmlentitiesjs(rawStr){
 }
 
 
-function open_fontawesome(){
-    update__cover('fas fa-icons');
-    $('.fa_search').removeClass('hidden');
-    $('#modal'+apply_id+' .mass_action_toggle').attr('href','https://fontawesome.com/search?q=circle&o=r&s=solid');
-}
-
 function watch_cover_change(new_cover){
     if(new_cover.includes('<i class="fa-')){
-        //User pasted Font Awesome HTML code, simplify:
+        //Extract FA code:
         var split_cover_arr = new_cover.split('<i class="fa-');
         var split_cover_arr2 = split_cover_arr[1].split('"');
-        $('#modal31912 .save_e__cover').val(split_cover_arr2[0]).removeClass('hidden');
+        //Update:
+        $('#modal31912 .save_e__cover').val(split_cover_arr2[0]);
+        watch_cover_change(split_cover_arr2[0]);
     } else if(new_cover.includes('fa-')){
-        //This is font awesome, show:
+        //Show valid font awesome:
         $('#modal31912 .save_e__cover').removeClass('hidden');
+        //Update Search:
+
+        $('.fa_search').removeClass('hidden');
+        $('#modal'+apply_id+' .mass_action_toggle').attr('href','https://fontawesome.com/search?q=circle&o=r&s=solid');
+
     } else {
         $('#modal31912 .save_e__cover').addClass('hidden');
     }
