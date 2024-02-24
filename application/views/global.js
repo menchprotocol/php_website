@@ -112,9 +112,9 @@ function watch_cover_change(new_cover){
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
         $('#modal31912 .fa_search a').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(split_cover_2arr2[0])+'&o=r&s=solid&f=classic').removeClass('hidden');
-        $('#modal31912 .save_e__cover').removeClass('hidden');
+        $('#modal31912 .save_e__cover,  #modal31912 .fa_search').removeClass('hidden');
     } else {
-        $('#modal31912 .save_e__cover').addClass('hidden');
+        $('#modal31912 .save_e__cover, #modal31912 .fa_search').addClass('hidden');
 
     }
 }
