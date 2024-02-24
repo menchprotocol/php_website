@@ -197,15 +197,9 @@ echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><s
 
 
 //Append Roattion CSS:
-$routes_location = '';
+$routes_text = '';
 for($i=1;$i<360;$i++){
-    $routes_location .= ' .rotate'.$i.' {
-    -webkit-transform: rotate('.$i.'deg); /* Chrome and other webkit browsers */
-    -moz-transform: rotate('.$i.'deg); /* FF */
-    -o-transform: rotate('.$i.'deg); /* Opera */
-    -ms-transform: rotate('.$i.'deg); /* IE9 */
-    transform: rotate('.$i.'deg); /* W3C compliant browsers */
-} ';
+    $routes_text .= '.rotate'.$i.' { -webkit-transform: rotate('.$i.'deg); -moz-transform: rotate('.$i.'deg); -o-transform: rotate('.$i.'deg); -ms-transform: rotate('.$i.'deg); transform: rotate('.$i.'deg); } ';
 }
 
 
