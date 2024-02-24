@@ -98,21 +98,15 @@ function htmlentitiesjs(rawStr){
 
 
 function watch_cover_change(new_cover){
-    if(new_cover.includes('<i class="fa-')){
-        //Extract font awesome code:
-        var split_cover_arr = new_cover.split('<i class="fa-');
-        var split_cover_arr2 = split_cover_arr[1].split('"');
-        //Update:
-        $('#modal31912 .save_e__cover').val(split_cover_arr2[0]);
-        watch_cover_change(split_cover_arr2[0]);
-    } else if(new_cover.includes('fa-')){
+    if(new_cover.includes('fa-')){
         //Update font awesome:
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
-        $('#modal31912 .fa_search').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(split_cover_2arr2[0])+'&o=r&s=solid').removeClass('hidden');
+        $('#modal31912 .fa_search').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(split_cover_2arr2[0])+'&o=r&s=solid&f=classic').removeClass('hidden');
         $('#modal31912 .save_e__cover').removeClass('hidden');
     } else {
         $('#modal31912 .save_e__cover').addClass('hidden');
+
     }
 }
 
@@ -869,6 +863,15 @@ function activate_popover(){
     });
 }
 
+function clean_font_awesome_paste(text){
+    if(text.includes('<i class="fa-')){
+        //Extract font awesome code:
+        var split_cover_arr = text.split('<i class="fa-');
+        var split_cover_arr2 = split_cover_arr[1].split('"');
+        text = ( split_cover_arr2[0].length ? split_cover_arr2[0] : text );
+    }
+}
+
 var algolia_index = false;
 $(document).ready(function () {
 
@@ -877,7 +880,33 @@ $(document).ready(function () {
     load_hashtag_menu();
 
     $('#modal31912 .save_e__cover').change(function () {
+
         watch_cover_change($(this).val());
+
+    }).on('paste', function (e) {
+        e.preventDefault();
+        var text;
+        var clp = (e.originalEvent || e).clipboardData;
+        if (clp === undefined || clp === null) {
+            text = window.clipboardData.getData("text") || "";
+            if (text !== "") {
+                text = clean_font_awesome_paste(text);
+                if (window.getSelection) {
+                    var newNode = document.createElement("span");
+                    newNode.innerHTML = text;
+                    window.getSelection().getRangeAt(0).insertNode(newNode);
+                } else {
+                    document.selection.createRange().pasteHTML(text);
+                }
+            }
+        } else {
+            text = clp.getData('text/plain') || "";
+            if (text !== "") {
+                text = clean_font_awesome_paste(text);
+                document.execCommand('insertText', false, text);
+            }
+        }
+        watch_cover_change(text);
     });
 
     $(document).on('keydown', function ( e ) {
