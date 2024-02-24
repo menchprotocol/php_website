@@ -903,7 +903,6 @@ function activate_cover_watch(){
                 document.execCommand('insertText', false, text);
             }
         }
-        watch_cover_change(text);
     });
 
 }
