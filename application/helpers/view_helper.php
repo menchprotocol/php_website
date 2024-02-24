@@ -1469,7 +1469,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
     $ui .= '</ul>';
     $ui .= $body_content;
 
-    if($discovery_mode || !$can_add){
+    if(!$can_add){
         $focus_tab = 0;
         foreach($e___loading_order as $x__type => $m) { //Load Focus Tab:
             if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
