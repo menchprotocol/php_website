@@ -1486,6 +1486,7 @@ function view_i_nav($discovery_mode, $focus_i, $write_privacy_i){
         }
     } else {
         //Focus on next:
+        $focus_tab = 12840;
         $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\'Next\'); }); </script>';
     }
     
