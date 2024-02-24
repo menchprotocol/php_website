@@ -3686,7 +3686,7 @@ a,
     --fa-primary-opacity: 0.60;
 }
 .primaryopacity80{
-    --fa-primary-opacity: 0.89;
+    --fa-primary-opacity: 0.80;
 }
 .primaryopacity100{
     --fa-primary-opacity: 1.00;
@@ -3710,7 +3710,7 @@ a,
     --fa-secondary-opacity: 0.60;
 }
 .secondaryopacity80{
-    --fa-secondary-opacity: 0.89;
+    --fa-secondary-opacity: 0.80;
 }
 .secondaryopacity100{
     --fa-secondary-opacity: 1.00;
