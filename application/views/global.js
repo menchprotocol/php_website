@@ -96,13 +96,22 @@ function htmlentitiesjs(rawStr){
     });
 }
 
+function clean_font_awesome_paste(new_cover){
+    if(new_cover.includes('<i class="fa-')){
+        //Extract font awesome code:
+        var split_cover_arr = new_cover.split('<i class="fa-');
+        var split_cover_arr2 = split_cover_arr[1].split('"');
+        new_cover = ( split_cover_arr2[0].length ? 'fa-'+split_cover_arr2[0] : new_cover );
+    }
+    return new_cover;
+}
 
 function watch_cover_change(new_cover){
     if(new_cover.includes('fa-')){
         //Update font awesome:
         var split_cover_2arr = new_cover.split('fa-');
         var split_cover_2arr2 = split_cover_2arr[1].split(' ');
-        $('#modal31912 .fa_search').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(split_cover_2arr2[0])+'&o=r&s=solid&f=classic').removeClass('hidden');
+        $('#modal31912 .fa_search a').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(split_cover_2arr2[0])+'&o=r&s=solid&f=classic').removeClass('hidden');
         $('#modal31912 .save_e__cover').removeClass('hidden');
     } else {
         $('#modal31912 .save_e__cover').addClass('hidden');
@@ -863,15 +872,7 @@ function activate_popover(){
     });
 }
 
-function clean_font_awesome_paste(text){
-    if(text.includes('<i class="fa-')){
-        //Extract font awesome code:
-        var split_cover_arr = text.split('<i class="fa-');
-        var split_cover_arr2 = split_cover_arr[1].split('"');
-        text = ( split_cover_arr2[0].length ? 'fa-'+split_cover_arr2[0] : text );
-    }
-    return text;
-}
+
 
 var algolia_index = false;
 $(document).ready(function () {
@@ -2113,7 +2114,6 @@ function e_editor_load(e__id = 0, x__id = 0){
     $('#modal31912 .save_x__id').val(x__id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
     $('#modal31912 .save_e__title').val(current_title);
-    $('#modal31912 .fa_search a').attr('href','https://fontawesome.com/search?q='+encodeURIComponent(current_title)+'&o=r&s=solid');
 
     //Source Privacy:
     update_form_select(6177, current_privacy, 1, true);
