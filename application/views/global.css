@@ -1289,8 +1289,8 @@ a.headline {
 }
 
 .x-list {
-    padding:15px 0;
-    margin-bottom: 5px;
+    padding: 21px 0;
+    border-bottom: 1px solid #000000;
 }
 .simple-line{
     padding: 5px 0;
