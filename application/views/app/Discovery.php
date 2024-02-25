@@ -716,7 +716,7 @@ if($target_i__hashtag){
         var i__type = parseInt($('.list-answers').attr('i__type'));
 
         //Clear all if single selection:
-        var is_single_selection = (i__type==6684);
+        var is_single_selection = js_n___33331.includes(i__type);
         if(is_single_selection){
             //Single Selection, clear all previously selected answers, if any:
             $('.answer-item').removeClass('isSelected');

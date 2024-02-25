@@ -1564,7 +1564,7 @@ class X_model extends CI_Model
             );
         }
 
-        $is_single_selection = $is[0]['i__type']==6684;
+        $is_single_selection = in_array($is[0]['i__type'], $this->config->item('n___33331'));
 
         //Can they skip without selecting anything?
         $can_skip = !count($this->X_model->fetch(array(
