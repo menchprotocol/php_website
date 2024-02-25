@@ -44,7 +44,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="+ Add @source">
                     </div></div></div></div>';
-            $body_content .= '<script> $(document).ready(function () { e_load_finder(12274, '.$x__type.'); }); </script>';
+            $body_content .= '<script> $(document).ready(function () { e_load_finder('.$x__type.'); }); </script>';
 
         }
 

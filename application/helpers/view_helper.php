@@ -1452,7 +1452,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="+ Add @source">
                     </div></div></div></div>';
-                $body_content .= '<script> $(document).ready(function () { e_load_finder(12274, '.$x__type.'); }); </script>';
+                $body_content .= '<script> $(document).ready(function () { e_load_finder('.$x__type.'); }); </script>';
 
             }
 
