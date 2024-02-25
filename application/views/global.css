@@ -2398,6 +2398,9 @@ input.form-control {
     line-height: 134%;
     border-bottom: 1px solid #999999 !important;
 }
+.modal-body .form-control.save_i__message {
+    border-bottom: 0 !important;
+}
 .coin-12274.mini-cover .inner-content {
     text-align: center !important;
 }
