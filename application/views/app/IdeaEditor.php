@@ -105,12 +105,6 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
                 </div>
 
-                <!-- Idea Hashtag -->
-                <div class="dynamic_editing_input single_line hash_group left_padded" title="<?= $e___6201[32337]['m__title'] ?>">
-                    <h3 class="mini-font"><span class="icon-block-sm"><?= $e___6201[32337]['m__cover']  ?></span></h3>
-                    <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
-                </div>
-
 
                 <div class="hidden_superpower__10939 left_padded">
 
@@ -119,6 +113,12 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
                     <!-- Dynamic Inputs -->
                     <div class="dynamic_frame"><?= $dynamic_edit ?></div>
+
+                    <!-- Idea Hashtag -->
+                    <div class="dynamic_editing_input single_line hash_group left_padded" title="<?= $e___6201[32337]['m__title'] ?>">
+                        <h3 class="mini-font"><span class="icon-block-sm"><?= $e___6201[32337]['m__cover']  ?></span></h3>
+                        <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view_memory(6404,41985) ?>">
+                    </div>
 
                     <!-- Link Note -->
                     <div class="dynamic_editing_input save_x__frame hidden">
