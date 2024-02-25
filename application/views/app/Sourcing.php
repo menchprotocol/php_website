@@ -42,9 +42,21 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="+ Add @source">
+                               placeholder="@source search, link or /command">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { e_load_finder('.$x__type.'); }); </script>';
+
+        } elseif(in_array($x__type, $this->config->item('n___42261'))){
+
+            //ADD IDEAS
+            $input_content .= '<div class="new_list new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
+                    <div class="input-group border">
+                        <input type="text"
+                               class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
+                               maxlength="' . view_memory(6404,6197) . '"
+                               placeholder="#idea search, link or /command">
+                    </div></div></div></div>';
+            $body_content .= '<script> $(document).ready(function () { i_load_finder('.$x__type.'); }); </script>';
 
         }
 

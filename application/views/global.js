@@ -285,6 +285,20 @@ function e_load_finder(x__type) {
     });
 }
 
+function i_load_finder(x__type) {
+    console.log(x__type + " i_load_finder()");
+    //Load Search:
+    var icons_listed = [];
+    $('.new-list-'+x__type + ' .add-input').keypress(function (e) {
+        icons_listed = [];
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code==13) || (e.ctrlKey && code==13)) {
+            i__add(x__type, 0);
+            return true;
+        }
+    });
+}
+
 function view_s_js_cover(x__type, suggestion, action_id){
 
     if(!js_n___26010.includes(x__type)){
@@ -2522,6 +2536,82 @@ function e__add(x__type, e_existing_id) {
     });
 }
 
+
+
+var i_is_adding = false;
+function i__add(x__type, link_i__id) {
+
+    alert('not up yet');
+    return false;
+
+    /*
+     *
+     * Either creates an IDEA transaction between focus_id & link_i__id
+     * OR will create a new idea based on input text and then transaction it
+     * to fetch_int_val('#focus_id') (In this case link_i__id=0)
+     *
+     * */
+
+    if(i_is_adding){
+        return false;
+    }
+
+    //Remove results:
+    i_is_adding = true;
+    var sort_i_grabr = ".card_cover";
+    var input_field = $('.new-list-'+x__type+' .add-input');
+    var new_i__message = input_field.val();
+
+
+    //We either need the idea name (to create a new idea) or the link_i__id>0 to create an IDEA transaction:
+    if (!link_i__id && new_i__message.length < 1) {
+        alert('Missing Idea');
+        input_field.focus();
+        return false;
+    }
+
+    //Set processing status:
+    input_field.addClass('dynamic_saving');
+    add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+
+    //Update backend:
+    $.post("/ajax/i__add", {
+        x__type: x__type,
+        focus_card: fetch_int_val('#focus_card'),
+        focus_id: fetch_int_val('#focus_id'),
+        new_i__message: new_i__message,
+        link_i__id: link_i__id
+    }, function (data) {
+
+        //Delete loader:
+        $("#tempLoader").remove();
+        input_field.removeClass('dynamic_saving').prop("disabled", false).focus();
+        i_is_adding = false;
+
+        if (data.status) {
+
+            //Add new
+            add_to_list(x__type, sort_i_grabr, data.new_i_html, 1);
+
+            //Lookout for textinput updates
+            x_set_start_text();
+            load_covers();
+            set_autosize($('.texttype__lg'));
+
+            //Hide Coin:
+            $('.mini-cover.coin-12273.coin-id-'+link_i__id).fadeOut();
+
+        } else {
+            //Show errors:
+            alert(data.message);
+        }
+
+    });
+
+    //Return false to prevent <form> submission:
+    return false;
+
+}
 
 
 function e_delete(x__id, x__type) {
