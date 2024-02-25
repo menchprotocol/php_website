@@ -4568,6 +4568,9 @@ main {
     display: block;
     padding-top: 7px !important;
 }
+.creator_box .first_headline{
+    padding-top: 0px !important;
+}
 
 .x__message_headline{
     display: block;
