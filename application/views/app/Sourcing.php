@@ -29,10 +29,9 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
 
     $coins_count[$x__type] = view_e_covers($x__type, $focus_e['e__id'], 0, false);
     if(!$coins_count[$x__type] && in_array($x__type, $this->config->item('n___12144'))){ continue; }
-    $can_add = superpower_unlocked(10939);
 
     $input_content = '';
-    if($can_add){
+    if(superpower_unlocked(10939)){
 
         if(in_array($x__type, $this->config->item('n___11028'))){
 
@@ -62,7 +61,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
 
     }
 
-    if($can_add || $coins_count[$x__type]>0){
+    if(in_array($x__type, $this->config->item('n___42945')) || $coins_count[$x__type]>0){
 
         $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
 
