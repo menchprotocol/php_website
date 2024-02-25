@@ -1680,7 +1680,7 @@ label {
     margin-top: -1px;
 }
 .coin-12273 .icon-block-sm {
-    height: 17px !important;
+    height: 22px !important;
 }
 .focus-cover.coin-12273 .icon-block-sm {
     height: 29px !important;
@@ -2971,7 +2971,7 @@ h4.main__title{
 
 .card_covers>span>div {
     display: inline-block !important;
-    padding:0 1px 0 0;
+    padding:0 0 0 0;
 }
 
 
