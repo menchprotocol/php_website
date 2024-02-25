@@ -1098,11 +1098,11 @@ function data_type_validate($data_type, $data_value, $data_title){
             'status' => 0,
             'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
         );
-    } elseif($data_type==42927 && (!is_numeric($data_value) || $data_value<0 || $data_value>100)){
+    } elseif($data_type==42947 && (!is_numeric($data_value) || $data_value<0 || $data_value>1)){
         //Percentage:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'].' which is a number between 0 & 100.',
+            'message' => $data_title.' must be set to a number between 0.00 & 1.00.',
         );
     } elseif(in_array($data_type, $CI->config->item('n___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)){
         //URL:

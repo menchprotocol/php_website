@@ -2694,7 +2694,7 @@ class Ajax extends CI_Controller
                 //idea list:
                 $is_next = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
                     'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                     'x__previous' => $_POST['s__id'],
                 ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));

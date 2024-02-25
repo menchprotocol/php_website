@@ -363,6 +363,8 @@ li a {
     width: 100%;
 }
 
+
+
 .large-cover{
     font-size: 2.1em;
     margin: 21px 0;
@@ -3173,6 +3175,10 @@ h4.main__title{
 }
 
 @media (max-width:610px) {
+
+    .add-input{
+        padding-left: 3px !important;
+    }
 
     .card_covers a.btn-sm {
         margin-left: 3px !important;

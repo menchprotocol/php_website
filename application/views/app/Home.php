@@ -14,14 +14,13 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 
 
 
-
 $primary_i = array();
 $secondary_i_list = array();
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 34513, //Pinned
     'x__following' => $website_id,
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
 ), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $this_i){
     if(!count($primary_i)){
         $primary_i = $this_i;
