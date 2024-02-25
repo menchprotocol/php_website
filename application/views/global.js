@@ -263,11 +263,11 @@ function view_s__title(suggestion){
 }
 
 
-function view_s_js_line(suggestion){
+function view_s_js_line(suggestion, default_handle = '@'){
     if(suggestion.s__type==12273){
         return '<span class="grey">#' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     } else if(suggestion.s__type==12274){
-        return '<span class="icon-block-xs">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">@' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
+        return '<span class="icon-block-xs">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     }
 }
 
@@ -1142,7 +1142,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js_line(suggestion);
+                    return view_s_js_line(suggestion, '/');
                 },
                 replace: function (suggestion) {
                     return '/' + suggestion.s__handle + ' ';
@@ -1168,7 +1168,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view_s_js_line(suggestion);
+                    return view_s_js_line(suggestion, '/');
                 },
                 replace: function (suggestion) {
                     return '/' + suggestion.s__handle + ' ';
