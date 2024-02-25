@@ -1372,6 +1372,7 @@ class Ajax extends CI_Controller
 
 
         //Set some variables:
+        $_POST['e_new_string'] = trim($_POST['e_new_string']);
         $_POST['x__type'] = intval($_POST['x__type']);
         $is_upwards = in_array($_POST['x__type'], $this->config->item('n___14686'));
 
