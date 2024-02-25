@@ -1109,6 +1109,58 @@ $(document).ready(function () {
                 }
             },
         ]);
+
+        $('.algolia__ce').textcomplete([
+            {
+                match: /(^|\s)\/(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12274 AND _tags:z_4997', //Source Commands
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    return '/' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
+        $('.algolia__ci').textcomplete([
+            {
+                match: /(^|\s)\/(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12274 AND _tags:z_125889', //Idea Commands
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    return '/' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
     }
 
 
