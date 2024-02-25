@@ -1755,7 +1755,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //GET STARTED
-                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span><span class="'.( !$focus__node ? ' show-max ' : '' ).'">'.$m_target_bar['m__title'].'</span></a></span>';
+                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31911 && $access__i && !$discovery_mode){
 
