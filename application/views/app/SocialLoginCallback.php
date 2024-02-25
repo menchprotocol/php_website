@@ -92,7 +92,7 @@ if(isset($_GET['i__hashtag'])){
 
             //Activate Session:
             $this->E_model->activate_session($player_emails[0], true);
-            js_php_redirect(( $login_i__hashtag ? '/ajax/x_start/'.$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() )), 13);
+            js_php_redirect(( $login_i__hashtag ? '/Start/'.$login_i__hashtag : ( $redirect_url ? $redirect_url : home_url() )), 13);
 
         } else {
 

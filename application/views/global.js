@@ -197,7 +197,7 @@ function load_editor(){
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
         source: function (q, cb) {
-            algolia_index.search(q, {
+            index_algolia.search(q, {
                 filters: 's__type=12274' + search_and_filter,
                 hitsPerPage: js_e___6404[31112]['m__message'],
             }, function (error, content) {
@@ -229,7 +229,7 @@ function load_editor(){
     }).autocomplete({hint: false, autoselect: false, minLength: 2}, [{
 
         source: function (q, cb) {
-            algolia_index.search(q, {
+            index_algolia.search(q, {
                 filters: 's__type=12273' + search_and_filter,
                 hitsPerPage: js_e___6404[31112]['m__message'],
             }, function (error, content) {
@@ -269,6 +269,20 @@ function view_s_js_line(suggestion){
     } else if(suggestion.s__type==12274){
         return '<span class="icon-block-xs">'+ view_cover_js(suggestion.s__cover) +'</span><span class="grey">@' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view_s__title(suggestion) + '</span>';
     }
+}
+
+function e_load_finder(x__type) {
+    console.log(x__type + " e_load_finder()");
+    //Load Search:
+    var icons_listed = [];
+    $('.new-list-'+x__type + ' .add-input').keypress(function (e) {
+        icons_listed = [];
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if ((code==13) || (e.ctrlKey && code==13)) {
+            e__add(x__type, 0);
+            return true;
+        }
+    });
 }
 
 function view_s_js_cover(x__type, suggestion, action_id){
@@ -712,10 +726,10 @@ function image_cover(cover_preview, cover_apply, new_title){
 
 function initiate_algolia(){
     $(".algolia_finder").focus(function () {
-        if(!algolia_index && search_enabled()){
+        if(!index_algolia && search_enabled()){
             //Loadup Algolia once:
             client = algoliasearch('49OCX1ZXLJ', 'ca3cf5f541daee514976bc49f8399716');
-            algolia_index = client.initIndex('alg_index');
+            index_algolia = client.initIndex('alg_index');
         }
     });
 }
@@ -910,7 +924,7 @@ function activate_popover(){
 
 
 
-var algolia_index = false;
+var index_algolia = false;
 $(document).ready(function () {
 
     //Look for power editor updates:
@@ -1021,34 +1035,11 @@ $(document).ready(function () {
     //Search that also has insert module:
     if(search_enabled()){
 
-        $('#modal31911 .save_i__message').textcomplete([
-            {
-                match: /(^|\s)@(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    algolia_index.search(q, {
-                        hitsPerPage: js_e___6404[31112]['m__message'],
-                        filters: 's__type=12274' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    return view_s_js_line(suggestion);
-                },
-                replace: function (suggestion) {
-                    return ' @' + suggestion.s__handle + ' ';
-                }
-            },
+        $('#modal31911 .algolia__i').textcomplete([
             {
                 match: /(^|\s)#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
-                    algolia_index.search(q, {
+                    index_algolia.search(q, {
                         hitsPerPage: js_e___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
@@ -1071,7 +1062,7 @@ $(document).ready(function () {
             {
                 match: /(^|\s)!#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
-                    algolia_index.search(q, {
+                    index_algolia.search(q, {
                         hitsPerPage: js_e___6404[31112]['m__message'],
                         filters: 's__type=12273' + search_and_filter,
                     })
@@ -1089,6 +1080,32 @@ $(document).ready(function () {
                 },
                 replace: function (suggestion) {
                     return ' !#' + suggestion.s__handle + ' ';
+                }
+            },
+        ]);
+
+        $('#modal31911 .algolia__e').textcomplete([
+            {
+                match: /(^|\s)@(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12274' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    return view_s_js_line(suggestion);
+                },
+                replace: function (suggestion) {
+                    return ' @' + suggestion.s__handle + ' ';
                 }
             },
         ]);
@@ -1167,7 +1184,7 @@ $(document).ready(function () {
                     }
 
                     //Append filters:
-                    algolia_index.search(q, {
+                    index_algolia.search(q, {
                         hitsPerPage: js_e___6404[31113]['m__message'],
                         filters:search_filters,
                     }, function (error, content) {
@@ -2713,11 +2730,9 @@ function i_sort_load(x__type){
 }
 
 
-function next_url(){
-    return '/ajax/x_next/' + $('#target_i__hashtag').val() + '/' + $('#focus_handle').val();
+function GoNext(){
+    return '/GoNext/' + $('#target_i__hashtag').val() + '/' + $('#focus_handle').val();
 }
-
-
 
 
 

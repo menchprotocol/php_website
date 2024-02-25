@@ -141,12 +141,6 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             //This prevents the emoji modal from closing when an emoji is selected...
             event.stopPropagation();
         });
-        $(".insert_hashtag").click(function (e) {
-            insertText($(".save_i__message"), '#');
-        });
-        $(".insert_at_sign").click(function (e) {
-            insertText($(".save_i__message"), '@');
-        });
 
     </script>
     <link href="https://unpkg.com/cloudinary-video-player@1.10.5/dist/cld-video-player.min.css" rel="stylesheet">
@@ -376,8 +370,11 @@ if($focus_e && !$focus_i){
     echo '<input type="hidden" id="focus__node" value="12273" />
 <input type="hidden" id="focus_handle" value="'.$focus_i['i__hashtag'].'" />
 <input type="hidden" id="focus__id" value="'.$focus_i['i__id'].'" />';
+    if($target_i){
+        echo '<input type="hidden" id="target_i__hashtag" value="'.$target_i['i__hashtag'].'" />
+        <input type="hidden" id="target_i__id" value="'.$target_i['i__id'].'" />';
+    }
 }
-
 
 
 

@@ -677,13 +677,6 @@ if($target_i__hashtag){
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
 </script>
-<input type="hidden" id="focus__node" value="12273" />
-<input type="hidden" id="focus__id" value="<?= $focus_i['i__id'] ?>" />
-<input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
-<input type="hidden" id="target_i__id" value="<?= $target_i__id ?>" />
-<input type="hidden" id="target_i__hashtag" value="<?= $target_i__hashtag ?>" />
-
-
 
 <script>
 
@@ -805,7 +798,7 @@ if($target_i__hashtag){
 
                 //Go Next:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(next_url());
+                js_redirect(GoNext());
 
             }
         }
@@ -837,7 +830,7 @@ if($target_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(next_url());
+                js_redirect(GoNext());
             } else {
                 //Show error:
                 alert(data.message);
@@ -857,7 +850,7 @@ if($target_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(next_url());
+                js_redirect(GoNext());
             } else {
                 //Show error:
                 alert(data.message);
@@ -881,7 +874,7 @@ if($target_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(next_url());
+                js_redirect(GoNext());
             } else {
                 //Show error:
                 alert(data.message);
@@ -900,7 +893,7 @@ if($target_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(next_url());
+                js_redirect(GoNext());
             } else {
                 //Show error:
                 alert(data.message);
@@ -930,7 +923,7 @@ if($target_i__hashtag){
             if (data.status) {
                 //Go to redirect message:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
-                js_redirect(next_url());
+                js_redirect(GoNext());
             } else {
                 //Show error:
                 alert(data.message);

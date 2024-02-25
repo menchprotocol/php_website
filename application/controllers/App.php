@@ -270,7 +270,7 @@ class App extends CI_Controller
         //Has already started?
         if($target_i && $target_i['i__hashtag']==$_GET['i__hashtag'] && $player_e && !$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])){
             //Go to start:
-            return redirect_message('/ajax/x_start/'.$target_i['i__hashtag']);
+            return redirect_message('/Start/'.$target_i['i__hashtag']);
         }
 
 

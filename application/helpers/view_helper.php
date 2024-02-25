@@ -1448,10 +1448,11 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
                 $input_content .= '<div class="new_list new-list-'.$x__type.'"><div class="col-12 container-center"><div class="dropdown_'.$x__type.' list-adder">
                     <div class="input-group border">
                         <input type="text"
-                               class="form-control form-control-thick algolia_finder dotransparent add-input"
+                               class="form-control form-control-thick algolia_finder algolia__e dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
                                placeholder="+ Add @source">
                     </div></div></div></div>';
+                $body_content .= '<script> $(document).ready(function () { e_load_finder(12274, '.$x__type.'); }); </script>';
 
             }
 
