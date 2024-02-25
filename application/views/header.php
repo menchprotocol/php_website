@@ -878,12 +878,12 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     if($player_e){
 
-        $this->load->view('app/31911', array(
+        $this->load->view('app/IdeaEditor', array(
             'dynamic_edit' => $dynamic_edit,
             'player_e' => $player_e,
         ));
 
-        $this->load->view('app/31912', array(
+        $this->load->view('app/SourceEditor', array(
             'dynamic_edit' => $dynamic_edit,
             'player_e' => $player_e,
         ));
