@@ -3469,40 +3469,40 @@ a,
 
 
 /* Colors */
-.btn.btn-12274,
-.btn.btn-12274:focus,
-.btn.btn-12274:active,
-.btn.btn-12274.active,
-.btn.btn-12274:active:focus,
-.btn.btn-12274:active:hover,
-.btn.btn-12274.active:focus,
-.btn.btn-12274.active:hover,
-.open > .btn.btn-12274.dropdown-toggle,
-.open > .btn.btn-12274.dropdown-toggle:focus,
-.open > .btn.btn-12274.dropdown-toggle:hover,
-.navbar .navbar-nav > li > a.btn.btn-12274,
-.navbar .navbar-nav > li > a.btn.btn-12274:focus,
-.navbar .navbar-nav > li > a.btn.btn-12274:active,
-.navbar .navbar-nav > li > a.btn.btn-12274.active,
-.navbar .navbar-nav > li > a.btn.btn-12274:active:focus,
-.navbar .navbar-nav > li > a.btn.btn-12274:active:hover,
-.navbar .navbar-nav > li > a.btn.btn-12274.active:focus,
-.navbar .navbar-nav > li > a.btn.btn-12274.active:hover,
-.open > .navbar .navbar-nav > li > a.btn.btn-12274.dropdown-toggle,
-.open > .navbar .navbar-nav > li > a.btn.btn-12274.dropdown-toggle:focus,
-.open > .navbar .navbar-nav > li > a.btn.btn-12274.dropdown-toggle:hover {
+.colorful .btn.btn-12274,
+.colorful .btn.btn-12274:focus,
+.colorful .btn.btn-12274:active,
+.colorful .btn.btn-12274.active,
+.colorful .btn.btn-12274:active:focus,
+.colorful .btn.btn-12274:active:hover,
+.colorful .btn.btn-12274.active:focus,
+.colorful .btn.btn-12274.active:hover,
+.colorful .open > .btn.btn-12274.dropdown-toggle,
+.colorful .open > .btn.btn-12274.dropdown-toggle:focus,
+.colorful .open > .btn.btn-12274.dropdown-toggle:hover,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274:active,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274.active,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274:active:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274:active:hover,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274.active:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12274.active:hover,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-12274.dropdown-toggle,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-12274.dropdown-toggle:focus,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-12274.dropdown-toggle:hover {
     /* background-color: transparent; */
     color: #007AFD;
 }
-.btn-superpower.active i.zq12274,
-.zq12274,
-.zq12274 i,
-.color12274,
-.info-item i.zq12274:hover,
-.info-item a.zq12274:hover,
-.headline.zq12274,
-.headline.zq12274 a,
-.headline.zq12274 i {
+.colorful .btn-superpower.active i.zq12274,
+.colorful .zq12274,
+.colorful .zq12274 i,
+.colorful .color12274,
+.colorful .info-item i.zq12274:hover,
+.colorful .info-item a.zq12274:hover,
+.colorful .headline.zq12274,
+.colorful .headline.zq12274 a,
+.colorful .headline.zq12274 i {
     color: #007AFD !important;
 }
 
@@ -3511,54 +3511,52 @@ a,
     border: 1px dotted #000000;
 }
 
-.btn.btn-12273,
-.btn.btn-12273:active,
-.btn.btn-12273.active,
-.btn.btn-12273:active:focus,
-.btn.btn-12273:active:hover,
-.btn.btn-12273.active:focus,
-.btn.btn-12273.active:hover,
-.open > .btn.btn-12273.dropdown-toggle,
-.open > .btn.btn-12273.dropdown-toggle:focus,
-.open > .btn.btn-12273.dropdown-toggle:hover,
-.navbar .navbar-nav > li > a.btn.btn-12273,
-.navbar .navbar-nav > li > a.btn.btn-12273:focus,
-.navbar .navbar-nav > li > a.btn.btn-12273:active,
-.navbar .navbar-nav > li > a.btn.btn-12273.active,
-.navbar .navbar-nav > li > a.btn.btn-12273:active:focus,
-.navbar .navbar-nav > li > a.btn.btn-12273:active:hover,
-.navbar .navbar-nav > li > a.btn.btn-12273.active:focus,
-.navbar .navbar-nav > li > a.btn.btn-12273.active:hover,
-.open > .navbar .navbar-nav > li > a.btn.btn-12273.dropdown-toggle,
-.open > .navbar .navbar-nav > li > a.btn.btn-12273.dropdown-toggle:focus,
-.open > .navbar .navbar-nav > li > a.btn.btn-12273.dropdown-toggle:hover {
+.colorful .btn.btn-12273,
+.colorful .btn.btn-12273:active,
+.colorful .btn.btn-12273.active,
+.colorful .btn.btn-12273:active:focus,
+.colorful .btn.btn-12273:active:hover,
+.colorful .btn.btn-12273.active:focus,
+.colorful .btn.btn-12273.active:hover,
+.colorful .open > .btn.btn-12273.dropdown-toggle,
+.colorful .open > .btn.btn-12273.dropdown-toggle:focus,
+.colorful .open > .btn.btn-12273.dropdown-toggle:hover,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273:active,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273.active,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273:active:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273:active:hover,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273.active:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-12273.active:hover,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-12273.dropdown-toggle,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-12273.dropdown-toggle:focus,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-12273.dropdown-toggle:hover {
     /* background-color: transparent; */
     color: #FFC500;
     /* border:1px solid #FFC500; */
 }
-.btn-12273 { border-color:#FFC500 !important; }
+.colorful .btn-12273 { border-color:#FFC500 !important; }
 
 
-.btn-superpower.active i.zq12273,
-.zq12273,
-.zq12273 i,
-.color12273,
-.info-item i.zq12273:hover,
-.info-item a.zq12273:hover,
-.headline.zq12273,
-.headline.zq12273 a,
-.headline.zq12273 i {
+.colorful .btn-superpower.active i.zq12273,
+.colorful .zq12273,
+.colorful .zq12273 i,
+.colorful .color12273,
+.colorful .info-item i.zq12273:hover,
+.colorful .info-item a.zq12273:hover,
+.colorful .headline.zq12273,
+.colorful .headline.zq12273 a,
+.colorful .headline.zq12273 i {
     color:#FFC500 !important;
 }
-.coinType12273 {
 
-}
 .btn.btn-12274,
 .coinType12274 {
     border-radius: 50% !important;
 }
-.bg12273,
-.btn-12273 {
+.colorful .bg12273,
+.colorful .btn-12273 {
     background-color: #FFC500 !important;
 }
 
@@ -3574,60 +3572,60 @@ a,
 }
 
 
-.btn.btn-6255,
-.btn.btn-6255:focus,
-.btn.btn-6255:active,
-.btn.btn-6255.active,
-.btn.btn-6255:active:focus,
-.btn.btn-6255:active:hover,
-.btn.btn-6255.active:focus,
-.btn.btn-6255.active:hover,
-.open > .btn.btn-6255.dropdown-toggle,
-.open > .btn.btn-6255.dropdown-toggle:focus,
-.open > .btn.btn-6255.dropdown-toggle:hover,
-.navbar .navbar-nav > li > a.btn.btn-6255,
-.navbar .navbar-nav > li > a.btn.btn-6255:focus,
-.navbar .navbar-nav > li > a.btn.btn-6255:active,
-.navbar .navbar-nav > li > a.btn.btn-6255.active,
-.navbar .navbar-nav > li > a.btn.btn-6255:active:focus,
-.navbar .navbar-nav > li > a.btn.btn-6255:active:hover,
-.navbar .navbar-nav > li > a.btn.btn-6255.active:focus,
-.navbar .navbar-nav > li > a.btn.btn-6255.active:hover,
-.open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle,
-.open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:focus,
-.open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:hover {
+.colorful .btn.btn-6255,
+.colorful .btn.btn-6255:focus,
+.colorful .btn.btn-6255:active,
+.colorful .btn.btn-6255.active,
+.colorful .btn.btn-6255:active:focus,
+.colorful .btn.btn-6255:active:hover,
+.colorful .btn.btn-6255.active:focus,
+.colorful .btn.btn-6255.active:hover,
+.colorful .open > .btn.btn-6255.dropdown-toggle,
+.colorful .open > .btn.btn-6255.dropdown-toggle:focus,
+.colorful .open > .btn.btn-6255.dropdown-toggle:hover,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255:active,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255.active,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255:active:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255:active:hover,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255.active:focus,
+.colorful .navbar .navbar-nav > li > a.btn.btn-6255.active:hover,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:focus,
+.colorful .open > .navbar .navbar-nav > li > a.btn.btn-6255.dropdown-toggle:hover {
     background-color: #EFEFEF;
     color: #FC1B44;
 }
-.btn-6255 i,
-.btn-superpower.active i.zq6255 {
+.colorful .btn-6255 i,
+.colorful .btn-superpower.active i.zq6255 {
     color:#FC1B44 !important;
 }
-.btn.btn-6255 {
+.colorful .btn.btn-6255 {
     color: #FC1B44;
 }
-.btn-6255{
+.colorful .btn-6255{
     border: 0 !important;
     background-color: #FC1B44;
 }
 
 
-.zq6255,
-.zq6255 i,
-.color6255,
-.info-item i.zq6255:hover,
-.info-item a.zq6255:hover,
-.fas.redalert,
-.headline.zq6255,
-.headline.zq6255 a,
-.headline.zq6255 i  {
+.colorful .zq6255,
+.colorful .zq6255 i,
+.colorful .color6255,
+.colorful .info-item i.zq6255:hover,
+.colorful .info-item a.zq6255:hover,
+.colorful .fas.redalert,
+.colorful .headline.zq6255,
+.colorful .headline.zq6255 a,
+.colorful .headline.zq6255 i  {
     color:#FC1B44 !important;
 }
-.bg6255,
-.btn-6255 {
+.colorful .bg6255,
+.colorful .btn-6255 {
     background-color: #FC1B44 !important;
 }
-.dropdown_6255, .dropdown_4235 {
+.colorful .dropdown_6255, .dropdown_4235 {
     border-color: #FC1B44 !important;
 }
 
@@ -3642,27 +3640,27 @@ a,
 
 
 /* DUO Font Awesome Colors */
-.zq12273_12274 {
+.colorful .zq12273_12274 {
     --fa-primary-color: #FFC500;
     --fa-secondary-color: #007AFD;
 }
-.zq12274_12273 {
+.colorful .zq12274_12273 {
     --fa-primary-color: #007AFD;
     --fa-secondary-color: #FFC500;
 }
-.zq12273_6255 {
+.colorful .zq12273_6255 {
     --fa-primary-color: #FFC500;
     --fa-secondary-color: #FC1B44;
 }
-.zq6255_12273 {
+.colorful .zq6255_12273 {
     --fa-primary-color: #FC1B44;
     --fa-secondary-color: #FFC500;
 }
-.zq12274_6255 {
+.colorful .zq12274_6255 {
     --fa-primary-color: #007AFD;
     --fa-secondary-color: #FC1B44;
 }
-.zq6255_12274 {
+.colorful .zq6255_12274 {
     --fa-primary-color: #FC1B44;
     --fa-secondary-color: #007AFD;
 }
