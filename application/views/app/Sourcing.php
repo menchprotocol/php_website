@@ -42,7 +42,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="@source search or /command">
+                               placeholder="@source /command">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { e_load_finder('.$x__type.'); }); </script>';
 
@@ -54,7 +54,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="#idea search or /command">
+                               placeholder="#idea /command">
                     </div></div></div></div>';
             $body_content .= '<script> $(document).ready(function () { i_load_finder('.$x__type.'); }); </script>';
 
