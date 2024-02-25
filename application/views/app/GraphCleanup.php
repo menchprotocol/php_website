@@ -83,7 +83,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
-                    //Add source link:
+                    //Increment source link:
                     $completed++;
                     $this->X_model->create(array(
                         'x__player' => ($player_e ? $player_e['e__id'] : $x['x__player']),

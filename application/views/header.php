@@ -561,9 +561,9 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</td>';
 
-                    //Always give option to ideate:
+                    //Add Source
                     if(superpower_unlocked(13422)){
-                        //echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$e___11035[42819]['m__title'].'">'.$e___11035[42819]['m__cover'].'</a></td>'; //Add New Idea
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$e___11035[42819]['m__title'].'">'.$e___11035[42819]['m__cover'].'</a></td>';
                     }
 
                     ?>

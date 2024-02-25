@@ -57,13 +57,13 @@ foreach($is as $in){
 }
 
 
-//Add sources:
+//Transfer sources:
 $es = $this->E_model->fetch(array(
     'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ));
 foreach($es as $en){
 
-    //Add source node:
+    //Transfer source node:
     $this->db->insert('gephi_nodes', array(
         'id' => $id_prefix[12274].$en['e__id'],
         'label' => $en['e__title'],

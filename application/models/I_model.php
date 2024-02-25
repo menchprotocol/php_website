@@ -717,7 +717,7 @@ class I_model extends CI_Model
                         $link_count = $this->I_model->duplicate($next_i, $i['i__id'], $x__player);
 
                         if($link_count > 0){
-                            //Add Source since not there:
+                            //Increment Source since not there:
                             $applied_success++;
                         }
 
@@ -746,7 +746,7 @@ class I_model extends CI_Model
                                     ), $x__player, 10673 /* Member Transaction Unpublished  */);
                                 }
 
-                                //Add Source since not there:
+                                //Increment Source since not there:
                                 $applied_success++;
                             }
                         }

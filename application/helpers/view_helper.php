@@ -1438,10 +1438,9 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
 
         $coins_count[$x__type] = view_i_covers($x__type, $focus_i['i__id'], 0, false);
         if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
-        $can_add = $access__i;
 
         $input_content = '';
-        if($can_add){
+        if($access__i){
 
             if(in_array($x__type, $CI->config->item('n___42261'))){
 
@@ -1469,7 +1468,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
 
         }
 
-        if($can_add || $coins_count[$x__type]>0){
+        if(in_array($x__type, $CI->config->item('n___42262')) || $coins_count[$x__type]>0){
             $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
 
             $ui .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'">&nbsp;<span class="icon-block">'.$m['m__cover'].'</span><span class="main__title hideIfEmpty xtypecounter'.$x__type.'">'.view_number($coins_count[$x__type]) . '</span><span class="main__title hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
@@ -1728,11 +1727,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access__i ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==42379 && $player_e){
+            } elseif($x__type_target_bar==42819 && superpower_unlocked(13422)){
 
-                //Reply Inverse / Quote
+                //New Source
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access__i ? 4228 : 30901 ).',0,'.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
+                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access__i ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_target_bar==42260 && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__player']!=$player_e['e__id'])){
