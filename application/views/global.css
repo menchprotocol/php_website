@@ -227,6 +227,13 @@ h3{
     margin-left: 40px !important;
     width: calc(100% - 40px) !important;
 }
+.save_i__hashtag,
+.left_padded .dynamic_editing_input input.form-control,
+.left_padded .dynamic_editing_input textarea.form-control{
+    margin-left: 30px !important;
+    width: calc(100% - 30px) !important;
+}
+
 .single_line {
     margin: 0 !important;
 }
