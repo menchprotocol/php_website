@@ -137,7 +137,7 @@ class App extends CI_Controller
 
 
         //Access Levels
-        if ( $focus_i && !in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !write_privacy_i($focus_i['i__hashtag'])){
+        if ( $focus_i && !in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !access__i($focus_i['i__hashtag'])){
             return redirect_message( ( $target_i ? view_memory(42903,33286).$target_i['i__hashtag'] : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_hashtag . ' is not public and you are missing permission to access.</div>');
         }
 
@@ -331,6 +331,7 @@ class App extends CI_Controller
             //Prep view:
             $raw_app = $this->load->view('app/'.$app_e__id, $view_input, true);
             $ui .= $raw_app;
+
         }
 
         if($new_cache){

@@ -5,7 +5,7 @@ $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 
-if(write_privacy_i($focus_i['i__hashtag']) && superpower_unlocked(10939)){
+if(access__i($focus_i['i__hashtag']) && superpower_unlocked(10939)){
     echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view_memory(42903,33286).$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
@@ -162,7 +162,7 @@ echo '<div class="main_item view_6255 row justify-content">';
 echo view_card_i(42288, $focus_i);
 echo '</div>';
 
-echo view_i_nav(true, $focus_i, write_privacy_i($focus_i['i__hashtag']));
+echo view_i_nav(true, $focus_i, access__i($focus_i['i__hashtag']));
 
 
 //Mark this as skipped since there is nothing to choose from:
@@ -677,7 +677,7 @@ if($target_i__hashtag){
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
 </script>
-<input type="hidden" id="focus__card" value="12273" />
+<input type="hidden" id="focus__node" value="12273" />
 <input type="hidden" id="focus__id" value="<?= $focus_i['i__id'] ?>" />
 <input type="hidden" id="focus_handle" value="<?= $focus_i['i__hashtag'] ?>" />
 <input type="hidden" id="target_i__id" value="<?= $target_i__id ?>" />

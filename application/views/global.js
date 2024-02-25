@@ -312,10 +312,10 @@ function toggle_headline(x__type){
 
     var x__follower = 0;
     var x__next = 0;
-    var focus__card = fetch_int_val('#focus__card');
-    if(focus__card==12273){
+    var focus__node = fetch_int_val('#focus__node');
+    if(focus__node==12273){
         x__next = fetch_int_val('#focus__id');
-    } else if (focus__card==12274){
+    } else if (focus__node==12274){
         x__follower = fetch_int_val('#focus__id');
     }
 
@@ -447,11 +447,11 @@ function toggle_pills(x__type_hash){
 
     var x__follower = 0;
     var x__next = 0;
-    var focus__card = fetch_int_val('#focus__card');
+    var focus__node = fetch_int_val('#focus__node');
 
-    if(focus__card==12273){
+    if(focus__node==12273){
         x__next = fetch_int_val('#focus__id');
-    } else if (focus__card==12274){
+    } else if (focus__node==12274){
         x__follower = fetch_int_val('#focus__id');
     }
 
@@ -483,25 +483,25 @@ function toggle_pills(x__type_hash){
 
             $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
 
-            var focus__card = fetch_int_val('#focus__card');
-            console.log('Tab loading from @'+focus__card+' for @'+x__type);
+            var focus__node = fetch_int_val('#focus__node');
+            console.log('Tab loading from @'+focus__node+' for @'+x__type);
 
-            if(focus__card==12273){
+            if(focus__node==12273){
 
                 var loading_url = "/ajax/i_view_body";
                 var loading_data = {
-                    focus__card:focus__card,
+                    focus__node:focus__node,
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('read-counter'),
                     i__id:fetch_int_val('#focus__id'),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
-            } else if(focus__card==12274){
+            } else if(focus__node==12274){
 
                 var loading_url = "/ajax/e_view_body";
                 var loading_data = {
-                    focus__card:focus__card,
+                    focus__node:focus__node,
                     x__type:x__type,
                     counter:$('.headline_body_'+x__type).attr('read-counter'),
                     e__id:fetch_int_val('#focus__id'),
@@ -542,9 +542,9 @@ function toggle_pills(x__type_hash){
 
                 setTimeout(function () {
 
-                    if(js_n___11020.includes(x__type) || (focus__card==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
+                    if(js_n___11020.includes(x__type) || (focus__node==12274 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))){
                         i_sort_load(x__type);
-                    } else if(js_n___11028.includes(x__type) || (focus__card==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
+                    } else if(js_n___11028.includes(x__type) || (focus__node==12273 && (js_n___42261.includes(x__type) || js_n___42284.includes(x__type)))) {
                         e_sort_load(x__type);
                     }
 
@@ -913,11 +913,25 @@ function activate_popover(){
 var algolia_index = false;
 $(document).ready(function () {
 
+    //Look for power editor updates:
+    $('.x_set_class_text').keypress(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code==13) {
+            x_set_text(this);
+            e.preventDefault();
+        }
+    }).change(function() {
+        x_set_text(this);
+    });
+
     activate_popover();
 
     load_hashtag_menu();
 
     activate_cover_watch();
+
+    //Only for idea page but still:
+    set_autosize($('.text__6197_'+fetch_int_val('#focus__id')));
 
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
@@ -1244,7 +1258,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
 
     $(".idea_link_direction, .idea_link_unlink, .idea_link_type").addClass('hidden');
-    var focus_i_id = ( fetch_int_val('#focus__card')==12273 ? fetch_int_val('#focus__id') : 0 );
+    var focus_i_id = ( fetch_int_val('#focus__node')==12273 ? fetch_int_val('#focus__id') : 0 );
     $("#modal31911 .save_results").html('');
 
     if(!passon_i__id){
@@ -1374,10 +1388,10 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         //See where we are at and append anything needed to the idea:
         var insert_message = '';
         if(!next_i__id && !previous_i__id){
-            var focus__card = fetch_int_val('#focus__card');
-            if(focus__card==12273){
+            var focus__node = fetch_int_val('#focus__node');
+            if(focus__node==12273){
                 //insert_message = '#'+$('#focus_handle').val()+' ';
-            } else if (focus__card==12274 && fetch_int_val('#focus__id')!=js_pl_id){
+            } else if (focus__node==12274 && fetch_int_val('#focus__id')!=js_pl_id){
                 insert_message = '@'+$('#focus_handle').val()+' ';
             }
         }
@@ -1392,7 +1406,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $('#modal31911 .save_x__id').val(x__id);
 
         //Idea<>Idea links do not have an interaction message
-        if(fetch_int_val('#focus__card')!=12273 || ($('.ui_x__message_'+x__id+':first') && $('.ui_x__message_'+x__id+':first').text().length>0)){
+        if(fetch_int_val('#focus__node')!=12273 || ($('.ui_x__message_'+x__id+':first') && $('.ui_x__message_'+x__id+':first').text().length>0)){
             $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').text());
             $('#modal31911 .save_x__frame').removeClass('hidden');
         }
@@ -1512,7 +1526,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                     $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(x__id && fetch_int_val('#focus__card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus__id')){
+                    if(x__id && fetch_int_val('#focus__node')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus__id')){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         $("#modal31911 .save_x__message").val('IGNORE_INPUT');
                         $("#modal31911 .save_x__frame").addClass('hidden');
@@ -1553,7 +1567,7 @@ function i_editor_save(){
     var uploader_id = 13572; //THis is for idea modal
 
     var modify_data = {
-        focus__card:         fetch_int_val('#focus__card'),
+        focus__node:         fetch_int_val('#focus__node'),
         focus__id:           fetch_int_val('#focus__id'),
         save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
         save_x__id:         $('#modal31911 .save_x__id').val(),
@@ -1653,7 +1667,7 @@ function i_editor_save(){
             //Update Handle & Href links if needed:
             var old_handle = $(".ui_i__hashtag_"+modify_data['save_i__id']+':first').text();
             var new_handle = modify_data['save_i__hashtag'];
-            var on_focus__idea = fetch_int_val('#focus__card')==12273 && modify_data['save_i__id']==fetch_int_val('#focus__id');
+            var on_focus__idea = fetch_int_val('#focus__node')==12273 && modify_data['save_i__id']==fetch_int_val('#focus__id');
 
             //Update Idea Type:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__type', modify_data['save_i__type']);
@@ -2132,7 +2146,7 @@ function e_editor_load(e__id = 0, x__id = 0){
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(x__id && ( (fetch_int_val('#focus__card')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus__id')) || data.return_inputs[index_i]["d__id"]==e__id )){
+                    if(x__id && ( (fetch_int_val('#focus__node')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus__id')) || data.return_inputs[index_i]["d__id"]==e__id )){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         $("#modal31912 .save_x__message").val('IGNORE_INPUT');
                         $("#modal31912 .save_x__frame").addClass('hidden');
@@ -2224,7 +2238,7 @@ function e_editor_save(){
             var old_handle = $(".ui_e__handle_"+modify_data['save_e__id']+':first').text();
             var new_handle = modify_data['save_e__handle'];
             if(old_handle!=new_handle){
-                if(fetch_int_val('#focus__card')==12274 && modify_data['save_e__id']==fetch_int_val('#focus__id')){
+                if(fetch_int_val('#focus__node')==12274 && modify_data['save_e__id']==fetch_int_val('#focus__id')){
                     //Refresh page since focus item handle changed:
                     return js_redirect(js_e___42903[42902]['m__message']+new_handle);
                 } else {
@@ -2262,7 +2276,7 @@ function e_editor_save(){
             $('#modal31912').modal('hide');
 
             //Do we need to refresh the page?
-            if(fetch_int_val('#focus__card')==12274 && fetch_int_val('#focus__id')==modify_data['save_e__id']){
+            if(fetch_int_val('#focus__node')==12274 && fetch_int_val('#focus__id')==modify_data['save_e__id']){
                 //Refresh page since source edited their own profile:
                 js_redirect(js_e___42903[42902]['m__message']+$('#focus_handle').val());
             }
@@ -2301,7 +2315,7 @@ function x_view_load_page() {
     }
 
     var current_total_count = parseInt($('.headline_body_' + focus_x__group).attr('read-counter')); //Total of that item
-    var has_more_to_load = ( current_total_count > parseInt(fetch_int_val('#page_limit')) * current_page[focus_x__group] );
+    var has_more_to_load = ( current_total_count > parseInt(js_e___6404[11064]['m__message']) * current_page[focus_x__group] );
 
     if(!has_more_to_load){
         return false;
@@ -2314,7 +2328,7 @@ function x_view_load_page() {
     current_page[focus_x__group]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
     $.post("/ajax/x_view_load_page", {
-        focus__card: fetch_int_val('#focus__card'),
+        focus__node: fetch_int_val('#focus__node'),
         focus__id: fetch_int_val('#focus__id'),
         x__type: focus_x__group,
         current_page: current_page[focus_x__group],
@@ -2380,7 +2394,7 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/ajax/e__add", {
 
-        focus__card: fetch_int_val('#focus__card'),
+        focus__node: fetch_int_val('#focus__node'),
         x__type: x__type,
         focus__id: fetch_int_val('#focus__id'),
         e_existing_id: e_existing_id,
@@ -2649,8 +2663,8 @@ function i_sort_load(x__type){
         }
 
         //Make sure beow minimum sorting requirement:
-        if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(fetch_int_val('#page_limit'))){
-            console.log(x__type+' has '+$("#list-in-"+x__type+" .sort_draggable").length+' items which is more than the page limit of '+fetch_int_val('#page_limit'));
+        if($("#list-in-"+x__type+" .sort_draggable").length>=parseInt(js_e___6404[11064]['m__message'])){
+            console.log(x__type+' has '+$("#list-in-"+x__type+" .sort_draggable").length+' items which is more than the page limit of '+js_e___6404[11064]['m__message']);
             return false;
         } else if($("#list-in-"+x__type+" .sort_draggable").length<2){
             console.log('Less than 2 items to sort '+x__type);
@@ -3029,13 +3043,13 @@ function x_reset_sorting(){
     var r = confirm("Reset sorting?");
     if (r==true) {
 
-        var focus__card = fetch_int_val('#focus__card');
+        var focus__node = fetch_int_val('#focus__node');
         var focus__id = fetch_int_val('#focus__id');
         var focus_handle = fetch_int_val('#focus_handle');
 
         //Update via call:
         $.post("/ajax/x_reset_sorting", {
-            focus__card: focus__card,
+            focus__node: focus__node,
             focus__id: focus__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -3048,10 +3062,10 @@ function x_reset_sorting(){
             } else {
 
                 //Refresh page:
-                if(focus__card==12273){
+                if(focus__node==12273){
                     //Ideation
                     js_redirect(js_e___42903[33286]['m__message'] + focus_handle);
-                } else if(focus__card==12274){
+                } else if(focus__node==12274){
                     //Sourcing
                     js_redirect(js_e___42903[42902]['m__message'] + focus_handle);
                 }

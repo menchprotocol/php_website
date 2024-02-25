@@ -1011,7 +1011,7 @@ function js_reload($timer = 1){
 }
 
 
-function generate_handle($focus__card, $str, $suggestion = null, $increment = 1){
+function generate_handle($focus__node, $str, $suggestion = null, $increment = 1){
     //Generates a Suitable Handle from the title:
 
     //Previous suggestion did not work, let's tweak and try again:
@@ -1043,17 +1043,17 @@ function generate_handle($focus__card, $str, $suggestion = null, $increment = 1)
     }
 
     if(strlen($suggestion)<4 || is_numeric($suggestion)){
-        $suggestion = ( $focus__card==12273 ? 'Idea' : 'Source' ).$suggestion;
+        $suggestion = ( $focus__node==12273 ? 'Idea' : 'Source' ).$suggestion;
     }
 
 
     //Make sure no duplicates:
     $CI =& get_instance();
-    if($focus__card==12273 && count($CI->I_model->fetch(array(
+    if($focus__node==12273 && count($CI->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($suggestion),
         )))){
         return generate_handle(12273, $str, $suggestion, $increment);
-    } elseif($focus__card==12274 && count($CI->E_model->fetch(array(
+    } elseif($focus__node==12274 && count($CI->E_model->fetch(array(
             'LOWER(e__handle)' => strtolower($suggestion),
         )))){
         return generate_handle(12274, $str, $suggestion, $increment);
@@ -1696,7 +1696,7 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function write_privacy_e($e__handle, $e__id = 0){
+function access__e($e__handle, $e__id = 0){
 
 
     $player_e = superpower_unlocked();
@@ -1733,7 +1733,7 @@ function write_privacy_e($e__handle, $e__id = 0){
 
 }
 
-function write_privacy_i($i__hashtag, $i__id = 0){
+function access__i($i__hashtag, $i__id = 0){
 
     $player_e = superpower_unlocked();
     if(!$player_e || (!strlen($i__hashtag) && !intval($i__id))){
@@ -1775,28 +1775,28 @@ function public_app($e){
     $CI =& get_instance();
     return in_array($e['e__privacy'], $CI->config->item('n___7357')) && !in_array($e['e__id'], $CI->config->item('n___32141'));
 }
-function flag_for_search_indexing($focus__card = null, $s__id = 0) {
+function flag_for_search_indexing($focus__node = null, $s__id = 0) {
 
     $CI =& get_instance();
 
-    if($focus__card && !in_array($focus__card , $CI->config->item('n___12761'))){
+    if($focus__node && !in_array($focus__node , $CI->config->item('n___12761'))){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($focus__card && !$s__id) || ($s__id && !$focus__card)){
+    } elseif(($focus__node && !$s__id) || ($s__id && !$focus__node)){
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
         );
     }
 
-    if($focus__card==12273){
+    if($focus__node==12273){
         //Update idea flag
         $CI->I_model->update($s__id, array(
             'i__flag' => true,
         ));
-    } elseif($focus__card==12274){
+    } elseif($focus__node==12274){
         //Update idea flag
         $CI->E_model->update($s__id, array(
             'e__flag' => true,
@@ -1811,7 +1811,7 @@ function search_enabled(){
 }
 
 
-function update_algolia($focus__card = null, $s__id = 0) {
+function update_algolia($focus__node = null, $s__id = 0) {
 
     if(!search_enabled()){
         console.log("Search engine is disabled!");
@@ -1826,12 +1826,12 @@ function update_algolia($focus__card = null, $s__id = 0) {
      *
      * */
 
-    if($focus__card && !in_array($focus__card , $CI->config->item('n___12761'))){
+    if($focus__node && !in_array($focus__node , $CI->config->item('n___12761'))){
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($focus__card && !$s__id) || ($s__id && !$focus__card)){
+    } elseif(($focus__node && !$s__id) || ($s__id && !$focus__node)){
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
@@ -1846,10 +1846,10 @@ function update_algolia($focus__card = null, $s__id = 0) {
     $limits = array();
 
 
-    if($focus__card==12273){
+    if($focus__node==12273){
         $focus_field_id = 'i__id';
         $focus_field_privacy = 'i__privacy';
-    } elseif($focus__card==12274 || $focus__card==6287){
+    } elseif($focus__node==12274 || $focus__node==6287){
         $focus_field_id = 'e__id';
         $focus_field_privacy = 'e__privacy';
     }
@@ -1861,10 +1861,10 @@ function update_algolia($focus__card = null, $s__id = 0) {
 
 
     //Which objects are we fetching?
-    if ($focus__card) {
+    if ($focus__node) {
 
         //We'll only fetch a specific type:
-        $fetch_objects = array($focus__card);
+        $fetch_objects = array($focus__node);
 
     } else {
 
@@ -1935,16 +1935,16 @@ function update_algolia($focus__card = null, $s__id = 0) {
             //Update Weight if single update:
             if($s__id){
                 //Update weight before updating this object:
-                if($focus__card==12273){
+                if($focus__node==12273){
                     i__weight_calculator($s);
-                } elseif($focus__card==12274){
+                } elseif($focus__node==12274){
                     e__weight_calculator($s);
                 }
             }
 
 
             //Attempt to fetch Algolia object ID from object Metadata:
-            if($focus__card){
+            if($focus__node){
 
                 if (intval($s['algolia__id']) > 0) {
                     //We found it! Let's just update existing algolia record
@@ -2126,7 +2126,7 @@ function update_algolia($focus__card = null, $s__id = 0) {
     }
 
     //Now let's see what to do with the index (Update, Create or delete)
-    if ($focus__card) {
+    if ($focus__node) {
 
         //We should have fetched a single item only, meaning $all_export_rows[0] is what we are focused on
 
@@ -2165,11 +2165,11 @@ function update_algolia($focus__card = null, $s__id = 0) {
                 //Now update local database with the new objectIDs:
                 if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs'])==1 ) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        if ($focus__card==12273) {
+                        if ($focus__node==12273) {
                             $CI->I_model->update($all_db_rows[$key][$focus_field_id], array(
                                 'algolia__id' => $algolia_id,
                             ));
-                        } elseif ($focus__card==12274) {
+                        } elseif ($focus__node==12274) {
                             $CI->E_model->update($all_db_rows[$key][$focus_field_id], array(
                                 'algolia__id' => $algolia_id,
                             ));

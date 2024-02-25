@@ -75,7 +75,7 @@ class Ajax extends CI_Controller
                     'status' => 0,
                     'message' => 'Idea is no longer active',
                 ));
-            } elseif (!write_privacy_i($is[0]['i__hashtag'])) {
+            } elseif (!access__i($is[0]['i__hashtag'])) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You are missing permission to edit this idea',
@@ -246,7 +246,7 @@ class Ajax extends CI_Controller
                 'message' => 'Missing Idea',
             ));
 
-        } elseif(!isset($_POST['focus__card']) || !isset($_POST['focus__id'])){
+        } elseif(!isset($_POST['focus__node']) || !isset($_POST['focus__id'])){
 
             return view_json(array(
                 'status' => 0,
@@ -311,7 +311,7 @@ class Ajax extends CI_Controller
         }
 
 
-        $focus__card = ( $_POST['focus__card']==12273 && $_POST['focus__id']==$_POST['save_i__id'] );
+        $focus__node = ( $_POST['focus__node']==12273 && $_POST['focus__id']==$_POST['save_i__id'] );
         $has_media = (isset($_POST['save_media']) && is_array($_POST['save_media']) && count($_POST['save_media'])>0);
 
 
@@ -839,7 +839,7 @@ class Ajax extends CI_Controller
         return view_json(array(
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
-            'return_i__cache_links' => view_i__links($is[0], $focus__card, $focus__card),
+            'return_i__cache_links' => view_i__links($is[0], $focus__node, $focus__node),
             'return_i__cache_full' => view_card_i($_POST['focus_x__group'], $is[0]),
             'redirect_idea' => ( isset($is[0]['i__hashtag']) ? view_memory(42903,33286).$is[0]['i__hashtag'] : null ),
             'message' => $media_stats['total_current'].' current & '.$media_stats['total_submitted'].' submitted media: '.$media_stats['total_submitted'].' Created, '.$media_stats['adjust_updated'].' Updated & '.$media_stats['adjust_removed'].' Removed while detected '.$media_stats['adjust_duplicated'].' duplicate uploads. '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',
@@ -879,7 +879,7 @@ class Ajax extends CI_Controller
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missing core variables</div>';
         } else {
 
-            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !write_privacy_i(null, $_POST['i__id'])){
+            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access__i(null, $_POST['i__id'])){
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
 
@@ -1008,7 +1008,7 @@ class Ajax extends CI_Controller
 
         } else {
 
-            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !write_privacy_e(null, $_POST['e__id'])){
+            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access__e(null, $_POST['e__id'])){
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
 
@@ -1338,7 +1338,7 @@ class Ajax extends CI_Controller
             ));
         }
 
-        $adding_to_i = ($_POST['focus__card']==12273);
+        $adding_to_i = ($_POST['focus__node']==12273);
 
         if($adding_to_i){
 
@@ -1526,7 +1526,7 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => 'Source is no longer active',
             ));
-        } elseif (!write_privacy_e($es[0]['e__handle'])) {
+        } elseif (!access__e($es[0]['e__handle'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are missing permission to edit this Source',
@@ -2725,12 +2725,12 @@ class Ajax extends CI_Controller
         $focus_e = array();
         $previous_i = array();
 
-        if(!isset($_POST['focus__card'])){
+        if(!isset($_POST['focus__node'])){
             die('Missing input. Refresh and try again.');
         }
         $success = false;
 
-        if($_POST['focus__card']==12274){
+        if($_POST['focus__node']==12274){
 
             //SOURCE
             $focus_es = $this->E_model->fetch(array(
@@ -2748,7 +2748,7 @@ class Ajax extends CI_Controller
                 }
             }
 
-        } elseif($_POST['focus__card']==12273) {
+        } elseif($_POST['focus__node']==12273) {
 
             //IDEA
             $previous_is = $this->I_model->fetch(array(
@@ -2784,10 +2784,10 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => view_unauthorized_message(13422),
             ));
-        } elseif (!isset($_POST['focus__card']) || !in_array($_POST['focus__card'], $this->config->item('n___28956'))) {
+        } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('n___28956'))) {
             view_json(array(
                 'status' => 0,
-                'message' => 'Invalid focus__card',
+                'message' => 'Invalid focus__node',
             ));
         } elseif (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
             view_json(array(
@@ -2796,7 +2796,7 @@ class Ajax extends CI_Controller
             ));
         }
 
-        if($_POST['focus__card']==12273){
+        if($_POST['focus__node']==12273){
             //Ideas order based on alphabetical order
             $order = 0;
             foreach($this->X_model->fetch(array(
@@ -2810,7 +2810,7 @@ class Ajax extends CI_Controller
                     'x__weight' => $order,
                 ), $player_e['e__id'], 13007 /* SOURCE SORT RESET */);
             }
-        } elseif($_POST['focus__card']==12274){
+        } elseif($_POST['focus__node']==12274){
             //Sources reset order
             foreach($this->X_model->fetch(array(
                 'x__following' => $_POST['focus__id'],

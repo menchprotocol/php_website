@@ -2,8 +2,7 @@
 
 //Log source view:
 $limit = view_memory(6404,11064);
-$e___11035 = $this->config->item('e___11035'); //Encyclopedia
-$write_privacy_e = write_privacy_e($focus_e['e__handle']);
+$access__e = access__e($focus_e['e__handle']);
 
 
 
@@ -80,17 +79,3 @@ if(!$focus_tab){
 
 ?>
 
-
-
-
-<input type="hidden" id="page_limit" value="<?= $limit ?>" />
-<input type="hidden" id="focus_handle" value="<?= $focus_e['e__handle'] ?>" />
-<input type="hidden" id="focus__card" value="12274" />
-<input type="hidden" id="focus__id" value="<?= $focus_e['e__id'] ?>" />
-<script>
-
-    $(document).ready(function () {
-        set_autosize($('.text__6197_'+fetch_int_val('#focus__id')));
-    });
-
-</script>
