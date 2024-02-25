@@ -2138,7 +2138,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     //Source Handle
     $ui .= '<div class="center-block">';
 
-    $ui .= '<div class="creator_headline grey mini-frame">@<span class="ignore-click ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
+    $ui .= '<div class="creator_headline grey">@<span class="ignore-click ui_e__handle_'.$e['e__id'].'" title="ID '.$e['e__id'].'">'.$e['e__handle'].'</span></div>';
 
     //Source Location:
     $e___42777 = $CI->config->item('e___42777');
