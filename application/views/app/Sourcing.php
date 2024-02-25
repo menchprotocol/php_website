@@ -29,7 +29,7 @@ foreach($this->config->item('e___31916') as $x__type => $m) {
 
     $coins_count[$x__type] = view_e_covers($x__type, $focus_e['e__id'], 0, false);
     if(!$coins_count[$x__type] && in_array($x__type, $this->config->item('n___12144'))){ continue; }
-    $can_add = superpower_unlocked(10939) && in_array($x__type, $this->config->item('n___42262'));
+    $can_add = superpower_unlocked(10939);
 
     $input_content = '';
     if($can_add){
