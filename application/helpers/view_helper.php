@@ -1450,7 +1450,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__e algolia__ce dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="@source /command">
+                               placeholder="/command @sources">
                     </div></div></div></div>';
                 $body_content .= '<script> $(document).ready(function () { e_load_finder('.$x__type.'); }); </script>';
 
@@ -1462,7 +1462,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
                         <input type="text"
                                class="form-control form-control-thick algolia_finder algolia__i algolia__ci dotransparent add-input"
                                maxlength="' . view_memory(6404,6197) . '"
-                               placeholder="#idea /command">
+                               placeholder="/command #ideas">
                     </div></div></div></div>';
                 $body_content .= '<script> $(document).ready(function () { i_load_finder('.$x__type.'); }); </script>';
             }

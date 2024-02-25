@@ -1145,7 +1145,7 @@ $(document).ready(function () {
                     return view_s_js_line(suggestion, '/');
                 },
                 replace: function (suggestion) {
-                    return '/' + suggestion.s__handle + ' ';
+                    return '/' + suggestion.s__handle + ' @';
                 }
             },
         ]);
@@ -1171,7 +1171,7 @@ $(document).ready(function () {
                     return view_s_js_line(suggestion, '/');
                 },
                 replace: function (suggestion) {
-                    return '/' + suggestion.s__handle + ' ';
+                    return '/' + suggestion.s__handle + ' @';
                 }
             },
         ]);
