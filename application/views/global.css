@@ -1626,7 +1626,6 @@ label {
 .emoji_table .icon-block-sm {
     height: 7px;
 }
-.focus-cover .dropdown span.icon-block-sm{ height: 28px !important; }
 
 
 .custom-popover {
@@ -1679,6 +1678,9 @@ label {
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;
 }
+
+.coin-12274 .creator_headline,
+.focus-cover .dropdown span.icon-block-sm,
 .coin-12273 .icon-block-sm {
     height: 22px !important;
 }
@@ -2992,7 +2994,6 @@ h4.main__title{
 
 .coin-12274 .creator_headline{
     padding: 0 1px 0 0;
-    height: 22px;
 }
 
 .source_bio{
