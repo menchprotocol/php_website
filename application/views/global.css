@@ -1698,9 +1698,7 @@ label {
 
 .block-x, i, .nav .icon-block i,
 .icon-block-sm   i { font-size: 1.21em !important; }
-.icon-block      i,
-.focus-cover .icon-block-sm      i
-                    { font-size: 1.34em !important; }
+.icon-block      i { font-size: 1.34em !important; }
 
 .icon-block-xs i,
 .icon-block-xs .icon-block-sm   i,
