@@ -1988,7 +1988,7 @@ label {
 .dropdown-item.intro_header .main__title,
 .dropdown-item.intro_header {
     --fa-primary-color: #999999;
-    --fa-secondary-color: #999999;
+    --fa-secondary-color: #FFFFFF;
     color: #999999 !important;
     background-color: #FFFFFF !important;
 }
