@@ -397,14 +397,14 @@ if(count($i_query)){
     }
     tr.main__title{
         background-color: #CCCCCC !important;
-        border-top:1px solid #999998 !important;
+        border-top:1px solid #000000 !important;
     }
     .table-striped tr:nth-of-type(odd) td {
         background-color: #FFFFFF !important;
         -webkit-print-color-adjust:exact;
     }
     .table-striped td {
-        border-bottom: 1px dotted #999998 !important;
+        border-bottom: 1px dotted #000000 !important;
     }
     .fa-filter, .fa-sort{
         font-size: 1.01em !important;

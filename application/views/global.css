@@ -211,7 +211,7 @@ h3{
     float: right !important;
 }
 .idea_list_previous{
-    border: 1px solid #999998;
+    border: 1px solid #000000;
     padding: 8px 0px 5px 3px;
     margin: 3px 0 5px 40px;
 }
@@ -361,7 +361,6 @@ li a {
     margin-bottom: 2px;
     padding:0 0 5px !important;
     width: 100%;
-    border-bottom: 1px solid #000000 !important;
 }
 
 .large-cover{
@@ -518,7 +517,7 @@ img.no-frame {
 
 .textcomplete-item{
     padding: 3px 2px;
-    border-bottom: 1px solid #999998;
+    border-bottom: 1px solid #000000;
 }
 .algolia-autocomplete .aa-dropdown-menu {
     width: 100%;
@@ -802,7 +801,7 @@ label:focus,
     border-radius: 0;
 }
 .nav-controller .active .nav-title{
-    border-bottom: 1px solid #999998;
+    border-bottom: 1px solid #000000;
 }
 .nav-title{
     padding: 5px 0 !important;
@@ -858,7 +857,7 @@ label:focus,
     font-size: 1em !important;
     font-weight:bold;
     padding: 13px 0 0;
-    border-top: 1px solid #999998;
+    border-top: 1px solid #000000;
 }
 
 .menu_header:first-of-type {
@@ -940,7 +939,7 @@ p.menu_header {
 
 
 .mid-text-line{
-    border-bottom: 1px solid #999998;
+    border-bottom: 1px solid #000000;
     text-align: center;
     margin: 21px 0 34px;
     height: 17px;
@@ -1041,7 +1040,7 @@ h4 .halfbg {
     padding: 2px 3px;
     margin-top: 5px;
     display: block;
-    border: 1px dotted #999998 !important;
+    border: 1px dotted #000000 !important;
     overflow: hidden;
 }
 .dropdown-menu {
@@ -1996,7 +1995,7 @@ label {
     background-color: #FFFFFF !important;
 }
 .dropdown-item.intro_header {
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #000000;
     padding:5px !important;
 }
 
@@ -2110,7 +2109,7 @@ label {
     font-size: 0.79em;
 }
 .underdot{
-    border-bottom: 1px dotted #999998;
+    border-bottom: 1px dotted #000000;
 }
 .subtle-line{
     display: inline-block;
@@ -2300,7 +2299,7 @@ input.form-control {
 .card_cover.coinface-12273{
     margin:0 0 !important;
     padding:21px 0 !important;
-    border-top: 1px solid #999998;
+    border-top: 1px solid #000000;
 }
 .flip-content .card_cover.coinface-12273{
     border-top: 0;
@@ -2397,7 +2396,7 @@ input.form-control {
     background-color: #FFFFFF;
     font-weight: bold;
     line-height: 134%;
-    border-bottom: 1px solid #999999 !important;
+    border-bottom: 1px solid #000000 !important;
 }
 .coin-12274.mini-cover .inner-content {
     text-align: center !important;
@@ -2827,7 +2826,7 @@ h4.main__title{
 }
 
 .breadcrumb-item .breadcrumb-item a {
-    border-bottom: 1px solid #999998;
+    border-bottom: 1px solid #000000;
 }
 
 .nav-tabs .nav-link.active{
@@ -2958,7 +2957,7 @@ h4.main__title{
 }
 
 .info_blob>span{
-    border-bottom: 1px dotted #999999;
+    border-bottom: 1px dotted #000000;
 }
 
 .edge-cover .card_covers {
@@ -3435,13 +3434,13 @@ a,
 .fa-gif-wrap,
 .inner-content .texttype__lg
 {
-    border-color: #999998 !important;
+    border-color: #000000 !important;
 }
 
 
 .nav-tabs .nav-item.show .nav-link,
 .dropdown-menu {
-    border-color: #999998 !important;
+    border-color: #000000 !important;
 }
 
 /*
@@ -3507,7 +3506,7 @@ a,
 
 .coinType6287 {
     border-radius: 0px !important;
-    border: 1px dotted #999998;
+    border: 1px dotted #000000;
 }
 
 .btn.btn-12273,
@@ -3891,7 +3890,7 @@ a,
 
 .input-group-text,
 .btn-grey .fa-gif-wrap {
-    border-color: #999998 !important;
+    border-color: #000000 !important;
 
 }
 .grey-background {
@@ -3999,7 +3998,7 @@ h4.main__title{
 
 .divider-line{
     height: 1px;
-    border-bottom: 1px solid #999998;
+    border-bottom: 1px solid #000000;
     margin: 2px 8px;
 }
 
@@ -4070,7 +4069,7 @@ h4.main__title{
 .filter_table input {
     background-color: #FFF;
     border-radius: 0px !important;
-    border: 1px solid #999998 !important;
+    border: 1px solid #000000 !important;
     color: #000;
 }
 .filter_table td {
@@ -4610,7 +4609,7 @@ main {
 }
 
 .dropdown_type_DISABLE_42795{
-    border: 1px solid #999998;
+    border: 1px solid #000000;
     padding: 5px 5px 3px 0;
     margin:8px 0 0 5px;
 }
