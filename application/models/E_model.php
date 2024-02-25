@@ -491,7 +491,7 @@ class E_model extends CI_Model
         }
     }
 
-    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('e__id' => 'DESC'), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array('e__id' => 'DESC'), $select = '*', $group_by = null, $authenticate = false)
     {
 
         //Fetch the target sources:
@@ -515,7 +515,16 @@ class E_model extends CI_Model
         }
 
         $q = $this->db->get();
-        return $q->result_array();
+        $arr = $q->result_array();
+        //Make sure user has access to each item:
+        if($authenticate && !superpower_unlocked(13422)){
+            foreach($arr as $key=>$val){
+                if(!access__e($val['e__handle'])){
+                    unset($arr[$key]);
+                }
+            }
+        }
+        return $arr;
     }
 
     function fetch_recursive($x__type, $e__id, $include_any_e = array(), $exclude_all_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){

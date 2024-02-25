@@ -378,10 +378,6 @@ function i_view_body($x__type, $counter, $i__id){
     $CI =& get_instance();
 
 
-    if(in_array($x__type, $CI->config->item('n___42376')) && !access__i(null, $i__id)){
-        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
-    }
-
     $list_results = view_i_covers($x__type, $i__id, 1);
     $ui = '';
     $is = $CI->I_model->fetch(array(
@@ -389,6 +385,10 @@ function i_view_body($x__type, $counter, $i__id){
     ));
     if(!count($is)){
         return false;
+    }
+
+    if(in_array($x__type, $CI->config->item('n___42376')) && !access__i(null, $is[0]['i__id'])){
+        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
     }
 
     if(in_array($x__type, $CI->config->item('n___42380'))){
@@ -992,7 +992,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $access__i = 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
             $removal_option = in_array($e__id, $CI->config->item('n___42850'));
 
-            $ui .= '<a class="dropdown-item drop_item_instant_'.$e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$e__id]['m__message'].'</span></span>' : '' ).'</a>';
+            $ui .= '<a class="dropdown-item drop_item_instant_'.$e__id.'_'.$o__id.'_'.$x__id.' main__title optiond_'.$e__id.'_'.$o__id.'_'.$x__id.' '.( $e__id==$selected_e__id ? ' active ' : '' ).( $removal_option ? ' removal_option '.( $unselected_radio ? ' hidden ' : '') : '' ).'" href="javascript:void();" this_id="'.$e__id.'" onclick="x_update_instant_select('.$cache_e__id.', '.$e__id.', '.$o__id.', '.$x__id.', '.intval($show_full_name).')"><span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].( isset($e___11035[$e__id]) && strlen($e___11035[$e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$e__id]['m__message'].'</span></span>' : '' ).'</a>';
 
 
         }
@@ -2277,7 +2277,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             continue;
                         }
 
-                        $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
+                        $anchor = '<span class="icon-block-sm">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
 
                         if($e__id_dropdown==4997){

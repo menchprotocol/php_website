@@ -116,7 +116,7 @@ class I_model extends CI_Model
 
     }
 
-    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $limit = 0, $limit_offset = 0, $order_columns = array(), $select = '*', $group_by = null, $authenticate = false)
     {
 
         //The basic fetcher for Ideas
@@ -139,7 +139,17 @@ class I_model extends CI_Model
             $this->db->limit($limit, $limit_offset);
         }
         $q = $this->db->get();
-        return $q->result_array();
+        $arr = $q->result_array();
+        //Make sure user has access to each item:
+        if($authenticate && !superpower_unlocked(12700)){
+            foreach($arr as $key=>$val){
+                if(!access__i($val['i__hashtag'])){
+                    unset($arr[$key]);
+                }
+            }
+        }
+
+        return $arr;
     }
 
 
