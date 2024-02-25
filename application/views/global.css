@@ -1463,8 +1463,8 @@ label {
 }
 
 .fad{
-    --fa-primary-color: #FFFFFF;
-    --fa-secondary-color: #EFEFEF;
+    --fa-primary-color: #EFEFEF;
+    --fa-secondary-color: #000000;
 }
 
 
