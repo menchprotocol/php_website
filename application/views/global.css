@@ -1462,6 +1462,11 @@ label {
     color: #999999 !important;
 }
 
+.fad{
+    --fa-primary-color: #000000;
+    --fa-secondary-color: #EFEFEF;
+}
+
 
 .btn-superpower.btn-locked, .not-allowed, .not-allowed * {
     cursor: not-allowed !important;
