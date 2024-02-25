@@ -4700,6 +4700,13 @@ h1 i.fad{
 }
 
 .glow-red.active {
+    border-color: #000000 !important;
+    -webkit-box-shadow: 0 0 5px #000000 !important;
+    -moz-box-shadow: 0 0 5px #000000 !important;
+    box-shadow: 0 0 5px #000000 !important;
+}
+
+.colorful .glow-red.active {
     border-color: #FC1B44 !important;
     -webkit-box-shadow: 0 0 5px #FC1B44 !important;
     -moz-box-shadow: 0 0 5px #FC1B44 !important;
