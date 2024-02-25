@@ -3177,9 +3177,6 @@ h4.main__title{
     .card_covers a.btn-sm {
         margin-left: 3px !important;
     }
-    .edge-cover .card_covers a.btn-sm {
-        padding: 3px 0 0 0 !important;
-    }
 
     .mini-frame{
         max-width: 233px;
