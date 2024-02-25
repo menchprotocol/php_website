@@ -909,7 +909,7 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
 
     $ui .= '<div class="dropdown-menu dropmenu_form_'.$cache_e__id.'" aria-labelledby="dropdown_form_'.$cache_e__id.'">';
 
-    $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block">'.$e___4527[$cache_e__id]['m__cover'].'</span>'.$e___4527[$cache_e__id]['m__title'].':'.( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$cache_e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$cache_e__id]['m__message'].'</span></span>' : '' ).'</div>';
+    $ui .= '<div class="dropdown-item main__title intro_header"><span class="icon-block-sm">'.$e___4527[$cache_e__id]['m__cover'].'</span>'.$e___4527[$cache_e__id]['m__title'].':'.( isset($e___11035[$cache_e__id]) && strlen($e___11035[$cache_e__id]['m__message']) ? '<span class="doregular info_blob '.( strlen($e___11035[$cache_e__id]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$cache_e__id]['m__message'].'</span></span>' : '' ).'</div>';
 
     foreach($e___this as $e__id => $m) {
 
