@@ -1035,7 +1035,7 @@ $(document).ready(function () {
     //Search that also has insert module:
     if(search_enabled()){
 
-        $('#modal31911 .algolia__i').textcomplete([
+        $('.algolia__i').textcomplete([
             {
                 match: /(^|\s)#(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
@@ -1084,7 +1084,7 @@ $(document).ready(function () {
             },
         ]);
 
-        $('#modal31911 .algolia__e').textcomplete([
+        $('.algolia__e').textcomplete([
             {
                 match: /(^|\s)@(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
