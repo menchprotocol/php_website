@@ -358,9 +358,10 @@ li a {
 
 
 .add-input{
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     padding:0 0 5px !important;
     width: 100%;
+    border-bottom: 1px solid #000000 !important;
 }
 
 .large-cover{
