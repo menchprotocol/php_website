@@ -227,7 +227,7 @@ h3{
     margin-left: 40px !important;
     width: calc(100% - 40px) !important;
 }
-.save_i__hashtag,
+.dynamic_editing_input input.form-control.save_i__hashtag,
 .left_padded .dynamic_editing_input input.form-control,
 .left_padded .dynamic_editing_input textarea.form-control{
     margin-left: 30px !important;
