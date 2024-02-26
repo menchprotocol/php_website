@@ -320,7 +320,9 @@ function view_s_js_cover(x__type, suggestion, action_id){
     //Return appropriate UI:
     if(x__type==26011){
         //Mini Coin
-        return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+suggestion.s__url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+suggestion.s__url+'" class="main__title">'+(suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">'+suggestion.s__title+'</span>' )+'</a></div></div></div>';
+        var search_only_app = $("#website_finder").val().charAt(0)=='-';
+        var target_url = ( search_only_app ? suggestion.s__url.replace('/@','/') : suggestion.s__url );
+        return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover coin-'+suggestion.s__type+' '+( search_only_app ? ' coin-6287 ' : '' )+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+target_url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+target_url+'" class="main__title">'+(suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">'+suggestion.s__title+'</span>' )+'</a></div></div></div>';
     } else if(x__type==26013){
         //Link Source
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover coin-'+suggestion.s__type+' coin-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
@@ -1224,7 +1226,7 @@ $(document).ready(function () {
                     } else if(search_only_e){
                         search_filters += ' s__type=12274';
                     } else if(search_only_app){
-                        search_filters += ' s__type=6287';
+                        search_filters += ' s__type=12274 AND _tags:z_6287 ';
                     }
 
                     if(js_pl_id > 0){
