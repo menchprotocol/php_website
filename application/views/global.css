@@ -1627,7 +1627,7 @@ label {
 #searchFrontForm .icon-block { width:28px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-sm{ width:28px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
-.icon-block, .focus-cover.coin-12273 .icon-block-sm { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; }
+.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; }
 .icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:19px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
 .dropdown-item .icon-block,
 .btn .dropdown-item .icon-block {
@@ -1700,9 +1700,6 @@ label {
 }
 .focus-cover.coin-12273 .icon-block-sm {
     height: 29px !important;
-}
-.view_6255 .focus-cover.coin-12273 .icon-block-sm {
-    height: 50px !important;
 }
 .icon-block img{
     line-height: 100%;
@@ -3329,7 +3326,7 @@ h4.main__title{
 
 
 .platform-navigation .block-x a i {
-    margin-top: -3px;
+    margin-top: -2px;
 }
 
 
