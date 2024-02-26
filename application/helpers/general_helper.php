@@ -1848,7 +1848,7 @@ function update_algolia($focus__node = null, $s__id = 0) {
     if($focus__node==12273){
         $focus_field_id = 'i__id';
         $focus_field_privacy = 'i__privacy';
-    } elseif($focus__node==12274 || $focus__node==6287){
+    } elseif($focus__node==12274){
         $focus_field_id = 'e__id';
         $focus_field_privacy = 'e__privacy';
     }
@@ -1908,15 +1908,6 @@ function update_algolia($focus__node = null, $s__id = 0) {
             }
 
             $db_rows[$loop_obj] = $CI->E_model->fetch($filters, 0);
-
-        } elseif (!$s__id && $loop_obj==6287) {
-
-            $db_rows[$loop_obj] = $CI->X_model->fetch(array(
-                'x__following' => 6287, //Featured Apps
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__follower'), 0);
 
         }
 
@@ -2071,40 +2062,6 @@ function update_algolia($focus__node = null, $s__id = 0) {
                     'x__player' => $s['e__id'], //This follower source
                 ), array('x__player'), 0, 0, array('x__time' => 'DESC')) as $x){
                     $export_row['s__keywords'] .= $x['x__message'] . ' ';
-                }
-
-            } elseif ($loop_obj==6287) {
-
-                //Non-Hidden APPS
-                $export_row['s__type'] = $loop_obj;
-                $export_row['s__id'] = intval($s['e__id']);
-                $export_row['s__handle'] = $s['e__handle'];
-                $export_row['s__url'] = view_app_link($s['e__id']);
-                $export_row['s__privacy'] = intval($s['e__privacy']);
-                $export_row['s__cover'] = $s['e__cover'];
-                $export_row['s__title'] = $s['e__title'];
-                $export_row['s__cache'] = '';
-                $export_row['s__weight'] = intval($s['e__weight']);
-
-                array_push($export_row['_tags'], 'is_app');
-
-                if(public_app($s)){
-                    array_push($export_row['_tags'], 'public_index');
-                }
-
-                //Fetch Following:
-                foreach($CI->X_model->fetch(array(
-                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__follower' => $s['e__id'], //This follower source
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-                ), array('x__following'), 0, 0, array('e__title' => 'DESC')) as $x) {
-
-                    //Add tags:
-                    array_push($export_row['_tags'], 'z_' . $x['e__id']);
-
-                    //Add Keywords:
-                    $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['x__message']) ? ' '.$x['x__message'] : '' ) . ' ';
                 }
 
             }
