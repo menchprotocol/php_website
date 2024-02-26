@@ -301,12 +301,12 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     //Ideation Mode:
     $_GET['i__hashtag'] = $discovery_i__hashtag;
     $i_view = 30795;
-    $quick_href = header . phpview_memory(42903, 33286);
+    $quick_href = view_memory(42903, 33286);
 
 } elseif(!strlen($first_segment) && superpower_unlocked(12703)) {
 
     //Edit Website Home Page:
-    $quick_href = header . phpview_memory(42903, 42902);
+    $quick_href = view_memory(42903, 42902);
     $quick_id = 33287;
 
 } elseif($e_segment && $e_segment==$e___14870[$website_id]['m__handle']) {
@@ -320,7 +320,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     //Ideation Mode:
     $_GET['i__hashtag'] = substr($first_segment, 1);
     $i_view = 33286;
-    $quick_href = header . phpview_memory(42903, 33286);
+    $quick_href = view_memory(42903, 33286);
 
 } elseif(array_key_exists($first_segment, $this->config->item('handle___6287'))) {
 
@@ -330,7 +330,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     } else {
         $quick_id = 33287;
     }
-    $quick_href = header . phpview_memory(42903, 42902);
+    $quick_href = view_memory(42903, 42902);
 
 } elseif($e_segment && array_key_exists($e_segment, $this->config->item('handle___6287'))) {
 
@@ -340,18 +340,18 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     } else {
         $quick_id = 6287;
     }
-    $quick_href = header . phpview_memory(42903, 6287);
+    $quick_href = view_memory(42903, 6287);
 
 } elseif(isset($_GET['e__handle']) && strlen($_GET['e__handle'])) {
 
     //Source Mode:
-    $quick_href = header . phpview_memory(42903, 42902);
+    $quick_href = view_memory(42903, 42902);
     $quick_id = 33287;
 
 } elseif(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])) {
 
     //Ideation Mode:
-    $quick_href = header . phpview_memory(42903, 33286);
+    $quick_href = view_memory(42903, 33286);
     $quick_id = 33286;
 
 }
