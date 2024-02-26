@@ -264,10 +264,10 @@ class App extends CI_Controller
 
         $title = null;
         if($focus_i){
-            $title .= view_i_title($focus_i).' | ';
+            $title .= view_i_title($focus_i, true).' | ';
         }
         if($target_i){
-            $title .= view_i_title($target_i).' | ';
+            $title .= view_i_title($target_i, true).' | ';
         }
         if($focus_e){
             $title .= $focus_e['e__title'].' @'.$focus_e['e__handle'].' | ';
