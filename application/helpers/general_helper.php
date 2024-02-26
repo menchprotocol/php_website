@@ -1650,7 +1650,6 @@ function access__e($e__handle = null, $e__id = 0, $e = false){
         }
     }
 
-    return true;
 
     if(in_array($e['e__privacy'], $CI->config->item('n___33240'))){
         //Public Sources:
@@ -1658,7 +1657,7 @@ function access__e($e__handle = null, $e__id = 0, $e = false){
     } else {
         //Only Author can Access:
         return count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
+            'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__following' => $player_e['e__id'],
             'x__follower' => $e['e__id'],
