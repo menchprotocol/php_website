@@ -1479,7 +1479,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
     $ui .= '</ul>';
     $ui .= $body_content;
 
-    if($ideation_pen){
+    if($ideation_pen || $access__i){
         //Focus on next:
         $focus_tab = 12840;
         $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\'Next\'); }); </script>';
