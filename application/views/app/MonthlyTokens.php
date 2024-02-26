@@ -22,7 +22,7 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
         $unique = $this->X_model->fetch(array(
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
+            'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
         ), array('x__follower'), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif(in_array($x__type, $this->config->item('n___42284'))){

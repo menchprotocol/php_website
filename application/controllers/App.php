@@ -26,12 +26,14 @@ class App extends CI_Controller
             $app_e__id = 4527;
         }
 
+
         //Any ideas passed?
         $e___6287 = $this->config->item('e___6287'); //APP
         $flash_message = false;
         $focus_e = null; //Sourcing
         $focus_i = null; //Ideation/Discovery
         $target_i = null; //Discovery
+
 
         if($focus_handle && strlen($focus_handle) && !isset($_GET['e__handle'])){
             $_GET['e__handle'] = $focus_handle;
@@ -49,7 +51,6 @@ class App extends CI_Controller
                 $focus_i = $i_found;
             }
             if(!$focus_i){
-
                 //See if we can find via ID?
                 if(is_numeric($_GET['i__hashtag'])){
                     foreach($this->I_model->fetch(array(
@@ -57,10 +58,6 @@ class App extends CI_Controller
                     )) as $i_found){
                         $focus_i = $i_found;
                     }
-                }
-
-                if(!$focus_i){
-                    $flash_message .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
                 }
             }
             if($app_e__id==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
@@ -77,7 +74,6 @@ class App extends CI_Controller
                 $focus_e = $e_found;
             }
             if(!$focus_e){
-
                 //See if we need to lookup the ID:
                 if(is_numeric($_GET['e__handle'])){
                     //Maybe its an ID?
@@ -86,10 +82,6 @@ class App extends CI_Controller
                     )) as $e_found){
                         $focus_e = $e_found;
                     }
-                }
-
-                if(!$focus_e){
-                    $flash_message .=  '<div class="alert alert-danger" role="alert">@'.$_GET['e__handle'].' is not a valid handle 🤔</div>';
                 }
             }
             if($app_e__id==42902 && $focus_e && $focus_e['e__handle']!==$_GET['e__handle']){
@@ -101,74 +93,116 @@ class App extends CI_Controller
 
 
         if($target_hashtag && strlen($target_hashtag)){
-
             //Validate Focus Idea:
-            if($target_hashtag==view_memory(6404,4235) && strlen($_GET['i__hashtag'])){
+            if($focus_i && $target_hashtag==view_memory(6404,4235)){
 
                 //This is the starting point:
                 $target_hashtag = $_GET['i__hashtag'];
+                $target_i = $focus_i;
 
             } else {
 
+                //Verify:
+                foreach($this->I_model->fetch(array(
+                    'LOWER(i__hashtag)' => strtolower($target_hashtag),
+                )) as $i_found){
+                    $target_i = $i_found;
+                }
 
-
-            }
-
-
-
-            //Verify:
-            foreach($this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($target_hashtag),
-            )) as $i_found){
-                $target_i = $i_found;
-            }
-            if(!$focus_i){
-                $flash_message .=  '<div class="alert alert-danger" role="alert">#'.$_GET['i__hashtag'].' is not a valid hashtag 🤔</div>';
             }
         }
 
 
-        //Validate App
+
         if($memory_detected && !in_array($app_e__id, $this->config->item('n___6287'))){
-            foreach($this->E_model->fetch(array('e__id' => $app_e__id)) as $this_e){
-                return redirect_message(view_memory(42903,42902).$this_e['e__handle'], '<div class="alert alert-danger" role="alert">@'.$this_e['e__handle'].' Is not an APP, yet 🤔</div>');
-            }
-        }
-
-
-
-        //Access Levels
-        if ( $focus_i && !in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !access__i($focus_i['i__hashtag'])){
-            return redirect_message( ( $target_i ? view_memory(42903,33286).$target_i['i__hashtag'] : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Idea #' . $focus_hashtag . ' is not public and you are missing permission to access.</div>');
-        }
-
-
-
-        //Missing inputs?
-        if(!in_array($app_e__id, $this->config->item('n___42922'))){
+            //Invalid App:
+            return redirect_message(view_memory(42903,42902).$e___6287[$app_e__id]['m__handle'], '<div class="alert alert-danger" role="alert">@'.$e___6287[$app_e__id]['m__handle'].' Is not an APP, yet 🤔</div>');
+        } elseif($memory_detected && !in_array($app_e__id, $this->config->item('n___42922'))){
+            //Validate Required App input:
             if(in_array($app_e__id, $this->config->item('n___42905')) && !$focus_e){
                 return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Error: @'.$_GET['e__handle'].' is not a valid source handle.</div>');
             } elseif(in_array($app_e__id, $this->config->item('n___42923')) && (!$focus_i || !$target_i)){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Error: Both #'.$_GET['i__hashtag'].' & #'.$target_hashtag.' are not valid discovery hashtags.</div>');
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Error: Both #'.$_GET['i__hashtag'].' & #'.$target_hashtag.' must be valid hashtags.</div>');
             } elseif(in_array($app_e__id, $this->config->item('n___42911')) && !$focus_i){
                 return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Error: #'.$_GET['i__hashtag'].' is not a valid idea hashtag.</div>');
             }
         }
 
-        //Missing Access?
 
 
-
+        $x__follower = ( $focus_e ? $focus_e['e__id'] : 0 );
+        $x__next = ( $focus_i ? $focus_i['i__id'] : 0 );
+        $x__previous = ($target_i ? $target_i['i__id'] : 0 );
 
         //Run App
         $player_e = false;
-        $is_u_request = isset($_SERVER['SERVER_NAME']);
+        $player_http_request = isset($_SERVER['SERVER_NAME']);
 
-        if(in_array($app_e__id, $this->config->item('n___42920'))){
+        if($memory_detected && in_array($app_e__id, $this->config->item('n___42920'))){
             boost_power();
         }
 
-        if($memory_detected && $is_u_request){
+
+        //Cache App?
+        $x__metadata = array(
+            'current_link' => current_link(),
+            '$_GET' => $_GET,
+            '$_POST' => $_POST,
+            '$_REQUEST' => $_REQUEST,
+            'php_input' => json_decode(file_get_contents('php://input')),
+        );
+        $ui = null;
+        $new_cache = false;
+        $cache_x__time = null;
+        $x__player = ( $player_http_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+
+
+        //MEMBER REDIRECT?
+        if($player_http_request){
+
+            //Missing App, Source or Idea Access?
+            $missing_access = false; //Assume they have access
+            $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
+            if($player_e && in_array($app_e__id, $this->config->item('n___14639'))){
+                //Should redirect them:
+                return redirect_message(view_memory(42903,42902).$player_e['e__handle']);
+            } elseif(!$player_e && in_array($app_e__id, $this->config->item('n___14740'))){
+                //Should redirect them:
+                $missing_access = 'Error: You must Login to Access the App '.$e___6287[$app_e__id]['m__title'].'.';
+            } elseif(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+                $e___10957 = $this->config->item('e___10957');
+                $missing_access = 'Error: You Cannot Access App '.$e___6287[$app_e__id]['m__title'].' as it requires '.$e___10957[end($superpowers_required)]['m__title'].'.';
+            } elseif($focus_e && !access__e(null, $focus_e['e__id'])){
+                $missing_access = 'Error: You Cannot Access @'.$focus_e['e__handle'].' due to Privacy Settings.';
+            } elseif($focus_i && !access__i(null, $focus_i['i__id'], $focus_i)){
+                $missing_access = 'Error: You Cannot Access #'.$focus_i['i__hashtag'].' due to Privacy Settings.';
+            } elseif($target_i && !access__i(null, $target_i['i__id'], $target_i)){
+                $missing_access = 'Error: You Cannot Access #'.$target_i['i__hashtag'].' due to Privacy Settings.';
+            }
+
+
+            if($missing_access){
+
+                //We have an error:
+                $this->X_model->create(array(
+                    'x__type' => 29737, //Access Blocked
+                    'x__player' => $x__player,
+                    'x__following' => $app_e__id,
+                    'x__follower' => $x__follower,
+                    'x__previous' => $x__previous,
+                    'x__message' => $missing_access,
+                    'x__next' => $x__next,
+                    'x__metadata' => $x__metadata,
+                ));
+
+                //Redirect:
+                return redirect_message((!$player_e ? view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']) : home_url() ), '<div class="alert alert-warning" role="alert">'.$missing_access.'</div>');
+
+            }
+        }
+
+
+        if($memory_detected && $player_http_request){
 
             //Needs superpowers?
             $player_e = superpower_unlocked();
@@ -190,77 +224,6 @@ class App extends CI_Controller
                         $session_data = $this->E_model->activate_session($player_e, true);
                     }
 
-                } else {
-
-                    $flash_message = '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Invalid Hash: Idea could not be discovered at this time.</div>';
-
-                }
-            }
-
-
-
-            $superpowers_required = array_intersect($this->config->item('n___10957'), $e___6287[$app_e__id]['m__following']);
-            if($is_u_request && count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-                if(!$player_e){
-                    //No user, maybe they can login to get it:
-                    return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to gain access.</div>');
-                } else {
-                    die(view_unauthorized_message(end($superpowers_required)));
-                }
-            }
-
-
-
-
-        }
-
-        $x__player = ( $is_u_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
-
-
-        //MEMBER REDIRECT?
-        if($player_e && in_array($app_e__id, $this->config->item('n___14639'))){
-            //Should redirect them:
-            return redirect_message(view_memory(42903,42902).$player_e['e__handle']);
-        } elseif(!$player_e && in_array($app_e__id, $this->config->item('n___14740'))){
-            //Should redirect them:
-            return redirect_message(view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']), '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-lock-open"></i></span>Login to <b>'.$e___6287[$app_e__id]['m__title'].'</b></div>');
-        }
-
-
-
-        $x_completes = array();
-        if($player_e && $app_e__id==30795) {
-
-            //Fetch discovery
-            $x_completes = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__player' => $player_e['e__id'],
-                'x__previous' => $focus_i['i__id'],
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ), array('x__next'));
-
-            //Missing focus Idea?
-            if(!$target_i) {
-
-                //Do we have a direct discovery?
-                $this_discovery = null;
-                foreach($x_completes as $x){
-                    $this_discovery = $x['i__hashtag'];
-                    break;
-                }
-
-                if($this_discovery){
-                    //We have a discovery here, make sure its not the same as the starting point:
-                    if($this_discovery!=$focus_hashtag){
-                        return redirect_message(view_memory(42903,30795).$this_discovery.'/'.$focus_hashtag);
-                    }
-                } else {
-                    //No discovery here, let's see if we can find any above:
-                    $target_x_i__hashtag = $this->X_model->find_previous_discovered($focus_i['i__id'], $player_e['e__id']);
-                    if($target_x_i__hashtag){
-                        return redirect_message(view_memory(42903,30795).$target_x_i__hashtag.'/'.$focus_hashtag);
-                    }
                 }
             }
         }
@@ -268,24 +231,9 @@ class App extends CI_Controller
 
 
 
-        //Has already started?
-        if($target_i && $target_i['i__hashtag']==$_GET['i__hashtag'] && $player_e && !$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])){
-            //Go to start:
-            return redirect_message('/Start/'.$target_i['i__hashtag']);
-        }
 
 
-        //Cache App?
-        $x__previous = ( $focus_i ? $focus_i['i__id'] : 0 );
-        $x__follower = ( $focus_e ? $focus_e['e__id'] : 0 );
-        $title = null;
-        $ui = null;
-        $new_cache = false;
-        $cache_x__id = 0;
-        $cache_x__time = null;
         if($memory_detected){
-            
-            $title = $e___6287[$app_e__id]['m__title'];
 
             if(in_array($app_e__id, $this->config->item('n___14599')) && !in_array($app_e__id, $this->config->item('n___12741'))){
 
@@ -295,13 +243,13 @@ class App extends CI_Controller
                         'x__website' => website_setting(0),
                         'x__type' => 14599, //Cache App
                         'x__following' => $app_e__id,
-                        'x__previous' => $x__previous,
                         'x__follower' => $x__follower,
+                        'x__previous' => $x__previous,
+                        'x__next' => $x__next,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                         $ui = $latest_cache['x__message'];
-                        $cache_x__id = $latest_cache['x__id'];
                         $cache_x__time = '<div class="texttransparent center main__title">Updated ' . view_time_difference($latest_cache['x__time']) . ' Ago</div>';
                     }
                 }
@@ -314,26 +262,45 @@ class App extends CI_Controller
         }
 
 
+        $title = null;
+        if($focus_i){
+            $title .= view_i_title($focus_i).' | ';
+        }
+        if($target_i){
+            $title .= view_i_title($target_i).' | ';
+        }
+        if($focus_e){
+            $title .= $focus_e['e__title'].' @'.$focus_e['e__handle'].' | ';
+        }
+        if(!$title){
+            //Append app name since no title:
+            $title .= $e___6287[$app_e__id]['m__title'].' | ';
+        }
+        //Always Append Website at the end:
+        $title .= get_domain('m__title');
+
+
+
         $view_input = array(
             'app_e__id' => $app_e__id,
             'x__player' => $x__player,
             'player_e' => $player_e,
-            'is_u_request' => $is_u_request,
+            'is_u_request' => $player_http_request,
             'memory_detected' => $memory_detected,
             'focus_e' => $focus_e,
             'focus_i' => $focus_i,
             'target_i' => $target_i,
             'title' => $title,
-            'x_completes' => $x_completes,
             'flash_message' => $flash_message,
         );
+
 
         if(!$ui){
             //Prep view:
             $raw_app = $this->load->view('app/'.$e___6287[$app_e__id]['m__handle'], $view_input, true);
             $ui .= $raw_app;
-
         }
+
 
         if($new_cache){
             $cache_x = $this->X_model->create(array(
@@ -341,62 +308,72 @@ class App extends CI_Controller
                 'x__type' => 14599, //Cache App
                 'x__following' => $app_e__id,
                 'x__message' => $ui,
-                'x__previous' => $x__previous,
+
                 'x__follower' => $x__follower,
+                'x__previous' => $x__previous,
+                'x__next' => $x__next,
             ));
-            $cache_x__id = $cache_x['x__id'];
         }
-        
 
-        //Log App Load:
-        $interaction = array(
-            'x__player' => $x__player,
-            'x__type' => 14067, //APP LOADED $app_e__id
-            'x__following' => $app_e__id,
-            'x__reference' => $cache_x__id,
-            'x__metadata' => array(
-                '$_GET' => $_GET,
-                '$_POST' => $_POST,
-                'REQUEST' => $_REQUEST,
-            ),
-        );
-
-        //Called when the paypal payment is complete:
-        $this->X_model->create(array(
-            'x__type' => 27901,
-            'x__metadata' => array(
-                'POST' => $_POST,
-                'GET' => $_GET,
-            ),
-        ));
-
-        //Append additional info for members:
-        if($is_u_request){
-
-            $interaction['x__message'] = current_link();
-
-            //Any more data to append?
-            if(isset($_GET['e__handle']) && strlen($_GET['e__handle'])){
-                foreach($this->E_model->fetch(array(
-                    'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-                )) as $e){
-                    $interaction['x__follower'] = $e['e__id'];
-                    $title = $e['e__title'].' | '.$title;
-                }
-            }
-
-            if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
-                foreach($this->I_model->fetch(array(
-                    'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
-                )) as $i_this){
-                    $interaction['x__previous'] = $i_this['i__id'];
-                    $title = view_i_title($i_this, true).' | '.$title;
-                }
-            }
-        }
 
         //Log Interaction:
-        $this->X_model->create($interaction);
+        $this->X_model->create(array(
+            'x__player' => $x__player,
+            'x__type' => $app_e__id,
+
+            'x__metadata' => $x__metadata,
+            'x__follower' => $x__follower,
+            'x__previous' => $x__previous,
+            'x__next' => $x__next,
+        ));
+
+
+        //App title?
+        if(in_array($app_e__id, $this->config->item('n___42928'))){
+            $ui = '<h1>'.$e___6287[$app_e__id]['m__title'].'</h1>'.$ui;
+        }
+
+
+        //Check to ensure they have started:
+        if($app_e__id==30795 && $target_i && $focus_i && $player_e && $target_i['i__hashtag']==$focus_i['i__hashtag']){
+
+            //Starting point, make sure all good:
+            if(!count($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__next' => $target_i['i__id'],
+                'x__following' => 4235,
+            )))){
+
+                //Not a valid starting point:
+                return redirect_message(home_url(), '<div class="alert alert-warning" role="alert">#'.$target_i['i__hashtag'].' is not a valid starting point.</div>');
+
+            } elseif(!$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])){
+
+                //Not yet started, add to their starting point:
+                $this->X_model->create(array(
+                    'x__player' => $player_e['e__id'],
+                    'x__type' => 4235, //Get started
+                    'x__next' => $target_i['i__id'],
+                    'x__previous' => $target_i['i__id'],
+                ));
+
+                //Mark as complete:
+                $this->X_model->x_read_only_complete($player_e['e__id'], $target_i['i__id'], $target_i);
+
+                //Now return next idea:
+                $next_i__hashtag = $this->X_model->find_next($player_e['e__id'], $target_i['i__hashtag'], $target_i);
+                if($next_i__hashtag){
+                    //Go Next:
+                    return redirect_message(view_memory(42903,30795).$target_i['i__hashtag'].'/'.$next_i__hashtag );
+                }
+
+            }
+
+        }
+
+
+
 
         //Delivery App
         if(!$memory_detected){

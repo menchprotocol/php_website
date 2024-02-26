@@ -75,7 +75,7 @@ class Ajax extends CI_Controller
                     'status' => 0,
                     'message' => 'Idea is no longer active',
                 ));
-            } elseif (!access__i($is[0]['i__hashtag'])) {
+            } elseif (!access__i($is[0]['i__hashtag'], 0, $is[0])) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You are missing permission to edit this idea',
@@ -2364,7 +2364,7 @@ class Ajax extends CI_Controller
             foreach($this->I_model->fetch(array(
                 'i__id' => $_POST['sign_i__id'],
             )) as $i){
-                $sign_url = '/Start/'.$i['i__hashtag'];
+                $sign_url = $i['i__hashtag'].'/'.view_memory(6404,4235);
             }
         } elseif (isset($_POST['referrer_url']) && strlen(urldecode($_POST['referrer_url'])) > 1) {
             $sign_url = urldecode($_POST['referrer_url']);

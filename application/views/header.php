@@ -68,7 +68,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     ?>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= ( isset($title) ? $title.' | ' : '' ) . get_domain('m__title') ?></title>
+    <title><?= $title ?></title>
     <?php
 
     //Font Helps:

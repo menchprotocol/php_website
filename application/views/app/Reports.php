@@ -35,7 +35,7 @@ foreach($this->config->item('e___42263') as $x__type => $m) {
 
 
 //Decide what to do with this?
-if($is_u_request && !isset($_GET['email_trigger'])){
+if($player_http_request && !isset($_GET['email_trigger'])){
 
     echo '<div style="font-weight: bold; padding: 0 0 13px 0;">'.$subject.'</div>';
     echo $html_message;
@@ -52,7 +52,7 @@ if($is_u_request && !isset($_GET['email_trigger'])){
     );
 
     //Should we limit the scope?
-    if($is_u_request){
+    if($player_http_request){
         $subscriber_filters['x__follower'] = $player_e['e__id'];
     }
 

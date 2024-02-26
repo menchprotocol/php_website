@@ -5,7 +5,7 @@ $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 
-if(access__i($focus_i['i__hashtag'])){
+if(access__i($focus_i['i__hashtag'], 0, $focus_i)){
     echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view_memory(42903,33286).$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
 
@@ -162,7 +162,7 @@ echo '<div class="main_item view_6255 row justify-content">';
 echo view_card_i(42288, $focus_i);
 echo '</div>';
 
-echo view_i_nav(true, $focus_i, access__i($focus_i['i__hashtag']));
+echo view_i_nav(true, $focus_i, access__i($focus_i['i__hashtag'], 0, $focus_i));
 
 
 //Mark this as skipped since there is nothing to choose from:
@@ -175,6 +175,18 @@ if (!count($is_next) && !count($this->X_model->fetch(array(
     //Skipped:
     $this->X_model->mark_complete(31022, $x__player, $target_i__id, $focus_i);
 }
+
+
+
+//Fetch discovery
+$x_completes = $this->X_model->fetch(array(
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+    'x__player' => $player_e['e__id'],
+    'x__previous' => $focus_i['i__id'],
+    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+), array('x__next'));
+
 
 
 $x_selects = array();

@@ -896,7 +896,7 @@ function activate_popover(){
 
     //Set Interval:
     interval = window.setInterval(function() {
-        $('.glow-red').toggleClass('active');
+        $('.glowbright').toggleClass('active');
     }, 1597);
 
 

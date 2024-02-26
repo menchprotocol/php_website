@@ -4487,18 +4487,19 @@ h1 i.fad{
     font-size:0.4em !important;
 }
 
-.glow-red {
+.glowbright {
     border: 1px solid transparent !important;
     -webkit-transition: border 0.1s linear, box-shadow 0.1s linear;
     -moz-transition: border 0.1s linear, box-shadow 0.1s linear;
     transition: border 0.1s linear, box-shadow 0.1s linear;
 }
 
-.glow-red.active {
+
+.glowbright.active {
     border-color: #000000 !important;
-    -webkit-box-shadow: 0 0 5px #FFC500 !important;
-    -moz-box-shadow: 0 0 5px #FFC500 !important;
-    box-shadow: 0 0 5px #FFC500 !important;
+    -webkit-box-shadow: 0 0 5px #FC1B44 !important;
+    -moz-box-shadow: 0 0 5px #FC1B44 !important;
+    box-shadow: 0 0 5px #FC1B44 !important;
 }
 
 .card_covers>span.hidden,

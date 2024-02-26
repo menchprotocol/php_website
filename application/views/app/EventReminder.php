@@ -51,7 +51,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         }
     }
 
-} elseif (!$is_u_request || isset($_GET['cron'])) {
+} elseif (!$player_http_request || isset($_GET['cron'])) {
 
     $e___42216 = $this->config->item('e___42216'); //Event Reminder
 

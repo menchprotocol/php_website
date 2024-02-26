@@ -387,7 +387,7 @@ function i_view_body($x__type, $counter, $i__id){
         return false;
     }
 
-    if(in_array($x__type, $CI->config->item('n___42376')) && !access__i(null, $is[0]['i__id'])){
+    if(in_array($x__type, $CI->config->item('n___42376')) && !access__i(null, $is[0]['i__id'], $is[0])){
         return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
     }
 
@@ -1422,6 +1422,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
     $coins_count = array();
     $body_content = '';
     $player_e = superpower_unlocked();
+    $ideation_pen = superpower_unlocked(10939);
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273">';
@@ -1440,7 +1441,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
         if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
 
         $input_content = '';
-        if($access__i){
+        if($ideation_pen){
 
             if(in_array($x__type, $CI->config->item('n___42261'))){
 
@@ -1478,7 +1479,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
     $ui .= '</ul>';
     $ui .= $body_content;
 
-    if($access__i){
+    if($ideation_pen){
         //Focus on next:
         $focus_tab = 12840;
         $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\'Next\'); }); </script>';
@@ -1521,7 +1522,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
 
     $player_e = superpower_unlocked();
-    $access__i = ( $cache_app || $access_locked ? false : access__i($i['i__hashtag']) );
+    $access__i = ( $cache_app || $access_locked ? false : access__i($i['i__hashtag'], 0, $i) );
     $user_input = $focus_e;
 
     $primary_icon = in_array($x__type, $CI->config->item('n___14378')); //PRIMARY ICON
@@ -1755,7 +1756,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //GET STARTED
-                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glow-red"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glowbright"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31911 && $access__i && !$discovery_mode){
 

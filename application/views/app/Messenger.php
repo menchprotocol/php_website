@@ -1,6 +1,6 @@
 <?php
 
-if(!$is_u_request || isset($_GET['cron'])){
+if(!$player_http_request || isset($_GET['cron'])){
 
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC

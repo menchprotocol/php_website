@@ -377,89 +377,6 @@ function i_spots_remaining($i__id){
     return $spots_remaining;
 }
 
-function access_blocked($log_tnx, $log_message, $x__player, $i__id, $x__following, $x__follower){
-
-    $return_i__id = $i__id;
-    $CI =& get_instance();
-
-    //Log Access Block:
-    if($log_tnx){
-
-        $access_blocked = $CI->X_model->create(array(
-            'x__type' => ( $x__player>0 ? 29737 : 30341 ), //Access Blocked
-            'x__player' => $x__player,
-            'x__previous' => $i__id,
-            'x__following' => $x__following,
-            'x__follower' => $x__follower,
-            'x__message' => $log_message,
-        ));
-
-        //Delete Current Selection:
-        foreach($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___32234')) . ')' => null, //Discovery Expansions
-            'x__next' => $i__id, //This was select as an answer to x__previous
-            'x__previous > 0' => null,
-        ), array('x__previous'), 0) as $x_progress) {
-
-            //Find all answers
-            foreach($CI->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__player' => $x__player,
-                'x__previous' => $x_progress['x__previous'],
-            ), array(), 0) as $x){
-
-                //Delete all Selections:
-                foreach($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___32234')) . ')' => null, //Discovery Expansions
-                    'x__previous' => $x_progress['x__previous'],
-                ), array('x__next'), 0) as $x2){
-                    $CI->X_model->update($x2['x__id'], array(
-                        'x__privacy' => 6173, //Transaction Removed
-                        'x__reference' => $access_blocked['x__id'],
-                    ), $x__player, 29782 );
-                }
-
-                //Delete question discovery so the user can re-select:
-                $CI->X_model->update($x['x__id'], array(
-                    'x__privacy' => 6173, //Transaction Removed
-                    'x__reference' => $access_blocked['x__id'],
-                ), $x__player, 29782 );
-
-            }
-
-            //Delete this answer:
-            $CI->X_model->update($x_progress['x__id'], array(
-                'x__privacy' => 6173, //Transaction Removed
-                'x__reference' => $access_blocked['x__id'],
-            ), $x__player, 29782 );
-
-            //Guide them back to the top:
-            $return_i__id = $x_progress['x__previous'];
-
-            //We can only handle 1 question for now
-            //TODO If multiple questions found, see which one is within target_i__id
-            break;
-
-        }
-
-    }
-
-    //Return false:
-    foreach($CI->I_model->fetch(array(
-        'i__id' => $return_i__id,
-    )) as $i){
-        return array(
-            'status' => false,
-            'return_i__hashtag' => $i['i__hashtag'],
-            'message' => $log_message,
-        );
-    }
-
-}
-
 
 function i_is_discoverable($i, $is_also_startable = false){
 
@@ -501,7 +418,10 @@ function i_is_discoverable($i, $is_also_startable = false){
             }
         }
         if(!$meets_inc1_prereq && $x__player > 0){
-            return access_blocked(false, $excludes_message,$x__player, $i['i__id'], 13865, $x__following);
+            return array(
+                'status' => false,
+                'message' => $excludes_message,
+            );
         }
     }
 
@@ -540,7 +460,10 @@ function i_is_discoverable($i, $is_also_startable = false){
         }
         if($meets_inc2_prereq < count($fetch_27984)){
             //Did not meet all requirements:
-            return access_blocked(false, $excludes_message,$x__player, $i['i__id'], 27984, $x__following);
+            return array(
+                'status' => false,
+                'message' => $excludes_message,
+            );
         }
     }
 
@@ -576,7 +499,10 @@ function i_is_discoverable($i, $is_also_startable = false){
         }
 
         if(!$excludes_all){
-            return access_blocked(false, $excludes_message, $x__player, $i['i__id'], 26600, $x__following);
+            return array(
+                'status' => false,
+                'message' => $excludes_message,
+            );
         }
     }
 
@@ -584,7 +510,10 @@ function i_is_discoverable($i, $is_also_startable = false){
     //Any Limits on Selection?
     if(!i_spots_remaining($i['i__id'])){
         //Limit is reached, cannot complete this at this time:
-        return access_blocked(false, "You cannot discover this idea because there are no spots remaining.", $x__player, $i['i__id'], 26189, 0);
+        return array(
+            'status' => false,
+            'message' => "You cannot discover this idea because there are no spots remaining.",
+        );
     }
     
 
@@ -1695,19 +1624,20 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function access__e($e__handle, $e__id = 0){
-
+function access__e($e__handle = null, $e__id = 0){
 
     $player_e = superpower_unlocked();
     if(!$player_e || (!strlen($e__handle) && !intval($e__id))){
         //No input
         return false;
+    } elseif(superpower_unlocked(13422) || ($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id']))){
+        return true;
     }
 
     //Ways a Member can modify a source:
     $CI =& get_instance();
     $filters = array(
-        'x__type IN (' . join(',', $CI->config->item('n___41944')) . ')' => null, //Source Authors
+        'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__following' => $player_e['e__id'],
     );
@@ -1717,49 +1647,56 @@ function access__e($e__handle, $e__id = 0){
         $filters['e__id'] = $e__id;
     }
 
-    return (
-
-        //Member has Advance source editing superpower
-        superpower_unlocked(13422)
-
-        //Member is the source
-        || ($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id']))
-
-        //If Source Follows this Member
-        || count($CI->X_model->fetch($filters, array('x__follower')))
-
-    );
+    //Can access only if they are the author of this source:
+    return count($CI->X_model->fetch($filters, array('x__follower')));
 
 }
 
-function access__i($i__hashtag, $i__id = 0){
+function access__i($i__hashtag = null, $i__id = 0, $i = false){
 
-    $player_e = superpower_unlocked();
-    if(!$player_e || (!strlen($i__hashtag) && !intval($i__id))){
-        return false;
+    if(superpower_unlocked(12700)){
+        return true; //Can access all ideas
     }
 
-    //Ways a member can modify an idea:
     $CI =& get_instance();
-    $filters = array( //IDEA SOURCE
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-        'x__following' => $player_e['e__id'],
-    );
+    $player_e = superpower_unlocked();
 
     if(strlen($i__hashtag)){
         $filters['LOWER(i__hashtag)'] = strtolower($i__hashtag);
     } elseif(intval($i__id)){
         $filters['i__id'] = $i__id;
+    } elseif(!$i || !$player_e){
+        return false; //Missing idea or player!
     }
 
-    return (
-        superpower_unlocked(12700) || //WALKIE TALKIE
-        (
-            count($CI->X_model->fetch($filters, array('x__next')))
-        )
-    );
+    if(!$i){
+        //Check privacy first:
+        foreach($CI->I_model->fetch($filters) as $this_i){
+            $i = $this_i;
+            break;
+        }
+    }
 
+    if(in_array($i['i__privacy'], $CI->config->item('n___42952'))){
+        //Public idea:
+        return true;
+    } elseif($i['i__privacy']==42625){
+        //Only Mentioned Sources can access:
+        return count($CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___42953')) . ')' => null, //Author Mentions
+            'x__following' => $player_e['e__id'],
+            'x__next' => $i['i__id'],
+        )));
+    } else {
+        //Only Author can Access:
+        return count($CI->X_model->fetch(array( //IDEA SOURCE
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+            'x__following' => $player_e['e__id'],
+            'x__next' => $i['i__id'],
+        )));
+    }
 }
 
 
