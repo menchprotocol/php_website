@@ -119,7 +119,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo view_memory(6404,4523);
     ?>
 
-    <link href="/application/views/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
+    <link href="/application/views/includes/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
 
     <script type="module">
 
@@ -154,7 +154,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
-    <script src="/application/views/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
+    <script src="/application/views/includes/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
 
     <?php
 
@@ -301,12 +301,12 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     //Ideation Mode:
     $_GET['i__hashtag'] = $discovery_i__hashtag;
     $i_view = 30795;
-    $quick_href = view_memory(42903,33286).$discovery_i__hashtag;
+    $quick_href = header . phpview_memory(42903, 33286);
 
 } elseif(!strlen($first_segment) && superpower_unlocked(12703)) {
 
     //Edit Website Home Page:
-    $quick_href = view_memory(42903,42902). $e___14870[$website_id]['m__handle'];
+    $quick_href = header . phpview_memory(42903, 42902);
     $quick_id = 33287;
 
 } elseif($e_segment && $e_segment==$e___14870[$website_id]['m__handle']) {
@@ -320,7 +320,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     //Ideation Mode:
     $_GET['i__hashtag'] = substr($first_segment, 1);
     $i_view = 33286;
-    $quick_href = view_memory(42903,33286) . $_GET['i__hashtag'];
+    $quick_href = header . phpview_memory(42903, 33286);
 
 } elseif(array_key_exists($first_segment, $this->config->item('handle___6287'))) {
 
@@ -330,7 +330,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     } else {
         $quick_id = 33287;
     }
-    $quick_href = view_memory(42903,42902). $first_segment;
+    $quick_href = header . phpview_memory(42903, 42902);
 
 } elseif($e_segment && array_key_exists($e_segment, $this->config->item('handle___6287'))) {
 
@@ -340,18 +340,18 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     } else {
         $quick_id = 6287;
     }
-    $quick_href = view_memory(42903,6287).view_valid_handle_e($first_segment);
+    $quick_href = header . phpview_memory(42903, 6287);
 
 } elseif(isset($_GET['e__handle']) && strlen($_GET['e__handle'])) {
 
     //Source Mode:
-    $quick_href = view_memory(42903,42902). $_GET['e__handle'];
+    $quick_href = header . phpview_memory(42903, 42902);
     $quick_id = 33287;
 
 } elseif(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])) {
 
     //Ideation Mode:
-    $quick_href = view_memory(42903,33286).$_GET['i__hashtag'];
+    $quick_href = header . phpview_memory(42903, 33286);
     $quick_id = 33286;
 
 }
@@ -877,12 +877,12 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
     if($player_e){
 
-        $this->load->view('app/IdeaEditor', array(
+        $this->load->view('includes/IdeaEditor', array(
             'dynamic_edit' => $dynamic_edit,
             'player_e' => $player_e,
         ));
 
-        $this->load->view('app/SourceEditor', array(
+        $this->load->view('includes/SourceEditor', array(
             'dynamic_edit' => $dynamic_edit,
             'player_e' => $player_e,
         ));

@@ -390,10 +390,10 @@ class App extends CI_Controller
 
                 //Regular UI:
                 //Load App:
-                echo $this->load->view('header', $view_input, true);
+                echo $this->load->view('includes/header', $view_input, true);
                 echo $ui;
                 echo $cache_x__time;
-                echo $this->load->view('footer', array(), true);
+                echo $this->load->view('includes/footer', array(), true);
 
             }
         }
