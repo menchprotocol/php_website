@@ -1644,8 +1644,8 @@ function access__e($e__handle = null, $e__id = 0, $e = false){
 
     if(!$e){
         //Check privacy first:
-        foreach($CI->E_model->fetch($filters) as $this_e){
-            $e = $this_e;
+        foreach($CI->E_model->fetch($filters) as $match_e){
+            $e = $match_e;
             break;
         }
     }
@@ -1657,7 +1657,7 @@ function access__e($e__handle = null, $e__id = 0, $e = false){
     } else {
         //Only Author can Access:
         return count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
+            'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__following' => $player_e['e__id'],
             'x__follower' => $e['e__id'],
@@ -1685,8 +1685,8 @@ function access__i($i__hashtag = null, $i__id = 0, $i = false){
 
     if(!$i){
         //Check privacy first:
-        foreach($CI->I_model->fetch($filters) as $this_i){
-            $i = $this_i;
+        foreach($CI->I_model->fetch($filters) as $match_i){
+            $i = $match_i;
             break;
         }
     }
