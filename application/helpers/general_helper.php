@@ -1624,31 +1624,46 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function access__e($e__handle = null, $e__id = 0){
+function access__e($e__handle = null, $e__id = 0, $e = false){
 
+    $CI =& get_instance();
     $player_e = superpower_unlocked();
-    if(!$player_e || (!strlen($e__handle) && !intval($e__id))){
-        //No input
-        return false;
-    } elseif(superpower_unlocked(13422) || ($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id']))){
+    if(superpower_unlocked(13422)){
+        return true; //Can access all ideas
+    } elseif($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id'])){
         return true;
     }
 
-    //Ways a Member can modify a source:
-    $CI =& get_instance();
-    $filters = array(
-        'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__following' => $player_e['e__id'],
-    );
     if(strlen($e__handle)){
         $filters['LOWER(e__handle)'] = strtolower($e__handle);
     } elseif(intval($e__id)){
         $filters['e__id'] = $e__id;
+    } elseif(!$e || !$player_e){
+        return false; //Missing source and player!
     }
 
-    //Can access only if they are the author of this source:
-    return count($CI->X_model->fetch($filters, array('x__follower')));
+    if(!$e){
+        //Check privacy first:
+        foreach($CI->E_model->fetch($filters) as $this_e){
+            $e = $this_e;
+            break;
+        }
+    }
+
+    return true;
+
+    if(in_array($e['e__privacy'], $CI->config->item('n___33240'))){
+        //Public Sources:
+        return true;
+    } else {
+        //Only Author can Access:
+        return count($CI->X_model->fetch(array(
+            'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__following' => $player_e['e__id'],
+            'x__follower' => $e['e__id'],
+        )));
+    }
 
 }
 

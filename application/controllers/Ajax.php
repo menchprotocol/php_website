@@ -1595,7 +1595,7 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => 'Source is no longer active',
             ));
-        } elseif (!access__e($es[0]['e__handle'])) {
+        } elseif (!access__e($es[0]['e__handle'], 0, $es[0])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are missing permission to edit this Source',

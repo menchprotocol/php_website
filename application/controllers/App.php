@@ -142,6 +142,32 @@ class App extends CI_Controller
             boost_power();
         }
 
+        if($memory_detected && $player_http_request){
+
+            //Needs superpowers?
+            $player_e = superpower_unlocked();
+
+            //Auto Login?
+            if(isset($_GET['e__hash']) && isset($_GET['e__time']) && $focus_e){
+
+                //Validate Hash:
+                if($_GET['e__hash'] == view__hash($_GET['e__time'].$focus_e['e__handle'])){
+
+                    $this->X_model->x_read_only_complete($focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
+                    $this->X_model->mark_complete(29393, $focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
+
+                    //Inform user of changes:
+                    $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Idea has been discovered</div>';
+
+                    //If not logged in, log them in:
+                    if(!$player_e){
+                        $session_data = $this->E_model->activate_session($player_e, true);
+                    }
+
+                }
+            }
+        }
+
 
         //Cache App?
         $x__metadata = array(
@@ -172,7 +198,7 @@ class App extends CI_Controller
             } elseif(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 $e___10957 = $this->config->item('e___10957');
                 $missing_access = 'Error: You Cannot Access App '.$e___6287[$app_e__id]['m__title'].' as it requires '.$e___10957[end($superpowers_required)]['m__title'].'.';
-            } elseif($focus_e && !access__e(null, $focus_e['e__id'])){
+            } elseif($focus_e && !access__e(null, $focus_e['e__id'], $focus_e)){
                 $missing_access = 'Error: You Cannot Access @'.$focus_e['e__handle'].' due to Privacy Settings.';
             } elseif($focus_i && !access__i(null, $focus_i['i__id'], $focus_i)){
                 $missing_access = 'Error: You Cannot Access #'.$focus_i['i__hashtag'].' due to Privacy Settings.';
@@ -198,33 +224,6 @@ class App extends CI_Controller
                 //Redirect:
                 return redirect_message((!$player_e ? view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']) : home_url() ), '<div class="alert alert-warning" role="alert">'.$missing_access.'</div>');
 
-            }
-        }
-
-
-        if($memory_detected && $player_http_request){
-
-            //Needs superpowers?
-            $player_e = superpower_unlocked();
-
-            //Auto Login?
-            if(isset($_GET['e__hash']) && isset($_GET['e__time']) && $focus_e){
-
-                //Validate Hash:
-                if($_GET['e__hash'] == view__hash($_GET['e__time'].$focus_e['e__handle'])){
-
-                    $this->X_model->x_read_only_complete($focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
-                    $this->X_model->mark_complete(29393, $focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
-
-                    //Inform user of changes:
-                    $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Idea has been discovered</div>';
-
-                    //If not logged in, log them in:
-                    if(!$player_e){
-                        $session_data = $this->E_model->activate_session($player_e, true);
-                    }
-
-                }
             }
         }
 

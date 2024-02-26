@@ -1,10 +1,5 @@
 <?php
 
-//Log source view:
-$limit = view_memory(6404,11064);
-$access__e = access__e($focus_e['e__handle']);
-
-
 
 //Focus Source:
 echo '<div class="main_item view_12274 row justify-content">';

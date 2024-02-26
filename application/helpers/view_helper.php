@@ -2061,7 +2061,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     $access_locked = in_array($e['e__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
     $access_public = in_array($e['e__privacy'], $CI->config->item('n___33240'));
 
-    $access__e = ( $access_locked ? false :  access__e($e['e__handle']) );
+    $access__e = ( $access_locked ? false :  access__e($e['e__handle'], 0, $e) );
     $player_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
