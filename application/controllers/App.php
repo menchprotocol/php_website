@@ -208,26 +208,10 @@ class App extends CI_Controller
 
 
             if($missing_access){
-
-                //We have an error:
-                $this->X_model->create(array(
-                    'x__type' => 29737, //Access Blocked
-                    'x__player' => $x__player,
-                    'x__following' => $app_e__id,
-                    'x__follower' => $x__follower,
-                    'x__previous' => $x__previous,
-                    'x__message' => $missing_access,
-                    'x__next' => $x__next,
-                    'x__metadata' => $x__metadata,
-                ));
-
                 //Redirect:
                 return redirect_message((!$player_e ? view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']) : home_url() ), '<div class="alert alert-warning" role="alert">'.$missing_access.'</div>');
-
             }
         }
-
-
 
 
 
