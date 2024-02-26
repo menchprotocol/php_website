@@ -881,9 +881,8 @@ function load_card_clickers(){
 
 function random_animal(basic_style = false){
     var styles = ['fas','fad','fal','fat','fas','fad','fal','fat','fas','fad','fal','fat','fas fa-sharp','fal fa-sharp','fat fa-sharp'];
-    var colors = [' ',' zq12273',' zq12274',' zq6255'];
     var animals = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-cat-space','fa-fish','fa-dragon','fa-whale','fa-turtle','fa-snake','fa-spider','fa-lobster','fa-duck','fa-dove','fa-crow','fa-dinosaur','fa-bee','fa-horse','fa-raccoon','fa-pegasus','fa-bat','fa-deer','fa-badger-honey','fa-squirrel','fa-ram','fa-dolphin','fa-bird','fa-crab','fa-worm','fa-kiwi-bird','fa-shrimp','fa-duck','fa-teddy-bear','fa-t-rex'];
-    return animals[Math.floor(Math.random()*animals.length)] + ' ' + ( basic_style ? ' fas ' : styles[Math.floor(Math.random()*styles.length)] + ' ' + colors[Math.floor(Math.random()*colors.length)] );
+    return animals[Math.floor(Math.random()*animals.length)] + ' ' + ( basic_style ? ' fas ' : styles[Math.floor(Math.random()*styles.length)] );
 }
 
 var interval = null;
@@ -1156,7 +1155,7 @@ $(document).ready(function () {
                 search: function (q, callback) {
                     index_algolia.search(q, {
                         hitsPerPage: js_e___6404[31112]['m__message'],
-                        filters: 's__type=12274 AND _tags:z_125889', //Idea Commands
+                        filters: 's__type=12274 AND _tags:z_12589', //Idea Commands
                     })
                         .then(function searchSuccess(content) {
                             if (content.query === q) {
@@ -1311,7 +1310,7 @@ function view_cover_js(cover_code){
             return cover_code;
         }
     } else {
-        return '<i class="fas fa-circle zq12274"></i>';
+        return '<i class="fas fa-circle"></i>';
     }
 }
 
@@ -1708,7 +1707,7 @@ function i_editor_save(){
     if(!media_uploaded){
         i_saving = false;
         $(".i_editor_save").html('SAVE');
-        $("#modal31911 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Error: Media has not yet uploaded, please wait until upload is complete...');
+        $("#modal31911 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Error: Media has not yet uploaded, please wait until upload is complete...');
         return false;
     }
 
@@ -1732,7 +1731,7 @@ function i_editor_save(){
         if (!data.status) {
 
             //Show Errors:
-            $("#modal31911 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Error: '+data.message);
+            $("#modal31911 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Error: '+data.message);
 
         } else {
 
@@ -2313,7 +2312,7 @@ function e_editor_save(){
         if (!data.status) {
 
             //Show Errors:
-            $("#modal31912 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span> Error: '+data.message);
+            $("#modal31912 .save_results").html('<span class="icon-block"><i class="fas fa-exclamation-circle"></i></span> Error: '+data.message);
 
         } else {
 

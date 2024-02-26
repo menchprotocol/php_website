@@ -239,7 +239,7 @@ if(superpower_unlocked()) {
                 } else {
 
                     //Show errors:
-                    $('#account_email_phone_errors').html('<b class="main__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                    $('#account_email_phone_errors').html('<b class="main__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
                     $('#account_email_phone').focus();
 
                 }
@@ -282,7 +282,7 @@ if(superpower_unlocked()) {
                     code_checking = false;
                     $('#code_check_next').html(go_next_icon);
                     $('#input_code').prop('disabled', false).focus();
-                    $('#sign_code_errors').html('<b class="main__title zq6255"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                    $('#sign_code_errors').html('<b class="main__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
 
                 }
             });
@@ -318,7 +318,7 @@ if(superpower_unlocked()) {
 
                 <div class="form-group"><input type="text" autocapitalize="none" placeholder="<?= $e___4269[32079]['m__message'] ?>" id="account_email_phone" <?= isset($_GET['account_email_phone']) ? ' value="'.$_GET['account_email_phone'].'" ' : '' ?> class="form-control border input_border"></div>
 
-                <div id="account_email_phone_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+                <div id="account_email_phone_errors" class="margin-top-down hideIfEmpty"></div>
 
 
                 <span>
@@ -390,7 +390,7 @@ if(superpower_unlocked()) {
                 <!-- Sign in Code -->
                 <div style="padding:8px 0;">Enter the <?= $e___4269[32078]['m__title'] ?> sent to <span class="code_sent_to"></span>:</div>
                 <div class="form-group"><input maxlength="4" autocomplete="off" type="number"step="1" id="input_code" class="form-control border input_border" /></div>
-                <div id="sign_code_errors" class="zq6255 margin-top-down hideIfEmpty"></div>
+                <div id="sign_code_errors" class="margin-top-down hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
 

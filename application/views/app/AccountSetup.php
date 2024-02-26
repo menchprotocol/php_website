@@ -37,5 +37,5 @@ foreach($this->config->item('e___14517') as $x__type => $m) {
 
 //CONTINUE:
 echo '<div class="nav-controller">';
-echo '<div><a class="btn btn-lrg btn-6255 go-next" href="javascript:void(0);" onclick="complete_setup()">'.$e___11035[14521]['m__title'].' '.$e___11035[14521]['m__cover'].'</a></div>';
+echo '<div><a class="btn btn-lrg go-next" href="javascript:void(0);" onclick="complete_setup()">'.$e___11035[14521]['m__title'].' '.$e___11035[14521]['m__cover'].'</a></div>';
 echo '</div>';

@@ -33,7 +33,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
             <div class="modal-body">
 
-                <div class="save_results hideIfEmpty zq6255 alert alert-danger" style="margin:8px 0;"></div>
+                <div class="save_results hideIfEmpty alert alert-danger" style="margin:8px 0;"></div>
 
                 <input type="hidden" class="created_i__id" value="0" />
                 <input type="hidden" class="save_i__id" value="0" />

@@ -200,8 +200,7 @@ function phone_href($x__type, $number){
 function random_cover($e__id){
     $CI =& get_instance();
     $fetch = $CI->config->item('e___'.$e__id);
-    $colors = array(' ',' ',' ',' ',' ',' ',' zq12273',' zq12274',' zq12274',' zq6255',' zq6255',' zq6255');
-    return trim(one_two_explode('class="','"',$fetch[array_rand($fetch)]['m__cover']).$colors[array_rand($colors)]);
+    return trim(one_two_explode('class="','"',$fetch[array_rand($fetch)]['m__cover']));
 }
 
 function format_percentage($percent){
@@ -975,7 +974,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
 }

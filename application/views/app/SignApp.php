@@ -19,13 +19,13 @@ if(isset($_GET['i__hashtag'])){
 
             //Process Signature to make sure it's all ok:
             if (strlen($_POST['x_write'])<5 || !substr_count($_POST['x_write'] , ' ')) {
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter Your First & Last Name</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Enter Your First & Last Name</div>';
             } elseif (!isset($_POST['DigitalSignAgreement']) || !intval($_POST['DigitalSignAgreement'])) {
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>You must agree to be legally bound by this document.</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>You must agree to be legally bound by this document.</div>';
             } elseif (!filter_var($_POST['x_email'], FILTER_VALIDATE_EMAIL)) {
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a valid Email Address</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Enter a valid Email Address</div>';
             } elseif (strlen(intval($_POST['x_phone']))<10) {
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Enter a valid Phone Number</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Enter a valid Phone Number</div>';
             } else {
 
                 //Input validated, process signature:
@@ -73,7 +73,7 @@ if(isset($_GET['i__hashtag'])){
                     ));
                 }
 
-                echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle zq6255"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show your ID at the door to enter'.( isset($map_user['e__id']) ? '<a href="'.view_memory(42903,42902).$map_user['e__handle'].'" style="text-decoration: none;">.</a>' : '.' ).'</div>';
+                echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span> Waver signed for "'.$_POST['x_write'].'".<br />Show your ID at the door to enter'.( isset($map_user['e__id']) ? '<a href="'.view_memory(42903,42902).$map_user['e__handle'].'" style="text-decoration: none;">.</a>' : '.' ).'</div>';
 
             }
 
@@ -100,5 +100,5 @@ if(isset($_GET['i__hashtag'])){
 
 
 if(!$found_i){
-    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Missign Agreement Idea ID</div>';
+    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Missign Agreement Idea ID</div>';
 }

@@ -41,7 +41,7 @@ echo '<form method="GET" action="">';
 
 echo '<div class="mini-header">Search String:</div>';
 echo '<input type="text" class="form-control border maxout" name="search_for" value="'.$icon_keyword.'"><br />';
-echo '<input type="submit" class="btn btn-12273" value="Search">';
+echo '<input type="submit" class="btn" value="Search">';
 
 
 if($icon_keyword){
@@ -95,7 +95,7 @@ if($icon_keyword){
 
     echo '<div class="mini-header">Replace With:</div>';
     echo '<input type="text" class="form-control border maxout" name="replace_with" value="'.@$_GET['replace_with'].'"><br />';
-    echo '<input type="submit" name="do_replace" class="btn btn-12273" value="Replace">';
+    echo '<input type="submit" name="do_replace" class="btn" value="Replace">';
 }
 
 

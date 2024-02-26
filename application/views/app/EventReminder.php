@@ -40,7 +40,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 echo '<p>You can submit this form if you wish to cancel your attendance:</p>';
                 echo '<form action="" method="GET">';
                 echo '<textarea class="form-control border no-padding" name="x__message" data-lpignore="true" placeholder="Optional Note">'.( isset($_POST['list_emails']) ? $_POST['list_emails'] : '' ).'</textarea><br /><br />';
-                echo '<input type="submit" name="submit" class="btn btn-6255" value="Cancel Event Attendance" />';
+                echo '<input type="submit" name="submit" class="btn" value="Cancel Event Attendance" />';
                 echo '</form>';
 
             }

@@ -213,7 +213,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
         }, function (data) {
             if (!data.status) {
                 //Show Error:
-                $('#x_page_'+page_num).html('<span class="zq6255">'+ data.message +'</span>');
+                $('#x_page_'+page_num).html(data.message);
             } else {
                 //Load Report:
                 $('#x_page_'+page_num).html(data.message);
@@ -406,7 +406,7 @@ echo '</tr></table>';
 
 
 
-echo '<input type="submit" class="btn btn-6255" value="Apply" />';
+echo '<input type="submit" class="btn" value="Apply" />';
 
 if($has_filters){
     echo ' &nbsp;<a href="'.view_app_link(4341).'" style="font-size: 0.8em;">Remove Filters</a>';

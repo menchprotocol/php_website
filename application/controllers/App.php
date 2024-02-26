@@ -139,7 +139,7 @@ class App extends CI_Controller
 
         //Access Levels
         if ( $focus_i && !in_array($focus_i['i__privacy'], $this->config->item('n___31871')) && !access__i($focus_i['i__hashtag'])){
-            return redirect_message( ( $target_i ? view_memory(42903,33286).$target_i['i__hashtag'] : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Idea #' . $focus_hashtag . ' is not public and you are missing permission to access.</div>');
+            return redirect_message( ( $target_i ? view_memory(42903,33286).$target_i['i__hashtag'] : home_url() ), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Idea #' . $focus_hashtag . ' is not public and you are missing permission to access.</div>');
         }
 
 
@@ -147,11 +147,11 @@ class App extends CI_Controller
         //Missing inputs?
         if(!in_array($app_e__id, $this->config->item('n___42922'))){
             if(in_array($app_e__id, $this->config->item('n___42905')) && !$focus_e){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: @'.$_GET['e__handle'].' is not a valid source handle.</div>');
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Error: @'.$_GET['e__handle'].' is not a valid source handle.</div>');
             } elseif(in_array($app_e__id, $this->config->item('n___42923')) && (!$focus_i || !$target_i)){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: Both #'.$_GET['i__hashtag'].' & #'.$target_hashtag.' are not valid discovery hashtags.</div>');
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Error: Both #'.$_GET['i__hashtag'].' & #'.$target_hashtag.' are not valid discovery hashtags.</div>');
             } elseif(in_array($app_e__id, $this->config->item('n___42911')) && !$focus_i){
-                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle zq6255"></i></span>Error: #'.$_GET['i__hashtag'].' is not a valid idea hashtag.</div>');
+                return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Error: #'.$_GET['i__hashtag'].' is not a valid idea hashtag.</div>');
             }
         }
 

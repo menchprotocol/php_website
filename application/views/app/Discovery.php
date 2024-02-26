@@ -379,7 +379,7 @@ if($target_i__hashtag) {
 
 
                                     //Give option for manual checkin:
-                                    echo '<div style="text-align: center;"><div class="nav-controller select-btns"><a class="btn btn-lrg btn-6255 go-next" href="'.$qr_link.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
+                                    echo '<div style="text-align: center;"><div class="nav-controller select-btns"><a class="btn btn-lrg go-next" href="'.$qr_link.'">'.$e___11035[32016]['m__title'].' '.$e___11035[32016]['m__cover'].'</a></div></div>';
 
                                 }
 
@@ -607,7 +607,7 @@ if($target_i__hashtag) {
         }
 
         //UPLOAD BUTTON:
-        echo '<div class="select-btns"><label class="btn btn-6255 inline-block" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
+        echo '<div class="select-btns"><label class="btn inline-block" style="margin-left:5px;">' . $e___11035[13572]['m__cover'] . ' ' . $e___11035[13572]['m__title'] . '</label></div>';
 
     }
 
@@ -829,7 +829,7 @@ if($target_i__hashtag){
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 js_redirect(GoNext());
             } else {
                 //Show error:
@@ -849,7 +849,7 @@ if($target_i__hashtag){
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 js_redirect(GoNext());
             } else {
                 //Show error:
@@ -873,7 +873,7 @@ if($target_i__hashtag){
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 js_redirect(GoNext());
             } else {
                 //Show error:
@@ -892,7 +892,7 @@ if($target_i__hashtag){
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 js_redirect(GoNext());
             } else {
                 //Show error:
@@ -922,7 +922,7 @@ if($target_i__hashtag){
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin zq6255"></i>');
+                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 js_redirect(GoNext());
             } else {
                 //Show error:
