@@ -479,10 +479,7 @@ if(!$basic_header_footer){
                     }
 
 
-                    //Add Source
-                    if(superpower_unlocked(13422)){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$e___11035[42819]['m__title'].'">'.$e___11035[42819]['m__cover'].'</a></td>';
-                    }
+
 
                     //Add Idea:
                     if($player_e){
@@ -564,6 +561,12 @@ if(!$basic_header_footer){
                     echo '</div>';
                     echo '</div>';
                     echo '</td>';
+
+
+                    //Add Source
+                    if(superpower_unlocked(13422)){
+                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$e___11035[42819]['m__title'].'">'.$e___11035[42819]['m__cover'].'</a></td>';
+                    }
 
                     ?>
                 </tr>
