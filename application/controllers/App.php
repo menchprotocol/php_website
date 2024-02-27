@@ -197,7 +197,7 @@ class App extends CI_Controller
                 $missing_access = 'Error: You must Login to Access the App '.$e___6287[$app_e__id]['m__title'].'.';
             } elseif(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 $e___10957 = $this->config->item('e___10957');
-                $missing_access = 'Error: You Cannot Access App '.$e___6287[$app_e__id]['m__title'].' as it requires '.$e___10957[end($superpowers_required)]['m__title'].'.';
+                $missing_access = 'Error: You Cannot Access '.$e___6287[$app_e__id]['m__title'].' as it requires the superpower of '.$e___10957[end($superpowers_required)]['m__title'].'.';
             } elseif($focus_e && !access__e(null, $focus_e['e__id'], $focus_e)){
                 $missing_access = 'Error: You Cannot Access @'.$focus_e['e__handle'].' due to Privacy Settings.';
             } elseif($focus_i && !access__i(null, $focus_i['i__id'], $focus_i)){
