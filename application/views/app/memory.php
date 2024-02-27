@@ -193,7 +193,7 @@ fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated '.$total_nodes.' Sources ('.$biggest_source_handle.' Biggest with '.$biggest_source_count.' Sources) & removed '.reset_cache($x__player).' cached pages.</div><div>'.$start_time.' / '.$save_time.' / '.date("Y-m-d H:i:s").'</div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Synced '.$total_nodes.' Sources ('.$biggest_source_handle.' biggest with '.$biggest_source_count.') & removed '.reset_cache($x__player).' caches.</div><div></div></div>';
 
 
 //Show:
