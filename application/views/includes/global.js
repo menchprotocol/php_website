@@ -166,7 +166,7 @@ function x_mass_apply_preview(apply_id, s__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
+    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
     $.post("/ajax/x_mass_apply_preview", {
         apply_id: apply_id,
         s__id: s__id,
@@ -751,7 +751,7 @@ function e_load_cover(x__type, e__id, counter, first_segment){
        return false;
     }
 
-    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/e_load_cover", {
         x__type:x__type,
@@ -772,7 +772,7 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
         return false;
     }
 
-    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/i_load_cover", {
         x__type:x__type,
@@ -903,7 +903,7 @@ function activate_popover(){
                 x_set_start_text();
                 load_card_clickers();
             });
-            return '<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>';
+            return '<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>';
         }
     });
 
@@ -1627,7 +1627,7 @@ function i_editor_save(){
     }
 
     i_saving = true;
-    $(".i_editor_save").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".i_editor_save").html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
@@ -2266,7 +2266,7 @@ function e_editor_save(){
     }
 
     e_saving = true;
-    $(".e_editor_save").html('<span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".e_editor_save").html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
@@ -2394,7 +2394,7 @@ function x_view_load_page() {
 
 
     current_page[focus_x__group]++; //Now we can increment current page
-    $('<div class="load-more"><span class="icon-block"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
+    $('<div class="load-more"><span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
     $.post("/ajax/x_view_load_page", {
         focus__node: fetch_int_val('#focus__node'),
         focus__id: fetch_int_val('#focus__id'),
