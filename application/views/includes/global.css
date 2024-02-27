@@ -1689,7 +1689,7 @@ label {
 .focus-cover .dropdown span.icon-block-sm {
     height: 24px !important;
 }
-dynamic_editing_input textarea.form-control.save_i__message{
+.dynamic_editing_input textarea.form-control.save_i__message{
     padding-top: 3px !important;
 }
 
