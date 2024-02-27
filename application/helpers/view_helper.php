@@ -712,7 +712,7 @@ function dynamic_headline($dynamic_e__id, $m, $selected_e = null){
     $e___6177 = $CI->config->item('e___6177'); //Source Privacy
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
 
-    $headline = '<span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].': ';
+    $headline = '<span class="icon-block-sm">'.$m['m__cover'].'</span>'.$m['m__title'].': ';
 
     if(in_array($dynamic_e__id, $CI->config->item('n___28239'))){
         $headline .= '<span class="icon-block-sm" title="'.$e___11035[28239]['m__message'].'" data-toggle="tooltip" data-placement="top" style="font-size:0.34em;">'.$e___11035[28239]['m__cover'].'</span>';
