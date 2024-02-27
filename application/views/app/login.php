@@ -312,7 +312,7 @@ if(superpower_unlocked()) {
             <!-- Step 1: Enter Email -->
             <div id="step2" class="signup-steps hidden">
 
-                <?= '<p style="margin-top:13px; text-align: center; padding-bottom: 34px;">'.$intro_message.'</p>'; ?>
+                <?= '<p style="text-align: center; padding-bottom: 13px;">'.$intro_message.'</p>'; ?>
 
                 <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
 
