@@ -2974,7 +2974,7 @@ function ui_instant_select(element_id, new_e__id, o__id, x__id, show_full_name){
     //Update x:
     console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn' + new_e__id);
     var data_object = eval('js_e___'+element_id);
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html(''+data_object[new_e__id]['m__cover']+'' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .current_content span').html(data_object[new_e__id]['m__cover'] + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
 
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + x__id).removeClass('active');
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .optiond_' + new_e__id+'_'+o__id+ '_' + x__id).addClass('active');
