@@ -527,7 +527,7 @@ img.no-frame {
 .textcomplete-item{
     padding: 3px 2px;
     border-bottom: 1px solid #000000;
-
+    overflow-y: hidden;
 }
 .algolia-autocomplete .aa-dropdown-menu {
     width: 100%;
@@ -1689,7 +1689,7 @@ label {
 .focus-cover .dropdown span.icon-block-sm {
     height: 24px !important;
 }
-.save_i__message{
+dynamic_editing_input textarea.form-control.save_i__message{
     padding-top: 3px !important;
 }
 
