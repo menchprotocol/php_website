@@ -2966,7 +2966,7 @@ h4.main__title{
 }
 
 .edge-cover .card_covers {
-    line-height: 121%;
+    line-height: 144%;
 }
 .coin-12274 .card_covers{
     text-align: center;
@@ -3329,6 +3329,8 @@ h4.main__title{
 }
 .fixed-top{
     background: rgba(255,255,254,1.00) !important;
+    padding-bottom: 0 !important;
+    min-height: 34px;
 }
 
 .coin-6287 .cover-content,
@@ -3947,7 +3949,7 @@ div.img {
 
 .logo_title {
     position: absolute;
-    top: 5px;
+    top: 3px;
     left: 40px;
 
     display: block;
