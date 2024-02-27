@@ -224,7 +224,7 @@ h3{
 .dynamic_editing_input input.form-control,
 .dynamic_editing_input textarea.form-control{
     padding: 0 0 !important;
-    margin-left: 40px !important;
+    margin-left: 30px !important;
     width: calc(100% - 40px) !important;
 }
 .dynamic_editing_input input.form-control.save_i__hashtag,
@@ -1691,6 +1691,7 @@ label {
 }
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding-top: 3px !important;
+    margin-left: 40px !important;
 }
 
 .edge-cover .coin-12273 .icon-block-sm {
