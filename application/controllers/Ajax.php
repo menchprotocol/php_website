@@ -2576,10 +2576,6 @@ class Ajax extends CI_Controller
     }
 
 
-    function x_create(){
-        return view_json($this->X_model->create($_POST));
-    }
-
     function x_set_text(){
 
         //Authenticate Member:

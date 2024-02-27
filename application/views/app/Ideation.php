@@ -2,12 +2,6 @@
 
 //Just Viewing:
 $access__i = access__i($focus_i['i__hashtag'], 0, $focus_i);
-$this->X_model->create(array(
-    'x__player' => $player_e['e__id'],
-    'x__type' => 4993, //Member Opened Idea
-    'x__next' => $focus_i['i__id'],
-));
-
 
 //Focusing on a certain source?
 if(isset($_GET['focus__e']) && superpower_unlocked(12701)){

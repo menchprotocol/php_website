@@ -14,15 +14,8 @@ if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
     <script>
         function complete_setup(){
             //Log transaction:
-            if(x_create({
-                x__player: js_pl_id,
-                x__type: 14517,
-                x__previous: <?= $i__id ?>,
-            })){
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect('<?= ( isset($_GET['i__hashtag']) ? $_GET['i__hashtag'].'/'.view_memory(6404,4235) : ( isset($_GET['url']) ? urldecode($_GET['url']) : '/' /* Home Page */ ) ) ?>');
-            }
-
+            $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+            js_redirect('<?= ( isset($_GET['i__hashtag']) ? $_GET['i__hashtag'].'/'.view_memory(6404,4235) : ( isset($_GET['url']) ? urldecode($_GET['url']) : '/' /* Home Page */ ) ) ?>');
         }
     </script>
 <?php

@@ -718,12 +718,6 @@ function x_remove(x__id, x__type, i__hashtag){
 }
 
 
-function x_create(add_fields){
-    return false;
-    return $.post("/ajax/x_create", add_fields);
-}
-
-
 
 
 function update__cover(new_cover, changed = true){
@@ -1012,11 +1006,6 @@ $(document).ready(function () {
     $('.trigger_modal').click(function (e) {
         var x__type = parseInt($(this).attr('x__type'));
         $('#modal'+x__type).modal('show');
-        x_create({
-            x__player: js_pl_id,
-            x__type: 14576, //MODAL VIEWED
-            x__following: x__type,
-        });
     });
 
 
