@@ -888,11 +888,6 @@ function activate_popover(){
         clearInterval(interval);
     }
 
-    //Set Interval:
-    interval = window.setInterval(function() {
-        $('.glowbright').toggleClass('active');
-    }, 1597);
-
 
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover({

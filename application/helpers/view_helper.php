@@ -658,9 +658,6 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
             'x__previous' => $i__id,
         );
-        if(isset($_GET['focus__e'])){
-            $query_filters['x__player'] = intval($_GET['focus__e']);
-        }
 
     } else {
 
@@ -1046,12 +1043,6 @@ function view_time_hours($total_seconds, $hide_hour = false){
     return ( $hide_hour && !$hours ? '' : str_pad($hours, 2, "0", STR_PAD_LEFT).':' ).str_pad($minutes, 2, "0", STR_PAD_LEFT).':'.str_pad($seconds, 2, "0", STR_PAD_LEFT);
 }
 
-function view__focus__e($e){
-    $CI =& get_instance();
-    $e___11035 = $CI->config->item('e___11035');
-    return '<div class="alert alert-info no-margin" style="margin-bottom: 10px !important;" title="'.$e___11035[13670]['m__title'].'"><span class="icon-block">'.$e___11035[13670]['m__cover'] . '</span><span class="icon-block-sm">' . view_cover($e['e__handle'], true) . '</span><a href="'.view_memory(42903,42902).$e['e__handle'].'">' . $e['e__title'].'</a>&nbsp;&nbsp;&nbsp;<a href="'.view_memory(42903,33286).$CI->uri->segment(1).'" title="'.$e___11035[13671]['m__title'].'">'.$e___11035[13671]['m__cover'].'</a></div>';
-}
-
 
 
 function view_card_x_select($i, $x__player, $previously_selected){
@@ -1416,7 +1407,7 @@ function view_featured_links($x__type, $location, $m = null, $focus__node){
 }
 
 
-function view_i_nav($discovery_mode, $focus_i, $access__i){
+function view_i_nav($discovery_mode, $focus_i){
 
     $CI =& get_instance();
     $coins_count = array();
@@ -1479,7 +1470,7 @@ function view_i_nav($discovery_mode, $focus_i, $access__i){
     $ui .= '</ul>';
     $ui .= $body_content;
 
-    if($ideation_pen || $access__i){
+    if($ideation_pen){
         //Focus on next:
         $focus_tab = 12840;
         $ui .= '<script> $(document).ready(function () { set_hashtag_if_empty(\'Next\'); }); </script>';
@@ -1550,7 +1541,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             $href = view_memory(42903,33286).$i['i__hashtag'];
         }
     } else {
-        $href = view_memory(42903,33286).$i['i__hashtag'] . ( isset($_GET['focus__e']) ? '?focus__e='.intval($_GET['focus__e']) : '' );
+        $href = view_memory(42903,33286).$i['i__hashtag'];
     }
 
     $has_discovered = false;
@@ -1756,7 +1747,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //GET STARTED
-                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm glowbright"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm bold-btn"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31911 && $access__i && !$discovery_mode){
 

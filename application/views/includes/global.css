@@ -4463,7 +4463,10 @@ main {
     font-size: 3.4em;
 }
 
-
+.bold-btn{
+    background-color: #000000;
+    color: #FFFFFF;
+}
 .ref_source,
 .source-featured u,
 .source-featured a,
@@ -4485,21 +4488,6 @@ h1 i.fal,
 h1 i.far,
 h1 i.fad{
     font-size:0.4em !important;
-}
-
-.glowbright {
-    border: 1px solid transparent !important;
-    -webkit-transition: border 0.1s linear, box-shadow 0.1s linear;
-    -moz-transition: border 0.1s linear, box-shadow 0.1s linear;
-    transition: border 0.1s linear, box-shadow 0.1s linear;
-}
-
-
-.glowbright.active {
-    border-color: #000000 !important;
-    -webkit-box-shadow: 0 0 5px #FC1B44 !important;
-    -moz-box-shadow: 0 0 5px #FC1B44 !important;
-    box-shadow: 0 0 5px #FC1B44 !important;
 }
 
 .card_covers>span.hidden,
