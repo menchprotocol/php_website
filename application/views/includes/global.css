@@ -204,7 +204,7 @@ h3{
 .inner_message {
     clear: both;
     display: block;
-    margin-left: 40px;
+    margin-left: 30px;
     padding: 3px 0 1px;
 }
 .float_right{
@@ -730,7 +730,7 @@ textarea.main__title {
     line-height: 150%;
 }
 .message_content{
-    margin-left: 40px;
+    margin-left: 30px;
 }
 .i-footer .message_content{
     margin-left:0;
@@ -1252,7 +1252,7 @@ a.headline {
     margin-bottom: 21px;
 }
 .left-margin{
-    margin-left: 40px;
+    margin-left: 30px;
     display: inline-block;
 }
 .left-half-margin{
@@ -1691,7 +1691,7 @@ label {
 }
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding-top: 3px !important;
-    margin-left: 40px !important;
+    margin-left: 30px !important;
 }
 
 .edge-cover .coin-12273 .icon-block-sm {
@@ -1970,7 +1970,7 @@ label {
     text-decoration: none;
     padding: 5px !important;
     margin-bottom: 0 !important;
-    margin-left: 40px !important;
+    margin-left: 30px !important;
 }
 .itemsetting.active{
     margin-top:0 !important;
@@ -3051,7 +3051,7 @@ h4.main__title{
     clear: both;
     background-color: #FFFFFF;
     display: block;
-    margin-left: 40px;
+    margin-left: 30px;
 }
 .media_frame {
     clear: both;
@@ -3239,7 +3239,7 @@ h4.main__title{
     }
 
     .icon-tweak{ padding-left: 8px; }
-    .name-block{ margin-left: 40px; }
+    .name-block{ margin-left: 30px; }
 
 
     .title-block{
@@ -3277,7 +3277,7 @@ h4.main__title{
     /*
     .short_blob{
         display: block !important;
-        margin-left: 40px;
+        margin-left: 30px;
     }
      */
     .platform-navigation .block-sign-x{
