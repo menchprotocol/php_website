@@ -662,8 +662,8 @@ textarea.main__title {
 
 .center-info{
     width: 100%;
-    max-width:380px !important;
-    padding: 34px 15px 15px;
+    max-width:377px !important;
+    padding: 0 8px;
     margin: 0 auto;
 }
 .center{
