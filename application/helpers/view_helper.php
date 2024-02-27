@@ -1719,7 +1719,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access__i ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==42819 && superpower_unlocked(13422)){
+            } elseif(0 && $x__type_target_bar==42819 && superpower_unlocked(13422)){
 
                 //New Source
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
