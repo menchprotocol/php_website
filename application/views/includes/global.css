@@ -527,6 +527,7 @@ img.no-frame {
 .textcomplete-item{
     padding: 3px 2px;
     border-bottom: 1px solid #000000;
+
 }
 .algolia-autocomplete .aa-dropdown-menu {
     width: 100%;
