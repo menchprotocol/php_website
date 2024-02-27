@@ -519,7 +519,7 @@ class E_model extends CI_Model
         //Make sure user has access to each item:
         if($authenticate && !superpower_unlocked(13422)){
             foreach($arr as $key=>$val){
-                if(!access__e($val['e__handle'], 0, $val)){
+                if(!access__read_e($val['e__handle'], 0, $val)){
                     unset($arr[$key]);
                 }
             }

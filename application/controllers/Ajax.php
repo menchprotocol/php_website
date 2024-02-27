@@ -75,7 +75,7 @@ class Ajax extends CI_Controller
                     'status' => 0,
                     'message' => 'Idea is no longer active',
                 ));
-            } elseif (!access__i($is[0]['i__hashtag'], 0, $is[0])) {
+            } elseif (!access__read_i($is[0]['i__hashtag'], 0, $is[0])) {
                 return view_json(array(
                     'status' => 0,
                     'message' => 'You are missing permission to edit this idea',
@@ -879,7 +879,7 @@ class Ajax extends CI_Controller
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access__i(null, $_POST['i__id'])){
+            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access__read_i(null, $_POST['i__id'])){
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
 
@@ -1008,7 +1008,7 @@ class Ajax extends CI_Controller
 
         } else {
 
-            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access__e(null, $_POST['e__id'])){
+            if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access__read_e(null, $_POST['e__id'])){
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
 
@@ -1595,7 +1595,7 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => 'Source is no longer active',
             ));
-        } elseif (!access__e($es[0]['e__handle'], 0, $es[0])) {
+        } elseif (!access__read_e($es[0]['e__handle'], 0, $es[0])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'You are missing permission to edit this Source',

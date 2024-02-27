@@ -1624,7 +1624,7 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function access__e($e__handle = null, $e__id = 0, $e = false){
+function access__read_e($e__handle = null, $e__id = 0, $e = false){
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
@@ -1666,7 +1666,7 @@ function access__e($e__handle = null, $e__id = 0, $e = false){
 
 }
 
-function access__i($i__hashtag = null, $i__id = 0, $i = false){
+function access__read_i($i__hashtag = null, $i__id = 0, $i = false){
 
     if(superpower_unlocked(12700)){
         return true; //Can access all ideas

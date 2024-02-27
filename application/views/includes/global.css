@@ -1688,6 +1688,9 @@ label {
 .focus-cover .dropdown span.icon-block-sm {
     height: 24px !important;
 }
+.save_i__message{
+    padding-top: 3px !important;
+}
 
 .edge-cover .coin-12273 .icon-block-sm {
     height: 19px !important;
