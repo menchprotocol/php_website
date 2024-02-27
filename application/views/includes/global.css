@@ -2958,18 +2958,13 @@ h4.main__title{
 .info_blob{
     font-size: 0.79em !important;
     color: #999999 !important;
-    display: block !important;
+    display: inline !important;
     margin-left: 28px;
 }
 .short_blob{
     display: inline !important;
     margin-left: 5px;
 }
-
-.info_blob>span{
-    border-bottom: 1px dotted #000000;
-}
-
 .edge-cover .card_covers {
     line-height: 144%;
 }
