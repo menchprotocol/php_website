@@ -2269,7 +2269,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             continue;
                         }
 
-                        $anchor = '<span class="icon-block-sm">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
+                        $anchor = '<span class="icon-block">'.$m_dropdown['m__cover'].'</span>'.$m_dropdown['m__title'];
 
 
                         if($e__id_dropdown==4997){
