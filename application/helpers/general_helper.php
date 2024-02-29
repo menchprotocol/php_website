@@ -1624,14 +1624,24 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 
 
 
-function access__read_e($e__handle = null, $e__id = 0, $e = false){
+function access_level_e($e__handle = null, $e__id = 0, $e = false){
+
+    /*
+     *
+     * Returns an Integer Depending on Access Level:
+     *
+     * 0 ACCESS BLOCKED
+     * 1 READ-ONLY
+     * 3 EDIT
+     *
+     * */
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
     if(superpower_unlocked(13422)){
-        return true; //Can access all ideas
+        return 3;
     } elseif($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id'])){
-        return true;
+        return 3;
     }
 
     if(strlen($e__handle)){
@@ -1639,7 +1649,7 @@ function access__read_e($e__handle = null, $e__id = 0, $e = false){
     } elseif(intval($e__id)){
         $filters['e__id'] = $e__id;
     } elseif(!$e || !$player_e){
-        return false; //Missing source and player!
+        return 0;
     }
 
     if(!$e){
@@ -1651,12 +1661,10 @@ function access__read_e($e__handle = null, $e__id = 0, $e = false){
     }
 
 
-    if(in_array($e['e__privacy'], $CI->config->item('n___33240'))){
-        //Public Sources:
-        return true;
-    } else {
-        //Only Author can Access:
-        return count($CI->X_model->fetch(array(
+    $is_public = in_array($e['e__privacy'], $CI->config->item('n___33240'));
+    $is_author = false;
+    if($player_e){
+        $is_author = count($CI->X_model->fetch(array(
             'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__following' => $player_e['e__id'],
@@ -1664,12 +1672,25 @@ function access__read_e($e__handle = null, $e__id = 0, $e = false){
         )));
     }
 
+    return ( $is_author ? 3 : ( $is_public ? 1 : 0) );
+
 }
 
-function access__read_i($i__hashtag = null, $i__id = 0, $i = false){
+function access_level_i($i__hashtag = null, $i__id = 0, $i = false){
+
+    /*
+     *
+     * Returns an Integer Depending on Access Level:
+     *
+     * 0 ACCESS BLOCKED
+     * 1 READ-ONLY
+     * 2 CAN-REPLY
+     * 3 EDIT
+     *
+     * */
 
     if(superpower_unlocked(12700)){
-        return true; //Can access all ideas
+        return 3;
     }
 
     $CI =& get_instance();
@@ -1680,7 +1701,7 @@ function access__read_i($i__hashtag = null, $i__id = 0, $i = false){
     } elseif(intval($i__id)){
         $filters['i__id'] = $i__id;
     } elseif(!$i || !$player_e){
-        return false; //Missing idea or player!
+        return 0;
     }
 
     if(!$i){
@@ -1691,26 +1712,33 @@ function access__read_i($i__hashtag = null, $i__id = 0, $i = false){
         }
     }
 
-    if(in_array($i['i__privacy'], $CI->config->item('n___42952'))){
-        //Public idea:
-        return true;
-    } elseif($i['i__privacy']==42625){
-        //Only Mentioned Sources can access:
-        return count($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___42953')) . ')' => null, //Author Mentions
-            'x__following' => $player_e['e__id'],
-            'x__next' => $i['i__id'],
-        )));
-    } else {
-        //Only Author can Access:
-        return count($CI->X_model->fetch(array( //IDEA SOURCE
+    $is_author = false;
+    if($player_e){
+        $is_author = count($CI->X_model->fetch(array( //IDEA SOURCE
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
             'x__following' => $player_e['e__id'],
             'x__next' => $i['i__id'],
         )));
     }
+
+    if($is_author) {
+        //Authors can always edit:
+        return 3;
+    } elseif(count($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42953')) . ')' => null, //Mentioned Sources
+        'x__following' => $player_e['e__id'],
+        'x__next' => $i['i__id'],
+    )))){
+        //Mentioned can always reply:
+        return 2;
+    } else {
+        $is_public = in_array($i['i__privacy'], $CI->config->item('n___42952'));
+        $is_read_only = $i['i__privacy']==42929;
+        return ( $is_public ? ( $is_read_only ? 1 : 2 ) : 0 );
+    }
+
 }
 
 

@@ -198,11 +198,11 @@ class App extends CI_Controller
             } elseif(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 $e___10957 = $this->config->item('e___10957');
                 $missing_access = 'Error: You Cannot Access '.$e___6287[$app_e__id]['m__title'].' as it requires the superpower of '.$e___10957[end($superpowers_required)]['m__title'].'.';
-            } elseif($focus_e && !access__read_e(null, $focus_e['e__id'], $focus_e)){
+            } elseif($focus_e && !access_level_e(null, $focus_e['e__id'], $focus_e)){
                 $missing_access = 'Error: You Cannot Access @'.$focus_e['e__handle'].' due to Privacy Settings.';
-            } elseif($focus_i && !access__read_i(null, $focus_i['i__id'], $focus_i)){
+            } elseif($focus_i && !access_level_i(null, $focus_i['i__id'], $focus_i)){
                 $missing_access = 'Error: You Cannot Access #'.$focus_i['i__hashtag'].' due to Privacy Settings.';
-            } elseif($target_i && !access__read_i(null, $target_i['i__id'], $target_i)){
+            } elseif($target_i && !access_level_i(null, $target_i['i__id'], $target_i)){
                 $missing_access = 'Error: You Cannot Access #'.$target_i['i__hashtag'].' due to Privacy Settings.';
             }
 
