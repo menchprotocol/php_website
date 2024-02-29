@@ -4350,6 +4350,9 @@ main {
 .creator_headline span.mini-frame.grey{
     margin-bottom: -6px;
 }
+.creator_headline .grey.icon-block{
+    padding:3px 0;
+}
 .creator_frame .creator_headline,
 .modal-body .creator_headline{
     display: block;
