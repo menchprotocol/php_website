@@ -601,7 +601,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 }
 
 
-function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true){
+function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true, $headline_authors = array()){
 
     /*
      *
@@ -621,6 +621,10 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'x__next' => $i__id,
         );
+        if($x__type==42256 && count($headline_authors)){
+            //Exclude Headline Authors since they have already been listed:
+            $query_filters['x__following NOT IN (' . join(',', $headline_authors) . ')'] = null;
+        }
 
         $order_columns = array('x__type = \'34513\' DESC' => null, 'x__weight' => 'ASC', 'x__time' => 'DESC');
 
@@ -1574,12 +1578,14 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $ui .= '<div class="creator_frame creator_frame_'.$i['i__id'].'">';
 
     //Show Creator if any:
+    $headline_authors = array();
     foreach($CI->X_model->fetch(array(
         'x__type' => 4250,
         'x__next' => $i['i__id'],
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__following')) as $creator){
 
+        array_push($headline_authors, $creator['e__id']);
         $follow_btn = null;
         if($focus__node && $player_e && $player_e['e__id']!=$creator['e__id']){
             $followings = $CI->X_model->fetch(array(
@@ -1797,7 +1803,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         } elseif($e__id_dropdown==33286 && $discovery_mode && $access_level_i>=3){
 
                             //Ideation Mode
-                            $action_buttons .= '<a href="'.view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title wow">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
 
                         } elseif($e__id_dropdown==13007 && $access_level_i>=3){
 
@@ -1890,7 +1896,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     continue;
                 }
 
-                $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id']);
+                $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id'], 0, true, $headline_authors);
                 if(strlen($coins_ui)){
                     $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
                     $bottom_bar_ui .= $coins_ui;
