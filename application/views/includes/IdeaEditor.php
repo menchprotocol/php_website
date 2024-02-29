@@ -13,6 +13,11 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                 <div class="initial_header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
+                    <!-- Idea Links -->
+                    <div class="dynamic_editing_input idea_link_type hidden hidden_superpower__10939" style="margin: 0 !important;">
+                        <div class="dynamic_selector"><?= view_single_select_form(4486, 4228, false, false); ?></div>
+                    </div>
+
                     <!-- Unlink -->
                     <div class="dynamic_editing_input no_padded idea_link_unlink hidden">
                         <a class="icon-block" href="javascript:void(0);" onclick="i_editor_switch()" title="Unlink Idea / Publish a Standalone idea"><i class="far fa-unlink"></i></a>
@@ -23,10 +28,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                         <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="far fa-arrow-up-arrow-down"></i></a>
                     </div>
 
-                    <!-- Idea Links -->
-                    <div class="dynamic_editing_input idea_link_type hidden hidden_superpower__10939" style="margin: 0 !important;">
-                        <div class="dynamic_selector"><?= view_single_select_form(4486, 4228, false, false); ?></div>
-                    </div>
+
                 </div>
                 <button type="button" class="btn btn-default i_editor_save post_button" onclick="i_editor_save()">SAVE</button>
             </div>
