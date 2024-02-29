@@ -1797,9 +1797,9 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         } elseif($e__id_dropdown==33286 && $discovery_mode && $access_level_i>=3){
 
                             //Ideation Mode
-                            $action_buttons .= '<a href="'.view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+                            $action_buttons .= '<a href="'.view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title wow">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==13007){
+                        } elseif($e__id_dropdown==13007 && $access_level_i>=3){
 
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
