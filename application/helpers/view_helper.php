@@ -933,7 +933,7 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
 }
 
 
-function view_single_select_instant($cache_e__id, $selected_e__id, $access_level_i = true, $show_full_name = true, $o__id = 0, $x__id = 0){
+function view_single_select_instant($cache_e__id, $selected_e__id, $access_level_i = 0, $show_full_name = true, $o__id = 0, $x__id = 0){
 
     $CI =& get_instance();
     $e___this = $CI->config->item('e___'.$cache_e__id);
@@ -964,17 +964,17 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $access_level
     }
 
     //Make sure it's not locked:
-    $access_level_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $access_level_i : false );
+    $access_level_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $access_level_i : 0 );
 
     $ui = '<div class="dropdown '.( $show_full_name ? 'dropdown_type_'.$cache_e__id : '' ).' inline-block dropd_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected_value="'.$selected_e__id.'">';
 
-    $ui .= '<button type="button" '.( $access_level_i ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
+    $ui .= '<button type="button" '.( $access_level_i>=3 ? 'class="btn no-left-padding '.( $show_full_name ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_full_name ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
     $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___this[$selected_e__id]['m__title'] : '' ) : '<span class="icon-block-sm">'.$e___11035[$cache_e__id]['m__cover'].'</span>'.( $show_full_name ?  $e___11035[$cache_e__id]['m__title'] : '' ) ).'</span>'; //.( $show_full_name ? '<span class="icon-block-sm"><i class="fal fa-angle-down"></i></span>' : '' )
 
     $ui .= '</button>';
 
-    if($access_level_i){
+    if($access_level_i>=3){
 
         $ui .= '<div class="dropdown-menu dropmenu_instant_'.$cache_e__id.'" o__id="'.$o__id.'" x__id="'.$x__id.'" aria-labelledby="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'">';
 
@@ -1704,7 +1704,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 //Selector
 
-            } elseif($x__type_target_bar==4737 && !$discovery_mode && $access_level_i>=3){
+            } elseif($x__type_target_bar==4737 && !$discovery_mode){
 
                 //Idea Type
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
