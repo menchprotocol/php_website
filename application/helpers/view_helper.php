@@ -1848,7 +1848,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                                 $action_buttons .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" class="dropdown-item main__title" target="_blank">'.$anchor.'</a>';
                             }
 
-                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
+                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287')) && $access_level_i>=3){
 
                             //Standard button
                             $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).view_memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
@@ -2309,7 +2309,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Reset Alphabetic order
                             $action_buttons .= '<a href="javascript:void(0);" onclick="x_reset_sorting()" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287'))){
+                        } elseif(in_array($e__id_dropdown, $CI->config->item('n___6287')) && $access_level_e>=3){
 
                             //Standard button
                             $action_buttons .= '<a href="'.view_app_link($e__id_dropdown).view_memory(42903,42902).$e['e__handle'].'" class="dropdown-item main__title">'.$anchor.'</a>';
