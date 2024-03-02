@@ -173,7 +173,7 @@ foreach($this->X_model->fetch(array(
 
     //Always Have no Input option:
     if($special_routes){
-        $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+        //$special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
     } else {
         $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
     }
