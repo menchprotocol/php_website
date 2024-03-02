@@ -1,10 +1,5 @@
 <?php
 
-if(!isset($_GET['i__hashtag'])){
-    die('Missing Idea ID i__hashtag');
-}
-
-
 //Generate list & settings:
 $list_settings = list_settings($_GET['i__hashtag'], true);
 echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';

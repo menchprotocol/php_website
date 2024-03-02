@@ -170,13 +170,12 @@ foreach($this->X_model->fetch(array(
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         }
     }
-    if(in_array($app['e__id'], $this->config->item('n___42922'))){
-        //No Inputs
-        if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
-        } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
-        }
+
+    //Always Have no Input option:
+    if($special_routes){
+        $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+    } else {
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
     }
 
 
