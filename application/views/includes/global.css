@@ -1693,6 +1693,9 @@ label {
 .focus-cover .dropdown span.icon-block-sm {
     height: 24px !important;
 }
+.focus-cover .dropdown span.icon-block-sm {
+    height: 24px !important;
+}
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding-top: 3px !important;
     margin-left: 40px !important;
@@ -1700,9 +1703,6 @@ label {
 
 .edge-cover .coin-12273 .icon-block-sm {
     height: 19px !important;
-}
-.focus-cover.coin-12273 .icon-block-sm {
-    height: 29px !important;
 }
 .icon-block img{
     line-height: 100%;

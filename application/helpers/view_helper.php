@@ -1696,14 +1696,14 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             } elseif($x__type_target_bar==4737 && !$discovery_mode){
 
                 //Idea Type
-                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
             } elseif($x__type_target_bar==31004 && !$discovery_mode && $access_level_i>=3){
 
                 //Idea Access
-                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $access_level_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
@@ -1730,7 +1730,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
-                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
