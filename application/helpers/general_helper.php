@@ -634,16 +634,12 @@ function auto_login_player($is_ajax) {
 
             $player_e = verify_cookie();
             if($player_e){
-                //Login:
-                $CI->E_model->activate_session($player_e, true);
-
                 //Log them in:
                 if(!$is_ajax){
                     header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
                     exit;
                 }
             }
-
         }
 
 
