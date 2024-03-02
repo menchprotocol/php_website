@@ -3018,6 +3018,7 @@ h4.main__title{
     padding: 0;
     height: 18px;
     overflow: visible;
+    overflow-y: hidden;
 }
 
 
