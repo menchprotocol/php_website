@@ -566,16 +566,43 @@ function cookie_delete(){
     setcookie('auth_cookie', null, -1, '/');
 }
 
-function auto_loading(){
-    date_default_timezone_set('America/Los_Angeles');
+function verify_cookie(){
+
+    //Authenticate Cookie:
+    $cookie_parts = explode('ABCEFG',$_COOKIE['auth_cookie']);
+    $CI =& get_instance();
+
+    $es = $CI->E_model->fetch(array(
+        'e__id' => $cookie_parts[0],
+    ));
+
+    if(count($es) && $cookie_parts[2]==view__hash($cookie_parts[0].$cookie_parts[1])){
+
+        //Assign session & log transaction:
+        $CI->E_model->activate_session($es[0], false, true);
+        return $es[0];
+
+    } else {
+
+        //Cookie was invalid
+        cookie_delete();
+        return false;
+
+    }
+
 }
 
-function auto_login() {
+function auto_login_player($is_ajax) {
 
-    auto_loading();
+    date_default_timezone_set('America/Los_Angeles');
     @session_start();
     $CI =& get_instance();
-    $first_segment = $CI->uri->segment(1);
+
+
+    $e_user = false;
+    $first_segment = ( $is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $CI->uri->segment(1));
+    $_SERVER['REQUEST_URI'] = ( isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI'] );
+    $REQUEST_URI = ( strlen($REQUEST_URI) ? $REQUEST_URI : view_app_link(4269) );
     $player_e = superpower_unlocked();
     $is_login_verified = isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
 
@@ -587,23 +614,49 @@ function auto_login() {
 
 
         if($is_login_verified){
+
             foreach($CI->E_model->fetch(array(
                 'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-            )) as $e_user){
+            )) as $player_e){
 
                 //Login:
-                $CI->E_model->activate_session($e_user, true);
+                $CI->E_model->activate_session($player_e, true);
 
                 //Log them in:
-                header("Location: " . ( $_SERVER['REQUEST_URI'] ? $_SERVER['REQUEST_URI'] : view_app_link(4269) ), true, 307);
-                exit;
+                if(!$is_ajax){
+                    header("Location: " . $REQUEST_URI, true, 307);
+                    exit;
+                }
+
             }
+
+        } elseif(isset($_COOKIE['auth_cookie'])) {
+
+            $player_e = verify_cookie();
+            if($player_e){
+                //Login:
+                $CI->E_model->activate_session($player_e, true);
+
+                //Log them in:
+                if(!$is_ajax){
+                    header("Location: " . $REQUEST_URI, true, 307);
+                    exit;
+                }
+            }
+
         }
 
-        header("Location: " . view_app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
-        exit;
+
+        //Log them in:
+        if(!$is_ajax){
+            header("Location: " . view_app_link(4269).( strlen($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
+            exit;
+        }
 
     }
+
+    return $player_e;
+
 }
 
 function round_minutes($seconds){
@@ -866,9 +919,13 @@ function home_url(){
     return ( $player_e ? view_memory(42903,42902).$player_e['e__handle'] : view_memory(42903,14565) );
 }
 
-function superpower_unlocked($superpower_e__id = null, $force_redirect = 0)
+function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $session_player_e = false)
 {
 
+    if(isset($session_player_e['e__id'])){
+        //We have the player!
+        return $session_player_e;
+    }
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
     $player_e = $CI->session->userdata('session_up');

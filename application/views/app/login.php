@@ -17,25 +17,7 @@ if(superpower_unlocked()) {
 
 } elseif(isset($_COOKIE['auth_cookie'])){
 
-    //Authenticate Cookie:
-    $cookie_parts = explode('ABCEFG',$_COOKIE['auth_cookie']);
-
-    $es = $this->E_model->fetch(array(
-        'e__id' => $cookie_parts[0],
-        'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-    ));
-
-    if(count($es) && $cookie_parts[2]==view__hash($cookie_parts[0].$cookie_parts[1])){
-
-        //Assign session & log transaction:
-        $this->E_model->activate_session($es[0], false, true);
-
-    } else {
-
-        //Cookie was invalid
-        cookie_delete();
-
-    }
+    verify_cookie();
 
     js_php_redirect($next_url, 13);
 

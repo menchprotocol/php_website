@@ -4,13 +4,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Ajax extends CI_Controller
 {
 
+    public $player_e = array();
+
     function __construct()
     {
         parent::__construct();
 
         $this->output->enable_profiler(FALSE);
 
-        auto_loading();
+        $this->player_e = auto_login_player(false);
 
     }
 
@@ -47,7 +49,7 @@ class Ajax extends CI_Controller
     function i_editor_load()
     {
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
@@ -111,7 +113,7 @@ class Ajax extends CI_Controller
         foreach(array_intersect($this->config->item('n___'.$i__type), $this->config->item('n___42179')) as $dynamic_e__id){
 
             $superpowers_required = array_intersect($this->config->item('n___10957'), $e___42179[$dynamic_e__id]['m__following']);
-            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
+            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required), 0, $this->player_e)){
                 continue;
             }
 
@@ -231,7 +233,7 @@ class Ajax extends CI_Controller
     function i_editor_save(){
 
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
 
             return view_json(array(
@@ -335,7 +337,7 @@ class Ajax extends CI_Controller
                             $valid_hashtag = true;
                             array_push($i_references, $i_found);
                         }
-                        if(!$valid_hashtag && superpower_unlocked(10939)){
+                        if(!$valid_hashtag && superpower_unlocked(10939, 0, $this->player_e)){
                             return view_json(array(
                                 'status' => 0,
                                 'message' => 'ERROR: '.$word.' is not a valid/active Idea',
@@ -850,7 +852,7 @@ class Ajax extends CI_Controller
     function i_copy(){
 
         //Auth member and check required variables:
-        $player_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -941,7 +943,7 @@ class Ajax extends CI_Controller
          *
          * */
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -1066,7 +1068,7 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
         if (!$player_e) {
             view_json(array(
                 'status' => 0,
@@ -1133,7 +1135,7 @@ class Ajax extends CI_Controller
     function e_delete(){
 
         //Auth member and check required variables:
-        $player_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -1161,7 +1163,7 @@ class Ajax extends CI_Controller
     function e_copy(){
 
         //Auth member and check required variables:
-        $player_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -1322,7 +1324,7 @@ class Ajax extends CI_Controller
          * */
 
         //Authenticate Member:
-        $member_e = superpower_unlocked(10939);
+        $member_e = superpower_unlocked(10939, 0, $this->player_e);
         if (!$member_e) {
             return view_json(array(
                 'status' => 0,
@@ -1382,7 +1384,7 @@ class Ajax extends CI_Controller
     {
 
         //Auth member and check required variables:
-        $player_e = superpower_unlocked(10939);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -1570,7 +1572,7 @@ class Ajax extends CI_Controller
     function e_editor_load()
     {
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         $e___11035 = $this->config->item('e___11035');
         $e___42776 = $this->config->item('e___42776');
         $e___4592 = $this->config->item('e___4592'); //Data types
@@ -1838,7 +1840,7 @@ class Ajax extends CI_Controller
     function e_editor_save()
     {
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
@@ -2059,7 +2061,7 @@ class Ajax extends CI_Controller
          *
          * */
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
@@ -2379,7 +2381,7 @@ class Ajax extends CI_Controller
 
     function e_toggle_e(){
 
-        $player_e = superpower_unlocked(28714);
+        $player_e = superpower_unlocked(28714, 0, $this->player_e);
         if(!$player_e){
 
             return view_json(array(
@@ -2579,7 +2581,7 @@ class Ajax extends CI_Controller
     function x_set_text(){
 
         //Authenticate Member:
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         $e___12112 = $this->config->item('e___12112');
 
         if (!$player_e) {
@@ -2655,7 +2657,7 @@ class Ajax extends CI_Controller
         }
 
         //Log Modal View
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         $this->X_model->create(array(
             'x__player' => ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 ),
             'x__type' => 14576, //MODAL VIEWED
@@ -2774,7 +2776,7 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_e = superpower_unlocked(13422);
+        $player_e = superpower_unlocked(13422, 0, $this->player_e);
 
         if (!$player_e) {
             view_json(array(
@@ -2832,7 +2834,7 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
 
             return view_json(array(
@@ -2911,7 +2913,7 @@ class Ajax extends CI_Controller
     function x_read_only_complete(){
 
         //Validate/Fetch idea:
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -2963,7 +2965,7 @@ class Ajax extends CI_Controller
 
 
         //Validate/Fetch idea:
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
@@ -3011,7 +3013,7 @@ class Ajax extends CI_Controller
             'i__id' => $_POST['i__id'],
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ));
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -3064,7 +3066,7 @@ class Ajax extends CI_Controller
 
     function x_write(){
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
@@ -3395,7 +3397,7 @@ class Ajax extends CI_Controller
     function x_link_toggle(){
 
         //Authenticate Member:
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
         if (!$player_e) {
 
             return view_json(array(
@@ -3465,7 +3467,7 @@ class Ajax extends CI_Controller
          *
          * */
 
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
@@ -3502,7 +3504,7 @@ class Ajax extends CI_Controller
         $page_num = ( isset($_POST['page_num']) && intval($_POST['page_num'])>=2 ? intval($_POST['page_num']) : 1 );
         $next_page = ($page_num+1);
         $query_offset = (($page_num-1)*view_memory(6404,11064));
-        $player_e = superpower_unlocked();
+        $player_e = superpower_unlocked(null, 0, $this->player_e);
 
         $message = '';
 

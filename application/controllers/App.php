@@ -10,7 +10,7 @@ class App extends CI_Controller
 
         $this->output->enable_profiler(FALSE);
 
-        auto_login();
+        auto_login_player(false);
     }
 
     function index(){
