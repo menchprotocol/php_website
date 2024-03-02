@@ -1693,6 +1693,9 @@ label {
     height: 24px !important;
 }
 .focus-cover .dropdown span.icon-block-sm {
+    height: 24px !important;
+}
+.focus-cover.coin-6255 .dropdown span.icon-block-sm {
     height: 47px !important;
 }
 .dynamic_editing_input textarea.form-control.save_i__message{
@@ -1752,7 +1755,7 @@ label {
 }
 .platform-large{
     font-size: 8em !important;
-    padding:34px 0;
+    padding:0 0 34px 0;
 }
 .platform-text{
     font-size: 1.5em !important;
@@ -3174,10 +3177,6 @@ h4.main__title{
 }
 
 @media (max-width:610px) {
-
-    .main_item {
-        padding: 0 5px;
-    }
 
     .add-input{
         padding-left: 3px !important;
