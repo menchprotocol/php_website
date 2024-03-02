@@ -2481,7 +2481,7 @@ class Ajax extends CI_Controller
         if (!$valid_email && !$possible_phone) {
             return view_json(array(
                 'status' => 0,
-                'message' => '['.$_POST['account_email_phone'].'] is Invalid!',
+                'message' => ( strlen($_POST['account_email_phone']) ? '['.$_POST['account_email_phone'].'] is Invalid!' : 'Enter your email to continue...' ),
             ));
         } elseif (!isset($_POST['sign_i__id'])) {
             return view_json(array(
