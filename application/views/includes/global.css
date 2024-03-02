@@ -1689,12 +1689,11 @@ label {
 .edge-cover .card_covers .icon-block-sm {
     height: 21px !important;
 }
-.coin-12274 .creator_headline,
-.focus-cover .dropdown span.icon-block-sm {
+.coin-12274 .creator_headline {
     height: 24px !important;
 }
 .focus-cover .dropdown span.icon-block-sm {
-    height: 24px !important;
+    height: 47px !important;
 }
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding-top: 3px !important;
