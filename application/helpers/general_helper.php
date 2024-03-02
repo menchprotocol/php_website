@@ -1660,6 +1660,11 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
         }
     }
 
+    //Source or its status is system locked?
+    if(in_array($e['e__id'], $CI->config->item('n___32145'))){
+        //Read Only
+        return 0;
+    }
 
     $is_public = in_array($e['e__privacy'], $CI->config->item('n___33240'));
     $is_author = false;

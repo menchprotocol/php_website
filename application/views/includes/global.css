@@ -2441,12 +2441,6 @@ input.form-control {
 .focus-cover.coin-12273 .inner-content{
     max-height: none;
 }
-.bottom-wrapper{
-    display: block;
-    position: absolute;
-    z-index: 995;
-    width: 100%;
-}
 .coinface-12274 .cover-content .inner-content {
     padding: 0 2px 0;
 }
