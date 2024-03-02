@@ -1752,7 +1752,7 @@ label {
 }
 .platform-large{
     font-size: 8em !important;
-    padding:0 0 34px 0;
+    padding:34px 0;
 }
 .platform-text{
     font-size: 1.5em !important;
