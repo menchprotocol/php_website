@@ -2131,7 +2131,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Start with top bar:
-    if(!$cache_app && !$is_app && $access_level_e>=2) {
+    if(!$cache_app && !$is_app && $access_level_e>=1) {
 
         //Source Link Groups
         $link_type_id = 0;
@@ -2355,7 +2355,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Bottom Bar
-    if(!$is_cache && !$is_app && $access_level_e>=2){
+    if(!$is_cache && !$is_app && $access_level_e>=1){
 
         $ui .= '<div class="card_covers hideIfEmpty">';
 
