@@ -3175,6 +3175,10 @@ h4.main__title{
 
 @media (max-width:610px) {
 
+    .main_item {
+        padding: 0 5px;
+    }
+
     .add-input{
         padding-left: 3px !important;
     }
