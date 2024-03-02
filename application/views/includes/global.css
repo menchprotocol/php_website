@@ -1181,7 +1181,7 @@ a.headline {
 .focus-cover .space-content,
 .focus-cover .i_cache,
 .large-frame>.i_cache{
-    padding: 0 3px 0 !important;
+    padding: 0 0 0 !important;
 }
 
 .space-content{
@@ -3177,6 +3177,10 @@ h4.main__title{
 }
 
 @media (max-width:610px) {
+
+    .focus-cover .i_cache{
+        padding: 0 5px 0 !important;
+    }
 
     .add-input{
         padding-left: 3px !important;
