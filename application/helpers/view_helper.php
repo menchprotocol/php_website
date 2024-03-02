@@ -2117,7 +2117,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     if($is_app && isset($e['x__message']) && strlen($e['x__message'])){
         $ui .= '<span class="icon-block" data-toggle="tooltip" data-placement="top" title="'.$e['x__message'].'"><i class="far fa-info-circle"></i></span>';
-    } else if($access_level_e>=3){
+    } else if($x__id && $access_level_e>=3){
         //Main description:
         $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . ( in_array($e['x__type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '">'.htmlentities($e['x__message']).'</div>';
     }
