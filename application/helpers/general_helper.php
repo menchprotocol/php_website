@@ -602,7 +602,7 @@ function auto_login_player($is_ajax) {
     $e_user = false;
     $first_segment = ( $is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $CI->uri->segment(1));
     $_SERVER['REQUEST_URI'] = ( isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI'] );
-    $REQUEST_URI = ( strlen($REQUEST_URI) ? $REQUEST_URI : view_app_link(4269) );
+    $_SERVER['REQUEST_URI'] = ( strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_link(4269) );
     $player_e = superpower_unlocked();
     $is_login_verified = isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
 
@@ -624,7 +624,7 @@ function auto_login_player($is_ajax) {
 
                 //Log them in:
                 if(!$is_ajax){
-                    header("Location: " . $REQUEST_URI, true, 307);
+                    header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
                     exit;
                 }
 
@@ -639,7 +639,7 @@ function auto_login_player($is_ajax) {
 
                 //Log them in:
                 if(!$is_ajax){
-                    header("Location: " . $REQUEST_URI, true, 307);
+                    header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
                     exit;
                 }
             }
