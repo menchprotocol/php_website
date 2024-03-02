@@ -1627,7 +1627,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Bottom Bar
-    if(!$cache_app && $access_level_i>=1){
+    if(!$cache_app && $access_level_i>=2){
 
         $bottom_bar_ui = '';
 
@@ -2131,7 +2131,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Start with top bar:
-    if(!$cache_app && !$is_app && $access_level_e>=1) {
+    if(!$cache_app && !$is_app && $access_level_e>=2) {
 
         //Source Link Groups
         $link_type_id = 0;
