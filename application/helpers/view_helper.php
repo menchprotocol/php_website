@@ -1627,7 +1627,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Bottom Bar
-    if(!$cache_app && $access_level_i>=2){
+    if(!$cache_app){
 
         $bottom_bar_ui = '';
 
@@ -2355,7 +2355,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Bottom Bar
-    if(!$is_cache && !$is_app){
+    if(!$is_cache && !$is_app && $access_level_e>=2){
 
         $ui .= '<div class="card_covers hideIfEmpty">';
 
