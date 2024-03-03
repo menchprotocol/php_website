@@ -43,13 +43,35 @@ class App extends CI_Controller
         }
 
 
-
-        if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
+        if($target_hashtag && strlen($target_hashtag)){
+            //Verify:
             foreach($this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
+                'LOWER(i__hashtag)' => strtolower($target_hashtag),
             )) as $i_found){
-                $focus_i = $i_found;
+                $target_i = $i_found;
             }
+        }
+
+
+        if(strlen($_GET['i__hashtag'])){
+
+            //Validate Focus Idea:
+            if($target_i && $_GET['i__hashtag']==view_memory(6404,4235)){
+
+                //This is the starting point:
+                $_GET['i__hashtag'] = $target_hashtag;
+                $focus_i = $target_i;
+
+            } else {
+
+                foreach($this->I_model->fetch(array(
+                    'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
+                )) as $i_found){
+                    $focus_i = $i_found;
+                }
+
+            }
+
             if(!$focus_i){
                 //See if we can find via ID?
                 if(is_numeric($_GET['i__hashtag'])){
@@ -60,6 +82,7 @@ class App extends CI_Controller
                     }
                 }
             }
+
             if($app_e__id==33286 && $focus_i && $focus_i['i__hashtag']!==$_GET['i__hashtag']){
                 //Adjust URL Case Sensitive:
                 return redirect_message(view_memory(42903,33286).$focus_i['i__hashtag']);
@@ -92,25 +115,7 @@ class App extends CI_Controller
 
 
 
-        if($target_hashtag && strlen($target_hashtag)){
-            //Validate Focus Idea:
-            if($focus_i && $target_hashtag==view_memory(6404,4235)){
 
-                //This is the starting point:
-                $target_hashtag = $_GET['i__hashtag'];
-                $target_i = $focus_i;
-
-            } else {
-
-                //Verify:
-                foreach($this->I_model->fetch(array(
-                    'LOWER(i__hashtag)' => strtolower($target_hashtag),
-                )) as $i_found){
-                    $target_i = $i_found;
-                }
-
-            }
-        }
 
 
 

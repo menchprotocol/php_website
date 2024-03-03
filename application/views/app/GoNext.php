@@ -1,6 +1,6 @@
 <?php
 
-die('not wired yet');
+//die('not wired yet');
 //$target_i__hashtag, $focus_i__hashtag
 
 if(!$this->X_model->i_has_started($player_e['e__id'], $target_i__hashtag)) {

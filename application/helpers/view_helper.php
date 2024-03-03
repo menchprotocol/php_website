@@ -1513,6 +1513,13 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $x__id = ( isset($i['x__id']) && $i['x__id']>0 ? $i['x__id'] : 0 );
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
+    $goto_start = in_array($x__type, $CI->config->item('n___42988'));
+    $is_starting_point = count($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
+        'x__next' => $i['i__id'],
+        'x__following' => 4235,
+    )));
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
 
     $player_e = superpower_unlocked();
@@ -1734,12 +1741,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==4235 && !$discovery_mode && count($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
-                    'x__next' => $i['i__id'],
-                    'x__following' => 4235,
-                ))) && $access_level_i>=1){
+            } elseif($x__type_target_bar==4235 && !$discovery_mode && $is_starting_point && $access_level_i>=1){
 
                 //GET STARTED
                 $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm bold-btn"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
