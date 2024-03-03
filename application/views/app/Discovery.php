@@ -49,6 +49,8 @@ $breadcrum_content = null;
 
 if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
+    echo '['.$target_i__hashtag.'/'.$focus_i['i__hashtag'].']';
+
     $find_previous = $this->X_model->find_previous($x__player, $target_i__hashtag, $focus_i['i__id']);
     if(count($find_previous)){
 
