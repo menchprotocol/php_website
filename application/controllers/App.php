@@ -41,6 +41,12 @@ class App extends CI_Controller
         if($focus_hashtag && strlen($focus_hashtag) && !isset($_GET['i__hashtag'])){
             $_GET['i__hashtag'] = $focus_hashtag;
         }
+        if(!isset($_GET['e__handle'])){
+            $_GET['e__handle'] = 0;
+        }
+        if(!isset($_GET['i__hashtag'])){
+            $_GET['i__hashtag'] = 0;
+        }
 
 
         if($target_hashtag && strlen($target_hashtag)){
