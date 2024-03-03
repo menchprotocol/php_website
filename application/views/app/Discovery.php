@@ -49,8 +49,6 @@ $breadcrum_content = null;
 
 if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
-    echo '['.$target_i__hashtag.'/'.$focus_i['i__hashtag'].']';
-
     $find_previous = $this->X_model->find_previous($x__player, $target_i__hashtag, $focus_i['i__id']);
     if(count($find_previous)){
 
@@ -108,6 +106,7 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
     }
 }
 
+/*
 if(!$breadcrum_content){
     //See if any visible top ideas:
     foreach($this->X_model->fetch(array(
@@ -121,6 +120,7 @@ if(!$breadcrum_content){
         $breadcrum_content .= '</li>';
     }
 }
+*/
 
 if($breadcrum_content){
 
