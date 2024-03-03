@@ -4,10 +4,11 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
-
+/*
 if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
     echo '<div class="alert alert-default" role="alert"><span class="icon-block-sm">'.$e___11035[33286]['m__cover'].'</span>You can edit this idea in <a href="'.view_memory(42903,33286).$focus_i['i__hashtag'].'"><b><u>'.$e___11035[33286]['m__title'].'</u></b></a></div>';
 }
+*/
 
 //NEXT IDEAS
 $is_next = $this->X_model->fetch(array(
