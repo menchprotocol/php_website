@@ -1720,7 +1720,9 @@ label {
     margin: 0 0 0 0 !important;
     font-weight: bold;
 }
-
+.horizontal_menu a {
+    display: inline-block;
+}
 .block-x, i, .nav .icon-block i,
 .icon-block-sm   i { font-size: 1.21em !important; }
 .icon-block      i { font-size: 1.34em !important; }
