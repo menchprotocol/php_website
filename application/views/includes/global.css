@@ -1726,6 +1726,7 @@ label {
 .horizontal_menu a {
     display: inline-block;
     white-space: normal;
+    padding: 0;
     margin: 0;
     overflow: visible;
 }
