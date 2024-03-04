@@ -3576,7 +3576,10 @@ class Ajax extends CI_Controller
         $miscstats = '';
 
         //See if we have any idea or source targets to limit our stats:
-        if(isset($_POST['e__handle']) && strlen($_POST['e__handle']) && $_POST['e__handle']){
+        $has_handle = isset($_POST['e__handle']) && strlen($_POST['e__handle']) && $_POST['e__handle']!='0';
+        $has_hashtag = isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && $_POST['i__hashtag']!='0';
+
+        if($has_handle){
 
             //See stats for this source:
             $es = $this->E_model->fetch(array(
@@ -3589,7 +3592,7 @@ class Ajax extends CI_Controller
                 ));
             }
 
-        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && $_POST['i__hashtag']){
+        } elseif($has_hashtag){
 
             //See stats for this idea:
             $is = $this->I_model->fetch(array(
@@ -3624,7 +3627,7 @@ class Ajax extends CI_Controller
 
                     if($x__type2==12273){
 
-                        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
+                        if($has_handle){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -3634,7 +3637,7 @@ class Ajax extends CI_Controller
                                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
+                        } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->I_model->fetch(array(
@@ -3654,7 +3657,7 @@ class Ajax extends CI_Controller
 
                     } elseif($x__type2==12274){
 
-                        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
+                        if($has_handle){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -3663,7 +3666,7 @@ class Ajax extends CI_Controller
                                 'e__privacy' => $x__type3,
                             ), array('x__follower'), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
+                        } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->X_model->fetch(array(
@@ -3683,7 +3686,7 @@ class Ajax extends CI_Controller
 
                     } else {
 
-                        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
+                        if($has_handle){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
@@ -3691,7 +3694,7 @@ class Ajax extends CI_Controller
                                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
-                        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && count($recursive_down_ids['recursive_i_ids'])){
+                        } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
