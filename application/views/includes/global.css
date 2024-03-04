@@ -1729,6 +1729,8 @@ label {
     padding: 0;
     margin: 0;
     overflow: visible;
+    width: auto;
+    font-size: 0.89em;
 }
 .block-x, i, .nav .icon-block i,
 .icon-block-sm   i { font-size: 1.21em !important; }
