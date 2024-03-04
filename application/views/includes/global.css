@@ -1725,6 +1725,9 @@ label {
 }
 .horizontal_menu a {
     display: inline-block;
+    white-space: normal;
+    margin: 0;
+    overflow: visible;
 }
 .block-x, i, .nav .icon-block i,
 .icon-block-sm   i { font-size: 1.21em !important; }
