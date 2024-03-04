@@ -3571,12 +3571,12 @@ class Ajax extends CI_Controller
 
     }
 
-    function x_33292(){
+    function x__refresh_gameplay(){
 
         $miscstats = '';
 
         //See if we have any idea or source targets to limit our stats:
-        if(isset($_POST['e__handle']) && strlen($_POST['e__handle'])){
+        if(isset($_POST['e__handle']) && strlen($_POST['e__handle']) && $_POST['e__handle']){
 
             //See stats for this source:
             $es = $this->E_model->fetch(array(
@@ -3589,7 +3589,7 @@ class Ajax extends CI_Controller
                 ));
             }
 
-        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag'])){
+        } elseif(isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && $_POST['i__hashtag']){
 
             //See stats for this idea:
             $is = $this->I_model->fetch(array(

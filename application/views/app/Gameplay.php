@@ -99,8 +99,8 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 <script>
 
-    function x_33292(){
-        $.post("/ajax/x_33292", {
+    function x__refresh_gameplay(){
+        $.post("/ajax/x__refresh_gameplay", {
             e__handle: '<?= $e__handle ?>',
             i__hashtag: '<?= $i__hashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -126,7 +126,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         $("h1").append('<a class="icon-block" href="javascript:void(0);" onclick="$(\'.advanced-stats\').toggleClass(\'hidden\');"><i class="fas fa-search-plus advanced-stats" style="font-size: 0.34em !important;"></i><i class="fas fa-search-minus advanced-stats hidden" style="font-size: 0.34em !important;"></i></a>').append('<a class="icon-block-sm advanced-stats hidden" href="javascript:void(0);" onclick="$(\'.points_frame\').toggleClass(\'hidden\');"><span class="points_frame"><i class="far fa-hexagon-plus fa-spin-slow" aria-hidden="true"></i></span><span class="points_frame hidden"><i class="far fa-hexagon-minus fa-spin-slow" aria-hidden="true"></i></span></a>');
 
         //Load initial stats:
-        x_33292();
+        x__refresh_gameplay();
 
         //Watch for click to expand:
         $(".card_frame").click(function (e) {
@@ -135,7 +135,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         //Update stats live:
         $(function () {
-            setInterval(x_33292, js_e___6404[33292]['m__message']);
+            setInterval(x__refresh_gameplay, js_e___6404[33292]['m__message']);
         });
 
     });
