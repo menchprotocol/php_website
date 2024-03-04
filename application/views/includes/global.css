@@ -1720,6 +1720,9 @@ label {
     margin: 0 0 0 0 !important;
     font-weight: bold;
 }
+.horizontal_menu  {
+    width: 377px;
+}
 .horizontal_menu a {
     display: inline-block;
 }
