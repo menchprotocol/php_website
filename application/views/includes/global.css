@@ -1635,6 +1635,8 @@ label {
 }
 .popover-body .icon-block-xs{
     width:16px !important;
+    height:16px !important;
+    font-size: 0.89em !important;
 }
 
 .block-menu .dropdown-item .icon-block {
