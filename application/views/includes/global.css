@@ -1701,6 +1701,7 @@ label {
 .focus-cover .dropdown span.icon-block-sm {
     height: 24px !important;
 }
+.view_6255 .focus-cover .dropdown span.icon-block-sm,
 .focus-cover.coin-6255 .dropdown span.icon-block-sm {
     height: 47px !important;
 }
