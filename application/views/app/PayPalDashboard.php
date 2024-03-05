@@ -36,7 +36,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
 
     $i_query = $this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
         'x__following' => $es[0]['e__id'],
     ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
@@ -177,7 +177,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
 
         $max_available = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26189,
         ), array(), 1);
@@ -361,7 +361,7 @@ if(count($i_query)){
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                             'x__next' => $origin,
                             'x__following' => 30564, //None Promoter
                         )))){

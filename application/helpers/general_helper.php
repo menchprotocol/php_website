@@ -322,7 +322,7 @@ function i_spots_remaining($i__id){
     $spots_remaining = -1; //No limits
     $max_available = $CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___42350')) . ')' => null, //Active Writes
+        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i__id,
         'x__following' => 26189,
     ), array(), 1);
@@ -913,6 +913,31 @@ function home_url(){
     $CI =& get_instance();
     $player_e = superpower_unlocked();
     return ( $player_e ? view_memory(42903,42902).$player_e['e__handle'] : view_memory(42903,14565) );
+}
+
+function i_startable($i){
+
+    $CI =& get_instance();
+
+    foreach($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'x__next' => $i['i__id'],
+        'x__following' => 26557, //Time Ends
+    )) as $time){
+        if(strtotime($time['x__message']) < time()){
+            //End time passed, cannot start:
+            return false;
+        }
+    }
+
+    //Must have access and be startable idea:
+    return access_level_i(null, $i['i__id'], $i) && count($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'x__next' => $i['i__id'],
+        'x__following' => 4235,
+    )));
 }
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $session_player_e = false)

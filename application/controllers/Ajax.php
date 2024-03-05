@@ -3112,7 +3112,7 @@ class Ajax extends CI_Controller
         //Any Preg Remove?
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $_POST['i__id'],
             'x__following' => 32103, //Preg Remove
         )) as $preg_query){
@@ -3136,7 +3136,7 @@ class Ajax extends CI_Controller
         if(!strlen($_POST['x_write'])){
             if(!count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $_POST['i__id'],
                 'x__following' => 28239, //Required
             )))){
@@ -3167,13 +3167,13 @@ class Ajax extends CI_Controller
 
             $time_starts = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $_POST['i__id'],
                 'x__following' => 42203, //Time Equal or Greater Than
             ), array(), 1);
             $time_ends = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $_POST['i__id'],
                 'x__following' => 26557, //Time Ends
             ), array(), 1);
@@ -3201,13 +3201,13 @@ class Ajax extends CI_Controller
 
             $min_value = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $_POST['i__id'],
                 'x__following' => 31800, //Min Value
             ), array(), 1);
             $max_value = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $_POST['i__id'],
                 'x__following' => 31801, //Max Value
             ), array(), 1);
@@ -3278,7 +3278,7 @@ class Ajax extends CI_Controller
         //Any Preg Match?
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $_POST['i__id'],
             'x__following' => 26611, //Preg Match
         )) as $preg_query){
@@ -3287,7 +3287,7 @@ class Ajax extends CI_Controller
                 //Do we have a custom message:
                 $preg_query_message = $this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $_POST['i__id'],
                     'x__following' => 30998, //Preg Match Error
                 ));

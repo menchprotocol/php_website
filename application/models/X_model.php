@@ -1569,7 +1569,7 @@ class X_model extends CI_Model
         //Can they skip without selecting anything?
         $can_skip = !count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $focus_i__id,
             'x__following' => 28239, //Required
         )));
@@ -1589,7 +1589,7 @@ class X_model extends CI_Model
         if(!$can_skip && !$is_single_selection){
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $focus_i__id,
                 'x__following' => 40834, //Min Selection
             ), array(), 1) as $limit){
@@ -1607,7 +1607,7 @@ class X_model extends CI_Model
         if(!$is_single_selection){
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $focus_i__id,
                 'x__following' => 40833, //Max Selection
             ), array(), 1) as $limit){

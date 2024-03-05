@@ -339,15 +339,10 @@ class App extends CI_Controller
         if($app_e__id==30795 && $target_i && $focus_i && $player_e && $target_i['i__hashtag']==$focus_i['i__hashtag']){
 
             //Starting point, make sure all good:
-            if(!count($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
-                'x__next' => $target_i['i__id'],
-                'x__following' => 4235,
-            )))){
+            if(!i_startable($target_i)){
 
                 //Not a valid starting point:
-                return redirect_message(home_url(), '<div class="alert alert-warning" role="alert">#'.$target_i['i__hashtag'].' is not a valid starting point.</div>');
+                return redirect_message(home_url(), '<div class="alert alert-warning" role="alert">#'.$target_i['i__hashtag'].' is not an active starting point.</div>');
 
             } elseif(!$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])){
 

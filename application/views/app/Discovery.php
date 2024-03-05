@@ -36,7 +36,7 @@ $target_i__id = ( count($target_i) ? $target_i['i__id'] : 0 );
 $target_completed = false; //Assume main intent not yet completed, unless proven otherwise
 $can_skip = !count($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
     'x__next' => $focus_i['i__id'],
     'x__following' => 28239, //Required
 )));
@@ -245,25 +245,25 @@ if($target_i__hashtag) {
 
             $currency_types = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $focus_i['i__id'],
                 'x__following IN (' . join(',', $this->config->item('n___26661')) . ')' => null, //Currency
             ));
             $total_dues = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $focus_i['i__id'],
                 'x__following' => 26562, //Total Due
             ));
             $cart_max = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $focus_i['i__id'],
                 'x__following' => 29651, //Cart Max Quantity
             ));
             $cart_min = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $focus_i['i__id'],
                 'x__following' => 31008, //Cart Min Quantity
             ));
@@ -289,7 +289,7 @@ if($target_i__hashtag) {
 
                 $digest_fees = count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $focus_i['i__id'],
                     'x__following' => 30589, //Digest Fees
                 )));
@@ -303,7 +303,7 @@ if($target_i__hashtag) {
                 $info_append .= '<div class="sub_note">';
                 if(!count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $focus_i['i__id'],
                     'x__following' => 30615, //Is Refundable
                 )))){
@@ -547,7 +547,7 @@ if($target_i__hashtag) {
                 //Steps
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $focus_i['i__id'],
                     'x__following' => 31813, //Steps
                 )) as $num_steps){
@@ -559,7 +559,7 @@ if($target_i__hashtag) {
                 //Min Value
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $focus_i['i__id'],
                     'x__following' => 31800, //Min Value
                 )) as $num_steps){
@@ -571,7 +571,7 @@ if($target_i__hashtag) {
                 //Max Value
                 foreach($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $focus_i['i__id'],
                     'x__following' => 31801, //Max Value
                 )) as $num_steps){
@@ -584,7 +584,7 @@ if($target_i__hashtag) {
 
                 $input_type = (count($this->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $focus_i['i__id'],
                     'x__following' => 32442, //Select Time
                 ))) ? 'datetime-local'  : 'date' );

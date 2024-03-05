@@ -161,7 +161,7 @@ foreach($list_settings['column_i'] as $i_var){
 
     $max_available = $this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42350')) . ')' => null, //Active Writes
+        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i_var['i__id'],
         'x__following' => 26189,
     ), array(), 1);
