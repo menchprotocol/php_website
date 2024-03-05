@@ -941,6 +941,9 @@ class E_model extends CI_Model
 
         boost_power();
 
+        $action_command1 = trim($action_command1);
+        $action_command2 = trim($action_command2);
+
 
         if(!in_array($action_e__id, $this->config->item('n___4997'))) {
 

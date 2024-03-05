@@ -168,16 +168,6 @@ echo '</div>';
 echo view_i_nav(true, $focus_i);
 
 
-//Mark this as skipped since there is nothing to choose from:
-if (!count($is_next) && !count($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__player' => $x__player,
-        'x__previous' => $focus_i['i__id'],
-    )))) {
-    //Skipped:
-    $this->X_model->mark_complete(31022, $x__player, $target_i__id, $focus_i);
-}
 
 
 
