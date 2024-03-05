@@ -1522,6 +1522,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $goto_start = in_array($x__type, $CI->config->item('n___42988'));
     $i_startable = i_startable($i);
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
+    $superpower_10939 = superpower_unlocked(10939);
 
     $player_e = superpower_unlocked();
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
@@ -1537,7 +1538,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $has_sortable = $x__id > 0 && !$focus__node && $access_level_i>=3 && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
 
     if($discovery_mode || $cache_app) {
-        if($goto_start && $i_startable){
+        if(($goto_start || !$superpower_10939) && $i_startable){
             $href = view_memory(42903,30795).$target_i__hashtag.'/'.view_memory(6404,4235);
         } elseif($link_creator && $target_i__hashtag){
             $href = view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
@@ -2050,6 +2051,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
     $x__id = ( isset($e['x__id']) ? $e['x__id'] : 0);
     $access_level_e = access_level_e($e['e__handle'], 0, $e);
+    $superpower_10939 = superpower_unlocked(10939);
     $player_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
@@ -2264,7 +2266,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                             //Clone:
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_copy('.$e['e__id'].')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                        } elseif($e__id_dropdown==10673 && $x__id > 0 && $access_level_e>=3 && superpower_unlocked(10939)){
+                        } elseif($e__id_dropdown==10673 && $x__id > 0 && $access_level_e>=3 && $superpower_10939){
 
                             //UNLINK
                             $action_buttons .= '<a href="javascript:void(0);" onclick="e_delete(' . $x__id . ', '.$e['x__type'].')" class="dropdown-item main__title">'.$anchor.'</span></a>';
