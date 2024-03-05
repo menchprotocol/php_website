@@ -931,8 +931,10 @@ function i_startable($i){
         }
     }
 
+    $no_spots_remaining = ( i_spots_remaining($i['i__id'])==0 );
+
     //Must have access and be startable idea:
-    return access_level_i(null, $i['i__id'], $i) && count($CI->X_model->fetch(array(
+    return !$no_spots_remaining && access_level_i(null, $i['i__id'], $i) && count($CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
