@@ -850,28 +850,13 @@ function add_media(result_info){
 
 
 function load_card_clickers(){
-
-    $(".card_click_e, .card_click_i, .card_click_x").unbind();
+    $(".card_click").unbind();
     var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source';
-
-    $( ".card_click_e" ).click(function(e) {
+    $( ".card_click" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect(js_e___42903[42902]['m__message']+$(this).attr('e__handle'));
+            js_redirect($(this).attr('href'));
         }
     });
-
-    $('.card_click_i').click(function(e) {
-        if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect(js_e___42903[33286]['m__message']+$(this).attr('i__hashtag'));
-        }
-    });
-
-    $('.card_click_x').click(function(e) {
-        if($(e.target).closest(ignore_clicks).length < 1){
-            js_redirect(js_e___42903[33286]['m__message']+$(this).attr('i__hashtag'));
-        }
-    });
-
 }
 
 

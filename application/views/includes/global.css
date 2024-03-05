@@ -1162,11 +1162,11 @@ textarea.note-textarea{
     margin-bottom: 0;
 }
 
-.card_click_e, .card_click_i, .card_click_x, a:hover, a:hover * {
+.card_click, a:hover, a:hover * {
     cursor: pointer !important;
 }
 
-.focus-cover.card_click_e, .ignore-click, .focus-cover.card_click_i, .focus-cover.card_click_x {
+.focus-cover.card_click, .ignore-click {
     cursor: default !important;
 }
 
