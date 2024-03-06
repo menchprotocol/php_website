@@ -169,8 +169,6 @@ echo view_i_nav(true, $focus_i);
 
 
 
-
-
 //Fetch discovery
 $x_completes = $this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -678,6 +676,7 @@ if($target_i__hashtag){
 
 ?>
 
+<div class="import_idea_creator"></div>
 <script>
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
@@ -686,6 +685,9 @@ if($target_i__hashtag){
 <script>
 
     $(document).ready(function () {
+
+        //Import if needed:
+        $('.import_idea_creator').html($('.new_idea').html(''));
 
         show_more(<?= $focus_i['i__id'] ?>);
 
