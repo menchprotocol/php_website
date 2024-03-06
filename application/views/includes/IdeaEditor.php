@@ -46,67 +46,63 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                 <div class="idea_list_next cover-text hideIfEmpty"></div>
                 <div class="doclear">&nbsp;</div>
 
-                <div class="new_idea">
+                <!-- Idea Creator(s) -->
+                <div class="creator_box">
+                    <?php
+                    foreach($this->X_model->fetch(array(
+                        'x__following' => $player_e['e__id'],
+                        'x__type' => 41011, //PINNED FOLLOWER
+                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
+                        echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
+                        //TODO maybe give the option to remove?
+                    }
 
-                    <!-- Idea Creator(s) -->
-                    <div class="creator_box">
-                        <?php
-                        foreach($this->X_model->fetch(array(
-                            'x__following' => $player_e['e__id'],
-                            'x__type' => 41011, //PINNED FOLLOWER
-                            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
-                            echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
-                            //TODO maybe give the option to remove?
-                        }
+                    //Always append current user:
+                    echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($player_e['e__cover']).'</span></div>';
+                    ?>
+                </div>
 
-                        //Always append current user:
-                        echo '<div class="creator_headline first_headline"><span class="icon-block">'.view_cover($player_e['e__cover']).'</span></div>';
-                        ?>
-                    </div>
-
-                    <!-- Idea Message -->
-                    <div class="dynamic_editing_input" style="margin: 0 !important;">
-                        <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_i__message" placeholder="<?= ( strlen($e___6201[4736]['m__message']) ? $e___6201[4736]['m__message'] : $e___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
-                        <div class="media_outer_frame hideIfEmpty">
-                            <div id="media_frame" class="media_frame hideIfEmpty"></div>
-                            <div class="doclear">&nbsp;</div>
-                        </div>
-                    </div>
-
-                    <div class="inner_message left_padded">
-                        <div class="idea_list_previous hideIfEmpty"></div>
-                    </div>
-
-                    <div class="inner_message left_padded">
-
-                        <!-- EMOJI -->
-                        <div class="dynamic_editing_input no_padded float_right">
-                            <div class="dropdown emoji_selector">
-                                <button type="button" class="btn no-left-padding no-right-padding icon-block" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
-                                <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
-                            </div>
-                        </div>
-
-                        <!-- Upload -->
-                        <div class="dynamic_editing_input no_padded float_right">
-                            <a class="uploader_13572 icon-block" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
-                        </div>
-
-
-                        <!-- Idea Privacy -->
-                        <div class="dynamic_editing_input" style="margin: 0 !important;">
-                            <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, true); ?></div>
-                        </div>
-
-                        <!-- Idea Type -->
-                        <div class="dynamic_editing_input hidden_superpower__10939" style="margin: 0 !important;">
-                            <div class="dynamic_selector"><?= view_single_select_form(4737, 6677, false, true); ?></div>
-                        </div>
-
+                <!-- Idea Message -->
+                <div class="dynamic_editing_input" style="margin: 0 !important;">
+                    <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_i__message" placeholder="<?= ( strlen($e___6201[4736]['m__message']) ? $e___6201[4736]['m__message'] : $e___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
+                    <div class="media_outer_frame hideIfEmpty">
+                        <div id="media_frame" class="media_frame hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
-
                     </div>
+                </div>
+
+                <div class="inner_message left_padded">
+                    <div class="idea_list_previous hideIfEmpty"></div>
+                </div>
+
+                <div class="inner_message left_padded">
+
+                    <!-- EMOJI -->
+                    <div class="dynamic_editing_input no_padded float_right">
+                        <div class="dropdown emoji_selector">
+                            <button type="button" class="btn no-left-padding no-right-padding icon-block" id="emoji_i" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="far fa-face-smile"></i></button>
+                            <div class="dropdown-menu emoji_i" aria-labelledby="emoji_i"></div>
+                        </div>
+                    </div>
+
+                    <!-- Upload -->
+                    <div class="dynamic_editing_input no_padded float_right">
+                        <a class="uploader_13572 icon-block" href="javascript:void(0);" title="<?= $e___11035[13572]['m__title'] ?>"><?= $e___11035[13572]['m__cover'] ?></a>
+                    </div>
+
+
+                    <!-- Idea Privacy -->
+                    <div class="dynamic_editing_input" style="margin: 0 !important;">
+                        <div class="dynamic_selector"><?= view_single_select_form(31004, 31005, false, true); ?></div>
+                    </div>
+
+                    <!-- Idea Type -->
+                    <div class="dynamic_editing_input hidden_superpower__10939" style="margin: 0 !important;">
+                        <div class="dynamic_selector"><?= view_single_select_form(4737, 6677, false, true); ?></div>
+                    </div>
+
+                    <div class="doclear">&nbsp;</div>
 
                 </div>
 

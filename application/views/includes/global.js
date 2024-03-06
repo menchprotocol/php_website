@@ -860,6 +860,44 @@ function load_card_clickers(){
 }
 
 
+
+var busy_processing = false;
+function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, unit_fee){
+
+    var new_quantity = parseInt($('.input_ui_'+i__id+' .current_sales').text()) + increment;
+
+    if(new_quantity<1){
+        //Invalid new quantity
+        return false;
+    } else if (new_quantity<min_allowed){
+        if(min_allowed>1){
+            alert('Error: Minimum Allowed is '+min_allowed);
+        }
+        return false;
+    } else if (new_quantity>max_allowed){
+        alert('Error: Maximum Allowed is '+max_allowed);
+        return false;
+    } else if(busy_processing){
+        return false;
+    }
+
+    busy_processing = true;
+
+
+    var handling_total = ( unit_fee * new_quantity );
+    var new_total = ( unit_total * new_quantity );
+
+    //Update UI:
+    $(".input_ui_"+i__id+" .paypal_quantity").val(new_quantity);
+    $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
+    $(".input_ui_"+i__id+" .current_sales").text(new_quantity);
+    $(".input_ui_"+i__id+" .total_ui").text(new_total.toFixed(2));
+
+    busy_processing = false;
+
+}
+
+
 function random_animal(basic_style = false){
     var styles = ['fas','fad','fal','fat','fas','fad','fal','fat','fas','fad','fal','fat','fas fa-sharp','fal fa-sharp','fat fa-sharp'];
     var animals = ['fa-hippo','fa-otter','fa-sheep','fa-rabbit','fa-pig','fa-dog','fa-elephant','fa-deer','fa-cow','fa-alicorn','fa-rabbit','fa-monkey','fa-cat','fa-cat-space','fa-fish','fa-dragon','fa-whale','fa-turtle','fa-snake','fa-spider','fa-lobster','fa-duck','fa-dove','fa-crow','fa-dinosaur','fa-bee','fa-horse','fa-raccoon','fa-pegasus','fa-bat','fa-deer','fa-badger-honey','fa-squirrel','fa-ram','fa-dolphin','fa-bird','fa-crab','fa-worm','fa-kiwi-bird','fa-shrimp','fa-duck','fa-teddy-bear','fa-t-rex'];

@@ -2830,85 +2830,6 @@ class Ajax extends CI_Controller
         ));
     }
 
-    function x_upload()
-    {
-
-        //Authenticate Member:
-        $player_e = superpower_unlocked(null, 0, $this->player_e);
-        if (!$player_e) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-
-        } elseif (!isset($_POST['i__id'])) {
-
-            //Log this error!
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__player' => $player_e['e__id'],
-                'x__message' => 'x_upload() Missing POST ERROR',
-                'x__metadata' => array(
-                    'post' => $_POST,
-                ),
-            ));
-
-            return view_json(array(
-                'status' => 0,
-                'post' => $_POST,
-                'get' => $_GET,
-                'req' => $_REQUEST,
-                'message' => 'Missing IDEA',
-            ));
-
-        } elseif (!isset($_POST['target_i__id'])) {
-
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top IDEA',
-            ));
-
-        }
-
-        //Validate Idea:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-        if(count($is)<1){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea ID',
-            ));
-        }
-
-
-        //Delete previous answer(s):
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__previous' => $is[0]['i__id'],
-            'x__player' => $player_e['e__id'],
-        )) as $x_progress){
-            $this->X_model->update($x_progress['x__id'], array(
-                'x__privacy' => 6173, //Transaction Removed
-            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
-        }
-
-        //Save new answer:
-        $this->X_model->mark_complete(12117, $player_e['e__id'], $_POST['target_i__id'], $is[0], array(
-            'x__message' => '', //TODO Needs URL
-        ));
-
-        //All good:
-        $e___11035 = $this->config->item('e___11035'); //Encyclopedia
-        return view_json(array(
-            'status' => 1,
-            'message' => '', //TODO Needs URL
-        ));
-
-    }
 
     function x_read_only_complete(){
 
@@ -3035,7 +2956,8 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
-        } elseif($is[0]['i__type']!=26560){
+
+        } elseif(in_array($is[0]['i__type'], $this->config->item('n___41055'))){
             return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid Idea Type',

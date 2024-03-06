@@ -1528,7 +1528,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
     $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
-    $focus_source = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
+    $x__player = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
     $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
 
     if(!$focus_e){
@@ -1550,11 +1550,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     $has_discovered = false;
-    if(!$cache_app && $focus_source){
+    if(!$cache_app && $x__player){
         $discoveries = $CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__player' => $focus_source,
+            'x__player' => $x__player,
             'x__previous' => $i['i__id'],
         ));
         $has_discovered = count($discoveries);
@@ -1635,6 +1635,346 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $ui .= '</div>';
     $ui .= '</div>';
 
+
+
+
+    if($player_e){
+
+        //Three main actions: (Excludes reading which is no action)
+        $input_ui = '';
+
+        //Fetch discovery
+        $x_completes = $CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__player' => $player_e['e__id'],
+            'x__previous' => $i['i__id'],
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+        ), array('x__next'));
+
+
+
+        if (in_array($i['i__type'], $CI->config->item('n___7712'))) {
+
+            //Inform them what they need to do:
+            $e___7712 = $CI->config->item('e___7712'); //Encyclopedia
+            $input_ui .= '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___7712[$i['i__type']]['m__cover'].'</span>'.$e___7712[$i['i__type']]['m__message'].':</div>';
+
+        } elseif (in_array($i['i__type'], $CI->config->item('n___41055'))) {
+
+            //PAYMENT TICKET
+            if(isset($_GET['cancel_pay']) && !count($x_completes)){
+                $input_ui .= '<div class="alert alert-danger" role="alert">You cancelled your payment.</div>';
+            }
+
+            if(isset($_GET['process_pay']) && !count($x_completes)){
+
+                $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
+
+                //Referesh soon so we can check if completed or not
+                js_php_redirect(phpview_memory(42903, 30795) . $target_i__hashtag .'/'.$i['i__hashtag'].'?process_pay=1', 987);
+
+            } elseif(count($x_completes)){
+
+                foreach($x_completes as $x_complete){
+
+                    $x__metadata = unserialize($x_complete['x__metadata']);
+                    $quantity = ( $x_complete['x__weight'] >= 2 ? $x_complete['x__weight'] : ( isset($x__metadata['quantity']) && $x__metadata['quantity']>=2 ? $x__metadata['quantity'] : 1 ) );
+
+                    if($x__metadata['mc_gross']!=0){
+                        $input_ui .= '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
+                    }
+
+                    if(in_array($x_complete['x__type'], $CI->config->item('n___40986'))){
+                        //Successful discovery Show QR Code:
+                        foreach($CI->E_model->fetch(array(
+                            'e__id' => $x_complete['x__player'],
+                        )) as $e){
+                            $input_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
+                            $input_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__player).view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(phptime() . $e['e__handle'])).'</div>';
+                        }
+                    }
+
+                }
+
+                $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$x__metadata['mc_gross'].'">';
+                $input_ui .= '<input type="hidden" class="paypal_quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
+
+            } else {
+
+                $valid_currency = false; //Until we can find and verify from DB
+
+                $paypal_email =  website_setting(30882);
+
+                $currency_types = $CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'x__next' => $i['i__id'],
+                    'x__following IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
+                ));
+                $total_dues = $CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'x__next' => $i['i__id'],
+                    'x__following' => 26562, //Total Due
+                ));
+                $cart_max = $CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'x__next' => $i['i__id'],
+                    'x__following' => 29651, //Cart Max Quantity
+                ));
+                $cart_min = $CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                    'x__next' => $i['i__id'],
+                    'x__following' => 31008, //Cart Min Quantity
+                ));
+
+
+
+                //Payments Must have Unit Price, otherwise they are NOT a payment until added
+                $info_append = '';
+                $unit_currency = '';
+                $unit_price = 0;
+                $unit_fee = 0;
+                $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view_memory(6404,29651) );
+                $spots_remaining = i_spots_remaining($i['i__id']);
+                $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
+                $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
+                $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message'])>0 : 1 );
+                $min_allowed = ( $min_allowed < 1 ? 1 : $min_allowed );
+
+                if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $total_dues[0]['x__message']>0 && count($currency_types)==1){
+
+                    $valid_currency = true;
+                    $e___26661 = $CI->config->item('e___26661'); //Currency
+
+                    $digest_fees = count($CI->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $i['i__id'],
+                        'x__following' => 30589, //Digest Fees
+                    )));
+
+                    //Break down amount & currency
+                    $unit_currency = $e___26661[$currency_types[0]['x__following']]['m__message'];
+                    $unit_price = doubleval($total_dues[0]['x__message']);
+                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__player)) + doubleval(website_setting(27017, $x__player)))/100 ), 2, ".", "");
+
+                    //Append information to cart:
+                    $info_append .= '<div class="sub_note">';
+                    if(!count($CI->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $i['i__id'],
+                        'x__following' => 30615, //Is Refundable
+                    )))){
+                        $info_append .= 'Final sale. ';
+                    }
+
+                    $info_append .= 'No need to create a Paypal account: You can pay by only entering your credit card details to checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.';
+                    $info_append .= '</div>';
+
+                }
+
+
+
+                //Is multi selectable, allow show down for quantity:
+                $input_ui .= '<div class="source-info ticket-notice">'
+                    . '<span class="icon-block">'. $e___11035[31076]['m__cover'] . '</span>'
+                    . '<span>'.$e___11035[31076]['m__title'] . '</span>'
+                    . '<div class="source_info_box">'
+                    . ( strlen($e___11035[31076]['m__message']) ? '<div class="sub_note main__title">'.nl2br($e___11035[31076]['m__message']).'</div>' : '' );
+
+                if($max_allowed > 1 || $min_allowed > 1){
+                    $input_ui .= '<div>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="fas fa-minus-circle"></i></a>';
+                    $input_ui .= '<span class="main__title current_sales" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="fas fa-plus-circle"></i></a>';
+                    $input_ui .= '</div>';
+                } else {
+                    $input_ui .= '<span class="current_sales" style="display: none;">'.$min_allowed.'</span>';
+                }
+
+
+                if($unit_price > 0){
+                    $input_ui .= '<div style="padding: 8px 0 21px;" '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' + '.$unit_fee.' in Fees" data-toggle="tooltip" data-placement="top" ' : '' ).'><span class="main__title total_ui">'.(($unit_fee+$unit_price)*$min_allowed).'</span> '.$unit_currency.'</div>';
+                } else {
+                    $input_ui .= '<span class="total_ui" style="display: none;">0</span>';
+                }
+
+                $input_ui .= $info_append;
+
+                $input_ui .= '</div>';
+                $input_ui .= '</div>';
+
+
+                if($valid_currency){
+
+                    $e___14870 = $CI->config->item('e___14870'); //DOMAINS
+
+                    //Load Paypal Pay button:
+                    $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+
+                    $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$unit_fee.'">';
+                    $input_ui .= '<input type="hidden" class="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" name="item_name" value="'.view_i_title($i, true).'">';
+                    $input_ui .= '<input type="hidden" name="item_number" value="'.( $target_i__hashtag ? '#'.$target_i__hashtag : '' ).'#'.$i['i__hashtag'].'@'.$player_e['e__handle'].'@'.get_domain('m__handle').'">';
+
+                    $input_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
+                    $input_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
+                    $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
+                    $input_ui .= '<input type="hidden" name="notify_url" value="https://'.$e___14870[2738]['m__message'].view_app_link(26595).'">';
+                    $input_ui .= '<input type="hidden" name="cancel_return" value="https://'.get_domain('m__message').view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?cancel_pay=1">';
+                    $input_ui .= '<input type="hidden" name="return" value="https://'.get_domain('m__message').view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?process_pay=1">';
+                    $input_ui .= '<input type="hidden" name="cmd" value="_xclick">';
+                    $input_ui .= '<input type="hidden" name="business" value="'.$paypal_email.'">';
+
+                    $input_ui .= '<input type="submit" class="adj-btn pay-btn main__title" name="pay_now" id="pay_now" value="Pay Now >" onclick="$(\'.process-btn\').html(\'Loading\');$(\'#pay_now\').val(\'...\');">';
+
+                    $input_ui .= '</form>';
+
+                } else {
+
+                    //FREE TICKET
+                    $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$unit_fee.'">';
+                    $input_ui .= '<input type="hidden" class="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
+
+                }
+            }
+
+        } elseif (in_array($i['i__type'], $CI->config->item('n___33532'))) {
+
+            //Find the created ide:
+            $x_ideations = $CI->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__type' => 33532, //Share Idea
+                'x__previous' => $i['i__id'],
+            ), array('x__next'), 0, 0);
+
+            //Do we have a text response from before?
+            $previous_response = '';
+            if($x__player){
+                //Does this have any append sources?
+                foreach($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type' => 7545, //Following Add
+                    'x__next' => $i['i__id'],
+                )) as $append_e){
+                    //Does the user have this source with any values?
+                    foreach($CI->X_model->fetch(array(
+                        'x__following' => $append_e['x__following'],
+                        'x__follower' => $x__player,
+                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                    ), array(), 0, 0) as $up_appended) {
+                        if(strlen($up_appended['x__message'])){
+                            $previous_response = $up_appended['x__message'];
+                            break;
+                        }
+                    }
+                    if(strlen($previous_response)){
+                        break;
+                    }
+                }
+            }
+
+            $input_attributes = '';
+            $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
+
+            if ($i['i__type']==6683) {
+
+                //Text response
+                $input_ui .= '<textarea class="border i_content x_input greybg" placeholder="" id="x_write">' . $previous_response . '</textarea>';
+
+            } elseif ($i['i__type']==32603) {
+
+                $input_ui .= view_sign($i, $previous_response);
+
+            } else {
+
+                //Determine type:
+                if($i['i__type']==31794){
+
+                    //Number
+                    $input_type = 'number';
+
+                    //Steps
+                    foreach($CI->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $i['i__id'],
+                        'x__following' => 31813, //Steps
+                    )) as $num_steps){
+                        if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
+                            $input_attributes .= ' step="'.$num_steps['x__message'].'" ';
+                        }
+                    }
+
+                    //Min Value
+                    foreach($CI->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $i['i__id'],
+                        'x__following' => 31800, //Min Value
+                    )) as $num_steps){
+                        if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
+                            $input_attributes .= ' min="'.$num_steps['x__message'].'" ';
+                        }
+                    }
+
+                    //Max Value
+                    foreach($CI->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $i['i__id'],
+                        'x__following' => 31801, //Max Value
+                    )) as $num_steps){
+                        if(strlen($num_steps['x__message']) && is_numeric($num_steps['x__message'])){
+                            $input_attributes .= ' max="'.$num_steps['x__message'].'" ';
+                        }
+                    }
+
+                } elseif($i['i__type']==30350){
+
+                    $input_type = (count($CI->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $i['i__id'],
+                        'x__following' => 32442, //Select Time
+                    ))) ? 'datetime-local'  : 'date' );
+
+                } elseif($i['i__type']==31794){
+
+                    //Number
+                    $input_type = 'number';
+
+                } elseif($i['i__type']==31795){
+
+                    //URL
+                    $input_type = 'url';
+
+                }
+
+
+                $input_ui .= '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content greybg x_input" placeholder="" value="'.$previous_response.'" id="x_write" />';
+
+            }
+
+        }
+
+        if(strlen($input_ui)){
+            $ui .= '<div class="input_ui input_ui_'.$i['i__id'].'">'.$input_ui.'</div>';
+        }
+
+        //End of Discovery input
+    }
+
+
+
+    
 
 
     //Bottom Bar

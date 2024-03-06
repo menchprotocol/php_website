@@ -1055,14 +1055,19 @@ class X_model extends CI_Model
         $x__type = 0;
         if (in_array($i['i__type'], $this->config->item('n___34826'))) {
             if ($i['i__type'] == 6677) {
+                //Statement
                 $x__type = 4559;
             } elseif ($i['i__type'] == 30874) {
+                //Event
                 $x__type = 31810;
             } elseif ($i['i__type'] == 42392) {
+                //Position
                 $x__type = 42402;
-            } elseif ($i['i__type'] == 42399) {
-                $x__type = 42400;
+            } elseif ($i['i__type'] == 32603) {
+                //Agreement
+                $x__type = 33614;
             } elseif ($i['i__type'] == 42394) {
+                //Task
                 $x__type = 42397;
             }
         }
@@ -1076,7 +1081,7 @@ class X_model extends CI_Model
     }
 
 
-    function mark_complete($x__type, $x__player, $target_i__id, $i, $x_data = array()) {
+    function mark_complete($x__type, $x__player, $target_i__id = 0, $i, $x_data = array()) {
 
         if(!in_array($x__type, $this->config->item('n___31777'))){
             $this->X_model->create(array(

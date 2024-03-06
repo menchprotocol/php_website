@@ -20,7 +20,7 @@ $is_emoji = ( !filter_var($domain_logo, FILTER_VALIDATE_URL) && !string_is_icon(
 
 
 //Generate Body Class String:
-$body_class = ''; //Always append current coin
+$body_class = ' app__'.$app_e__id.' '; //Always append current coin
 foreach($this->config->item('e___13890') as $e__id => $m){
     if($player_e){
         //Look at their session:
