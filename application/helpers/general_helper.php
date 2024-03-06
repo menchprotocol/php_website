@@ -919,6 +919,13 @@ function i_startable($i){
 
     $CI =& get_instance();
 
+    return count($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'x__next' => $i['i__id'],
+        'x__following' => 4235,
+    )));
+
     foreach($CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
