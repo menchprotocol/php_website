@@ -483,7 +483,7 @@ if($target_i__hashtag) {
 
         echo $ticket_ui;
 
-    } elseif (in_array($focus_i['i__type'], $this->config->item('n___34849'))) {
+    } elseif (in_array($focus_i['i__type'], $this->config->item('n___33532'))) {
 
         //Do we have a text response from before?
         $previous_response = '';
@@ -627,7 +627,7 @@ if($target_i__hashtag) {
 
             $control_btn .= '<div style="padding-left: 8px;" class="save_toggle_answer hidden"><a class="controller-nav round-btn main-next" href="javascript:void(0);" onclick="$(\'.save_toggle_answer\').toggleClass(\'hidden\');">'.$e___11035[40639]['m__cover'].'</a><span class="nav-title main__title">'.$e___11035[40639]['m__title'].'</span></div>';
 
-        } elseif($x__type==14422 && $target_completed && in_array($focus_i['i__type'], $this->config->item('n___34849'))){
+        } elseif($x__type==14422 && $target_completed && in_array($focus_i['i__type'], $this->config->item('n___33532'))){
 
             //Save Response
             $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
@@ -767,7 +767,7 @@ if($target_i__hashtag){
             //SELECT ONE/SOME
             return x_select();
 
-        } else if(is_logged_in && js_n___34849.includes(focus_i__type)) {
+        } else if(is_logged_in && js_n___33532.includes(focus_i__type)) {
 
             if(focus_i__type==32603 && !$("#DigitalSignAgreement").is(':checked')){
                 if(can_skip){

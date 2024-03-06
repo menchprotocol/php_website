@@ -3100,7 +3100,7 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => 'Idea not published.',
             ));
-        } elseif (!in_array($is[0]['i__type'] , $this->config->item('n___34849'))) {
+        } elseif (!in_array($is[0]['i__type'] , $this->config->item('n___33532'))) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Idea Type is not writable.',
