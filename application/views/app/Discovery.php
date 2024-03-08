@@ -10,22 +10,6 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 }
 */
 
-//NEXT IDEAS
-$is_next = $this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-    'x__previous' => $focus_i['i__id'],
-), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
-
-//Filter Next Ideas:
-foreach($is_next as $in_key => $in_value){
-    $i_is_discoverable = i_is_discoverable($in_value);
-    if(!$i_is_discoverable['status']){
-        //Remove this option:
-        unset($is_next[$in_key]);
-    }
-}
 
 $x__player = ( $player_e ? $player_e['e__id'] : 0 );
 $focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
@@ -70,18 +54,7 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
                 'x__previous' => $followings_i['i__id'],
-            ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
-            foreach($query_subset as $key=>$value){
-                $i_is_discoverable = i_is_discoverable($value);
-                if(!$i_is_discoverable['status'] || !count($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__player' => $x__player,
-                        'x__previous' => $value['i__id'],
-                    )))){
-                    unset($query_subset[$key]);
-                }
-            }
+            ), array('x__next'), 0, 0, array('x__weight' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
             $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.$followings_i['i__hashtag'].'"><u>'.view_i_title($followings_i).'</u></a>';

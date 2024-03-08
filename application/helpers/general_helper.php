@@ -378,153 +378,6 @@ function i_spots_remaining($i__id){
 }
 
 
-function i_is_discoverable($i, $is_also_startable = false){
-
-    $CI =& get_instance();
-    $player_e = superpower_unlocked();
-    $x__player = ( $player_e ? $player_e['e__id'] : 0 );
-    $double_check = 'if you believe you have this source then make sure to login with the same email address that we sent you the email.';
-
-    if($i['i__privacy']){
-        //Public Ideas
-    }
-
-    //Any Inclusion Any Requirements?
-    $fetch_13865 = $CI->X_model->fetch(array(
-        'x__next' => $i['i__id'],
-        'x__type' => 13865, //Must Include Any
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__following'), 0);
-    if(count($fetch_13865)){
-        //Let's see if they meet any of these PREREQUISITES:
-        $meets_inc1_prereq = false;
-        $x__following = 0;
-        $excludes_message = 'Unknown Error @13865';
-
-        if($x__player > 0){
-            foreach($fetch_13865 as $e_pre){
-                if(( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__following' => $e_pre['x__following'],
-                        'x__follower' => $x__player,
-                    )))){
-                    $meets_inc1_prereq = true;
-                    $x__following = ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
-                    $excludes_message = "You cannot discover this idea because you are missing a requirement, ".$double_check;
-                    break;
-                }
-            }
-        }
-        if(!$meets_inc1_prereq && $x__player > 0){
-            return array(
-                'status' => false,
-                'message' => $excludes_message,
-            );
-        }
-    }
-
-    //Any Inclusion All Requirements?
-    $fetch_27984 = $CI->X_model->fetch(array(
-        'x__next' => $i['i__id'],
-        'x__type' => 27984, //Must Include All
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__following'), 0);
-    if(count($fetch_27984)){
-        //There are some requirements, Let's see if they meet all of them:
-        $missing_es = '';
-        $meets_inc2_prereq = 0;
-
-        $x__following = 0;
-        $excludes_message = 'Unknown Error @27984';
-
-        if($x__player > 0){
-            foreach($fetch_27984 as $e_pre){
-                if($x__player && (( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__following' => $e_pre['x__following'],
-                        'x__follower' => $x__player,
-                    ))))){
-                    $meets_inc2_prereq++;
-                } else {
-                    //Missing:
-                    $missing_es .= ( strlen($missing_es) ? ' & ' : '' ).$e_pre['e__title'];
-                }
-
-                $x__following = ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
-                $excludes_message = "You cannot discover this idea because you are ".( $x__player ? "missing [".$missing_es."]" : "not logged in" ).", ".$double_check;
-            }
-        }
-        if($meets_inc2_prereq < count($fetch_27984)){
-            //Did not meet all requirements:
-            return array(
-                'status' => false,
-                'message' => $excludes_message,
-            );
-        }
-    }
-
-    //Any Exclusion All Requirements?
-    $fetch_26600 = $CI->X_model->fetch(array(
-        'x__next' => $i['i__id'],
-        'x__type' => 26600, //Must Exclude All
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-    ), array('x__following'), 0);
-    if(count($fetch_26600)){
-        //Let's see if they meet any of these PREREQUISITES:
-        $x__following = 0;
-        $excludes_all = false;
-        $excludes_message = 'Unknown Error @26600';
-        if($x__player > 0){
-            foreach($fetch_26600 as $e_pre){
-                if(( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__following' => $e_pre['x__following'],
-                        'x__follower' => $x__player,
-                    )))){
-                    //Found an exclusion, so skip this:
-                    $excludes_all = false;
-                    $excludes_message = "You cannot discover this idea because you belong to [".$e_pre['e__title']."]";
-                    $x__following =  ( isset($e_pre['x__following']) ? $e_pre['x__following'] : 0 );
-                    break;
-                } else {
-                    $excludes_all = true;
-                }
-            }
-        }
-
-        if(!$excludes_all){
-            return array(
-                'status' => false,
-                'message' => $excludes_message,
-            );
-        }
-    }
-
-
-    //Any Limits on Selection?
-    if(!i_spots_remaining($i['i__id'])){
-        //Limit is reached, cannot complete this at this time:
-        return array(
-            'status' => false,
-            'message' => "You cannot discover this idea because there are no spots remaining.",
-        );
-    }
-    
-
-    //All good:
-    return array(
-        'status' => true,
-    );
-
-}
-
-
 function redirect_message($url, $message = null, $log_error = false)
 {
     //An error handling function that would redirect member to $url with optional $message
@@ -1826,10 +1679,74 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false){
         //Mentioned can always reply:
         return 2;
     } else {
+
+        //Any Limits on Selection?
+        if(!i_spots_remaining($i['i__id'])){
+            return 0;
+        }
+
+        //Any Inclusion All Requirements?
+        $fetch_27984 = $CI->X_model->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 27984, //Must Include All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__following'), 0);
+        if(count($fetch_27984)){
+            $meets_inc2_prereq = 0;
+            if($player_e){
+                foreach($fetch_27984 as $e_pre){
+                    if((( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__following' => $e_pre['x__following'],
+                                'x__follower' => $player_e['e__id'],
+                            ))))){
+                        $meets_inc2_prereq++;
+                    }
+                }
+            }
+            if($meets_inc2_prereq < count($fetch_27984)){
+                return 0;
+            }
+        }
+
+        //Any Exclusion All Requirements?
+        $fetch_26600 = $CI->X_model->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 26600, //Must Exclude All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__following'), 0);
+        if(count($fetch_26600)){
+            $excludes_all = false; //Let's see if they meet any of these PREREQUISITES
+            if($player_e){
+                foreach($fetch_26600 as $e_pre){
+                    if(( $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__following' => $e_pre['x__following'],
+                            'x__follower' => $player_e['e__id'],
+                        )))){
+                        //Found an exclusion, so skip this:
+                        $excludes_all = false;
+                        break;
+                    } else {
+                        $excludes_all = true;
+                    }
+                }
+            }
+            if(!$excludes_all){
+                return 0;
+            }
+        }
+
+
         $is_public = in_array($i['i__privacy'], $CI->config->item('n___42952'));
         $is_read_only = $i['i__privacy']==42929;
         return ( $is_public ? ( $is_read_only ? 1 : 2 ) : 0 );
     }
+
 
 }
 

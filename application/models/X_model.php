@@ -193,7 +193,7 @@ class X_model extends CI_Model
 
     }
 
-    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null, $must_be_discovered = false)
     {
 
         $this->db->select($select);
@@ -237,7 +237,36 @@ class X_model extends CI_Model
             $this->db->limit($limit, $limit_offset);
         }
         $q = $this->db->get();
-        return $q->result_array();
+        $results = $q->result_array();
+
+
+
+        //Verify Access to each item:
+        if(array_intersect(array('x__previous','x__next'), $joins_objects)){
+            //Idea results:
+            $player_e = superpower_unlocked();
+            foreach($results as $key => $value){
+                if(!access_level_i(null, $value['i__id'], $value) || ($must_be_discovered && (!$player_e || !count($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__player' => $player_e['e__id'],
+                        'x__previous' => $value['i__id'],
+                    )))))){
+                    unset($results[$key]); //Remove this option
+                }
+            }
+        } elseif(array_intersect(array('x__following','x__follower'), $joins_objects)){
+            //Source results:
+            foreach($results as $key => $value){
+                if(!access_level_e(null, $value['e__id'], $value)){
+                    unset($results[$key]); //Remove this option
+                }
+            }
+        }
+
+        return $results;
+
+
     }
 
     function update($id, $update_columns, $x__player = 0, $x__type = 0, $x__message = '')
