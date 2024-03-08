@@ -1572,6 +1572,7 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
      *
      * 0 ACCESS BLOCKED
      * 1 READ-ONLY
+     * 2 VIEW ALL
      * 3 EDIT
      *
      * */
@@ -1617,7 +1618,7 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
         )));
     }
 
-    return ( $is_author ? 3 : ( $is_public ? 1 : 0) );
+    return ( $is_author ? 3 : ( $is_public ? 2 : ( $e['e__privacy']==43008 ? 1 : 0 ) ) );
 
 }
 
