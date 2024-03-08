@@ -142,11 +142,14 @@ class I_model extends CI_Model
         $results = $q->result_array();
 
         //Make sure user has access to each item:
-        foreach($results as $key => $value){
-            if(!access_level_i($value['i__hashtag'], 0, $value)){
-                unset($results[$key]); //Remove this option
+        if($select=='*'){
+            foreach($results as $key => $value){
+                if(!access_level_i($value['i__hashtag'], 0, $value)){
+                    unset($results[$key]); //Remove this option
+                }
             }
         }
+
 
         return $results;
 
