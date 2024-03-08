@@ -1895,6 +1895,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             } else {
 
+                $input_type = 'text';
+
                 //Determine type:
                 if($i['i__type']==31794){
 
