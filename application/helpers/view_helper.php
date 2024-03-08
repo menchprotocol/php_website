@@ -1657,8 +1657,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         if (in_array($i['i__type'], $CI->config->item('n___7712'))) {
 
             //Inform them what they need to do:
-            $e___7712 = $CI->config->item('e___7712'); //Encyclopedia
-            $input_ui .= '<div class="alert alert-danger" role="alert"><span class="icon-block">'.$e___7712[$i['i__type']]['m__cover'].'</span>'.$e___7712[$i['i__type']]['m__message'].':</div>';
+            $input_ui .= '<div class="aler" role="alert"><span class="icon-block">'.$e___11035[$i['i__type']]['m__cover'].'</span>'.$e___11035[$i['i__type']]['m__message'].':</div>';
+
+        } elseif ($i['i__type']==32603) {
+
+            $input_ui .= view_sign($i);
 
         } elseif (in_array($i['i__type'], $CI->config->item('n___41055'))) {
 
@@ -1888,10 +1891,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 //Text response
                 $input_ui .= '<textarea class="border i_content x_input greybg" placeholder="" id="x_write">' . $previous_response . '</textarea>';
-
-            } elseif ($i['i__type']==32603) {
-
-                $input_ui .= view_sign($i, $previous_response);
 
             } else {
 
