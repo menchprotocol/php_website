@@ -1443,6 +1443,7 @@ label {
     line-height: 100%;
     border: 0;
     padding: 10px;
+    border-radius: 0;
 }
 
 .breadcrumb-item .btn{
