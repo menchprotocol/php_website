@@ -1,8 +1,6 @@
 <?php
 
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
-$e___4737 = $this->config->item('e___4737'); //Idea Types
-$is_or_7712 = in_array($focus_i['i__type'], $this->config->item('n___7712'));
 
 /*
 if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
@@ -10,14 +8,8 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 }
 */
 
-
 $x__player = ( $player_e ? $player_e['e__id'] : 0 );
-$focus_i['i__message'] = str_replace('"','',$focus_i['i__message']);
-$pathways_count = 0;
-$target_i__id = ( count($target_i) ? $target_i['i__id'] : 0 );
-    $target_i__id = ( count($target_i) && $x__player ? $target_i['i__id'] : 0 );
-    $target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
-$target_completed = false; //Assume main intent not yet completed, unless proven otherwise
+$target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
 $can_skip = !count($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
@@ -28,9 +20,9 @@ $can_skip = !count($this->X_model->fetch(array(
 
 
 
+
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
-
 if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
     $find_previous = $this->X_model->find_previous($x__player, $target_i__hashtag, $focus_i['i__id']);
@@ -78,11 +70,7 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
         }
     }
 }
-
-
-
 if($breadcrum_content){
-
     //Add blank item to get final arrow:
     $breadcrum_content .= '<li class="breadcrumb-item">&nbsp;</li>';
 
@@ -94,14 +82,21 @@ if($breadcrum_content){
 
 
 
-echo '<div class="active_navigation">';
 
+
+//Progress?
 $tree_progress = $this->X_model->tree_progress($x__player, $target_i);
 $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
-
-if($target_completed){
+if($target_completed) {
     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
+} else {
+    echo '<div style="padding: 0 5px;"><div class="progress">
+<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
+</div></div>';
 }
+
+
+
 
 
 //Focus Idea:
@@ -116,14 +111,8 @@ echo '</div>';
 
 
 
-
-
-
-
-$buttons_found = 0;
+//Discovery Menu
 $buttons_ui = '';
-$control_btn = '';
-
 foreach($this->config->item('e___13289') as $x__type => $m2) {
 
     if($x__type==13495){
@@ -147,13 +136,11 @@ foreach($this->config->item('e___13289') as $x__type => $m2) {
 
     $buttons_ui .= ( $control_btn ? '<div class="navigate_item navigate_'.$x__type.'">'.$control_btn.'</div>' : '' );
 
-    if($control_btn){
-        $buttons_found++;
-    }
-
 }
 
-if($buttons_found > 0){
+
+
+if(strlen($buttons_ui)){
     echo '<div class="nav-controller">';
     echo $buttons_ui;
     echo '</div>';
@@ -161,17 +148,6 @@ if($buttons_found > 0){
 
 
 
-
-
-
-
-
-
-if(!$target_completed) {
-    echo '<div style="padding: 0 5px;"><div class="progress">
-<div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
-</div></div>';
-}
 
 
 
