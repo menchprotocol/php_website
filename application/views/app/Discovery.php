@@ -85,15 +85,18 @@ if($breadcrum_content){
 
 
 //Progress?
-$tree_progress = $this->X_model->tree_progress($x__player, $target_i);
-$target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
-if($target_completed) {
-    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
-} else {
-    echo '<div style="padding: 0 5px;"><div class="progress">
+if($player_e){
+    $tree_progress = $this->X_model->tree_progress($x__player, $target_i);
+    $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
+    if($target_completed) {
+        echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
+    } else {
+        echo '<div style="padding: 0 5px;"><div class="progress">
 <div class="progress-bar bg6255" role="progressbar" data-toggle="tooltip" data-placement="top" title="'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' Ideas Discovered '.$tree_progress['fixed_completed_percentage'].'%" style="width: '.$tree_progress['fixed_completed_percentage'].'%" aria-valuenow="'.$tree_progress['fixed_completed_percentage'].'" aria-valuemin="0" aria-valuemax="100"></div>
 </div></div>';
+    }
 }
+
 
 
 
