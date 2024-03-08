@@ -1065,7 +1065,7 @@ function view_card_x_select($i, $x__player, $previously_selected){
 
     $href = 'href="javascript:void(0);"'.( $spots_remaining==0 && !$previously_selected ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="select_answer(' . $i['i__id'] . ')"' );
 
-    $ui  = '<div class="card_cover coin-6255 col-6 col-md-4 no-padding">';
+    $ui  = '<div class="card_cover col-6 col-md-4 no-padding">';
     $ui .= '<div class="cover-wrapper">';
     $ui .= '<table class="card_covers"></table>'; //For UI height adjustment
     $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'">';
@@ -1526,7 +1526,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     $player_e = superpower_unlocked();
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
-    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
+    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) || (!isset($_POST['js_request_uri']) && strlen($this->uri->segment(2))) );
+
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $x__player = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
     $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
@@ -1567,7 +1568,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding '.( $discovery_mode ? ' coin-6255 ' : ' coin-12273 ' ).' card_click coinface-12273 s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 card_click s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
     $ui .= '<div class="cover-content">';
@@ -2396,7 +2397,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     $superpower_10939 = superpower_unlocked(10939);
     $player_e = superpower_unlocked();
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
-    $discovery_mode = in_array($x__type, $CI->config->item('n___14378')); //DISCOVERY MODE
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $is_cache = in_array($x__type, $CI->config->item('n___14599'));
@@ -2407,7 +2407,7 @@ function view_card_e($x__type, $e, $extra_class = null)
 
 
     //Source UI
-    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" e__privacy="' . $e['e__privacy'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" x__privacy="'.$e['x__privacy'].'" ' : '' ).' href="'.$href.'" class="card_cover card_e_cover no-padding s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' coin-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $discovery_mode ? ' coinface-6255 coin-6255 coinface-12274 coin-12274 ' : ' coinface-12274 coin-12274  ' ).( $focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click col-sm-4 col-6 ' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).'">';
+    $ui  = '<div e__id="' . $e['e__id'] . '" e__handle="' . $e['e__handle'] . '" e__privacy="' . $e['e__privacy'] . '" '.( isset($e['x__id']) ? ' x__id="'.$e['x__id'].'" x__privacy="'.$e['x__privacy'].'" ' : '' ).' href="'.$href.'" class="card_cover card_e_cover no-padding card-12274 s__12274_'.$e['e__id'].' '.$extra_class.( $is_app ? ' card-6287 ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $focus__node ? ' focus-cover slim_flat col-md-8 col-sm-10 col-12 ' : ' edge-cover card_click col-sm-4 col-6 ' ).( isset($e['x__id']) ? ' cover_x_'.$e['x__id'].' ' : '' ).'">';
 
     $ui .= '<div class="cover-wrapper">';
 

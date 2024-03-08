@@ -1293,7 +1293,7 @@ a.headline {
 
 
 
-.coin-type {
+.card-type {
     display: block;
     padding-left: 8px;
     padding-top: 2px;
@@ -1398,7 +1398,7 @@ a.headline {
     padding-bottom: 5px !important;
 }
 
-.edge-cover.coin-12274.focus-cover {
+.edge-cover.card-12274.focus-cover {
     padding-bottom: 21px !important;
 }
 
@@ -1458,7 +1458,7 @@ label {
 
 
 
-.coin-cover .btn{
+.card-cover .btn{
     padding:0px;
 }
 
@@ -1705,22 +1705,20 @@ label {
 .edge-cover .card_covers .icon-block-sm {
     height: 21px !important;
 }
-.coin-12274 .creator_headline {
+.card-12274 .creator_headline {
     height: 24px !important;
 }
 .focus-cover .dropdown span.icon-block-sm {
     height: 24px !important;
 }
 
-.focus-cover.coin-6255 .dropdown span.icon-block-sm {
-    height: 47px !important;
-}
+
 .dynamic_editing_input textarea.form-control.save_i__message{
     padding-top: 3px !important;
     margin-left: 40px !important;
 }
 
-.edge-cover .coin-12273 .icon-block-sm {
+.edge-cover .card-12273 .icon-block-sm {
     height: 19px !important;
 }
 .icon-block img{
@@ -1877,8 +1875,8 @@ label {
 }
 
 
-.coin-12274 .inner-content .text_e_6197,
-.coin-6287 .inner-content .text_e_6197{
+.card-12274 .inner-content .text_e_6197,
+.card-6287 .inner-content .text_e_6197{
     text-align: center;
     padding-left: 0;
 }
@@ -2193,29 +2191,23 @@ label {
     max-height: 69%;
     top:36px;
 }
-.coin-6255 .cover-content{
-    top:5px;
-    max-height: 100%;
-    margin:0 8px 8px;
-}
 
 .mini-cover .cover-content{
     max-height: 89%;
 }
 
-.coin-12274 .cover-content{
+.card-12274 .cover-content{
     position: relative;
     width: 100% !important;
     margin: 0;
     top:unset;
 }
-.mini-cover.coin-12274 .cover-content{
+.mini-cover.card-12274 .cover-content{
     width: calc(100% - 2px) !important;
     margin-left: 1px;
     top:0;
 }
-.coin-12273 .cover-content,
-.coin-6255 .cover-content{
+.card-12273 .cover-content{
     position: relative;
     width: 100% !important;
     margin: 0;
@@ -2224,21 +2216,21 @@ label {
     max-height: none;
 }
 
-.edge-cover.coin-12274 .cover-content,
-.focus-cover.coin-12274 .cover-content{
+.edge-cover.card-12274 .cover-content,
+.focus-cover.card-12274 .cover-content{
     top: unset !important;
 }
-.coin-12274 .card_covers{
+.card-12274 .card_covers{
     top: 34px !important;
 }
 
 
 
-.coin-6287 .cover-content{
+.card-6287 .cover-content{
     width: calc(100% - 12px) !important;
     margin: 0 6px;
 }
-.coin-6287 .cover-content{
+.card-6287 .cover-content{
     top:18px;
 }
 
@@ -2264,14 +2256,13 @@ input.form-control {
     padding: 1px 1px 0;
 }
 
-#container_finder .mini-cover.coin-12273 .cover-content,
-#container_finder .mini-cover.coin-6255 .cover-content {
+#container_finder .mini-cover.card-12273 .cover-content {
     top: 0px;
     padding: 1px 1px 0;
     margin: 0 1px;
 }
 
-.coin-cover{
+.card-cover{
     position: absolute;
     width: 24px;
     overflow: visible;
@@ -2333,49 +2324,45 @@ input.form-control {
     text-align: center;
 }
 
-.card_cover.coin-12274,
-.card_cover.coin-6287{
+.card_cover.card-12274,
+.card_cover.card-6287{
     border-radius: 0px !important;
 }
-.edge-cover.coin-12274{
+.edge-cover.card-12274{
     padding: 1px 0 55px 0 !important;
 }
-.card_cover.coinface-12273{
+.card_cover.card-12273{
     margin:0 0 !important;
     padding:21px 0 !important;
     border-top: 1px solid #000000;
 }
-.flip-content .card_cover.coinface-12273{
+.flip-content .card_cover.card-12273{
     border-top: 0;
 }
-.focus-cover.coinface-12273{
+.focus-cover.card-12273{
     border-top: 0px solid transparent;
-}
-.flip-content .card_cover.coin-6255{
-    border-bottom: 0px solid;
-    margin-bottom: 5px !important;
 }
 .flip-content .card_cover:hover {
     background: #000000 !important;
 }
 
-.mini-cover.coin-12274{
+.mini-cover.card-12274{
     border-radius: 50% !important;
 }
-.card_cover.coin-12274{
+.card_cover.card-12274{
 
 }
-.card_cover.coinface-12274{
+.card_cover.card-12274{
     margin:0 !important;
 }
-.card_cover.focus-cover.coinface-12274{
+.card_cover.focus-cover.card-12274{
     margin:34px 0 0 0 !important;
 }
-.card_cover.coin-6287{
+.card_cover.card-6287{
     margin:0 0 13px 0 !important;
     padding-bottom:13px !important;
 }
-.card_cover.coin-6287.mini-cover{
+.card_cover.card-6287.mini-cover{
     margin:0 !important;
     padding-bottom:0 !important;
 }
@@ -2399,8 +2386,7 @@ input.form-control {
 .focus-cover{
     margin:13px 0 0 !important;
 }
-.coin-12273.focus-cover,
-.coin-6255.focus-cover{
+.card-12273.focus-cover{
     margin:13px 0 0 !important;
 }
 
@@ -2419,7 +2405,7 @@ input.form-control {
     padding: 5px 0 0;
     margin: 0;
 }
-.focus-cover.coin-12274 .source-social ul {
+.focus-cover.card-12274 .source-social ul {
     padding: 13px 0 0;
 }
 .source-social ul li {
@@ -2442,36 +2428,32 @@ input.form-control {
     line-height: 134%;
     border-bottom: 1px solid #000000 !important;
 }
-.coin-12274.mini-cover .inner-content {
+.card-12274.mini-cover .inner-content {
     text-align: center !important;
 }
 
-.coin-12273 .inner-content,
-.coin-6255 .inner-content{
+.card-12273 .inner-content{
     height: auto; /* 200px */
 }
-.mini-cover.coin-12273 .inner-content,
-.mini-cover.coin-6255 .inner-content{
+.mini-cover.card-12273 .inner-content{
     height: 89px;
 }
-.coin-6255 .inner-content,
-.coin-12273 .inner-content{
+
+.card-12273 .inner-content{
     overflow-x: hidden;
     overflow-y: auto;
     padding: 5px 0;
 }
 
-.focus-cover.coin-6255 .inner-content,
-.focus-cover.coin-12273 .inner-content{
+.focus-cover.card-12273 .inner-content{
     overflow-x: visible;
     overflow-y: visible;
 }
 
-.focus-cover.coin-6255 .inner-content,
-.focus-cover.coin-12273 .inner-content{
+.focus-cover.card-12273 .inner-content{
     max-height: none;
 }
-.coinface-12274 .cover-content .inner-content {
+.card-12274 .cover-content .inner-content {
     padding: 0 2px 0;
 }
 .mini-cover .cover-content .inner-content {
@@ -2797,8 +2779,7 @@ textarea {
     padding: 5px !important;
 }
 
-.coin-6255.focus-cover .inner-content .main__title,
-.coin-12273.focus-cover .inner-content .main__title{
+.card-12273.focus-cover .inner-content .main__title{
     padding:5px 0 !important;
 }
 
@@ -2997,7 +2978,7 @@ h4.main__title{
 .edge-cover .card_covers {
     line-height: 144%;
 }
-.coin-12274 .card_covers{
+.card-12274 .card_covers{
     text-align: center;
 }
 
@@ -3013,12 +2994,11 @@ h4.main__title{
 }
 
 
-.coin-12273 .card_covers,
-.coin-6255.coinface-12273 .card_covers{
+.card-12273 .card_covers {
     padding: 0 34px;
 }
 
-.focus-cover.coin-12273 .card_covers{
+.focus-cover.card-12273 .card_covers{
     padding: 0 0px;
     text-align: left !important;
 }
@@ -3026,7 +3006,7 @@ h4.main__title{
     max-width: 377px;
 }
 
-.coin-12274 .creator_headline{
+.card-12274 .creator_headline{
     padding: 0 1px 0 0;
 }
 
@@ -3037,7 +3017,7 @@ h4.main__title{
     overflow-x: auto;
     line-height: 113%;
 }
-.edge-cover.coin-12274 .source_bio{
+.edge-cover.card-12274 .source_bio{
     padding: 0 0 5px;
     font-size: 0.79em;
     max-height: 55px;
@@ -3047,7 +3027,7 @@ h4.main__title{
     margin-top: -3px;
 }
 
-.edge-cover.coin-12274 .creator_headline{
+.edge-cover.card-12274 .creator_headline{
     font-size: 0.79em;
     padding: 0;
     height: 18px;
@@ -3368,17 +3348,17 @@ h4.main__title{
     min-height: 34px;
 }
 
-.coin-6287 .cover-content,
-.coin-12274 .cover-content,
-.coin-12274.not-allowed .cover-content,
-.coin-6287.not-allowed .cover-content{
+.card-6287 .cover-content,
+.card-12274 .cover-content,
+.card-12274.not-allowed .cover-content,
+.card-6287.not-allowed .cover-content{
     background: rgba(255,255,254,0.79) !important;
 }
 
 .search_bar,
 .edge-cover:hover,
-.edge-cover.coin-12274:hover .cover-content,
-.edge-cover.coin-6287:hover .cover-content{
+.edge-cover.card-12274:hover .cover-content,
+.edge-cover.card-6287:hover .cover-content{
     background: #EFEFEF !important;
     color: #000000 !important;
 }
@@ -3387,8 +3367,7 @@ h4.main__title{
     background: #000000 !important;
 }
 
-.focus-cover.coin-12273,
-.focus-cover.coin-6255{
+.focus-cover.card-12273{
     margin-bottom: -34px !important;
     padding-bottom: 34px !important;
 }
@@ -3780,16 +3759,16 @@ a,
 .mini-cover .inner-content .main__title{
     padding: 0 !important;
 }
-.coin-12274 .inner-content .main__title,
-.coin-6287 .inner-content .main__title{
+.card-12274 .inner-content .main__title,
+.card-6287 .inner-content .main__title{
     text-align: center;
 }
-.coin-12274 .inner-content .dropdown .main__title,
-.coin-6287 .inner-content .dropdown .main__title{
+.card-12274 .inner-content .dropdown .main__title,
+.card-6287 .inner-content .dropdown .main__title{
     text-align: left;
 }
-.coin-12274 .mini-font,
-.coin-6287 .mini-font{
+.card-12274 .mini-font,
+.card-6287 .mini-font{
     text-align: center;
 }
 .select-btns .btn{
@@ -4030,8 +4009,8 @@ div.img {
     margin-bottom: -3px;
 }
 
-.coin-12274 .inner-content .i_cache,
-.coin-6287 .inner-content .i_cache{
+.card-12274 .inner-content .i_cache,
+.card-6287 .inner-content .i_cache{
     text-align: center !important;
 }
 
