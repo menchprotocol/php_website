@@ -475,10 +475,6 @@ img.no-frame {
 .isred{
     color:#FC1B44 !important;
 }
-.progress-done{
-    height:1px;
-    background-color: #FC1B44;
-}
 
 .dounderline{
     text-decoration: underline !important;
@@ -795,6 +791,8 @@ label:focus,
     height: 8px;
     margin:21px 0;
     background-color: #CCCCCC;
+    border-radius: 0;
+    --bs-progress-bar-bg:#000000;
 }
 .mid-range {
     padding: 0 1px;
@@ -2167,14 +2165,6 @@ label {
     white-space: nowrap;
     text-overflow: clip;
 }
-.cover-progress{
-    width: 100%;
-    top: 0;
-    left: 0;
-    position: absolute;
-    z-index: 999;
-}
-
 
 
 
