@@ -79,21 +79,7 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
     }
 }
 
-/*
-if(!$breadcrum_content){
-    //See if any visible top ideas:
-    foreach($this->X_model->fetch(array(
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42268')) . ')' => null, //Active Sequence Up
-        'x__next' => $focus_i['i__id'],
-    ), array('x__previous')) as $prev_i){
-        $breadcrum_content .= '<li class="breadcrumb-item breadcrumb-flat">';
-        $breadcrum_content .= '<a href="'.view_memory(42903,33286).$prev_i['i__hashtag'].'"><u>'.view_i_title($prev_i).'</u></a>';
-        $breadcrum_content .= '</li>';
-    }
-}
-*/
+
 
 if($breadcrum_content){
 
@@ -116,21 +102,6 @@ $target_completed = $tree_progress['fixed_completed_percentage'] >= 100;
 if($target_completed){
     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>100% Complete</div>';
 }
-
-if(isset($_GET['list'])){
-    //Secret list for debugging
-    echo '<p style="padding:10px;">'.$tree_progress['fixed_discovered'].' of '.$tree_progress['fixed_total'].' Discovered:</p>';
-    $counter = 0;
-    foreach($tree_progress['list_total'] as $to_discover_id){
-        $is = $this->I_model->fetch(array(
-            'i__id' => $to_discover_id,
-        ));
-        $counter++;
-        echo '<p style="padding:2px;">'.$counter.') <a href="'.view_memory(42903,33286).$is[0]['i__hashtag'].'">'.( in_array($is[0]['i__id'], $tree_progress['list_discovered']) ? '✅ ' : '' ).view_i_title($is[0]).'</p>';
-    }
-}
-
-
 
 
 //Focus Idea:
@@ -165,7 +136,7 @@ foreach($this->config->item('e___13289') as $x__type => $m2) {
         //Save Response
         $control_btn = '<div style="padding-left: 8px;"><a class="controller-nav round-btn go-next main-next" href="javascript:void(0);" onclick="go_next()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
 
-    } elseif($x__type==31022 && $can_skip && !$target_completed && !count($x_completes)){
+    } elseif($x__type==31022 && $can_skip && !$target_completed){
 
         //SKIP
         $control_btn = '<div style="padding-left: 13px;" class="save_toggle_answer"><a class="controller-nav round-btn" href="javascript:void(0);" onclick="x_skip()">'.$m2['m__cover'].'</a><span class="nav-title main__title">'.$m2['m__title'].'</span></div>';
