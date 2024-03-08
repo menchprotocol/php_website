@@ -1083,7 +1083,7 @@ h4 .halfbg {
 
 .x_write{
     padding: 5px;
-    min-height: 55px;
+    min-height: 34px;
     margin: 0;
     width: calc(100% - 10px) !important;
 }
