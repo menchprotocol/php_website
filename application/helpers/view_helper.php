@@ -1442,7 +1442,7 @@ function view_i_nav($discovery_mode, $focus_i){
         if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
 
         $input_content = '';
-        if($ideation_pen){
+        if(!$discovery_mode && $ideation_pen){
 
             if(in_array($x__type, $CI->config->item('n___42261'))){
 
