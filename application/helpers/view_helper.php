@@ -445,7 +445,7 @@ function view_sign($i, $previous_response = null){
         $message_ui .= '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
     }
 
-    $message_ui .= '<input type="text" class="border greybg custom_ui_14506_34281 main__title itemsetting" value="'.$previous_response.'" placeholder="" id="x_write" name="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
+    $message_ui .= '<input type="text" class="border dotted-borders custom_ui_14506_34281 main__title itemsetting x_write" value="'.$previous_response.'" placeholder="" name="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
 
     //Signature agreement:
     $message_ui .= '<div class="form-check">
@@ -1857,46 +1857,21 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 0, 0);
 
-            //Do we have a text response from before?
-            $previous_response = '';
-            if($x__player){
-                //Does this have any append sources?
-                foreach($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 7545, //Following Add
-                    'x__next' => $i['i__id'],
-                )) as $append_e){
-                    //Does the user have this source with any values?
-                    foreach($CI->X_model->fetch(array(
-                        'x__following' => $append_e['x__following'],
-                        'x__follower' => $x__player,
-                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    ), array(), 0, 0) as $up_appended) {
-                        if(strlen($up_appended['x__message'])){
-                            $previous_response = $up_appended['x__message'];
-                            break;
-                        }
-                    }
-                    if(strlen($previous_response)){
-                        break;
-                    }
-                }
-            }
-
             $input_attributes = '';
-            $previous_response = ( !strlen($previous_response) && count($x_completes) ? trim($x_completes[0]['x__message']) : $previous_response );
+            $previous_response = ( isset($x_ideations[0]['x__message']) ? $x_ideations[0]['x__message'] : '' );
 
-            if ($i['i__type']==6683) {
+            if (in_array($i['i__type'], $CI->config->item('n___43002'))) {
+                //Textarea
+                $input_ui .= '<textarea class="border dotted-borders x_write" placeholder="">' . $previous_response . '</textarea>';
+            }
+            if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
+                //Uploader
+                $input_ui .= '<div class="inner_uploader inner_uploader_'.$i['i__id'].'"></div>';
+                $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, [\'#\'+i__id], null, null, \'.inner_uploader_'.$i['i__id'].'\'); }); </script>';
+            }
+            if (in_array($i['i__type'], $CI->config->item('n___43003'))) {
 
-                //Text response
-                $input_ui .= '<textarea class="border i_content x_input greybg" placeholder="" id="x_write">' . $previous_response . '</textarea>';
-
-            } else {
-
-                $input_type = 'text';
-
-                //Determine type:
+                //Input
                 if($i['i__type']==31794){
 
                     //Number
@@ -1947,11 +1922,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         'x__following' => 32442, //Select Time
                     ))) ? 'datetime-local'  : 'date' );
 
-                } elseif($i['i__type']==31794){
-
-                    //Number
-                    $input_type = 'number';
-
                 } elseif($i['i__type']==31795){
 
                     //URL
@@ -1959,8 +1929,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 }
 
-
-                $input_ui .= '<input type="'.$input_type.'" '.$input_attributes.' class="border i_content greybg x_input" placeholder="" value="'.$previous_response.'" id="x_write" />';
+                $input_ui .= '<input type="'.$input_type.'" '.$input_attributes.' class="border dotted-borders x_write" placeholder="" value="'.$previous_response.'" />';
 
             }
 

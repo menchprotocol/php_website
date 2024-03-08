@@ -261,7 +261,7 @@ if($target_i__hashtag){
             }
         }
 
-        set_autosize($('#x_write'));
+        set_autosize($('.x_write'));
 
     });
 
@@ -364,7 +364,7 @@ if($target_i__hashtag){
         $.post("/ajax/x_write", {
             target_i__id:$('#target_i__id').val(),
             i__id:fetch_int_val('#focus__id'),
-            x_write:$('#x_write').val(),
+            x_write:$('.x_write').val(),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
