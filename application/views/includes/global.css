@@ -1702,10 +1702,8 @@ label {
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;
 }
-.focus-cover .card_covers .icon-block-sm {
-    height: 21px !important;
-}
-.edge-cover .card_covers .icon-block-sm,
+
+.card_covers .icon-block-sm,
 .card-12274 .creator_headline {
     height: 24px !important;
 }
