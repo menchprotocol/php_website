@@ -82,6 +82,9 @@ body {
 .edge-cover .content-image {
     max-height: 610px;
 }
+.edge-cover .input_ui{
+    margin-left: 30px;
+}
 
 .ytframe{
     margin: 10px 0 0;

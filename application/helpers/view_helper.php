@@ -1938,6 +1938,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $input_type = 'url';
                     $placeholder = 'Paste URL...';
 
+                } elseif($i['i__type']==43005){
+
+                    //Input Text
+                    $input_type = 'text';
+                    $placeholder = 'Write...';
+
                 }
 
                 $input_ui .= '<input type="'.$input_type.'" '.$input_attributes.' class="border dotted-borders x_write" placeholder="'.$placeholder.'" value="'.$previous_response.'" />';
