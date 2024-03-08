@@ -789,7 +789,7 @@ label:focus,
 
 .progress{
     height: 8px;
-    margin:21px 0;
+    margin:0 0 8px 0;
     background-color: #CCCCCC;
     border-radius: 0;
     --bs-progress-bar-bg:#000000;
