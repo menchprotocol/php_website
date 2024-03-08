@@ -4062,6 +4062,7 @@ div.img {
     top:-34px !important;
 }
 
+input[type=date],
 input[type=datetime-local],
 input[type=number]{
     max-width: 233px;
