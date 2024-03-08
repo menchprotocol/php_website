@@ -3152,25 +3152,15 @@ h4.main__title{
 
 
 .card_covers a.btn-sm {
-    padding: 2px 13px 0 0 !important;
-    border: 1px solid #000000 !important;
-    border-radius: 0 !important;
-    margin-top: -5px !important;
-}
-.card_covers a.btn-sm:hover {
-    background-color: #EFEFEF !important;
-}
-.edge-cover .card_covers a.btn-sm:hover {
-    background-color: #FFFFFF !important;
-}
-
-.edge-cover .card_covers a.btn-sm {
     padding: 3px 5px 0 0 !important;
     margin-top: -11px !important;
     margin-left: 6px !important;
     margin-right: 5px !important;
 }
-.edge-cover .card_covers a.btn-sm .icon-block-sm{
+.card_covers a.btn-sm:hover {
+    background-color: #EFEFEF !important;
+}
+.card_covers a.btn-sm .icon-block-sm{
     height: 21px !important;
 }
 .dropdown-item .info_blob {
