@@ -240,6 +240,7 @@ class X_model extends CI_Model
         $results = $q->result_array();
 
 
+        print_r($select);
         print_r($results);
 
         //Verify Access to each item:
