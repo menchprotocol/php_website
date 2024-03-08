@@ -1559,7 +1559,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
             if(initial_loading){
 
                 //Initiate Idea  Uploader:
-                load_cloudinary(13572, ['#'+i__id], '.uploader_13572', '#modal31911');
+                load_cloudinary(13572, i__id, ['#'+i__id], '.uploader_13572', '#modal31911');
 
                 //Track unsaved changes to prevent unwated modal closure:
                 $("#modal31911 .unsaved_warning").change(function() {
@@ -1680,7 +1680,7 @@ function i_editor_save(){
     var sorted_media = [];
     var sort_rank = 0;
     var media_uploaded = true;
-    $("#media_frame .media_item").each(function () {
+    $(".media_frame .media_item").each(function () {
         var current_e_id = parseInt($(this).attr('e__id'));
 
         if(current_e_id > 0){
@@ -1843,7 +1843,7 @@ function sort_media(){
 }
 
 var media_cache = []; //Stores the json data for successfully uploaded media files
-function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){
+function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button = null, loading_modal = null, loading_inline_container = null){
 
     console.log('Initiating Uploader @'+uploader_id+' with tags '+uploader_tags.join(' & '));
 
@@ -1984,9 +1984,10 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 has_unsaved_changes = true;
                 $('.media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
-            } else if(uploader_id==12117){
+            } else if(uploader_id==43004){
 
                 //Discovery Uploader
+                $('.media_frame_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
@@ -2002,7 +2003,7 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                 //Source Cover Uploader:
                 update__cover('https://res.cloudinary.com/menchcloud/image/upload/c_crop,g_custom/' + result.info.path);
 
-            } else if(uploader_id==13572){
+            } else if(uploader_id==13572 || uploader_id==43004){
 
                 //Idea Uploader
                 var playback_code = '';
@@ -2038,9 +2039,6 @@ function load_cloudinary(uploader_id, uploader_tags = [], loading_button = null,
                     console.log('ERORRRRRRRR: Missing Media Type');
 
                 }
-
-            } else if(uploader_id==12117){
-                //Discovery Uploader
 
             }
 
@@ -2186,7 +2184,7 @@ function e_editor_load(e__id = 0, x__id = 0){
         if (data.status) {
 
             //Initiate Source Cover Uploader:
-            load_cloudinary(42359, ['@'+e__id], '.uploader_42359', '#modal31912');
+            load_cloudinary(42359, e__id, ['@'+e__id], '.uploader_42359', '#modal31912');
 
             //Dynamic Input Fields:
             var index_i_content = 0;
