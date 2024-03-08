@@ -1863,6 +1863,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             if (in_array($i['i__type'], $CI->config->item('n___43002'))) {
                 //Textarea
                 $input_ui .= '<textarea class="border dotted-borders x_write" placeholder="">' . $previous_response . '</textarea>';
+                $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
             }
             if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
                 //Uploader
