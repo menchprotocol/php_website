@@ -1639,7 +1639,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
 
-    if($discovery_mode && $player_e){
+    if($player_e){
 
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
