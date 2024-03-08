@@ -1526,7 +1526,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     $player_e = superpower_unlocked();
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
-    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) || (!isset($_POST['js_request_uri']) && strlen($this->uri->segment(2))) );
+    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2))) );
 
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $x__player = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
