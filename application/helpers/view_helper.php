@@ -1881,6 +1881,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     //Number
                     $input_type = 'number';
+                    $placeholder = 'Enter Number...';
 
                     //Steps
                     foreach($CI->X_model->fetch(array(
@@ -1920,21 +1921,25 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 } elseif($i['i__type']==30350){
 
-                    $input_type = (count($CI->X_model->fetch(array(
+                    $has_time = count($CI->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 32442, //Select Time
-                    ))) ? 'datetime-local'  : 'date' );
+                    )));
+
+                    $input_type = ( $has_time ? 'datetime-local'  : 'date' );
+                    $placeholder = ( $has_time ? 'Select Date & Time...'  : 'Select Date...' );
 
                 } elseif($i['i__type']==42915){
 
                     //URL
                     $input_type = 'url';
+                    $placeholder = 'Paste URL...';
 
                 }
 
-                $input_ui .= '<input type="'.$input_type.'" '.$input_attributes.' class="border dotted-borders x_write" placeholder="" value="'.$previous_response.'" />';
+                $input_ui .= '<input type="'.$input_type.'" '.$input_attributes.' class="border dotted-borders x_write" placeholder="'.$placeholder.'" value="'.$previous_response.'" />';
 
             }
 
