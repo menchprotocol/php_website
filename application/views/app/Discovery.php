@@ -117,6 +117,9 @@ echo '</div>';
 
 
 
+
+
+
 $buttons_found = 0;
 $buttons_ui = '';
 $control_btn = '';
@@ -171,8 +174,13 @@ if(!$target_completed) {
 }
 
 
-?>
 
+
+echo view_i_nav(true, $focus_i);
+
+
+
+?>
 
 <script>
     var focus_i__type = <?= $focus_i['i__type'] ?>;
