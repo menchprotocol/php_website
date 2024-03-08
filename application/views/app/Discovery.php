@@ -103,7 +103,7 @@ if($player_e){
 
 
 //Focus Discovery:
-echo '<div class="main_item view_6255 row justify-content">';
+echo '<div class="main_item row justify-content">';
 echo view_card_i(43007, $focus_i);
 echo '</div>';
 

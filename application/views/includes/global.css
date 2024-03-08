@@ -2951,20 +2951,10 @@ h4.main__title{
     line-height: 169%;
 }
 
-.view_6255 .card_covers .icon-block-sm {
-    width: 44px !important;
-}
 .horizontal_menu .dropdown-item .icon-block-sm {
     width: 34px !important;
 }
-.view_6255 .card_covers i {
-    font-size: 2em !important;
-    height:50px !important;
-}
-.view_6255 .card_covers .dropdown-item .icon-block-sm,
-.view_6255 .card_covers .dropdown-item i {
-    height:21px !important;
-}
+
 .info_blob{
     font-size: 0.79em !important;
     color: #999999 !important;
