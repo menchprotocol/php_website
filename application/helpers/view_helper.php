@@ -1867,7 +1867,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
                 //Uploader
                 $input_ui .= '<div class="media_outer_frame hideIfEmpty">
-                        <div class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
+                        <div id="media_frame_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>';
                 $input_ui .= '<div style="padding: 5px 0 0 0;"><div class="btn btn-sm bold-btn inner_uploader_'.$i['i__id'].'">UPLOAD</div></div>';

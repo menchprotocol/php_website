@@ -1461,7 +1461,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             $('#modal31911 .media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
             cloudinary_preview_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
         });
-        sort_media('#modal31911 .media_frame');
+        sort_media('media_frame');
 
     } else if(passon_i__id) {
 
@@ -1829,8 +1829,8 @@ function i_editor_save(){
     });
 }
 
-function sort_media(sort_handle){
-    var sort = Sortable.create($(sort_handle), {
+function sort_media(sort_id){
+    var sort = Sortable.create(document.getElementById(sort_id), {
         animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".media_item", // Specifies which items inside the element should be sortable
         handle: ".media_item", // Restricts sort start click/touch to the specified element
@@ -1967,12 +1967,12 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             if(uploader_id==13572){
 
                 //Ideator Uploader
-                sort_media('#modal31911 .media_frame');
+                sort_media('media_frame');
 
             } else if(uploader_id==43004){
 
                 //Discovery Uploader
-                sort_media('.media_frame_'+s__id);
+                sort_media('media_frame_'+s__id);
 
             }
 
