@@ -3151,7 +3151,7 @@ class Ajax extends CI_Controller
                 ));
             }
 
-        } elseif ($is[0]['i__type']==31795) {
+        } elseif ($is[0]['i__type']==42915) {
 
             $x__type = 31799; //Entered URL
 

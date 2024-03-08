@@ -1922,7 +1922,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         'x__following' => 32442, //Select Time
                     ))) ? 'datetime-local'  : 'date' );
 
-                } elseif($i['i__type']==31795){
+                } elseif($i['i__type']==42915){
 
                     //URL
                     $input_type = 'url';
