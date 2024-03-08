@@ -1655,12 +1655,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
 
-        if (in_array($i['i__type'], $CI->config->item('n___7712'))) {
-
-            //Inform them what they need to do:
-            $input_ui .= '<div class="aler" role="alert"><span class="icon-block-sm">'.$e___11035[$i['i__type']]['m__cover'].'</span>'.$e___11035[$i['i__type']]['m__message'].':</div>';
-
-        } elseif ($i['i__type']==32603) {
+        if ($i['i__type']==32603) {
 
             $input_ui .= view_sign($i);
 
@@ -2091,7 +2086,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //Skip
-                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm bold-btn"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm bold-btn"><span class="icon-block-sm" style="height: 21px !important;" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</span></a></span>';
 
             } elseif($x__type_target_bar==31911 && $access_level_i>=3 && !$discovery_mode){
 
