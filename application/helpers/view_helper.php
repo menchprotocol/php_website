@@ -1520,12 +1520,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $goto_start = in_array($x__type, $CI->config->item('n___42988'));
-    $i_startable = i_startable($i);
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
     $superpower_10939 = superpower_unlocked(10939);
 
     $player_e = superpower_unlocked();
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
+    $i_startable = i_startable($i);
     $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2))) );
 
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN

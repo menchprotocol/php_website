@@ -84,6 +84,19 @@ if($breadcrum_content){
 
 
 
+
+
+
+
+//Focus Discovery:
+echo '<div class="main_item row justify-content">';
+echo view_card_i(43007, $focus_i);
+echo '</div>';
+
+
+
+
+
 //Progress?
 if($player_e){
     $tree_progress = $this->X_model->tree_progress($x__player, $target_i);
@@ -96,16 +109,6 @@ if($player_e){
 </div></div>';
     }
 }
-
-
-
-
-
-
-//Focus Discovery:
-echo '<div class="main_item row justify-content">';
-echo view_card_i(43007, $focus_i);
-echo '</div>';
 
 
 
