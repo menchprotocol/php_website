@@ -1458,10 +1458,10 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
         //Load Current Media:
         $(".ui_i__cache_"+i__id+" .media_display").each(function () {
-            $('.media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
+            $('#modal31911 .media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
             cloudinary_preview_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
         });
-        sort_media();
+        sort_media('#modal31911 .media_frame');
 
     } else if(passon_i__id) {
 
@@ -1680,7 +1680,7 @@ function i_editor_save(){
     var sorted_media = [];
     var sort_rank = 0;
     var media_uploaded = true;
-    $(".media_frame .media_item").each(function () {
+    $('#modal31911 .media_frame .media_item').each(function () {
         var current_e_id = parseInt($(this).attr('e__id'));
 
         if(current_e_id > 0){
@@ -1829,8 +1829,8 @@ function i_editor_save(){
     });
 }
 
-function sort_media(){
-    var sort = Sortable.create(document.getElementById("media_frame"), {
+function sort_media(sort_handle){
+    var sort = Sortable.create($(sort_handle), {
         animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
         draggable: ".media_item", // Specifies which items inside the element should be sortable
         handle: ".media_item", // Restricts sort start click/touch to the specified element
@@ -1964,7 +1964,17 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         } else if (result.event === "queues-start") {
 
             //Enable Sorting:
-            sort_media();
+            if(uploader_id==13572){
+
+                //Ideator Uploader
+                sort_media('#modal31911 .media_frame');
+
+            } else if(uploader_id==43004){
+
+                //Discovery Uploader
+                sort_media('.media_frame_'+s__id);
+
+            }
 
         } else if (result.event === "upload-added") {
 
@@ -1980,9 +1990,9 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
             } else if(uploader_id==13572){
 
-                //Discovery Uploader
+                //Ideator Uploader
                 has_unsaved_changes = true;
-                $('.media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('#modal31911 .media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             } else if(uploader_id==43004){
 
@@ -1990,7 +2000,6 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
                 $('.media_frame_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             }
-
 
         } else if (result.event === "success") {
 
