@@ -1870,7 +1870,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         <div id="media_frame_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>';
-                $input_ui .= '<div class="btn btn-sm bold-btn inner_uploader_'.$i['i__id'].'"><span class="icon-block">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div>';
+                $input_ui .= '<div style="padding:5px 0 2px 0;"><div class="btn btn-sm bold-btn inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
                 $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['i__id'].', [\'#'.$i['i__id'].'\'], \'.inner_uploader_'.$i['i__id'].'\'); }); </script>';
             }
             if (in_array($i['i__type'], $CI->config->item('n___43003'))) {
