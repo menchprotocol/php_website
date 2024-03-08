@@ -240,30 +240,30 @@ class X_model extends CI_Model
         $results = $q->result_array();
 
 
-        print_r($select);
-        print_r($results);
 
         //Verify Access to each item:
-        if(array_intersect(array('x__previous','x__next'), $joins_objects)){
-            //Idea results:
-            $player_e = superpower_unlocked();
-            foreach($results as $key => $value){
+        if($select=='*'){
+            if(array_intersect(array('x__previous','x__next'), $joins_objects)){
+                //Idea results:
+                $player_e = superpower_unlocked();
+                foreach($results as $key => $value){
 
 
-                if(!access_level_i(null, $value['i__id'], $value) || ($must_be_discovered && (!$player_e || !count($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__player' => $player_e['e__id'],
-                        'x__previous' => $value['i__id'],
-                    )))))){
-                    unset($results[$key]); //Remove this option
+                    if(!access_level_i(null, $value['i__id'], $value) || ($must_be_discovered && (!$player_e || !count($this->X_model->fetch(array(
+                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                                    'x__player' => $player_e['e__id'],
+                                    'x__previous' => $value['i__id'],
+                                )))))){
+                        unset($results[$key]); //Remove this option
+                    }
                 }
-            }
-        } elseif(array_intersect(array('x__following','x__follower'), $joins_objects)){
-            //Source results:
-            foreach($results as $key => $value){
-                if(!access_level_e(null, $value['e__id'], $value)){
-                    unset($results[$key]); //Remove this option
+            } elseif(array_intersect(array('x__following','x__follower'), $joins_objects)){
+                //Source results:
+                foreach($results as $key => $value){
+                    if(!access_level_e(null, $value['e__id'], $value)){
+                        unset($results[$key]); //Remove this option
+                    }
                 }
             }
         }
