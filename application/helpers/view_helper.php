@@ -2071,12 +2071,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             } elseif($x__type_target_bar==4235 && !$discovery_mode && $i_startable && $access_level_i>=1){
 
                 //Start
-                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm bold-btn"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+                $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm bold-btn"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==42924 && $discovery_mode){
 
                 //Next
-                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm bold-btn"><span class="icon-block-sm" style="height: 21px !important;">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm bold-btn"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31022 && $discovery_mode && !count($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2086,7 +2086,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //Skip
-                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm"><span class="icon-block-sm" style="height: 21px !important;" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</span></a></span>';
+                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm"><span class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</span></a></span>';
 
             } elseif($x__type_target_bar==31911 && $access_level_i>=3 && !$discovery_mode){
 
