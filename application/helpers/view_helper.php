@@ -1866,7 +1866,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             }
             if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
                 //Uploader
-                $input_ui .= '<div class="media_frame_'.$i['i__id'].' hideIfEmpty"></div>';
+                $input_ui .= '<div class="media_outer_frame hideIfEmpty">
+                        <div class="media_frame_'.$i['i__id'].' hideIfEmpty"></div>
+                        <div class="doclear">&nbsp;</div>
+                    </div>';
                 $input_ui .= '<div class="btn btn-default inner_uploader_'.$i['i__id'].'">UPLOAD</div>';
                 $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['i__id'].', [\'#'.$i['i__id'].'\'], \'.inner_uploader_'.$i['i__id'].'\'); }); </script>';
             }
