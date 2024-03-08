@@ -109,7 +109,6 @@ echo '<div class="main_item view_6255 row justify-content">';
 echo view_card_i(42288, $focus_i);
 echo '</div>';
 
-echo view_i_nav(true, $focus_i);
 
 
 
@@ -171,14 +170,10 @@ if(!$target_completed) {
 </div></div>';
 }
 
-if($target_i__hashtag){
-    echo '</div>';
-}
-
 
 ?>
 
-<div class="import_idea_creator"></div>
+
 <script>
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
