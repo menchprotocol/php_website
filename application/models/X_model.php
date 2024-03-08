@@ -240,6 +240,7 @@ class X_model extends CI_Model
         $results = $q->result_array();
 
 
+        print_r($results);
 
         //Verify Access to each item:
         if(array_intersect(array('x__previous','x__next'), $joins_objects)){
@@ -247,7 +248,6 @@ class X_model extends CI_Model
             $player_e = superpower_unlocked();
             foreach($results as $key => $value){
 
-                print_r($value);
 
                 if(!access_level_i(null, $value['i__id'], $value) || ($must_be_discovered && (!$player_e || !count($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
