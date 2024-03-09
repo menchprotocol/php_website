@@ -519,7 +519,7 @@ class E_model extends CI_Model
 
 
         //Make sure user has access to each item:
-        if($select=='*'){
+        if($select=='*' && 0){
             foreach($results as $key => $value){
                 if(!access_level_e(null, $value['e__id'], $value)){
                     unset($results[$key]); //Remove this option

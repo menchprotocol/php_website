@@ -204,8 +204,9 @@ echo view_i_nav(true, $focus_i);
         }
 
         //Attempts to go next if no submissions:
-        if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
+        if (js_n___7712.includes(focus_i__type)){
 
+            //Also check $('.list-answers .answer-item').length
             //Choose
             return x_select();
 

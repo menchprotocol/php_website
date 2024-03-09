@@ -2855,7 +2855,6 @@ class Ajax extends CI_Controller
 
         foreach($this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         )) as $focus_i){
 
             //Mark as complete:
