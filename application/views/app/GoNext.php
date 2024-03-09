@@ -5,7 +5,7 @@ if(!$this->X_model->i_has_started($player_e['e__id'], $target_i['i__hashtag'])) 
 }
 
 //Go to Next Idea:
-$next_i__hashtag = $this->X_model->find_next($player_e['e__id'], $focus_i['i__hashtag'], $focus_i);
+$next_i__hashtag = $this->X_model->find_next($player_e['e__id'], $target_i['i__hashtag'], $focus_i);
 if($next_i__hashtag){
 
     return redirect_message(view_memory(42903,30795).$target_i['i__hashtag'].'/'.$next_i__hashtag );

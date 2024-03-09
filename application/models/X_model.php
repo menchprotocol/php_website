@@ -905,7 +905,7 @@ class X_model extends CI_Model
     function find_previous($e__id, $target_i__hashtag, $focus_i__id, $loop_breaker_ids = array())
     {
 
-        echo 'Previous:'.$e__id.'/'.$target_i__hashtag.'/'.$focus_i__id;
+        //echo 'Previous:'.$e__id.'/'.$target_i__hashtag.'/'.$focus_i__id;
 
         if(count($loop_breaker_ids)>0 && in_array($focus_i__id, $loop_breaker_ids)){
             return array();
@@ -1056,7 +1056,7 @@ class X_model extends CI_Model
 
         }
 
-        echo 'Next:'.$e__id.'/'.$target_i__hashtag.'/'.$i['i__hashtag'];
+        //echo 'Next:'.$e__id.'/'.$target_i__hashtag.'/'.$i['i__hashtag'];
 
         if ($search_up && $target_i__hashtag!=$i['i__hashtag']) {
             //Check Previous/Up

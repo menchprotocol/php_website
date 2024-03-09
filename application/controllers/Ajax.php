@@ -2860,7 +2860,7 @@ class Ajax extends CI_Controller
             //Mark as complete:
             $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $focus_i);
 
-            $next_hashtag = $this->X_model->find_next($player_e['e__id'], $focus_i['i__hashtag'], $focus_i);
+            $next_hashtag = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
 
             //All good:
             return view_json(array(
