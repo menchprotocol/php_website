@@ -238,6 +238,8 @@ echo view_i_nav(true, $focus_i);
 
             } else {
 
+                alert('Unknown ERRORRR');
+                return false;
                 //Go Next:
                 $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
                 js_redirect(GoNext());
