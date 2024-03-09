@@ -272,12 +272,13 @@ echo view_i_nav(true, $focus_i);
         $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
         $.post("/ajax/x_read_only_complete", {
             target_i__id:$('#target_i__id').val(),
+            target_i__hashtag:$('#target_i__hashtag').val(),
             i__id:fetch_int_val('#focus__id'),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                js_redirect(data.find_next_hashtag);
+                js_redirect(data.go_next_url);
             } else {
                 //Show error:
                 alert(data.message);
