@@ -1054,40 +1054,6 @@ function view_time_hours($total_seconds, $hide_hour = false){
 }
 
 
-
-function view_card_x_select($i, $x__player, $previously_selected){
-
-    //Search to see if an idea has a thumbnail:
-    $CI =& get_instance();
-    $player_e = superpower_unlocked();
-    $spots_remaining = i_spots_remaining($i['i__id']);
-
-
-    $href = 'href="javascript:void(0);"'.( $spots_remaining==0 && !$previously_selected ? ' onclick="alert(\'This Option is Not Available\')" ' : ' onclick="select_answer(' . $i['i__id'] . ')"' );
-
-    $ui  = '<div class="card_cover col-6 col-md-4 no-padding">';
-    $ui .= '<div class="cover-wrapper">';
-    $ui .= '<table class="card_covers"></table>'; //For UI height adjustment
-    $ui .= '<a '.$href.' selection_i__id="' . $i['i__id'] . '" class="answer-item black-background-obs cover-link x_select_' . $i['i__id'] . ($previously_selected ? ' isSelected ' : '') . ( $spots_remaining==0 ? ' greyout ' : '' ).'">';
-
-    $ui .= '</a>';
-    $ui .= '</div>';
-
-    $ui .= '<div class="cover-content"><div class="inner-content">';
-
-    $ui .= '<div class="cover-text">';
-    $ui .= '<a '.$href.' class="hideIfEmpty doblock">';
-    $ui .= $i['i__cache'];
-    $ui .= '</a>';
-    $ui .= '</div>';
-
-    $ui .= '</div></div>';
-    $ui .= '</div>';
-
-    return $ui;
-
-}
-
 function view__hash($string){
     $CI =& get_instance();
     return substr(md5($string.$CI->config->item('secret_hash')), 0, 10);
@@ -1567,7 +1533,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div title="@@'.$x__type.'" i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 card_click s__12273_'.$i['i__id'].' '.( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
 
