@@ -198,15 +198,18 @@ echo view_i_nav(true, $focus_i);
 
     function go_next(){
 
-        var is_logged_in = (js_pl_id > 0);
+        if(!js_pl_id){
+            alert('You Must be logged in to go next');
+            return false;
+        }
 
         //Attempts to go next if no submissions:
-        if (is_logged_in && js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
+        if (js_n___7712.includes(focus_i__type) && $('.list-answers .answer-item').length){
 
             //Choose
             return x_select();
 
-        } else if(is_logged_in && js_n___33532.includes(focus_i__type)) {
+        } else if(js_n___33532.includes(focus_i__type)) {
 
             //Write
 
@@ -222,13 +225,13 @@ echo view_i_nav(true, $focus_i);
                 return x_write();
             }
 
-        } else if (is_logged_in && js_n___41055.includes(focus_i__type) ) {
+        } else if (js_n___41055.includes(focus_i__type) ) {
 
             return x_free_ticket();
 
         } else {
 
-            if (is_logged_in && js_n___34826.includes(focus_i__type) && parseInt($('#target_i__id').val()) > 0) {
+            if (js_n___34826.includes(focus_i__type) && parseInt($('#target_i__id').val()) > 0) {
 
                 //READ:
                 return x_read_only_complete();
