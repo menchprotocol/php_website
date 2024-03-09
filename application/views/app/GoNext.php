@@ -16,6 +16,7 @@ if($next_i__hashtag){
     $this->X_model->create(array(
         'x__player' => $player_e['e__id'],
         'x__type' => 14730, //COMPLETED 100%
+        'x__previous' => $target_i['i__id'],
         'x__next' => $focus_i['i__id'],
     ));
 
