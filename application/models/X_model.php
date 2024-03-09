@@ -905,7 +905,7 @@ class X_model extends CI_Model
     function find_previous($e__id, $target_i__hashtag, $focus_i__id, $loop_breaker_ids = array())
     {
 
-        die('Previous:'.$e__id.'/'.$target_i__hashtag.'/'.$focus_i__id);
+        echo 'Previous:'.$e__id.'/'.$target_i__hashtag.'/'.$focus_i__id;
 
         if(count($loop_breaker_ids)>0 && in_array($focus_i__id, $loop_breaker_ids)){
             return array();
@@ -922,7 +922,6 @@ class X_model extends CI_Model
 
             //Validate Selection:
             $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___7712'));
-            $is_fixed_x = in_array($i_previous['x__type'], $this->config->item('n___42268')); //Active Sequence UP
             $is_selected = count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
@@ -931,7 +930,7 @@ class X_model extends CI_Model
                 'x__player' => $e__id,
             )));
 
-            if($e__id>0 && !$is_selected && ($is_or_i || !$is_fixed_x)){
+            if($e__id>0 && !$is_selected && $is_or_i){
                 continue;
             }
 
@@ -1027,7 +1026,6 @@ class X_model extends CI_Model
             }
 
             //Validate Selection:
-            $is_fixed_x = in_array($next_i['x__type'], $this->config->item('n___42267')); //Active Sequence Down
             $is_selected = count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
@@ -1035,7 +1033,7 @@ class X_model extends CI_Model
                 'x__next' => $next_i['i__id'],
                 'x__player' => $e__id,
             )));
-            if(($is_or_i || !$is_fixed_x) && !$is_selected){
+            if($is_or_i && !$is_selected){
                 continue;
             }
 
@@ -1058,7 +1056,7 @@ class X_model extends CI_Model
 
         }
 
-        die('Next:'.$e__id.'/'.$target_i__hashtag.'/'.$i['i__hashtag']);
+        echo 'Next:'.$e__id.'/'.$target_i__hashtag.'/'.$i['i__hashtag'];
 
         if ($search_up && $target_i__hashtag!=$i['i__hashtag']) {
             //Check Previous/Up
