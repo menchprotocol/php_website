@@ -2853,26 +2853,29 @@ class Ajax extends CI_Controller
             ));
         }
 
-        $is = $this->I_model->fetch(array(
+        foreach($this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-        if(count($is) < 1){
+        )) as $focus_i){
+
+            //Mark as complete:
+            $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $is[0]);
+
+            //All good:
             return view_json(array(
-                'status' => 0,
-                'message' => 'Idea not published.',
+                'status' => 1,
+                'message' => 'Saved & Next',
+                'go_next_url' => '/'.$_POST['target_i__hashtag'].'/'.$this->X_model->find_next($player_e['e__id'], $focus_i['i__hashtag'], $focus_i),
             ));
+
         }
 
 
-        //Mark as complete:
-        $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $is[0]);
 
-        //All good:
+
         return view_json(array(
-            'status' => 1,
-            'message' => 'Saved & Next',
-            'go_next_url' => '/'.$_POST['target_i__hashtag'].'/'.$this->X_model->find_next($player_e['e__id'], $focus_i['i__hashtag'], $focus_i),
+            'status' => 0,
+            'message' => 'Idea not published.',
         ));
 
     }
