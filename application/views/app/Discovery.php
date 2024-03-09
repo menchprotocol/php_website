@@ -269,6 +269,7 @@ echo view_i_nav(true, $focus_i);
 
 
     function x_read_only_complete(){
+        $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
         $.post("/ajax/x_read_only_complete", {
             target_i__id:$('#target_i__id').val(),
             i__id:fetch_int_val('#focus__id'),
@@ -276,8 +277,7 @@ echo view_i_nav(true, $focus_i);
         }, function (data) {
             if (data.status) {
                 //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(GoNext());
+                js_redirect(data.find_next_hashtag);
             } else {
                 //Show error:
                 alert(data.message);
