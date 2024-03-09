@@ -84,19 +84,6 @@ if($breadcrum_content){
 
 
 
-
-
-
-
-//Focus Discovery:
-echo '<div class="main_item row justify-content">';
-echo view_card_i(43007, $focus_i);
-echo '</div>';
-
-
-
-
-
 //Progress?
 if($player_e){
     $tree_progress = $this->X_model->tree_progress($x__player, $target_i);
@@ -112,19 +99,29 @@ if($player_e){
 
 
 
+
+
+
+
+//Focus Discovery:
+echo '<div class="main_item row justify-content">';
+echo view_card_i(43007, $focus_i);
+echo '</div>';
+
+
+
+
+
 //Main Navigation
 echo view_i_nav(true, $focus_i);
-
 
 
 ?>
 
 <script>
+
     var focus_i__type = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
-</script>
-
-<script>
 
     $(document).ready(function () {
 
@@ -148,220 +145,5 @@ echo view_i_nav(true, $focus_i);
         set_autosize($('.x_write'));
 
     });
-
-
-    var is_toggling = false;
-    function select_answer(i__id){
-
-        if(is_toggling){
-            return false;
-        }
-        is_toggling = true;
-
-        //Allow answer to be saved/updated:
-        var i__type = parseInt($('.list-answers').attr('i__type'));
-
-        //Clear all if single selection:
-        var is_single_selection = js_n___33331.includes(i__type);
-        if(is_single_selection){
-            //Single Selection, clear all previously selected answers, if any:
-            $('.answer-item').removeClass('isSelected');
-        }
-
-        //Is selected?
-        if($('.x_select_'+i__id).hasClass('isSelected')){
-
-            //Previously Selected, delete Multi-selection:
-            if(!is_single_selection){
-                //Multi Selection
-                $('.x_select_'+i__id).removeClass('isSelected');
-            }
-
-            is_toggling = false;
-
-        } else {
-
-            //Not selected, select now:
-            $('.x_select_'+i__id).addClass('isSelected');
-
-            if(is_single_selection){
-                //Auto submit answer since they selected one:
-                go_next();
-            } else {
-                //Flash call to action:
-                $(".main-next").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
-                is_toggling = false;
-            }
-        }
-
-    }
-
-    function go_next(){
-
-        if(!js_pl_id){
-            alert('You Must be logged in to go next');
-            return false;
-        }
-
-        //Attempts to go next if no submissions:
-        if (js_n___7712.includes(focus_i__type)){
-
-            //Also check $('.list-answers .answer-item').length
-            //Choose
-            return x_select();
-
-        } else if(js_n___33532.includes(focus_i__type)) {
-
-            //Write
-
-            if(focus_i__type==32603 && !$("#DigitalSignAgreement").is(':checked')){
-                if(can_skip){
-                    x_skip();
-                } else {
-                    //Must upload file first:
-                    alert('Please agree to terms of service before going next.');
-                }
-            } else {
-                //SUBMIT TEXT RESPONSE:
-                return x_write();
-            }
-
-        } else if (js_n___41055.includes(focus_i__type) ) {
-
-            return x_free_ticket();
-
-        } else {
-
-            if (js_n___34826.includes(focus_i__type) && parseInt($('#target_i__id').val()) > 0) {
-
-                //READ:
-                return x_read_only_complete();
-
-            } else {
-
-                alert('Unknown ERRORRR');
-                return false;
-                //Go Next:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(GoNext());
-
-            }
-        }
-    }
-
-
-    function x_write(){
-        $.post("/ajax/x_write", {
-            target_i__id:$('#target_i__id').val(),
-            i__id:fetch_int_val('#focus__id'),
-            x_write:$('.x_write').val(),
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-        }, function (data) {
-            if (data.status) {
-                //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(GoNext());
-            } else {
-                //Show error:
-                alert(data.message);
-            }
-        });
-    }
-
-
-
-
-    function x_read_only_complete(){
-        $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-        $.post("/ajax/x_read_only_complete", {
-            target_i__id:$('#target_i__id').val(),
-            target_i__hashtag:$('#target_i__hashtag').val(),
-            i__id:fetch_int_val('#focus__id'),
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-        }, function (data) {
-            if (data.status && data.go_next_url.length) {
-                //Go to redirect message:
-                js_redirect(data.go_next_url);
-            } else {
-                //Show error:
-                alert(data.message);
-            }
-        });
-    }
-
-
-    function x_skip(){
-
-        if(!can_skip){
-            alert('You cannot skip this');
-            return false;
-        }
-
-        $.post("/ajax/x_skip", {
-            target_i__id:$('#target_i__id').val(),
-            i__id:fetch_int_val('#focus__id'),
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-        }, function (data) {
-            if (data.status) {
-                //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(GoNext());
-            } else {
-                //Show error:
-                alert(data.message);
-            }
-        });
-    }
-
-
-    function x_free_ticket(){
-        var i__id = fetch_int_val('#focus__id');
-        $.post("/ajax/x_free_ticket", {
-            target_i__id:$('#target_i__id').val(),
-            i__id:i__id,
-            paypal_quantity:$('.input_ui_'+i__id+' .paypal_quantity').val(),
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-        }, function (data) {
-            if (data.status) {
-                //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(GoNext());
-            } else {
-                //Show error:
-                alert(data.message);
-            }
-        });
-    }
-
-    function x_select(){
-
-        //Check
-        var selection_i__id = [];
-        $(".answer-item").each(function () {
-            var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-            if ($('.x_select_'+selection_i__id_this).hasClass('isSelected')) {
-                selection_i__id.push(selection_i__id_this);
-            }
-        });
-
-
-        //Show Loading:
-        $.post("/ajax/x_select", {
-            focus__id:fetch_int_val('#focus__id'),
-            target_i__id:$('#target_i__id').val(),
-            selection_i__id:selection_i__id,
-            js_request_uri: js_request_uri, //Always append to AJAX Calls
-        }, function (data) {
-            if (data.status) {
-                //Go to redirect message:
-                $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-                js_redirect(GoNext());
-            } else {
-                //Show error:
-                alert(data.message);
-            }
-        });
-    }
-
 
 </script>
