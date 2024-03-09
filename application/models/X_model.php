@@ -905,6 +905,8 @@ class X_model extends CI_Model
     function find_previous($e__id, $target_i__hashtag, $focus_i__id, $loop_breaker_ids = array())
     {
 
+        die($e__id.'/'.$target_i__hashtag.'/'.$focus_i__id);
+
         if(count($loop_breaker_ids)>0 && in_array($focus_i__id, $loop_breaker_ids)){
             return array();
         }
@@ -938,7 +940,7 @@ class X_model extends CI_Model
                 return array($i_previous);
             }
 
-            //Keep looking:
+            //Keep looking further up:
             $website_finder = $this->X_model->find_previous($e__id, $target_i__hashtag, $i_previous['i__id'], $loop_breaker_ids);
             if(count($website_finder)){
                 array_push($website_finder, $i_previous);
