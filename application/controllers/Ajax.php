@@ -2859,7 +2859,7 @@ class Ajax extends CI_Controller
         )) as $focus_i){
 
             //Mark as complete:
-            $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $is[0]);
+            $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $focus_i);
 
             //All good:
             return view_json(array(
