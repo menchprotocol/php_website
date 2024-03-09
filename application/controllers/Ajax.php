@@ -2865,24 +2865,15 @@ class Ajax extends CI_Controller
         }
 
 
-        //Mark as complete?
-        if($this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $is[0])){
+        //Mark as complete:
+        $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $is[0]);
 
-            //All good:
-            return view_json(array(
-                'status' => 1,
-                'message' => 'Saved & Next',
-                'go_next_url' => '/'.$_POST['target_i__hashtag'].'/'.$this->X_model->find_next($player_e['e__id'], $focus_i['i__hashtag'], $focus_i),
-
-            ));
-
-        } else {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Cannot complete this idea',
-            ));
-        }
-
+        //All good:
+        return view_json(array(
+            'status' => 1,
+            'message' => 'Saved & Next',
+            'go_next_url' => '/'.$_POST['target_i__hashtag'].'/'.$this->X_model->find_next($player_e['e__id'], $focus_i['i__hashtag'], $focus_i),
+        ));
 
     }
 
