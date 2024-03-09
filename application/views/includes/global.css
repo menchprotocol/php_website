@@ -647,7 +647,7 @@ textarea.main__title {
 }
 
 .breadcrumb {
-    margin:0 5px 13px;
+    margin:0 5px 0;
     width: auto;
 }
 
@@ -788,8 +788,8 @@ label:focus,
 }
 
 .progress{
-    height: 8px;
-    margin:0 0 8px 0;
+    height: 3px;
+    margin:0;
     background-color: #CCCCCC;
     border-radius: 0;
     --bs-progress-bar-bg:#000000;
