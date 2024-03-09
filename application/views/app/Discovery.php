@@ -276,7 +276,7 @@ echo view_i_nav(true, $focus_i);
             i__id:fetch_int_val('#focus__id'),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
-            if (data.status) {
+            if (data.status && data.go_next_url.length) {
                 //Go to redirect message:
                 js_redirect(data.go_next_url);
             } else {
