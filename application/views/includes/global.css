@@ -899,6 +899,10 @@ p.menu_header {
 
 .fixed-bottom{
     padding: 0;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-bottom: 0;
+    display: flex;
 }
 .fixed-top, .fixed-bottom {
     z-index: 999 !important;

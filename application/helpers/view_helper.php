@@ -2209,7 +2209,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
         if($bottom_bar_ui){
-            $ui .= '<div class="'.( $focus__node ? ' container fixed-bottom ' : '' ).'">';
+            $ui .= '<div class="'.( $focus__node && $discovery_mode ? ' container fixed-bottom ' : '' ).'">';
             $ui .= '<div class="card_covers">';
             $ui .= $bottom_bar_ui;
             $ui .= '</div>';
