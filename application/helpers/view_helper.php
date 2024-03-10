@@ -1525,7 +1525,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
 
-    $is_undiscovered = ($discovery_mode && $x__player && !$has_discovered);
+    $is_undiscovered = ($discovery_mode && $x__player && !$has_discovered && !$focus__node);
 
 
     if(($goto_start || !$superpower_10939) && $i_startable){
