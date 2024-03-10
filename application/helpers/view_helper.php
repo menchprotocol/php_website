@@ -1405,7 +1405,7 @@ function view_i_nav($discovery_mode, $focus_i){
         }
 
         $coins_count[$x__type] = view_i_covers($x__type, $focus_i['i__id'], 0, false);
-        if(!$coins_count[$x__type] && $x__type!=6255 & in_array($x__type, $CI->config->item('n___12144'))){ continue; }
+        if(!$coins_count[$x__type] && ($discovery_mode || in_array($x__type, $CI->config->item('n___12144')))){ continue; }
 
         $input_content = '';
         if(!$discovery_mode && $ideation_pen){
