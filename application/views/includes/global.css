@@ -902,6 +902,8 @@ p.menu_header {
     background-color: #fff;
     border: 1px solid #000;
     border-bottom: 0;
+}
+.fixed-bottom .card_covers {
     display: flex;
 }
 .fixed-top, .fixed-bottom {
