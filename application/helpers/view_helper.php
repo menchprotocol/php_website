@@ -1392,7 +1392,7 @@ function view_i_nav($discovery_mode, $focus_i){
     $ideation_pen = superpower_unlocked(10939);
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
     $ui = '';
-    $ui .= '<ul class="nav nav-tabs nav12273">';
+    $ui .= '<ul class="nav nav-tabs nav12273 hideIfEmpty">';
     foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $x__type => $m) {
 
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m['m__following']);
