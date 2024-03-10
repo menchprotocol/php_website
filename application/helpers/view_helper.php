@@ -2198,7 +2198,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         }
 
         //Bottom Bar menu
-        if(!$focus__node){
+        if(!$focus__node && !$is_undiscovered){
             foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
 
                 $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
