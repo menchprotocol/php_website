@@ -2018,21 +2018,21 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $access_level_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==33532 && $player_e && $access_level_i>=2){
+            } elseif($x__type_target_bar==33532 && !$is_locked && $player_e && $access_level_i>=2){
 
                 //Add Idea
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif(0 && $x__type_target_bar==42819 && superpower_unlocked(13422) && $access_level_i>=3){
+            } elseif(0 && $x__type_target_bar==42819 && !$is_locked && superpower_unlocked(13422) && $access_level_i>=3){
 
                 //New Source
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==42260 && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__player']!=$player_e['e__id'])){
+            } elseif($x__type_target_bar==42260 && !$is_locked && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__player']!=$player_e['e__id'])){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
@@ -2050,17 +2050,17 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 //Locked
                 $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>';
 
-            } elseif($x__type_target_bar==4235 && !$is_locked && !$discovery_mode && $i_startable && $access_level_i>=1){
+            } elseif($x__type_target_bar==4235 && !$discovery_mode && $i_startable && $access_level_i>=1){
 
                 //Start
                 $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm bold-btn"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
-            } elseif($x__type_target_bar==42924 && !$is_locked && $discovery_mode && $focus__node){
+            } elseif($x__type_target_bar==42924 && $discovery_mode && $focus__node){
 
                 //Next
                 $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next()" class="btn btn-sm bold-btn"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
-            } elseif($x__type_target_bar==31022 && !$is_locked && $discovery_mode && $focus__node && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
+            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
