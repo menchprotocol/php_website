@@ -483,7 +483,7 @@ if(!$basic_header_footer){
 
                     //Add Idea:
                     if($player_e){
-                        echo '<td class="block-x"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>';
+                        echo '<td class="block-x add_idea"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>';
                     }
 
 
