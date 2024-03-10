@@ -1985,9 +1985,15 @@ label {
 
 
 
-.dropdown-item:focus, a.dropdown-item:hover {
+.dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
     background-color: #EFEFEF;
+    border-radius: 0;
+}
+
+div.dropdown-item:hover {
+    text-decoration: none;
+    background-color: #FFFFFF;
     border-radius: 0;
 }
 
