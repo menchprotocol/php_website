@@ -41,18 +41,21 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
             $level++;
 
             //Does this have a follower list?
+            /*
             $query_subset = $this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
                 'x__previous' => $followings_i['i__id'],
             ), array('x__next'), 0, 0, array('x__weight' => 'ASC'), '*', null, true);
+            && count($query_subset) >= 2
+            */
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
             $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.$followings_i['i__hashtag'].'"><u>'.view_i_title($followings_i).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
-            if(count($query_subset) >= 2){
+            if(0){
                 //Show other branches:
                 $breadcrum_content .= '<div class="dropdown inline-block">';
                 $breadcrum_content .= '<button type="button" class="btn no-side-padding" id="dropdown_instant_'.$followings_i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
