@@ -905,10 +905,15 @@ p.menu_header {
 }
 .fixed-bottom .card_covers {
     display: flex;
+    min-height: 21px;
 }
 .fixed-bottom .card_covers>span {
     display: block;
     width: 100% !important;
+    border-right: 1px solid #000;
+}
+.fixed-bottom .card_covers>span:last-of-type {
+    border-right: 0;
 }
 .fixed-top, .fixed-bottom {
     z-index: 999 !important;
