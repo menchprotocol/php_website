@@ -906,6 +906,10 @@ p.menu_header {
 .fixed-bottom .card_covers {
     display: flex;
 }
+.fixed-bottom .card_covers>span {
+    display: block;
+    width: 100%;
+}
 .fixed-top, .fixed-bottom {
     z-index: 999 !important;
 }
