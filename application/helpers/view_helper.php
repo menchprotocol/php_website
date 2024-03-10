@@ -1525,10 +1525,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
 
+    $is_locked = ($discovery_mode && $x__player && !$has_discovered);
 
 
     if($discovery_mode) {
-        if($x__player && !$has_discovered) {
+        if($is_locked) {
             $href = null;
         } elseif(($goto_start || !$superpower_10939) && $i_startable){
             $href = view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235);
@@ -2044,17 +2045,22 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, false, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==4235 && !$discovery_mode && $i_startable && $access_level_i>=1){
+            } elseif($x__type_target_bar==43010 && $is_locked){
+
+                //Locked
+                $bottom_bar_ui .= '<span><span class="btn btn-sm bold-btn" title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span></span>';
+
+            } elseif($x__type_target_bar==4235 && !$is_locked && !$discovery_mode && $i_startable && $access_level_i>=1){
 
                 //Start
                 $bottom_bar_ui .= '<span><a href="'.view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235).'" class="btn btn-sm bold-btn"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
-            } elseif($x__type_target_bar==42924 && $discovery_mode && $focus__node){
+            } elseif($x__type_target_bar==42924 && !$is_locked && $discovery_mode && $focus__node){
 
                 //Next
                 $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next()" class="btn btn-sm bold-btn"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
-            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
+            } elseif($x__type_target_bar==31022 && !$is_locked && $discovery_mode && $focus__node && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
