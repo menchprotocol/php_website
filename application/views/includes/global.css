@@ -4474,6 +4474,7 @@ h1 i.fad{
 }
 .fixed-bottom .icon-block-sm {
     height: unset !important;
+    margin-top: 3px;
 }
 .fixed-bottom .card_covers>span {
     display: block;
