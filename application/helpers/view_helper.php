@@ -2054,7 +2054,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             } elseif($x__type_target_bar==43010 && $is_undiscovered){
 
-                //Locked
+                //Undiscovered
                 $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>';
 
             } elseif($x__type_target_bar==4235 && !$discovery_mode && $i_startable && $access_level_i>=1){
