@@ -1507,17 +1507,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     $has_sortable = $x__id > 0 && !$focus__node && $access_level_i>=3 && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
 
-    if($discovery_mode || $cache_app) {
-        if(($goto_start || !$superpower_10939) && $i_startable){
-            $href = view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235);
-        } elseif($target_i__hashtag){ //$link_creator &&
-            $href = view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
-        } else {
-            $href = view_memory(42903,33286).$i['i__hashtag'];
-        }
-    } else {
-        $href = view_memory(42903,33286).$i['i__hashtag'];
-    }
+
+
 
     $has_discovered = false;
     if(!$cache_app && $x__player){
@@ -1533,6 +1524,22 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $i = array_merge($i, $discoveries[0]);
     }
 
+
+
+
+    if($discovery_mode) {
+        if(!$has_discovered) {
+            $href = null;
+        } elseif(($goto_start || !$superpower_10939) && $i_startable){
+            $href = view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235);
+        } elseif($target_i__hashtag){ //$link_creator &&
+            $href = view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
+        } else {
+            $href = view_memory(42903,33286).$i['i__hashtag'];
+        }
+    } else {
+        $href = view_memory(42903,33286).$i['i__hashtag'];
+    }
 
 
     //Top action menu:
@@ -2071,7 +2078,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" class="sort_i_grab">'.$m_target_bar['m__cover'].'</span>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==14980 && !$cache_app && !$access_locked){
+            } elseif($x__type_target_bar==14980 && !$cache_app && !$access_locked && !$discovery_mode){
 
                 //Drop Down
                 $action_buttons = null;
