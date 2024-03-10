@@ -1528,7 +1528,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     if($discovery_mode) {
-        if(!$has_discovered) {
+        if($x__player && !$has_discovered) {
             $href = null;
         } elseif(($goto_start || !$superpower_10939) && $i_startable){
             $href = view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235);
