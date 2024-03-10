@@ -1547,6 +1547,9 @@ label {
     display: inline-block;
 }
 
+.is_undiscovered{
+    cursor: not-allowed;
+}
 .inputfile + label {
     cursor: pointer; /* "hand" cursor */
 }
