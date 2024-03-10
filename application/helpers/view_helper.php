@@ -1494,7 +1494,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $i_startable = i_startable($i);
     $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2))) );
     if($discovery_mode && !$target_i__hashtag){
-        $target_i__hashtag = $CI->uri->segment(1);
+        $target_i__hashtag = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) ? one_two_explode('/','/',$_POST['js_request_uri']) : $CI->uri->segment(1) );
     }
 
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
