@@ -3126,9 +3126,6 @@ h4.main__title{
     padding: 0 !important;
     margin: 0 !important;
 }
-.fixed-bottom .card_covers a.btn-sm:hover {
-    background-color: transparent !important;
-}
 .fixed-bottom .card_covers a.btn-sm .icon-block-sm{
     height: unset !important;
 }
