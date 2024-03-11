@@ -2061,11 +2061,16 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 //Next
                 $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next()" class="btn btn-sm bold-btn"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
-            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
+            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
                     'x__following' => 28239, //Required
+                ))) && !count($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__previous' => $i['i__id'],
+                    'x__player' => $player_e['e__id'], //Required
                 )))){
 
                 //Skip
