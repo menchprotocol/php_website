@@ -3142,6 +3142,11 @@ h4.main__title{
 
 @media (max-width:610px) {
 
+    .fixed-bottom{
+        border-left: 0 !important;
+        border-right: 0 !important;
+    }
+
     .focus-cover .space-content,
     .focus-cover .i_cache{
         padding: 0 5px 0 !important;
