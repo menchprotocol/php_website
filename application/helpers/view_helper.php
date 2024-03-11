@@ -2022,7 +2022,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             } elseif($x__type_target_bar==33532 && !$is_undiscovered && $player_e && $access_level_i>=2){
 
                 //New Idea
-                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).' main__title">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
