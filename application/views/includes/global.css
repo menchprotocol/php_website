@@ -3133,6 +3133,11 @@ h4.main__title{
     height: unset !important;
 }
 
+.fixed-bottom .card_covers a,
+.fixed-bottom .card_covers .btn {
+    display: block;
+}
+
 
 
 
