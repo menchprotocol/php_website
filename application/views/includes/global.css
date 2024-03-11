@@ -3135,6 +3135,7 @@ h4.main__title{
 .fixed-bottom .card_covers .btn {
     display: block;
     width: 100%;
+    height: 100%;
 }
 
 .fixed-bottom .card_covers a:hover,
