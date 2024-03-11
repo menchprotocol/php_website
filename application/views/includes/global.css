@@ -3140,6 +3140,12 @@ h4.main__title{
     width: 100%;
 }
 
+.fixed-bottom .card_covers a:hover,
+.fixed-bottom .card_covers .main__title:hover,
+.fixed-bottom .card_covers .btn:hover {
+    background-color: #EFEFEF;
+}
+
 .dropdown-item .info_blob {
     margin-left: 5px;
 }
