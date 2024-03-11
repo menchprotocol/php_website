@@ -3122,14 +3122,14 @@ h4.main__title{
 
 
 
-.card_covers .fixed-bottom a.btn-sm {
+.fixed-bottom .card_covers a.btn-sm {
     padding: 0 !important;
     margin: 0 !important;
 }
-.card_covers .fixed-bottom a.btn-sm:hover {
+.fixed-bottom .card_covers a.btn-sm:hover {
     background-color: transparent !important;
 }
-.card_covers .fixed-bottom a.btn-sm .icon-block-sm{
+.fixed-bottom .card_covers a.btn-sm .icon-block-sm{
     height: unset !important;
 }
 
