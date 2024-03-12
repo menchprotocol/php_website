@@ -118,18 +118,7 @@ foreach($this->X_model->fetch(array(
 
 }
 
-//Append Pinned Links:
-$memory_text .= "\n"."\n";
-$memory_text .= '$config[\'pinned_down\'] = array('."\n";
-foreach($pinned_down as $key => $value){
-    $memory_text .= '     '.$key.' => array('.join(',',$value).'),'."\n";
-}
-$memory_text .= ');'."\n";
-$memory_text .= '$config[\'pinned_up\'] = array('."\n";
-foreach($pinned_up as $key => $value){
-    $memory_text .= '     '.$key.' => array('.join(',',$value).'),'."\n";
-}
-$memory_text .= ');'."\n";
+
 
 
 //Append all App Handlers for quick checking:
@@ -147,10 +136,29 @@ foreach($this->X_model->fetch(array(
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
         'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
     ), array('x__follower'), 0) as $app){
-        $memory_text .= '\''.strtolower($app['e__handle']).'\' => '.$app['e__id'].','."\n";
+        $memory_text .= '     \''.strtolower($app['e__handle']).'\' => '.$app['e__id'].','."\n";
     }
     $memory_text .= ');'."\n";
 }
+
+
+
+
+//Append Pinned Links:
+$memory_text .= "\n"."\n";
+$memory_text .= '$config[\'pinned_down\'] = array('."\n";
+foreach($pinned_down as $key => $value){
+    $memory_text .= '     '.$key.' => array('.join(',',$value).'),'."\n";
+}
+$memory_text .= ');'."\n";
+$memory_text .= '$config[\'pinned_up\'] = array('."\n";
+foreach($pinned_up as $key => $value){
+    $memory_text .= '     '.$key.' => array('.join(',',$value).'),'."\n";
+}
+$memory_text .= ');'."\n";
+
+
+
 
 $memory_text .= "\n"."\n";
 $memory_text .= '$config[\'cache_time\'] = \''.time().'\';'."\n";
