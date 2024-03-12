@@ -89,7 +89,7 @@ foreach($this->X_model->fetch(array(
         if($follower['x__type']==41011){
             if(!isset($pinned_up[$follower['e__id']])){
                 $pinned_up[$follower['e__id']] = array($en['e__id']);
-            } elseif(!in_array($follower['x__follower'], $pinned_up[$follower['e__id']])) {
+            } elseif(!in_array($en['e__id'], $pinned_up[$follower['e__id']])) {
                 array_push($pinned_up[$follower['e__id']], $en['e__id']);
             }
         }
