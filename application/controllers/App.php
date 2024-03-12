@@ -298,7 +298,7 @@ class App extends CI_Controller
 
         if(!$ui){
             //Prep view:
-            $raw_app = $this->load->view('app/'.$e___6287[$app_e__id]['m__handle'], $view_input, true);
+            $raw_app = $this->load->view('app/'.strtolower($e___6287[$app_e__id]['m__handle']), $view_input, true);
             $ui .= $raw_app;
         }
 

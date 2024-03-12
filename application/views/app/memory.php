@@ -28,8 +28,8 @@ if(is_array($this->config->item('n___6287')) && count($this->config->item('n___6
 
 }
 
-$pinned_link_down = array();
-$pinned_link_up = array();
+$pinned_down = array();
+$pinned_up = array();
 $total_nodes = 0;
 $biggest_source_count = 0;
 $biggest_source_handle = '';
@@ -73,16 +73,18 @@ foreach($this->X_model->fetch(array(
     $memory_text .= '$config[\'e___'.$en['x__follower'].'\'] = array('.( strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "'.trim($prefix_common_words).'"' : '' )."\n";
     foreach($down__e as $follower){
 
+        //Does this have any Pinned?
+
         if($follower['x__type']==41011){
-            if(!isset($pinned_link_down[$follower['e__id']])){
-                $pinned_link_down[$follower['e__id']] = array($en['x__follower']);
+            if(!isset($pinned_down[$follower['e__id']])){
+                $pinned_down[$follower['e__id']] = array($en['x__follower']);
             } else {
-                array_push($pinned_link_down[$follower['e__id']], $en['x__follower']);
+                array_push($pinned_down[$follower['e__id']], $en['x__follower']);
             }
-            if(!isset($pinned_link_up[$en['x__follower']])){
-                $pinned_link_up[$en['x__follower']] = array($follower['e__id']);
+            if(!isset($pinned_up[$en['x__follower']])){
+                $pinned_up[$en['x__follower']] = array($follower['e__id']);
             } else {
-                array_push($pinned_link_up[$en['x__follower']], $follower['e__id']);
+                array_push($pinned_up[$en['x__follower']], $follower['e__id']);
             }
         }
 
@@ -112,13 +114,13 @@ foreach($this->X_model->fetch(array(
 
 //Append Pinned Links:
 $memory_text .= "\n"."\n";
-$memory_text .= '$config[\'pinned_link_down\'] = array('."\n";
-foreach($pinned_link_down as $key => $value){
+$memory_text .= '$config[\'pinned_down\'] = array('."\n";
+foreach($pinned_down as $key => $value){
     $memory_text .= '     '.$key.' => array('.join(',',$value).'),'."\n";
 }
 $memory_text .= ');'."\n";
-$memory_text .= '$config[\'pinned_link_up\'] = array('."\n";
-foreach($pinned_link_up as $key => $value){
+$memory_text .= '$config[\'pinned_up\'] = array('."\n";
+foreach($pinned_up as $key => $value){
     $memory_text .= '     '.$key.' => array('.join(',',$value).'),'."\n";
 }
 $memory_text .= ');'."\n";
