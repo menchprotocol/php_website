@@ -147,7 +147,7 @@ foreach($this->X_model->fetch(array(
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
         'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
     ), array('x__follower'), 0) as $app){
-        $memory_text .= '     \''.$app['e__handle'].'\' => '.$app['e__id'].','."\n";
+        $memory_text .= '\''.strtolower($app['e__handle']).'\' => '.$app['e__id'].','."\n";
     }
     $memory_text .= ');'."\n";
 }

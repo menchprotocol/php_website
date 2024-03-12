@@ -322,20 +322,20 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
     $i_view = 33286;
     $quick_href = view_memory(42903, 33286);
 
-} elseif(array_key_exists($first_segment, $this->config->item('handle___6287'))) {
+} elseif(array_key_exists(strtolower($first_segment), $this->config->item('handle___6287'))) {
 
     //Source Mode:
-    if(array_key_exists($first_segment, $handle___40904) && isset($_GET['i__hashtag'])){
+    if(array_key_exists(strtolower($first_segment), $handle___40904) && isset($_GET['i__hashtag'])){
         $i_view = $handle___40904[$first_segment];
     } else {
         $quick_id = 33287;
     }
     $quick_href = view_memory(42903, 42902);
 
-} elseif($e_segment && array_key_exists($e_segment, $this->config->item('handle___6287'))) {
+} elseif($e_segment && array_key_exists(strtolower($e_segment), $this->config->item('handle___6287'))) {
 
     //App Store:
-    if(array_key_exists($e_segment, $handle___40904) && isset($_GET['i__hashtag'])){
+    if(array_key_exists(strtolower($e_segment), $handle___40904) && isset($_GET['i__hashtag'])){
         $i_view = $handle___40904[$e_segment];
     } else {
         $quick_id = 6287;

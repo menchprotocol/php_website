@@ -461,7 +461,7 @@ function auto_login_player($is_ajax) {
 
     if(
         !$player_e //User must not be logged in
-        && !array_key_exists($first_segment, $CI->config->item('handle___14582'))
+        && !array_key_exists(strtolower($first_segment), $CI->config->item('handle___14582'))
         && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
     ) {
 
@@ -1099,7 +1099,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
             'message' => 'Hashtag Must be '.view_memory(6404,41985).' characters or less',
         );
 
-    } elseif ($i__id && array_key_exists($str, $CI->config->item('handle___6287'))) {
+    } elseif ($i__id && array_key_exists(strtolower($str), $CI->config->item('handle___6287'))) {
 
         return array(
             'status' => 0,
