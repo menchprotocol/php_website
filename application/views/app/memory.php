@@ -73,14 +73,20 @@ foreach($this->X_model->fetch(array(
     $memory_text .= '$config[\'e___'.$en['x__follower'].'\'] = array('.( strlen($prefix_common_words) ? ' //$prefix_common_words Removed = "'.trim($prefix_common_words).'"' : '' )."\n";
     foreach($down__e as $follower){
 
-        //Does this have any Pinned?
+        //Does this have any Pins?
+        foreach($this->X_model->fetch(array(
+            'x__following' => $follower['e__id'],
+            'x__type' => 41011, //PINNED FOLLOWER
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0) as $x_pinned) {
+            if(!isset($pinned_down[$follower['e__id']])){
+                $pinned_down[$follower['e__id']] = array($x_pinned['x__follower']);
+            } else {
+                array_push($pinned_down[$follower['e__id']], $x_pinned['x__follower']);
+            }
+        }
 
         if($follower['x__type']==41011){
-            if(!isset($pinned_down[$follower['e__id']])){
-                $pinned_down[$follower['e__id']] = array($en['x__follower']);
-            } else {
-                array_push($pinned_down[$follower['e__id']], $en['x__follower']);
-            }
             if(!isset($pinned_up[$en['x__follower']])){
                 $pinned_up[$en['x__follower']] = array($follower['e__id']);
             } else {
