@@ -41,7 +41,7 @@ foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
     'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
-), array('x__follower'), 0) as $en){
+), array('x__follower'), 0, 0, array('e__id' => 'ASC')) as $en){
 
     //Now fetch all its followers:
     $down__e = $this->X_model->fetch(array(
