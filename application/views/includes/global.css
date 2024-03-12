@@ -1679,10 +1679,12 @@ label {
 }
 
 .card_covers .icon-block-sm,
-.card-12274 .creator_headline {
-    height: 24px !important;
+.edge-cover .card-12273 .icon-block-sm {
+    height: 19px !important;
 }
-.focus-cover .dropdown span.icon-block-sm {
+
+.focus-cover .dropdown span.icon-block-sm,
+.card-12274 .creator_headline {
     height: 24px !important;
 }
 
@@ -1692,9 +1694,7 @@ label {
     margin-left: 40px !important;
 }
 
-.edge-cover .card-12273 .icon-block-sm {
-    height: 19px !important;
-}
+
 .icon-block img{
     line-height: 100%;
     width: 30px !important;
