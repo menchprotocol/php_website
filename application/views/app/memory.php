@@ -81,7 +81,7 @@ foreach($this->X_model->fetch(array(
         ), array(), 0) as $x_pinned) {
             if(!isset($pinned_down[$follower['e__id']])){
                 $pinned_down[$follower['e__id']] = array($x_pinned['x__follower']);
-            } else {
+            } elseif(!in_array($x_pinned['x__follower'], $pinned_down[$follower['e__id']])) {
                 array_push($pinned_down[$follower['e__id']], $x_pinned['x__follower']);
             }
         }
@@ -89,7 +89,7 @@ foreach($this->X_model->fetch(array(
         if($follower['x__type']==41011){
             if(!isset($pinned_up[$en['x__follower']])){
                 $pinned_up[$en['x__follower']] = array($follower['e__id']);
-            } else {
+            } elseif(!in_array($follower['x__follower'], $pinned_down[$en['e__id']])) {
                 array_push($pinned_up[$en['x__follower']], $follower['e__id']);
             }
         }
