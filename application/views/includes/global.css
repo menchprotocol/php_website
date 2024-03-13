@@ -1677,7 +1677,9 @@ label {
 .creator_headline .icon-block i, .creator_headline .focus-cover .icon-block-sm i {
     margin-top: -1px;
 }
-
+.mini_button{
+    max-width: 89px;
+}
 .card_covers .icon-block-sm,
 .edge-cover .card-12273 .icon-block-sm {
     height: 19px !important;

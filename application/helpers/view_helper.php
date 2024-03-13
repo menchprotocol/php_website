@@ -2025,8 +2025,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             } elseif($x__type_target_bar==33532 && !$is_undiscovered && $player_e && $access_level_i>=2){
 
-                //New Idea
-                $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).' main__title">';
+                //Reply
+                $bottom_bar_ui .= '<span class="mini_button"><div class="'.( $always_see ? '' : 'show-on-hover' ).' main__title">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
@@ -2046,7 +2046,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
-                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).' main__title">';
+                $bottom_bar_ui .= '<span class="mini_button"><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).' main__title">';
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
@@ -2080,7 +2080,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //Skip
-                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm"><span class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</span></a></span>';
+                $bottom_bar_ui .= '<span class="mini_button"><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm"><span class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</span></a></span>';
 
             } elseif($x__type_target_bar==31911 && $access_level_i>=3 && !$discovery_mode){
 
