@@ -224,7 +224,7 @@ class E_model extends CI_Model
                 'x__player' => $e['e__id'],
                 'x__follower' => $e['e__id'],
             ));
-            $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
+            $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
         }
         */
 

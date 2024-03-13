@@ -221,7 +221,7 @@ if(superpower_unlocked()) {
                 } else {
 
                     //Show errors:
-                    $('#account_email_phone_errors').html('<b class="main__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                    $('#account_email_phone_errors').html('<b class="main__title"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
                     $('#account_email_phone').focus();
 
                 }
@@ -264,7 +264,7 @@ if(superpower_unlocked()) {
                     code_checking = false;
                     $('#code_check_next').html(go_next_icon);
                     $('#input_code').prop('disabled', false).focus();
-                    $('#sign_code_errors').html('<b class="main__title"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
+                    $('#sign_code_errors').html('<b class="main__title"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
 
                 }
             });

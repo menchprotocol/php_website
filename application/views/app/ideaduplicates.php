@@ -23,6 +23,6 @@ if(count($duplicates) > 0){
 
 } else {
 
-    echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!';
+    echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>No duplicates found!';
 
 }

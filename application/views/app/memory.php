@@ -235,7 +235,7 @@ fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Cached '.$total_nodes.' Sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.reset_cache($x__player).'.</div><div></div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached '.$total_nodes.' Sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.reset_cache($x__player).'.</div><div></div></div>';
 
 
 //Show:

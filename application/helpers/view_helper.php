@@ -315,7 +315,7 @@ function e_view_body($x__type, $counter, $e__id){
 
     //Check Permission:
     if(in_array($x__type, $CI->config->item('n___42376')) && !access_level_e(null, $e__id)){
-        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
+        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
     }
 
     $list_results = view_e_covers($x__type, $e__id, 1);
@@ -388,7 +388,7 @@ function i_view_body($x__type, $counter, $i__id){
     }
 
     if(in_array($x__type, $CI->config->item('n___42376')) && !access_level_i(null, $is[0]['i__id'], $is[0])){
-        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
+        return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
     }
 
     if(in_array($x__type, $CI->config->item('n___42380'))){
@@ -851,7 +851,7 @@ function view_instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
             $headline .= '<span class="icon-block-sm" title="'.$e___11035[32145]['m__title'].'" data-toggle="tooltip" data-placement="top">'.$e___11035[32145]['m__cover'].'</span>';
         }
         if($selected){
-            $headline .= '<span class="icon-block-sm checked_icon"><i class="fas fa-check"></i></span>';
+            $headline .= '<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>';
         }
         if(in_array($list_item['e__id'], $CI->config->item('n___11035')) && strlen($e___11035[$list_item['e__id']]['m__message'])>0){
             $headline .= '<span class="doregular info_blob '.( strlen($e___11035[$list_item['e__id']]['m__message'])<55 ? ' short_blob ' : '' ).'"><span>'.$e___11035[$list_item['e__id']]['m__message'].'</span></span>';
@@ -862,7 +862,7 @@ function view_instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
             if($access_locked){
                 $ui .= '<span class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview_'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'</span>';
             } elseif($has_multiple) {
-                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview_'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'<span class="icon-block-sm"><i class="fal fa-pen-to-square"></i></span></a>';
+                $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item custom_ui_'.$focus__id.'_'.$list_item['e__id'].' '.$exclude_fonts.' itemsetting_'.$focus__id.' selection_preview selection_preview_'.$focus__id.' itemsetting active" title="'.stripslashes($list_item['e__title']).'">'.$headline.'<span class="icon-block-sm"><i class="far fa-pen-to-square"></i></span></a>';
             }
         }
 
@@ -878,7 +878,7 @@ function view_instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
 
     if($overflow_reached && !$has_selected && !$access_locked){
         //We show this only if non are selected and has too many options:
-        $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item itemsetting selection_preview selection_preview_'.$focus__id.'"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Show More...</a>';
+        $ui .= '<a href="javascript:void(0);" onclick="$(\'.selection_item_'.$focus__id.'\').removeClass(\'hidden\');$(\'.selection_preview_'.$focus__id.'\').addClass(\'hidden\');" class="list-group-item itemsetting selection_preview selection_preview_'.$focus__id.'"><span class="icon-block"><i class="far fa-search-plus"></i></span>Show More...</a>';
     }
 
     $ui .= '</div>';
@@ -904,7 +904,7 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
 
     $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ? $e___this[$selected_e__id]['m__title'] : '' ).'</span>'.( $show_dropdown_arrow ? '<span class="icon-block-sm"><i class="fal fa-angle-down"></i></span>' : '' );
+    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ? $e___this[$selected_e__id]['m__title'] : '' ).'</span>'.( $show_dropdown_arrow ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' );
 
     $ui .= '</button>';
 
@@ -972,7 +972,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $access_level
 
     $ui .= '<button type="button" '.( $access_level_i>=3 ? 'class="btn no-left-padding '.( $show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_title ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
-    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ?  $e___this[$selected_e__id]['m__title'] : '' ) : '<span class="icon-block-sm">'.$e___11035[$cache_e__id]['m__cover'].'</span>'.( $show_title ?  $e___11035[$cache_e__id]['m__title'] : '' ) ).'</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="fal fa-angle-down"></i></span>' : '' )
+    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ?  $e___this[$selected_e__id]['m__title'] : '' ) : '<span class="icon-block-sm">'.$e___11035[$cache_e__id]['m__cover'].'</span>'.( $show_title ?  $e___11035[$cache_e__id]['m__title'] : '' ) ).'</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
 
     $ui .= '</button>';
 
@@ -1663,7 +1663,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $quantity = ( $x_complete['x__weight'] >= 2 ? $x_complete['x__weight'] : ( isset($x__metadata['quantity']) && $x__metadata['quantity']>=2 ? $x__metadata['quantity'] : 1 ) );
 
                     if($x__metadata['mc_gross']!=0){
-                        $input_ui .= '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
+                        $input_ui .= '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
                     }
 
                     if(in_array($x_complete['x__type'], $CI->config->item('n___40986'))){
@@ -1770,9 +1770,9 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 if($max_allowed > 1 || $min_allowed > 1){
                     $input_ui .= '<div>';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="fas fa-minus-circle"></i></a>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="far fa-minus-circle"></i></a>';
                     $input_ui .= '<span class="main__title current_sales" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="fas fa-plus-circle"></i></a>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="far fa-plus-circle"></i></a>';
                     $input_ui .= '</div>';
                 } else {
                     $input_ui .= '<span class="current_sales" style="display: none;">'.$min_allowed.'</span>';

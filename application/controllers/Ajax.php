@@ -479,7 +479,7 @@ class Ajax extends CI_Controller
                     if(!$submitted_media['e__id']){
 
                         //Create Source for this new media:
-                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $player_e['e__id'], ( $submitted_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'fas fa-volume-up' : $submitted_media['e__cover'] ), true);
+                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $player_e['e__id'], ( $submitted_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $submitted_media['e__cover'] ), true);
                         if(!$added_e['status']){
                             $this->X_model->create(array(
                                 'x__type' => 4246, //Platform Bug Reports
@@ -878,12 +878,12 @@ class Ajax extends CI_Controller
     function i_load_cover(){
 
         if (!isset($_POST['i__id']) || !isset($_POST['x__type']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
             if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access_level_i(null, $_POST['i__id'])){
 
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
             } else {
 
@@ -985,7 +985,7 @@ class Ajax extends CI_Controller
     function i_view_body(){
         //Authenticate Member:
         if (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
             echo i_view_body($_POST['x__type'], $_POST['counter'], $_POST['i__id']);
         }
@@ -996,7 +996,7 @@ class Ajax extends CI_Controller
     function e_view_body(){
         //Authenticate Member:
         if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
             echo e_view_body($_POST['x__type'], $_POST['counter'], $_POST['e__id']);
         }
@@ -1006,13 +1006,13 @@ class Ajax extends CI_Controller
 
         if (!isset($_POST['e__id']) || !isset($_POST['x__type']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
 
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Missing core variables</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
 
         } else {
 
             if(in_array($_POST['x__type'], $this->config->item('n___42376')) && !access_level_e(null, $_POST['e__id'])){
 
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-lock"></i></span>Private</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
             } else {
 
@@ -2667,16 +2667,16 @@ class Ajax extends CI_Controller
         ));
 
         if(!isset($_POST['apply_id']) || !isset($_POST['s__id'])){
-            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Missing Core Data</div>';
+            echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing Core Data</div>';
         } else {
             if($_POST['apply_id']==4997){
 
                 //Source list:
                 $counter = view_e_covers(12274, $_POST['s__id'], 0, false);
                 if(!$counter){
-                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Sources yet</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Sources yet</div>';
                 } else {
-                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to '.$counter.' source'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
                     foreach(view_e_covers(12274, $_POST['s__id'], 1, true) as $e) {
@@ -2699,9 +2699,9 @@ class Ajax extends CI_Controller
                 $counter = count($is_next);
 
                 if(!$counter){
-                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Ideas yet</div>';
+                    echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Ideas yet</div>';
                 } else {
-                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="fas fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
+                    echo '<div class="alert" role="alert"><span class="icon-block"><i class="far fa-list"></i></span>Will apply to '.$counter.' idea'.view__s($counter).':</div>';
                     echo '<div class="row justify-content">';
                     $ids = array();
                     foreach($is_next as $i) {
@@ -2713,7 +2713,7 @@ class Ajax extends CI_Controller
                 }
 
             } else {
-                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>Unknown Apply ID</div>';
+                echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Unknown Apply ID</div>';
             }
         }
     }
@@ -3460,7 +3460,7 @@ class Ajax extends CI_Controller
                         'x__message' => $new_content,
                     ), $player_e['e__id'], 12360, update_description($x['x__message'], $new_content));
 
-                    $message .= '<div class="alert alert-info" role="alert"><i class="fas fa-check-circle"></i> Replaced ['.$_POST['x__message_find'].'] with ['.trim($_POST['x__message_replace']).']</div>';
+                    $message .= '<div class="alert alert-info" role="alert"><i class="far fa-check-circle"></i> Replaced ['.$_POST['x__message_find'].'] with ['.trim($_POST['x__message_replace']).']</div>';
 
                 }
 
@@ -3469,17 +3469,17 @@ class Ajax extends CI_Controller
 
             //Do we have more to show?
             if($has_more_x){
-                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn" onclick="x_4341(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="fas fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
+                $message .= '<div id="x_page_'.$next_page.'"><a href="javascript:void(0);" style="margin:10px 0 72px 0;" class="btn" onclick="x_4341(x_filters, x_joined_by, '.$next_page.');"><span class="icon-block"><i class="far fa-search-plus"></i></span>Page '.$next_page.'</a></div>';
                 $message .= '';
             } else {
-                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="fas fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transactions have been loaded</div>';
+                $message .= '<div style="margin:10px 0 72px 0;"><span class="icon-block"><i class="far fa-check-circle"></i></span>All '.$x_count[0]['total_count'].' transactions have been loaded</div>';
 
             }
 
         } else {
 
             //Show no transaction warning:
-            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
+            $message .= '<div class="alert alert-warning" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>No Transactions found with the selected filters. Modify filters and try again.</div>';
 
         }
 

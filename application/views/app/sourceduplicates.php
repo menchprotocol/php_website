@@ -56,7 +56,7 @@ if(isset($_GET['e__handle'])){
         }
 
     } else {
-        echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>No duplicates found!';
+        echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>No duplicates found!';
     }
 
 }

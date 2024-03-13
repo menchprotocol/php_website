@@ -85,7 +85,7 @@ if($icon_keyword){
         }
 
         if($replaced > 0){
-            echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>Updated icons for '.$replaced.' sources.';
+            echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>Updated icons for '.$replaced.' sources.';
         }
 
     }

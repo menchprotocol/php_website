@@ -833,7 +833,7 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $ses
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-exclamation-circle"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
     }
 
 }

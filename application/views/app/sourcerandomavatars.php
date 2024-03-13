@@ -19,7 +19,7 @@ if(isset($_GET['update_u_icons'])){
             'e__cover' => random_cover(12279),
         ));
     }
-    echo '<span class="icon-block"><i class="fas fa-check-circle"></i></span>'.$updated.' Member following updated with new random animal icons';
+    echo '<span class="icon-block"><i class="far fa-check-circle"></i></span>'.$updated.' Member following updated with new random animal icons';
 }
 
 for($i=0;$i<750;$i++){

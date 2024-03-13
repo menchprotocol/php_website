@@ -34,7 +34,7 @@ echo '</div>';
 
 
 //List Regular Apps:
-echo '<div class="extra_apps center" style="padding: 34px 0;"><a href="javascript:void(0)" onclick="$(\'.extra_apps\').toggleClass(\'hidden\');"><i class="fas fa-search-plus"></i> SEE MORE</a></div>';
+echo '<div class="extra_apps center" style="padding: 34px 0;"><a href="javascript:void(0)" onclick="$(\'.extra_apps\').toggleClass(\'hidden\');"><i class="far fa-search-plus"></i> SEE MORE</a></div>';
 echo '<div class="row extra_apps hidden">';
 foreach($this->X_model->fetch(array(
     'x__following' => 6287, //Featured Apps

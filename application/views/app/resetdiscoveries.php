@@ -46,7 +46,7 @@ if(!isset($_GET['confirm'])){
     }
 
     //Show basic UI for now:
-    return redirect_message(view_memory(42903,42902).$focus_e['e__handle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="fas fa-trash-alt"></i></span>'.$message.'</div>');
+    return redirect_message(view_memory(42903,42902).$focus_e['e__handle'], '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-trash-alt"></i></span>'.$message.'</div>');
 
 
 }

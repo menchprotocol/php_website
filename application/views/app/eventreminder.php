@@ -31,7 +31,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 foreach($this->I_model->fetch(array(
                     'i__id' => $x['x__previous'],
                 )) as $i_go){
-                    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="fas fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="'.view_memory(42903,33286).$i_go['i__hashtag'].'">'.view_i_title($i_go, true).'</a>.</div>';
+                    echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="'.view_memory(42903,33286).$i_go['i__hashtag'].'">'.view_i_title($i_go, true).'</a>.</div>';
                 }
 
             } else {
