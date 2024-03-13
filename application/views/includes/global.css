@@ -3144,6 +3144,7 @@ h4.main__title{
     background-color: #EFEFEF;
 }
 
+.list-group .info_blob,
 .dropdown-item .info_blob {
     margin-left: 5px;
 }
