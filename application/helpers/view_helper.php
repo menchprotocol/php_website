@@ -2080,7 +2080,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //Skip
-                $bottom_bar_ui .= '<span class="mini_button"><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm"><span class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</span></a></span>';
+                $bottom_bar_ui .= '<span class="mini_button"><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31911 && $access_level_i>=3 && !$discovery_mode){
 
