@@ -69,13 +69,13 @@ function is_valid_date($str)
 
 
 function e_pinned($e__id, $first_pin_only){
-
-    $pinned_down = $this->config->item('pinned_down');
+    $CI =& get_instance();
+    $pinned_down = $CI->config->item('pinned_down');
     if(isset($pinned_down[$e__id][0])){
         return ( $first_pin_only ? intval($pinned_down[$e__id][0]) : $pinned_down[$e__id] );
     }
 
-    $pinned_up = $this->config->item('pinned_down');
+    $pinned_up = $CI->config->item('pinned_down');
     if(isset($pinned_up[$e__id][0])){
         return ( $first_pin_only ? intval($pinned_up[$e__id][0]) : $pinned_up[$e__id] );
     }
