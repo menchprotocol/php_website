@@ -3110,10 +3110,8 @@ h4.main__title{
 
 
 .card_covers a.btn-sm {
-    padding: 3px 5px 0 0 !important;
+    padding: 3px 0 0 0 !important;
     margin-top: -5px !important;
-    margin-left: 6px !important;
-    margin-right: 5px !important;
 }
 .card_covers a.btn-sm:hover {
     background-color: #EFEFEF !important;
@@ -3167,10 +3165,6 @@ h4.main__title{
 
     .add-input{
         padding-left: 3px !important;
-    }
-
-    .card_covers a.btn-sm {
-        margin-left: 3px !important;
     }
 
     .mini-frame{
