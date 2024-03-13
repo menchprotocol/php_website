@@ -203,7 +203,7 @@ h3{
     height: 13px;
     overflow: visible;
 }
-.post_button{
+.btn.post_button{
     background-color: #000000;
     color: #FFFFFF !important;
 }
@@ -2997,7 +2997,6 @@ h4.main__title{
 .save_results{
     margin:8px -13px 13px -5px !important;
 }
-
 
 .media_outer_frame {
     clear: both;
