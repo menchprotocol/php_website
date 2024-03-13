@@ -4245,7 +4245,8 @@ main {
     z-index: 998;
 }
 .tab_content{
-    max-height: 987px;
+    min-height: 987px;
+    padding-bottom: 144px;
 }
 
 .nav-tabs > li {
