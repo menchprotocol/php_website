@@ -1982,7 +1982,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             //Determine hover state:
             $always_see = $focus__node || in_array($x__type_target_bar, $CI->config->item('n___32172'));
 
-            if($x__type_target_bar==31770 && !$discovery_mode && $link_type_ui && $player_e){
+            if($x__type_target_bar==31770 && !$discovery_mode && $link_type_ui && $superpower_10939){
 
                 //Links
                 $bottom_bar_ui .= $link_type_ui;
