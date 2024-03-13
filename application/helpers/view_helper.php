@@ -2503,11 +2503,11 @@ function view_card_e($x__type, $e, $extra_class = null)
 
             $always_see = in_array($x__type_target_bar, $CI->config->item('n___32172'));
 
-            if($x__type_target_bar==31770 && $x__id && $player_e){
+            if($x__type_target_bar==31770 && $x__id && $superpower_10939){
 
                 $featured_sources .= $link_type_ui;
 
-            } elseif($x__type_target_bar==6177 && $access_level_e>=3){
+            } elseif($x__type_target_bar==6177 && $access_level_e>=3 && $superpower_10939){
 
                 //Source Privacy
                 //( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' )
@@ -2515,8 +2515,14 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $featured_sources .= view_single_select_instant(6177, $e['e__privacy'], $access_level_e, false, $e['e__id'], $x__id);
                 $featured_sources .= '</span>';
 
-            } elseif($x__type_target_bar==42795 && $player_e && $player_e['e__id']!=$e['e__id'] && (!$x__id || !(superpower_unlocked(13422) && in_array($e['x__type'], $CI->config->item('n___42795')) && $e['x__follower']==$player_e['e__id'] && $e['x__following']==$e['e__id']))){
+            } elseif($x__type_target_bar==42795 && $player_e && $player_e['e__id']!=$e['e__id'] && count($CI->X_model->fetch(array(
+                    'x__follower' => $e['e__id'],
+                    'x__following' => 4430, //Active Member
+                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                )))){
 
+                //Allow to follow fellow players:
                 $followings = $CI->X_model->fetch(array(
                     'x__following' => $e['e__id'],
                     'x__follower' => $player_e['e__id'],
