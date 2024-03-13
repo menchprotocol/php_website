@@ -210,6 +210,9 @@ h3{
 .btn.post_button i{
     color: #FFFFFF !important;
 }
+.btn.post_button:hover i{
+    color: #000000 !important;
+}
 .inner_message {
     clear: both;
     display: block;
