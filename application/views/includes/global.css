@@ -1977,6 +1977,7 @@ label {
 
 .dropdown-item:focus, .dropdown-item:hover {
     text-decoration: none;
+    color: #000000 !important;
     background-color: #EFEFEF;
     border-radius: 0;
 }
@@ -3113,6 +3114,7 @@ h4.main__title{
 }
 .card_covers a.btn-sm:hover {
     background-color: #EFEFEF !important;
+    color: #000000 !important;
 }
 .card_covers a.btn-sm .icon-block-sm{
     height: 21px !important;
@@ -3140,6 +3142,7 @@ h4.main__title{
 .fixed-bottom .card_covers .main__title:hover,
 .fixed-bottom .card_covers .btn:hover {
     background-color: #EFEFEF;
+    color: #000000 !important;
 }
 
 .list-group .info_blob,
@@ -3699,6 +3702,7 @@ a,
 }
 .grey-background:hover {
     background-color: #EFEFEF !important;
+    color: #000000 !important;
 }
 
 .cover-content .i_cache {
@@ -3757,6 +3761,7 @@ a,
 }
 .table-striped tbody tr:nth-of-type(even){
     background-color: #EFEFEF;
+    color: #000000 !important;
 }
 
 
