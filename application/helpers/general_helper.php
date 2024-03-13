@@ -83,6 +83,29 @@ function e_pinned($e__id, $first_pin_only){
     return ( $first_pin_only ? 0 : array() );
 }
 
+function i__discovery($i){
+
+    $CI =& get_instance();
+    if(in_array($i['i__type'], $CI->config->item('n___41055'))){
+        $currency_types = $CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__next' => $i['i__id'],
+            'x__following IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
+        ));
+        $total_dues = $CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__next' => $i['i__id'],
+            'x__following' => 26562, //Total Due
+        ));
+        return ( count($total_dues) && doubleval($total_dues[0]['x__message']) && count($currency_types) ? 26595 : 42332 );
+    } else {
+        return e_pinned($i['i__type'], true);
+    }
+
+}
+
 
 
 function string_is_icon($string){
