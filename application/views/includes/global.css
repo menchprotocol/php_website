@@ -203,7 +203,7 @@ h3{
     height: 13px;
     overflow: visible;
 }
-.btn.post_button{
+.post_button{
     background-color: #000000;
     color: #FFFFFF !important;
 }
@@ -2999,7 +2999,6 @@ h4.main__title{
 }
 
 
-
 .media_outer_frame {
     clear: both;
     display: block;
@@ -3148,6 +3147,8 @@ h4.main__title{
 .dropdown-item .info_blob {
     margin-left: 5px;
 }
+
+
 
 @media (max-width:610px) {
 
