@@ -6,7 +6,7 @@ if(isset($_GET['search_for'])){
 
     $icon_keyword = $_GET['search_for'];
 
-} elseif(isset($_GET['e__handle'])){
+} elseif(isset($_GET['e__handle']) && $_GET['e__handle']){
 
     $es = $this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
