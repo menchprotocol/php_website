@@ -1931,7 +1931,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         }
 
         if(strlen($input_ui)){
-            $ui .= '<div class="input_ui input_ui_'.$i['i__id'].'">'.$input_ui.'</div>';
+            $ui .= '<div class="ignore-click input_ui input_ui_'.$i['i__id'].'">'.$input_ui.'</div>';
         }
 
         //End of Discovery input
