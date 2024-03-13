@@ -2009,14 +2009,14 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 //Selector
 
-            } elseif($x__type_target_bar==4737 && !$discovery_mode){
+            } elseif($x__type_target_bar==4737 && !$discovery_mode && $superpower_10939){
 
                 //Idea Type
                 $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==31004 && !$discovery_mode && $access_level_i>=3){
+            } elseif($x__type_target_bar==31004 && !$discovery_mode && $access_level_i>=3 && $superpower_10939){
 
                 //Idea Access
                 $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
