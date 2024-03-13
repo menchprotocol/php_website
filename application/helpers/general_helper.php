@@ -68,43 +68,22 @@ function is_valid_date($str)
 }
 
 
-function map_primary_links($link_id){
+function e_pinned($e__id, $first_pin_only){
 
-    //See if it has any pinned:
-    $CI =& get_instance();
-    foreach($CI->X_model->fetch(array(
-        'x__following' => $link_id,
-        'x__type' => 41011, //PINNED FOLLOWER
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-    ), array(), 0) as $x_pinned) {
-        return intval($x_pinned['x__follower']);
+    $pinned_down = $this->config->item('pinned_down');
+    if(isset($pinned_down[$e__id][0])){
+        return ( $first_pin_only ? intval($pinned_down[$e__id][0]) : $pinned_down[$e__id] );
     }
 
-    //It must be itself:
-    return intval($link_id);
-}
-
-function int_hash($str){
-    $int_length = 4;
-    $numhash = unpack('N2', md5($str, true));
-    $int_val = $numhash[1] & 0x000FFFFF;
-    if(strlen($int_val) < $int_length){
-        return str_pad($int_val, $int_length, "0", STR_PAD_RIGHT);
-    } else {
-        return substr($int_val, 0, $int_length);
+    $pinned_up = $this->config->item('pinned_down');
+    if(isset($pinned_up[$e__id][0])){
+        return ( $first_pin_only ? intval($pinned_up[$e__id][0]) : $pinned_up[$e__id] );
     }
+
+    return ( $first_pin_only ? 0 : array() );
 }
 
 
-function validateDate($date, $format)
-{
-    $d = DateTime::createFromFormat($format, $date);
-    return $d && $d->format($format)==$date;
-}
-
-function current_link(){
-    return 'https://' .get_server('SERVER_NAME') . get_server('REQUEST_URI');
-}
 
 function string_is_icon($string){
     return substr_count($string,'fa-');
@@ -154,18 +133,6 @@ function e__weight_calculator($e){
 
 }
 
-function filter_cache_group($search_e__id, $cache_e__id){
-
-    //Determines which category an source belongs to
-
-    $CI =& get_instance();
-    foreach($CI->config->item('e___'.$cache_e__id) as $e__id => $m) {
-        if(in_array($search_e__id, $CI->config->item('n___'.$e__id))){
-            return $m;
-        }
-    }
-    return false;
-}
 
 function random_string($length_of_string){
     $characters = '123456789abcdefghijklmnpqrstuvwxyz';

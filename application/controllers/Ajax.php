@@ -3539,12 +3539,12 @@ class Ajax extends CI_Controller
         foreach($this->config->item('e___33292') as $x__type1 => $m1) {
             $level1_total = 0;
             foreach($this->config->item('e___'.$x__type1) as $x__type2 => $m2) {
-                $map_primary_links = map_primary_links($x__type2);
+                $e_pinned = e_pinned($x__type2, true);
                 $level2_total = 0;
-                if(!$map_primary_links ||!is_array($this->config->item('e___'.$map_primary_links)) || !count($this->config->item('e___'.$map_primary_links)) ){
+                if(!$e_pinned ||!is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
                     continue;
                 }
-                foreach($this->config->item('e___'.$map_primary_links) as $x__type3 => $m3) {
+                foreach($this->config->item('e___'.$e_pinned) as $x__type3 => $m3) {
 
                     if($x__type2==12273){
 

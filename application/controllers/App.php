@@ -182,7 +182,7 @@ class App extends CI_Controller
 
         //Cache App?
         $x__metadata = array(
-            'current_link' => current_link(),
+            'current_link' => 'https://' .get_server('SERVER_NAME') . get_server('REQUEST_URI'),
             '$_GET' => $_GET,
             '$_POST' => $_POST,
             '$_REQUEST' => $_REQUEST,
