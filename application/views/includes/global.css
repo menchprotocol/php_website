@@ -3158,7 +3158,7 @@ h4.main__title{
     }
 
     .fixed-bottom .card_covers>span{
-        padding-bottom: 13px;
+        padding: 8px 0;
     }
     .focus-cover .space-content,
     .focus-cover .i_cache{
