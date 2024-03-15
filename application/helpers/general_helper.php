@@ -68,7 +68,7 @@ function is_valid_date($str)
 }
 
 
-function e_pinned($e__id, $first_pin_only){
+function e_pinned($e__id, $first_pin_only, $return_itself = false){
     $CI =& get_instance();
     $pinned_down = $CI->config->item('pinned_down');
     if(isset($pinned_down[$e__id])){
@@ -80,7 +80,7 @@ function e_pinned($e__id, $first_pin_only){
         return ( $first_pin_only ? reset($pinned_up[$e__id]) : $pinned_up[$e__id] );
     }
 
-    return ( $first_pin_only ? 0 : array() );
+    return ( $first_pin_only ? ( $return_itself ? $e__id : 0 ) : array() );
 }
 
 function i__discovery_link($i){

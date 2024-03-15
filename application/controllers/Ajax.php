@@ -3497,8 +3497,8 @@ class Ajax extends CI_Controller
         $miscstats = '';
 
         //See if we have any idea or source targets to limit our stats:
-        $has_handle = isset($_POST['e__handle']) && strlen($_POST['e__handle']) && $_POST['e__handle']!='0';
-        $has_hashtag = isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && $_POST['i__hashtag']!='0';
+        $has_handle = isset($_POST['e__handle']) && strlen($_POST['e__handle']) && $_POST['e__handle'];
+        $has_hashtag = isset($_POST['i__hashtag']) && strlen($_POST['i__hashtag']) && $_POST['i__hashtag'];
 
         if($has_handle){
 
@@ -3536,16 +3536,16 @@ class Ajax extends CI_Controller
 
         //Count transactions:
         $return_array = array();
-        foreach($this->config->item('e___33292') as $x__type1 => $m1) {
+        foreach($this->config->item('e___33292') as $x__type1 => $m1) { //Gameplay
             $level1_total = 0;
-            foreach($this->config->item('e___'.$x__type1) as $x__type2 => $m2) {
-                $e_pinned = e_pinned($x__type2, true);
-                $e_pinned = ( $e_pinned ? $e_pinned : $x__type1 );
+            foreach($this->config->item('e___'.$x__type1) as $x__type2 => $m2) { //Nodes/Links
+
+                $e_pinned = e_pinned($x__type2, true, true);
                 $level2_total = 0;
                 if(!is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
                     continue;
                 }
-                foreach($this->config->item('e___'.$e_pinned) as $x__type3 => $m3) {
+                foreach($this->config->item('e___'.$e_pinned) as $x__type3 => $m3) { //Source/Idea/Discovery
 
                     if($x__type2==12273){
 
