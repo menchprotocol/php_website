@@ -106,12 +106,14 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
 
-            //Update stats numbers:
-            data.return_array.forEach(function(key, val) {
+
+            $.each(data.return_array, function (key, val) {
                 console.log(key+'/'+val);
-                if (item.sub_counter != $(".card_count_"+item.sub_id+":first").text()){
+                /*
+                * if (item.sub_counter != $(".card_count_"+item.sub_id+":first").text()){
                     $(".card_count_"+item.sub_id).removeClass('hidden').text(item.sub_counter).hide().fadeIn().hide().fadeIn();
                 }
+                * */
             });
 
             //Load Misc Stats, if any:
