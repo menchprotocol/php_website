@@ -1523,13 +1523,18 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
 
-    $is_undiscovered = ($discovery_mode && $x__player && !$has_discovered && !$focus__node);
+    $is_locked = ($discovery_mode && $x__player && !$has_discovered && !$focus__node && count($CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $CI->config->item('n___42948')) . ')' => null, //Public Ideas
+            'x__type IN (' . join(',', $CI->config->item('n___42267')) . ')' => null, //IDEA LINKS
+            'x__previous' => $i['i__id'],
+        ), array('x__next'))));
 
 
     if(($goto_start || !$superpower_10939) && $i_startable){
         $href = view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235);
     } elseif($discovery_mode) {
-        if($is_undiscovered) {
+        if($is_locked) {
             $href = null;
         } elseif($target_i__hashtag){ //$link_creator &&
             $href = view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
@@ -1545,7 +1550,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $is_undiscovered ? ' is_undiscovered ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $is_locked ? ' is_undiscovered ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
     if($discovery_mode && $x__player && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
@@ -2023,21 +2028,21 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $access_level_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==33532 && !$is_undiscovered && $player_e && $access_level_i>=2){
+            } elseif($x__type_target_bar==33532 && !$is_locked && $player_e && $access_level_i>=2){
 
                 //Reply
                 $bottom_bar_ui .= '<span class="mini_button"><div class="'.( $always_see ? '' : 'show-on-hover' ).' main__title">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif(0 && $x__type_target_bar==42819 && !$is_undiscovered && superpower_unlocked(13422) && $access_level_i>=3){
+            } elseif(0 && $x__type_target_bar==42819 && !$is_locked && superpower_unlocked(13422) && $access_level_i>=3){
 
                 //New Source
                 $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==42260 && !$is_undiscovered && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__player']!=$player_e['e__id'])){
+            } elseif($x__type_target_bar==42260 && !$is_locked && $player_e && (!$x__id || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__player']!=$player_e['e__id'])){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
@@ -2050,7 +2055,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==43010 && $is_undiscovered){
+            } elseif($x__type_target_bar==43010 && $is_locked){
 
                 //Undiscovered
                 $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>';
@@ -2211,7 +2216,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         }
 
         //Bottom Bar menu
-        if(!$focus__node && !$is_undiscovered){
+        if(!$focus__node && !$is_locked){
             foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
 
                 $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
