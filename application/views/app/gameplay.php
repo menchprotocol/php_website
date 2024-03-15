@@ -108,7 +108,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 
             $.each(data.return_array, function (key, val) {
-                var formatted = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 2 }).format(val);
+                var formatted = String(val).replace(/(.)(?=(\d{3})+$)/g,'$1,');
                 if (formatted != $(".card_count_"+key+":first").text()){
                     $(".card_count_"+key).removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
                 }
