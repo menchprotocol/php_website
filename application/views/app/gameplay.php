@@ -108,8 +108,9 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 
             $.each(data.return_array, function (key, val) {
-                if (val != $(".card_count_"+key+":first").text()){
-                    $(".card_count_"+key).removeClass('hidden').text(val).hide().fadeIn().hide().fadeIn();
+                var formatted = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(val);
+                if (formatted != $(".card_count_"+key+":first").text()){
+                    $(".card_count_"+key).removeClass('hidden').text(formatted).hide().fadeIn().hide().fadeIn();
                 }
             });
 
