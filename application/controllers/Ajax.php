@@ -3635,25 +3635,16 @@ class Ajax extends CI_Controller
                     }
 
                     $level2_total += $sub_counter[0]['totals'];
-                    array_push($return_array , array(
-                        'sub_id' => $x__type3,
-                        'sub_counter' => number_format($sub_counter[0]['totals'], 0),
-                    ));
+                    $return_array[$x__type3] = intval($sub_counter[0]['totals']);
 
                 }
 
                 $level1_total += $level2_total;
-                array_push($return_array , array(
-                    'sub_id' => $x__type2,
-                    'sub_counter' => number_format($level2_total, 0),
-                ));
+                $return_array[$x__type2] = intval($level2_total);
 
             }
 
-            array_push($return_array , array(
-                'sub_id' => $x__type1,
-                'sub_counter' => number_format($level1_total, 0),
-            ));
+            $return_array[$x__type1] = intval($level1_total);
 
         }
         return view_json(array(
