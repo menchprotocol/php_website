@@ -83,7 +83,7 @@ function e_pinned($e__id, $first_pin_only){
     return ( $first_pin_only ? 0 : array() );
 }
 
-function i__discovery($i){
+function i__discovery_link($i){
 
     $CI =& get_instance();
     if(in_array($i['i__type'], $CI->config->item('n___41055'))){

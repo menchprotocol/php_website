@@ -2064,8 +2064,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 //Next
                 $e___6255 = $CI->config->item('e___6255');
-                $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[$i__discovery] );
-                $i__discovery = i__discovery($i);
+                $i__discovery_link = i__discovery_link($i);
+                $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[$i__discovery_link] );
                 $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next()" class="btn btn-sm post_button"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
