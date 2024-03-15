@@ -1523,12 +1523,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
 
-    $is_locked = ($discovery_mode && $x__player && !$has_discovered && !$focus__node && count($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $CI->config->item('n___42948')) . ')' => null, //Public Ideas
-            'x__type IN (' . join(',', $CI->config->item('n___42267')) . ')' => null, //IDEA LINKS
-            'x__previous' => $i['i__id'],
-        ), array('x__next'))));
+    $is_locked = ($discovery_mode && $x__player && !$has_discovered && !$focus__node);
 
 
     if(($goto_start || !$superpower_10939) && $i_startable){
@@ -2055,7 +2050,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==43010 && $is_locked){
+            } elseif($x__type_target_bar==43010 && $is_locked && count($CI->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'i__privacy IN (' . join(',', $CI->config->item('n___42948')) . ')' => null, //Public Ideas
+                    'x__type IN (' . join(',', $CI->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                    'x__previous' => $i['i__id'],
+                ), array('x__next')))){
 
                 //Undiscovered
                 $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>';
