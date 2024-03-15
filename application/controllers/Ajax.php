@@ -3540,9 +3540,10 @@ class Ajax extends CI_Controller
             $level1_total = 0;
             foreach($this->config->item('e___'.$x__type1) as $x__type2 => $m2) {
                 $e_pinned = e_pinned($x__type2, true);
+                $e_pinned = ( $e_pinned ? $e_pinned : $x__type2 );
                 $level2_total = 0;
-                if(!$e_pinned || !is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
-                    //continue;
+                if(!is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
+                    continue;
                 }
                 foreach($this->config->item('e___'.$e_pinned) as $x__type3 => $m3) {
 
