@@ -108,12 +108,9 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
 
             $.each(data.return_array, function (key, val) {
-                console.log(key+'/'+val);
-                /*
-                * if (item.sub_counter != $(".card_count_"+item.sub_id+":first").text()){
-                    $(".card_count_"+item.sub_id).removeClass('hidden').text(item.sub_counter).hide().fadeIn().hide().fadeIn();
+                if (val != $(".card_count_"+key+":first").text()){
+                    $(".card_count_"+key).removeClass('hidden').text(val).hide().fadeIn().hide().fadeIn();
                 }
-                * */
             });
 
             //Load Misc Stats, if any:
