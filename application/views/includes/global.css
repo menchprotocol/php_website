@@ -1606,7 +1606,7 @@ label {
 .inline{ display: inline !important; }
 .block{ display: block !important; width: 100%; }
 .underline{ text-decoration: underline !important; }
-.nav>.nav-item>.nav-link>.icon-block { width:28px !important; }
+body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !important; }
 #searchFrontForm .icon-block { width:28px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 .icon-block-sm{ width:28px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
