@@ -2046,7 +2046,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1);
-                $bottom_bar_ui .= '<span class="mini_button"><div class="main__title">aaa';
+                $bottom_bar_ui .= '<span class="mini_button"><div class="main__title">';
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
