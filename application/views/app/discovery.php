@@ -123,7 +123,6 @@ echo '</div>';
 
 
 
-
 //Main Navigation
 echo view_i_nav(true, $focus_i);
 
