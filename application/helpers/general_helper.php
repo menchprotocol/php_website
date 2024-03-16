@@ -67,7 +67,9 @@ function is_valid_date($str)
     }
 }
 
-
+function target_disccovery(){
+    return ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) ? one_two_explode('/','/',$_POST['js_request_uri']).'/' : null );
+}
 function e_pinned($e__id, $first_pin_only, $return_itself = false){
     $CI =& get_instance();
     $pinned_down = $CI->config->item('pinned_down');

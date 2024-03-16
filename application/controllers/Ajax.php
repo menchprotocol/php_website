@@ -887,6 +887,8 @@ class Ajax extends CI_Controller
 
             } else {
 
+                $target_disccovery = target_disccovery();
+
                 $ui = '';
                 $listed_items = 0;
                 if(in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___42284'))){
@@ -911,7 +913,7 @@ class Ajax extends CI_Controller
 
                     foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view_card(view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
+                            $ui .= view_card($target_disccovery.view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                             $listed_items++;
                         }
                     }
@@ -923,7 +925,7 @@ class Ajax extends CI_Controller
                     foreach($this->I_model->fetch(array(
                         'i__id' => $_POST['i__id'],
                     )) as $i){
-                        $ui .= view_more(view_memory(42903,33286).$i['i__hashtag'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                        $ui .= view_more($target_disccovery.view_memory(42903,33286).$i['i__hashtag'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
                     }
                 }
 
@@ -1039,10 +1041,11 @@ class Ajax extends CI_Controller
                     $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
                     $e___4737 = $this->config->item('e___4737'); //Idea Types
                     $e___4593 = $this->config->item('e___4593'); //Transaction Types
+                    $target_disccovery = target_disccovery();
 
                     foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view_card(view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
+                            $ui .= view_card($target_disccovery.view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
                             $listed_items++;
                         }
                     }
