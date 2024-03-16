@@ -2037,7 +2037,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==42260 && !$is_locked && $player_e && (!$x__id || 1 || !in_array($i['x__type'], $CI->config->item('n___42260')) || $i['x__player']!=$player_e['e__id'])){
+            } elseif($x__type_target_bar==42260 && !$is_locked && $player_e){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
