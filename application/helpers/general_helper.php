@@ -68,6 +68,7 @@ function is_valid_date($str)
 }
 
 function target_disccovery(){
+    return null;
     return ( isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1)=='/' && substr_count($_POST['js_request_uri'], '/')==2 ? strtok(substr($_POST['js_request_uri'], 1), '/').'/' : null );
 }
 function e_pinned($e__id, $first_pin_only, $return_itself = false){
