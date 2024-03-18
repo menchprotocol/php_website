@@ -2057,7 +2057,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==41037 && !$focus__node && $focus_i__or_node){
+            } elseif($x__type_target_bar==41037 ){
 
                 //Selector
                 $bottom_bar_ui .= '<span class="this_selector"><i class="far fa-square fa-sharp"></i></span>';
