@@ -150,6 +150,9 @@ echo view_i_nav(true, $focus_i);
         $(".focus_i__or_node").click(function (e) {
             console.log('WOW:');
         });
+        $(".focus_i__or_node i").click(function (e) {
+            console.log('WOW44:');
+        });
         $(".card_cover").click(function (e) {
             console.log('WOW23:');
         });
