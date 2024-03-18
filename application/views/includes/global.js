@@ -859,6 +859,7 @@ function load_card_clickers(){
         }
     });
 
+    console.log('loaded.......');
     $(".focus_i__or_node").unbind();
     $(".focus_i__or_node").click(function (e) {
         if($('.this_selector_'+$(this).attr('x__id')+' i').hasClass('fa-square-check')){
