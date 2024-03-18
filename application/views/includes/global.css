@@ -3115,7 +3115,7 @@ h4.main__title{
     margin: 0 !important;
 }
 .fixed-bottom .card_covers a.btn-sm .icon-block-sm{
-    height: unset !important;
+    height: 26px !important;
 }
 
 .fixed-bottom .card_covers a,

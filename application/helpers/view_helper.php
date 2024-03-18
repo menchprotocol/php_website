@@ -1489,6 +1489,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
     $i_startable = i_startable($i);
 
+    $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );
     $discovery_seg = ( !$discovery_uri && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false );
     $discovery_mode = ( $discovery_uri || $discovery_seg || $goto_start );
@@ -1504,13 +1505,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $focus_i__hashtag = false;
     }
 
-    $focus_i__or_node = ($discovery_mode && $focus_i__hashtag && count($CI->I_model->fetch(array(
+    $focus_i__or_node = ($discovery_mode && $focus_i__hashtag && !$focus__node && count($CI->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__type IN (' . join(',', $CI->config->item('n___7712')) . ')' => null, //Input Choice
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
         ))));
 
-    $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $x__player = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
     $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
 
@@ -2057,10 +2057,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==41037 && !$focus__node && $focus_i__or_node){
+            } elseif($x__type_target_bar==41037 && $focus_i__or_node){
 
                 //Selector
-                $bottom_bar_ui .= '<span class="this_selector"><i class="far fa-square fa-sharp"></i></span>';
+                $bottom_bar_ui .= '<span class="this_selector"><span class="icon-block-sm"><i class="far fa-square fa-sharp"></i></span></span>';
 
             } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or_node){
 
