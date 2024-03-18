@@ -146,6 +146,7 @@ echo view_i_nav(true, $focus_i);
                 $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
             }
         });
+        console.log('WOW22:');
 
         $(".focus_i__or_node").click(function (e) {
             console.log('WOW:');
