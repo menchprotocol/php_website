@@ -1602,7 +1602,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     height: 13px;
 }
 .this_selector{
-    margin: 0 0 -34px -34px;
+    margin: 0 0 -33px 6px;
 }
 .popover-body .icon-block-xs{
     width:16px !important;
