@@ -137,7 +137,6 @@ echo view_i_nav(true, $focus_i);
     $(document).ready(function () {
 
         $(".focus_i__or_node").click(function (e) {
-            console.log('WOW:');
             console.log('WOW:'+$(this).attr('x__id'));
             if($('.this_selector_'+$(this).attr('x__id')+' i').hasClass('fa-square-check')){
                 //Already selected, so unselect:
@@ -146,6 +145,10 @@ echo view_i_nav(true, $focus_i);
                 //Not selected, so Select now:
                 $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
             }
+        });
+
+        $(".focus_i__or_node").click(function (e) {
+            console.log('WOW:');
         });
 
         show_more(<?= $focus_i['i__id'] ?>);
