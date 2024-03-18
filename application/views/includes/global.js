@@ -954,6 +954,7 @@ var index_algolia = false;
 $(document).ready(function () {
 
     $(".focus_i__or_node").click(function (e) {
+        console.log($(this).attr('x__id'));
         if($('.this_selector_'+$(this).attr('x__id')+' i').hasClass('fa-square-check')){
             //Already selected, so unselect:
             $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
