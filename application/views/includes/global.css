@@ -1346,12 +1346,6 @@ a.headline {
     background-color: inherit;
 }
 
-.show-on-hover {
-    display:none !important;
-}
-.inline-on-hover {
-    display:none !important;
-}
 .card_subcat {
     padding:34px 0 13px;
 }
@@ -1360,15 +1354,6 @@ a.headline {
     padding-bottom: 3px;
 }
 
-.card_cover:hover .show-on-hover, .card_cover.card_checked .show-on-hover{
-    display:inline-block !important;
-}
-
-.list-group-item:hover .show-on-hover,
-.card_cover:hover .inline-on-hover,
-.list-group-item:hover .inline-on-hover{
-    display:inline-block !important;
-}
 .card_cover.focus-cover {
     padding-bottom: 5px !important;
 }
@@ -4326,9 +4311,6 @@ main {
 }
 
 
-.main_item:hover .card_cover .show-on-hover {
-    display: block !important;
-}
 .creator_headline{
     display: inline-block;
     line-height: 134%;

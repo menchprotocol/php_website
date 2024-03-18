@@ -1465,9 +1465,7 @@ function view_i_nav($discovery_mode, $focus_i){
         }
 
     }
-    
 
-    
     return $ui;
     
 }
@@ -1490,10 +1488,27 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $player_e = superpower_unlocked();
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
     $i_startable = i_startable($i);
-    $discovery_mode = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) || (!isset($_POST['js_request_uri']) && strlen($CI->uri->segment(2))) || $goto_start );
-    if($discovery_mode && !$target_i__hashtag){
-        $target_i__hashtag = ( (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2) ? one_two_explode('/','/',$_POST['js_request_uri']) : $CI->uri->segment(1) );
+
+    $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );
+    $discovery_seg = ( !$discovery_uri && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false );
+    $discovery_mode = ( $discovery_uri || $discovery_seg || $goto_start );
+
+    $focus_i_uri = ( $discovery_uri ? one_two_explode('/','',substr($_POST['js_request_uri'], 1)) : false );
+    $focus_i_seg = ( $discovery_seg ? $CI->uri->segment(2) : false );
+    $focus_i__hashtag = ( $focus_i_uri ? $focus_i_uri : ( $focus_i_seg ? $focus_i_seg : false ) );
+
+    if($discovery_mode && !$target_i__hashtag && ($discovery_uri || $discovery_seg)){
+        $target_i__hashtag = ( $discovery_uri ? $discovery_uri : $discovery_seg );
     }
+    if($target_i__hashtag && $focus_i__hashtag && $focus_i__hashtag==$i['i__hashtag']){
+        $focus_i__hashtag = false;
+    }
+
+    $focus_i__or_node = ($discovery_mode && $focus_i__hashtag && count($CI->I_model->fetch(array(
+            'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
+            'i__type IN (' . join(',', $CI->config->item('n___7712')) . ')' => null, //Input Choice
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+        ))));
 
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $x__player = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
@@ -1544,7 +1559,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Top action menu:
-    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+    $ui = '<div title="'.$target_i__hashtag.'/'.$focus_i__hashtag.'/'.$i['i__hashtag'].'/'.intval($focus_i__or_node).'" i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $is_locked ? ' is_undiscovered ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
     if($discovery_mode && $x__player && $focus__node){
@@ -1956,18 +1971,18 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     foreach($CI->X_model->fetch(array(
                         'x__id' => $x__id,
                     ), array('x__player')) as $linker){
-                        $link_type_ui .= '<span class="icon-block-sm"><div class="'.( in_array($x__type1, $CI->config->item('n___32172')) || in_array($i['x__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                        $link_type_ui .= '<span class="icon-block-sm">';
                         $link_type_ui .= view_single_select_instant($x__type1, $i['x__type'], $access_level_i, false, $i['i__id'], $x__id);
-                        $link_type_ui .= '</div></span>';
+                        $link_type_ui .= '</span>';
                     }
                     $link_type_id = $x__type1;
                     break;
                 }
             }
             if(!$link_type_ui){
-                $link_type_ui .= '<span class="icon-block-sm"><div class="show-on-hover">';
+                $link_type_ui .= '<span class="icon-block-sm">';
                 $link_type_ui .= view_single_select_instant(4593, $i['x__type'], false, false, $i['i__id'], $x__id);
-                $link_type_ui .= '</div></span>';
+                $link_type_ui .= '</span>';
             }
         }
 
@@ -1980,8 +1995,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             }
 
             //Determine hover state:
-            $always_see = $focus__node || in_array($x__type_target_bar, $CI->config->item('n___32172'));
-
             if($x__type_target_bar==31770 && !$discovery_mode && $link_type_ui && $superpower_10939){
 
                 //Links
@@ -2003,39 +2016,35 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     }
                 }
 
-                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="show-on-hover grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
-
-            } elseif($x__type_target_bar==41037 && !$discovery_mode && $access_level_i>=3 && !$focus__node){
-
-                //Selector
+                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
 
             } elseif($x__type_target_bar==4737 && !$discovery_mode && $superpower_10939){
 
                 //Idea Type
-                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__type'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span>';
                 $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['i__id'], $x__id);
-                $bottom_bar_ui .= '</div></span>';
+                $bottom_bar_ui .= '</span>';
 
             } elseif($x__type_target_bar==31004 && !$discovery_mode && $access_level_i>=3 && $superpower_10939){
 
                 //Idea Access
-                $bottom_bar_ui .= '<span><div class="'.( $always_see || in_array($i['i__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span>';
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $access_level_i, false, $i['i__id'], $x__id);
-                $bottom_bar_ui .= '</div></span>';
+                $bottom_bar_ui .= '</span>';
 
             } elseif($x__type_target_bar==33532 && !$is_locked && $player_e && $access_level_i>=2){
 
                 //Reply
-                $bottom_bar_ui .= '<span class="mini_button"><div class="'.( $always_see ? '' : 'show-on-hover' ).' main__title">';
+                $bottom_bar_ui .= '<span class="mini_button main__title">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
-                $bottom_bar_ui .= '</div></span>';
+                $bottom_bar_ui .= '</span>';
 
             } elseif(0 && $x__type_target_bar==42819 && !$is_locked && superpower_unlocked(13422) && $access_level_i>=3){
 
                 //New Source
-                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
-                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')">'.$m_target_bar['m__cover'].'</a>';
-                $bottom_bar_ui .= '</div></span>';
+                $bottom_bar_ui .= '<span class="mini_button main__title">';
+                $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
+                $bottom_bar_ui .= '</span>';
 
             } elseif($x__type_target_bar==42260 && !$is_locked && $player_e){
 
@@ -2050,6 +2059,13 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
+            } elseif($x__type_target_bar==41037 && !$is_locked && !$focus__node && ($access_level_i>=3 || $discovery_mode)){
+
+                //Selector
+                $bottom_bar_ui .= '<span>';
+                $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['i__id'], $x__id);
+                $bottom_bar_ui .= '</span>';
+
             } elseif($x__type_target_bar==43010 && $is_locked){
 
                 /*
@@ -2063,7 +2079,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                  * */
 
-                //Undiscovered
+                //Locked
                 $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>';
 
             } elseif($x__type_target_bar==4235 && !$discovery_mode && $i_startable && $access_level_i>=1){
@@ -2097,16 +2113,16 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             } elseif($x__type_target_bar==31911 && $access_level_i>=3 && !$discovery_mode){
 
                 //Idea Editor
-                $bottom_bar_ui .= '<span class="icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="icon-block-sm">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</a>';
-                $bottom_bar_ui .= '</div></span>';
+                $bottom_bar_ui .= '</span>';
 
             } elseif($x__type_target_bar==13909 && $access_level_i>=3 && $has_sortable && !$discovery_mode){
 
                 //Sort Idea
-                $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-sm"><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                $bottom_bar_ui .= '<span class="sort_i_frame hidden icon-block-sm">';
                 $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" class="sort_i_grab">'.$m_target_bar['m__cover'].'</span>';
-                $bottom_bar_ui .= '</div></span>';
+                $bottom_bar_ui .= '</span>';
 
             } elseif($x__type_target_bar==14980 && !$cache_app && !$access_locked && !$discovery_mode){
 
@@ -2207,14 +2223,14 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     //Right Action Menu
                     $e___14980 = $CI->config->item('e___14980'); //Dropdowns
 
-                    $bottom_bar_ui .= '<span><div class="'.( $always_see ? '' : 'show-on-hover' ).'">';
+                    $bottom_bar_ui .= '<span>';
                     $bottom_bar_ui .= '<div class="dropdown inline-block">';
                     $bottom_bar_ui .= '<button type="button" class="btn no-left-padding no-right-padding main__title icon-block-sm" id="action_menu_i_'.$i['i__id'].'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="'.$e___14980[$focus_dropdown]['m__title'].'">'.$e___14980[$focus_dropdown]['m__cover'].'</button>';
                     $bottom_bar_ui .= '<div class="dropdown-menu" aria-labelledby="action_menu_i_'.$i['i__id'].'">';
                     $bottom_bar_ui .= $action_buttons;
                     $bottom_bar_ui .= '</div>';
                     $bottom_bar_ui .= '</div>';
-                    $bottom_bar_ui .= '</div></span>';
+                    $bottom_bar_ui .= '</span>';
 
                 }
 
@@ -2237,7 +2253,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 $coins_ui = view_i_covers($e__id_bottom_bar,  $i['i__id'], 0, true, $headline_authors);
                 if(strlen($coins_ui)){
-                    $bottom_bar_ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
+                    $bottom_bar_ui .= '<span class="hideIfEmpty">';
                     $bottom_bar_ui .= $coins_ui;
                     $bottom_bar_ui .= '</span>';
                 }
@@ -2513,8 +2529,6 @@ function view_card_e($x__type, $e, $extra_class = null)
                 continue;
             }
 
-            $always_see = in_array($x__type_target_bar, $CI->config->item('n___32172'));
-
             if($x__type_target_bar==31770 && $x__id && $superpower_10939){
 
                 $featured_sources .= $link_type_ui;
@@ -2522,7 +2536,6 @@ function view_card_e($x__type, $e, $extra_class = null)
             } elseif($x__type_target_bar==6177 && $access_level_e>=3 && $superpower_10939){
 
                 //Source Privacy
-                //( $always_see || in_array($e['e__privacy'], $CI->config->item('n___32172')) ? '' : 'show-on-hover' )
                 $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">';
                 $featured_sources .= view_single_select_instant(6177, $e['e__privacy'], $access_level_e, false, $e['e__id'], $x__id);
                 $featured_sources .= '</span>';
@@ -2732,7 +2745,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     continue;
                 }
 
-                $ui .= '<span class="hideIfEmpty '.( in_array($e__id_bottom_bar, $CI->config->item('n___32172')) ? '' : 'inline-on-hover' ).'">';
+                $ui .= '<span class="hideIfEmpty">';
                 $ui .= view_e_covers($e__id_bottom_bar,  $e['e__id']);
                 $ui .= '</span>';
             }
