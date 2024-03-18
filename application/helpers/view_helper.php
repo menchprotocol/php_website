@@ -2060,7 +2060,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             } elseif($x__type_target_bar==41037 && !$focus__node && ($focus_i__or_node || (!$is_locked && $access_level_i>=3))){
 
                 //Selector
-                $bottom_bar_ui .= '<span class="this_selector"><i class="far fa-square fa-sharp"></i></span>';
+                $bottom_bar_ui .= '<span class="this_selector">Hiiiii<i class="far fa-square fa-sharp"></i></span>';
 
             } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or_node){
 
