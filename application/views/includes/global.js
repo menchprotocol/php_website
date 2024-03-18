@@ -850,11 +850,23 @@ function add_media(result_info){
 
 
 function load_card_clickers(){
+
     $(".card_click").unbind();
     var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source';
     $( ".card_click" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length){
             js_redirect($(this).attr('href'));
+        }
+    });
+
+    $(".focus_i__or_node").unbind();
+    $(".focus_i__or_node").click(function (e) {
+        if($('.this_selector_'+$(this).attr('x__id')+' i').hasClass('fa-square-check')){
+            //Already selected, so unselect:
+            $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
+        } else {
+            //Not selected, so Select now:
+            $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
         }
     });
 }

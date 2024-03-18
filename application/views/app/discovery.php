@@ -136,27 +136,6 @@ echo view_i_nav(true, $focus_i);
 
     $(document).ready(function () {
 
-        $(".focus_i__or_node").click(function (e) {
-            console.log('WOW:'+$(this).attr('x__id'));
-            if($('.this_selector_'+$(this).attr('x__id')+' i').hasClass('fa-square-check')){
-                //Already selected, so unselect:
-                $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
-            } else {
-                //Not selected, so Select now:
-                $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
-            }
-        });
-
-        $(".focus_i__or_node").click(function (e) {
-            console.log('WOW:');
-        });
-        $(".focus_i__or_node i").click(function (e) {
-            console.log('WOW44:');
-        });
-        $(".card_cover").click(function (e) {
-            console.log('WOW23:');
-        });
-
         show_more(<?= $focus_i['i__id'] ?>);
 
         //Auto next a single answer:
