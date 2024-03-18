@@ -132,6 +132,8 @@ echo view_i_nav(true, $focus_i);
 <script>
 
     var focus_i__type = <?= $focus_i['i__type'] ?>;
+    var selection_min = <?= $focus_i['i__type'] ?>;
+    var selection_max = <?= $focus_i['i__type'] ?>;
     var can_skip = <?= intval($can_skip) ?>;
 
     $(document).ready(function () {
