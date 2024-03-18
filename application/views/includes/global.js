@@ -953,17 +953,6 @@ function activate_popover(){
 var index_algolia = false;
 $(document).ready(function () {
 
-    $(".focus_i__or_node").click(function (e) {
-        console.log('WOW:'+$(this).attr('x__id'));
-        if($('.this_selector_'+$(this).attr('x__id')+' i').hasClass('fa-square-check')){
-            //Already selected, so unselect:
-            $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
-        } else {
-            //Not selected, so Select now:
-            $('.this_selector_'+$(this).attr('x__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
-        }
-    });
-
     //Look for power editor updates:
     $('.x_set_class_text').keypress(function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
