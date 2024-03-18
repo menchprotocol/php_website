@@ -1559,13 +1559,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Top action menu:
-    $ui = '<div title="'.$target_i__hashtag.'/'.$focus_i__hashtag.'/'.$i['i__hashtag'].'/'.intval($focus_i__or_node).'" i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $is_locked ? ' is_undiscovered ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+    $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $is_locked ? ' is_locked ' : '' ).( $focus_i__or_node ? ' focus_i__or_node ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
     if($discovery_mode && $x__player && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
-
-
     }
 
     $ui .= '<div class="cover-content">';
@@ -2059,14 +2057,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==41037 && !$is_locked && !$focus__node && ($access_level_i>=3 || $discovery_mode)){
+            } elseif($x__type_target_bar==41037 && !$focus__node && ($focus_i__or_node || (!$is_locked && $access_level_i>=3))){
 
                 //Selector
-                $bottom_bar_ui .= '<span>';
-                $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['i__id'], $x__id);
-                $bottom_bar_ui .= '</span>';
+                $bottom_bar_ui .= '<span class="this_selector"><i class="far fa-square fa-sharp"></i></span>';
 
-            } elseif($x__type_target_bar==43010 && $is_locked){
+            } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or_node){
 
                 /*
 

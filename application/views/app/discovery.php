@@ -70,7 +70,7 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
                         $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_undiscovered main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'" title="'.$e___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>'.view_i_title($i_subset).'</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked main__title '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'" title="'.$e___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>'.view_i_title($i_subset).'</div>';
                     }
 
                 }
