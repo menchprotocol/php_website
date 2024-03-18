@@ -1616,6 +1616,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $ui .= '</div>';
 
 
+    if($focus_i__or_node){
+        $ui .= '<div class="this_selector"><span class="icon-block-sm"><i class="far fa-square fa-sharp"></i></span></div>';
+    }
+
     //Idea Message (Remaining)
     $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus__node, $focus__node).'</div>';
 
@@ -2057,10 +2061,9 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif($x__type_target_bar==41037 && $focus_i__or_node){
+            } elseif(0 && $x__type_target_bar==41037 && $focus_i__or_node){
 
                 //Selector
-                $bottom_bar_ui .= '<span class="this_selector"><span class="icon-block-sm"><i class="far fa-square fa-sharp"></i></span></span>';
 
             } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or_node){
 

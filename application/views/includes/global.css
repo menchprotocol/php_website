@@ -1601,6 +1601,9 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 .btn .dropdown-item .icon-block {
     height: 13px;
 }
+.this_selector{
+    margin: 0 0 -34px -34px;
+}
 .popover-body .icon-block-xs{
     width:16px !important;
     height:16px !important;
