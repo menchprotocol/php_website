@@ -1912,6 +1912,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     margin:5px 0;
     color: #000000;
 }
+
+.focus_i__or_node,
 .share-this .icon-block{
     cursor: pointer;
 }
