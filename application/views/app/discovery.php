@@ -137,6 +137,7 @@ echo view_i_nav(true, $focus_i);
     $(document).ready(function () {
 
         $(".focus_i__or_node").click(function (e) {
+            console.log('WOW:');
             console.log('WOW:'+$(this).attr('x__id'));
             if($('.this_selector_'+$(this).attr('x__id')+' i').hasClass('fa-square-check')){
                 //Already selected, so unselect:
