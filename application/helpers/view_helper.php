@@ -1566,6 +1566,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
 
+    if($focus_i__or_node){
+        $ui .= '<div class="this_selector"><span class="icon-block-sm"><i class="far fa-square fa-sharp"></i></span></div>';
+    }
+
     $ui .= '<div class="cover-content">';
     $ui .= '<div class="inner-content">';
     $ui .= '<div class="cover-text">';
@@ -1616,9 +1620,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $ui .= '</div>';
 
 
-    if($focus_i__or_node){
-        $ui .= '<div class="this_selector"><span class="icon-block-sm"><i class="far fa-square fa-sharp"></i></span></div>';
-    }
 
     //Idea Message (Remaining)
     $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus__node, $focus__node).'</div>';
