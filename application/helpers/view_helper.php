@@ -1488,6 +1488,9 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $player_e = superpower_unlocked();
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
     $i_startable = i_startable($i);
+    $x__player = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
+    $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
+
 
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );
@@ -1505,14 +1508,24 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $focus_i__hashtag = false;
     }
 
-    $focus_i__or_node = ($discovery_mode && $focus_i__hashtag && !$focus__node && count($CI->I_model->fetch(array(
+    $focus_i__or = false;
+    if($discovery_mode && $focus_i__hashtag && !$focus__node && $x__player){
+        foreach($CI->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__type IN (' . join(',', $CI->config->item('n___7712')) . ')' => null, //Input Choice
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        ))));
+        )) as $focus_i){
+            $focus_i__or = $focus_i;
+        }
+    }
+    $focus_i__selected = $focus_i__or && count($CI->X_model->fetch(array(
+        'x__type' => 12336, //Link Selection
+        'x__player' => $x__player,
+        'x__previous' => $focus_i__or['i__id'],
+        'x__next' => $i['i__id'],
+    )));
 
-    $x__player = ( $x__id && isset($i['x__player']) ? $i['x__player'] : ( $focus_e && $focus_e['e__id'] ? $focus_e['e__id'] : ( $player_e && $player_e['e__id'] ? $player_e['e__id'] : 0 ) ) );
-    $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
+
 
     if(!$focus_e){
         $focus_e = $player_e;
@@ -1560,13 +1573,13 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $focus_i__or_node ? ' focus_i__or_node ' : ( $is_locked ? ' is_locked ' : '' ) ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $focus_i__or ? ' focus_i__or_node ' : ( $is_locked ? ' is_locked ' : '' ) ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
     if($discovery_mode && $x__player && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
-    if($focus_i__or_node){
-        $ui .= '<div class="this_selector this_selector_'.$x__id.'" x__id="'.$x__id.'"><span class="icon-block-sm"><i class="far fa-square fa-sharp"></i></span></div>';
+    if($focus_i__or){
+        $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( $focus_i__selected ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
     }
 
     $ui .= '<div class="cover-content">';
@@ -2061,11 +2074,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
                 $bottom_bar_ui .= '</div></span>';
 
-            } elseif(0 && $x__type_target_bar==41037 && $focus_i__or_node){
+            } elseif(0 && $x__type_target_bar==41037 && $focus_i__or){
 
                 //Selector
 
-            } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or_node){
+            } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or){
 
                 /*
 

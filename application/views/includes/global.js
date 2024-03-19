@@ -859,7 +859,7 @@ function load_card_clickers(){
         }
     });
 
-    if(focus_i__type){
+    if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
         var is_single_choice = ( focus_i__type==6684 );
         $(".focus_i__or_node").unbind();
         $(".focus_i__or_node").click(function (e) {
