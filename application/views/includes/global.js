@@ -863,18 +863,18 @@ function load_card_clickers(){
         var is_single_choice = ( focus_i__type==6684 );
         $(".focus_i__or_node").unbind();
         $(".focus_i__or_node").click(function (e) {
-            if($('.this_selector_'+$(this).attr('selection_i__id')+' i').hasClass('fa-square-check')){
+            if($('.this_selector_'+$(this).attr('i__id')+' i').hasClass('fa-square-check')){
                 //Already selected, so unselect:
-                $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
+                $('.this_selector_'+$(this).attr('i__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
             } else {
                 //Not selected, so Select now:
                 if(is_single_choice){
                     //Unselect the previously selected:
-                    $('.this_selector:not(.this_selector_'+$(this).attr('selection_i__id')+') i.fa-square-check').each(function () {
+                    $('.this_selector:not(.this_selector_'+$(this).attr('i__id')+') i.fa-square-check').each(function () {
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
                     });
                 }
-                $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
+                $('.this_selector_'+$(this).attr('i__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
             }
         });
     }
