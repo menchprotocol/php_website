@@ -2078,22 +2078,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 //Selector
 
-            } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or){
-
-                /*
-
-                count($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__privacy IN (' . join(',', $CI->config->item('n___42948')) . ')' => null, //Public Ideas
-                    'x__type IN (' . join(',', $CI->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                    'x__previous' => $i['i__id'],
-                ), array('x__next')))
-
-                 * */
-
-                //Locked
-                $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>';
-
             } elseif($x__type_target_bar==4235 && !$discovery_mode && $i_startable && $access_level_i>=1){
 
                 //Start
@@ -2274,7 +2258,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
         if($bottom_bar_ui){
-            $ui .= '<div class="'.( $focus__node && $discovery_mode ? ' container fixed-bottom ' : '' ).'">';
+            $ui .= '<div class="'.( $focus__node && $discovery_mode ? ' container fixed-bottom hidden ' : '' ).'">';
             $ui .= '<div class="card_covers">';
             $ui .= $bottom_bar_ui;
             $ui .= '</div>';

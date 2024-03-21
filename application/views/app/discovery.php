@@ -138,6 +138,16 @@ echo view_i_nav(true, $focus_i);
 
     $(document).ready(function () {
 
+        $(function () {
+            var $win = $(window);
+            $win.scroll(function () {
+                //Download loading from bottom:
+                if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 144) {
+                    $(".fixed-bottom").removeClass('hidden');
+                }
+            });
+        });
+
         show_more(<?= $focus_i['i__id'] ?>);
 
         //Auto next a single answer:
