@@ -1483,13 +1483,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $cache_app = in_array($x__type, $CI->config->item('n___14599'));
     $goto_start = in_array($x__type, $CI->config->item('n___42988'));
     $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
-    $superpower_10939 = superpower_unlocked(10939);
-
     $player_e = superpower_unlocked();
+    $superpower_10939 = superpower_unlocked(10939);
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
     $i_startable = i_startable($i);
     $x__player = ( $player_e ? $player_e['e__id'] : 0 );
-    $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
+    $link_creator = isset($i['x__player']) && $i['x__player']==$x__player;
 
 
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
@@ -1509,7 +1508,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     $focus_i__or = false;
-    if($discovery_mode && $focus_i__hashtag && !$focus__node && $x__player){
+    if($discovery_mode && $focus_i__hashtag && !$focus__node && $player_e){
         foreach($CI->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__type IN (' . join(',', $CI->config->item('n___7712')) . ')' => null, //Input Choice
@@ -1537,7 +1536,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     $has_discovered = false;
-    if(!$cache_app && $x__player){
+    if(!$cache_app && $player_e){
         $discoveries = $CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -1575,7 +1574,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $ui = '<div i__id="'.$i['i__id'].'" title="'.( $has_discovered ? $has_discovered.'/'.$discoveries[0]['x__id']  : '0' ).'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
      ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $focus_i__or ? ' focus_i__or_node ' : ( $is_locked ? ' is_locked ' : '' ) ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
-    if($discovery_mode && $x__player && $focus__node){
+    if($discovery_mode && $player_e && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
     if($focus_i__or){
