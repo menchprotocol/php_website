@@ -140,13 +140,15 @@ echo view_i_nav(true, $focus_i);
 
 
         var $win = $(window);
-        if ((parseInt($("body").height())-144) <= parseInt($win.height())) {
+        if ((parseInt($("body").height())+89) <= parseInt($win.height())) {
+            console.log('step1');
             $(".fixed-bottom").removeClass('hidden');
         } else {
             $(function () {
                 $win.scroll(function () {
                     //Download loading from bottom:
                     if (parseInt($(document).height() - ($win.height() + $win.scrollTop())) < 144) {
+                        console.log('step2');
                         $(".fixed-bottom").removeClass('hidden');
                     }
                 });
