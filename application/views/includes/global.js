@@ -453,6 +453,7 @@ function set_hashtag_if_empty(x__type_hash){
 }
 
 
+var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
 function toggle_pills(x__type_hash){
@@ -461,8 +462,11 @@ function toggle_pills(x__type_hash){
         return false;
     } else if(pills_loading && !loaded_pills.includes(x__type_hash)){
         return false;
+    } else if (loading_in_progress){
+        return false;
     }
 
+    loading_in_progress = true;
 
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
         x__type = parseInt($('.handle_nav_'+x__type_hash).attr('x__type'));
@@ -584,12 +588,17 @@ function toggle_pills(x__type_hash){
 
                 }, 233);
 
+                loading_in_progress = false;
+
             });
 
+        } else {
+            loading_in_progress = false;
         }
 
+    } else {
+        loading_in_progress = false;
     }
-
 }
 
 
