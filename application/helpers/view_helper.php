@@ -1551,7 +1551,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
 
-    $is_locked = ($discovery_mode && $x__player && !$has_discovered && !$focus__node);
+    $is_locked = ($discovery_mode && !$focus__node); // && !$has_discovered
 
 
     if(($goto_start || !$superpower_10939) && $i_startable){
