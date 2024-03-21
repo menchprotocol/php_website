@@ -1626,7 +1626,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     //Link Message if any:
     if($x__id){
-        $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . ( in_array($i['x__type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '" style="padding-left:34px;">'.htmlentities($i['x__message']).'</div>';
+        $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . ( in_array($i['x__type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '" style="padding-left:40px;">'.htmlentities($i['x__message']).'</div>';
     }
 
     $ui .= '</div>';
