@@ -434,8 +434,10 @@ window.onpopstate = function(event) {
     load_hashtag_menu();
 };
 
-function load_hashtag_menu(){
-    if(document.location.hash){
+function load_hashtag_menu(load_hashtag = null){
+    if(load_hashtag){
+        toggle_pills(load_hashtag);
+    } else if(document.location.hash){
         var hashtag = document.location.hash.substr(1);
         if(hashtag && hashtag.length>0){
             toggle_pills(hashtag);
@@ -995,8 +997,6 @@ $(document).ready(function () {
     });
 
     activate_popover();
-
-    load_hashtag_menu();
 
     activate_cover_watch();
 

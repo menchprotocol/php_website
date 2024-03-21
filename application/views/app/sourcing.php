@@ -86,3 +86,8 @@ if(!$focus_tab){
 
 ?>
 
+<script>
+    $(document).ready(function () {
+        load_hashtag_menu();
+    });
+</script>

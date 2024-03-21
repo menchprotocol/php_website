@@ -12,6 +12,7 @@ echo view_i_nav(false, $focus_i);
 
 <script>
     $(document).ready(function () {
+        load_hashtag_menu();
         show_more(<?= $focus_i['i__id'] ?>);
     });
 </script>

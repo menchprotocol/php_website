@@ -139,6 +139,8 @@ echo view_i_nav(true, $focus_i);
     $(document).ready(function () {
 
 
+        load_hashtag_menu('Next');
+
         var $win = $(window);
         if ((parseFloat($("body").height())+89) < parseFloat($win.height())) {
             console.log('step1/'+$("body").height()+'/'+$win.height());
