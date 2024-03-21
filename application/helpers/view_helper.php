@@ -1488,7 +1488,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $player_e = superpower_unlocked();
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i);
     $i_startable = i_startable($i);
-    $x__player = ( $player_e ? $player_e['e__id'] : ( $focus_e ? $focus_e['e__id'] : 0 ) );
+    $x__player = ( $player_e ? $player_e['e__id'] : 0 );
     $link_creator = isset($i['x__player']) && $i['x__player']==$player_e['e__id'];
 
 
