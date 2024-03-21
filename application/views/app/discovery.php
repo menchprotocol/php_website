@@ -140,7 +140,7 @@ echo view_i_nav(true, $focus_i);
 
 
         var $win = $(window);
-        if ((parseFloat($("body").height())+89) > parseFloat($win.height())) {
+        if ((parseFloat($("body").height())+89) < parseFloat($win.height())) {
             console.log('step1/'+$("body").height()+'/'+$win.height());
             $(".fixed-bottom").removeClass('hidden');
         } else {
