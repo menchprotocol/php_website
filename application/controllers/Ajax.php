@@ -2836,17 +2836,32 @@ class Ajax extends CI_Controller
 
     function go_next(){
 
-        $_POST['hi'] = 'bye';
-        return view_json(object_to_array($_POST));
 
         $player_e = superpower_unlocked(null, 0, $this->player_e);
-
-        if (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+        if(!$player_e){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Missing idea ID.',
+                'message' => 'Must Be Logged In to Continue',
+            ));
+        } elseif (!isset($_POST['target_i__hashtag']) || !isset($_POST['target_i__id']) || !isset($_POST['focus_i_data']) || !isset($_POST['do_skip']) || !isset($_POST['next_i_data'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Core Data',
             ));
         }
+
+        echo '2'.$_POST['focus_i_data']['i__id'];
+        echo '1'.$_POST['focus_i_data'].i__id;
+
+        die();
+
+        $pinned_down = $this->config->item('pinned_down');
+
+
+        //Discover Focus Idea:
+        $this->X_model->mark_complete($pinned_down[][], $player_e['e__id'], $_POST['target_i__id'], $is[0], array(
+            'x__weight' => $_POST['i__quantity'],
+        ));
 
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(

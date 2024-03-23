@@ -162,7 +162,6 @@ $memory_text .= ');'."\n";
 
 $memory_text .= "\n"."\n";
 $memory_text .= '$config[\'cache_time\'] = \''.time().'\';'."\n";
-$memory_text .= '$config[\'cache_buster\'] = \''.md5($memory_text).'\';'."\n";
 
 $save_time = date("Y-m-d H:i:s");
 

@@ -119,7 +119,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo view_memory(6404,4523);
     ?>
 
-    <link href="/application/views/includes/global.css?cache_buster=<?= $this->config->item('cache_buster') ?>" rel="stylesheet">
+    <link href="/application/views/includes/global.css?cache_time=<?= $this->config->item('cache_time') ?>" rel="stylesheet">
 
     <script type="module">
 
@@ -154,7 +154,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/fbf7f3ae67.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
-    <script src="/application/views/includes/global.js?cache_buster=<?= $this->config->item('cache_buster') ?>"></script>
+    <script src="/application/views/includes/global.js?cache_time=<?= $this->config->item('cache_time') ?>"></script>
 
     <?php
 
