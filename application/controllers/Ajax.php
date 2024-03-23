@@ -2819,7 +2819,7 @@ class Ajax extends CI_Controller
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__follower'), 0, 0, array()) as $x) {
+            ), array('x__follower'), 0, 0) as $x) {
                 $this->X_model->update($x['x__id'], array(
                     'x__weight' => 0,
                 ), $player_e['e__id'], 13007 /* SOURCE SORT RESET */);
@@ -2850,18 +2850,21 @@ class Ajax extends CI_Controller
             ));
         }
 
-        echo '2'.$_POST['focus_i_data']['i__id'];
-        echo '1'.$_POST['focus_i_data'].i__id;
 
-        die();
-
-        $pinned_down = $this->config->item('pinned_down');
 
 
         //Discover Focus Idea:
-        $this->X_model->mark_complete($pinned_down[][], $player_e['e__id'], $_POST['target_i__id'], $is[0], array(
-            'x__weight' => $_POST['i__quantity'],
-        ));
+        $pinned_down = $this->config->item('pinned_down');
+        foreach($this->I_model->fetch(array(
+            'i__id' => $_POST['focus_i_data']['i__id'],
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        )) as $focus_i){
+            $this->X_model->mark_complete($pinned_down[$focus_i['i__type']][0], $player_e['e__id'], $_POST['target_i__id'], $focus_i, $_POST['focus_i_data'], array(
+                'x__weight' => $_POST['focus_i_data']['i__quantity'],
+            ));
+        }
+
+
 
         //Validate/Fetch idea:
         $is = $this->I_model->fetch(array(
@@ -2906,7 +2909,7 @@ class Ajax extends CI_Controller
             'x__previous' => $is[0]['i__id'],
         )))){
             //Free Ticket:
-            $this->X_model->mark_complete(42332, $player_e['e__id'], $_POST['target_i__id'], $is[0], array(
+            $this->X_model->mark_complete(42332, $player_e['e__id'], $_POST['target_i__id'], $is[0], array(), array(
                 'x__weight' => $_POST['i__quantity'],
             ));
         }
@@ -2963,7 +2966,7 @@ class Ajax extends CI_Controller
         )) as $focus_i){
 
             //Mark as complete:
-            $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $focus_i);
+            $this->X_model->mark_complete($pinned_down[$focus_i['i__type']][0], $player_e['e__id'], $_POST['target_i__id'], $focus_i);
 
             $next_hashtag = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
 
@@ -3063,7 +3066,7 @@ class Ajax extends CI_Controller
                 'x__following' => 28239, //Required
             )))){
                 //Log Skip:
-                $this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['target_i__id']), $is[0], array(
+                $this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['target_i__id']), $is[0], array(), array(
                     'x__message' => $_POST['x_write'],
                 ));
                 //All good:
@@ -3232,7 +3235,7 @@ class Ajax extends CI_Controller
         }
 
         //Save new answer:
-        $this->X_model->mark_complete($x__type, $player_e['e__id'], intval($_POST['target_i__id']), $is[0], array(
+        $this->X_model->mark_complete($x__type, $player_e['e__id'], intval($_POST['target_i__id']), $is[0], array(), array(
             'x__message' => $_POST['x_write'],
         ));
 

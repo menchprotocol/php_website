@@ -148,6 +148,7 @@ class App extends CI_Controller
         //Run App
         $player_e = false;
         $player_http_request = isset($_SERVER['SERVER_NAME']);
+        $pinned_down = $this->config->item('pinned_down');
 
         if($memory_detected && in_array($app_e__id, $this->config->item('n___42920'))){
             boost_power();
@@ -164,7 +165,7 @@ class App extends CI_Controller
                 //Validate Hash:
                 if($_GET['e__hash'] == view__hash($_GET['e__time'].$focus_e['e__handle'])){
 
-                    $this->X_model->x_read_only_complete($focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
+                    $this->X_model->mark_complete($pinned_down[$focus_i['i__type']][0], $focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
                     $this->X_model->mark_complete(29393, $focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
 
                     //Inform user of changes:
@@ -355,7 +356,7 @@ class App extends CI_Controller
                 ));
 
                 //Mark as complete:
-                $this->X_model->x_read_only_complete($player_e['e__id'], $target_i['i__id'], $target_i);
+                $this->X_model->mark_complete($pinned_down[$target_i['i__type']][0], $player_e['e__id'], $target_i['i__id'], $target_i);
 
                 //Now return next idea:
                 $next_i__hashtag = $this->X_model->find_next($player_e['e__id'], $target_i['i__hashtag'], $target_i);

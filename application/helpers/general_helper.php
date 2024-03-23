@@ -1499,7 +1499,8 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             foreach ($CI->I_model->fetch(array(
                 'i__id' => $x_data['x__previous'],
             )) as $email_i) {
-                $CI->X_model->x_read_only_complete($e__id, $x_data['x__next'], $email_i, $x_data);
+                $pinned_down = $CI->config->item('pinned_down');
+                $CI->X_model->mark_complete($pinned_down[$email_i['i__type']][0], $e__id, $x_data['x__next'], $email_i, $x_data);
             }
         }
 

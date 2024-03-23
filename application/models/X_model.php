@@ -1081,37 +1081,7 @@ class X_model extends CI_Model
 
 
 
-
-    function x_read_only_complete($x__player, $target_i__id, $i, $x_data = array()){
-
-        //Try to auto complete:
-        $x__type = 0;
-        if (in_array($i['i__type'], $this->config->item('n___34826'))) {
-            if ($i['i__type'] == 6677) {
-                //Statement
-                $x__type = 4559;
-            } elseif ($i['i__type'] == 30874) {
-                //Event
-                $x__type = 31810;
-            } elseif ($i['i__type'] == 42392) {
-                //Position
-                $x__type = 42402;
-            } elseif ($i['i__type'] == 42394) {
-                //Task
-                $x__type = 42397;
-            }
-        }
-
-        if($x__type > 0){
-            return $this->X_model->mark_complete($x__type, $x__player, $target_i__id, $i, $x_data);
-        } else {
-            return false;
-        }
-
-    }
-
-
-    function mark_complete($x__type, $x__player, $target_i__id = 0, $i, $x_data = array()) {
+    function mark_complete($x__type, $x__player, $target_i__id = 0, $i, $focus_i_data = array(), $x_data = array()) {
 
         if(!in_array($x__type, $this->config->item('n___31777'))){
             $this->X_model->create(array(
@@ -1126,8 +1096,21 @@ class X_model extends CI_Model
             ));
         }
 
-        $player_e = superpower_unlocked();
-        $x_data['x__player'] = ( $x__player ? $x__player : $player_e['e__id'] );
+        if(!$x__player){
+            $player_e = superpower_unlocked();
+            $x__player = $player_e['e__id'];
+        }
+
+        //Do we need to save text/upload ?
+        if(isset($focus_i_data['i__text']) && strlen($focus_i_data['i__text'])){
+
+        }
+
+        if(isset($focus_i_data['i__uploads']) && strlen($focus_i_data['i__uploads'])){
+
+        }
+
+        $x_data['x__player'] = $x__player;
         $x_data['x__type'] = $x__type;
         $x_data['x__previous'] = $i['i__id'];
 
@@ -1161,6 +1144,7 @@ class X_model extends CI_Model
         //Add new transaction:
         $domain_url = get_domain('m__message', $x__player);
         $new_x = $this->X_model->create($x_data);
+        $pinned_down = $this->config->item('pinned_down');
 
 
         //Auto Complete OR Answers:
@@ -1172,7 +1156,7 @@ class X_model extends CI_Model
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 0) as $next_i){
                 //Mark as complete:
-                $this->X_model->x_read_only_complete($x_data['x__player'], $target_i__id, $next_i, $x_data);
+                $this->X_model->mark_complete($pinned_down[$next_i['i__type']][0], $x_data['x__player'], $target_i__id, $next_i, $x_data);
             }
         }
 
