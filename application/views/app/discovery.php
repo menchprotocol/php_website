@@ -10,13 +10,6 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 
 $x__player = ( $player_e ? $player_e['e__id'] : 0 );
 $target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
-$can_skip = !count($this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-    'x__next' => $focus_i['i__id'],
-    'x__following' => 28239, //Required
-)));
-
 
 
 
@@ -132,15 +125,16 @@ echo view_i_nav(true, $focus_i);
 <script>
 
     var focus_i__type = <?= $focus_i['i__type'] ?>;
-    var selection_min = <?= $focus_i['i__type'] ?>;
-    var selection_max = <?= $focus_i['i__type'] ?>;
-    var can_skip = <?= intval($can_skip) ?>;
 
     $(document).ready(function () {
 
-
         load_hashtag_menu('Next');
 
+        set_autosize($('.x_write'));
+
+        show_more(<?= $focus_i['i__id'] ?>);
+
+        //Make Navigation visible only when the user scrolls to the bottom or the bottom is visible from the start:
         var $win = $(window);
         if ((parseFloat($("body").height())+89) < parseFloat($win.height())) {
             console.log('step1/'+$("body").height()+'/'+$win.height());
@@ -156,27 +150,6 @@ echo view_i_nav(true, $focus_i);
                 });
             });
         }
-
-
-
-        show_more(<?= $focus_i['i__id'] ?>);
-
-        //Auto next a single answer:
-        if(!can_skip && js_n___7712.includes(parseInt($('.list-answers').attr('i__type')))){
-            //It is, see if it has only 1 option:
-            var single_id = 0;
-            var answer_count = 0;
-            $(".answer-item").each(function () {
-                single_id = parseInt($(this).attr('selection_i__id'));
-                answer_count++;
-            });
-            if(answer_count==1){
-                //Only 1 option, select and go next only if the user cannot skip:
-                select_answer(single_id);
-            }
-        }
-
-        set_autosize($('.x_write'));
 
     });
 

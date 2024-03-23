@@ -432,33 +432,6 @@ function i_view_body($x__type, $counter, $i__id){
 
 }
 
-function view_sign($i, $previous_response = null){
-
-    $CI =& get_instance();
-    $player_e = superpower_unlocked();
-    $e___4737 = $CI->config->item('e___4737'); //Idea Status
-
-    //Sign Agreement
-    $message_ui = '';
-    $message_ui .= '<h3 style="margin-top: 34px;">' . $e___4737[$i['i__type']]['m__title'] . '</h3>';
-    if(strlen($e___4737[$i['i__type']]['m__message'])){
-        $message_ui .= '<p>' . $e___4737[$i['i__type']]['m__message'] . ':</p>';
-    }
-
-    $message_ui .= '<input type="text" class="border dotted-borders custom_ui_14506_34281 main__title itemsetting x_write" value="'.$previous_response.'" placeholder="" name="x_write" style="width:289px !important; font-size: 2.1em !important;" />';
-
-    //Signature agreement:
-    $message_ui .= '<div class="form-check">
-  <input class="form-check-input" type="checkbox" value="1" id="DigitalSignAgreement" name="DigitalSignAgreement">
-  <label class="form-check-label" for="DigitalSignAgreement">
-    I agree to be legally bound by this document & our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Service</u></a>.
-  </label>
-</div><br />';
-
-    return $message_ui;
-
-}
-
 function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true){
 
     /*
@@ -1665,12 +1638,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         ), array('x__next'));
 
 
-
-        if ($i['i__type']==32603) {
-
-            $input_ui .= view_sign($i);
-
-        } elseif (in_array($i['i__type'], $CI->config->item('n___41055'))) {
+        //Any inputs for this idea?
+        if (in_array($i['i__type'], $CI->config->item('n___41055'))) {
 
             //PAYMENT TICKET
             if(isset($_GET['cancel_pay']) && !count($x_completes)){
@@ -1708,7 +1677,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 }
 
                 $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$x__metadata['mc_gross'].'">';
-                $input_ui .= '<input type="hidden" class="paypal_quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
+                $input_ui .= '<input type="hidden" class="i__quantity" name="quantity" value="'.$x__metadata['quantity'].'">'; //Dynamic Variable that JS will update
 
             } else {
 
@@ -1828,7 +1797,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $input_ui .= '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
 
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$unit_fee.'">';
-                    $input_ui .= '<input type="hidden" class="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" class="i__quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
                     $input_ui .= '<input type="hidden" name="item_name" value="'.view_i_title($i, true).'">';
                     $input_ui .= '<input type="hidden" name="item_number" value="'.( $target_i__hashtag ? '#'.$target_i__hashtag : '' ).'#'.$i['i__hashtag'].'@'.$player_e['e__handle'].'@'.get_domain('m__handle').'">';
 
@@ -1849,14 +1818,14 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     //FREE TICKET
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$unit_fee.'">';
-                    $input_ui .= '<input type="hidden" class="paypal_quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
+                    $input_ui .= '<input type="hidden" class="i__quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
 
                 }
             }
 
         } elseif (in_array($i['i__type'], $CI->config->item('n___33532'))) {
 
-            //Find the created ide:
+            //Find the created idea if any:
             $x_ideations = $CI->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -1868,21 +1837,13 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             $previous_response = ( isset($x_ideations[0]['x__message']) ? $x_ideations[0]['x__message'] : '' );
 
             if (in_array($i['i__type'], $CI->config->item('n___43002'))) {
+
                 //Textarea
                 $e___6201 = $CI->config->item('e___6201'); //IDEA Cache
                 $input_ui .= '<textarea class="border dotted-borders x_write algolia_finder algolia__i algolia__e" placeholder="'.( strlen($e___6201[4736]['m__message']) ? $e___6201[4736]['m__message'] : $e___6201[4736]['m__title'].'...' ).'">' . $previous_response . '</textarea>';
                 $input_ui .= '<script> $(document).ready(function () { set_autosize($(\'.x_write\')); }); </script>';
-            }
-            if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
-                //Uploader
-                $input_ui .= '<div class="media_outer_frame hideIfEmpty">
-                        <div id="media_frame_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
-                        <div class="doclear">&nbsp;</div>
-                    </div>';
-                $input_ui .= '<div style="padding:5px 0 2px 0;"><div class="btn btn-sm inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
-                $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['i__id'].', [\'#'.$i['i__id'].'\'], \'.inner_uploader_'.$i['i__id'].'\'); }); </script>';
-            }
-            if (in_array($i['i__type'], $CI->config->item('n___43003'))) {
+
+            } elseif (in_array($i['i__type'], $CI->config->item('n___43003'))) {
 
                 //Input
                 if($i['i__type']==31794){
@@ -1955,6 +1916,16 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 $input_ui .= '<input type="'.$input_type.'" '.$input_attributes.' class="border dotted-borders x_write" placeholder="'.$placeholder.'" value="'.$previous_response.'" />';
 
+            }
+
+            //Uploader
+            if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
+                $input_ui .= '<div class="media_outer_frame hideIfEmpty">
+                        <div id="media_frame_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
+                        <div class="doclear">&nbsp;</div>
+                    </div>';
+                $input_ui .= '<div style="padding:5px 0 2px 0;"><div class="btn btn-sm inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
+                $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['i__id'].', [\'#'.$i['i__id'].'\'], \'.inner_uploader_'.$i['i__id'].'\'); }); </script>';
             }
 
         }
@@ -2106,7 +2077,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $e___6255 = $CI->config->item('e___6255');
                 $i__discovery_link = i__discovery_link($i);
                 $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[$i__discovery_link] );
-                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next()" class="btn btn-sm post_button"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
+                $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2121,7 +2092,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 )))){
 
                 //Skip
-                $bottom_bar_ui .= '<span class="mini_button"><a href="javascript:void(0);" onclick="x_skip()" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+                $bottom_bar_ui .= '<span class="mini_button"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
             } elseif($x__type_target_bar==31911 && $access_level_i>=3 && !$discovery_mode){
 

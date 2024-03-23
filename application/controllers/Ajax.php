@@ -2834,95 +2834,11 @@ class Ajax extends CI_Controller
     }
 
 
-    function x_read_only_complete(){
+    function go_next(){
 
-        //Validate/Fetch idea:
+        die('hiii');
+
         $player_e = superpower_unlocked(null, 0, $this->player_e);
-
-        if (!$player_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea ID.',
-            ));
-        } elseif (!isset($_POST['target_i__id']) || !isset($_POST['target_i__hashtag'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top idea ID.',
-            ));
-        }
-
-        foreach($this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-        )) as $focus_i){
-
-            //Mark as complete:
-            $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $focus_i);
-
-            $next_hashtag = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
-
-            //All good:
-            return view_json(array(
-                'status' => 1,
-                'message' => 'Saved & Next',
-                'go_next_url' => ( $next_hashtag ? '/'.$_POST['target_i__hashtag'].'/'.$next_hashtag : null ),
-            ));
-
-        }
-
-
-
-
-        return view_json(array(
-            'status' => 0,
-            'message' => 'Idea not published.',
-        ));
-
-    }
-
-    function x_skip(){
-
-
-        //Validate/Fetch idea:
-        $player_e = superpower_unlocked(null, 0, $this->player_e);
-        if (!$player_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea ID.',
-            ));
-        } elseif (!isset($_POST['target_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top idea ID.',
-            ));
-        }
-
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-
-        //Log Skipped:
-        $this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['target_i__id']), $is[0]);
-
-        //All good:
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Skipped & Next',
-        ));
-
-    }
-
-    function x_free_ticket(){
 
         if (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
             return view_json(array(
@@ -2948,7 +2864,7 @@ class Ajax extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing Top idea ID.',
             ));
-        } elseif (!isset($_POST['paypal_quantity'])) {
+        } elseif (!isset($_POST['i__quantity'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Count.',
@@ -2975,7 +2891,7 @@ class Ajax extends CI_Controller
         )))){
             //Free Ticket:
             $this->X_model->mark_complete(42332, $player_e['e__id'], $_POST['target_i__id'], $is[0], array(
-                'x__weight' => $_POST['paypal_quantity'],
+                'x__weight' => $_POST['i__quantity'],
             ));
         }
 
@@ -2986,7 +2902,73 @@ class Ajax extends CI_Controller
             'message' => 'Saved & Next',
         ));
 
+
+
+
+        //Validate input:
+        if(!isset($_POST['target_i__id']) || !isset($_POST['focus__id'])){
+            die('missing core data');
+        }
+
+
+        //Log Skipped:
+        //$this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['target_i__id']), $is[0]);
+
+        //Log Selection:
+
+
+        return view_json($this->X_model->x_select($_POST['target_i__id'], $_POST['focus__id'], ( !isset($_POST['selection_i__id']) || !count($_POST['selection_i__id']) ? array() : $_POST['selection_i__id'] )));
+
+
+
+
+
+        if (!$player_e) {
+            return view_json(array(
+                'status' => 0,
+                'message' => view_unauthorized_message(),
+            ));
+        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing idea ID.',
+            ));
+        } elseif (!isset($_POST['target_i__id']) || !isset($_POST['target_i__hashtag'])) {
+            return view_json(array(
+                'status' => 0,
+                'message' => 'Missing Top idea ID.',
+            ));
+        }
+
+
+
+        foreach($this->I_model->fetch(array(
+            'i__id' => $_POST['i__id'],
+        )) as $focus_i){
+
+            //Mark as complete:
+            $this->X_model->x_read_only_complete($player_e['e__id'], $_POST['target_i__id'], $focus_i);
+
+            $next_hashtag = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
+
+            //All good:
+            return view_json(array(
+                'status' => 1,
+                'message' => 'Saved',
+            ));
+
+        }
+
+
+
+
+        return view_json(array(
+            'status' => 0,
+            'message' => 'Idea not published.',
+        ));
+
     }
+
 
     function x_write(){
 
@@ -3168,22 +3150,6 @@ class Ajax extends CI_Controller
 
             $x__type = 6144; //Text Replied
 
-        } elseif ($is[0]['i__type']==32603) {
-
-            $x__type = 33614; //Agreement Signed
-
-            if(strlen($_POST['x_write'])<5) {
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Legal Name is too short',
-                ));
-            } elseif(!substr_count($_POST['x_write'], ' ')){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'You must enter both your first name & last name!',
-                ));
-            }
-
         } else {
 
             //Unknown type!
@@ -3305,16 +3271,6 @@ class Ajax extends CI_Controller
         } else {
             return view_json($this->X_model->x_update_instant_select($_POST['focus__id'],$_POST['o__id'],$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['x__id']));
         }
-
-    }
-
-    function x_select(){
-
-        if(!isset($_POST['target_i__id']) || !isset($_POST['focus__id'])){
-            die('missing core data');
-        }
-
-        return view_json($this->X_model->x_select($_POST['target_i__id'], $_POST['focus__id'], ( !isset($_POST['selection_i__id']) || !count($_POST['selection_i__id']) ? array() : $_POST['selection_i__id'] )));
 
     }
 

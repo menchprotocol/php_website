@@ -1096,9 +1096,6 @@ class X_model extends CI_Model
             } elseif ($i['i__type'] == 42392) {
                 //Position
                 $x__type = 42402;
-            } elseif ($i['i__type'] == 32603) {
-                //Agreement
-                $x__type = 33614;
             } elseif ($i['i__type'] == 42394) {
                 //Task
                 $x__type = 42397;

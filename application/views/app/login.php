@@ -123,7 +123,7 @@ if(superpower_unlocked()) {
         });
 
 
-        var go_next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
+        var next_icon = '<?= $e___11035[26104]['m__cover'] ?>';
         var sign_i__id = <?= ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ) ?>;
         var referrer_url = '<?= @$_GET['url'] ?>';
         var logged_messenger = false;
@@ -187,7 +187,7 @@ if(superpower_unlocked()) {
 
                 //Release field lock:
                 verifying_contact = false;
-                $('#email_check_next').html(go_next_icon);
+                $('#email_check_next').html(next_icon);
                 $('#account_email_phone').prop('disabled', false);
 
                 if (data.status) {
@@ -262,7 +262,7 @@ if(superpower_unlocked()) {
 
                     //Release field lock:
                     code_checking = false;
-                    $('#code_check_next').html(go_next_icon);
+                    $('#code_check_next').html(next_icon);
                     $('#input_code').prop('disabled', false).focus();
                     $('#sign_code_errors').html('<b class="main__title"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' + data.message + '</b>').hide().fadeIn();
 
