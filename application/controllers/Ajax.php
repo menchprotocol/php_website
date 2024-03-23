@@ -2836,8 +2836,7 @@ class Ajax extends CI_Controller
 
     function go_next(){
 
-        $nice = (array) $_POST;
-        return view_json($nice);
+        return view_json(object_to_array($_POST));
 
         $player_e = superpower_unlocked(null, 0, $this->player_e);
 
