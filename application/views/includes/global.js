@@ -3294,7 +3294,7 @@ function go_next(do_skip){
     }
 
     //Compile all next ideas, if any:
-    var next_i_data = {}; //Aggregate the data for all children
+    var next_i_data = []; //Aggregate the data for all children
     $("#list-in-12840 .edge-cover").each(function () {
         next_i_data.push({
             i__id: parseInt($(this).attr('i__id')),
