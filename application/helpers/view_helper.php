@@ -2079,17 +2079,20 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[$i__discovery_link] );
                 $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
 
-            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
+            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
                     'x__following' => 28239, //Required
-                ))) && !count($CI->X_model->fetch(array(
+                )))){
+
+                $x_completes = $CI->X_model->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__player' => $player_e['e__id'],
                     'x__previous' => $i['i__id'],
-                    'x__player' => $player_e['e__id'], //Required
-                )))){
+                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+                ), array('x__next'));
 
                 //Skip
                 $bottom_bar_ui .= '<span class="mini_button"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';

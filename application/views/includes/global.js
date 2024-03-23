@@ -334,19 +334,15 @@ function view_s_mini_js(s__cover,s__title){
 }
 
 
-function fetch_int_val(object_name){
-    return ( $(object_name).length ? parseInt($(object_name).val()) : 0 );
-}
-
 function toggle_headline(x__type){
 
     var x__follower = 0;
     var x__next = 0;
-    var focus__node = fetch_int_val('#focus__node');
+    var focus__node = parseInt($('#focus__node').val());
     if(focus__node==12273){
-        x__next = fetch_int_val('#focus__id');
+        x__next = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        x__follower = fetch_int_val('#focus__id');
+        x__follower = parseInt($('#focus__id').val());
     }
 
     if($('.headline_title_' + x__type+' .icon_26008').hasClass('hidden')){
@@ -483,12 +479,12 @@ function toggle_pills(x__type_hash){
 
     var x__follower = 0;
     var x__next = 0;
-    var focus__node = fetch_int_val('#focus__node');
+    var focus__node = parseInt($('#focus__node').val());
 
     if(focus__node==12273){
-        x__next = fetch_int_val('#focus__id');
+        x__next = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        x__follower = fetch_int_val('#focus__id');
+        x__follower = parseInt($('#focus__id').val());
     }
 
     //Toggle view
@@ -519,7 +515,7 @@ function toggle_pills(x__type_hash){
 
             $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
 
-            var focus__node = fetch_int_val('#focus__node');
+            var focus__node = parseInt($('#focus__node').val());
             console.log('Tab loading from @'+focus__node+' for @'+x__type);
 
             if(focus__node==12273){
@@ -529,7 +525,7 @@ function toggle_pills(x__type_hash){
                     focus__node:focus__node,
                     x__type:x__type,
                     counter:$('.headline_body_' + x__type).attr('read-counter'),
-                    i__id:fetch_int_val('#focus__id'),
+                    i__id:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
@@ -540,7 +536,7 @@ function toggle_pills(x__type_hash){
                     focus__node:focus__node,
                     x__type:x__type,
                     counter:$('.headline_body_'+x__type).attr('read-counter'),
-                    e__id:fetch_int_val('#focus__id'),
+                    e__id:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
 
@@ -1001,7 +997,7 @@ $(document).ready(function () {
     activate_cover_watch();
 
     //Only for idea page but still:
-    set_autosize($('.text__6197_'+fetch_int_val('#focus__id')));
+    set_autosize($('.text__6197_'+parseInt($('#focus__id').val())));
 
     $(document).on('keydown', function ( e ) {
         // You may replace `c` with whatever key you want
@@ -1378,7 +1374,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
 
 
     $(".idea_link_direction, .idea_link_unlink, .idea_link_type").addClass('hidden');
-    var focus_i_id = ( fetch_int_val('#focus__node')==12273 ? fetch_int_val('#focus__id') : 0 );
+    var focus_i_id = ( parseInt($('#focus__node').val())==12273 ? parseInt($('#focus__id').val()) : 0 );
     $("#modal31911 .save_results").html('');
 
     if(!passon_i__id){
@@ -1508,10 +1504,10 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         //See where we are at and append anything needed to the idea:
         var insert_message = '';
         if(!next_i__id && !previous_i__id){
-            var focus__node = fetch_int_val('#focus__node');
+            var focus__node = parseInt($('#focus__node').val());
             if(focus__node==12273){
                 //insert_message = '#'+$('#focus_handle').val()+' ';
-            } else if (focus__node==12274 && fetch_int_val('#focus__id')!=js_pl_id){
+            } else if (focus__node==12274 && parseInt($('#focus__id').val())!=js_pl_id){
                 insert_message = '@'+$('#focus_handle').val()+' ';
             }
         }
@@ -1526,7 +1522,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $('#modal31911 .save_x__id').val(x__id);
 
         //Idea<>Idea links do not have an interaction message
-        if(fetch_int_val('#focus__node')!=12273 || ($('.ui_x__message_'+x__id+':first') && $('.ui_x__message_'+x__id+':first').text().length>0)){
+        if(parseInt($('#focus__node').val())!=12273 || ($('.ui_x__message_'+x__id+':first') && $('.ui_x__message_'+x__id+':first').text().length>0)){
             $('#modal31911 .save_x__message').val($('.ui_x__message_'+x__id+':first').text());
             $('#modal31911 .save_x__frame').removeClass('hidden');
         }
@@ -1646,7 +1642,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
                     $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(x__id && fetch_int_val('#focus__node')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus__id')){
+                    if(x__id && parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         $("#modal31911 .save_x__message").val('IGNORE_INPUT');
                         $("#modal31911 .save_x__frame").addClass('hidden');
@@ -1687,8 +1683,8 @@ function i_editor_save(){
     var uploader_id = 13572; //THis is for idea modal
 
     var modify_data = {
-        focus__node:         fetch_int_val('#focus__node'),
-        focus__id:           fetch_int_val('#focus__id'),
+        focus__node:         parseInt($('#focus__node').val()),
+        focus__id:           parseInt($('#focus__id').val()),
         save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
         save_x__id:         $('#modal31911 .save_x__id').val(),
         next_i__id:         $('#modal31911 .next_i__id').val(),
@@ -1787,7 +1783,7 @@ function i_editor_save(){
             //Update Handle & Href links if needed:
             var old_handle = $(".ui_i__hashtag_"+modify_data['save_i__id']+':first').text();
             var new_handle = modify_data['save_i__hashtag'];
-            var on_focus__idea = fetch_int_val('#focus__node')==12273 && modify_data['save_i__id']==fetch_int_val('#focus__id');
+            var on_focus__idea = parseInt($('#focus__node').val())==12273 && modify_data['save_i__id']==parseInt($('#focus__id').val());
 
             //Update Idea Type:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__type', modify_data['save_i__type']);
@@ -2273,7 +2269,7 @@ function e_editor_load(e__id = 0, x__id = 0){
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(x__id && ( (fetch_int_val('#focus__node')==12274 && data.return_inputs[index_i]["d__id"]==fetch_int_val('#focus__id')) || data.return_inputs[index_i]["d__id"]==e__id )){
+                    if(x__id && ( (parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"]==e__id )){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
                         $("#modal31912 .save_x__message").val('IGNORE_INPUT');
                         $("#modal31912 .save_x__frame").addClass('hidden');
@@ -2365,7 +2361,7 @@ function e_editor_save(){
             var old_handle = $(".ui_e__handle_"+modify_data['save_e__id']+':first').text();
             var new_handle = modify_data['save_e__handle'];
             if(old_handle!=new_handle){
-                if(fetch_int_val('#focus__node')==12274 && modify_data['save_e__id']==fetch_int_val('#focus__id')){
+                if(parseInt($('#focus__node').val())==12274 && modify_data['save_e__id']==parseInt($('#focus__id').val())){
                     //Refresh page since focus item handle changed:
                     return js_redirect(js_e___42903[42902]['m__message']+new_handle);
                 } else {
@@ -2403,7 +2399,7 @@ function e_editor_save(){
             $('#modal31912').modal('hide');
 
             //Do we need to refresh the page?
-            if(fetch_int_val('#focus__node')==12274 && fetch_int_val('#focus__id')==modify_data['save_e__id']){
+            if(parseInt($('#focus__node').val())==12274 && parseInt($('#focus__id').val())==modify_data['save_e__id']){
                 //Refresh page since source edited their own profile:
                 js_redirect(js_e___42903[42902]['m__message']+$('#focus_handle').val());
             }
@@ -2455,8 +2451,8 @@ function x_view_load_page() {
     current_page[focus_x__group]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
     $.post("/ajax/x_view_load_page", {
-        focus__node: fetch_int_val('#focus__node'),
-        focus__id: fetch_int_val('#focus__id'),
+        focus__node: parseInt($('#focus__node').val()),
+        focus__id: parseInt($('#focus__id').val()),
         x__type: focus_x__group,
         current_page: current_page[focus_x__group],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2521,9 +2517,9 @@ function e__add(x__type, e_existing_id) {
     //Add via Ajax:
     $.post("/ajax/e__add", {
 
-        focus__node: fetch_int_val('#focus__node'),
+        focus__node: parseInt($('#focus__node').val()),
         x__type: x__type,
-        focus__id: fetch_int_val('#focus__id'),
+        focus__id: parseInt($('#focus__id').val()),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2592,7 +2588,7 @@ function i__add(x__type, link_i__id) {
      *
      * Either creates an IDEA transaction between focus_id & link_i__id
      * OR will create a new idea based on input text and then transaction it
-     * to fetch_int_val('#focus_id') (In this case link_i__id=0)
+     * to #focus_id (In this case link_i__id=0)
      *
      * */
 
@@ -2621,8 +2617,8 @@ function i__add(x__type, link_i__id) {
     //Update backend:
     $.post("/ajax/i__add", {
         x__type: x__type,
-        focus_card: fetch_int_val('#focus_card'),
-        focus_id: fetch_int_val('#focus_id'),
+        focus__node: parseInt($('#focus__node').val()),
+        focus__id: parseInt($('#focus__id').val()),
         new_i__message: new_i__message,
         link_i__id: link_i__id
     }, function (data) {
@@ -3151,7 +3147,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/x_update_instant_select", {
-        focus__id:fetch_int_val('#focus__id'),
+        focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
         new_e__id: new_e__id,
@@ -3224,7 +3220,7 @@ function e_sort_save(x__type) {
     if (sort_rank > 0) {
         //Update backend:
         $.post("/ajax/e_sort_save", {
-            e__id: fetch_int_val('#focus__id'),
+            e__id: parseInt($('#focus__id').val()),
             x__type:x__type,
             new_x__weight: new_x__weight,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3244,9 +3240,9 @@ function x_reset_sorting(){
     var r = confirm("Reset sorting?");
     if (r==true) {
 
-        var focus__node = fetch_int_val('#focus__node');
-        var focus__id = fetch_int_val('#focus__id');
-        var focus_handle = fetch_int_val('#focus_handle');
+        var focus__node = parseInt($('#focus__node').val());
+        var focus__id = parseInt($('#focus__id').val());
+        var focus_handle = $('#focus_handle').val();
 
         //Update via call:
         $.post("/ajax/x_reset_sorting", {
@@ -3286,7 +3282,6 @@ function x_reset_sorting(){
 function go_next(do_skip){
 
     var selection_i__id = [];
-    var next_i_data = []; //Aggregate the data for all children
 
     if (js_n___7712.includes(focus_i__type)){
         //Choose
@@ -3299,22 +3294,23 @@ function go_next(do_skip){
     }
 
     //Compile all next ideas, if any:
+    var next_i_data = {}; //Aggregate the data for all children
     $("#list-in-12840 .edge-cover").each(function () {
-        var valueToPush = { }; // or "var valueToPush = new Object();" which is the same
-        valueToPush["i__id"] = parseInt($(this).attr('i__id'));
-        valueToPush["i__text"] = ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null );
-        valueToPush["i__quantity"] = ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 );
-        valueToPush["i__uploads"] = [];
-        next_i_data.push(valueToPush);
+        next_i_data.push({
+            i__id: parseInt($(this).attr('i__id')),
+            i__text: ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null ),
+            i__quantity: ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 ),
+            i__uploads: [],
+        });
     });
 
     console.log({
         target_i__hashtag: $('#target_i__hashtag').val(),
-        target_i__id: $('#target_i__id').val(),
+        target_i__id: parseInt($('#target_i__id').val()),
         focus_i_data: {
-            i__id: fetch_int_val('#focus__id'),
+            i__id: parseInt($('#focus__id').val()),
             i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
-            i__quantity: ( $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val() ? $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val() : 0 ),
+            i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
             i__uploads: [],
         },
         do_skip: do_skip,
@@ -3335,9 +3331,9 @@ function go_next(do_skip){
         target_i__hashtag: $('#target_i__hashtag').val(),
         target_i__id: $('#target_i__id').val(),
         focus_i_data: {
-            i__id: fetch_int_val('#focus__id'),
+            i__id: parseInt($('#focus__id').val()),
             i__text: $('.focus-cover .x_write').val(),
-            i__quantity:$('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val(),
+            i__quantity:$('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val(),
             i__uploads: [],
         },
         do_skip: do_skip,
