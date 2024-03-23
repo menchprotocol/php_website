@@ -3285,22 +3285,6 @@ function x_reset_sorting(){
 
 function go_next(do_skip){
 
-    console.log({
-        target_i__hashtag: $('#target_i__hashtag').val(),
-        target_i__id: $('#target_i__id').val(),
-        focus_i_data: {
-            i__id: fetch_int_val('#focus__id'),
-            i__text: $('.focus-cover .x_write').val(),
-            i__quantity:$('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val(),
-            i__uploads: [],
-        },
-        do_skip: do_skip,
-        selection_i__id: selection_i__id,
-        next_i_data: next_i_data,
-        js_request_uri: js_request_uri, //Always append to AJAX Calls
-    });
-    return false;
-
     var selection_i__id = [];
     var next_i_data = []; //Aggregate the data for all children
 
@@ -3318,11 +3302,29 @@ function go_next(do_skip){
     $("#list-in-12840 .edge-cover").each(function () {
         var valueToPush = { }; // or "var valueToPush = new Object();" which is the same
         valueToPush["i__id"] = $(this).attr('i__id');
-        valueToPush["i__text"] = $('.s__12273_'+$(this).attr('i__id')+' .x_write').val();
-        valueToPush["i__quantity"] = $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val();
+        valueToPush["i__text"] = ( $('.s__12273_'+$(this).attr('i__id')+' .x_write') ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null );
+        valueToPush["i__quantity"] = ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity') ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 );
         valueToPush["i__uploads"] = [];
         next_i_data.push(valueToPush);
     });
+
+    console.log({
+        target_i__hashtag: $('#target_i__hashtag').val(),
+        target_i__id: $('#target_i__id').val(),
+        focus_i_data: {
+            i__id: fetch_int_val('#focus__id'),
+            i__text: ( $('.focus-cover .x_write') ? $('.focus-cover .x_write').val() : null ),
+            i__quantity: ( $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity') ? $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val() : 0 ),
+            i__uploads: [],
+        },
+        do_skip: do_skip,
+        selection_i__id: selection_i__id,
+        next_i_data: next_i_data,
+        js_request_uri: js_request_uri, //Always append to AJAX Calls
+    });
+    return false;
+
+
 
 
     //Load:
