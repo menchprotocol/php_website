@@ -2836,6 +2836,8 @@ class Ajax extends CI_Controller
 
     function go_next(){
 
+        return view_json($_POST);
+
         $player_e = superpower_unlocked(null, 0, $this->player_e);
 
         if (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
