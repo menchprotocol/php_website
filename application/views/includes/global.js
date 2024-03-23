@@ -3301,9 +3301,9 @@ function go_next(do_skip){
     //Compile all next ideas, if any:
     $("#list-in-12840 .edge-cover").each(function () {
         var valueToPush = { }; // or "var valueToPush = new Object();" which is the same
-        valueToPush["i__id"] = $(this).attr('i__id');
-        valueToPush["i__text"] = ( $('.s__12273_'+$(this).attr('i__id')+' .x_write') ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null );
-        valueToPush["i__quantity"] = ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity') ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 );
+        valueToPush["i__id"] = parseInt($(this).attr('i__id'));
+        valueToPush["i__text"] = ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null );
+        valueToPush["i__quantity"] = ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 );
         valueToPush["i__uploads"] = [];
         next_i_data.push(valueToPush);
     });
@@ -3313,8 +3313,8 @@ function go_next(do_skip){
         target_i__id: $('#target_i__id').val(),
         focus_i_data: {
             i__id: fetch_int_val('#focus__id'),
-            i__text: ( $('.focus-cover .x_write') ? $('.focus-cover .x_write').val() : null ),
-            i__quantity: ( $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity') ? $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val() : 0 ),
+            i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
+            i__quantity: ( $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val() ? $('.input_ui_'+fetch_int_val('#focus__id')+' .i__quantity').val() : 0 ),
             i__uploads: [],
         },
         do_skip: do_skip,
