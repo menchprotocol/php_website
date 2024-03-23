@@ -3304,22 +3304,6 @@ function go_next(do_skip){
         });
     });
 
-    console.log({
-        target_i__hashtag: $('#target_i__hashtag').val(),
-        target_i__id: parseInt($('#target_i__id').val()),
-        focus_i_data: {
-            i__id: parseInt($('#focus__id').val()),
-            i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
-            i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
-            i__uploads: [],
-        },
-        do_skip: do_skip,
-        selection_i__id: selection_i__id,
-        next_i_data: next_i_data,
-        js_request_uri: js_request_uri, //Always append to AJAX Calls
-    });
-    return false;
-
 
 
 
@@ -3329,11 +3313,11 @@ function go_next(do_skip){
     //Submit to go next:
     $.post("/ajax/go_next", {
         target_i__hashtag: $('#target_i__hashtag').val(),
-        target_i__id: $('#target_i__id').val(),
+        target_i__id: parseInt($('#target_i__id').val()),
         focus_i_data: {
             i__id: parseInt($('#focus__id').val()),
-            i__text: $('.focus-cover .x_write').val(),
-            i__quantity:$('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val(),
+            i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
+            i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
             i__uploads: [],
         },
         do_skip: do_skip,
