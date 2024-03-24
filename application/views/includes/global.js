@@ -3328,7 +3328,8 @@ function go_next(do_skip){
         if (data.status) {
             //Go to redirect message:
             $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-            js_redirect(GoNext());
+            alert(GoNext());
+            //js_redirect(GoNext());
         } else {
             //Show error:
             alert(data.message);
