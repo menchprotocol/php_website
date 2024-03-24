@@ -461,8 +461,8 @@ class I_model extends CI_Model
             return array();
         }
 
-        $is_or_i = in_array($i['i__type'], $this->config->item('n___7712'));
-        if($scope=='AND' && $is_or_i){
+        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
+        if($scope=='AND' && $input__selection){
             //OR IDEA:
             return array();
         }
@@ -478,7 +478,7 @@ class I_model extends CI_Model
         ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
 
             if(!in_array(intval($next_i['i__id']), $recursive_i_ids)){
-                if(!($scope=='OR' && !$is_or_i)){
+                if(!($scope=='OR' && !$input__selection)){
                     //We add it at all times unless scope is OR and node is not OR
                     array_push($recursive_i_ids, intval($next_i['i__id']));
                 }

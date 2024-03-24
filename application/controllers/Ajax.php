@@ -2569,7 +2569,6 @@ class Ajax extends CI_Controller
 
         }
 
-
         return view_json(array(
             'status' => 1,
             'account_id' => $x__player,
@@ -2579,7 +2578,6 @@ class Ajax extends CI_Controller
         ));
 
     }
-
 
     function x_set_text(){
 
@@ -2833,17 +2831,15 @@ class Ajax extends CI_Controller
         ));
     }
 
-
     function go_next(){
-
 
         $player_e = superpower_unlocked(null, 0, $this->player_e);
         if(!$player_e){
             return view_json(array(
                 'status' => 0,
-                'message' => 'Must Be Logged In to Continue',
+                'message' => view_unauthorized_message(),
             ));
-        } elseif (!isset($_POST['target_i__hashtag']) || !isset($_POST['target_i__id']) || !isset($_POST['focus_i_data']) || !isset($_POST['do_skip']) || !isset($_POST['next_i_data'])) {
+        } elseif (!isset($_POST['target_i__hashtag']) || !isset($_POST['target_i__id']) || !isset($_POST['focus_i_data']) || !isset($_POST['do_skip']) || !isset($_POST['next_i_data']) || !isset($_POST['selection_i__id'])) {
             return view_json(array(
                 'status' => 0,
                 'message' => 'Missing Core Data',
@@ -2852,187 +2848,190 @@ class Ajax extends CI_Controller
 
 
 
-
         //Discover Focus Idea:
-        $pinned_down = $this->config->item('pinned_down');
         foreach($this->I_model->fetch(array(
             'i__id' => $_POST['focus_i_data']['i__id'],
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         )) as $focus_i){
-            $this->X_model->mark_complete($pinned_down[$focus_i['i__type']][0], $player_e['e__id'], $_POST['target_i__id'], $focus_i, $_POST['focus_i_data'], array(
+
+            $input__selection = in_array($focus_i['i__type'], $this->config->item('n___7712'));
+            $input__upload = in_array($focus_i['i__type'], $this->config->item('n___43004'));
+            $input__text = in_array($focus_i['i__type'], $this->config->item('n___43002')) || in_array($focus_i['i__type'], $this->config->item('n___43003'));
+            $total_selected = count($_POST['selection_i__id']);
+            $trying_to_skip = ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['next_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['next_i_data']['i__uploads'])) || ($input__text && $input__upload && !count($_POST['next_i_data']['i__uploads']) && !strlen($_POST['next_i_data']['i__text'])));
+            $i_required = i_required($focus_i);
+
+            //If skipping, make sure they can:
+            if($i_required && $trying_to_skip){
+                return view_json(array(
+                    'status' => 0,
+                    'message' => 'You Cannot Skip This Idea.'.( $input__selection ? ' Make a Selection to go Next.' : '' ),
+                ));
+            }
+
+            //Now complete relevant next ideas, if any:
+            if($input__selection){
+
+                $is_single_selection = in_array($focus_i['i__type'], $this->config->item('n___33331'));
+
+                //How about the min selection?
+                if($i_required && !$is_single_selection){
+                    foreach($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $focus_i['i__id'],
+                        'x__following' => 40834, //Min Selection
+                    ), array(), 1) as $limit){
+                        if(intval($limit['x__message']) > 0 && $total_selected < intval($limit['x__message'])){
+                            return array(
+                                'status' => 0,
+                                'message' => 'Select '.$limit['x__message'].' or more ideas to go next.',
+                            );
+                        }
+                    }
+                }
+
+
+                //How about max selection?
+                if(!$is_single_selection){
+                    foreach($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $focus_i['i__id'],
+                        'x__following' => 40833, //Max Selection
+                    ), array(), 1) as $limit){
+                        if(intval($limit['x__message']) > 0 && $total_selected > intval($limit['x__message'])){
+                            return array(
+                                'status' => 0,
+                                'message' => 'You cannot select more than '.$limit['x__message'].' items.',
+                            );
+                        }
+                    }
+                }
+
+
+                //Delete ALL previous answers:
+                foreach($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY ANSWERED
+                    'x__player' => $player_e['e__id'],
+                    'x__previous' => $focus_i['i__id'],
+                ), array('x__next')) as $x_selection){
+
+                    $this->X_model->update($x_selection['x__id'], array(
+                        'x__privacy' => 6173, //Transaction Deleted
+                    ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
+
+                    if(!in_array($x_selection['i__type'], $this->config->item('n___41055'))){
+
+                        //Remove discovery of the selected since its not a payment type:
+                        foreach($this->X_model->fetch(array(
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                            'x__previous' => $x_selection['i__id'],
+                            'x__player' => $player_e['e__id'],
+                        ), array(), 0) as $x_discovery){
+
+                            $this->X_model->update($x_discovery['x__id'], array(
+                                'x__privacy' => 6173, //Transaction Deleted
+                            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
+
+                        }
+                    }
+                }
+
+                //Save New Answers
+                foreach($_POST['selection_i__id'] as $answer_i__id){
+                    $this->X_model->create(array(
+                        'x__type' => 7712, //Input Choice
+                        'x__player' => $player_e['e__id'],
+                        'x__previous' => $focus_i['i__id'],
+                        'x__next' => $answer_i__id,
+                    ));
+                }
+
+            } elseif($input__upload || $input__text){
+
+                //Must add a new idea, but first let's validate the input:
+                /*
+                if($focus_i['i__type']==6683 && strlen($_POST['next_i_data']['i__text'])){
+                    //Text Input
+
+                } elseif($focus_i['i__type']==42994 && (strlen($_POST['next_i_data']['i__text']) || count($_POST['next_i_data']['i__uploads']))){
+                    //Text Upload
+
+                } elseif($focus_i['i__type']==7637 && count($_POST['next_i_data']['i__uploads'])){
+                    //File Upload
+
+                }
+                */
+
+                if($focus_i['i__type']==31794 && strlen($_POST['next_i_data']['i__text']) && !is_numeric($_POST['next_i_data']['i__text'])){
+                    //Number Input
+                    return array(
+                        'status' => 0,
+                        'message' => 'Invalid Number',
+                    );
+                } elseif($focus_i['i__type']==42915 && strlen($_POST['next_i_data']['i__text']) && !filter_var($_POST['next_i_data']['i__text'], FILTER_VALIDATE_URL)){
+                    //Link Input
+                    return array(
+                        'status' => 0,
+                        'message' => 'Invalid URL',
+                    );
+                } elseif($focus_i['i__type']==30350 && strlen($_POST['next_i_data']['i__text']) && !strtotime($_POST['next_i_data']['i__text'])){
+                    //Date Input
+                    return array(
+                        'status' => 0,
+                        'message' => 'Invalid Date',
+                    );
+                }
+
+                //All validated, lets make the new idea:
+                $i_new = $this->I_model->create(array(
+                    'i__message' => $_POST['next_i_data']['i__text'],
+                    'i__type' => 6677, //Statement
+                    'i__privacy' => 42625, //Private
+                ), $player_e['e__id']);
+
+                //Link to this idea:
+                $this->X_model->create(array(
+                    'x__type' => 4228,
+                    'x__player' => $player_e['e__id'],
+                    'x__previous' => $focus_i['i__id'],
+                    'x__next' => $i_new['i__id'],
+                ));
+
+            }
+
+
+            //Issue DISCOVERY/IDEA COIN:
+            $this->X_model->mark_complete(i__discovery_link($focus_i, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $focus_i, $_POST['focus_i_data'], array(
                 'x__weight' => $_POST['focus_i_data']['i__quantity'],
             ));
-        }
 
 
-
-        //Validate/Fetch idea:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-        $player_e = superpower_unlocked(null, 0, $this->player_e);
-
-        if (!$player_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['target_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top idea ID.',
-            ));
-        } elseif (!isset($_POST['i__quantity'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Count.',
-            ));
-        } elseif(count($is) < 1){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Idea not published.',
-            ));
-
-        } elseif(in_array($is[0]['i__type'], $this->config->item('n___41055'))){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Invalid Idea Type',
-            ));
-        }
-
-
-        if(!count($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //Tickets
-            'x__player' => $player_e['e__id'],
-            'x__previous' => $is[0]['i__id'],
-        )))){
-            //Free Ticket:
-            $this->X_model->mark_complete(42332, $player_e['e__id'], $_POST['target_i__id'], $is[0], array(), array(
-                'x__weight' => $_POST['i__quantity'],
-            ));
-        }
-
-
-        //All good:
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Saved & Next',
-        ));
-
-
-
-
-        //Validate input:
-        if(!isset($_POST['target_i__id']) || !isset($_POST['focus__id'])){
-            die('missing core data');
-        }
-
-
-        //Log Skipped:
-        //$this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['target_i__id']), $is[0]);
-
-        //Log Selection:
-
-
-        return view_json($this->X_model->x_select($_POST['target_i__id'], $_POST['focus__id'], ( !isset($_POST['selection_i__id']) || !count($_POST['selection_i__id']) ? array() : $_POST['selection_i__id'] )));
-
-
-
-
-
-        if (!$player_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea ID.',
-            ));
-        } elseif (!isset($_POST['target_i__id']) || !isset($_POST['target_i__hashtag'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top idea ID.',
-            ));
-        }
-
-
-
-        foreach($this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-        )) as $focus_i){
-
-            //Mark as complete:
-            $this->X_model->mark_complete($pinned_down[$focus_i['i__type']][0], $player_e['e__id'], $_POST['target_i__id'], $focus_i);
-
-            $next_hashtag = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
+            if(!$input__selection) {
+                //AND Idea, Look through ALL next ideas and see which ones we can complete, if any:
+            }
 
             //All good:
             return view_json(array(
                 'status' => 1,
-                'message' => 'Saved',
+                'message' => 'Saved & Next',
             ));
 
         }
 
-
-
-
+        //All good:
         return view_json(array(
             'status' => 0,
-            'message' => 'Idea not published.',
+            'message' => 'Invalid Idea',
         ));
 
     }
 
 
     function x_write(){
-
-        $player_e = superpower_unlocked(null, 0, $this->player_e);
-        if (!$player_e) {
-            return view_json(array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            ));
-        } elseif (!isset($_POST['i__id']) || !intval($_POST['i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing idea ID.',
-            ));
-        } elseif (!isset($_POST['target_i__id'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Top idea ID.',
-            ));
-        } elseif (!isset($_POST['x_write'])) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Missing Response Variable.',
-            ));
-        }
-
-
-        //Validate/Fetch idea:
-        $is = $this->I_model->fetch(array(
-            'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-        if(count($is) < 1){
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Idea not published.',
-            ));
-        } elseif (!in_array($is[0]['i__type'] , $this->config->item('n___33532'))) {
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Idea Type is not writable.',
-            ));
-        }
-
-
 
         //Any Preg Remove?
         foreach($this->X_model->fetch(array(
@@ -3059,12 +3058,8 @@ class Ajax extends CI_Controller
 
         //Trying to Skip?
         if(!strlen($_POST['x_write'])){
-            if(!count($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $_POST['i__id'],
-                'x__following' => 28239, //Required
-            )))){
+
+            if(!i_required($i)){
                 //Log Skip:
                 $this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['target_i__id']), $is[0], array(), array(
                     'x__message' => $_POST['x_write'],
@@ -3518,7 +3513,7 @@ class Ajax extends CI_Controller
             $level1_total = 0;
             foreach($this->config->item('e___'.$x__type1) as $x__type2 => $m2) { //Nodes/Links
 
-                $e_pinned = e_pinned($x__type2, true, true);
+                $e_pinned = e_pinned($x__type2, true);
                 $level2_total = 0;
                 if(!is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
                     continue;

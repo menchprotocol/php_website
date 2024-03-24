@@ -70,22 +70,28 @@ function is_valid_date($str)
 function target_disccovery(){
     return ( isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1)=='/' && substr_count($_POST['js_request_uri'], '/')==2 ? '/'.strtok(substr($_POST['js_request_uri'], 1), '/') : null );
 }
-function e_pinned($e__id, $first_pin_only, $return_itself = false){
+function e_pinned($e__id, $return_itself = false, $first_pin_only = true){
+
     $CI =& get_instance();
     $pinned_down = $CI->config->item('pinned_down');
     if(isset($pinned_down[$e__id])){
         return ( $first_pin_only ? reset($pinned_down[$e__id]) : $pinned_down[$e__id] );
     }
 
-    $pinned_up = $CI->config->item('pinned_down');
+    $pinned_up = $CI->config->item('pinned_up');
     if(isset($pinned_up[$e__id])){
         return ( $first_pin_only ? reset($pinned_up[$e__id]) : $pinned_up[$e__id] );
     }
 
     return ( $first_pin_only ? ( $return_itself ? $e__id : 0 ) : array() );
+
 }
 
-function i__discovery_link($i){
+function i__discovery_link($i, $trying_to_skip = false){
+
+    if($trying_to_skip){
+        return 31022;
+    }
 
     $CI =& get_instance();
     if(in_array($i['i__type'], $CI->config->item('n___41055'))){
@@ -103,7 +109,7 @@ function i__discovery_link($i){
         ));
         return ( count($total_dues) && doubleval($total_dues[0]['x__message']) && count($currency_types) ? 26595 : 42332 );
     } else {
-        return e_pinned($i['i__type'], true);
+        return e_pinned($i['i__type']);
     }
 
 }
@@ -383,6 +389,16 @@ function object_to_array($obj) {
     else {
         return $obj;
     }
+}
+
+function i_required($i){
+    $CI =& get_instance();
+    return in_array($i['i__type'], $CI->config->item('n___43009')) || count($CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__next' => $i['i__id'],
+            'x__following' => 28239, //Required
+        )));
 }
 
 function redirect_message($url, $message = null, $log_error = false)
@@ -1499,8 +1515,7 @@ function send_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = arr
             foreach ($CI->I_model->fetch(array(
                 'i__id' => $x_data['x__previous'],
             )) as $email_i) {
-                $pinned_down = $CI->config->item('pinned_down');
-                $CI->X_model->mark_complete($pinned_down[$email_i['i__type']][0], $e__id, $x_data['x__next'], $email_i, $x_data);
+                $CI->X_model->mark_complete(i__discovery_link($email_i), $e__id, $x_data['x__next'], $email_i, $x_data);
             }
         }
 

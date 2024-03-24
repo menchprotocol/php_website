@@ -921,7 +921,7 @@ class X_model extends CI_Model
         ), array('x__previous')) as $i_previous) {
 
             //Validate Selection:
-            $is_or_i = in_array($i_previous['i__type'], $this->config->item('n___7712'));
+            $input__selection = in_array($i_previous['i__type'], $this->config->item('n___7712'));
             $is_selected = count($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
@@ -930,7 +930,7 @@ class X_model extends CI_Model
                 'x__player' => $e__id,
             )));
 
-            if($e__id>0 && !$is_selected && $is_or_i){
+            if($e__id>0 && !$is_selected && $input__selection){
                 continue;
             }
 
@@ -1007,7 +1007,7 @@ class X_model extends CI_Model
         }
         array_push($loop_breaker_ids, intval($i['i__id']));
 
-        $is_or_i = in_array($i['i__type'], $this->config->item('n___7712'));
+        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $found_trigger = false;
 
         foreach ($this->X_model->fetch(array(
@@ -1033,7 +1033,7 @@ class X_model extends CI_Model
                 'x__next' => $next_i['i__id'],
                 'x__player' => $e__id,
             )));
-            if($is_or_i && !$is_selected){
+            if($input__selection && !$is_selected){
                 continue;
             }
 
@@ -1144,8 +1144,6 @@ class X_model extends CI_Model
         //Add new transaction:
         $domain_url = get_domain('m__message', $x__player);
         $new_x = $this->X_model->create($x_data);
-        $pinned_down = $this->config->item('pinned_down');
-
 
         //Auto Complete OR Answers:
         if(in_array($i['i__type'], $this->config->item('n___7712'))){
@@ -1156,7 +1154,7 @@ class X_model extends CI_Model
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 0) as $next_i){
                 //Mark as complete:
-                $this->X_model->mark_complete($pinned_down[$next_i['i__type']][0], $x_data['x__player'], $target_i__id, $next_i, $x_data);
+                $this->X_model->mark_complete(i__discovery_link($next_i), $x_data['x__player'], $target_i__id, $next_i, $x_data);
             }
         }
 
@@ -1546,155 +1544,6 @@ class X_model extends CI_Model
         ), array('x__next')));
     }
 
-
-
-    function x_select($target_i__id, $focus_i__id, $answer_i__ids){
-
-        $player_e = superpower_unlocked();
-        if (!$player_e) {
-            return array(
-                'status' => 0,
-                'message' => view_unauthorized_message(),
-            );
-        }
-
-        $is = $this->I_model->fetch(array(
-            'i__id' => $focus_i__id,
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
-        $es = $this->E_model->fetch(array(
-            'e__id' => $player_e['e__id'],
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
-        if (!count($is)) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid idea ID',
-            );
-        } elseif (!count($es)) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Source Input',
-            );
-        } elseif (!in_array($is[0]['i__type'], $this->config->item('n___7712'))) {
-            return array(
-                'status' => 0,
-                'message' => 'Invalid Idea type [Must be Answer]',
-            );
-        }
-
-        $is_single_selection = in_array($is[0]['i__type'], $this->config->item('n___33331'));
-
-        //Can they skip without selecting anything?
-        $can_skip = !count($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $focus_i__id,
-            'x__following' => 28239, //Required
-        )));
-        if(!$can_skip && !count($answer_i__ids)){
-            return array(
-                'status' => 0,
-                'message' => 'You must select an item before going next.',
-            );
-        }
-        $did_skip = ( $can_skip && !count($answer_i__ids) );
-
-
-
-
-
-        //How about the min selection?
-        if(!$can_skip && !$is_single_selection){
-            foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $focus_i__id,
-                'x__following' => 40834, //Min Selection
-            ), array(), 1) as $limit){
-                if(intval($limit['x__message']) > 0 && count($answer_i__ids) < intval($limit['x__message'])){
-                    return array(
-                        'status' => 0,
-                        'message' => 'You must select '.$limit['x__message'].' items or more.',
-                    );
-                }
-            }
-        }
-
-
-        //How about max selection?
-        if(!$is_single_selection){
-            foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $focus_i__id,
-                'x__following' => 40833, //Max Selection
-            ), array(), 1) as $limit){
-                if(intval($limit['x__message']) > 0 && count($answer_i__ids) > intval($limit['x__message'])){
-                    return array(
-                        'status' => 0,
-                        'message' => 'You cannot select more than '.$limit['x__message'].' items.',
-                    );
-                }
-            }
-        }
-
-
-
-        //Delete ALL previous answers:
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY ANSWERED
-            'x__player' => $player_e['e__id'],
-            'x__previous' => $is[0]['i__id'],
-        ), array('x__next')) as $x_selection){
-
-            $this->X_model->update($x_selection['x__id'], array(
-                'x__privacy' => 6173, //Transaction Deleted
-            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
-
-            if(!in_array($x_selection['i__type'], $this->config->item('n___41055'))){
-
-                //Remove discovery of the selected since its not a payment type:
-                foreach($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__previous' => $x_selection['i__id'],
-                    'x__player' => $player_e['e__id'],
-                ), array(), 0) as $x_discovery){
-
-                    $this->X_model->update($x_discovery['x__id'], array(
-                        'x__privacy' => 6173, //Transaction Deleted
-                    ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
-
-                }
-            }
-        }
-
-        //Add New Answers
-        $answers_newly_added = 0;
-        if(count($answer_i__ids)){
-            foreach($answer_i__ids as $answer_i__id){
-                $answers_newly_added++;
-                $this->X_model->create(array(
-                    'x__type' => 12336, //Link Selection
-                    'x__player' => $player_e['e__id'],
-                    'x__previous' => $is[0]['i__id'],
-                    'x__next' => $answer_i__id,
-                ));
-            }
-        }
-
-        //Issue DISCOVERY/IDEA COIN:
-        $this->X_model->mark_complete(( count($answer_i__ids) ? ( $is_single_selection ? 6157 : 41940 ) : 31022 /* Skipped */ ), $player_e['e__id'], $target_i__id, $is[0]);
-
-        //All good, something happened:
-        return array(
-            'status' => 1,
-            'message' => $answers_newly_added.' Selected. Going Next',
-        );
-
-    }
 
 
 

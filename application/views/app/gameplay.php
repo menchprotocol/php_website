@@ -44,7 +44,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
         echo '<table class="table table-striped card_subcat card_subcat_'.$e__id2.' hidden" style="width:100%; margin-top:13px;">';
 
         $focus_link_group = 0;
-        $e_pinned = e_pinned($e__id2, true, true);
+        $e_pinned = e_pinned($e__id2, true);
         if(!$e_pinned || !is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
             continue;
         }

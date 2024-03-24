@@ -1491,7 +1491,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         }
     }
     $focus_i__selected = $focus_i__or && count($CI->X_model->fetch(array(
-        'x__type' => 12336, //Link Selection
+        'x__type' => 7712, //Input Choice
         'x__player' => $x__player,
         'x__previous' => $focus_i__or['i__id'],
         'x__next' => $i['i__id'],
@@ -2075,24 +2075,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                 //Next
                 $e___6255 = $CI->config->item('e___6255');
-                $i__discovery_link = i__discovery_link($i);
-                $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[$i__discovery_link] );
+                $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[i__discovery_link($i)] );
                 $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
 
-            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !in_array($i['i__type'], $CI->config->item('n___43009')) && !count($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                    'x__next' => $i['i__id'],
-                    'x__following' => 28239, //Required
-                )))){
-
-                $x_completes = $CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                    'x__player' => $player_e['e__id'],
-                    'x__previous' => $i['i__id'],
-                    'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-                ), array('x__next'));
+            } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !i_required($i)){
 
                 //Skip
                 $bottom_bar_ui .= '<span class="mini_button"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
