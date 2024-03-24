@@ -30,7 +30,7 @@ if(isset($_POST['payment_status'])){
             $is_good = true;
 
             //Log Payment:
-            $new_x = $this->X_model->mark_complete(( $is_pending ? 35572 /* Pending Payment */ : 26595 ), $x__player, $target_i__id, $next_is[0], array(), array(
+            $completion_status = $this->X_model->mark_complete(( $is_pending ? 35572 /* Pending Payment */ : 26595 ), $x__player, $target_i__id, $next_is[0], array(), array(
                 'x__weight' => intval($_POST['quantity']),
                 'x__metadata' => $_POST,
             ));
@@ -48,7 +48,7 @@ if(isset($_POST['payment_status'])){
             ));
 
             //Log Refund:
-            $new_x = $this->X_model->mark_complete(( $is_pending ? 39597 /* Pending Refund */ : 31967 ), $x__player, $target_i__id, $next_is[0], array(), array(
+            $completion_status = $this->X_model->mark_complete(( $is_pending ? 39597 /* Pending Refund */ : 31967 ), $x__player, $target_i__id, $next_is[0], array(), array(
                 'x__weight' => (-1 * ( isset($original_payment[0]['x__weight']) ? $original_payment[0]['x__weight'] : 1 )),
                 'x__metadata' => $_POST,
                 'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),
@@ -69,7 +69,7 @@ if(!$is_good || 1){
         'x__message' => 'Invalid uploader',
         'x__metadata' => array(
             'url' => (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
-            'new_x' => $new_x,
+            'new_x' => $completion_status['new_x'],
             'input' => $arr,
             'inputs1' => ( isset($arr->notification_type) ? $arr->notification_type : array() ),
             'inputs2' => ( isset($arr['notification_type']) ? $arr['notification_type'] : array() ),

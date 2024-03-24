@@ -1071,7 +1071,6 @@ class X_model extends CI_Model
             }
         }
 
-
         //Nothing found:
         return false;
 
@@ -1083,11 +1082,11 @@ class X_model extends CI_Model
 
     function mark_complete($x__type, $x__player, $target_i__id = 0, $i, $focus_i_data = array(), $x_data = array()) {
 
-        if(!in_array($x__type, $this->config->item('n___31777'))){
+        if(!$x__player || !in_array($x__type, $this->config->item('n___31777'))){
             $this->X_model->create(array(
                 'x__player' => $x__player,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'mark_complete() Invalid x__type @'.$x__type.' missing in @31777',
+                'x__message' => 'mark_complete() Invalid x__type @'.$x__type.' missing in @31777 OR Missing $x__player',
                 'x__metadata' => array(
                     '$target_i__id' => $target_i__id,
                     '$i' => $i,
@@ -1096,17 +1095,62 @@ class X_model extends CI_Model
             ));
         }
 
-        if(!$x__player){
-            $player_e = superpower_unlocked();
-            $x__player = $player_e['e__id'];
-        }
-
         //Do we need to save text/upload ?
-        if(isset($focus_i_data['i__text']) && strlen($focus_i_data['i__text'])){
+        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
+        $input__upload = in_array($i['i__type'], $this->config->item('n___43004'));
+        $input__text = in_array($i['i__type'], $this->config->item('n___43002')) || in_array($i['i__type'], $this->config->item('n___43003'));
 
-        }
+        if($input__upload || $input__text){
 
-        if(isset($focus_i_data['i__uploads']) && strlen($focus_i_data['i__uploads'])){
+            //Must add a new idea, but first let's validate the input:
+            /*
+            if($i['i__type']==6683 && strlen($focus_i_data['i__text'])){
+                //Text Input
+
+            } elseif($i['i__type']==42994 && (strlen($focus_i_data['i__text']) || count($focus_i_data['i__uploads']))){
+                //Text Upload
+
+            } elseif($i['i__type']==7637 && count($focus_i_data['i__uploads'])){
+                //File Upload
+
+            }
+            */
+
+            if($i['i__type']==31794 && strlen($focus_i_data['i__text']) && !is_numeric($focus_i_data['i__text'])){
+                //Number Input
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid Number',
+                );
+            } elseif($i['i__type']==42915 && strlen($focus_i_data['i__text']) && !filter_var($focus_i_data['i__text'], FILTER_VALIDATE_URL)){
+                //Link Input
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid URL',
+                );
+            } elseif($i['i__type']==30350 && strlen($focus_i_data['i__text']) && !strtotime($focus_i_data['i__text'])){
+                //Date Input
+                return array(
+                    'status' => 0,
+                    'message' => 'Invalid Date',
+                );
+            }
+
+            //All validated, lets make the new idea:
+            $i_new = $this->I_model->create(array(
+                'i__message' => $focus_i_data['i__text'],
+                'i__type' => 6677, //Statement
+                'i__privacy' => 42625, //Private
+            ), $x__player);
+
+
+            //Link to this idea:
+            $this->X_model->create(array(
+                'x__type' => 33532,
+                'x__player' => $x__player,
+                'x__previous' => $i['i__id'],
+                'x__next' => $i_new['i__id'],
+            ));
 
         }
 
@@ -1146,7 +1190,7 @@ class X_model extends CI_Model
         $new_x = $this->X_model->create($x_data);
 
         //Auto Complete OR Answers:
-        if(in_array($i['i__type'], $this->config->item('n___7712'))){
+        if($input__selection){
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
@@ -1339,6 +1383,7 @@ class X_model extends CI_Model
                     }
 
                     //See if Session needs to be updated:
+                    $player_e = superpower_unlocked();
                     if($player_e && $player_e['e__id']==$x_data['x__player'] && ($x_added>0 || $x_edited>0 || $x_deleted>0)){
                         $this->E_model->activate_session($es_creator[0], true);
                     }
@@ -1419,10 +1464,12 @@ class X_model extends CI_Model
                 }
             }
         }
-        
 
-
-        return $new_x;
+        return array(
+            'status' => 1,
+            'message' => 'Marked as Complete',
+            'new_x' => $new_x,
+        );
 
     }
 

@@ -2847,7 +2847,6 @@ class Ajax extends CI_Controller
         }
 
 
-
         //Discover Focus Idea:
         foreach($this->I_model->fetch(array(
             'i__id' => $_POST['focus_i_data']['i__id'],
@@ -2950,68 +2949,21 @@ class Ajax extends CI_Controller
                     ));
                 }
 
-            } elseif($input__upload || $input__text){
-
-                //Must add a new idea, but first let's validate the input:
-                /*
-                if($focus_i['i__type']==6683 && strlen($_POST['next_i_data']['i__text'])){
-                    //Text Input
-
-                } elseif($focus_i['i__type']==42994 && (strlen($_POST['next_i_data']['i__text']) || count($_POST['next_i_data']['i__uploads']))){
-                    //Text Upload
-
-                } elseif($focus_i['i__type']==7637 && count($_POST['next_i_data']['i__uploads'])){
-                    //File Upload
-
-                }
-                */
-
-                if($focus_i['i__type']==31794 && strlen($_POST['next_i_data']['i__text']) && !is_numeric($_POST['next_i_data']['i__text'])){
-                    //Number Input
-                    return array(
-                        'status' => 0,
-                        'message' => 'Invalid Number',
-                    );
-                } elseif($focus_i['i__type']==42915 && strlen($_POST['next_i_data']['i__text']) && !filter_var($_POST['next_i_data']['i__text'], FILTER_VALIDATE_URL)){
-                    //Link Input
-                    return array(
-                        'status' => 0,
-                        'message' => 'Invalid URL',
-                    );
-                } elseif($focus_i['i__type']==30350 && strlen($_POST['next_i_data']['i__text']) && !strtotime($_POST['next_i_data']['i__text'])){
-                    //Date Input
-                    return array(
-                        'status' => 0,
-                        'message' => 'Invalid Date',
-                    );
-                }
-
-                //All validated, lets make the new idea:
-                $i_new = $this->I_model->create(array(
-                    'i__message' => $_POST['next_i_data']['i__text'],
-                    'i__type' => 6677, //Statement
-                    'i__privacy' => 42625, //Private
-                ), $player_e['e__id']);
-
-                //Link to this idea:
-                $this->X_model->create(array(
-                    'x__type' => 4228,
-                    'x__player' => $player_e['e__id'],
-                    'x__previous' => $focus_i['i__id'],
-                    'x__next' => $i_new['i__id'],
-                ));
-
             }
 
-
             //Issue DISCOVERY/IDEA COIN:
-            $this->X_model->mark_complete(i__discovery_link($focus_i, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $focus_i, $_POST['focus_i_data'], array(
+            $completion_status = $this->X_model->mark_complete(i__discovery_link($focus_i, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $focus_i, $_POST['focus_i_data'], array(
                 'x__weight' => $_POST['focus_i_data']['i__quantity'],
             ));
+            if(!$completion_status['status']){
+                //We had an error with data within target_i__id:
+                return view_json($completion_status);
+            }
 
 
             if(!$input__selection) {
                 //AND Idea, Look through ALL next ideas and see which ones we can complete, if any:
+                //TODO
             }
 
             //All good:
