@@ -4251,6 +4251,10 @@ main {
     padding-bottom: 144px;
 }
 
+.app__30795 .tab_content{
+    min-height: unset;
+}
+
 .nav-tabs > li {
     float:none !important;
     display:inline-block !important;
