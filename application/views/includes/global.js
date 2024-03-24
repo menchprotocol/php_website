@@ -2912,11 +2912,6 @@ function i_sort_load(x__type){
 }
 
 
-function GoNext(){
-    return '/GoNext/' + $('#target_i__hashtag').val() + '/' + $('#focus_handle').val();
-}
-
-
 
 
 var current_focus = 0;
@@ -3328,8 +3323,7 @@ function go_next(do_skip){
         if (data.status) {
             //Go to redirect message:
             $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
-            alert(GoNext());
-            //js_redirect(GoNext());
+            js_redirect(data.next_i__hashtag);
         } else {
             //Show error:
             alert(data.message);

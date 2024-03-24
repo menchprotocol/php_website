@@ -2976,6 +2976,7 @@ class Ajax extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
+                'next_i__hashtag' => $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i),
             ));
 
         }
