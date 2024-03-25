@@ -1608,6 +1608,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 }
 .this_selector{
     margin: 0 0 -33px 6px;
+    width: 34px;
+    height: 34px;
 }
 .popover-body .icon-block-xs{
     width:16px !important;
@@ -1919,7 +1921,6 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     color: #000000;
 }
 
-.focus_i__or_node,
 .share-this .icon-block{
     cursor: pointer;
 }

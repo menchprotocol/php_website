@@ -1539,13 +1539,13 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( $focus_i__or ? ' focus_i__or_node ' : ( $is_locked ? ' is_locked ' : '' ) ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).( $cache_app ? ' is-cache ' : '' ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( !$focus_i__or && $is_locked ? ' is_locked ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
     if($discovery_mode && $player_e && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
     if($focus_i__or){
-        $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm inner_click" i__id="'.$i['i__id'].'">'.( count($CI->X_model->fetch(array(
+        $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( count($CI->X_model->fetch(array(
                 'x__type' => 7712, //Input Choice
                 'x__player' => $x__player,
                 'x__previous' => $focus_i__or['i__id'],
