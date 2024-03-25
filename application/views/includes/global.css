@@ -1607,14 +1607,15 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     height: 13px;
 }
 .this_selector{
-    width: 27px;
-    height: 23px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     z-index: 999 !important;
     display: block;
     position: absolute;
-    left: 6px;
-    top: 30px;
+    top: 21px;
+    left: 0;
+    padding: 10px 6px;
 }
 .popover-body .icon-block-xs{
     width:16px !important;
