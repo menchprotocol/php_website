@@ -862,15 +862,14 @@ function load_card_clickers(){
     var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
     $( ".card_click" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length){
-            js_redirect($(this).attr('href'));
+            //js_redirect($(this).attr('href'));
         }
     });
 
     if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
         console.log('ACTIVATED');
         var is_single_choice = ( focus_i__type==6684 );
-        $(".this_selector").unbind();
-        $(".this_selector").click(function (e) {
+        $(".this_selector").unbind().click(function (e) {
             console.log('CLICKED');
             if($('.this_selector_'+$(this).attr('selection_i__id')+' i').hasClass('fa-square-check')){
                 //Already selected, so unselect:
