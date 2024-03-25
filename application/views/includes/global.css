@@ -1611,6 +1611,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     width: 27px;
     height: 23px;
     cursor: pointer;
+    z-index: 999999;
 }
 .popover-body .icon-block-xs{
     width:16px !important;
