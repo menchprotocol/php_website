@@ -1617,6 +1617,9 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     left: 0;
     padding: 10px 6px;
 }
+.this_selector:hover i{
+    background-color: #999999;
+}
 .popover-body .icon-block-xs{
     width:16px !important;
     height:16px !important;
