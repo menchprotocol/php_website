@@ -3293,7 +3293,7 @@ function go_next(do_skip){
     $("#list-in-12840 .edge-cover").each(function () {
         next_i_data.push({
             i__id: parseInt($(this).attr('i__id')),
-            i__text: ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : '' ),
+            i__text: ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null ),
             i__quantity: ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 ),
             i__uploads: [],
         });
@@ -3311,7 +3311,7 @@ function go_next(do_skip){
         target_i__id: parseInt($('#target_i__id').val()),
         focus_i_data: {
             i__id: parseInt($('#focus__id').val()),
-            i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : '' ),
+            i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
             i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
             i__uploads: [],
         },

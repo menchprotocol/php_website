@@ -2852,6 +2852,13 @@ class Ajax extends CI_Controller
         if(!isset($_POST['next_i_data'])){
             $_POST['next_i_data'] = array();
         }
+        if(!isset($_POST['next_i_data']['i__text'])){
+            $_POST['next_i_data']['i__text'] = null;
+        }
+        if(!isset($_POST['next_i_data']['i__uploads'])){
+            $_POST['next_i_data']['i__uploads'] = array();
+        }
+
 
         //Discover Focus Idea:
         foreach($this->I_model->fetch(array(

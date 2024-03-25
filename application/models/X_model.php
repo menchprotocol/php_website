@@ -1102,6 +1102,13 @@ class X_model extends CI_Model
 
         if($input__upload || $input__text){
 
+            if(!isset($focus_i_data['i__text'])){
+                $focus_i_data['i__text'] = null;
+            }
+            if(!isset($focus_i_data['i__uploads'])){
+                $focus_i_data['i__uploads'] = array();
+            }
+
             //Must add a new idea, but first let's validate the input:
             /*
             if($i['i__type']==6683 && strlen($focus_i_data['i__text'])){
