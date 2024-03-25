@@ -1490,12 +1490,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             $focus_i__or = $focus_i;
         }
     }
-    $focus_i__selected = $focus_i__or && count($CI->X_model->fetch(array(
-        'x__type' => 7712, //Input Choice
-        'x__player' => $x__player,
-        'x__previous' => $focus_i__or['i__id'],
-        'x__next' => $i['i__id'],
-    )));
 
 
 
@@ -1551,7 +1545,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
     if($focus_i__or){
-        $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( $focus_i__selected ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
+        $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( count($CI->X_model->fetch(array(
+                'x__type' => 7712, //Input Choice
+                'x__player' => $x__player,
+                'x__previous' => $focus_i__or['i__id'],
+                'x__next' => $i['i__id'],
+            ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
     }
 
     $ui .= '<div class="cover-content">';
