@@ -859,7 +859,7 @@ function add_media(result_info){
 function load_card_clickers(){
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source';
+    var ignore_clicks = 'a, .btn, textarea, .x__message, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
     $( ".card_click" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length){
             js_redirect($(this).attr('href'));
