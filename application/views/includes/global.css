@@ -1610,7 +1610,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     width: 27px;
     height: 23px;
     cursor: pointer;
-    z-index: 99999 !important;
+    z-index: 999 !important;
     display: block;
     position: absolute;
     left: 6px;
