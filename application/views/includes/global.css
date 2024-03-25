@@ -87,6 +87,7 @@ body {
     margin-bottom: 2px;
 }
 .edge-cover .card_covers,
+.edge-cover .card_covers .btn,
 .edge-cover .card_covers i{
     color: #999999 !important;
 }
