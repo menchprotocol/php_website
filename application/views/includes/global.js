@@ -869,7 +869,7 @@ function load_card_clickers(){
     if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
         console.log('ACTIVATED');
         var is_single_choice = ( focus_i__type==6684 );
-        $(".this_selector").unbind().click(function (e) {
+        $(".this_selector").click(function (e) { //unbind().
             console.log('CLICKED');
             if($('.this_selector_'+$(this).attr('selection_i__id')+' i').hasClass('fa-square-check')){
                 //Already selected, so unselect:
