@@ -1195,7 +1195,11 @@ class X_model extends CI_Model
             'x__message' => $x_data['x__message'],
         )) as $already_discovered){
             //Already discovered! Return this:
-            return $already_discovered;
+            return array(
+                'status' => 1,
+                'message' => 'Marked as Complete',
+                'new_x' => $already_discovered,
+            );
         }
 
         //Add new transaction:
