@@ -1551,7 +1551,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 'x__player' => $x__player,
                 'x__previous' => $focus_i__or['i__id'],
                 'x__next' => $i['i__id'],
-            ))) ? '<i class="fas fa-square-check fa-sharp" title="'..'"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
+            ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
     }
 
     $ui .= '<div class="cover-content">';
