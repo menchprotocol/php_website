@@ -1832,10 +1832,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 'x__type' => 33532, //Share Idea
                 'x__previous' => $i['i__id'],
                 'x__player' => $player_e['e__id'],
-            ), array('x__next'), 0, 0);
+            ), array('x__next'));
 
             $input_attributes = '';
-            $previous_response = ( isset($x_ideations[0]['x__message']) ? $x_ideations[0]['x__message'] : '' );
+            $previous_response = ( isset($x_ideations[0]['i__message']) ? $x_ideations[0]['i__message'] : '' );
 
             if (in_array($i['i__type'], $CI->config->item('n___43002'))) {
 
