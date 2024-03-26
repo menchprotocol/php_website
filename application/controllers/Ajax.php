@@ -2922,6 +2922,19 @@ class Ajax extends CI_Controller
                 }
 
 
+                return array(
+                    'status' => 0,
+                    'message' => 'No',
+                    'list' => $this->X_model->fetch(array(
+                        'i__type NOT IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Ignore paid answers since they cannot be removed!
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type' => 7712, //Input Choice
+                        'x__player' => $player_e['e__id'],
+                        'x__previous' => $focus_i['i__id'],
+                    ), array('x__next')),
+                    'selection_i__id' => $_POST['selection_i__id'],
+                );
+
                 //Delete ALL previous answers that are not currently selected, if any:
                 $already_answered = array();
                 foreach($this->X_model->fetch(array(
