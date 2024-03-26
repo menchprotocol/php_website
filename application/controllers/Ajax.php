@@ -2895,10 +2895,10 @@ class Ajax extends CI_Controller
                         'x__following' => 40834, //Min Selection
                     ), array(), 1) as $limit){
                         if(intval($limit['x__message']) > 0 && $total_selected < intval($limit['x__message'])){
-                            return array(
+                            return view_json(array(
                                 'status' => 0,
                                 'message' => 'Select '.$limit['x__message'].' or more ideas to go next.',
-                            );
+                            ));
                         }
                     }
                 }
@@ -2913,16 +2913,16 @@ class Ajax extends CI_Controller
                         'x__following' => 40833, //Max Selection
                     ), array(), 1) as $limit){
                         if(intval($limit['x__message']) > 0 && $total_selected > intval($limit['x__message'])){
-                            return array(
+                            return view_json(array(
                                 'status' => 0,
                                 'message' => 'You cannot select more than '.$limit['x__message'].' items.',
-                            );
+                            ));
                         }
                     }
                 }
 
 
-                return array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'No',
                     'list' => $this->X_model->fetch(array(
@@ -2933,7 +2933,7 @@ class Ajax extends CI_Controller
                         'x__previous' => $focus_i['i__id'],
                     ), array('x__next')),
                     'selection_i__id' => $_POST['selection_i__id'],
-                );
+                ));
 
                 //Delete ALL previous answers that are not currently selected, if any:
                 $already_answered = array();
