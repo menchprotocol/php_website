@@ -2870,7 +2870,7 @@ class Ajax extends CI_Controller
             $input__upload = in_array($focus_i['i__type'], $this->config->item('n___43004'));
             $input__text = in_array($focus_i['i__type'], $this->config->item('n___43002')) || in_array($focus_i['i__type'], $this->config->item('n___43003'));
             $total_selected = count($_POST['selection_i__id']);
-            $trying_to_skip = ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['next_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['next_i_data']['i__uploads'])) || ($input__text && $input__upload && !count($_POST['next_i_data']['i__uploads']) && !strlen($_POST['next_i_data']['i__text'])));
+            $trying_to_skip = ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['focus_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['focus_i_data']['i__uploads'])) || ($input__text && $input__upload && !count($_POST['focus_i_data']['i__uploads']) && !strlen($_POST['focus_i_data']['i__text'])));
             $i_required = i_required($focus_i);
 
             //If skipping, make sure they can:
@@ -2988,6 +2988,10 @@ class Ajax extends CI_Controller
 
             //Look through ALL next ideas and see which ones we can complete, if any:
             foreach($_POST['next_i_data'] as $next_i_data){
+
+                if(!isset($next_i_data['i__id'])){
+                    continue;
+                }
 
                 if($input__selection && !in_array($next_i_data['i__id'], $_POST['selection_i__id'])){
                     //Not selected, move on:
