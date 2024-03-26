@@ -1546,11 +1546,12 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
     if($focus_i__or){
         $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( count($CI->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 7712, //Input Choice
                 'x__player' => $x__player,
                 'x__previous' => $focus_i__or['i__id'],
                 'x__next' => $i['i__id'],
-            ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
+            ))) ? '<i class="fas fa-square-check fa-sharp" title="'..'"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
     }
 
     $ui .= '<div class="cover-content">';
