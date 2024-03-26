@@ -1613,7 +1613,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     z-index: 999 !important;
     display: block;
     position: absolute;
-    top: 21px;
+    top: 5px;
     left: 0;
     padding: 10px 6px;
 }
@@ -2305,7 +2305,7 @@ input.form-control {
 }
 .card_cover.card-12273{
     margin:0 0 !important;
-    padding:21px 0 !important;
+    padding:5px 0 !important;
     border-top: 1px solid #000000;
 }
 .flip-content .card_cover.card-12273{
