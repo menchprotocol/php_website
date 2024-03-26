@@ -1143,25 +1143,51 @@ class X_model extends CI_Model
                 );
             }
 
+            //Find previous answers by this user:
+            $x_responses = $this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__type' => 33532, //Share Idea
+                'x__previous' => $i['i__id'],
+                'x__player' => $x__player,
+            ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
+
             //All validated, lets make the new idea:
             if(strlen($focus_i_data['i__text']) || count($focus_i_data['i__uploads'])){
 
                 //TODO Consider file upload and save those as well...
 
-                $i_new = $this->I_model->create(array(
-                    'i__message' => $focus_i_data['i__text'],
-                    'i__type' => 6677, //Statement
-                    'i__privacy' => 42625, //Private
-                ), $x__player);
+                if(count($x_responses) && $focus_i_data['i__text']!=$x_responses[0]['i__message']){
+                    //Update existing response:
+                    $view_sync_links = view_sync_links($focus_i_data['i__text'], true, $x_responses[0]['i__id']);
+                } else {
+                    //Create a new response:
+                    $i_new = $this->I_model->create(array(
+                        'i__message' => $focus_i_data['i__text'],
+                        'i__type' => 6677, //Statement
+                        'i__privacy' => 42625, //Private
+                    ), $x__player);
 
 
-                //Link to this idea:
-                $this->X_model->create(array(
-                    'x__type' => 33532,
-                    'x__player' => $x__player,
-                    'x__previous' => $i['i__id'],
-                    'x__next' => $i_new['i__id'],
-                ));
+                    //Link to this idea:
+                    $this->X_model->create(array(
+                        'x__type' => 33532,
+                        'x__player' => $x__player,
+                        'x__previous' => $i['i__id'],
+                        'x__next' => $i_new['i__id'],
+                    ));
+                }
+
+            } elseif (count($x_responses)){
+
+                //Delete Links
+                $this->I_model->remove($x_responses[0]['i__id'] , $x__player);
+
+                //Delete Idea:
+                $this->I_model->update($x_responses[0]['i__id'], array(
+                    'i__privacy' => 6182, //Deleted Idea
+                ), true, $x__player);
+
             }
 
 

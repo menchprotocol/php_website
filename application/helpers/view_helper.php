@@ -1834,7 +1834,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         } elseif (in_array($i['i__type'], $CI->config->item('n___33532'))) {
 
             //Find the created idea if any:
-            $x_ideations = $CI->X_model->fetch(array(
+            $x_responses = $CI->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type' => 33532, //Share Idea
@@ -1843,7 +1843,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
 
             $input_attributes = '';
-            $previous_response = ( isset($x_ideations[0]['i__message']) ? $x_ideations[0]['i__message'] : '' );
+            $previous_response = ( isset($x_responses[0]['i__message']) ? $x_responses[0]['i__message'] : '' );
 
             if (in_array($i['i__type'], $CI->config->item('n___43002'))) {
 
