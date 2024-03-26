@@ -1157,9 +1157,11 @@ class X_model extends CI_Model
 
                 //TODO Consider file upload and save those as well...
 
-                if(count($x_responses) && $focus_i_data['i__text']!=$x_responses[0]['i__message']){
-                    //Update existing response:
-                    $view_sync_links = view_sync_links($focus_i_data['i__text'], true, $x_responses[0]['i__id']);
+                if(count($x_responses)){
+                    //Update existing response if different:
+                    if($focus_i_data['i__text']!=$x_responses[0]['i__message']){
+                        $view_sync_links = view_sync_links($focus_i_data['i__text'], true, $x_responses[0]['i__id']);
+                    }
                 } else {
                     //Create a new response:
                     $i_new = $this->I_model->create(array(
