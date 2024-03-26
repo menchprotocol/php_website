@@ -2992,6 +2992,12 @@ class Ajax extends CI_Controller
                 if(!isset($next_i_data['i__id'])){
                     continue;
                 }
+                if(!isset($next_i_data['i__text'])){
+                    $next_i_data['i__text'] = null;
+                }
+                if(!isset($next_i_data['i__uploads'])){
+                    $next_i_data['i__uploads'] = array();
+                }
 
                 if($input__selection && !in_array($next_i_data['i__id'], $_POST['selection_i__id'])){
                     //Not selected, move on:
