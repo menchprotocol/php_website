@@ -2926,7 +2926,7 @@ class Ajax extends CI_Controller
                     'status' => 0,
                     'message' => 'No',
                     'list' => $this->X_model->fetch(array(
-                        'i__type NOT IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Ignore paid answers since they cannot be removed!
+                        //'i__type NOT IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Ignore paid answers since they cannot be removed!
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 7712, //Input Choice
                         'x__player' => $player_e['e__id'],
