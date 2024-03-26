@@ -1158,18 +1158,20 @@ class X_model extends CI_Model
                 //TODO Consider file upload and save those as well...
 
                 if(count($x_responses)){
+
                     //Update existing response if different:
                     if($focus_i_data['i__text']!=$x_responses[0]['i__message']){
                         $view_sync_links = view_sync_links($focus_i_data['i__text'], true, $x_responses[0]['i__id']);
                     }
+
                 } else {
+
                     //Create a new response:
                     $i_new = $this->I_model->create(array(
                         'i__message' => $focus_i_data['i__text'],
                         'i__type' => 6677, //Statement
                         'i__privacy' => 42625, //Private
                     ), $x__player);
-
 
                     //Link to this idea:
                     $this->X_model->create(array(
@@ -1178,6 +1180,7 @@ class X_model extends CI_Model
                         'x__previous' => $i['i__id'],
                         'x__next' => $i_new['i__id'],
                     ));
+
                 }
 
             } elseif (count($x_responses)){
@@ -1191,7 +1194,6 @@ class X_model extends CI_Model
                 ), true, $x__player);
 
             }
-
 
         }
 
