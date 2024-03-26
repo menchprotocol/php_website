@@ -1831,6 +1831,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__type' => 33532, //Share Idea
                 'x__previous' => $i['i__id'],
+                'x__player' => $player_e['e__id'],
             ), array('x__next'), 0, 0);
 
             $input_attributes = '';
