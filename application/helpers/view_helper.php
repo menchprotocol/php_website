@@ -1949,8 +1949,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
 
-
-
     //Bottom Bar
     if(!$cache_app){
 
@@ -2056,29 +2054,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             } elseif(0 && $x__type_target_bar==41037 && $focus_i__or){
 
                 //Selector
-
-            } elseif($x__type_target_bar==43010 && $is_locked && !$focus_i__or){
-
-                /*
-
-                count($CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__privacy IN (' . join(',', $CI->config->item('n___42948')) . ')' => null, //Public Ideas
-                    'x__type IN (' . join(',', $CI->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                    'x__previous' => $i['i__id'],
-                ), array('x__next')))
-
-                 * */
-
-                //
-
-                $bottom_bar_ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
-
-
-                //$bottom_bar_ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').prepend(\'<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top" class="make_mini"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>\') }); </script>';
-
-                //Locked
-                //$bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>';
 
             } elseif($x__type_target_bar==4235 && !$discovery_mode && $i_startable && $access_level_i>=1){
 
@@ -2245,7 +2220,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $bottom_bar_ui .= '</span>';
                 }
             }
+        } elseif($is_locked && !$focus_i__or){
+            $bottom_bar_ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
         }
+
 
 
         if($bottom_bar_ui){
