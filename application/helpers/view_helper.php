@@ -2221,7 +2221,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 }
             }
         } elseif($is_locked && !$focus_i__or){
-            $bottom_bar_ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
+            $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
         }
 
 
