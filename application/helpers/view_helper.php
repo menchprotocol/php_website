@@ -625,6 +625,14 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
             'x__previous' => $i__id,
         );
 
+        //HACK:
+        if($x__type==42997){
+            $player_e = superpower_unlocked(null, 0, $this->player_e);
+            if($player_e){
+                $query_filters['x__player !='] = $player_e['e__id'];
+            }
+        }
+
     } elseif(in_array($x__type, $CI->config->item('n___12144'))){
 
         //DISCOVERIES
@@ -1832,7 +1840,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 'x__type' => 33532, //Share Idea
                 'x__previous' => $i['i__id'],
                 'x__player' => $player_e['e__id'],
-            ), array('x__next'));
+            ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
 
             $input_attributes = '';
             $previous_response = ( isset($x_ideations[0]['i__message']) ? $x_ideations[0]['i__message'] : '' );
