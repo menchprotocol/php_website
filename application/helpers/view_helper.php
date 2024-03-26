@@ -627,7 +627,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
         //HACK:
         if($x__type==42997){
-            $player_e = superpower_unlocked(null, 0, $CI->player_e);
+            $player_e = superpower_unlocked();
             if($player_e){
                 $query_filters['x__player !='] = $player_e['e__id'];
             }
