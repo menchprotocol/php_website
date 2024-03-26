@@ -1144,20 +1144,26 @@ class X_model extends CI_Model
             }
 
             //All validated, lets make the new idea:
-            $i_new = $this->I_model->create(array(
-                'i__message' => $focus_i_data['i__text'],
-                'i__type' => 6677, //Statement
-                'i__privacy' => 42625, //Private
-            ), $x__player);
+            if(strlen($focus_i_data['i__text']) || count($focus_i_data['i__uploads'])){
+
+                //TODO Consider file upload and save those as well...
+
+                $i_new = $this->I_model->create(array(
+                    'i__message' => $focus_i_data['i__text'],
+                    'i__type' => 6677, //Statement
+                    'i__privacy' => 42625, //Private
+                ), $x__player);
 
 
-            //Link to this idea:
-            $this->X_model->create(array(
-                'x__type' => 33532,
-                'x__player' => $x__player,
-                'x__previous' => $i['i__id'],
-                'x__next' => $i_new['i__id'],
-            ));
+                //Link to this idea:
+                $this->X_model->create(array(
+                    'x__type' => 33532,
+                    'x__player' => $x__player,
+                    'x__previous' => $i['i__id'],
+                    'x__next' => $i_new['i__id'],
+                ));
+            }
+
 
         }
 
