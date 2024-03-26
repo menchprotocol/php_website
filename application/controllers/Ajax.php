@@ -2921,45 +2921,57 @@ class Ajax extends CI_Controller
                     }
                 }
 
-
-                //Delete ALL previous answers:
-                foreach($this->X_model->fetch(array(
+                //Are there are previous different answers?
+                $previous_filter = array(
+                    'i__type NOT IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Ignore paid answers since they cannot be removed!
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY ANSWERED
                     'x__player' => $player_e['e__id'],
                     'x__previous' => $focus_i['i__id'],
-                ), array('x__next')) as $x_selection){
+                );
+                if($total_selected){
+                    $previous_filter['x__next NOT IN (' . join(',', $_POST['selection_i__id']) . ')'] = null;
+                }
+                $previous_diff_answers = $this->X_model->fetch($previous_filter, array('x__next'));
+
+                //Delete ALL previous answers:
+                foreach($previous_diff_answers as $x_selection){
 
                     $this->X_model->update($x_selection['x__id'], array(
                         'x__privacy' => 6173, //Transaction Deleted
                     ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
 
-                    if(!in_array($x_selection['i__type'], $this->config->item('n___41055'))){
+                    //Remove discovery:
+                    foreach($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__previous' => $x_selection['i__id'],
+                        'x__player' => $player_e['e__id'],
+                    ), array(), 0) as $x_discovery){
 
-                        //Remove discovery of the selected since its not a payment type:
-                        foreach($this->X_model->fetch(array(
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                            'x__previous' => $x_selection['i__id'],
-                            'x__player' => $player_e['e__id'],
-                        ), array(), 0) as $x_discovery){
+                        $this->X_model->update($x_discovery['x__id'], array(
+                            'x__privacy' => 6173, //Transaction Deleted
+                        ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
 
-                            $this->X_model->update($x_discovery['x__id'], array(
-                                'x__privacy' => 6173, //Transaction Deleted
-                            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
-
-                        }
                     }
                 }
 
-                //Save New Answers
+                //Save New Answers if not already:
                 foreach($_POST['selection_i__id'] as $answer_i__id){
-                    $this->X_model->create(array(
+                    if(!count($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 7712, //Input Choice
                         'x__player' => $player_e['e__id'],
                         'x__previous' => $focus_i['i__id'],
                         'x__next' => $answer_i__id,
-                    ));
+                    )))){
+                        $this->X_model->create(array(
+                            'x__type' => 7712, //Input Choice
+                            'x__player' => $player_e['e__id'],
+                            'x__previous' => $focus_i['i__id'],
+                            'x__next' => $answer_i__id,
+                        ));
+                    }
                 }
 
             }
@@ -2974,9 +2986,37 @@ class Ajax extends CI_Controller
             }
 
 
-            if(!$input__selection) {
-                //AND Idea, Look through ALL next ideas and see which ones we can complete, if any:
-                //TODO
+            //Look through ALL next ideas and see which ones we can complete, if any:
+            foreach($_POST['next_i_data'] as $next_i_data){
+
+                if($input__selection && !in_array($next_i_data['i__id'], $_POST['selection_i__id'])){
+                    //Not selected, move on:
+                    continue;
+                }
+
+                $is = $this->I_model->fetch(array(
+                    'i__id' => $next_i_data['i__id'],
+                ));
+                if(!count($is)){
+                    continue;
+                }
+
+                //Can we auto-complete?
+                if(in_array($is[0]['i__type'], $this->config->item('n___43039'))){
+                    //Focus Discovery only, so must go to next level:
+                    continue;
+                }
+
+                //Analyze input:
+                $input__text = in_array($is[0]['i__type'], $this->config->item('n___43002')) || in_array($is[0]['i__type'], $this->config->item('n___43003'));
+                $input__upload = in_array($is[0]['i__type'], $this->config->item('n___43004'));
+                $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['i__uploads'])) || ($input__text && $input__upload && !count($next_i_data['i__uploads']) && !strlen($next_i_data['i__text'])));
+
+                //Try to complete:
+                $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
+                    'x__weight' => $next_i_data['i__quantity'],
+                ));
+
             }
 
             //All good:
