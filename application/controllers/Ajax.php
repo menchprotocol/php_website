@@ -2921,21 +2921,22 @@ class Ajax extends CI_Controller
                     }
                 }
 
-                //Are there are previous different answers?
-                $previous_filter = array(
+
+                //Delete ALL previous answers that are not currently selected, if any:
+                $already_answered = array();
+                foreach($this->X_model->fetch(array(
                     'i__type NOT IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Ignore paid answers since they cannot be removed!
                     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___32234')) . ')' => null, //DISCOVERY ANSWERED
+                    'x__type' => 7712, //Input Choice
                     'x__player' => $player_e['e__id'],
                     'x__previous' => $focus_i['i__id'],
-                );
-                if($total_selected){
-                    $previous_filter['x__next NOT IN (' . join(',', $_POST['selection_i__id']) . ')'] = null;
-                }
-                $previous_diff_answers = $this->X_model->fetch($previous_filter, array('x__next'));
+                ), array('x__next')) as $x_selection){
 
-                //Delete ALL previous answers:
-                foreach($previous_diff_answers as $x_selection){
+                    if(in_array($x_selection['i__id'], $_POST['selection_i__id'])){
+                        //Current selection is already in the database from before:
+                        array_push($already_answered, $x_selection['i__id']);
+                        continue; //Nothing we need to do here...
+                    }
 
                     $this->X_model->update($x_selection['x__id'], array(
                         'x__privacy' => 6173, //Transaction Deleted
@@ -2958,13 +2959,7 @@ class Ajax extends CI_Controller
 
                 //Save New Answers if not already:
                 foreach($_POST['selection_i__id'] as $answer_i__id){
-                    if(!count($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 7712, //Input Choice
-                        'x__player' => $player_e['e__id'],
-                        'x__previous' => $focus_i['i__id'],
-                        'x__next' => $answer_i__id,
-                    )))){
+                    if(!in_array($answer_i__id, $already_answered)){
                         $this->X_model->create(array(
                             'x__type' => 7712, //Input Choice
                             'x__player' => $player_e['e__id'],
@@ -3021,11 +3016,15 @@ class Ajax extends CI_Controller
                 $input__text = in_array($is[0]['i__type'], $this->config->item('n___43002')) || in_array($is[0]['i__type'], $this->config->item('n___43003'));
                 $input__upload = in_array($is[0]['i__type'], $this->config->item('n___43004'));
                 $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['i__uploads'])) || ($input__text && $input__upload && !count($next_i_data['i__uploads']) && !strlen($next_i_data['i__text'])));
+                $i_required = i_required($is[0]);
 
-                //Try to complete:
-                $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
-                    'x__weight' => $next_i_data['i__quantity'],
-                ));
+                //If skipping, make sure they can:
+                if(!$i_required || !$trying_to_skip){
+                    //Try to complete:
+                    $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
+                        'x__weight' => $next_i_data['i__quantity'],
+                    ));
+                }
 
             }
 
