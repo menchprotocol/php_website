@@ -2070,6 +2070,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                  * */
 
+                //
+
+                $bottom_bar_ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
+
+
                 //$bottom_bar_ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').prepend(\'<span title="'.$m_target_bar['m__title'].'" data-toggle="tooltip" data-placement="top" class="make_mini"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span></span>\') }); </script>';
 
                 //Locked
