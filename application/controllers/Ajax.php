@@ -2931,7 +2931,7 @@ class Ajax extends CI_Controller
                         'x__type' => 7712, //Input Choice
                         'x__player' => $player_e['e__id'],
                         'x__previous' => $focus_i['i__id'],
-                    ), array('x__next')),
+                    )),
                     'selection_i__id' => $_POST['selection_i__id'],
                 ));
 
