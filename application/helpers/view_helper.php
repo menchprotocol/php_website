@@ -1527,7 +1527,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     $is_locked = ($discovery_mode && !$has_discovered && !$focus__node);
 
-
     if(($goto_start || !$superpower_10939) && $i_startable){
         $href = view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235);
     } elseif($discovery_mode) {
@@ -1552,6 +1551,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     if($discovery_mode && $player_e && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
+    if($is_locked){
+        $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
+    }
+
     if($focus_i__or){
         $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( count($CI->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2220,8 +2223,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $bottom_bar_ui .= '</span>';
                 }
             }
-        } elseif($is_locked && !$focus_i__or){
-            $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
         }
 
 
