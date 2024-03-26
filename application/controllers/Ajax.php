@@ -3021,7 +3021,7 @@ class Ajax extends CI_Controller
                 if($i_required && $trying_to_skip){
                     return view_json(array(
                         'status' => 0,
-                        'message' => 'You are required to respond to ['.view_i_title($is[0]).']',
+                        'message' => 'You are required to respond to ['.view_i_title($is[0], true).']',
                     ));
                 }
 
