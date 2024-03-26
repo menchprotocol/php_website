@@ -3018,13 +3018,17 @@ class Ajax extends CI_Controller
                 $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['i__uploads'])) || ($input__text && $input__upload && !count($next_i_data['i__uploads']) && !strlen($next_i_data['i__text'])));
                 $i_required = i_required($is[0]);
 
-                //If skipping, make sure they can:
-                if(!$i_required || !$trying_to_skip){
-                    //Try to complete:
-                    $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
-                        'x__weight' => $next_i_data['i__quantity'],
+                if($i_required && $trying_to_skip){
+                    return view_json(array(
+                        'status' => 0,
+                        'message' => 'You are required to respond to ['.view_i_title($is[0]).']',
                     ));
                 }
+
+                //Try to complete:
+                $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
+                    'x__weight' => $next_i_data['i__quantity'],
+                ));
 
             }
 
