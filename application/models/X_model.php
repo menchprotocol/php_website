@@ -1529,10 +1529,19 @@ class X_model extends CI_Model
             return false;
         }
 
-        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
-        $recursive_down_ids = $this->I_model->recursive_down_ids($i, ( $input__selection ? 'OR' : 'AND' ));
+        $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
         if(!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids'])){
-            return false;
+            $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
+            if($input__selection){
+                return array(
+                    'fixed_total' => 1,
+                    'list_total' => array($i['i__id']),
+                    'fixed_discovered' => 1,
+                    'list_discovered' => array($i['i__hashtag']),
+                );
+            } else {
+                return false;
+            }
         }
 
         $current_level++;
