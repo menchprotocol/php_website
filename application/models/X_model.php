@@ -1547,7 +1547,7 @@ class X_model extends CI_Model
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__previous'), 0) as $completed){
             if(!in_array(intval($completed['i__id']), $list_discovered)){
-                array_push($list_discovered, intval($completed['i__id']));
+                array_push($list_discovered, $completed['i__hashtag']);
             }
         }
 
