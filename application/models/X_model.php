@@ -1529,13 +1529,10 @@ class X_model extends CI_Model
             return false;
         }
 
-        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
-        if(!$input__selection && (!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids']))){
+        if(!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids'])){
             return false;
         }
-        $list_i = ( isset($recursive_down_ids['recursive_i_ids']) && count($recursive_down_ids['recursive_i_ids']) ? $recursive_down_ids['recursive_i_ids'] : array($i['i__id']) );
-
 
         $current_level++;
         array_push($loop_breaker_ids, intval($i['i__id']));
@@ -1545,7 +1542,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $e__id, //Belongs to this Member
-            'x__previous IN (' . join(',', $list_i ) . ')' => null,
+            'x__previous IN (' . join(',', $recursive_down_ids['recursive_i_ids'] ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__previous'), 0) as $completed){
@@ -1557,40 +1554,42 @@ class X_model extends CI_Model
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
-            'fixed_total' => (isset($recursive_down_ids['recursive_i_ids']) ? count($recursive_down_ids['recursive_i_ids']) : 0 ),
-            'list_total' => (isset($recursive_down_ids['recursive_i_ids']) ? $recursive_down_ids['recursive_i_ids'] : array() ),
+            'fixed_total' => count($recursive_down_ids['recursive_i_ids']),
+            'list_total' => $recursive_down_ids['recursive_i_ids'],
             'fixed_discovered' => count($list_discovered),
             'list_discovered' => $list_discovered,
         );
 
         //Now let's check possible expansions:
-        foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
-            'x__player' => $e__id, //Belongs to this Member
-            'x__previous IN (' . join(',', $list_i ) . ')' => null,
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('x__next')) as $expansion_in) {
+        if(count($recursive_down_ids['recursive_i_ids'])){
+            foreach($this->X_model->fetch(array(
+                'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
+                'x__player' => $e__id, //Belongs to this Member
+                'x__previous IN (' . join(',', $recursive_down_ids['recursive_i_ids'] ) . ')' => null,
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            ), array('x__next')) as $expansion_in) {
 
-            //Fetch recursive:
-            $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
+                //Fetch recursive:
+                $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
 
-            //Addup completion stats for this:
-            $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
-            $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
+                //Addup completion stats for this:
+                $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
+                $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
 
-            if($tree_progress['list_total'] && count($tree_progress['list_total'])){
-                foreach($tree_progress['list_total'] as $tree_id){
-                    if(!in_array($tree_id, $metadata_this['list_total'])){
-                        array_push($metadata_this['list_total'], $tree_id);
+                if($tree_progress['list_total'] && count($tree_progress['list_total'])){
+                    foreach($tree_progress['list_total'] as $tree_id){
+                        if(!in_array($tree_id, $metadata_this['list_total'])){
+                            array_push($metadata_this['list_total'], $tree_id);
+                        }
                     }
                 }
-            }
 
-            if($tree_progress['list_discovered'] && count($tree_progress['list_discovered'])){
-                foreach($tree_progress['list_discovered'] as $tree_id){
-                    if(!in_array($tree_id, $metadata_this['list_discovered'])){
-                        array_push($metadata_this['list_discovered'], $tree_id);
+                if($tree_progress['list_discovered'] && count($tree_progress['list_discovered'])){
+                    foreach($tree_progress['list_discovered'] as $tree_id){
+                        if(!in_array($tree_id, $metadata_this['list_discovered'])){
+                            array_push($metadata_this['list_discovered'], $tree_id);
+                        }
                     }
                 }
             }
