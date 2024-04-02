@@ -136,7 +136,7 @@ echo view_i_nav(true, $focus_i);
 
         //Make Navigation visible only when the user scrolls to the bottom or the bottom is visible from the start:
         var $win = $(window);
-        if ((parseFloat($("body").height())+89) < parseFloat($win.height())) {
+        if ((parseFloat($("body").height())+89) > parseFloat($win.height())) {
             console.log('step1/'+$("body").height()+'/'+$win.height());
             $(".fixed-bottom").removeClass('hidden');
         } else {
