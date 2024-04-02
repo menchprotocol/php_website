@@ -1530,10 +1530,13 @@ class X_model extends CI_Model
         }
 
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
-        $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
-        if(!$input__selection && (!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids']))){
-            return false;
+        if(!$input__selection){
+            $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
+            if(!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids'])){
+                return false;
+            }
         }
+
 
         $current_level++;
         array_push($loop_breaker_ids, intval($i['i__id']));
