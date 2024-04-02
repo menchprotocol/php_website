@@ -1529,6 +1529,7 @@ class X_model extends CI_Model
             return false;
         }
 
+        $recursive_down_ids = array();
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         if(!$input__selection){
             $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
