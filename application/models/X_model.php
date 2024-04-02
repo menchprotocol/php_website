@@ -1003,12 +1003,12 @@ class X_model extends CI_Model
     {
 
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
-            return false;
+            return null;
         }
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
-        $found_trigger = false;
+        $found_trigger = null;
 
         foreach ($this->X_model->fetch(array(
             'x__previous' => $i['i__id'],
@@ -1072,7 +1072,7 @@ class X_model extends CI_Model
         }
 
         //Nothing found:
-        return false;
+        return null;
 
     }
 
