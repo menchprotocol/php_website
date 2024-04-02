@@ -1534,6 +1534,7 @@ class X_model extends CI_Model
         if(!$input__selection && (!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids']))){
             return false;
         }
+        $list_i = ( isset($recursive_down_ids['recursive_i_ids']) && count($recursive_down_ids['recursive_i_ids']) ? $recursive_down_ids['recursive_i_ids'] : array($i['i__id']) );
 
 
         $current_level++;
@@ -1544,7 +1545,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $e__id, //Belongs to this Member
-            'x__previous IN (' . join(',', ( count($recursive_down_ids['recursive_i_ids']) ? $recursive_down_ids['recursive_i_ids'] : array($i['i__id']) ) ) . ')' => null,
+            'x__previous IN (' . join(',', $list_i ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__previous'), 0) as $completed){
@@ -1566,7 +1567,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
             'x__player' => $e__id, //Belongs to this Member
-            'x__previous IN (' . join(',', ( count($recursive_down_ids['recursive_i_ids']) ? $recursive_down_ids['recursive_i_ids'] : array($i['i__id']) ) ) . ')' => null,
+            'x__previous IN (' . join(',', $list_i ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__next')) as $expansion_in) {
