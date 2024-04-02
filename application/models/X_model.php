@@ -1218,7 +1218,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__type NOT IN (' . join(',', $this->config->item('n___30469')) . ')' => null, //TICKETS
+            //'x__type NOT IN (' . join(',', $this->config->item('n___31776')) . ')' => null, //Unremovable Discoveries
             'x__previous' => ( isset($x_data['x__previous']) ? $x_data['x__previous'] : 0 ),
             'x__next' => ( isset($x_data['x__next']) ? $x_data['x__next'] : 0 ),
             'x__player' => $x__player,
@@ -1227,7 +1227,7 @@ class X_model extends CI_Model
             //Already discovered! Return this:
             return array(
                 'status' => 1,
-                'message' => 'Marked as Complete',
+                'message' => 'Already Discovered',
                 'new_x' => $already_discovered,
             );
         }
