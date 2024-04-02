@@ -1547,7 +1547,7 @@ class X_model extends CI_Model
         foreach($this->X_model->fetch(array(
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $e__id, //Belongs to this Member
-            'x__previous IN (' . join(',', $recursive_down_ids['recursive_i_ids'] ) . ')' => null,
+            'x__previous IN (' . join(',', ( count($recursive_down_ids['recursive_i_ids']) ? $recursive_down_ids['recursive_i_ids'] : array($i['i__id']) ) ) . ')' => null,
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__previous'), 0) as $completed){
