@@ -1655,7 +1655,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         if (in_array($i['i__type'], $CI->config->item('n___7712'))) {
 
             //OR Selection change headline menu title, if any:
-            $e___7712 = $this->config->item('e___7712');
+            $e___7712 = $CI->config->item('e___7712');
             $ui .= '<script> $(document).ready(function () { $(\'.nav__'.$i['i__id'].' .thepill12840 .xtypecounter12840\').remove(); $(\'.nav__'.$i['i__id'].' .thepill12840 .xtypetitle_12840\').text(\' '.$e___7712[$i['i__type']]['m__message'].': \'); }); </script>';
 
         } elseif (in_array($i['i__type'], $CI->config->item('n___41055'))) {
