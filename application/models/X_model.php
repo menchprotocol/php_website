@@ -1529,7 +1529,7 @@ class X_model extends CI_Model
             return false;
         }
 
-        $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
+        $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'ALL');
         if(!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids'])){
             return false;
         }
