@@ -1531,17 +1531,7 @@ class X_model extends CI_Model
 
         $recursive_down_ids = $this->I_model->recursive_down_ids($i, 'AND');
         if(!isset($recursive_down_ids['recursive_i_ids']) || !count($recursive_down_ids['recursive_i_ids'])){
-            $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
-            if($input__selection){
-                return array(
-                    'fixed_total' => 1,
-                    'list_total' => array($i['i__id']),
-                    'fixed_discovered' => 1,
-                    'list_discovered' => array($i['i__hashtag']),
-                );
-            } else {
-                return false;
-            }
+            return false;
         }
 
         $current_level++;
@@ -1579,6 +1569,10 @@ class X_model extends CI_Model
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ), array('x__next')) as $expansion_in) {
+
+                if($expansion_in['i__hashtag']=='Asia'){
+                    die('Asia');
+                }
 
                 //Fetch recursive:
                 $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
