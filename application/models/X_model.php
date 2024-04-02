@@ -1557,8 +1557,8 @@ class X_model extends CI_Model
 
         //Calculate common steps and expansion steps recursively for this u:
         $metadata_this = array(
-            'fixed_total' => count($recursive_down_ids['recursive_i_ids']),
-            'list_total' => $recursive_down_ids['recursive_i_ids'],
+            'fixed_total' => (isset($recursive_down_ids['recursive_i_ids']) ? count($recursive_down_ids['recursive_i_ids']) : 0 ),
+            'list_total' => (isset($recursive_down_ids['recursive_i_ids']) ? $recursive_down_ids['recursive_i_ids'] : array() ),
             'fixed_discovered' => count($list_discovered),
             'list_discovered' => $list_discovered,
         );
