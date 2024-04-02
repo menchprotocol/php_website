@@ -1573,6 +1573,20 @@ class X_model extends CI_Model
                 //Fetch recursive:
                 $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
 
+                if(!$tree_progress && !count($this->X_model->fetch(array(
+                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__player' => $e__id, //Belongs to this Member
+                        'x__previous' => $expansion_in['i__id'],
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                    $tree_progress = array(
+                        'fixed_total' => 1,
+                        'list_total' => array($expansion_in['i__id']),
+                        'fixed_discovered' => 0,
+                        'list_discovered' => array(),
+                    );
+                }
+
                 //Addup completion stats for this:
                 $metadata_this['fixed_total'] += $tree_progress['fixed_total'];
                 $metadata_this['fixed_discovered'] += $tree_progress['fixed_discovered'];
