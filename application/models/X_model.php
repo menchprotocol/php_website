@@ -1570,10 +1570,6 @@ class X_model extends CI_Model
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             ), array('x__next')) as $expansion_in) {
 
-                if($expansion_in['i__hashtag']=='AustraliaOceania'){
-                    die('AustraliaOceania');
-                }
-
                 //Fetch recursive:
                 $tree_progress = $this->X_model->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
 
