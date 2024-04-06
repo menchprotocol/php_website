@@ -18,7 +18,6 @@ if(isset($_GET['go'])){
     ), array(), 0) as $addition_sync){
 
         if(in_array($addition_sync['x__follower'], $scanned_user)){
-            echo '@'.$addition_sync['x__follower'].' scanned<hr />';
             continue;
         }
         array_push($scanned_user, $addition_sync['x__follower']);
@@ -26,38 +25,87 @@ if(isset($_GET['go'])){
 
         $addition_sync['x__message'] = ucwords(strtolower(trim(str_replace('  ',' ',$addition_sync['x__message']))));
 
-        /*
+
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__following' => 30198,
+            'x__follower' => $addition_sync['x__follower'],
         ), array(), 0) as $addition_sync){
-
+            $this->X_model->update($addition_sync['x__id'], array(
+                'x__privacy' => 6173, //Transaction Removed
+            ));
         }
-        */
 
-        if(!strlen($addition_sync['x__message'])){
-            echo 'NONE @'.$addition_sync['x__follower'];
+        $full_name = explode(' ', $addition_sync['x__message'], 3);
+
+        echo $addition_sync['x__message'].' | ';
+
+        if(count($full_name)==1){
+
+            //First name only:
+            echo 'First: '.$full_name[0];
+
+            $this->X_model->create(array(
+                'x__type' => 4251, //Follow Source
+                'x__player' => $addition_sync['x__follower'],
+                'x__following' => 42584,
+                'x__message' => $full_name[0],
+                'x__follower' => $addition_sync['x__follower'],
+            ));
+
+        } elseif(count($full_name)==2){
+            //First & last name:
+
+            $this->X_model->create(array(
+                'x__type' => 4251, //Follow Source
+                'x__player' => $addition_sync['x__follower'],
+                'x__following' => 42584,
+                'x__message' => $full_name[0],
+                'x__follower' => $addition_sync['x__follower'],
+            ));
+
+            $this->X_model->create(array(
+                'x__type' => 4251, //Follow Source
+                'x__player' => $addition_sync['x__follower'],
+                'x__following' => 30198,
+                'x__message' => $full_name[1],
+                'x__follower' => $addition_sync['x__follower'],
+            ));
+
+            echo 'First: '.$full_name[0];
+            echo ' Last: '.$full_name[1];
 
         } else {
 
-            $full_name = explode(' ', $addition_sync['x__message'], 3);
+            $this->X_model->create(array(
+                'x__type' => 4251, //Follow Source
+                'x__player' => $addition_sync['x__follower'],
+                'x__following' => 42584,
+                'x__message' => $full_name[0],
+                'x__follower' => $addition_sync['x__follower'],
+            ));
 
-            echo $addition_sync['x__message'].' | ';
-            if(count($full_name)==1){
-                //First name only:
-                echo 'First: '.$full_name[0];
-            } elseif(count($full_name)==2){
-                //First & last name:
-                echo 'First: '.$full_name[0];
-                echo ' Last: '.$full_name[1];
+            $this->X_model->create(array(
+                'x__type' => 4251, //Follow Source
+                'x__player' => $addition_sync['x__follower'],
+                'x__following' => 42616,
+                'x__message' => $full_name[1],
+                'x__follower' => $addition_sync['x__follower'],
+            ));
 
-            } else {
-                //First & middle & last name:
-                echo 'First: '.$full_name[0];
-                echo ' Middle: '.$full_name[1];
-                echo ' Last: '.$full_name[2];
-            }
+            $this->X_model->create(array(
+                'x__type' => 4251, //Follow Source
+                'x__player' => $addition_sync['x__follower'],
+                'x__following' => 30198,
+                'x__message' => $full_name[2],
+                'x__follower' => $addition_sync['x__follower'],
+            ));
+
+            //First & middle & last name:
+            echo 'First: '.$full_name[0];
+            echo ' Middle: '.$full_name[1];
+            echo ' Last: '.$full_name[2];
         }
 
         echo '<hr />';
