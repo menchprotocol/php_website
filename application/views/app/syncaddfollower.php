@@ -24,7 +24,11 @@ foreach($this->X_model->fetch(array(
         foreach($this->I_model->fetch(array(
             'i__id' => $addition_sync['x__next'],
         )) as $x_n){
-            echo $counter.') @'.$dicovered['e__handle'].' not following @'.$addition_sync['e__handle'].' even though discovered #'.$x_n['i__hashtag'].' with value "'.$dicovered['x__message'].'" ['.intval($append_source).']<hr />';
+            echo $counter.') @'.$dicovered['e__handle'].' not following @'.$addition_sync['e__handle'].' even though discovered #'.$x_n['i__hashtag'].' with value "'.$dicovered['x__message'].'" ['.( $append_source ? 1 : 0 ).']<hr />';
+        }
+
+        if($append_source){
+            break;
         }
 
     }
