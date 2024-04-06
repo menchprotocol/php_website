@@ -5,7 +5,7 @@ $counter = 0;
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 7545,
-    'x__following NOT IN (' . join(',', $this->config->item('n___43048')) . ')' => null, //No need to add these special ones...
+    'x__following NOT IN (' . join(',', $this->config->item('n___43048')) . ')' => null, //No need to add these special ones... SourceNickname
 ), array('x__following'), 0) as $addition_sync){
 
     //Fetch everyone who has discovered this idea:
@@ -31,7 +31,7 @@ foreach($this->X_model->fetch(array(
         foreach($this->I_model->fetch(array(
             'i__id' => $addition_sync['x__next'],
         )) as $x_n){
-            echo $counter.') @'.$dicovered['e__handle'].' not following @'.$addition_sync['e__handle'].' even though discovered #'.$x_n['i__hashtag'].'<hr />';
+            echo $counter.') @'.$dicovered['e__handle'].' not following @'.$addition_sync['e__handle'].' even though discovered #'.$x_n['i__hashtag'].' with value "'.$dicovered['x__message'].'"<hr />';
         }
 
         /*
