@@ -19,7 +19,7 @@ if(isset($_GET['go'])){
         $addition_sync['x__message'] = ucwords(strtolower(trim(str_replace('  ',' ',$addition_sync['x__message']))));
 
         if(!strlen($addition_sync['x__message'])){
-            echo 'NONE';
+            echo 'NONE @'.$addition_sync['x__follower'];
 
         } else {
             $full_name = explode(' ', $addition_sync['x__message'], 3);
