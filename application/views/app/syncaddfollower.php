@@ -17,7 +17,6 @@ foreach($this->X_model->fetch(array(
         if(append_source($addition_sync['x__following'], $dicovered['x__player'], $dicovered['x__message'], $addition_sync['x__next'])){
             $counter++;
         }
-
     }
 }
 
