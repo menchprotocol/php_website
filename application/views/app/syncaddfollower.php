@@ -14,24 +14,12 @@ foreach ($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__previous' => $addition_sync['x__next'],
-    ), array('x__player'), 0) as $dicovered) {
+    ), array('x__player'), 0, 0, array('x__id' => 'DESC')) as $dicovered) {
         //lets append this source:
-        if (append_source($addition_sync['x__following'], $dicovered['x__player'], $dicovered['x__message'], $addition_sync['x__next'])) {
+        if (!in_array($addition_sync['x__following'].'_'.$dicovered['x__player'], $updated) && append_source($addition_sync['x__following'], $dicovered['x__player'], $dicovered['x__message'], $addition_sync['x__next'])) {
+            array_push($updated, $addition_sync['x__following'].'_'.$dicovered['x__player']);
             $counter++;
-
-            foreach($this->I_model->fetch(array(
-                'i__id' => $addition_sync['x__next'],
-            )) as $x_n){
-                echo $counter.') @'.$dicovered['e__handle'].' not following @'.$addition_sync['e__handle'].' even though discovered #'.$x_n['i__hashtag'].' with value "'.$dicovered['x__message'].'"<hr />';
-            }
-
-            $is_found = true;
-            //break;
-
         }
-    }
-    if($is_found){
-        //break;
     }
 }
 
