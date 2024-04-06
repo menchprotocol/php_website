@@ -10,18 +10,37 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 
 if(isset($_GET['go'])){
 
+    $scanned_user = array();
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__following' => 30198,
     ), array(), 0) as $addition_sync){
 
+        if(in_array($addition_sync['x__follower'], $scanned_user)){
+            echo '@'.$addition_sync['x__follower'].' scanned<hr />';
+            continue;
+        }
+        array_push($scanned_user, $addition_sync['x__follower']);
+
+
         $addition_sync['x__message'] = ucwords(strtolower(trim(str_replace('  ',' ',$addition_sync['x__message']))));
+
+        /*
+        foreach($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__following' => 30198,
+        ), array(), 0) as $addition_sync){
+
+        }
+        */
 
         if(!strlen($addition_sync['x__message'])){
             echo 'NONE @'.$addition_sync['x__follower'];
 
         } else {
+
             $full_name = explode(' ', $addition_sync['x__message'], 3);
 
             echo $addition_sync['x__message'].' | ';
