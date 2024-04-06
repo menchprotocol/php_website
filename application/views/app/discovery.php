@@ -59,7 +59,13 @@ if(isset($_GET['go'])){
             'x__previous' => $month['i__id'],
         ), array('x__next')) as $day){
             $parts = explode(' ', $day['i__message']);
-            echo $day['i__message'].'/'.$parts[1].'/'.$map[$parts[1]].'<hr />';
+            echo $day['i__message'].'/'.$parts[1].'/'.$map[$parts[1]].'OK<hr />';
+            $this->X_model->create(array(
+                'x__player' => 1,
+                'x__following' => $map[$parts[1]],
+                'x__type' => 7545,
+                'x__next' => $day['i__id'],
+            ), true);
         }
     }
 }
