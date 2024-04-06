@@ -3,7 +3,7 @@
 //Sync All Adding followers:
 $counter = 0;
 foreach($this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    //'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 7545,
 ), array('x__following'), 0) as $addition_sync){
 
