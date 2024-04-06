@@ -16,22 +16,27 @@ if(isset($_GET['go'])){
         'x__following' => 30198,
     )) as $addition_sync){
 
-        $full_name = explode(' ', $addition_sync, 3);
-
-        echo $full_name.' | ';
-        if(count($full_name)==1){
-            //First name only:
-            echo 'First: '.$full_name[0];
-        } elseif(count($full_name)==2){
-            //First & last name:
-            echo 'First: '.$full_name[0];
-            echo ' Last: '.$full_name[1];
+        if(!strlen($addition_sync['x__message'])){
+            echo 'NONE';
 
         } else {
-            //First & middle & last name:
-            echo 'First: '.$full_name[0];
-            echo ' Middle: '.$full_name[1];
-            echo ' Last: '.$full_name[2];
+            $full_name = explode(' ', $addition_sync['x__message'], 3);
+
+            echo $addition_sync['x__message'].' | ';
+            if(count($full_name)==1){
+                //First name only:
+                echo 'First: '.$full_name[0];
+            } elseif(count($full_name)==2){
+                //First & last name:
+                echo 'First: '.$full_name[0];
+                echo ' Last: '.$full_name[1];
+
+            } else {
+                //First & middle & last name:
+                echo 'First: '.$full_name[0];
+                echo ' Middle: '.$full_name[1];
+                echo ' Last: '.$full_name[2];
+            }
         }
 
         echo '<hr />';
