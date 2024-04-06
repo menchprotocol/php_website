@@ -955,7 +955,7 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 
 }
 
-function data_type_validate($data_type, $data_value, $data_title){
+function data_type_validate($data_type, $data_value, $data_title = null){
 
     $CI =& get_instance();
     $e___4592 = $CI->config->item('e___4592'); //Data types

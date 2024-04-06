@@ -26,16 +26,24 @@ foreach($this->X_model->fetch(array(
         }
 
         //Does this source need a data type to be added?
-        if(count($this->X_model->fetch(array(
+        $invalid_data = false;
+        foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__following IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Data Types
             'x__follower' => $addition_sync['x__following'],
-        ))) && !strlen($dicovered['x__message'])){
-            //Yes and it's missing it:
+        )) as $data_type) {
+            $data_type_validate = data_type_validate($data_type['x__following'], $dicovered['x__message']);
+            if (!$data_type_validate['status']) {
+                //Yes and it's not the data type needed:
+                $invalid_data = true;
+            }
+        }
+        if($invalid_data){
             continue;
         }
 
+        //All good to add:
         $counter++;
 
         foreach($this->I_model->fetch(array(
