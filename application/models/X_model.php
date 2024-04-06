@@ -1328,112 +1328,61 @@ class X_model extends CI_Model
             ), array('x__following')) as $x_tag){
 
                 //Check if special profile add?
+                if(in_array($x_tag['x__following'], $this->config->item('n___43048'))){
 
-                if($x_tag['x__following']==6197 && strlen(trim($x_data['x__message']))>=2){
+                    //Special Addition:
 
-                    //Update Source Title:
-                    $this->E_model->update($x_data['x__player'], array(
-                        'e__title' => $x_data['x__message'],
-                    ), true, $x_data['x__player']);
+                    if($x_tag['x__following']==6197 && strlen(trim($x_data['x__message']))>=2){
 
-                    //Update live session as well:
-                    $es_creator[0]['e__title'] = $x_data['x__message'];
-                    $this->E_model->activate_session($es_creator[0], true);
+                        //Update Source Title:
+                        $this->E_model->update($x_data['x__player'], array(
+                            'e__title' => $x_data['x__message'],
+                        ), true, $x_data['x__player']);
 
-                } elseif($x_tag['x__following']==6198 && view_valid_handle_e($x_data['x__message'])){
+                        //Update live session as well:
+                        $es_creator[0]['e__title'] = $x_data['x__message'];
+                        $this->E_model->activate_session($es_creator[0], true);
 
-                    //Update Source Cover:
-                    foreach($this->E_model->fetch(array(
-                        'LOWER(e__handle)' => strtolower(view_valid_handle_e($x_data['x__message'])),
-                    )) as $e){
-                        foreach($this->X_model->fetch(array(
-                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__follower' => $e['e__id'],
-                        ), array('x__following'), 1, 0, array('e__weight' => 'DESC')) as $following){
+                    } elseif($x_tag['x__following']==6198 && view_valid_handle_e($x_data['x__message'])){
 
-                            //Valid Image URL?
-                            $view_links = view_sync_links($following['x__message'], true);
-                            if(count($view_links['i__references'][4260])){
-                                //Update profile picture for current user:
-                                $this->E_model->update($x_data['x__player'], array(
-                                    'e__cover' => $following['x__message'],
-                                ), true, $x_data['x__player']);
+                        //Update Source Cover:
+                        foreach($this->E_model->fetch(array(
+                            'LOWER(e__handle)' => strtolower(view_valid_handle_e($x_data['x__message'])),
+                        )) as $e){
+                            foreach($this->X_model->fetch(array(
+                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__follower' => $e['e__id'],
+                            ), array('x__following'), 1, 0, array('e__weight' => 'DESC')) as $following){
 
-                                //Update live session as well:
-                                $es_creator[0]['e__cover'] = $following['x__message'];
-                                $this->E_model->activate_session($es_creator[0], true);
+                                //Valid Image URL?
+                                $view_links = view_sync_links($following['x__message'], true);
+                                if(count($view_links['i__references'][4260])){
+                                    //Update profile picture for current user:
+                                    $this->E_model->update($x_data['x__player'], array(
+                                        'e__cover' => $following['x__message'],
+                                    ), true, $x_data['x__player']);
+
+                                    //Update live session as well:
+                                    $es_creator[0]['e__cover'] = $following['x__message'];
+                                    $this->E_model->activate_session($es_creator[0], true);
+                                }
                             }
                         }
+
                     }
 
                 } else {
 
-                    //Generate stats:
-                    $x_added = 0;
-                    $x_edited = 0;
-                    $x_deleted = 0;
-
                     //Assign tag if following/follower transaction NOT previously assigned:
-                    $existing_x = $this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type' => 4251, //SOURCE LINKS
-                        'x__following' => $x_tag['x__following'],
-                        'x__follower' => $x_data['x__player'],
-                    ));
-
-                    if(count($existing_x)){
-
-                        //Transaction previously exists, see if content value is the same:
-                        if(strtolower($existing_x[0]['x__message'])==strtolower($x_data['x__message'])){
-                            //Everything is the same, nothing to do here:
-                            continue;
-                        }
-
-                        $x_edited++;
-
-                        //Content value has changed, update the transaction:
-                        $this->X_model->update($existing_x[0]['x__id'], array(
-                            'x__message' => $x_data['x__message'],
-                        ), $x_data['x__player'], 10657 /* SOURCE LINK CONTENT UPDATE  */);
-
-                        $this->X_model->create(array(
-                            'x__type' => 12197, //Following Added
-                            'x__player' => $x_data['x__player'],
-                            'x__following' => $x_tag['x__following'],
-                            'x__follower' => $x_data['x__player'],
-                            'x__previous' => $i['i__id'],
-                            'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$x_data['x__message'].']',
-                        ));
-
-                    } else {
-
-                        //Create transaction:
-                        $x_added++;
-                        $this->X_model->create(array(
-                            'x__type' => 4251, //Follow Source
-                            'x__message' => $x_data['x__message'],
-                            'x__player' => $x_data['x__player'],
-                            'x__following' => $x_tag['x__following'],
-                            'x__follower' => $x_data['x__player'],
-                        ));
-
-                        $this->X_model->create(array(
-                            'x__type' => 12197, //Following Added
-                            'x__player' => $x_data['x__player'],
-                            'x__following' => $x_tag['x__following'],
-                            'x__follower' => $x_data['x__player'],
-                            'x__previous' => $i['i__id'],
-                            'x__message' => $x_added.' added, '.$x_edited.' edited & '.$x_deleted.' deleted with new content ['.$x_data['x__message'].']',
-                        ));
-
-                    }
+                    $append_source = append_source($x_tag['x__following'], $x_data['x__player'], $x_data['x__message'], $i['i__id']);
 
                     //See if Session needs to be updated:
                     $player_e = superpower_unlocked();
-                    if($player_e && $player_e['e__id']==$x_data['x__player'] && ($x_added>0 || $x_edited>0 || $x_deleted>0)){
+                    if($player_e && $player_e['e__id']==$x_data['x__player'] && $append_source){
                         $this->E_model->activate_session($es_creator[0], true);
                     }
+
                 }
             }
 

@@ -903,6 +903,7 @@ function js_reload($timer = 1){
 
 
 function generate_handle($focus__node, $str, $suggestion = null, $increment = 1){
+
     //Generates a Suitable Handle from the title:
 
     //Previous suggestion did not work, let's tweak and try again:
@@ -952,6 +953,73 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
         //All good:
         return $suggestion;
     }
+
+}
+
+
+
+function append_source($x__following, $x__player, $x__message, $i__id){
+
+    $CI =& get_instance();
+
+    //First validate data type to ensure it matches:
+    foreach($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__following IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //Data Types
+        'x__follower' => $x__following,
+    )) as $data_type) {
+        $data_type_validate = data_type_validate($data_type['x__following'], $x__message);
+        if (!$data_type_validate['status']) {
+            //It's not the data type needed:
+            return false;
+        }
+    }
+
+    //Now check existing links:
+    $existing_x = $CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type' => 4251, //SOURCE LINKS
+        'x__following' => $x__following,
+        'x__follower' => $x__player,
+    ));
+
+    if(count($existing_x)){
+
+        //Transaction previously exists, see if content value is the same:
+        if(strtolower($existing_x[0]['x__message'])==strtolower($x__message)){
+            //Everything is the same, nothing to do here:
+            return false;
+        }
+
+        //Content value has changed, update the transaction:
+        $CI->X_model->update($existing_x[0]['x__id'], array(
+            'x__message' => $x__message,
+        ), $x__player, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+
+    } else {
+
+        //Create transaction:
+        $CI->X_model->create(array(
+            'x__type' => 4251, //Follow Source
+            'x__message' => $x__message,
+            'x__player' => $x__player,
+            'x__following' => $x__following,
+            'x__follower' => $x__player,
+        ));
+
+    }
+
+    $CI->X_model->create(array(
+        'x__type' => 12197, //Following Added
+        'x__player' => $x__player,
+        'x__following' => $x__following,
+        'x__follower' => $x__player,
+        'x__previous' => $i__id,
+        'x__message' => $x__message,
+    ));
+
+    return true;
 
 }
 
