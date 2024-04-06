@@ -5,6 +5,7 @@ $counter = 0;
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 7545,
+    'x__following NOT IN (' . join(',', $this->config->item('n___43048')) . ')' => null, //No need to add these special ones...
 ), array('x__following'), 0) as $addition_sync){
 
     //Fetch everyone who has discovered this idea:
