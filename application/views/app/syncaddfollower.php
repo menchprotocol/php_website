@@ -1,6 +1,7 @@
 <?php
 
 //Sync All Adding followers:
+$updated = array();
 $counter = 0;
 foreach ($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -25,13 +26,12 @@ foreach ($this->X_model->fetch(array(
             }
 
             $is_found = true;
-            break;
-
+            //break;
 
         }
     }
     if($is_found){
-        break;
+        //break;
     }
 }
 
