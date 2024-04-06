@@ -8,68 +8,6 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 }
 */
 
-if(isset($_GET['go'])){
-
-    $map = array(
-        1 => 42522,
-        2 => 42552,
-        3 => 42551,
-        4 => 42550,
-        5 => 42549,
-        6 => 42548,
-        7 => 42547,
-        8 => 42546,
-        9 => 42545,
-        10 => 42544,
-        11 => 42543,
-        12 => 42542,
-        13 => 42541,
-        14 => 42540,
-        15 => 42539,
-        16 => 42538,
-        17 => 42537,
-        18 => 42536,
-        19 => 42535,
-        20 => 42534,
-        21 => 42533,
-        22 => 42532,
-        23 => 42531,
-        24 => 42530,
-        25 => 42529,
-        26 => 42528,
-        27 => 42527,
-        28 => 42526,
-        29 => 42525,
-        30 => 42524,
-        31 => 42523,
-    );
-
-
-
-    foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-        'x__previous' => 16528, //Birth Month
-    ), array('x__next')) as $month){
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-            'x__previous' => $month['i__id'],
-        ), array('x__next')) as $day){
-            $parts = explode(' ', $day['i__message']);
-            echo $day['i__message'].'/'.$parts[1].'/'.$map[$parts[1]].'OK<hr />';
-            $this->X_model->create(array(
-                'x__player' => 1,
-                'x__following' => $map[$parts[1]],
-                'x__type' => 7545,
-                'x__next' => $day['i__id'],
-            ), true);
-        }
-    }
-}
-
 $x__player = ( $player_e ? $player_e['e__id'] : 0 );
 $target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
 
