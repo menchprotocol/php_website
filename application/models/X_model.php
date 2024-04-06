@@ -1377,7 +1377,7 @@ class X_model extends CI_Model
                     //Assign tag if following/follower transaction NOT previously assigned:
                     $existing_x = $this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__type' => 4251, //SOURCE LINKS
                         'x__following' => $x_tag['x__following'],
                         'x__follower' => $x_data['x__player'],
                     ));

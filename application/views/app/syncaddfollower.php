@@ -25,8 +25,18 @@ foreach($this->X_model->fetch(array(
             continue;
         }
 
-        $counter++;
+        //Does this source need a data type to be added?
+        if(count($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__following IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Data Types
+            'x__follower' => $addition_sync['x__following'],
+        ))) && !strlen($dicovered['x__message'])){
+            //Yes and it's missing it:
+            continue;
+        }
 
+        $counter++;
 
         foreach($this->I_model->fetch(array(
             'i__id' => $addition_sync['x__next'],
