@@ -14,7 +14,7 @@ if(isset($_GET['go'])){
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__following' => 30198,
-    )) as $addition_sync){
+    ), array(), 0) as $addition_sync){
 
         $addition_sync['x__message'] = ucwords(strtolower($addition_sync['x__message']));
 
