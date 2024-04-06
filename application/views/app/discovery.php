@@ -16,6 +16,8 @@ if(isset($_GET['go'])){
         'x__following' => 30198,
     )) as $addition_sync){
 
+        $addition_sync['x__message'] = ucwords($addition_sync['x__message']);
+
         if(!strlen($addition_sync['x__message'])){
             echo 'NONE';
 
