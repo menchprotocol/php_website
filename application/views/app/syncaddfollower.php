@@ -7,6 +7,9 @@ foreach($this->X_model->fetch(array(
     'x__type' => 7545,
 ), array('x__following','x__next'), 0) as $addition_sync){
 
+    print_r($addition_sync);
+    break;
+
     //Fetch everyone who has discovered this idea:
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
