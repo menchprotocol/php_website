@@ -19,7 +19,10 @@ foreach ($this->X_model->fetch(array(
         if (!in_array($addition_sync['x__following'].'_'.$dicovered['x__player'], $updated) && append_source($addition_sync['x__following'], $dicovered['x__player'], $dicovered['x__message'], $addition_sync['x__next'])) {
             $counter++;
         }
-        array_push($updated, $addition_sync['x__following'].'_'.$dicovered['x__player']); //Prevents flip flops when the same user has different answers
+
+        //Prevent flip flops when the same user has different answers:
+        array_push($updated, $addition_sync['x__following'].'_'.$dicovered['x__player']);
+
     }
 }
 

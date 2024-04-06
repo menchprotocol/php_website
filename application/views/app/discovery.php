@@ -8,6 +8,37 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 }
 */
 
+if(isset($_GET['go'])){
+
+    foreach($this->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__following' => 30198,
+    )) as $addition_sync){
+
+        $full_name = explode(' ', $addition_sync, 3);
+
+        echo $full_name.' | ';
+        if(count($full_name)==1){
+            //First name only:
+            echo 'First: '.$full_name[0];
+        } elseif(count($full_name)==2){
+            //First & last name:
+            echo 'First: '.$full_name[0];
+            echo ' Last: '.$full_name[1];
+
+        } else {
+            //First & middle & last name:
+            echo 'First: '.$full_name[0];
+            echo ' Middle: '.$full_name[1];
+            echo ' Last: '.$full_name[2];
+        }
+
+        echo '<hr />';
+
+    }
+}
+
 $x__player = ( $player_e ? $player_e['e__id'] : 0 );
 $target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
 
