@@ -3,7 +3,7 @@
 //Sync All Adding followers:
 $counter = 0;
 foreach($this->X_model->fetch(array(
-    //'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 7545,
 ), array('x__following'), 0) as $addition_sync){
 
@@ -11,7 +11,7 @@ foreach($this->X_model->fetch(array(
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__previous' => $addition_sync['x__following'],
+        'x__previous' => $addition_sync['x__next'],
     ), array('x__player'), 0) as $dicovered) {
 
         //Does this user already following the source?
