@@ -1508,6 +1508,8 @@ label {
 
 .edge-cover .card_covers .btn-black,
 .edge-cover .card_covers .btn-black i,
+.edge-cover .card_covers .btn-black:hover,
+.edge-cover .card_covers .btn-black i:hover,
 .btn-black i,
 .btn-black {
     color:#FFFFFF !important;
