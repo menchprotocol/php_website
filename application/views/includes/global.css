@@ -1515,9 +1515,7 @@ label {
 .btn-black i:hover,
 .btn-black:hover{
     color:#FFFFFF !important;
-    --fa-primary-color:#FFFFFF !important;
-    --fa-secondary-color:#FFFFFF !important;
-    background-color: #000000;
+    background-color: #000000 !important;
 }
 
 .card_covers a.btn-sm.btn-black,
