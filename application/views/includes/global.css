@@ -1504,6 +1504,12 @@ label {
 { color:#999999 !important;
     --fa-primary-color:#999999 !important;
     --fa-secondary-color:#CCCCCC !important;}
+.btn-black {
+    color:#FFFFFF !important;
+    --fa-primary-color:#FFFFFF !important;
+    --fa-secondary-color:#FFFFFF !important;
+    background-color: #000000;
+}
 
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
 
