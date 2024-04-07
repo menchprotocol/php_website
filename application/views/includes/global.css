@@ -1515,8 +1515,10 @@ label {
     --fa-secondary-color:#FFFFFF !important;
     background-color: #000000;
 }
+
+.card_covers a.btn-sm.btn-black,
 .btn-black {
-    padding: 0 3px !important;
+    padding: 3px 3px 0 !important;
 }
 
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
