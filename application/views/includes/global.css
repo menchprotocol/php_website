@@ -1506,6 +1506,7 @@ label {
     --fa-secondary-color:#CCCCCC !important;}
 
 
+.card_covers a.btn-sm.btn-black:hover,
 .edge-cover .card_covers .btn-black,
 .edge-cover .card_covers .btn-black i,
 .edge-cover .card_covers .btn-black:hover,
