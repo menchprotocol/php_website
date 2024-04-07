@@ -1516,7 +1516,7 @@ label {
     background-color: #000000;
 }
 .btn-black {
-    padding: 0 3px;
+    padding: 0 3px !important;
 }
 
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
