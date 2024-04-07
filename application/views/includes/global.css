@@ -1507,11 +1507,14 @@ label {
 
 
 .edge-cover .card_covers .btn-black,
+.btn-black i,
 .btn-black {
     color:#FFFFFF !important;
     --fa-primary-color:#FFFFFF !important;
     --fa-secondary-color:#FFFFFF !important;
     background-color: #000000;
+}
+.btn-black {
     padding: 0 3px;
 }
 
