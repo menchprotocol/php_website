@@ -1502,7 +1502,7 @@ class Ajax extends CI_Controller
                 'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                 'x__following' => $focus_e['e__id'],
                 'x__next' => $fetch_o[0]['i__id'],
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
             //Add Reference:
@@ -1541,7 +1541,7 @@ class Ajax extends CI_Controller
                 'x__follower' => $x__follower,
                 'x__following' => $x__following,
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )));
 
             //Create transaction:
