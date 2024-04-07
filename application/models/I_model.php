@@ -416,6 +416,7 @@ class I_model extends CI_Model
                 'message' => 'Idea already added in the inverse direction, so it cannot be added here',
             );
         } elseif(count($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__previous' => $i['i__id'],
             'x__type' => $x__type,
             'x__next' => $next_i['i__id'],
