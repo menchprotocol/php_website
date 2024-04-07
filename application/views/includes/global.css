@@ -1511,7 +1511,9 @@ label {
 .edge-cover .card_covers .btn-black:hover,
 .edge-cover .card_covers .btn-black i:hover,
 .btn-black i,
-.btn-black {
+.btn-black,
+.btn-black i:hover,
+.btn-black:hover{
     color:#FFFFFF !important;
     --fa-primary-color:#FFFFFF !important;
     --fa-secondary-color:#FFFFFF !important;
