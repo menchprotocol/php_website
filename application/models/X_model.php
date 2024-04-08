@@ -1105,24 +1105,12 @@ class X_model extends CI_Model
             if(!isset($focus_i_data['i__text'])){
                 $focus_i_data['i__text'] = null;
             }
-            if(!isset($focus_i_data['i__uploads'])){
-                $focus_i_data['i__uploads'] = array();
+            if(!isset($focus_i_data['uploaded_media'])){
+                $focus_i_data['uploaded_media'] = array();
             }
+
 
             //Must add a new idea, but first let's validate the input:
-            /*
-            if($i['i__type']==6683 && strlen($focus_i_data['i__text'])){
-                //Text Input
-
-            } elseif($i['i__type']==42994 && (strlen($focus_i_data['i__text']) || count($focus_i_data['i__uploads']))){
-                //Text Upload
-
-            } elseif($i['i__type']==7637 && count($focus_i_data['i__uploads'])){
-                //File Upload
-
-            }
-            */
-
             if($i['i__type']==31794 && strlen($focus_i_data['i__text']) && !is_numeric($focus_i_data['i__text'])){
                 //Number Input
                 return array(
@@ -1153,9 +1141,11 @@ class X_model extends CI_Model
             ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
 
             //All validated, lets make the new idea:
-            if(strlen($focus_i_data['i__text']) || count($focus_i_data['i__uploads'])){
+            if(strlen($focus_i_data['i__text']) || count($focus_i_data['uploaded_media'])){
 
-                //TODO Consider file upload and save those as well...
+                //Process Media:
+                $media_stats = process_media($x_responses[0]['i__id'], $focus_i_data['uploaded_media']);
+
 
                 if(count($x_responses)){
 

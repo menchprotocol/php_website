@@ -1668,6 +1668,61 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
     return created_i__id;
 }
 
+
+
+function gather_media(target_el, uploader_id){
+
+    //Append Media:
+    var sort_rank = 0;
+    var upload_completed = true;
+    var error_message = null;
+    var uploaded_media = [];
+    $(target_el).each(function () {
+
+        var current_e_id = parseInt($(this).attr('e__id'));
+
+        if(current_e_id > 0){
+
+            //Already there...
+            uploaded_media[sort_rank] = {
+                media_e__id:  parseInt($(this).attr('media_e__id')),
+                playback_code: $(this).attr('playback_code'),
+                e__id:        current_e_id,
+                e__cover:     $(this).attr('e__cover'),
+                e__title:     $('#'+$(this).attr('id')+' input').val(),
+            }
+            sort_rank++;
+
+        } else if(media_cache[uploader_id][$(this).attr('id')]){
+
+            //Fetch variables for this media:
+            uploaded_media[sort_rank] = {
+                media_e__id:  parseInt($(this).attr('media_e__id')),
+                playback_code: $(this).attr('playback_code'),
+                e__id:        0,
+                e__cover:     $(this).attr('e__cover'),
+                e__title:     $('#'+$(this).attr('id')+' input').val(),
+                media_cache:  media_cache[uploader_id][$(this).attr('id')],
+            }
+            sort_rank++;
+
+        } else {
+
+            //This media is missing, upload is not yet complete:
+            upload_completed = false;
+            error_message = 'Media has not yet uploaded, please wait until upload is complete...';
+
+        }
+    });
+
+    return {
+        upload_completed: upload_completed,
+        error_message: error_message,
+        uploaded_media: uploaded_media,
+    };
+}
+
+
 var i_saving = false; //Prevent double saving
 function i_editor_save(){
 
@@ -1681,7 +1736,15 @@ function i_editor_save(){
 
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
     var created_i__id = parseInt($('#modal31911 .created_i__id').val());
-    var uploader_id = 13572; //THis is for idea modal
+
+    //Fetch Media
+    var gather_media = gather_media('#modal31911 .media_frame .media_item', 13572);
+    if(!gather_media['upload_completed']){
+        i_saving = false;
+        $(".i_editor_save").html('SAVE');
+        $("#modal31911 .save_results").html('<span class="icon-block"><i class="far fa-exclamation-circle"></i></span> Error: '+gather_media['error_message']);
+        return false;
+    }
 
     var modify_data = {
         focus__node:         parseInt($('#focus__node').val()),
@@ -1697,55 +1760,9 @@ function i_editor_save(){
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
         save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
         save_i__privacy:    $('.dropd_form_31004').attr('selected_value').trim(),
-        save_media:         [],
+        uploaded_media:     gather_media['uploaded_media'],
         js_request_uri:     js_request_uri, //Always append to AJAX Calls
     };
-
-    //Append Media:
-    //modify_data['media_uploads']
-    var sorted_media = [];
-    var sort_rank = 0;
-    var media_uploaded = true;
-    $('#modal31911 .media_frame .media_item').each(function () {
-        var current_e_id = parseInt($(this).attr('e__id'));
-
-        if(current_e_id > 0){
-
-            //Already there...
-            modify_data['save_media'][sort_rank] = {
-                media_e__id:  parseInt($(this).attr('media_e__id')),
-                playback_code: $(this).attr('playback_code'),
-                e__id:        current_e_id,
-                e__cover:     $(this).attr('e__cover'),
-                e__title:     $('#'+$(this).attr('id')+' input').val(),
-            }
-            sort_rank++;
-
-        } else if(media_cache[uploader_id][$(this).attr('id')]){
-
-            //Fetch variables for this media:
-            modify_data['save_media'][sort_rank] = {
-                media_e__id:  parseInt($(this).attr('media_e__id')),
-                playback_code: $(this).attr('playback_code'),
-                e__id:        current_e_id,
-                e__cover:     $(this).attr('e__cover'),
-                e__title:     $('#'+$(this).attr('id')+' input').val(),
-                media_cache:  media_cache[uploader_id][$(this).attr('id')],
-            }
-            sort_rank++;
-
-        } else {
-            //This media is missing, upload is not complete:
-            media_uploaded = false;
-        }
-    });
-    if(!media_uploaded){
-        i_saving = false;
-        $(".i_editor_save").html('SAVE');
-        $("#modal31911 .save_results").html('<span class="icon-block"><i class="far fa-exclamation-circle"></i></span> Error: Media has not yet uploaded, please wait until upload is complete...');
-        return false;
-    }
-
 
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
@@ -3292,15 +3309,29 @@ function go_next(do_skip){
     //Compile all next ideas, if any:
     var next_i_data = []; //Aggregate the data for all children
     $("#list-in-12840 .edge-cover").each(function () {
+
+        //Fetch Media
+        var gather_media = gather_media('.inner_uploader_'+$(this).attr('i__id'), 43004);
+        if(!gather_media['upload_completed']){
+            alert('MEDIA ERROR: '+gather_media['error_message']);
+            return false;
+        }
+
         next_i_data.push({
             i__id: parseInt($(this).attr('i__id')),
             i__text: ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null ),
             i__quantity: ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 ),
-            i__uploads: [],
+            uploaded_media: gather_media['uploaded_media'],
         });
+
     });
 
 
+    var gather_media = gather_media('.inner_uploader_'+$('#focus__id').val(), 43004);
+    if(!gather_media['upload_completed']){
+        alert('MEDIA ERROR: '+gather_media['error_message']);
+        return false;
+    }
 
 
     //Load:
@@ -3314,7 +3345,7 @@ function go_next(do_skip){
             i__id: parseInt($('#focus__id').val()),
             i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
             i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
-            i__uploads: [],
+            uploaded_media: gather_media['uploaded_media'],
         },
         do_skip: do_skip,
         selection_i__id: selection_i__id,

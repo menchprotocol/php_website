@@ -314,14 +314,15 @@ class Ajax extends CI_Controller
 
 
         $focus__node = ( $_POST['focus__node']==12273 && $_POST['focus__id']==$_POST['save_i__id'] );
-        $has_media = (isset($_POST['save_media']) && is_array($_POST['save_media']) && count($_POST['save_media'])>0);
-
+        if(!isset($_POST['uploaded_media']) || !is_array($_POST['uploaded_media'])){
+            $_POST['uploaded_media'] = array();
+        }
 
         //Might be new if pre-drafting:
         if( $is[0]['i__privacy']==42636 ){
 
             //See if references only:
-            if(strlen($_POST['save_i__message']) && !$has_media && !substr_count($_POST['save_i__message'], "\n") && intval($_POST['save_x__type']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
+            if(strlen($_POST['save_i__message']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_i__message'], "\n") && intval($_POST['save_x__type']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
 
                 $all_hashtags = true;
                 $i_references = array();
@@ -397,276 +398,12 @@ class Ajax extends CI_Controller
 
 
 
-        //Update Media...
-        $media_stats = array(
-            'total_current' => 0,
-            'total_submitted' => 0,
-            'adjust_created' => 0,
-            'adjust_duplicated' => 0,
-            'adjust_updated' => 0,
-            'adjust_removed' => 0,
-        );
-        $full_media = array();
-        $current_media_e__ids = array();
-        $sort_count = 0;
-        //Fetch current media:
-        foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42294')) . ')' => null, //Media
-            'x__next' => $is[0]['i__id'],
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-        ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
-            $media_stats['total_current']++;
-            $current_media_e__ids[$sort_count] = intval($media['x__following']);
-            $full_media[$media['x__following']] = $media;
-            $sort_count++;
-        }
-
-        //Fetch submitted media:
-        $submitted_media_e__ids = array();
-        $sort_count = 0; //Reset sorting to compare to submitted media...
-        if($has_media){
-
-            //We have media to process:
-            foreach($_POST['save_media'] as $submitted_media){
-
-                if($submitted_media['e__id']>0){
-
-                    $adjust_updated = false;
-
-                    //Update media order?
-                    if($current_media_e__ids[$sort_count]!=$submitted_media['e__id']){
-                        //Order has changed, update it:
-                        $adjust_updated = true;
-                        $this->X_model->update($full_media[$submitted_media['e__id']]['x__id'], array(
-                            'x__weight' => $sort_count,
-                        ), $player_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
-                    }
-
-                    //Update the source title?
-                    $validate_e__title = validate_e__title($submitted_media['e__title']);
-                    if($validate_e__title['status'] && $full_media[$submitted_media['e__id']]['e__title']!=$submitted_media['e__title']){
-                        $adjust_updated = true;
-                        $this->E_model->update($submitted_media['e__id'], array(
-                            'e__title' => trim($submitted_media['e__title']),
-                        ), true, $player_e['e__id']);
-                    }
-
-                    if($adjust_updated){
-                        $media_stats['adjust_updated']++;
-                    }
-
-                } else {
-
-                    //Adding new media...
-                    //Search eTag to see if we already have it:
-                    $etag_detected = false;
-                    if(isset($submitted_media['media_cache']['etag']) && strlen($submitted_media['media_cache']['etag'])){
-                        //We we already have this asset, link to that source without giving this new source the authority over it...
-                        //First person to upload a source will get authority over its created source...
-                        foreach($this->X_model->fetch(array(
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'x__following' => 42662, //etag
-                            'x__message' => $submitted_media['media_cache']['etag'],
-                        ), array('x__follower'), 1) as $existing_media){
-                            $media_stats['adjust_duplicated']++;
-                            $submitted_media['e__id'] = $existing_media['e__id'];
-                            $etag_detected = true;
-                        }
-                    }
-
-                    if(!$submitted_media['e__id']){
-
-                        //Create Source for this new media:
-                        $added_e = $this->E_model->verify_create($submitted_media['e__title'], $player_e['e__id'], ( $submitted_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $submitted_media['e__cover'] ), true);
-                        if(!$added_e['status']){
-                            $this->X_model->create(array(
-                                'x__type' => 4246, //Platform Bug Reports
-                                'x__message' => 'Failed to create a new source for ['.$submitted_media['e__title'].'] with cover ['.$submitted_media['e__cover'].']',
-                                'x__metadata' => array(
-                                    'submitted_media' => $submitted_media,
-                                    'post' => $_POST,
-                                ),
-                            ));
-                            continue;
-                        }
-
-                        //Create new media and assign ID:
-                        $media_stats['adjust_created']++;
-                        $submitted_media['e__id'] = $added_e['new_e']['e__id'];
-
-                        //new asset, create new source and insert tags...
-                        $e___32088 = $this->config->item('e___32088'); //Platform Variables
-                        foreach($this->config->item('e___42679') as $x__type => $m) {
-
-                            //Ensure variable name exists so we can check the API call:
-                            $target_variable = false;
-                            if(isset($e___32088[$x__type]['m__message'])){
-                                //Determine if variable exists...
-                                if(in_array($x__type, $this->config->item('n___42763')) && isset($submitted_media['media_cache']['video'][$e___32088[$x__type]['m__message']])){
-                                    //Video info:
-                                    $target_variable = $submitted_media['media_cache']['video'][$e___32088[$x__type]['m__message']];
-                                } elseif(in_array($x__type, $this->config->item('n___42675')) && isset($submitted_media['media_cache']['audio'][$e___32088[$x__type]['m__message']])){
-                                    //Audio info:
-                                    $target_variable = $submitted_media['media_cache']['audio'][$e___32088[$x__type]['m__message']];
-                                } elseif(isset($submitted_media['media_cache'][$e___32088[$x__type]['m__message']])) {
-                                    //Media info:
-                                    $target_variable = $submitted_media['media_cache'][$e___32088[$x__type]['m__message']];
-                                }
-                            }
-                            if(!strlen($target_variable) || $target_variable=='0'){
-                                //This variable does not have a value, move on...
-                                continue;
-                            }
-
-                            //We have a variable, see what it is...
-                            if(in_array($x__type, $this->config->item('n___33331'))){
-
-                                //Single select that needs auto creation of sources if missing:
-                                $child_id = 0;
-                                foreach($this->X_model->fetch(array(
-                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                    'x__following' => $x__type,
-                                    'e__title' => $target_variable,
-                                ), array('x__follower'), 1, 0, array('x__id' => 'ASC')) as $child_source){
-                                    $child_id = $child_source['e__id'];
-                                }
-
-                                //If not found create the child:
-                                if(!$child_id){
-                                    $added_child = $this->E_model->verify_create($target_variable, 14068);
-                                    if(!$added_child['status']){
-                                        $this->X_model->create(array(
-                                            'x__type' => 4246, //Platform Bug Reports
-                                            'x__message' => 'Failed to create a new source for ['.$target_variable.']',
-                                            'x__metadata' => array(
-                                                'submitted_media' => $submitted_media,
-                                                'post' => $_POST,
-                                            ),
-                                        ));
-                                        continue;
-                                    }
-
-                                    //Add links for this new source:
-                                    $this->X_model->create(array(
-                                        'x__player' => $player_e['e__id'],
-                                        'x__following' => $x__type,
-                                        'x__follower' => $added_child['new_e']['e__id'],
-                                        'x__type' => 4251,
-                                    ));
-
-                                    //Assign child source:
-                                    $child_id = $added_child['new_e']['e__id'];
-
-                                }
-
-                                if($child_id){
-                                    //Child source found, simply link:
-                                    $this->X_model->create(array(
-                                        'x__player' => $player_e['e__id'],
-                                        'x__following' => $child_id,
-                                        'x__follower' => $submitted_media['e__id'],
-                                        'x__type' => 4251,
-                                    ));
-                                }
-
-                            } else {
-
-                                //Save variable as is:
-                                $this->X_model->create(array(
-                                    'x__player' => $player_e['e__id'],
-                                    'x__following' => $x__type,
-                                    'x__follower' => $submitted_media['e__id'],
-                                    'x__message' => $target_variable,
-                                    'x__type' => 4251,
-                                ));
-
-                            }
-                        }
-                    }
-
-
-                    //By now have the media source, create necessary links:
-                    if($submitted_media['e__id'] && $submitted_media['media_e__id']){
-
-                        //Link to Idea:
-                        if(!count($this->X_model->fetch(array(
-                            'x__next' => $is[0]['i__id'],
-                            'x__following' => $submitted_media['e__id'],
-                            'x__type' => $submitted_media['media_e__id'],
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        )))){
-                            $this->X_model->create(array(
-                                'x__player' => $player_e['e__id'],
-                                'x__next' => $is[0]['i__id'],
-                                'x__following' => $submitted_media['e__id'],
-                                'x__type' => $submitted_media['media_e__id'],
-                                'x__message' => $submitted_media['playback_code'],
-                                'x__weight' => $sort_count,
-                            ));
-                        }
-
-
-                        //Link to Source as Uploader:
-                        if(!count($this->X_model->fetch(array(
-                            'x__following' => $player_e['e__id'],
-                            'x__follower' => $submitted_media['e__id'],
-                            'x__type IN (' . join(',', $this->config->item('n___42657')) . ')' => null, //Uploads
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        )))){
-                            $this->X_model->create(array(
-                                'x__player' => $player_e['e__id'],
-                                'x__following' => $player_e['e__id'],
-                                'x__follower' => $submitted_media['e__id'],
-                                'x__type' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
-                                'x__message' => $submitted_media['playback_code'],
-                            ));
-                        }
-
-
-                        //Link to Media Type:
-                        if(!count($this->X_model->fetch(array(
-                            'x__following' => $submitted_media['media_e__id'],
-                            'x__follower' => $submitted_media['e__id'],
-                            'x__type' => 4251,
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        )))){
-                            $this->X_model->create(array(
-                                'x__player' => $player_e['e__id'],
-                                'x__following' => $submitted_media['media_e__id'],
-                                'x__follower' => $submitted_media['e__id'],
-                                'x__type' => 4251,
-                                'x__metadata' => $submitted_media,
-                            ));
-                        }
-
-                    }
-                }
-
-                //Add this to the submitted ones:
-                $submitted_media_e__ids[$sort_count] = $submitted_media['e__id'];
-                $media_stats['total_submitted']++;
-                $sort_count++;
-
-            }
-        }
-
-        //Remove current media missing from submitted (Removed during editing):
-        foreach(array_diff($current_media_e__ids, $submitted_media_e__ids) as $deleted_media_e__id){
-            $media_stats['adjust_removed']++;
-            $this->X_model->update($full_media[$deleted_media_e__id]['x__id'], array(
-                'x__privacy' => 6173, //Transaction Removed
-            ), $player_e['e__id'], 42694); //Media Removed
-        }
-
-
+        //Process Media:
+        $media_stats = process_media($is[0]['i__id'], $_POST['uploaded_media']);
 
 
         //Validate Idea Message:
-        $final_media_count = $media_stats['total_current'] + $media_stats['adjust_duplicated'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
-        if(!$final_media_count && !strlen(trim($_POST['save_i__message']))){
+        if(!$media_stats['total_media'] && !strlen(trim($_POST['save_i__message']))){
             //Since we do not have media, we must have a message:
             return view_json(array(
                 'status' => 0,
@@ -2849,14 +2586,14 @@ class Ajax extends CI_Controller
         if(!isset($_POST['selection_i__id'])){
             $_POST['selection_i__id'] = array();
         }
+        if(!isset($_POST['focus_i_data']['i__text'])){
+            $_POST['focus_i_data']['i__text'] = array();
+        }
+        if(!isset($_POST['focus_i_data']['uploaded_media'])){
+            $_POST['focus_i_data']['uploaded_media'] = array();
+        }
         if(!isset($_POST['next_i_data'])){
             $_POST['next_i_data'] = array();
-        }
-        if(!isset($_POST['next_i_data']['i__text'])){
-            $_POST['next_i_data']['i__text'] = null;
-        }
-        if(!isset($_POST['next_i_data']['i__uploads'])){
-            $_POST['next_i_data']['i__uploads'] = array();
         }
 
 
@@ -2870,7 +2607,7 @@ class Ajax extends CI_Controller
             $input__upload = in_array($focus_i['i__type'], $this->config->item('n___43004'));
             $input__text = in_array($focus_i['i__type'], $this->config->item('n___43002')) || in_array($focus_i['i__type'], $this->config->item('n___43003'));
             $total_selected = count($_POST['selection_i__id']);
-            $trying_to_skip = ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['focus_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['focus_i_data']['i__uploads'])) || ($input__text && $input__upload && !count($_POST['focus_i_data']['i__uploads']) && !strlen($_POST['focus_i_data']['i__text'])));
+            $trying_to_skip = ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['focus_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media'])) || ($input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media']) && !strlen($_POST['focus_i_data']['i__text'])));
             $i_required = i_required($focus_i);
 
             //If skipping, make sure they can:
@@ -2990,8 +2727,8 @@ class Ajax extends CI_Controller
                 if(!isset($next_i_data['i__text'])){
                     $next_i_data['i__text'] = null;
                 }
-                if(!isset($next_i_data['i__uploads'])){
-                    $next_i_data['i__uploads'] = array();
+                if(!isset($next_i_data['uploaded_media'])){
+                    $next_i_data['uploaded_media'] = array();
                 }
 
                 if($input__selection && !in_array($next_i_data['i__id'], $_POST['selection_i__id'])){
@@ -3020,7 +2757,7 @@ class Ajax extends CI_Controller
                 //Analyze input:
                 $input__text = in_array($is[0]['i__type'], $this->config->item('n___43002')) || in_array($is[0]['i__type'], $this->config->item('n___43003'));
                 $input__upload = in_array($is[0]['i__type'], $this->config->item('n___43004'));
-                $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['i__uploads'])) || ($input__text && $input__upload && !count($next_i_data['i__uploads']) && !strlen($next_i_data['i__text'])));
+                $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
                 $i_required = i_required($is[0]);
 
 

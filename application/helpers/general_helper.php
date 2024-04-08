@@ -905,6 +905,7 @@ function js_reload($timer = 1){
 function generate_handle($focus__node, $str, $suggestion = null, $increment = 1){
 
     //Generates a Suitable Handle from the title:
+    $CI =& get_instance();
 
     //Previous suggestion did not work, let's tweak and try again:
     $max_allowed_length = view_memory(6404,41985);
@@ -940,7 +941,6 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 
 
     //Make sure no duplicates:
-    $CI =& get_instance();
     if($focus__node==12273 && count($CI->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($suggestion),
         )))){
@@ -956,6 +956,290 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 
 }
 
+
+function process_media($i__id, $uploaded_media){
+
+    $CI =& get_instance();
+    $player_e = superpower_unlocked();
+
+    //Update Media...
+    $media_stats = array(
+        'total_current' => 0,
+        'total_submitted' => 0,
+        'adjust_created' => 0,
+        'adjust_duplicated' => 0,
+        'adjust_updated' => 0,
+        'adjust_removed' => 0,
+        'total_media' => 0,
+    );
+
+
+    if(!$player_e){
+        return $media_stats;
+    }
+
+    $full_media = array();
+    $current_media_e__ids = array();
+    $sort_count = 0;
+
+    //Fetch current media:
+    foreach($CI->X_model->fetch(array(
+        'x__type IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
+        'x__next' => $i__id,
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+    ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
+        $media_stats['total_current']++;
+        $current_media_e__ids[$sort_count] = intval($media['x__following']);
+        $full_media[$media['x__following']] = $media;
+        $sort_count++;
+    }
+
+    //Fetch submitted media:
+    $upload_media_e__ids = array();
+    if(count($uploaded_media)>0){
+
+        //We have media to process:
+        $sort_count = 0; //Reset sorting to compare to submitted media...
+        foreach($uploaded_media as $upload_media){
+
+            if($upload_media['e__id']>0){
+
+                $adjust_updated = false;
+
+                //Update media order?
+                if($current_media_e__ids[$sort_count]!=$upload_media['e__id']){
+                    //Order has changed, update it:
+                    $adjust_updated = true;
+                    $CI->X_model->update($full_media[$upload_media['e__id']]['x__id'], array(
+                        'x__weight' => $sort_count,
+                    ), $player_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
+                }
+
+                //Update the source title?
+                $validate_e__title = validate_e__title($upload_media['e__title']);
+                if($validate_e__title['status'] && $full_media[$upload_media['e__id']]['e__title']!=$upload_media['e__title']){
+                    $adjust_updated = true;
+                    $CI->E_model->update($upload_media['e__id'], array(
+                        'e__title' => trim($upload_media['e__title']),
+                    ), true, $player_e['e__id']);
+                }
+
+                if($adjust_updated){
+                    $media_stats['adjust_updated']++;
+                }
+
+            } else {
+
+                //Adding new media...
+                //Search eTag to see if we already have it:
+                $etag_detected = false;
+                if(isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])){
+                    //We we already have this asset, link to that source without giving this new source the authority over it...
+                    //First person to upload a source will get authority over its created source...
+                    foreach($CI->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'x__following' => 42662, //etag
+                        'x__message' => $upload_media['media_cache']['etag'],
+                    ), array('x__follower'), 1) as $existing_media){
+                        $media_stats['adjust_duplicated']++;
+                        $upload_media['e__id'] = $existing_media['e__id'];
+                        $etag_detected = true;
+                    }
+                }
+
+                if(!$upload_media['e__id']){
+
+                    //Create Source for this new media:
+                    $added_e = $CI->E_model->verify_create($upload_media['e__title'], $player_e['e__id'], ( $upload_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover'] ), true);
+                    if(!$added_e['status']){
+                        $CI->X_model->create(array(
+                            'x__type' => 4246, //Platform Bug Reports
+                            'x__message' => 'Failed to create a new source for ['.$upload_media['e__title'].'] with cover ['.$upload_media['e__cover'].']',
+                            'x__metadata' => array(
+                                'submitted_media' => $upload_media,
+                                'post' => $_POST,
+                            ),
+                        ));
+                        continue;
+                    }
+
+                    //Create new media and assign ID:
+                    $media_stats['adjust_created']++;
+                    $upload_media['e__id'] = $added_e['new_e']['e__id'];
+
+                    //new asset, create new source and insert tags...
+                    $e___32088 = $CI->config->item('e___32088'); //Platform Variables
+                    foreach($CI->config->item('e___42679') as $x__type => $m) {
+
+                        //Ensure variable name exists so we can check the API call:
+                        $target_variable = false;
+                        if(isset($e___32088[$x__type]['m__message'])){
+                            //Determine if variable exists...
+                            if(in_array($x__type, $CI->config->item('n___42763')) && isset($upload_media['media_cache']['video'][$e___32088[$x__type]['m__message']])){
+                                //Video info:
+                                $target_variable = $upload_media['media_cache']['video'][$e___32088[$x__type]['m__message']];
+                            } elseif(in_array($x__type, $CI->config->item('n___42675')) && isset($upload_media['media_cache']['audio'][$e___32088[$x__type]['m__message']])){
+                                //Audio info:
+                                $target_variable = $upload_media['media_cache']['audio'][$e___32088[$x__type]['m__message']];
+                            } elseif(isset($upload_media['media_cache'][$e___32088[$x__type]['m__message']])) {
+                                //Media info:
+                                $target_variable = $upload_media['media_cache'][$e___32088[$x__type]['m__message']];
+                            }
+                        }
+                        if(!strlen($target_variable) || $target_variable=='0'){
+                            //This variable does not have a value, move on...
+                            continue;
+                        }
+
+                        //We have a variable, see what it is...
+                        if(in_array($x__type, $CI->config->item('n___33331'))){
+
+                            //Single select that needs auto creation of sources if missing:
+                            $child_id = 0;
+                            foreach($CI->X_model->fetch(array(
+                                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__following' => $x__type,
+                                'e__title' => $target_variable,
+                            ), array('x__follower'), 1, 0, array('x__id' => 'ASC')) as $child_source){
+                                $child_id = $child_source['e__id'];
+                            }
+
+                            //If not found create the child:
+                            if(!$child_id){
+                                $added_child = $CI->E_model->verify_create($target_variable, 14068);
+                                if(!$added_child['status']){
+                                    $CI->X_model->create(array(
+                                        'x__type' => 4246, //Platform Bug Reports
+                                        'x__message' => 'Failed to create a new source for ['.$target_variable.']',
+                                        'x__metadata' => array(
+                                            'submitted_media' => $upload_media,
+                                            'post' => $_POST,
+                                        ),
+                                    ));
+                                    continue;
+                                }
+
+                                //Add links for this new source:
+                                $CI->X_model->create(array(
+                                    'x__player' => $player_e['e__id'],
+                                    'x__following' => $x__type,
+                                    'x__follower' => $added_child['new_e']['e__id'],
+                                    'x__type' => 4251,
+                                ));
+
+                                //Assign child source:
+                                $child_id = $added_child['new_e']['e__id'];
+
+                            }
+
+                            if($child_id){
+                                //Child source found, simply link:
+                                $CI->X_model->create(array(
+                                    'x__player' => $player_e['e__id'],
+                                    'x__following' => $child_id,
+                                    'x__follower' => $upload_media['e__id'],
+                                    'x__type' => 4251,
+                                ));
+                            }
+
+                        } else {
+
+                            //Save variable as is:
+                            $CI->X_model->create(array(
+                                'x__player' => $player_e['e__id'],
+                                'x__following' => $x__type,
+                                'x__follower' => $upload_media['e__id'],
+                                'x__message' => $target_variable,
+                                'x__type' => 4251,
+                            ));
+
+                        }
+                    }
+                }
+
+
+                //By now have the media source, create necessary links:
+                if($upload_media['e__id'] && $upload_media['media_e__id']){
+
+                    //Link to Idea:
+                    if(!count($CI->X_model->fetch(array(
+                        'x__next' => $i__id,
+                        'x__following' => $upload_media['e__id'],
+                        'x__type' => $upload_media['media_e__id'],
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        $CI->X_model->create(array(
+                            'x__player' => $player_e['e__id'],
+                            'x__next' => $i__id,
+                            'x__following' => $upload_media['e__id'],
+                            'x__type' => $upload_media['media_e__id'],
+                            'x__message' => $upload_media['playback_code'],
+                            'x__weight' => $sort_count,
+                        ));
+                    }
+
+
+                    //Link to Source as Uploader:
+                    if(!count($CI->X_model->fetch(array(
+                        'x__following' => $player_e['e__id'],
+                        'x__follower' => $upload_media['e__id'],
+                        'x__type IN (' . join(',', $CI->config->item('n___42657')) . ')' => null, //Uploads
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        $CI->X_model->create(array(
+                            'x__player' => $player_e['e__id'],
+                            'x__following' => $player_e['e__id'],
+                            'x__follower' => $upload_media['e__id'],
+                            'x__type' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
+                            'x__message' => $upload_media['playback_code'],
+                        ));
+                    }
+
+
+                    //Link to Media Type:
+                    if(!count($CI->X_model->fetch(array(
+                        'x__following' => $upload_media['media_e__id'],
+                        'x__follower' => $upload_media['e__id'],
+                        'x__type' => 4251,
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        $CI->X_model->create(array(
+                            'x__player' => $player_e['e__id'],
+                            'x__following' => $upload_media['media_e__id'],
+                            'x__follower' => $upload_media['e__id'],
+                            'x__type' => 4251,
+                            'x__metadata' => $upload_media,
+                        ));
+                    }
+
+                }
+            }
+
+            //Add this to the submitted ones:
+            $upload_media_e__ids[$sort_count] = $upload_media['e__id'];
+            $media_stats['total_submitted']++;
+            $sort_count++;
+
+        }
+    }
+
+    //Remove current media missing from submitted (Removed during editing):
+    foreach(array_diff($current_media_e__ids, $upload_media_e__ids) as $deleted_media_e__id){
+        $media_stats['adjust_removed']++;
+        $CI->X_model->update($full_media[$deleted_media_e__id]['x__id'], array(
+            'x__privacy' => 6173, //Transaction Removed
+        ), $player_e['e__id'], 42694); //Media Removed
+    }
+
+    //Calculate total media:
+    $media_stats['total_media'] = $media_stats['total_current'] + $media_stats['adjust_duplicated'] + $media_stats['adjust_created'] - $media_stats['adjust_removed'];
+
+    return $media_stats;
+
+}
 
 
 function append_source($x__following, $x__player, $x__message, $i__id){
