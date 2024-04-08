@@ -3315,7 +3315,7 @@ function go_next(do_skip){
     $("#list-in-12840 .edge-cover").each(function () {
 
         //Fetch Media
-        var gather_media = gather_media('.inner_uploader_'+$(this).attr('i__id'), 43004);
+        var gather_media = gather_media('.media_frame_'+$(this).attr('i__id')+' .media_frame .media_item', 43004);
         if(!gather_media['upload_completed']){
             alert('MEDIA ERROR: '+gather_media['error_message']);
             return false;
@@ -3331,7 +3331,7 @@ function go_next(do_skip){
     });
 
 
-    var gather_media = gather_media('.inner_uploader_'+$('#focus__id').val(), 43004);
+    var gather_media = gather_media('.media_frame_'+$('#focus__id').val()+' .media_frame .media_item', 43004);
     if(!gather_media['upload_completed']){
         alert('MEDIA ERROR: '+gather_media['error_message']);
         return false;
