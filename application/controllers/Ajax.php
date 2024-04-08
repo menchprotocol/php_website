@@ -3025,7 +3025,12 @@ class Ajax extends CI_Controller
                         'message' => 'You are required to respond to ['.view_i_title($is[0], true).'] before going next.',
                     ));
                     */
-                } else {
+                } elseif(!count($this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
+                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                    'x__previous' => $is[0]['i__id'],
+                ), array('x__next'), 0, 0))) {
                     //Try to complete:
                     $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
                         'x__weight' => $next_i_data['i__quantity'],
