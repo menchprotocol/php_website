@@ -3019,16 +3019,20 @@ class Ajax extends CI_Controller
                 $i_required = i_required($is[0]);
 
                 if($i_required && $trying_to_skip){
+                    /*
                     return view_json(array(
                         'status' => 0,
                         'message' => 'You are required to respond to ['.view_i_title($is[0], true).'] before going next.',
                     ));
+                    */
+                } else {
+                    //Try to complete:
+                    $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
+                        'x__weight' => $next_i_data['i__quantity'],
+                    ));
                 }
 
-                //Try to complete:
-                $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
-                    'x__weight' => $next_i_data['i__quantity'],
-                ));
+
 
             }
 
