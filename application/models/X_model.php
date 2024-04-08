@@ -1143,16 +1143,13 @@ class X_model extends CI_Model
             //All validated, lets make the new idea:
             if(strlen($focus_i_data['i__text']) || count($focus_i_data['uploaded_media'])){
 
-                //Process Media:
-                $media_stats = process_media($x_responses[0]['i__id'], $focus_i_data['uploaded_media']);
-
-
                 if(count($x_responses)){
 
                     //Update existing response if different:
                     if($focus_i_data['i__text']!=$x_responses[0]['i__message']){
                         $view_sync_links = view_sync_links($focus_i_data['i__text'], true, $x_responses[0]['i__id']);
                     }
+                    $this_i__id = $x_responses[0]['i__id'];
 
                 } else {
 
@@ -1163,6 +1160,8 @@ class X_model extends CI_Model
                         'i__privacy' => 42625, //Private
                     ), $x__player);
 
+                    $this_i__id = $i_new['i__id'];
+
                     //Link to this idea:
                     $this->X_model->create(array(
                         'x__type' => 33532,
@@ -1172,6 +1171,9 @@ class X_model extends CI_Model
                     ));
 
                 }
+
+                //Process Media:
+                $media_stats = process_media($this_i__id, $focus_i_data['uploaded_media']);
 
             } elseif (count($x_responses)){
 
