@@ -155,6 +155,63 @@ function activate_cover_watch(){
 
 }
 
+
+
+function gather_media(target_el, uploader_id){
+
+    //Append Media:
+    var sort_rank = 0;
+    var upload_completed = true;
+    var error_message = null;
+    var uploaded_media = [];
+    $(target_el).each(function () {
+
+        var current_e_id = parseInt($(this).attr('e__id'));
+
+        if(current_e_id > 0){
+
+            //Already there...
+            uploaded_media[sort_rank] = {
+                media_e__id:  parseInt($(this).attr('media_e__id')),
+                playback_code: $(this).attr('playback_code'),
+                e__id:        current_e_id,
+                e__cover:     $(this).attr('e__cover'),
+                e__title:     $('#'+$(this).attr('id')+' input').val(),
+            }
+            sort_rank++;
+
+        } else if(media_cache[uploader_id][$(this).attr('id')]){
+
+            //Fetch variables for this media:
+            uploaded_media[sort_rank] = {
+                media_e__id:  parseInt($(this).attr('media_e__id')),
+                playback_code: $(this).attr('playback_code'),
+                e__id:        0,
+                e__cover:     $(this).attr('e__cover'),
+                e__title:     $('#'+$(this).attr('id')+' input').val(),
+                media_cache:  media_cache[uploader_id][$(this).attr('id')],
+            }
+            sort_rank++;
+
+        } else {
+
+            //This media is missing, upload is not yet complete:
+            upload_completed = false;
+            error_message = 'Media has not yet uploaded, please wait until upload is complete...';
+
+        }
+    });
+
+    return {
+        upload_completed: upload_completed,
+        error_message: error_message,
+        uploaded_media: uploaded_media,
+    };
+}
+
+
+
+
 function x_mass_apply_preview(apply_id, s__id){
 
     //Select first:
@@ -1668,59 +1725,6 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
     return created_i__id;
 }
 
-
-
-function gather_media(target_el, uploader_id){
-
-    //Append Media:
-    var sort_rank = 0;
-    var upload_completed = true;
-    var error_message = null;
-    var uploaded_media = [];
-    $(target_el).each(function () {
-
-        var current_e_id = parseInt($(this).attr('e__id'));
-
-        if(current_e_id > 0){
-
-            //Already there...
-            uploaded_media[sort_rank] = {
-                media_e__id:  parseInt($(this).attr('media_e__id')),
-                playback_code: $(this).attr('playback_code'),
-                e__id:        current_e_id,
-                e__cover:     $(this).attr('e__cover'),
-                e__title:     $('#'+$(this).attr('id')+' input').val(),
-            }
-            sort_rank++;
-
-        } else if(media_cache[uploader_id][$(this).attr('id')]){
-
-            //Fetch variables for this media:
-            uploaded_media[sort_rank] = {
-                media_e__id:  parseInt($(this).attr('media_e__id')),
-                playback_code: $(this).attr('playback_code'),
-                e__id:        0,
-                e__cover:     $(this).attr('e__cover'),
-                e__title:     $('#'+$(this).attr('id')+' input').val(),
-                media_cache:  media_cache[uploader_id][$(this).attr('id')],
-            }
-            sort_rank++;
-
-        } else {
-
-            //This media is missing, upload is not yet complete:
-            upload_completed = false;
-            error_message = 'Media has not yet uploaded, please wait until upload is complete...';
-
-        }
-    });
-
-    return {
-        upload_completed: upload_completed,
-        error_message: error_message,
-        uploaded_media: uploaded_media,
-    };
-}
 
 
 var i_saving = false; //Prevent double saving
