@@ -157,7 +157,7 @@ function activate_cover_watch(){
 
 
 
-function gather_media(target_el, uploader_id){
+function process_medias(target_el, uploader_id){
 
     //Append Media:
     var sort_rank = 0;
@@ -1742,11 +1742,11 @@ function i_editor_save(){
     var created_i__id = parseInt($('#modal31911 .created_i__id').val());
 
     //Fetch Media
-    var gather_media = gather_media('#modal31911 .media_frame .media_item', 13572);
-    if(!gather_media['upload_completed']){
+    var process_media = process_medias('#modal31911 .media_frame .media_item', 13572);
+    if(!process_media['upload_completed']){
         i_saving = false;
         $(".i_editor_save").html('SAVE');
-        $("#modal31911 .save_results").html('<span class="icon-block"><i class="far fa-exclamation-circle"></i></span> Error: '+gather_media['error_message']);
+        $("#modal31911 .save_results").html('<span class="icon-block"><i class="far fa-exclamation-circle"></i></span> Error: '+process_media['error_message']);
         return false;
     }
 
@@ -1764,7 +1764,7 @@ function i_editor_save(){
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
         save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
         save_i__privacy:    $('.dropd_form_31004').attr('selected_value').trim(),
-        uploaded_media:     gather_media['uploaded_media'],
+        uploaded_media:     process_media['uploaded_media'],
         js_request_uri:     js_request_uri, //Always append to AJAX Calls
     };
 
@@ -3315,9 +3315,9 @@ function go_next(do_skip){
     $("#list-in-12840 .edge-cover").each(function () {
 
         //Fetch Media
-        var gather_media = gather_media('.media_frame_'+$(this).attr('i__id')+' .media_frame .media_item', 43004);
-        if(!gather_media['upload_completed']){
-            alert('MEDIA ERROR: '+gather_media['error_message']);
+        var process_media = process_medias('.media_frame_'+$(this).attr('i__id')+' .media_frame .media_item', 43004);
+        if(!process_media['upload_completed']){
+            alert('MEDIA ERROR: '+process_media['error_message']);
             return false;
         }
 
@@ -3325,15 +3325,15 @@ function go_next(do_skip){
             i__id: parseInt($(this).attr('i__id')),
             i__text: ( $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() ? $('.s__12273_'+$(this).attr('i__id')+' .x_write').val() : null ),
             i__quantity: ( $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() ? $('.input_ui_'+$(this).attr('i__id')+' .i__quantity').val() : 0 ),
-            uploaded_media: gather_media['uploaded_media'],
+            uploaded_media: process_media['uploaded_media'],
         });
 
     });
 
 
-    var gather_media = gather_media('.media_frame_'+$('#focus__id').val()+' .media_frame .media_item', 43004);
-    if(!gather_media['upload_completed']){
-        alert('MEDIA ERROR: '+gather_media['error_message']);
+    var process_media = process_medias('.media_frame_'+$('#focus__id').val()+' .media_frame .media_item', 43004);
+    if(!process_media['upload_completed']){
+        alert('MEDIA ERROR: '+process_media['error_message']);
         return false;
     }
 
@@ -3349,7 +3349,7 @@ function go_next(do_skip){
             i__id: parseInt($('#focus__id').val()),
             i__text: ( $('.focus-cover .x_write').val() ? $('.focus-cover .x_write').val() : null ),
             i__quantity: ( $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() ? $('.input_ui_'+parseInt($('#focus__id').val())+' .i__quantity').val() : 0 ),
-            uploaded_media: gather_media['uploaded_media'],
+            uploaded_media: process_media['uploaded_media'],
         },
         do_skip: do_skip,
         selection_i__id: selection_i__id,
