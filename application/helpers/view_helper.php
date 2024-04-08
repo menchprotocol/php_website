@@ -1370,6 +1370,11 @@ function view_i_nav($discovery_mode, $focus_i){
     $player_e = superpower_unlocked();
     $ideation_pen = superpower_unlocked(10939);
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
+
+    if(!$player_e){
+        return null;
+    }
+
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273 nav__'.$focus_i['i__id'].' hideIfEmpty">';
     foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $x__type => $m) {
@@ -1961,7 +1966,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Bottom Bar
-    if(!$cache_app && $player_e){
+    if(!$cache_app){
 
         $bottom_bar_ui = '';
 
