@@ -1428,6 +1428,14 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
     return i_editor_load(0, 0, link_x__type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .created_i__id').val()));
 }
 
+function display_media(mediaframe_id, uploader_id, i__id){
+    $(".ui_i__cache_"+i__id+" .media_display").each(function () {
+        $('#'+mediaframe_id).append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
+        cloudinary_preview_source(uploader_id, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
+    });
+    sort_media(mediaframe_id);
+}
+
 function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
 
 
@@ -1539,12 +1547,8 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
         $('#modal31911 .save_i__hashtag').val($('.ui_i__hashtag_'+i__id+':first').text());
         $('#modal31911 .save_i__message').val($('.ui_i__message_'+i__id+':first').text());
 
-        //Load Current Media:
-        $(".ui_i__cache_"+i__id+" .media_display").each(function () {
-            $('#modal31911 .media_frame').append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
-            cloudinary_preview_source(13572, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
-        });
-        sort_media('media_frame');
+        //Display Current Media:
+        display_media('media_editor_frame', 13572, i__id);
 
     } else if(passon_i__id) {
 
@@ -2014,7 +2018,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             if(uploader_id==13572){
 
                 //Ideator Uploader
-                sort_media('media_frame');
+                sort_media('media_editor_frame');
 
             } else if(uploader_id==43004){
 
@@ -2039,7 +2043,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
                 //Ideator Uploader
                 has_unsaved_changes = true;
-                $('#modal31911 .media_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_editor_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             } else if(uploader_id==43004){
 

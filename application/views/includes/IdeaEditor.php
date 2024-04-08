@@ -67,7 +67,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                 <div class="dynamic_editing_input" style="margin: 0 !important;">
                     <textarea class="form-control nodte-textarea algolia_finder new-note editing-mode unsaved_warning algolia__e algolia__i save_i__message" placeholder="<?= ( strlen($e___6201[4736]['m__message']) ? $e___6201[4736]['m__message'] : $e___6201[4736]['m__title'].'...' ) ?>" style="margin:0; width:100%; background-color: #FFFFFF !important;"></textarea>
                     <div class="media_outer_frame hideIfEmpty" style="margin-left: 40px;">
-                        <div id="media_frame" class="media_frame hideIfEmpty"></div>
+                        <div id="media_editor_frame" class="media_frame hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>
                 </div>
