@@ -1943,6 +1943,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
         maxRawFileSize: ( 20 * 1000000 ),
         maxChunkSize: ( 100 * 1000000 ),
 
+        queueViewPosition: 'left:21px',
         clientAllowedFormats: clientAllowedFormats,
         cropping: enable_crop,
         showSkipCropButton: !force_crop,
