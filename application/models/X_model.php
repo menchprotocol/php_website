@@ -1244,8 +1244,15 @@ class X_model extends CI_Model
                 'x__player' => $x_data['x__player'],
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 0) as $next_i){
-                //Mark as complete:
-                $this->X_model->mark_complete(i__discovery_link($next_i), $x_data['x__player'], $target_i__id, $next_i, $x_data);
+                if(!in_array($next_i['i__type'], $this->config->item('n___43039')) && !count($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
+                        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                        'x__previous' => $next_i['i__id'],
+                    ), array('x__next'), 0, 0))){
+                    //Mark as complete:
+                    $this->X_model->mark_complete(i__discovery_link($next_i), $x_data['x__player'], $target_i__id, $next_i, $x_data);
+                }
             }
         }
 

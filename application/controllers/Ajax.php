@@ -3007,7 +3007,12 @@ class Ajax extends CI_Controller
                 }
 
                 //Can we auto-complete?
-                if(in_array($is[0]['i__type'], $this->config->item('n___43039'))){
+                if(in_array($is[0]['i__type'], $this->config->item('n___43039')) || count($this->X_model->fetch(array(
+                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
+                        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                        'x__previous' => $is[0]['i__id'],
+                    ), array('x__next'), 0, 0))){
                     //Focus Discovery only, so must go to next level:
                     continue;
                 }
@@ -3018,26 +3023,13 @@ class Ajax extends CI_Controller
                 $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['i__uploads'])) || ($input__text && $input__upload && !count($next_i_data['i__uploads']) && !strlen($next_i_data['i__text'])));
                 $i_required = i_required($is[0]);
 
-                if($i_required && $trying_to_skip){
-                    /*
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'You are required to respond to ['.view_i_title($is[0], true).'] before going next.',
-                    ));
-                    */
-                } elseif(!count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
-                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                    'x__previous' => $is[0]['i__id'],
-                ), array('x__next'), 0, 0))) {
+
+                if(!($i_required && $trying_to_skip)){
                     //Try to complete:
                     $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
                         'x__weight' => $next_i_data['i__quantity'],
                     ));
                 }
-
-
 
             }
 
