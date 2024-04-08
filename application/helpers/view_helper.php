@@ -1961,7 +1961,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Bottom Bar
-    if(!$cache_app){
+    if(!$cache_app && $player_e){
 
         $bottom_bar_ui = '';
 
