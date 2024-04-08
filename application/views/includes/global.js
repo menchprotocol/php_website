@@ -1429,6 +1429,7 @@ function i_editor_switch(link_x__type = 0, next_i__id = 0, previous_i__id = 0, d
 }
 
 function display_media(mediaframe_id, uploader_id, i__id){
+    console.log('display_media: '+mediaframe_id+'/'+uploader_id+'/'+i__id);
     $(".ui_i__cache_"+i__id+" .media_display").each(function () {
         $('#'+mediaframe_id).append('<div id="'+$(this).attr('id')+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""></div>');
         cloudinary_preview_source(uploader_id, $(this).attr('id'), $(this).attr('media_e__id'), $(this).attr('playback_code'), $(this).attr('e__cover'), $(this).attr('e__title'), $(this).attr('e__id'));
