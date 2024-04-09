@@ -2023,7 +2023,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             } else if(uploader_id==43004){
 
                 //Discovery Uploader
-                sort_media('media_frame_'+s__id);
+                sort_media('media_outer_'+s__id);
 
             }
 
@@ -2048,7 +2048,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             } else if(uploader_id==43004){
 
                 //Discovery Uploader
-                $('#media_frame_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_outer_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
