@@ -2154,6 +2154,10 @@ function flag_for_search_indexing($focus__node = null, $s__id = 0) {
         );
     }
 
+    //Update live for now:
+    update_algolia($focus__node, $s__id);
+
+    /*
     if($focus__node==12273){
         //Update idea flag
         $CI->I_model->update($s__id, array(
@@ -2165,6 +2169,7 @@ function flag_for_search_indexing($focus__node = null, $s__id = 0) {
             'e__flag' => true,
         ));
     }
+    */
 
 }
 
