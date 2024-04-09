@@ -515,9 +515,7 @@ function toggle_pills(x__type_hash){
 
     console.log('Toggle Pill: '+x__type_hash);
 
-    if(pills_loading==x__type_hash){
-        return false;
-    } else if(pills_loading && !loaded_pills.includes(x__type_hash)){
+    if(pills_loading && !loaded_pills.includes(x__type_hash)){
         return false;
     } else if (loading_in_progress){
         return false;
