@@ -523,6 +523,8 @@ function toggle_pills(x__type_hash){
         return false;
     }
 
+    console.log('Toggle Pill Active: '+x__type_hash);
+
     loading_in_progress = true;
 
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
