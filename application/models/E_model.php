@@ -394,7 +394,7 @@ class E_model extends CI_Model
                     'x__next' => $i['i__id'], //Is this the template?
                 )))){
                     //Found the email template to send:
-                    $total_sent = $this->X_model->send_i_dm(array(array('e__id'=>$added_e['new_e']['e__id'])), $i, $x__website);
+                    $total_sent = $this->X_model->send_i_dm(array($added_e['new_e']), $i, $x__website);
                     break; //Just the first template match
                 }
             }
