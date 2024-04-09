@@ -939,7 +939,7 @@ function load_card_clickers(){
                     });
                     //Go Next:
                     if($('.input_ui_'+$(this).attr('selection_i__id'))[0]){
-                        $('.input_ui_'+$(this).attr('selection_i__id')+' textarea').focus();
+                        $('.input_ui_'+$(this).attr('selection_i__id')+' .x_write').focus();
                     } else {
                         //Since there is no input for this single select, we can instantly go next:
                         setTimeout(function () {
