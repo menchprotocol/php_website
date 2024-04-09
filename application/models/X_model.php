@@ -1344,14 +1344,31 @@ class X_model extends CI_Model
 
                     } elseif($x_tag['x__following']==6198 && filter_var($x_data['x__message'], FILTER_VALIDATE_URL)){
 
-                        //Update profile picture for current user:
-                        $this->E_model->update($x_data['x__player'], array(
-                            'e__cover' => $x_data['x__message'],
-                        ), true, $x_data['x__player']);
+                        //Update Source Cover:
+                        foreach($this->E_model->fetch(array(
+                            'LOWER(e__handle)' => strtolower(view_valid_handle_e($x_data['x__message'])),
+                        )) as $e){
+                            foreach($this->X_model->fetch(array(
+                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'x__follower' => $e['e__id'],
+                            ), array('x__following'), 1, 0, array('e__weight' => 'DESC')) as $following){
 
-                        //Update live session as well:
-                        $es_creator[0]['e__cover'] = $x_data['x__message'];
-                        $this->E_model->activate_session($es_creator[0], true);
+                                //Valid Image URL?
+                                $view_links = view_sync_links($following['x__message'], true);
+                                if(count($view_links['i__references'][4260])){
+                                    //Update profile picture for current user:
+                                    $this->E_model->update($x_data['x__player'], array(
+                                        'e__cover' => $following['x__message'],
+                                    ), true, $x_data['x__player']);
+
+                                    //Update live session as well:
+                                    $es_creator[0]['e__cover'] = $following['x__message'];
+                                    $this->E_model->activate_session($es_creator[0], true);
+                                }
+
+                            }
+                        }
 
                     }
 
@@ -1478,7 +1495,7 @@ class X_model extends CI_Model
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__previous'), 0) as $completed){
-            if(!in_array(intval($completed['i__id']), $list_discovered)){
+            if(!in_array($completed['i__hashtag'], $list_discovered)){
                 array_push($list_discovered, $completed['i__hashtag']);
             }
         }
@@ -1562,7 +1579,7 @@ class X_model extends CI_Model
 
             //Calculate completion rate based on estimated time cost:
             if($metadata_this['fixed_total'] > 0){
-                $metadata_this['fixed_completed_percentage'] = intval(ceil( $metadata_this['fixed_discovered'] / $metadata_this['fixed_total'] * 100 ));
+                $metadata_this['fixed_completed_percentage'] = intval(floor( $metadata_this['fixed_discovered'] / $metadata_this['fixed_total'] * 100 ));
             }
 
 
