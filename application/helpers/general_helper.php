@@ -964,6 +964,7 @@ function process_media($i__id, $uploaded_media){
 
     //Update Media...
     $media_stats = array(
+        'media_e__cover' => null,
         'total_current' => 0,
         'total_submitted' => 0,
         'adjust_created' => 0,
@@ -1025,6 +1026,8 @@ function process_media($i__id, $uploaded_media){
                     ), true, $player_e['e__id']);
                 }
 
+                $media_stats['media_e__cover'] = $upload_media['e__cover'];
+
                 if($adjust_updated){
                     $media_stats['adjust_updated']++;
                 }
@@ -1050,6 +1053,8 @@ function process_media($i__id, $uploaded_media){
                 }
 
                 if(!$upload_media['e__id']){
+
+                    $media_stats['media_e__cover'] = $upload_media['e__cover'];
 
                     //Create Source for this new media:
                     $added_e = $CI->E_model->verify_create($upload_media['e__title'], $player_e['e__id'], ( $upload_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover'] ), true);
