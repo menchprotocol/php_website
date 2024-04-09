@@ -525,14 +525,14 @@ function toggle_pills(x__type_hash){
 
     console.log('Toggle Pill Active: '+x__type_hash);
 
-    loading_in_progress = true;
-
     if($('.handle_nav_'+x__type_hash).attr('x__type') && $('.handle_nav_'+x__type_hash).attr('x__type').length){
         x__type = parseInt($('.handle_nav_'+x__type_hash).attr('x__type'));
     } else {
         console.log('ERROR: #'+x__type_hash+' is not a valid menu.');
         return false;
     }
+
+    loading_in_progress = true;
 
     if(!loaded_pills.includes(x__type_hash)){
         pills_loading = x__type_hash;
@@ -605,6 +605,7 @@ function toggle_pills(x__type_hash){
 
                 //Whaaaat is this?
                 console.log('ERROR: Unknown Tab!');
+                loading_in_progress = false;
                 return false;
 
             }
