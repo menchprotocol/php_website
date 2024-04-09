@@ -1616,7 +1616,7 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
     setTimeout(function () {
         //Focus on writing a message:
         $('#modal31911 .save_i__message').focus();
-    }, 987);
+    }, 611);
 
 }
 
@@ -2049,7 +2049,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             } else if(uploader_id==43004){
 
                 //Discovery Uploader
-                $('.media_frame_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_frame_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
