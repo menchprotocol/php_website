@@ -1521,7 +1521,7 @@ label {
 
 .card_covers a.btn-sm.btn-black,
 .btn-black {
-    padding: 5px 8px 4px 0px !important;
+    padding: 5px 8px 3px 3px !important;
 }
 
 .black, .black i, .black.fas, .black.far, .black.fal, .black.fad { color:#000000 !important; }
