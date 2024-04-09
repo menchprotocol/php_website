@@ -2046,21 +2046,21 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $bottom_bar_ui .= view_single_select_instant(31004, $i['i__privacy'], $access_level_i, false, $i['i__id'], $x__id);
                 $bottom_bar_ui .= '</span>';
 
-            } elseif($x__type_target_bar==33532 && $player_e && $access_level_i>=2){
+            } elseif($x__type_target_bar==33532 && $player_e && $access_level_i>=2 && !$access_locked){
 
                 //Reply
                 $bottom_bar_ui .= '<span class="mini_button main__title" style="max-width:40px;">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node && 0 ? $m_target_bar['m__title'] : '' ).'</a>';
                 $bottom_bar_ui .= '</span>';
 
-            } elseif(0 && $x__type_target_bar==42819 && superpower_unlocked(13422) && $access_level_i>=3){
+            } elseif(0 && $x__type_target_bar==42819 && superpower_unlocked(13422) && $access_level_i>=3 && !$access_locked){
 
                 //New Source
                 $bottom_bar_ui .= '<span class="mini_button main__title">';
                 $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
                 $bottom_bar_ui .= '</span>';
 
-            } elseif($x__type_target_bar==42260 && $player_e){
+            } elseif($x__type_target_bar==42260 && $player_e && !$access_locked){
 
                 //Reactions... Check to see if they have any?
                 $reactions = $CI->X_model->fetch(array(
