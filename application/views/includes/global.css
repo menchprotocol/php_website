@@ -3104,7 +3104,7 @@ h4.main__title{
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1001;
+    z-index: 998; /* 1001 */
     width: 144px;
     height: 144px;
     cursor: move;
