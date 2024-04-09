@@ -1,7 +1,7 @@
 <?php
 
 $sign_i = array();
-print_r($_GET);
+
 if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
     $sign_i = $this->I_model->fetch(array(
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
