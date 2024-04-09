@@ -924,7 +924,6 @@ function load_card_clickers(){
     });
 
     if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
-        console.log('ACTIVATED');
         var is_single_choice = ( focus_i__type==6684 );
         $(".this_selector").click(function (e) { //unbind().
             console.log('CLICKED');
@@ -938,6 +937,10 @@ function load_card_clickers(){
                     $('.this_selector:not(.this_selector_'+$(this).attr('selection_i__id')+') i.fa-square-check').each(function () {
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
                     });
+                    //Go Next:
+                    setTimeout(function () {
+                        go_next(0);
+                    }, 89);
                 }
                 $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
             }
