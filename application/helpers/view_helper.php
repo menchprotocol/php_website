@@ -1946,7 +1946,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             //Uploader
             if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
                 foreach($x_responses as $x_response){
-                    $input_ui .= '<div class="hidden">'.view_card_i(6255, $x_response).'</div>';
+                    $input_ui .= '<div>'.view_card_i(6255, $x_response).'</div>';
                 }
                 $input_ui .= '<div class="media_outer_frame hideIfEmpty">
                         <div id="media_frame_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
