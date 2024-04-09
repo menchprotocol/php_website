@@ -2826,13 +2826,13 @@ h4.main__title{
     display: inline-block;
     color: #999999;
     content: ">";
-    padding-right: 8px;
+    padding-right: 5px;
 }
 .breadcrumb-flat+.breadcrumb-flat::before {
     content: "&";
 }
 .breadcrumb-item {
-    margin: 5px 0;
+    margin: 3px 0;
 }
 
 .breadcrumb-item .breadcrumb-item a {
