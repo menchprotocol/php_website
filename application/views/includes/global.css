@@ -1705,7 +1705,6 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     margin-top: -1px;
 }
 .mini_button{
-    max-width: 100px;
     min-height: 32px;
 }
 .card_covers .icon-block-sm,
