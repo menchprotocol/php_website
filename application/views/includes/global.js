@@ -937,10 +937,6 @@ function load_card_clickers(){
                     $('.this_selector:not(.this_selector_'+$(this).attr('selection_i__id')+') i.fa-square-check').each(function () {
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
                     });
-                    //Go Next:
-                    setTimeout(function () {
-                        go_next(0);
-                    }, 89);
                 }
                 $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
             }
