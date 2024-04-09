@@ -1829,7 +1829,6 @@ function i_editor_save(){
                     //Update Hashtag & Link:
                     $('.s__12273_'+modify_data['save_i__id']).attr('i__hashtag', new_handle);
                     $(".ui_i__hashtag_"+modify_data['save_i__id']).text(new_handle).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233).fadeOut(233).fadeIn(233); //Flash
-                    $(".handle_href_i_"+modify_data['save_i__id']).attr('href', $(".handle_href_i_"+modify_data['save_i__id']+':first').attr('href').replaceAll(old_handle, new_handle));
                 }
             }
 

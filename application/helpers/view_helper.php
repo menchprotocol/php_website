@@ -1622,7 +1622,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="handle_href_i_'.$i['i__id'].' ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus__node, $focus__node).'</div>';
+    $ui .= '<div class="ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus__node, $focus__node).'</div>';
 
 
     //Raw Data:
@@ -1945,8 +1945,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             //Uploader
             if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
+                foreach($x_responses as $x_response){
+                    $input_ui .= '<div class="hidden">'.view_card_i(6255, $x_response).'</div>';
+                }
                 $input_ui .= '<div class="media_outer_frame hideIfEmpty">
-                        <div id="media_frame_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty">'.view_i_media($x_responses[0]).'</div>
+                        <div id="media_frame_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>';
                 $input_ui .= '<div style="padding:5px 0 2px 0;"><div class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
