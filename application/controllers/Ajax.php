@@ -2741,19 +2741,14 @@ class Ajax extends CI_Controller
                     'i__id' => $next_i_data['i__id'],
                 )) as $i_next){
 
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'Print: '.print_r($i_next, true).'/'.i__discovery_link($i_next, $trying_to_skip),
-                    ));
-
                     //Can we auto-complete?
-                    if(in_array($i_next['i__type'], $this->config->item('n___43039')) || count($this->X_model->fetch(array(
+                    if(in_array($i_next['i__type'], $this->config->item('n___43039')) || (!strlen($next_i_data['i__text']) && !count($next_i_data['uploaded_media']) && count($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                             'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
                             'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
                             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                             'x__previous' => $i_next['i__id'],
-                        ), array('x__next'), 0, 0))){
+                        ), array('x__next'), 0, 0)))){
                         //Focus Discovery only, so must go to next level:
                         continue;
                     }
@@ -2763,12 +2758,6 @@ class Ajax extends CI_Controller
                     $input__upload = in_array($i_next['i__type'], $this->config->item('n___43004'));
                     $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
                     $i_required = i_required($i_next);
-
-                    return view_json(array(
-                        'status' => 0,
-                        'message' => 'No:['.( $i_required ? '1' : '0' ).']['.( $trying_to_skip ? '1' : '0' ).']'.i__discovery_link($i_next, $trying_to_skip).'/'.$player_e['e__id'].'/'.$_POST['target_i__id'].'/'.print_r($i_next, true).'/'.print_r($next_i_data, true),
-                    ));
-
 
                     if(!($i_required && $trying_to_skip)){
                         //Try to complete:
