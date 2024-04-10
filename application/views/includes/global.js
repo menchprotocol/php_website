@@ -954,17 +954,19 @@ function load_card_clickers(){
                         setTimeout(function () {
                             go_next(0);
                         }, 89);
+                    } else {
+                        //Make button visible if hidden:
+                        $(".fixed-bottom").removeClass('hidden');
                     }
-
+                } else {
+                    //Make button visible if hidden:
+                    $(".fixed-bottom").removeClass('hidden');
                 }
 
                 if($('.input_ui_'+$(this).attr('selection_i__id'))[0]){
                     $('.input_ui_'+$(this).attr('selection_i__id')+' .x_write').focus();
                 }
                 $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
-
-                //Make button visible if hidden:
-                $(".fixed-bottom").removeClass('hidden');
 
             }
         });
