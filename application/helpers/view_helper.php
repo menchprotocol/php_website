@@ -1627,7 +1627,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
     //Idea Message (Remaining)
-    $ui .= '<div class="ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, $focus__node, $focus__node).'</div>';
+    $ui .= '<div class="ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, ($focus__node || 1), $focus__node).'</div>';
 
 
     //Raw Data:
