@@ -2614,7 +2614,7 @@ class Ajax extends CI_Controller
             if($i_required && $trying_to_skip){
                 return view_json(array(
                     'status' => 0,
-                    'message' => 'You Cannot Skip This Idea.'.( $input__selection ? ' Make a Selection to go Next.' : '' ),
+                    'message' => ( $input__selection ? 'Make a selection to continue...' : 'Respond to continue...' ),
                 ));
             }
 
