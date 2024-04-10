@@ -139,10 +139,6 @@ if($player_e){
         //Detect if no scroll bar, load instantly:
         var scroll_buffer = 233;
         setTimeout(function () {
-
-            //Focus on first write:
-            $(".dotted-borders:first").focus();
-
             if (( $(window).height() + scroll_buffer ) > $(document).height()) {
                 $(".fixed-bottom").removeClass('hidden');
             } else {
