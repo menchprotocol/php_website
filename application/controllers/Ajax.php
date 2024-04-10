@@ -2718,10 +2718,6 @@ class Ajax extends CI_Controller
             }
 
 
-            return view_json(array(
-                'status' => 0,
-                'message' => 'Print: '.print_r($_POST['next_i_data'], true).'/'.print_r($_POST['selection_i__id'], true),
-            ));
 
             //Look through ALL next ideas and see which ones we can complete, if any:
             foreach($_POST['next_i_data'] as $index => $next_i_data){
@@ -2744,6 +2740,11 @@ class Ajax extends CI_Controller
                 foreach($this->I_model->fetch(array(
                     'i__id' => $next_i_data['i__id'],
                 )) as $i_next){
+
+                    return view_json(array(
+                        'status' => 0,
+                        'message' => 'Print: '.print_r($i_next, true).'/'.print_r($_POST['selection_i__id'], true),
+                    ));
 
                     //Can we auto-complete?
                     if(in_array($i_next['i__type'], $this->config->item('n___43039')) || count($this->X_model->fetch(array(
