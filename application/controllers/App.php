@@ -281,7 +281,7 @@ class App extends CI_Controller
             'app_e__id' => $app_e__id,
             'x__player' => $x__player,
             'player_e' => $player_e,
-            'is_u_request' => $player_http_request,
+            'player_http_request' => $player_http_request,
             'memory_detected' => $memory_detected,
 
             'focus_e' => $focus_e,
