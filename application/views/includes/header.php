@@ -356,7 +356,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
 
 }
 
-echo '<body class="'.$body_class.'">';
+echo '<body class="'.$body_class.'" id="main_body">';
 echo $bgVideo;
 
 
