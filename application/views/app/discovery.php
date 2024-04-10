@@ -132,34 +132,33 @@ if($player_e){
 
     $(document).ready(function () {
 
-        load_hashtag_menu('Next');
-
         set_autosize($('.x_write'));
 
-        $(document).ready(function() {
-            var scroll_buffer = 233;
-            //Detect if no scroll bar, load instantly:
-            setTimeout(function () {
-                if (( $(window).height() + scroll_buffer ) > $(document).height()) {
-                    $(".fixed-bottom").removeClass('hidden');
-                } else {
-                    //Detect if scroll bar:
-                    $(window).scroll(function() {
-                        if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
-                            $(".fixed-bottom").removeClass('hidden');
-                        }
-                    });
-                }
-            }, 1597);
+        var scroll_buffer = 233;
+        //Detect if no scroll bar, load instantly:
+        setTimeout(function () {
 
-            //Check again just in case:
-            setTimeout(function () {
-                if (( $(window).height() + scroll_buffer ) > $(document).height()) {
-                    $(".fixed-bottom").removeClass('hidden');
-                }
-            }, 4181);
+            if (( $(window).height() + scroll_buffer ) > $(document).height()) {
+                $(".fixed-bottom").removeClass('hidden');
+            } else {
+                //Detect if scroll bar:
+                $(window).scroll(function() {
+                    if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
+                        $(".fixed-bottom").removeClass('hidden');
+                    }
+                });
+            }
 
-        });
+            load_hashtag_menu('Next');
+
+        }, 1597);
+
+        //Check again just in case:
+        setTimeout(function () {
+            if (( $(window).height() + scroll_buffer ) > $(document).height()) {
+                $(".fixed-bottom").removeClass('hidden');
+            }
+        }, 4181);
 
     });
 
