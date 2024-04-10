@@ -60,22 +60,4 @@ if(isset($_POST['payment_status'])){
 }
 
 
-if(!$is_good || 1){
-
-    $arr = json_decode(file_get_contents('php://input'));
-
-    $this->X_model->create(array(
-        'x__type' => 4246, //Platform Bug Reports
-        'x__message' => 'Invalid uploader',
-        'x__metadata' => array(
-            'url' => (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
-            'new_x' => ( isset($completion_status['new_x']) ? $completion_status['new_x'] : array() ),
-            'input' => $arr,
-        ),
-    ));
-    echo 'Invalid inputs';
-
-}
-
-
 
