@@ -1950,17 +1950,27 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             //Uploader
             if (in_array($i['i__type'], $CI->config->item('n___43004'))) {
-                $input_ui .= '<div class="media_outer_frame hideIfEmpty">
+
+                if($i['i__hashtag']=='ProfilePicture' && $player_e){
+
+                    //TODO REMOVE HACK: This is a profile picture hack:
+                    $input_ui .= '<div style="padding:3px 0;"><a href="" onclick="e_editor_load('.$player_e['e__id'].',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 377);" class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</a></div>';
+
+                } else {
+                    $input_ui .= '<div class="media_outer_frame hideIfEmpty">
                         <div id="media_outer_'.$i['i__id'].'" class="media_frame media_frame_'.$i['i__id'].' hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
                     </div>';
-                $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
-                $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['i__id'].', [\'#'.$i['i__id'].'\'], \'.inner_uploader_'.$i['i__id'].'\'); setTimeout(function () { display_media(\'media_outer_'.$i['i__id'].'\', 43004, '.$i['i__id'].'); }, 144); }); </script>';
+                    $input_ui .= '<div style="padding:3px 0;"><div class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</div></div>';
+                    $input_ui .= '<script> $(document).ready(function () { load_cloudinary(43004, '.$i['i__id'].', [\'#'.$i['i__id'].'\'], \'.inner_uploader_'.$i['i__id'].'\'); setTimeout(function () { display_media(\'media_outer_'.$i['i__id'].'\', 43004, '.$i['i__id'].'); }, 144); }); </script>';
 
-                foreach($x_responses as $x_response){
-                    $input_ui .= '<div class="hidden">'.view_card_i(6255, $x_response).'</div>';
-                    $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_'.$i['i__id'].'\', 43004, '.$x_response['i__id'].'); }, 144); }); </script>';
+                    foreach($x_responses as $x_response){
+                        $input_ui .= '<div class="hidden">'.view_card_i(6255, $x_response).'</div>';
+                        $input_ui .= '<script> $(document).ready(function () { setTimeout(function () { display_media(\'media_outer_'.$i['i__id'].'\', 43004, '.$x_response['i__id'].'); }, 144); }); </script>';
+                    }
                 }
+
+
 
             }
 
