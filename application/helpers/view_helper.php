@@ -1555,14 +1555,14 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     if($discovery_mode && ($is_locked || $focus_i__or)){
         $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
     }
-    if($discovery_mode && $player_e && !$is_locked && count($CI->X_model->fetch(array(
+    if($discovery_mode && $player_e && count($CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 28239, //Required
         )))){
         //Add required icon:
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\'<span class="icon-block" style="color:#FF0000;" title="Required">*</span>\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\'<span class="icon-block-xs" style="color:#FF0000;" title="Required">*</span>\'); }); </script>';
     }
 
     if($focus_i__or){
