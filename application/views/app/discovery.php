@@ -141,6 +141,7 @@ if($player_e){
         setTimeout(function () {
 
             //Focus on first write:
+            $(".dotted-borders:first").focus();
 
             if (( $(window).height() + scroll_buffer ) > $(document).height()) {
                 $(".fixed-bottom").removeClass('hidden');
@@ -159,7 +160,6 @@ if($player_e){
             if (( $(window).height() + scroll_buffer ) > $(document).height()) {
                 $(".fixed-bottom").removeClass('hidden');
             }
-            $(".x_write:first").focus();
         }, 4181);
 
     });
