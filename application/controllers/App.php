@@ -165,7 +165,7 @@ class App extends CI_Controller
                 if($_GET['e__hash'] == view__hash($_GET['e__time'].$focus_e['e__handle'])){
 
                     if(i_startable($focus_i)){
-                        $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>You have started this idea</div>';
+                        $flash_message = '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>You have started discovering this idea. Scroll to the bottom & go next to continue.</div>';
                     } else {
                         $this->X_model->mark_complete(i__discovery_link($focus_i), $focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
                         $this->X_model->mark_complete(29393, $focus_e['e__id'], ( $target_i ? $target_i['i__id'] : 0 ), $focus_i);
