@@ -144,13 +144,15 @@ if($player_e){
                 console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
                 $(".fixed-bottom").removeClass('hidden');
             } else {
-                $(window).scroll(function() {
-                    console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
-                    if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                        $(".fixed-bottom").removeClass('hidden');
-                    }
-                });
+
             }
+
+            $(window).scroll(function() {
+                console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
+                if($(window).scrollTop() + $(window).height() == $(document).height()) {
+                    $(".fixed-bottom").removeClass('hidden');
+                }
+            });
         });
 
     });
