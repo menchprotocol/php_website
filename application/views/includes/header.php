@@ -364,11 +364,7 @@ echo $bgVideo;
 
 
 //JS Variables for this app on page...
-if($focus_e && !$focus_i){
-    echo '<input type="hidden" id="focus__node" value="12274" />
-<input type="hidden" id="focus_handle" value="'.$focus_e['e__handle'].'" />
-<input type="hidden" id="focus__id" value="'.$focus_e['e__id'].'" />';
-} elseif ($focus_i && !$focus_e){
+if ($focus_i){
     echo '<input type="hidden" id="focus__node" value="12273" />
 <input type="hidden" id="focus_handle" value="'.$focus_i['i__hashtag'].'" />
 <input type="hidden" id="focus__id" value="'.$focus_i['i__id'].'" />';
@@ -376,6 +372,10 @@ if($focus_e && !$focus_i){
         echo '<input type="hidden" id="target_i__hashtag" value="'.$target_i['i__hashtag'].'" />
         <input type="hidden" id="target_i__id" value="'.$target_i['i__id'].'" />';
     }
+} elseif($focus_e){
+    echo '<input type="hidden" id="focus__node" value="12274" />
+<input type="hidden" id="focus_handle" value="'.$focus_e['e__handle'].'" />
+<input type="hidden" id="focus__id" value="'.$focus_e['e__id'].'" />';
 }
 
 
