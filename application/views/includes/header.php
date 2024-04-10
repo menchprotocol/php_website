@@ -203,6 +203,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
             .custom_ui_29700_'.$e__id.'.itemsetting.exclude_fonts,
             .custom_ui_29700_'.$e__id.' div,
             .custom_ui_29700_'.$e__id.' p,
+            .custom_ui_29700_'.$e__id.' .dropdown .btn,
             .custom_ui_29700_'.$e__id.' html,
             .custom_ui_29700_'.$e__id.' body,
             .custom_ui_29700_'.$e__id.' .doregular {
