@@ -1562,7 +1562,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             'x__following' => 28239, //Required
         )))){
         //Add required icon:
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\'<span class="icon-block-xs asterisk" title="Required">*</span>\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\'<span class="icon-block-sm asterisk" title="Required">*</span>\'); }); </script>';
     }
 
     if($focus_i__or){
