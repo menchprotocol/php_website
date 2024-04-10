@@ -1095,6 +1095,11 @@ class X_model extends CI_Model
             ));
         }
 
+        return array(
+            'status' => 0,
+            'message' => 'Awwwwwww',
+        );
+
         //Do we need to save text/upload ?
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $input__upload = in_array($i['i__type'], $this->config->item('n___43004'));
@@ -1140,7 +1145,6 @@ class X_model extends CI_Model
                 'x__player' => $x__player,
             ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
 
-            die('YESSSS');
 
             //All validated, lets make the new idea:
             if(strlen($focus_i_data['i__text']) || count($focus_i_data['uploaded_media'])){
