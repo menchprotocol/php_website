@@ -69,10 +69,8 @@ if(!$is_good || 1){
         'x__message' => 'Invalid uploader',
         'x__metadata' => array(
             'url' => (empty($_SERVER['HTTPS']) ? 'http://' : 'https://').$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],
-            'new_x' => $completion_status['new_x'],
+            'new_x' => ( isset($completion_status['new_x']) ? $completion_status['new_x'] : array() ),
             'input' => $arr,
-            'inputs1' => ( isset($arr->notification_type) ? $arr->notification_type : array() ),
-            'inputs2' => ( isset($arr['notification_type']) ? $arr['notification_type'] : array() ),
         ),
     ));
     echo 'Invalid inputs';
