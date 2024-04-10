@@ -147,7 +147,7 @@ if($player_e){
 
             }
 
-            console.log('Initial: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
+            console.log('Initial: '+$("body").height()+'/'+$(window).height()+'/'+$(document).height());
 
             $(window).scroll(function() {
                 console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
