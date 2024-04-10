@@ -144,7 +144,7 @@ if($player_e){
 
             setTimeout(function () {
 
-                //console.log('Initial: '+$(window).height()+'+'+scroll_buffer+' >= '+$(document).height());
+                console.log('Initial: '+$(window).height()+'+'+scroll_buffer+' >= '+$(document).height());
                 if (( $(window).height() + scroll_buffer ) > $(document).height()) {
                     $(".fixed-bottom").removeClass('hidden');
                 }
