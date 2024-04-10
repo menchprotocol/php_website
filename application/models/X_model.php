@@ -1143,6 +1143,8 @@ class X_model extends CI_Model
             //All validated, lets make the new idea:
             if(strlen($focus_i_data['i__text']) || count($focus_i_data['uploaded_media'])){
 
+                die('YESSSS');
+
                 if(count($x_responses)){
 
                     //Update existing response if different:
