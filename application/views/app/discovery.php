@@ -136,8 +136,6 @@ if($player_e){
 
         set_autosize($('.x_write'));
 
-        show_more(<?= $focus_i['i__id'] ?>);
-
         $(document).ready(function() {
             var scroll_buffer = 144;
             //Detect if no scroll bar, load instantly:
