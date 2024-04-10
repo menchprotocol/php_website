@@ -139,7 +139,7 @@ if($player_e){
         show_more(<?= $focus_i['i__id'] ?>);
 
 
-        if (!$('#main_body').hasScrollBar()) {
+        if (!$('html').hasScrollBar()) {
             console.log('NO SCROLL: '+$(window).height()+'/'+$(document).height());
             $(".fixed-bottom").removeClass('hidden');
         } else {
