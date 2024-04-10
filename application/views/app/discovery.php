@@ -140,7 +140,7 @@ if($player_e){
 
         $(document).ready(function() {
 
-            var scroll_buffer = 233;
+            var scroll_buffer = 144;
 
             setTimeout(function () {
 
