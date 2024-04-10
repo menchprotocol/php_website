@@ -139,15 +139,14 @@ if($player_e){
         show_more(<?= $focus_i['i__id'] ?>);
 
 
-        if (0) {
-            console.log('step1/'+$("body").height()+'/'+$win.height());
+        if (($(window).height()+89)>$(document).height()) {
+            console.log('Bottom: '+$(window).height()+'+89 > '+$(document).height());
             $(".fixed-bottom").removeClass('hidden');
         } else {
             $(window).scroll(function() {
                 console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
                 if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                    console.log('Scroll/'+$("body").height()+'/'+$win.height());
-                    alert("bottom!");
+                    $(".fixed-bottom").removeClass('hidden');
                 }
             });
         }
