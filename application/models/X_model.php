@@ -1105,7 +1105,7 @@ class X_model extends CI_Model
 
         return array(
             'status' => 0,
-            'message' => 'Awwwwwww'.$i['i__type'],
+            'message' => 'Awwwwwww'.$i['i__id'].'/'.$i['i__type'],
         );
 
         if($input__upload || $input__text){
