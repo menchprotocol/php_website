@@ -140,8 +140,8 @@ if($player_e){
 
         $(document).ready(function() {
             // Check if body height is higher than window height :)
-            if ($(".container_content").height() < $(window).height()) {
-                console.log('NO SCROLL: '+$(".container_content").height()+'/'+$(window).height());
+            if ($("#container_main").height() < $(window).height()) {
+                console.log('NO SCROLL: '+$("#container_main").height()+'/'+$(window).height());
                 $(".fixed-bottom").removeClass('hidden');
             } else {
                 $(window).scroll(function() {

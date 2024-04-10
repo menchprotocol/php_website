@@ -581,7 +581,7 @@ if(!$basic_header_footer){
 
 
 echo '<div id="container_finder" class="container hidden hideIfEmpty"><div class="row justify-content hideIfEmpty"></div></div>';
-echo '<div class="container container_content">';
+echo '<div id="container_main" class="container container_content">';
 
 //Any message we need to show here?
 if (!isset($flash_message) || !strlen($flash_message)) {
