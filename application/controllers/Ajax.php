@@ -2761,7 +2761,7 @@ class Ajax extends CI_Controller
                     if(($i_required && $trying_to_skip)){
                         return view_json(array(
                             'status' => 0,
-                            'message' => 'No',
+                            'message' => 'No:'.i__discovery_link($i_next, $trying_to_skip).'/'.$player_e['e__id'].'/'.$_POST['target_i__id'].'/'.print_r($i_next, true).'/'.print_r($next_i_data, true),
                         ));
                     }
 
