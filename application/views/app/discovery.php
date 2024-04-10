@@ -139,7 +139,7 @@ if($player_e){
         show_more(<?= $focus_i['i__id'] ?>);
 
         $(document).ready(function() {
-            var scroll_buffer = 180;
+            var scroll_buffer = 144;
             //Detect if no scroll bar, load instantly:
             setTimeout(function () {
                 if (( $(window).height() + scroll_buffer ) > $(document).height()) {
