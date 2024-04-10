@@ -140,18 +140,18 @@ if($player_e){
 
         $(document).ready(function() {
 
+            var scroll_buffer = 144;
             setTimeout(function () {
-                console.log('Initial1: '+$("body").height()+'/'+$(window).height()+'/'+$(document).height());
-                if ($("body").height() < $(window).height()) {
-                    console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
-                    //$(".fixed-bottom").removeClass('hidden');
+                console.log('Initial: '+$(window).height()+'+'+scroll_buffer+' >= '+$(document).height());
+                if (( $(window).height()+scroll_buffer ) > $(document).height()) {
+                    $(".fixed-bottom").removeClass('hidden');
                 }
             }, 987);
 
 
             $(window).scroll(function() {
-                console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
-                if($(window).scrollTop() + $(window).height() == $(document).height()) {
+                console.log('SCroll: '+$(window).scrollTop()+'+'+$(window).height()+'+'scroll_buffer+' >= '+$(document).height());
+                if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
                     $(".fixed-bottom").removeClass('hidden');
                 }
             });
