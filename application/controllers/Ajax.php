@@ -2758,12 +2758,10 @@ class Ajax extends CI_Controller
                     $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
                     $i_required = i_required($i_next);
 
-                    if(($i_required && $trying_to_skip)){
-                        return view_json(array(
-                            'status' => 0,
-                            'message' => 'No:'.i__discovery_link($i_next, $trying_to_skip).'/'.$player_e['e__id'].'/'.$_POST['target_i__id'].'/'.print_r($i_next, true).'/'.print_r($next_i_data, true),
-                        ));
-                    }
+                    return view_json(array(
+                        'status' => 0,
+                        'message' => 'No:['.( $i_required ? '1' : '0' ).']['.( $trying_to_skip ? '1' : '0' ).']'.i__discovery_link($i_next, $trying_to_skip).'/'.$player_e['e__id'].'/'.$_POST['target_i__id'].'/'.print_r($i_next, true).'/'.print_r($next_i_data, true),
+                    ));
 
 
                     if(!($i_required && $trying_to_skip)){
