@@ -140,7 +140,7 @@ if($player_e){
 
         $(document).ready(function() {
 
-            var scroll_buffer = 144;
+            var scroll_buffer = 233;
 
             setTimeout(function () {
 
@@ -152,7 +152,7 @@ if($player_e){
 
 
             $(window).scroll(function() {
-                //console.log('SCroll: '+$(window).scrollTop()+'+'+$(window).height()+'+'scroll_buffer+' >= '+$(document).height());
+                console.log('SCroll: '+$(window).scrollTop()+'+'+$(window).height()+'+'+scroll_buffer+' >= '+$(document).height());
                 if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
                     $(".fixed-bottom").removeClass('hidden');
                 }
