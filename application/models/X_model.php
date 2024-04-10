@@ -1095,17 +1095,20 @@ class X_model extends CI_Model
             ));
         }
 
+
+
         //Do we need to save text/upload ?
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $input__upload = in_array($i['i__type'], $this->config->item('n___43004'));
         $input__text = in_array($i['i__type'], $this->config->item('n___43002')) || in_array($i['i__type'], $this->config->item('n___43003'));
 
-        if($input__upload || $input__text){
 
-            return array(
-                'status' => 0,
-                'message' => 'Awwwwwww2',
-            );
+        return array(
+            'status' => 0,
+            'message' => 'Awwwwwww'.$i['i__type'],
+        );
+
+        if($input__upload || $input__text){
 
             if(!isset($focus_i_data['i__text'])){
                 $focus_i_data['i__text'] = null;
