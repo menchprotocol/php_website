@@ -110,7 +110,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
 
                 <!-- Dynamic Loader -->
-                <div class="dynamic_editing_loading hidden"><span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Loading</div>
+                <div class="dynamic_editing_loading hidden"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading</div>
 
                 <!-- Dynamic Inputs -->
                 <div class="dynamic_frame"><?= $dynamic_edit ?></div>

@@ -223,7 +223,7 @@ function x_mass_apply_preview(apply_id, s__id){
     $('#modal'+apply_id).modal('show');
 
     //Load Ppeview:
-    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Loading');
+    $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
     $.post("/ajax/x_mass_apply_preview", {
         apply_id: apply_id,
         s__id: s__id,
@@ -576,7 +576,7 @@ function toggle_pills(x__type_hash){
         //Do we need to load data via ajax?
         if( !loaded_pills.includes(x__type_hash) ){
 
-            $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="far fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + x__type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
             var focus__node = parseInt($('#focus__node').val());
             console.log('Tab loading from @'+focus__node+' for @'+x__type);
@@ -822,7 +822,7 @@ function e_load_cover(x__type, e__id, counter, first_segment){
        return false;
     }
 
-    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/e_load_cover", {
         x__type:x__type,
@@ -843,7 +843,7 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
         return false;
     }
 
-    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/i_load_cover", {
         x__type:x__type,
@@ -1029,7 +1029,7 @@ function activate_popover(){
                 x_set_start_text();
                 load_card_clickers();
             });
-            return '<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>';
+            return '<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>';
         }
     });
 
@@ -1762,7 +1762,7 @@ function i_editor_save(){
     }
 
     i_saving = true;
-    $(".i_editor_save").html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".i_editor_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31911 .save_results").html('');
 
     var current_i__id = parseInt($('#modal31911 .save_i__id').val());
@@ -2059,18 +2059,18 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             if(uploader_id==42359){
 
                 //Source Cover Uploader:
-                update__cover('far fa-yin-yang fa-spin');
+                update__cover('fas fa-yin-yang fa-spin');
 
             } else if(uploader_id==13572){
 
                 //Ideator Uploader
                 has_unsaved_changes = true;
-                $('#media_editor_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_editor_frame').append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             } else if(uploader_id==43004){
 
                 //Discovery Uploader
-                $('#media_outer_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="far fa-yin-yang fa-spin"></i></span></div>');
+                $('#media_outer_'+s__id).append('<div id="'+result.info.id+'" class="media_item" media_e__id="" playback_code="" e__id="0"  e__cover=""><span><i class="fas fa-yin-yang fa-spin"></i></span></div>');
 
             }
 
@@ -2369,7 +2369,7 @@ function e_editor_save(){
     }
 
     e_saving = true;
-    $(".e_editor_save").html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $(".e_editor_save").html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
     $("#modal31912 .save_results").html('');
 
     var modify_data = {
@@ -2497,7 +2497,7 @@ function x_view_load_page() {
 
 
     current_page[focus_x__group]++; //Now we can increment current page
-    $('<div class="load-more"><span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
+    $('<div class="load-more"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
     $.post("/ajax/x_view_load_page", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
@@ -2551,7 +2551,7 @@ function e__add(x__type, e_existing_id) {
     var input = $('.new-list-'+x__type+' .add-input');
 
     var original_photo = $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html();
-    $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
     var e_new_string = null;
     if (e_existing_id==0) {
         e_new_string = input.val();
@@ -2660,7 +2660,7 @@ function i__add(x__type, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="far fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
     $.post("/ajax/i__add", {
@@ -2995,7 +2995,7 @@ function e_select_apply(focus__id, selected_e__id, enable_mulitiselect, down_e__
     //Show spinner on the notification element:
     var notify_el = '.radio-'+focus__id+' .item-'+selected_e__id+' .change-results';
     var initial_icon = $(notify_el).html();
-    $(notify_el).html('<i class="far fa-yin-yang fa-spin"></i>');
+    $(notify_el).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
 
     if(!enable_mulitiselect){
@@ -3187,7 +3187,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
         alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ x__id +'/'+ show_full_name);
         return false;
     }
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/ajax/x_update_instant_select", {
         focus__id:parseInt($('#focus__id').val()),
@@ -3365,7 +3365,7 @@ function go_next(do_skip){
 
 
     //Load:
-    $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+    $('.go-next').html('<i class="fas fa-yin-yang fa-spin"></i>');
 
     //Submit to go next:
     $.post("/ajax/go_next", {
@@ -3384,7 +3384,7 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            $('.go-next').html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.go-next').html('<i class="fas fa-yin-yang fa-spin"></i>');
             js_redirect(data.next_i__hashtag);
         } else {
             //Show error:

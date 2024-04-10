@@ -15,4 +15,4 @@ if($player_e['e__id']){
 
 }
 
-echo '<div class="center"><span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span></div>';
+echo '<div class="center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span></div>';

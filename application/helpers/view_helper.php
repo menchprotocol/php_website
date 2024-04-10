@@ -1677,7 +1677,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             if(isset($_GET['process_pay']) && !count($x_completes)){
 
-                $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="far fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
+                $input_ui .= '<div class="alert alert-warning" role="alert"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Processing your payment, please wait</div>';
 
                 //Referesh soon so we can check if completed or not
                 js_php_redirect(phpview_memory(42903, 30795) . $target_i__hashtag .'/'.$i['i__hashtag'].'?process_pay=1', 987);

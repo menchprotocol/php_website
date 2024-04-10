@@ -269,7 +269,7 @@ echo '</table>';
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             };
 
-            $('.x__player_' + modify_data['e__id'] + '_' + modify_data['x__player']).html('<i class="far fa-yin-yang fa-spin"></i>');
+            $('.x__player_' + modify_data['e__id'] + '_' + modify_data['x__player']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
             $.post("/ajax/e_toggle_e", modify_data, function (data) {

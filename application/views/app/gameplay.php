@@ -26,7 +26,7 @@ echo '<div class="center miscstats hideIfEmpty"></div>';
 
 foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
-    echo '<h3 class="center centerh advanced-stats hidden main__title" title="@'.$m1['m__handle'].'"><div class="large-cover">'.$m1['m__cover'].'</div><b class="card_count_'.$e__id1.'"><i class="far fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</h3>';
+    echo '<h3 class="center centerh advanced-stats hidden main__title" title="@'.$m1['m__handle'].'"><div class="large-cover">'.$m1['m__cover'].'</div><b class="card_count_'.$e__id1.'"><i class="fas fa-yin-yang fa-spin"></i></b> '.$m1['m__title'].':</h3>';
 
     echo '<div class="row justify-content list-covers">';
     
@@ -37,7 +37,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
         echo '<div title="'.$m2['m__message'].'">';
         echo '<div class="large_cover">'.$m2['m__cover'].'</div>';
-        echo '<div class="main__title large_title"><b class="card_count_'.$e__id2.'"><i class="far fa-yin-yang fa-spin"></i></b></div>';
+        echo '<div class="main__title large_title"><b class="card_count_'.$e__id2.'"><i class="fas fa-yin-yang fa-spin"></i></b></div>';
         echo '<div class="main__title large_title" title="@'.$m2['m__handle'].'">'.$m2['m__title'].'</div>';
         echo '</div>';
 
@@ -78,7 +78,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
             }
 
             echo '<tr class="mobile-shrink" title="'.$m3['m__message'].'" data-toggle="tooltip" data-placement="top">';
-            echo '<td style="text-align: left;" title="@'.$m3['m__handle'].'"><a href="'.view_memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="far fa-yin-yang fa-spin"></i></b></span><span class="second-right-col points_frame hidden">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xs">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
+            echo '<td style="text-align: left;" title="@'.$m3['m__handle'].'"><a href="'.view_memory(42903,42902).$m3['m__handle'].'"><span class="icon-block-sm">'.$m3['m__cover'].'</span>'.$m3['m__title'].'</a><span class="last-right-col"><b class="card_count_'.$e__id3.'"><i class="fas fa-yin-yang fa-spin"></i></b></span><span class="second-right-col points_frame hidden">'.( isset($e___42225[$e__id3]['m__message']) && intval($e___42225[$e__id3]['m__message'])>0 ? $e___42225[$e__id3]['m__message'].'<span class="icon-block-xs">'.$e___11035[42225]['m__cover'].'</span>' : '' ).'</span></td>';
             echo '</tr>';
 
         }
