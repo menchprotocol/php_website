@@ -152,29 +152,6 @@ if($player_e){
             });
         }
 
-
-
-
-        //Make Navigation visible only when the user scrolls to the bottom or the bottom is visible from the start:
-        var $win = $(window);
-        if ((parseFloat($("body").height())-89) > parseFloat($win.height())) {
-            console.log('step1/'+$("body").height()+'/'+$win.height());
-            $(".fixed-bottom").removeClass('hidden');
-        } else if (parseFloat($("body").height())<parseFloat($win.height())) {
-            console.log('step2/'+$("body").height()+'/'+$win.height());
-            $(".fixed-bottom").removeClass('hidden');
-        } else {
-            $(function () {
-                $win.scroll(function () {
-                    //Download loading from bottom:
-                    if (parseFloat($(document).height() - ($win.height() + $win.scrollTop())) < 144) {
-                        console.log('step2');
-                        $(".fixed-bottom").removeClass('hidden');
-                    }
-                });
-            });
-        }
-
     });
 
 </script>
