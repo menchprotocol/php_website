@@ -1203,7 +1203,7 @@ class X_model extends CI_Model
         }
 
         $es_creator = $this->E_model->fetch(array(
-            'e__id' => $x_data['x__player'],
+            'e__id' => $x__player,
         ));
 
         //Make sure not duplicate:
@@ -1342,17 +1342,21 @@ class X_model extends CI_Model
                         $es_creator[0]['e__title'] = $x_data['x__message'];
                         $this->E_model->activate_session($es_creator[0], true);
 
-                    } elseif($x_tag['x__following']==6198 && filter_var($media_stats['media_e__cover'], FILTER_VALIDATE_URL)){
+                    } elseif($x_tag['x__following']==6198){
 
-                        //Update Source Cover:
-                        //Update profile picture for current user:
-                        $this->E_model->update($x_data['x__player'], array(
-                            'e__cover' => $media_stats['media_e__cover'],
-                        ), true, $x_data['x__player']);
+                        if(filter_var($media_stats['media_e__cover'], FILTER_VALIDATE_URL)){
+                            //Update Source Cover:
+                            //Update profile picture for current user:
+                            $this->E_model->update($x__player, array(
+                                'e__cover' => $media_stats['media_e__cover'],
+                            ), true, $x__player);
 
-                        //Update live session as well:
-                        $es_creator[0]['e__cover'] = $media_stats['media_e__cover'];
-                        $this->E_model->activate_session($es_creator[0], true);
+                            //Update live session as well:
+                            $es_creator[0]['e__cover'] = $media_stats['media_e__cover'];
+                            $this->E_model->activate_session($es_creator[0], true);
+                        } else {
+                            die('DIE:'+$media_stats['media_e__cover']);
+                        }
 
                     }
 
