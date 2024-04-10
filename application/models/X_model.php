@@ -1140,10 +1140,11 @@ class X_model extends CI_Model
                 'x__player' => $x__player,
             ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
 
+            die('YESSSS');
+
             //All validated, lets make the new idea:
             if(strlen($focus_i_data['i__text']) || count($focus_i_data['uploaded_media'])){
 
-                die('YESSSS');
 
                 if(count($x_responses)){
 
