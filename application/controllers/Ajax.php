@@ -650,7 +650,7 @@ class Ajax extends CI_Controller
 
                     foreach(view_i_covers($_POST['x__type'], $_POST['i__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view_card($target_disccovery.view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
+                            $ui .= view_card($target_disccovery.view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i, true), $next_i['x__message']);
                             $listed_items++;
                         }
                     }
@@ -782,7 +782,7 @@ class Ajax extends CI_Controller
 
                     foreach(view_e_covers($_POST['x__type'], $_POST['e__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view_card($target_disccovery.view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i), $next_i['x__message']);
+                            $ui .= view_card($target_disccovery.view_memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['x__type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view_i_title($next_i, true), $next_i['x__message']);
                             $listed_items++;
                         }
                     }
