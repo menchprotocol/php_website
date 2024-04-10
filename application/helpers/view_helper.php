@@ -283,7 +283,7 @@ function view_card($href, $is_current, $x__type, $o__privacy, $o__type, $o__titl
     $CI =& get_instance();
     $e___4593 = $CI->config->item('e___4593');
     $e___6177 = $CI->config->item('e___6177');
-    return '<a title="@'.$x__type.'" href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item main__title '.( $is_current ? ' active ' : '' ).'">'.
+    return '<a title="@'.$x__type.'" href="'.( $is_current ? 'javascript:alert(\'You are here already!\');' : $href ).'" class="dropdown-item '.( $is_current ? ' active ' : '' ).'">'.
         ( in_array($x__type, $CI->config->item('n___32172')) ? '<span class="icon-block-xs">'.$e___4593[$x__type]['m__cover'].'</span>' : '' ).
         ( in_array($o__privacy, $CI->config->item('n___32172')) ? '<span class="icon-block-xs">'.$e___6177[$o__privacy]['m__cover'].'</span>' : '' ).
         ( strlen($o__type) ? '<span class="icon-block-xs">'.$o__type.'</span>' : '&nbsp;' ). //Type or Cover
