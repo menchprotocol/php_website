@@ -137,7 +137,7 @@ if($player_e){
         set_autosize($('.x_write'));
 
         $(document).ready(function() {
-            var scroll_buffer = 144;
+            var scroll_buffer = 233;
             //Detect if no scroll bar, load instantly:
             setTimeout(function () {
                 if (( $(window).height() + scroll_buffer ) > $(document).height()) {
