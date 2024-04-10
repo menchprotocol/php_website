@@ -508,6 +508,10 @@ function set_hashtag_if_empty(x__type_hash){
 }
 
 
+
+
+
+
 var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];

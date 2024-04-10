@@ -139,15 +139,23 @@ if($player_e){
         show_more(<?= $focus_i['i__id'] ?>);
 
         $(document).ready(function() {
-            // Check if body height is higher than window height :)
-            if ($("body").height() < $(window).height()) {
-                console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
-                //$(".fixed-bottom").removeClass('hidden');
-            } else {
 
-            }
+            setTimeout(function () {
+                console.log('Initial: '+$("body").height()+'/'+$(window).height()+'/'+$(document).height());
+                if ($("body").height() < $(window).height()) {
+                    console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
+                    //$(".fixed-bottom").removeClass('hidden');
+                }
+            }, 89);
 
-            console.log('Initial: '+$("body").height()+'/'+$(window).height()+'/'+$(document).height());
+            setTimeout(function () {
+                console.log('Initial1: '+$("body").height()+'/'+$(window).height()+'/'+$(document).height());
+                if ($("body").height() < $(window).height()) {
+                    console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
+                    //$(".fixed-bottom").removeClass('hidden');
+                }
+            }, 1333);
+
 
             $(window).scroll(function() {
                 console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
@@ -155,6 +163,7 @@ if($player_e){
                     $(".fixed-bottom").removeClass('hidden');
                 }
             });
+
         });
 
     });
