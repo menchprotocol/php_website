@@ -2743,7 +2743,7 @@ class Ajax extends CI_Controller
 
                     return view_json(array(
                         'status' => 0,
-                        'message' => 'Print: '.print_r($i_next, true).'/'.print_r($_POST['selection_i__id'], true),
+                        'message' => 'Print: '.print_r($i_next, true).'/'.i__discovery_link($i_next, $trying_to_skip),
                     ));
 
                     //Can we auto-complete?
