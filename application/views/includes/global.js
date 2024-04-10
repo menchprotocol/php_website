@@ -934,10 +934,14 @@ function load_card_clickers(){
         var is_single_choice = ( focus_i__type==6684 );
         $(".this_selector").click(function (e) { //unbind().
             console.log('CLICKED');
+
             if($('.this_selector_'+$(this).attr('selection_i__id')+' i').hasClass('fa-square-check')){
+
                 //Already selected, so unselect:
                 $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
+
             } else {
+
                 //Not selected, so Select now:
                 if(is_single_choice){
                     //Unselect the previously selected:
@@ -958,6 +962,10 @@ function load_card_clickers(){
                     $('.input_ui_'+$(this).attr('selection_i__id')+' .x_write').focus();
                 }
                 $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('far').removeClass('fa-square').addClass('fas').addClass('fa-square-check');
+
+                //Make button visible if hidden:
+                $(".fixed-bottom").removeClass('hidden');
+
             }
         });
     }
