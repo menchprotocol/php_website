@@ -584,6 +584,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
+    $i__privacy = ( superpower_unlocked(10939) ? $CI->config->item('n___31871') /* Active */ : $CI->config->item('n___42948') /* Pubicly Listed Ideas */  );
 
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
@@ -608,7 +609,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $joins_objects = array('x__previous');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $i__privacy) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //IDEA LINKS
             'x__next' => $i__id,
         );
@@ -620,7 +621,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $joins_objects = array('x__next');
         $query_filters = array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $i__privacy) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'x__previous' => $i__id,
         );
