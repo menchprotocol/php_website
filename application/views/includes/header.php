@@ -165,7 +165,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 
     //Hide superpower CSS thats missing:
     foreach($this->config->item('e___10957') as $superpower_id => $superpower){
-        if(!in_array($superpower_id, $this->session->userdata('session_superpowers_unlocked'))){
+        if(is_array($this->session->userdata('session_superpowers_unlocked')) && !in_array($superpower_id, $this->session->userdata('session_superpowers_unlocked'))){
             echo ' body .hidden_superpower__'.$superpower_id.' { display:none !important; } '."\n";
         }
     }
