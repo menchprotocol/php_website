@@ -1348,21 +1348,17 @@ class X_model extends CI_Model
                         $es_creator[0]['e__title'] = $x_data['x__message'];
                         $this->E_model->activate_session($es_creator[0], true);
 
-                    } elseif($x_tag['x__following']==6198){
+                    } elseif($x_tag['x__following']==6198 && filter_var($media_stats['media_e__cover'], FILTER_VALIDATE_URL)){
 
-                        if(filter_var($media_stats['media_e__cover'], FILTER_VALIDATE_URL)){
-                            //Update Source Cover:
-                            //Update profile picture for current user:
-                            $this->E_model->update($x__player, array(
-                                'e__cover' => $media_stats['media_e__cover'],
-                            ), true, $x__player);
+                        //Update Source Cover:
+                        //Update profile picture for current user:
+                        $this->E_model->update($x__player, array(
+                            'e__cover' => $media_stats['media_e__cover'],
+                        ), true, $x__player);
 
-                            //Update live session as well:
-                            $es_creator[0]['e__cover'] = $media_stats['media_e__cover'];
-                            $this->E_model->activate_session($es_creator[0], true);
-                        } else {
-                            die('DIE:'+$media_stats['media_e__cover']);
-                        }
+                        //Update live session as well:
+                        $es_creator[0]['e__cover'] = $media_stats['media_e__cover'];
+                        $this->E_model->activate_session($es_creator[0], true);
 
                     }
 
