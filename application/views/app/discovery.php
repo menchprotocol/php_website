@@ -138,18 +138,20 @@ if($player_e){
 
         show_more(<?= $focus_i['i__id'] ?>);
 
-
-        if (!$('html').hasScrollBar()) {
-            console.log('NO SCROLL: '+$(window).height()+'/'+$(document).height());
-            $(".fixed-bottom").removeClass('hidden');
-        } else {
-            $(window).scroll(function() {
-                console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
-                if($(window).scrollTop() + $(window).height() == $(document).height()) {
-                    $(".fixed-bottom").removeClass('hidden');
-                }
-            });
-        }
+        $(document).ready(function() {
+            // Check if body height is higher than window height :)
+            if ($("body").height() < $(window).height()) {
+                console.log('NO SCROLL: '+$$("body").height()+'/'+$(window).height());
+                $(".fixed-bottom").removeClass('hidden');
+            } else {
+                $(window).scroll(function() {
+                    console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
+                    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+                        $(".fixed-bottom").removeClass('hidden');
+                    }
+                });
+            }
+        });
 
     });
 
