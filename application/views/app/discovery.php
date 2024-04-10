@@ -136,10 +136,18 @@ if($player_e){
 
         set_autosize($('.x_write'));
 
-        var scroll_buffer = 233;
+        setTimeout(function () {
+            //Focus on first write:
+            $(".x_write:first").focus();
+        }, 611);
 
         //Detect if no scroll bar, load instantly:
+        var scroll_buffer = 233;
         setTimeout(function () {
+
+            //Focus on first write:
+            $(".x_write:first").focus();
+
 
             if (( $(window).height() + scroll_buffer ) > $(document).height()) {
                 $(".fixed-bottom").removeClass('hidden');
