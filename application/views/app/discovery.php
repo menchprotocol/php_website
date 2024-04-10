@@ -132,9 +132,12 @@ if($player_e){
 
     $(document).ready(function () {
 
+        load_hashtag_menu('Next');
+
         set_autosize($('.x_write'));
 
         var scroll_buffer = 233;
+
         //Detect if no scroll bar, load instantly:
         setTimeout(function () {
 
@@ -148,9 +151,6 @@ if($player_e){
                     }
                 });
             }
-
-            load_hashtag_menu('Next');
-
         }, 1597);
 
         //Check again just in case:
