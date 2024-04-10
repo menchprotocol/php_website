@@ -507,6 +507,11 @@ function set_hashtag_if_empty(x__type_hash){
     }
 }
 
+(function($) {
+    $.fn.hasScrollBar = function() {
+        return this.get(0).scrollHeight > this.height();
+    }
+})(jQuery);
 
 var loading_in_progress = false;
 var pills_loading = null;

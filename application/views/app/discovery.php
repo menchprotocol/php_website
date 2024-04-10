@@ -139,8 +139,7 @@ if($player_e){
         show_more(<?= $focus_i['i__id'] ?>);
 
 
-        if (($(window).height()+89)>$(document).height() && 0) {
-            console.log('Bottom: '+$(window).height()+'+89 > '+$(document).height());
+        if (!$('body').hasScrollBar()) {
             $(".fixed-bottom").removeClass('hidden');
         } else {
             $(window).scroll(function() {
