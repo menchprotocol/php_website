@@ -2758,6 +2758,13 @@ class Ajax extends CI_Controller
                     $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
                     $i_required = i_required($i_next);
 
+                    if(($i_required && $trying_to_skip)){
+                        return view_json(array(
+                            'status' => 0,
+                            'message' => 'No',
+                        ));
+                    }
+
 
                     if(!($i_required && $trying_to_skip)){
                         //Try to complete:
