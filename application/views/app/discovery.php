@@ -43,7 +43,7 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
             ), array('x__next'), 0, 0, array('x__weight' => 'ASC'), '*', null, true);
 
             $breadcrum_content .= '<li class="breadcrumb-item">';
-            $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.( $followings_i['i__hashtag']==$target_i__hashtag ? 'start' : $followings_i['i__hashtag'] ).'"><u>'.view_i_title($followings_i).'</u></a>';
+            $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.( $followings_i['i__hashtag']==$target_i__hashtag ? 'start' : $followings_i['i__hashtag'] ).'"><u>'.view_i_title($followings_i, true).'</u></a>';
 
             //Do we have more sub-items in this branch? Must have more than 1 to show, otherwise the 1 will be included in the main branch:
             if(count($query_subset) >= 2){
@@ -61,10 +61,10 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
                         'x__player' => $x__player,
                         'x__previous' => $i_subset['i__id'],
                     )))){
-                        $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset).'</a>';
+                        $breadcrum_content .= '<a href="'.view_memory(42903,30795).$target_i__hashtag.'/'.$i_subset['i__hashtag'].'" class="dropdown-item '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'">'.view_i_title($i_subset, true).'</a>';
                     } else {
                         //Locked
-                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'" title="'.$e___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>'.view_i_title($i_subset).'</div>';
+                        $breadcrum_content .= '<div class="dropdown-item is_locked '.( in_array($i_subset['i__id'], $main_branch) ? ' active ' : '' ).'" title="'.$e___11035[43010]['m__title'].'" data-toggle="tooltip" data-placement="top"><span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>'.view_i_title($i_subset, true).'</div>';
                     }
 
                 }
