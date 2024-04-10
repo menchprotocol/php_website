@@ -140,6 +140,7 @@ if($player_e){
 
 
         if (!$('#main_body').hasScrollBar()) {
+            console.log('NO SCROLL: '+$(window).height()+'/'+$(document).height());
             $(".fixed-bottom").removeClass('hidden');
         } else {
             $(window).scroll(function() {
