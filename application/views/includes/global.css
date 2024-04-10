@@ -4492,12 +4492,9 @@ main {
 }
 
 .url_truncate {
-    font-size: 1em;
-    max-width: 98%;
+    max-width: 100%;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: block;
+    display: inline-block;
 }
 
 .cover-btn{
