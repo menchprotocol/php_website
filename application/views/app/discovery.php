@@ -138,6 +138,23 @@ if($player_e){
 
         show_more(<?= $focus_i['i__id'] ?>);
 
+
+        if (0) {
+            console.log('step1/'+$("body").height()+'/'+$win.height());
+            $(".fixed-bottom").removeClass('hidden');
+        } else {
+            $(window).scroll(function() {
+                console.log('SCroll: '+$(window).scrollTop()+'/'+$(window).height()+'/'+$(document).height());
+                if($(window).scrollTop() + $(window).height() == $(document).height()) {
+                    console.log('Scroll/'+$("body").height()+'/'+$win.height());
+                    alert("bottom!");
+                }
+            });
+        }
+
+
+
+
         //Make Navigation visible only when the user scrolls to the bottom or the bottom is visible from the start:
         var $win = $(window);
         if ((parseFloat($("body").height())-89) > parseFloat($win.height())) {
