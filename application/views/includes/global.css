@@ -4493,11 +4493,7 @@ main {
 
 .url_truncate {
     max-width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     display: inline-block;
-    margin-bottom: -11px;
 }
 
 .cover-btn{
