@@ -142,7 +142,7 @@ if($player_e){
             // Check if body height is higher than window height :)
             if ($("body").height() < $(window).height()) {
                 console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
-                $(".fixed-bottom").removeClass('hidden');
+                //$(".fixed-bottom").removeClass('hidden');
             } else {
 
             }
