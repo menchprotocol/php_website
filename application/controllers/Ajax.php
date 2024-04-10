@@ -2739,6 +2739,7 @@ class Ajax extends CI_Controller
                 foreach($this->I_model->fetch(array(
                     'i__id' => $next_i_data['i__id'],
                 )) as $i_next){
+
                     //Can we auto-complete?
                     if(in_array($i_next['i__type'], $this->config->item('n___43039')) || count($this->X_model->fetch(array(
                             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -2760,9 +2761,13 @@ class Ajax extends CI_Controller
 
                     if(!($i_required && $trying_to_skip)){
                         //Try to complete:
-                        $this->X_model->mark_complete(i__discovery_link($i_next, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $i_next, $next_i_data, array(
+                        $completion_status = $this->X_model->mark_complete(i__discovery_link($i_next, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $i_next, $next_i_data, array(
                             'x__weight' => $next_i_data['i__quantity'],
                         ));
+                        if($i_required && !$completion_status['status']){
+                            //We had an error with data within target_i__id:
+                            return view_json($completion_status);
+                        }
                     }
                 }
             }
