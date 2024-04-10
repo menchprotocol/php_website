@@ -1593,6 +1593,10 @@ function i_editor_load(i__id = 0, x__id = 0, link_x__type = 0, next_i__id = 0, p
             }
         }
 
+        if(insert_text.length && !insert_message.length){
+            insert_message = insert_text.length;
+        }
+
         if(insert_message.length){
             $("#modal31911 .save_i__message").val(insert_message);
         }

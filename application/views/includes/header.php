@@ -95,6 +95,7 @@ foreach($this->config->item('e___13890') as $e__id => $m){
     echo '<script> ';
     //JS VARIABLES
 
+    echo ' var insert_text = \'' . (isset($_GET['insert']) ? $_GET['insert'] : '')  . '\'; ';
     echo ' var js_pl_id = ' . ( $player_e ? $player_e['e__id'] : '0' ) . '; ';
     echo ' var js_pl_handle = \'' . ( $player_e ? $player_e['e__handle'] : '' ) . '\'; ';
     echo ' var js_pl_name = \'' . ( $player_e ? str_replace('\'','\\\'',trim($player_e['e__title'])) : '' ) . '\'; ';
