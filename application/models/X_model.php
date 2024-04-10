@@ -1103,10 +1103,13 @@ class X_model extends CI_Model
         $input__text = in_array($i['i__type'], $this->config->item('n___43002')) || in_array($i['i__type'], $this->config->item('n___43003'));
 
 
-        return array(
-            'status' => 0,
-            'message' => 'Awwwwwww'.$i['i__id'].'/'.$i['i__type'],
-        );
+        if($i['i__hashtag']=='asdasd'){
+            return array(
+                'status' => 0,
+                'message' => 'Awwwwwww'.$i['i__id'].'/'.$i['i__type'],
+            );
+        }
+
 
         if($input__upload || $input__text){
 

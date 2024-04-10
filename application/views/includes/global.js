@@ -3385,7 +3385,7 @@ function go_next(do_skip){
         if (data.status) {
             //Go to redirect message:
             $('.go-next').html('<i class="fas fa-yin-yang fa-spin"></i>');
-            //js_redirect(data.next_i__hashtag);
+            js_redirect(data.next_i__hashtag);
         } else {
             //Show error:
             alert(data.message);

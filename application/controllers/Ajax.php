@@ -2736,39 +2736,35 @@ class Ajax extends CI_Controller
                     continue;
                 }
 
-                $is = $this->I_model->fetch(array(
+                foreach($this->I_model->fetch(array(
                     'i__id' => $next_i_data['i__id'],
-                ));
-                if(!count($is)){
-                    continue;
+                )) as $i_next){
+                    //Can we auto-complete?
+                    if(in_array($i_next['i__type'], $this->config->item('n___43039')) || count($this->X_model->fetch(array(
+                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
+                            'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
+                            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                            'x__previous' => $i_next['i__id'],
+                        ), array('x__next'), 0, 0))){
+                        //Focus Discovery only, so must go to next level:
+                        continue;
+                    }
+
+                    //Analyze input:
+                    $input__text = in_array($i_next['i__type'], $this->config->item('n___43002')) || in_array($i_next['i__type'], $this->config->item('n___43003'));
+                    $input__upload = in_array($i_next['i__type'], $this->config->item('n___43004'));
+                    $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
+                    $i_required = i_required($i_next);
+
+
+                    if(!($i_required && $trying_to_skip)){
+                        //Try to complete:
+                        $this->X_model->mark_complete(i__discovery_link($i_next, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $i_next, $next_i_data, array(
+                            'x__weight' => $next_i_data['i__quantity'],
+                        ));
+                    }
                 }
-
-                //Can we auto-complete?
-                if(in_array($is[0]['i__type'], $this->config->item('n___43039')) || count($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
-                        'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
-                        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                        'x__previous' => $is[0]['i__id'],
-                    ), array('x__next'), 0, 0))){
-                    //Focus Discovery only, so must go to next level:
-                    continue;
-                }
-
-                //Analyze input:
-                $input__text = in_array($is[0]['i__type'], $this->config->item('n___43002')) || in_array($is[0]['i__type'], $this->config->item('n___43003'));
-                $input__upload = in_array($is[0]['i__type'], $this->config->item('n___43004'));
-                $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
-                $i_required = i_required($is[0]);
-
-
-                if(!($i_required && $trying_to_skip)){
-                    //Try to complete:
-                    $this->X_model->mark_complete(i__discovery_link($is[0], $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $is[0], $next_i_data, array(
-                        'x__weight' => $next_i_data['i__quantity'],
-                    ));
-                }
-
             }
 
             //Find Next:
