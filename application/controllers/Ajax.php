@@ -2720,7 +2720,7 @@ class Ajax extends CI_Controller
 
             return view_json(array(
                 'status' => 0,
-                'message' => 'Print: '.print_r($_POST['next_i_data'], true),
+                'message' => 'Print: '.print_r($_POST['next_i_data'], true).'/'.print_r($_POST['selection_i__id'], true),
             ));
 
             //Look through ALL next ideas and see which ones we can complete, if any:
