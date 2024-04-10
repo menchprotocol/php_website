@@ -151,6 +151,14 @@ if($player_e){
                     });
                 }
             }, 1597);
+
+            //Check again just in case:
+            setTimeout(function () {
+                if (( $(window).height() + scroll_buffer ) > $(document).height()) {
+                    $(".fixed-bottom").removeClass('hidden');
+                }
+            }, 4181);
+
         });
 
     });
