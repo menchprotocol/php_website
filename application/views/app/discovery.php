@@ -139,7 +139,7 @@ if($player_e){
         setTimeout(function () {
             //Focus on first write:
             $(".x_write:first").focus();
-        }, 611);
+        }, 987);
 
         //Detect if no scroll bar, load instantly:
         var scroll_buffer = 233;
