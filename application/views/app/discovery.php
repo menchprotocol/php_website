@@ -141,20 +141,12 @@ if($player_e){
         $(document).ready(function() {
 
             setTimeout(function () {
-                console.log('Initial: '+$("body").height()+'/'+$(window).height()+'/'+$(document).height());
-                if ($("body").height() < $(window).height()) {
-                    console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
-                    //$(".fixed-bottom").removeClass('hidden');
-                }
-            }, 89);
-
-            setTimeout(function () {
                 console.log('Initial1: '+$("body").height()+'/'+$(window).height()+'/'+$(document).height());
                 if ($("body").height() < $(window).height()) {
                     console.log('NO SCROLL: '+parseInt($("body").height())+'/'+parseInt($(window).height()));
                     //$(".fixed-bottom").removeClass('hidden');
                 }
-            }, 1333);
+            }, 987);
 
 
             $(window).scroll(function() {
