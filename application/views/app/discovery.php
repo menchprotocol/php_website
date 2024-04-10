@@ -139,25 +139,20 @@ if($player_e){
         show_more(<?= $focus_i['i__id'] ?>);
 
         $(document).ready(function() {
-
             var scroll_buffer = 180;
-
+            //Detect if no scroll bar, load instantly:
             setTimeout(function () {
-
-                console.log('Initial: '+$(window).height()+'+'+scroll_buffer+' >= '+$(document).height());
                 if (( $(window).height() + scroll_buffer ) > $(document).height()) {
                     $(".fixed-bottom").removeClass('hidden');
+                } else {
+                    //Detect if scroll bar:
+                    $(window).scroll(function() {
+                        if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
+                            $(".fixed-bottom").removeClass('hidden');
+                        }
+                    });
                 }
             }, 987);
-
-
-            $(window).scroll(function() {
-                console.log('SCroll: '+$(window).scrollTop()+'+'+$(window).height()+'+'+scroll_buffer+' >= '+$(document).height());
-                if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
-                    $(".fixed-bottom").removeClass('hidden');
-                }
-            });
-
         });
 
     });
