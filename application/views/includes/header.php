@@ -328,7 +328,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
 
     //Source Mode:
     if(array_key_exists(strtolower($first_segment), $handle___40904) && isset($_GET['i__hashtag'])){
-        $i_view = $handle___40904[$first_segment];
+        $i_view = $handle___40904[strtolower($first_segment)];
     } else {
         $quick_id = 33287;
     }
