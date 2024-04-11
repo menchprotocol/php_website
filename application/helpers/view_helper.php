@@ -2717,7 +2717,7 @@ function view_card_e($x__type, $e, $extra_class = null)
     }
 
     if($focus__node){
-        $ui .= '<div class="center-block" style="padding-top: 13px;">';
+        $ui .= '<div class="center-block">';
         $ui .= $featured_sources;
         $ui .= '</div>';
     }

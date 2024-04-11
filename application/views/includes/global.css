@@ -1622,9 +1622,9 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 
 .icon-block { width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; font-size: 1.21em !important; }
 
-.icon-block-sm, .icon-block-sm .icon-block{ width:28px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 1em !important; }
+.icon-block-sm, .icon-block-sm .icon-block{ width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 1em !important; }
 
-.icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:19px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 0.89em !important; }
+.icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:16px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 0.89em !important; }
 
 .dropdown-item .icon-block,
 .btn .dropdown-item .icon-block {
