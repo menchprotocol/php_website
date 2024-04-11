@@ -338,7 +338,7 @@ if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
 
     //App Store:
     if(array_key_exists(strtolower($e_segment), $handle___40904) && isset($_GET['i__hashtag'])){
-        $i_view = $handle___40904[$e_segment];
+        $i_view = $handle___40904[strtolower($e_segment)];
     } else {
         $quick_id = 6287;
     }
