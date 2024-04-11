@@ -874,7 +874,7 @@ class X_model extends CI_Model
             } elseif($ensure_undiscovered && count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__type' => 43142, //Message Sent
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 //Already discovered:
@@ -894,7 +894,7 @@ class X_model extends CI_Model
             ), $i['i__id'], $x__website, true);
 
             //Mark as discovered:
-            $this->X_model->mark_complete(i__discovery_link($x), $x['e__id'], 0, $x);
+            $this->X_model->mark_complete(43142, $x['e__id'], 0, $x);
 
             $total_sent += ( $send_dm['status'] ? 1 : 0 );
 
