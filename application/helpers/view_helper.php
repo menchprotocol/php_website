@@ -886,7 +886,7 @@ function view_single_select_form($cache_e__id, $selected_e__id, $show_dropdown_a
 
     $ui .= '<button type="button" class="btn no-left-padding dropdown-toggle" id="dropdown_form_'.$cache_e__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 
-    $ui .= '<span class="current_content"><span class="icon-block">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ? $e___this[$selected_e__id]['m__title'] : '' ).'</span>'.( $show_dropdown_arrow ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' );
+    $ui .= '<span class="current_content"><span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ? $e___this[$selected_e__id]['m__title'] : '' ).'</span>'.( $show_dropdown_arrow ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' );
 
     $ui .= '</button>';
 
@@ -954,7 +954,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $access_level
 
     $ui .= '<button type="button" '.( $access_level_i>=3 ? 'class="btn no-left-padding '.( $show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_title ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
-    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ?  $e___this[$selected_e__id]['m__title'] : '' ) : '<span class="icon-block-sm">'.$e___11035[$cache_e__id]['m__cover'].'</span>'.( $show_title ?  $e___11035[$cache_e__id]['m__title'] : '' ) ).'</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
+    $ui .= '<span class="current_content">'.( isset($e___this[$selected_e__id]['m__cover']) ? '<span class="icon-block-sm">'.$e___this[$selected_e__id]['m__cover'].'</span>'.( $show_title ?  $e___this[$selected_e__id]['m__title'] : '' ) : '<span class="icon-block-sm">'.$e___11035[$cache_e__id]['m__cover'].'</span>'.( $show_title ?  $e___11035[$cache_e__id]['m__title'] : '' ) ).'</span>'; //.( $show_title ? '<span class="icon-block-sm"><i class="far fa-angle-down"></i></span>' : '' )
 
     $ui .= '</button>';
 
