@@ -3996,8 +3996,8 @@ div.img {
 }
 .logo_cover{
     position: absolute;
-    top: 2px;
-    left: 2px;
+    top: 0;
+    left: 3px;
 
     display: block;
     line-height: 151%;
