@@ -1617,10 +1617,10 @@ label {
 .block{ display: block !important; width: 100%; }
 .underline{ text-decoration: underline !important; }
 body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !important; }
-#searchFrontForm .icon-block { width:28px !important; }
+#searchFrontForm .icon-block { width:21px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
 
-.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; font-size: 1.21em !important; }
+.icon-block { width:34px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; font-size: 1.21em !important; }
 
 .icon-block-sm, .icon-block-sm .icon-block{ width:28px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 1em !important; }
 
