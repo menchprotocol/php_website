@@ -894,9 +894,10 @@ class X_model extends CI_Model
             ), $i['i__id'], $x__website, true);
 
             //Mark as discovered:
-            $this->X_model->mark_complete(43142, $x['e__id'], 0, $i);
-
-            $total_sent += ( $send_dm['status'] ? 1 : 0 );
+            if($send_dm['status']){
+                $this->X_model->mark_complete(43142, $x['e__id'], 0, $i);
+                $total_sent ++;
+            }
 
         }
 
