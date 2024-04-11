@@ -41,6 +41,7 @@ foreach($this->X_model->fetch(array(
     $list_settings = list_settings($i['i__hashtag']);
     $total_sent = $this->X_model->send_i_dm($list_settings['query_string'], $i, $i['x__website']);
 
+    echo view_i_title($i).' Send '.$total_sent.' Messages<hr />';
 
     //Mark this as complete?
     if(!$end_sending || $end_sending<time()){
