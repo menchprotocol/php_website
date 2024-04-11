@@ -877,7 +877,8 @@ class X_model extends CI_Model
             if(!$ensure_undiscovered || !count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__type' => 29399, //Check emails for now...
+                //'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
 
