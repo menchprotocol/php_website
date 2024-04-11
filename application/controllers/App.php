@@ -147,7 +147,7 @@ class App extends CI_Controller
 
         //Run App
         $player_e = false;
-        $player_http_request = isset($_SERVER['SERVER_NAME']);
+        $player_http_request = ( isset($_SERVER['SERVER_NAME']) ? 1 : 0 );
 
         if($memory_detected && in_array($app_e__id, $this->config->item('n___42920'))){
             boost_power();
