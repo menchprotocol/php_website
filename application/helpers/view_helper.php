@@ -1955,7 +1955,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 if($i['i__hashtag']=='ProfilePicture' && $player_e){
 
                     //TODO REMOVE HACK: This is a profile picture hack:
-                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="e_editor_load('.$player_e['e__id'].',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 611);" class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</a></div>';
+                    $input_ui .= '<div style="padding:3px 0;"><a href="javascript:void(0);" onclick="e_editor_load('.$player_e['e__id'].',0);setTimeout(function () { $(\'.uploader_42359\').click(); }, 987);" class="btn btn-black inner_uploader_'.$i['i__id'].'"><span class="icon-block-sm">'.$e___11035[7637]['m__cover'].'</span>'.$e___11035[7637]['m__title'].'</a></div>';
 
                 } else {
                     $input_ui .= '<div class="media_outer_frame hideIfEmpty">
