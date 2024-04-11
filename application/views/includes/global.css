@@ -1619,13 +1619,36 @@ label {
 body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !important; }
 #searchFrontForm .icon-block { width:28px !important; }
 #searchFrontForm .algolia-autocomplete { width: calc(100% - 30px) !important; }
-.icon-block-sm{ width:28px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
-.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; }
-.icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:19px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; }
+
+.icon-block { width:40px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; height: 30px; font-size: 1.21em !important; }
+
+.icon-block-sm, .icon-block-sm .icon-block{ width:28px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 1em !important; }
+
+.icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:19px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 0.89em !important; }
+
 .dropdown-item .icon-block,
 .btn .dropdown-item .icon-block {
     height: 13px;
 }
+
+
+.icon-block img{
+    line-height: 100%;
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 0 0 0 !important;
+    font-weight: bold;
+}
+.block-x, i, .nav .icon-block i,
+
+.icon-block-sm   i { font-size: 1em !important; } /* 1.21em */
+.icon-block      i { font-size: 1em !important; } /* 1.34em */
+
+.icon-block-xs i,
+.icon-block-xs .icon-block-sm   i,
+.icon-block-xs .icon-block   i{ font-size: 1em !important; } /* 0.79em */
+
+
 .this_selector{
     width: 40px;
     height: 40px;
@@ -1724,20 +1747,6 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 }
 
 
-.icon-block img{
-    line-height: 100%;
-    width: 30px !important;
-    height: 30px !important;
-    margin: 0 0 0 0 !important;
-    font-weight: bold;
-}
-.block-x, i, .nav .icon-block i,
-.icon-block-sm   i { font-size: 1.21em !important; }
-.icon-block      i { font-size: 1.34em !important; }
-
-.icon-block-xs i,
-.icon-block-xs .icon-block-sm   i,
-.icon-block-xs .icon-block   i{ font-size: 0.79em !important; }
 
 .dynamic_editing_input.float_right .icon-block {
     width:28px !important;
