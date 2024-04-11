@@ -1,6 +1,6 @@
 <?php
 
-if(!intval($player_http_request) || isset($_GET['cron']) || 1){ //Only cron job (or a specific request like it) can trigger this app...
+if(!intval($player_http_request) || isset($_GET['cron'])){ //Only cron job (or a specific request like it) can trigger this app...
 
     foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
