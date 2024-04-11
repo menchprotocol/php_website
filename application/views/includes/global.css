@@ -1632,7 +1632,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 }
 
 .dropdown .icon-block-xs,
-.dropdown .icon-block-xs .icon-block { width:25px !important; }
+.dropdown .icon-block-xs .icon-block,
+.icon-block-xs .dropdown .icon-block{ width:25px !important; }
 
 .icon-block img{
     line-height: 100%;
