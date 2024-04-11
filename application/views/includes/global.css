@@ -1631,9 +1631,9 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     height: 13px;
 }
 
-.dropdown .icon-block-xs,
-.dropdown .icon-block-xs .icon-block,
-.icon-block-xs .dropdown .icon-block{ width:25px !important; }
+.dropdown .icon-block-sm,
+.dropdown .icon-block-sm .icon-block,
+.icon-block-sm .dropdown .icon-block{ width:25px !important; }
 
 .icon-block img{
     line-height: 100%;
