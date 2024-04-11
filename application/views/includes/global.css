@@ -1635,6 +1635,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 .dropdown .icon-block-sm .icon-block,
 .icon-block-sm .dropdown .icon-block{ width:21px !important; }
 
+.icon-block-xs .icon-block{ height:16px !important; }
+
 .icon-block img{
     line-height: 100%;
     width: 30px !important;
@@ -1732,10 +1734,6 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 }
 .mini_button{
     min-height: 32px;
-}
-.card_covers .icon-block-sm,
-.edge-cover .card-12273 .icon-block-sm {
-    height: 19px !important;
 }
 
 .focus-cover .dropdown span.icon-block-sm,

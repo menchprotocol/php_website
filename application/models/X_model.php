@@ -871,32 +871,33 @@ class X_model extends CI_Model
                     ),
                 ));
                 continue;
-            }
-
-            //Send to all of them IF NOT DISCOVERED
-            if(!$ensure_undiscovered || !count($this->X_model->fetch(array(
+            } elseif($ensure_undiscovered && count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
-                'x__type' => 29399, //Check emails for now...
-                //'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
-
-                //Append children as options:
-                $html_message = '';
-                foreach($children as $down_or){
-                    //Has this user discovered this idea or no?
-                    $html_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
-                    $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).view_memory(42903,33286).$down_or['i__hashtag'].( i_startable($down_or) ? '/'.view_memory(6404,4235) : '' ).'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']).'</div>';
-                }
-
-                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$html_message, array(
-                    'x__previous' => $i['i__id'],
-                ), $i['i__id'], $x__website, true);
-
-                $total_sent += ( $send_dm['status'] ? 1 : 0 );
-
+                //Already discovered:
+                continue;
             }
+
+            //Append children as options:
+            $html_message = '';
+            foreach($children as $down_or){
+                //Has this user discovered this idea or no?
+                $html_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
+                $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).view_memory(42903,33286).$down_or['i__hashtag'].( i_startable($down_or) ? '/'.view_memory(6404,4235) : '' ).'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']).'</div>';
+            }
+
+            $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message.$html_message, array(
+                'x__previous' => $i['i__id'],
+            ), $i['i__id'], $x__website, true);
+
+            //Mark as discovered:
+            $this->X_model->mark_complete(i__discovery_link($x), $x['e__id'], 0, $x);
+
+            $total_sent += ( $send_dm['status'] ? 1 : 0 );
+
         }
 
         return $total_sent;

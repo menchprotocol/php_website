@@ -41,7 +41,7 @@ if(!$player_http_request || isset($_GET['cron'])){
 
         //Now let's see who will receive this:
         $list_settings = list_settings($i['i__hashtag']);
-        $total_sent = $this->X_model->send_i_dm($list_settings['query_string'], $i, $i['x__website'], true);
+        $total_sent = $this->X_model->send_i_dm($list_settings['query_string'], $i, $i['x__website']);
 
 
         //Mark this as complete?
