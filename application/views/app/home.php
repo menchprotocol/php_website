@@ -30,10 +30,9 @@ foreach($this->X_model->fetch(array(
     }
 }
 
-
-echo ' <script> $(document).ready(function () { show_more('.$primary_i['i__id'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
-
-
+if(count($primary_i)){
+    echo ' <script> $(document).ready(function () { show_more('.$primary_i['i__id'].'); $(document).prop(\'title\', \''.get_domain('m__title').' | '.str_replace('\'','\\\'',view_i_title($primary_i, true)).'\'); }); </script> ';
+}
 
 echo '<h1 class="maxwidth" style="margin: '.( $expanded_space ? '144px auto 377px' : '89px auto 233px' ).' !important;">' . view_i_title($primary_i, true) . '</h1>';
 
