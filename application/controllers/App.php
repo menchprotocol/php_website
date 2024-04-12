@@ -37,7 +37,7 @@ class App extends CI_Controller
 
 
         if($_GET['e__handle']=='SuccessfulWhale'){
-            $_GET['e__handle'] = null;
+            $_GET['e__handle'] = '';
         }
 
         if($focus_handle && strlen($focus_handle) && !isset($_GET['e__handle'])){
