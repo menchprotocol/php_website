@@ -36,7 +36,7 @@ class App extends CI_Controller
         $target_i = null; //Discovery
 
 
-        if($_GET['e__handle']=='SuccessfulWhale'){
+        if(isset($_GET['e__handle']) && $_GET['e__handle']=='SuccessfulWhale'){
             $_GET['e__handle'] = '';
         }
 
