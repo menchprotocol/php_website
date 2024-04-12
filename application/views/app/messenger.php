@@ -36,19 +36,22 @@ foreach($this->X_model->fetch(array(
     }
 
 
-
     //Now let's see who will receive this:
     $list_settings = list_settings($i['i__hashtag']);
-    $total_sent = $this->X_model->send_i_dm($list_settings['query_string'], $i, $i['x__website']);
+    print_r($list_settings);
 
-    echo view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members<hr />';
+    if(0){
+        $total_sent = $this->X_model->send_i_dm($list_settings['query_string'], $i, $i['x__website']);
 
-    //Mark this as complete?
-    if(!$end_sending || $end_sending<time()){
-        //Ready to be done:
-        $this->X_model->update($i['x__id'], array(
-            'x__type' => ( $total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */ ),
-        ));
+        echo view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members<hr />';
+
+        //Mark this as complete?
+        if(!$end_sending || $end_sending<time()){
+            //Ready to be done:
+            $this->X_model->update($i['x__id'], array(
+                'x__type' => ( $total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */ ),
+            ));
+        }
     }
 
 }
