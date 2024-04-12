@@ -2233,11 +2233,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     //Bottom Bar menu
-    if(!$focus__node && !$is_locked){
+    if(!$focus__node && !$is_locked && !$is_cache){
         foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
-            if(count($superpowers_required) && (!superpower_unlocked(end($superpowers_required)) || $is_cache)){
+            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 continue;
             }
 
