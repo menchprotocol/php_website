@@ -2339,7 +2339,7 @@ input.form-control {
 }
 .flip-content .card_cover.card-12273{
     border-top: 0;
-    padding: 21px 0;
+    padding: 21px 0 !important;
 }
 .focus-cover.card-12273{
     border-top: 0px solid transparent;
