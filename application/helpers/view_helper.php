@@ -950,7 +950,7 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $access_level
     //Make sure it's not locked:
     $access_level_i = ( !in_array($cache_e__id, $CI->config->item('n___32145')) && !in_array($selected_e__id, $CI->config->item('n___32145')) ? $access_level_i : 0 );
 
-    $ui = '<div class="dropdown '.( $show_title ? 'dropdown_type_'.$cache_e__id : '' ).' main__title inline-block dropd_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected_value="'.$selected_e__id.'">';
+    $ui = '<div class="dropdown '.( $show_title ? 'dropdown_type_'.$cache_e__id : '' ).' inline-block dropd_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" selected_value="'.$selected_e__id.'">';
 
     $ui .= '<button type="button" '.( $access_level_i>=3 ? 'class="btn no-left-padding '.( $show_title ? 'dropdown-toggle' : 'no-right-padding dropdown-lock' ).'" id="dropdown_instant_'.$cache_e__id.'_'.$o__id.'_'.$x__id.'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' : 'class="btn adj-btn '.( !$show_title ? 'no-padding' : '' ).' edit-locked" ' ).'>';
 
