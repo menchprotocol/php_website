@@ -3358,6 +3358,10 @@ h4.main__title{
     width: 16px;
     height: 16px;
 }
+.block-x .enlarge{
+    font-size: 1.1em;
+    padding-top: 3px;
+}
 
 
 
@@ -4007,7 +4011,7 @@ div.img {
 }
 .logo_cover{
     position: absolute;
-    top: 0;
+    top: 1px;
     left: 3px;
 
     display: block;

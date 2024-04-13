@@ -469,15 +469,15 @@ if(!$basic_header_footer){
                     }
 
                     if($quick_id > 0){
-                        echo '<td class="block-x icon_finder"><a href="'.$quick_href.'" style="margin-left: 0;" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder"><a href="'.$quick_href.'" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
                     }
 
                     */
 
 
                     if(search_enabled() && $player_e){
-                        echo '<td class="block-x icon_finder '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[7256]['m__cover'].'</a></td>';
-                        echo '<td class="block-x icon_finder hidden"><a href="javascript:void(0);" onclick="toggle_finder()" style="margin-left: 0;">'.$e___11035[13401]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder enlarge '.( intval(website_setting(32450)) ? ' hidden ' : '' ).'"><a href="javascript:void(0);" onclick="toggle_finder()">'.$e___11035[7256]['m__cover'].'</a></td>';
+                        echo '<td class="block-x icon_finder enlarge hidden"><a href="javascript:void(0);" onclick="toggle_finder()">'.$e___11035[13401]['m__cover'].'</a></td>';
                     }
 
 
@@ -485,7 +485,7 @@ if(!$basic_header_footer){
 
                     //Add Idea:
                     if($player_e){
-                        echo '<td class="block-x add_idea"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>';
+                        echo '<td class="block-x enlarge add_idea"><a href="javascript:void(0);" onclick="i_editor_load()" title="'.$e___11035[33532]['m__title'].'">'.$e___11035[33532]['m__cover'].'</a></td>';
                     }
 
 

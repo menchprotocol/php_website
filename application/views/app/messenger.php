@@ -41,6 +41,7 @@ foreach($this->X_model->fetch(array(
     print_r($list_settings);
 
     if(0){
+
         $total_sent = $this->X_model->send_i_dm($list_settings['query_string'], $i, $i['x__website']);
 
         echo view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members<hr />';

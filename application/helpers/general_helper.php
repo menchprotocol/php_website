@@ -1978,7 +1978,7 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
 
 }
 
-function access_level_i($i__hashtag = null, $i__id = 0, $i = false){
+function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = false){
 
     /*
      *
@@ -1990,6 +1990,10 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false){
      * 3 EDIT
      *
      * */
+
+    if($is_cahce){
+        return 1;
+    }
 
     if(superpower_unlocked(12700)){
         return 3;

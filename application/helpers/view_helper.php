@@ -1465,20 +1465,16 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $e___11035 = $CI->config->item('e___11035'); //Encyclopedia
     $is_cache = in_array($x__type, $CI->config->item('n___14599'));
     $goto_start = in_array($x__type, $CI->config->item('n___42988'));
-    $access_locked = in_array($i['i__privacy'], $CI->config->item('n___32145')); //Locked Dropdown
     $player_e = superpower_unlocked();
     $superpower_10939 = superpower_unlocked(10939);
-    $access_level_i = ( $is_cache ? 1 : access_level_i($i['i__hashtag'], 0, $i));
+    $access_level_i = access_level_i($i['i__hashtag'], 0, $i, $is_cache);
     $i_startable = i_startable($i);
     $x__player = ( $player_e ? $player_e['e__id'] : 0 );
     $link_creator = isset($i['x__player']) && $i['x__player']==$x__player;
-
-
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );
     $discovery_seg = ( strtolower($CI->uri->segment(1))!='ajax' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false );
     $discovery_mode = $x__player && ( $discovery_uri || $discovery_seg );
-
     $focus_i_uri = ( $discovery_uri ? one_two_explode('/','',substr($_POST['js_request_uri'], 1)) : false );
     $focus_i_seg = ( $discovery_seg ? $CI->uri->segment(2) : false );
     $focus_i__hashtag = ( $focus_i_uri ? $focus_i_uri : ( $focus_i_seg ? $focus_i_seg : false ) );
@@ -1501,17 +1497,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         }
     }
 
-
-
     if(!$focus_e){
         $focus_e = $player_e;
     }
 
     $has_sortable = $x__id > 0 && !$focus__node && $access_level_i>=3 && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
-
-
-
-
     $has_discovered = false;
     if(!$is_cache && $player_e){
         $discoveries = $CI->X_model->fetch(array(
@@ -1525,7 +1515,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     if($has_discovered && $discovery_mode){
         $i = array_merge($i, $discoveries[0]);
     }
-
 
     $is_locked = ($discovery_mode && !$has_discovered && !$focus__node);
 
@@ -2120,7 +2109,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             $bottom_bar_ui .= '<span title="'.$m_target_bar['m__title'].'" class="sort_i_grab">'.$m_target_bar['m__cover'].'</span>';
             $bottom_bar_ui .= '</span>';
 
-        } elseif($x__type_target_bar==14980 && !$is_cache && !$access_locked && !$discovery_mode){
+        } elseif($x__type_target_bar==14980 && !$is_cache && $access_level_i>=1 && !$discovery_mode){
 
             //Drop Down
             $action_buttons = null;
