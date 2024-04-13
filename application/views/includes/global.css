@@ -86,7 +86,7 @@ body {
     margin:0 40px 5px;
 }
 .focus-cover .input_ui{
-    margin:0 8px 5px;
+    margin:0 0 5px;
 }
 .edge-cover .card_covers,
 .edge-cover .card_covers .btn,
@@ -3212,6 +3212,10 @@ h4.main__title{
     .fixed-bottom{
         border-left: 0 !important;
         border-right: 0 !important;
+    }
+
+    .focus-cover .input_ui{
+        margin:0 8px 5px;
     }
 
     .card_covers a.btn-sm.btn-black {
