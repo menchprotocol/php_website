@@ -3352,15 +3352,14 @@ h4.main__title{
 .platform-navigation .block-x a {
     display: block;
     text-align: center;
-    margin-left: 8px !important;
+    margin-left: 3px !important;
     margin-bottom: 0px;
     padding: 0;
     width: 16px;
     height: 16px;
 }
 .block-x.enlarge{
-    font-size: 1.1em !important;
-    padding-top: 3px;
+    font-size: 1.3em !important;
 }
 
 
