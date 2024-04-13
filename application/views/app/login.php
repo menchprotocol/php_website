@@ -282,20 +282,11 @@ if(superpower_unlocked()) {
         <div class="login-content" style="margin-top:21px;">
 
             <div id="step1" class="signup-steps">
-                <?php
-                //Back only if coming from an idea:
-                $intro_message = $e___4269[7561]['m__message']; //Assume No Idea
-                if (count($sign_i)) {
-                    $intro_message = str_replace('%s','<br /><a href="' . view_memory(42903,33286). $sign_i[0]['i__hashtag'] . '"><u>'.view_i_title($sign_i[0]).'</u></a>', $e___4269[7560]['m__message']);
-                }
-                ?>
                 <div class="doclear">&nbsp;</div>
             </div>
 
             <!-- Step 1: Enter Email -->
             <div id="step2" class="signup-steps hidden">
-
-                <?= '<p style="text-align: center; padding-bottom: 13px;">'.$intro_message.'</p>'; ?>
 
                 <span class="main__title" style="padding-bottom: 3px; display:block;"><?= '<span class="icon-block">'.$e___4269[32079]['m__cover'].'</span>'.$e___4269[32079]['m__title'] ?></span>
 

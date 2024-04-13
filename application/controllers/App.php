@@ -217,7 +217,7 @@ class App extends CI_Controller
                 return redirect_message(view_memory(42903,42902).$player_e['e__handle']);
             } elseif(!$player_e && in_array($app_e__id, $this->config->item('n___14740'))){
                 //Should redirect them:
-                $missing_access = 'Login or register to continue.';
+                $missing_access = 'Login or register a free account to continue.';
             } elseif(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                 $e___10957 = $this->config->item('e___10957');
                 $missing_access = 'Error: You Cannot Access '.$e___6287[$app_e__id]['m__title'].' as it requires the superpower of '.$e___10957[end($superpowers_required)]['m__title'].'.';
