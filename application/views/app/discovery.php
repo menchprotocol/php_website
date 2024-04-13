@@ -136,6 +136,11 @@ if($player_e){
 
         set_autosize($('.x_write'));
 
+        //Show percentage progress on next button:
+        if(parseInt($('.progress').attr('aria-valuenow'))>0 && parseInt($('.progress').attr('aria-valuenow'))<100){
+            $('.go_next_btn').append(' ['+$('.progress').attr('aria-valuenow')+'% Done]');
+        }
+
         //Detect if no scroll bar, load instantly:
         var scroll_buffer = 233;
         setTimeout(function () {
