@@ -1545,6 +1545,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     if(1){ // $discovery_mode && ($is_locked || $focus_i__or)
         $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
     }
+    if($is_locked){
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\'<span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>\'); }); </script>';
+    }
+
     if(count($CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
