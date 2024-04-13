@@ -595,7 +595,7 @@ if(strlen($flash_message) > 0) {
     //Delete from Flash:
     $this->session->unmark_flash('flash_message');
 
-    echo '<div class="'.( $basic_header_footer ? ' center-info ' : '' ).' center" id="flash_message" style="padding-bottom:13px;">'.$flash_message.'</div>';
+    echo '<div class="'.( $basic_header_footer ? ' center-info ' : '' ).' center" id="flash_message">'.$flash_message.'</div>';
 
 }
 
