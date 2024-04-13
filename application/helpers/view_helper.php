@@ -1546,7 +1546,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
     }
     if($is_locked){
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\'<span class="icon-block-sm">'.$e___11035[43010]['m__cover'].'</span>\'); }); </script>';
+        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').append(\' '.$e___11035[43010]['m__cover'].'\'); }); </script>';
     }
 
     if(count($CI->X_model->fetch(array(
