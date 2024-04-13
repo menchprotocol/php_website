@@ -1673,6 +1673,11 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     font-size: 0.89em !important;
 }
 
+.popover-body .dropdown .icon-block-xs{
+    width:21px !important;
+    height:21px !important;
+}
+
 .block-menu .dropdown-item .icon-block {
     height: 30px;
 }
