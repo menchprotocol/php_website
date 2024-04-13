@@ -118,7 +118,7 @@ echo '</div>';
 
 
 //Main Navigation
-if($player_e){
+if($player_e || isset($_GET['open'])){
     echo view_i_nav(true, $focus_i);
 }
 
