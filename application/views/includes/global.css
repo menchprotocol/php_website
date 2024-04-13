@@ -85,6 +85,9 @@ body {
 .edge-cover .input_ui{
     margin:0 40px 5px;
 }
+.focus-cover .input_ui{
+    margin:0 8px 5px;
+}
 .edge-cover .card_covers,
 .edge-cover .card_covers .btn,
 .edge-cover .card_covers i{
