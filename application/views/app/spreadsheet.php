@@ -91,7 +91,7 @@ foreach($list_settings['query_string'] as $x){
     foreach($list_settings['column_e'] as $e){
 
         $input_modal = count($this->X_model->fetch(array(
-            'x__following IN (' . join(',', $this->config->item('n___37707')) . ')' => null, //SOURCE LINKS
+            'x__following IN (' . join(',', $this->config->item('n___31110')) . ')' => null, //Require Text Type
             'x__follower' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
