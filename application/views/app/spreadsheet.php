@@ -196,7 +196,7 @@ echo '</table>';
         overflow: scroll;
     }
 
-    td a {
+    #sortable_table a {
         text-decoration: underline !important;
     }
 
