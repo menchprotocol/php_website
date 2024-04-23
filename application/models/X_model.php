@@ -1104,9 +1104,11 @@ class X_model extends CI_Model
                     '$x_data' => $x_data,
                 ),
             ));
+            return array(
+                'status' => 0,
+                'message' => 'Invalid Date',
+            );
         }
-
-
 
         //Do we need to save text/upload ?
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
