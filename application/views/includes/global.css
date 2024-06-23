@@ -1659,12 +1659,14 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     text-align: center !important;
 }
 
+/*
 .dark-theme {
     background-color: #000000 !important;
 }
 .dark-theme, .dark-theme .line {
     color: #FFFFFF !important;
 }
+*/
 
 .this_selector{
     width: 40px;
