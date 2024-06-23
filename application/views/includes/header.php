@@ -47,6 +47,10 @@ foreach($this->config->item('e___13890') as $e__id => $m){
 }
 
 
+if($website_id==39599){
+    $body_class .= ' center-align dark-theme ';
+}
+
 ?><!doctype html>
 <html lang="en" >
 <head>
