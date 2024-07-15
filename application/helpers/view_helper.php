@@ -1684,7 +1684,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $quantity = ( $x_complete['x__weight'] >= 2 ? $x_complete['x__weight'] : ( isset($x__metadata['quantity']) && $x__metadata['quantity']>=2 ? $x__metadata['quantity'] : 1 ) );
 
                     if($x__metadata['mc_gross']!=0){
-                        $input_ui .= '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
+                        $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'</div>';
                     }
 
                     if(in_array($x_complete['x__type'], $CI->config->item('n___40986'))){
@@ -1692,7 +1692,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         foreach($CI->E_model->fetch(array(
                             'e__id' => $x_complete['x__player'],
                         )) as $e){
-                            $input_ui .= '<div class="tickets_issued">'.$quantity.' Ticket'.view__s($quantity).':</div>';
+                            $input_ui .= '<div>'.$quantity.' Ticket'.view__s($quantity).':</div>';
                             $input_ui .= '<div>You have been added to the guest list, and just need to show up with your ID. We will send you more information 24 hours before the event.</div>';
                         }
                     }
