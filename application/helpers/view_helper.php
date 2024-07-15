@@ -1832,6 +1832,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     $input_ui .= '</form>';
 
+                    $input_ui .= '<script> $(document).ready(function () { $(\'.go_next_btn\').hide(); }); </script>';
+
                 } else {
 
                     //FREE TICKET
