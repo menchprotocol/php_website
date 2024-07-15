@@ -2159,7 +2159,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         //Idea Editor
                         $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==10673 && $x__id && !in_array($i['x__type'], $CI->config->item('n___31776')) && $access_level_i>=3){
+                    } elseif($e__id_dropdown==10673 && $x__id && $access_level_i>=3){ //!in_array($i['x__type'], $CI->config->item('n___31776')) &&
 
                         //Unlink
                         $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$x__id.', '.$x__type.',\''.$i['i__hashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
