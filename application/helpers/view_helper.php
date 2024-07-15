@@ -1690,7 +1690,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     if($x__metadata['mc_gross']!=0){
                         $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'.</div>';
-                        $input_ui .= '<div class="alert alert-warning tickets_issued" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Use your Paypal payment email receipt as your ticket confirmation that we will check upon your arrival.</div>';
+                        $input_ui .= '<div class="alert alert-warning tickets_issued" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span><u>Paypal Email Eeceipt</u> is your ticket copy what we will check upon arrival.</div>';
                     }
 
                 }

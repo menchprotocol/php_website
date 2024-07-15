@@ -3376,7 +3376,7 @@ function go_next(do_skip){
     //Payment Error?
     if (js_n___41055.includes(focus_i__type) && !$(".tickets_issued")[0]){
         //Ticket not yet issued!
-        alert('You Must pay via Paypal before going next.');
+        alert('Pay Now via Paypal before going next.');
         return false;
     }
 
