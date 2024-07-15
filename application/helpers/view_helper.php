@@ -1692,8 +1692,11 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         foreach($CI->E_model->fetch(array(
                             'e__id' => $x_complete['x__player'],
                         )) as $e){
+                            $qr_url = 'https://'.get_domain('m__message', $x__player).view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time() . $e['e__handle']);
                             $input_ui .= '<div>'.$quantity.' Ticket'.view__s($quantity).':</div>';
-                            $input_ui .= '<div>'.view_qr('https://'.get_domain('m__message', $x__player).view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time() . $e['e__handle'])).'</div>';
+                            $input_ui .= '<div>'.view_qr($qr_url).'</div>';
+                            $input_ui .= '<a href="'.$qr_url.'" target="_blank">'.$qr_url.'</a>';
+
                         }
                     }
 
