@@ -949,7 +949,7 @@ function load_card_clickers(){
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
                     });
                     //Go Next:
-                    if(!$('.input_ui_'+$(this).attr('selection_i__id'))[0] || $('.input_ui_'+$(this).attr('selection_i__id')).count()==1){
+                    if(!$('.input_ui_'+$(this).attr('selection_i__id'))[0] || $('.input_ui_'+$(this).attr('selection_i__id')).length==1){
                         //Since there is no input for this single select, we can instantly go next:
                         setTimeout(function () {
                             go_next(0);
