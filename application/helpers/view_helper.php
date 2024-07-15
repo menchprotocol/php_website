@@ -1504,7 +1504,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $x__player,
             'x__previous' => $i['i__id'],
-        ), array('x__previous'));
+        ), array('x__next'));
         $has_discovered = count($discoveries);
     }
     if($has_discovered && $discovery_mode){
