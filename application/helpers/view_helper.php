@@ -1474,7 +1474,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $focus_i_seg = ( $discovery_seg ? $CI->uri->segment(2) : false );
     $focus_i__hashtag = ( $focus_i_uri ? $focus_i_uri : ( $focus_i_seg ? $focus_i_seg : false ) );
 
-    if($discovery_mode && !$target_i__hashtag && ($discovery_uri || $discovery_seg)){
+    if(!$target_i__hashtag && ($discovery_uri || $discovery_seg)){
         $target_i__hashtag = ( $discovery_uri ? $discovery_uri : $discovery_seg );
     }
     if($target_i__hashtag && $focus_i__hashtag && $focus_i__hashtag==$i['i__hashtag']){
