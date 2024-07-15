@@ -1248,7 +1248,7 @@ class X_model extends CI_Model
         $new_x = $this->X_model->create($x_data);
 
         //Auto Complete OR Answers:
-        if($input__selection){
+        if($input__selection && 0){
             foreach($this->X_model->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansion
