@@ -1667,7 +1667,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             $e___7712 = $CI->config->item('e___7712');
             $ui .= '<script> $(document).ready(function () { $(\'.nav__'.$i['i__id'].' .thepill12840 .xtypecounter12840\').remove(); $(\'.nav__'.$i['i__id'].' .thepill12840 .xtypetitle_12840\').text(\''.$e___7712[$i['i__type']]['m__message'].':\'); }); </script>';
 
-        } elseif (in_array($i['i__type'], $CI->config->item('n___41055'))) {
+        } elseif (in_array($i['i__type'], $CI->config->item('n___41055')) && $focus__node) {
 
             //PAYMENT TICKET
             if(isset($_GET['cancel_pay']) && !count($x_completes)){
