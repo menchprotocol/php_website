@@ -3373,6 +3373,13 @@ function go_next(do_skip){
         return false;
     }
 
+    //Payment Error?
+    if (js_n___41055.includes(focus_i__type) && !$(".tickets_issued")[0]){
+        //Ticket not yet issued!
+        alert('You Must pay before going next.');
+        return false;
+    }
+
 
     //Load:
     $('.go-next').html('<i class="fas fa-yin-yang fa-spin"></i>');

@@ -1692,7 +1692,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         foreach($CI->E_model->fetch(array(
                             'e__id' => $x_complete['x__player'],
                         )) as $e){
-                            $input_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
+                            $input_ui .= '<div class="tickets_issued">'.$quantity.' Ticket'.view__s($quantity).':</div>';
                             $input_ui .= '<div>You have been added to the guest list, and just need to show up with your ID. We will send you more information 24 hours before the event.</div>';
                         }
                     }
