@@ -324,24 +324,18 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     )) : false);
 
 
-
-    $x__player = intval($item_numbers[3]);
-    $pay_amount = doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross']));
-
-
-
     if(count($player_es) && count($next_is)) {
 
         $is_pending = ($_POST['payment_status']=='Pending');
+        $pay_amount = doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross']));
 
         if($pay_amount > 0){
 
             //Paid:
-
             $x__type = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->X_model->mark_complete($x__type, $x__player, ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->X_model->mark_complete($x__type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
                 'x__weight' => intval($_POST['quantity']),
                 'x__metadata' => $_POST,
             ));
@@ -354,12 +348,12 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             //Find issued tickets:
             $original_payment = $this->X_model->fetch(array(
                 'x__type' => 26595,
-                'x__player' => $x__player,
+                'x__player' => $player_es[0]['e__id'],
                 'x__previous' => $next_is[0]['i__id'],
             ));
 
             //Log Refund:
-            $completion_status = $this->X_model->mark_complete($x__type, $x__player, ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->X_model->mark_complete($x__type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
                 'x__weight' => (-1 * ( isset($original_payment[0]['x__weight']) ? $original_payment[0]['x__weight'] : 1 )),
                 'x__metadata' => $_POST,
                 'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),
