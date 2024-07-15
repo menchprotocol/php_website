@@ -1693,7 +1693,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                             'e__id' => $x_complete['x__player'],
                         )) as $e){
                             $input_ui .= '<div>'.$quantity.' QR Ticket'.view__s($quantity).':</div>';
-                            $input_ui .= '<div>'.qr_code('https://'.get_domain('m__message', $x__player).view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'].'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(phptime() . $e['e__handle'])).'</div>';
+                            $input_ui .= '<div>You have been added to the guest list, and just need to show up with your ID. We will send you more information 24 hours before the event.</div>';
                         }
                     }
 
