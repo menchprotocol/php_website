@@ -1619,7 +1619,7 @@ function email_ticket($x__id, $i__hashtag, $x__player){
     foreach($CI->E_model->fetch(array(
         'e__id' => $x__player,
     )) as $e){
-        $CI->X_model->send_dm($x__player, get_domain('m__title', $x__player, $user_website).' QR Ticket'.$additional_info,
+        $CI->X_model->send_dm($x__player, get_domain('m__title', $x__player, $user_website).' Your Ticket'.$additional_info,
             'Upon arrival have your QR code ready to be scanned:'.
             "\n\n".'https://'.get_domain('m__message', $x__player, $user_website).view_memory(42903,33286).$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
     }
