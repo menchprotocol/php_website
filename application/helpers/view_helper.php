@@ -1680,6 +1680,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     if($x__metadata['mc_gross']!=0){
                         $input_ui .= '<div class="alert alert-success tickets_issued" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>'.( $x__metadata['mc_gross']>0 ? 'You paid ' : 'You got a refund of ' ).$x__metadata['mc_currency'].' '.str_replace('.00','',$x__metadata['mc_gross']).( $quantity>1 ? ' for '.$quantity.' tickets' : '' ).'. You can scroll down and go next now.</div>';
+                        $input_ui .= '<div class="alert alert-warning tickets_issued" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Note that you have been added to the guest list, and your Paypal payment confirmation is your entry ticket that we will check once you arrive.</div>';
                     }
 
                 }
