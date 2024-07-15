@@ -1504,7 +1504,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $x__player,
             'x__previous' => $i['i__id'],
-        ), array('x__next'));
+        ));
         $has_discovered = count($discoveries);
     }
     if($has_discovered && $discovery_mode){
@@ -1512,21 +1512,27 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     if($has_discovered && !$target_i__hashtag){
-        $target_i__hashtag = $discoveries[0]['i__hashtag'];
+        foreach($CI->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__player' => $x__player,
+            'x__previous' => $i['i__id'],
+            'x__next > 0' => null,
+        ), array('x__next')) as $this_dis){
+            $target_i__hashtag = $this_dis['i__hashtag'];
+        }
     }
 
     $is_locked = ($discovery_mode && !$has_discovered && !$focus__node);
 
     if(($goto_start || !$superpower_10939) && $i_startable){
         $href = view_memory(42903,30795).$i['i__hashtag'].'/'.view_memory(6404,4235);
+    } elseif($is_locked) {
+        $href = null;
+    } elseif($target_i__hashtag){
+        $href = view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
     } elseif($discovery_mode) {
-        if($is_locked) {
-            $href = null;
-        } elseif($target_i__hashtag){ //$link_creator &&
-            $href = view_memory(42903,30795).$target_i__hashtag.'/'.$i['i__hashtag'];
-        } else {
-            $href = view_memory(42903,33286).$i['i__hashtag'];
-        }
+        $href = view_memory(42903,33286).$i['i__hashtag'];
     } else {
         $href = view_memory(42903,33286).$i['i__hashtag'];
     }
