@@ -1603,28 +1603,6 @@ function user_website($x__player){
     return 0;
 }
 
-function email_ticket($x__id, $i__hashtag, $x__player){
-
-    $CI =& get_instance();
-    $user_website = user_website($x__player);
-
-    $additional_info = '';
-    foreach($CI->X_model->fetch(array(
-        'x__id' => $x__id,
-    ), array('x__next')) as $target_i){
-        $additional_info = ' for '.view_i_title($target_i, true);
-        break;
-    }
-
-    foreach($CI->E_model->fetch(array(
-        'e__id' => $x__player,
-    )) as $e){
-        $CI->X_model->send_dm($x__player, get_domain('m__title', $x__player, $user_website).' Your Ticket'.$additional_info,
-            'Upon arrival have your QR code ready to be scanned:'.
-            "\n\n".'https://'.get_domain('m__message', $x__player, $user_website).view_memory(42903,33286).$i__hashtag.'?e__handle='.$e['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$e['e__handle'])."\n", array(), 0, $user_website);
-    }
-
-}
 
 function clean_phone($phone){
     $phone_numbers = preg_replace('/\D/', '', $phone);

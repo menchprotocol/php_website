@@ -1267,13 +1267,6 @@ class X_model extends CI_Model
             }
         }
 
-        //Ticket Email?
-        /*
-        if(isset($new_x['x__id']) && isset($new_x['x__player']) && in_array($new_x['x__type'], $this->config->item('n___32014'))){
-            email_ticket($new_x['x__id'], $i['i__hashtag'],$new_x['x__player']);
-        }
-        */
-
         if ($x_data['x__player'] && in_array($x_data['x__type'], $this->config->item('n___40986'))) {
 
             //Discovery Triggers?
