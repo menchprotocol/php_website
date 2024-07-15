@@ -1512,7 +1512,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     if($has_discovered && !$target_i__hashtag){
-        $target_i__hashtag = $discoveries['i__hashtag'];
+        $target_i__hashtag = $discoveries[0]['i__hashtag'];
     }
 
     $is_locked = ($discovery_mode && !$has_discovered && !$focus__node);
