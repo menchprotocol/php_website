@@ -1474,7 +1474,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $focus_i_seg = ( $discovery_seg ? $CI->uri->segment(2) : false );
     $focus_i__hashtag = ( $focus_i_uri ? $focus_i_uri : ( $focus_i_seg ? $focus_i_seg : false ) );
 
-    if(!$target_i__hashtag && ($discovery_uri || $discovery_seg)){
+    if($discovery_mode && !$target_i__hashtag && ($discovery_uri || $discovery_seg)){
         $target_i__hashtag = ( $discovery_uri ? $discovery_uri : $discovery_seg );
     }
     if($target_i__hashtag && $focus_i__hashtag && $focus_i__hashtag==$i['i__hashtag']){
@@ -1504,11 +1504,15 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $x__player,
             'x__previous' => $i['i__id'],
-        ));
+        ), array('x__previous'));
         $has_discovered = count($discoveries);
     }
     if($has_discovered && $discovery_mode){
         $i = array_merge($i, $discoveries[0]);
+    }
+
+    if($has_discovered && !$target_i__hashtag){
+        $target_i__hashtag = $discoveries['i__hashtag'];
     }
 
     $is_locked = ($discovery_mode && !$has_discovered && !$focus__node);
