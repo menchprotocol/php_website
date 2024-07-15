@@ -3340,7 +3340,7 @@ function go_next(do_skip){
         //Choose
         $(".this_selector").each(function () {
             var selection_i__id_this = parseInt($(this).attr('selection_i__id'));
-            if ($('.this_selector_'+selection_i__id_this+' i').hasClass('fa-square-check')) {
+            if ($('.this_selector_'+selection_i__id_this+' i').hasClass('fa-square-check') || $(".this_selector").length==1) {
                 selection_i__id.push(selection_i__id_this);
             }
         });
