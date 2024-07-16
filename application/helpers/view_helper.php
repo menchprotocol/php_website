@@ -1464,7 +1464,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $superpower_10939 = superpower_unlocked(10939);
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i, $is_cache);
     $i_startable = i_startable($i);
-    $x__player = ( $player_e ? $player_e['e__id'] : 0 );
+    $x__player = ( $focus_e ? $focus_e['e__id'] : ( $player_e ? $player_e['e__id'] : 0 ) );
     $link_creator = isset($i['x__player']) && $i['x__player']==$x__player;
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );
@@ -1490,10 +1490,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         )) as $focus_i){
             $focus_i__or = $focus_i;
         }
-    }
-
-    if(!$focus_e){
-        $focus_e = $player_e;
     }
 
     $has_sortable = $x__id > 0 && !$focus__node && $access_level_i>=3 && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
