@@ -2020,7 +2020,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
     } else {
 
         //Any Limits on Selection?
-        if(!i_spots_remaining($i['i__id'])){
+        if(i_spots_remaining($i['i__id'])==0){
             return 0;
         }
 
