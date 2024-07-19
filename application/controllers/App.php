@@ -224,7 +224,7 @@ class App extends CI_Controller
             } elseif($focus_e && !$access_level_e){
                 $missing_access = 'Error: You Cannot Access @'.$focus_e['e__handle'].' due to Privacy Settings.';
             } elseif($focus_i && !$access_level_i){
-                $missing_access = 'Error: You Cannot Access #'.$focus_i['i__hashtag'].' due to Privacy Settings.';
+                $missing_access = 'Error: You Cannot Access #'.$focus_i['i__hashtag'].' due to Privacy Settings..';
             //} elseif($target_i && !$target_access_level_i){
                 //$missing_access = 'Error: You Cannot Access #'.$target_i['i__hashtag'].' due to Privacy Settings.';
             }
