@@ -202,6 +202,7 @@ class App extends CI_Controller
         $new_cache = false;
         $cache_x__time = null;
         $x__player = ( $player_http_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+        $skip_i_privacy_check = in_array($app_e__id, $this->config->item('n___43388'));
         $access_level_e = access_level_e(null, $focus_e['e__id'], $focus_e);
         $access_level_i = access_level_i(null, $focus_i['i__id'], $focus_i);
         $target_access_level_i = access_level_i(null, $target_i['i__id'], $target_i);
@@ -223,9 +224,9 @@ class App extends CI_Controller
                 $missing_access = 'Error: You Cannot Access '.$e___6287[$app_e__id]['m__title'].' as it requires the superpower of '.$e___10957[end($superpowers_required)]['m__title'].'.';
             } elseif($focus_e && !$access_level_e){
                 $missing_access = 'Error: You Cannot Access @'.$focus_e['e__handle'].' due to Privacy Settings.';
-            } elseif($focus_i && !$access_level_i){
+            } elseif(!$skip_i_privacy_check && $focus_i && !$access_level_i){
                 $missing_access = 'Error: You Cannot Access Focus #'.$focus_i['i__hashtag'].' due to Privacy Settings.';
-            } elseif($target_i && !$target_access_level_i){
+            } elseif(!$skip_i_privacy_check && $target_i && !$target_access_level_i){
                 $missing_access = 'Error: You Cannot Access Target #'.$target_i['i__hashtag'].' due to Privacy Settings.';
             }
 
