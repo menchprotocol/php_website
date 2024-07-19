@@ -110,7 +110,7 @@ foreach($list_settings['query_string'] as $x){
             if(strlen($fetch_data[0]['x__message'])){
                 if(filter_var($fetch_data[0]['x__message'], FILTER_VALIDATE_URL)){
                     //Sheet Click to Expand
-                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['x__message'].'">'.view_cover($e['e__cover'], '🔗️', ' ').'</a>';
+                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['x__message'].'" target="_blank" title="Open in a New Window">'.view_cover($e['e__cover'], '🔗️', ' ').'</a>';
                 } elseif(!isset($_GET['expand']) && in_array($e['e__id'], $this->config->item('n___40945'))){
                     //Sheet Click to Expand
                     $message_clean = '<span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['x__message'].' [Click to Expand]">'.view_cover($e['e__cover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].' hidden">'.$fetch_data[0]['x__message'].'</span>';
