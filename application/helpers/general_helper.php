@@ -1984,7 +1984,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
         $filters['LOWER(i__hashtag)'] = strtolower($i__hashtag);
     } elseif(intval($i__id)){
         $filters['i__id'] = $i__id;
-    } elseif(!$i || !$player_e){
+    } elseif(!$i){
         return 0;
     }
 
