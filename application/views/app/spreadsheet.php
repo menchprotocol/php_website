@@ -206,7 +206,7 @@ echo '</table>';
     }
 
     .maxwidth {
-        max-width: 1200px;
+        max-width: 1200px !important;
     }
 
     /* CSS Adjustments for Printing View */
