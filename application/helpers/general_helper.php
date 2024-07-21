@@ -673,7 +673,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__following' => $list_config[34513],
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+               'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
            ), array('x__follower'), 0, 0, sort__e());
 
            foreach($CI->X_model->fetch(array(
@@ -681,7 +681,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                'x__following' => $list_config[34513],
                'x__next !=' => $i['i__id'],
-               'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+               'i__privacy IN (' . join(',', $CI->config->item('n___42948')) . ')' => null, //Public Ideas
            ), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
                array_push($column_i, $link_i);
            }

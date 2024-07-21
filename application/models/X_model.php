@@ -1302,7 +1302,7 @@ class X_model extends CI_Model
                     //Discovery Forget: Remove all Discoveries made by this user:
                     foreach($this->X_model->fetch(array(
                         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
                         'x__previous' => $i['i__id'],
                         'x__player' => $x_data['x__player'],
                     )) as $remove_x){
