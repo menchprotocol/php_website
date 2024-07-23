@@ -1372,7 +1372,7 @@ class X_model extends CI_Model
                 } else {
 
                     //Assign tag if following/follower transaction NOT previously assigned:
-                    $append_source = append_source($x_tag['x__following'], $x_data['x__player'], $x_data['x__message'], $i['i__id']);
+                    $append_source = append_source($x_tag['x__following'], $x_data['x__player'], $focus_i_data['i__text'], $i['i__id']);
 
                     //See if Session needs to be updated:
                     $player_e = superpower_unlocked();

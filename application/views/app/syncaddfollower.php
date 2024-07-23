@@ -15,8 +15,20 @@ foreach ($this->X_model->fetch(array(
         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__previous' => $addition_sync['x__next'],
     ), array('x__player'), 0, 0, array('x__id' => 'DESC')) as $dicovered) {
+
+        //Any responses by this user?
+        $set_x__message = $dicovered['x__message'];
+        foreach($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 6144, //Written Response
+            'x__previous' => $addition_sync['x__next'],
+            'x__player' => $dicovered['x__player'],
+        ), array(), 0) as $x) {
+            $set_x__message = $x['x__message'];
+        }
+
         //lets append this source:
-        if (!in_array($addition_sync['x__following'].'_'.$dicovered['x__player'], $updated) && append_source($addition_sync['x__following'], $dicovered['x__player'], $dicovered['x__message'], $addition_sync['x__next'])) {
+        if (!in_array($addition_sync['x__following'].'_'.$dicovered['x__player'], $updated) && append_source($addition_sync['x__following'], $dicovered['x__player'], $set_x__message, $addition_sync['x__next'])) {
             $counter++;
         }
 
