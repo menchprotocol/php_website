@@ -1766,7 +1766,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         $info_append .= 'Final sale. ';
                     }
 
-                    $info_append .= 'By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.';
+                    $info_append .= 'No need to create a Paypal account: You can pay by only entering your credit card details to checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.';
                     $info_append .= '</div>';
 
                 }
@@ -1815,8 +1815,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $input_ui .= '<input type="hidden" name="item_name" value="'.view_i_title($i, true).'">';
                     $input_ui .= '<input type="hidden" name="item_number" value="'.( $target_i__hashtag ? '#'.$target_i__hashtag : '' ).'#'.$i['i__hashtag'].'@'.$player_e['e__handle'].'@'.get_domain('m__handle').'">';
 
-                    $input_ui .= '<input type="hidden" name="]\
-                    amount" value="'.$unit_price.'">';
+                    $input_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';
                     $input_ui .= '<input type="hidden" name="currency_code" value="'.$unit_currency.'">';
                     $input_ui .= '<input type="hidden" name="no_shipping" value="1">';
                     $input_ui .= '<input type="hidden" name="notify_url" value="https://'.$e___14870[2738]['m__message'].view_app_link(26595).'">';

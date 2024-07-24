@@ -1,13 +1,13 @@
 <?php
 
 //Sync All Adding followers:
-$updated = array();
 $counter = 0;
 foreach ($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 7545,
     'x__following NOT IN (' . join(',', $this->config->item('n___43048')) . ')' => null, //No need to add these special ones... SourceNickname
 ), array('x__following'), 0) as $addition_sync) {
+
     $is_found = false;
     //Fetch everyone who has discovered this idea:
     foreach ($this->X_model->fetch(array(
@@ -20,21 +20,17 @@ foreach ($this->X_model->fetch(array(
         $set_x__message = $dicovered['x__message'];
         foreach($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 6144, //Written Response
+            'x__type IN (' . join(',', array(42997,42998)) . ')' => null, //PUBLIC
             'x__previous' => $addition_sync['x__next'],
             'x__player' => $dicovered['x__player'],
-        ), array(), 0) as $x) {
+        ), array(), 1) as $x) {
             $set_x__message = $x['x__message'];
         }
 
         //lets append this source:
-        if (!in_array($addition_sync['x__following'].'_'.$dicovered['x__player'], $updated) && append_source($addition_sync['x__following'], $dicovered['x__player'], $set_x__message, $addition_sync['x__next'])) {
+        if (append_source($addition_sync['x__following'], $dicovered['x__player'], $set_x__message, $addition_sync['x__next'])) {
             $counter++;
         }
-
-        //Prevent flip flops when the same user has different answers:
-        array_push($updated, $addition_sync['x__following'].'_'.$dicovered['x__player']);
-
     }
 }
 
