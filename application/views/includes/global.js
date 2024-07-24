@@ -5,43 +5,21 @@ var has_unsaved_changes = false; //Tracks source/idea modal edits
 var focus_x__group = 0;
 
 
-//Full Story
-if(js_pl_id > 1 && js_e___30849[website_id]['m__message'].length>1){ //Any user other than Shervin
 
-    console.log('Activated Recording for Org '+js_e___30849[website_id]['m__message'])
-    window['_fs_debug'] = false;
-    window['_fs_host'] = 'fullstory.com';
-    window['_fs_script'] = 'edge.fullstory.com/s/fs.js';
-    window['_fs_org'] = js_e___30849[website_id]['m__message'];
-    window['_fs_namespace'] = 'FS';
-    (function(m,n,e,t,l,o,g,y){
-        if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
-        g=m[e]=function(a,b,s){g.q?g.q.push([a,b,s]):g._api(a,b,s);};g.q=[];
-        o=n.createElement(t);o.async=1;o.crossOrigin='anonymous';o.src='https://'+_fs_script;
-        y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
-        g.identify=function(i,v,s){g(l,{uid:i},s);if(v)g(l,v,s)};g.setUserVars=function(v,s){g(l,v,s)};g.event=function(i,v,s){g('event',{n:i,p:v},s)};
-        g.anonymize=function(){g.identify(!!0)};
-        g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
-        g.log = function(a,b){g("log",[a,b])};
-        g.consent=function(a){g("consent",!arguments.length||a)};
-        g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
-        g.clearUserCookie=function(){};
-        g._w={};y='XMLHttpRequest';g._w[y]=m[y];y='fetch';g._w[y]=m[y];
-        if(m[y])m[y]=function(){return g._w[y].apply(this,arguments)};
-        g._v="1.2.0";
-    })(window,document,window['_fs_namespace'],'script','user');
-
-    if(js_pl_id>0){
-        //https://help.fullstory.com/hc/en-us/articles/360020623294-FS-setUserVars-Recording-custom-user-data
-        FS.identify(js_pl_id, {
-            displayName: js_pl_name,
-            uid: js_pl_id,
-            profileURL: js_request_uri+js_e___42903[42902]['m__message']+js_pl_handle
-        });
-    }
+//Microsoft Clarity
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    //Append custom variables:
+    clarity("set", "website_id", website_id);
+    clarity("set", "website_uri", js_request_uri);
+    clarity("set", "user_id", js_pl_id);
+    clarity("set", "user_name", js_pl_name);
+    clarity("set", "user_handle", js_pl_handle);
+})(window, document, "clarity", "script", "59riunqvfm");
 
 
-}
 
 
 jQuery.fn.sortElements = (function(){
