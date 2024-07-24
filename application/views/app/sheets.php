@@ -61,7 +61,7 @@ foreach($list_settings['query_string'] as $x){
             }
         }
 
-        $i_content .= '<td>'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
+        $i_content .= '<td title="'.$x['e__title'].' x '.view_i_title($i_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' )  : '').'</td>';
 
 
         if(count($discoveries) && (!count($i_var['must_follow']) || count($i_var['must_follow'])!=count($this->X_model->fetch(array(
@@ -127,7 +127,7 @@ foreach($list_settings['query_string'] as $x){
         }
 
 
-        $body_content .= '<td  title="@'.$x['e__title'].' | '.$e['e__title'].'" class="'.( superpower_unlocked(28714) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__player_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__player="'.$x['e__id'].'" input_modal="'.( $input_modal ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['e__title'].' x '.$e['e__title'].'" class="'.( superpower_unlocked(28714) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__player_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__player="'.$x['e__id'].'" input_modal="'.( $input_modal ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
