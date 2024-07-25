@@ -620,7 +620,7 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
            if($x__player > 0){
                $filters['x__follower'] = $x__player;
            }
-           $query_string = $CI->X_model->fetch($filters, array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+           $query_string = $CI->X_model->fetch($filters, array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'), '*', 'x__follower having count(*) = '.count($list_config[43513]));
 
        } else {
 
@@ -666,7 +666,7 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
                unset($query_string[$key]);
 
            } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
-                   'x__previous IN (' . join(',', $list_config[40793]) . ')' => null,
+                   'x__previous IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
                    'x__player' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -676,29 +676,27 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
                //They have discovered at-least one, so skip this:
                unset($query_string[$key]);
 
-           } elseif (count($list_config[40791])) { //If Discovered ANY
+           } elseif (count($list_config[40791]) && count($list_config[27984]) && !count($CI->X_model->fetch(array(
+                   'x__follower' => $x['e__id'],
+                   'x__following IN (' . join(',', $list_config[27984]) . ')' => null, //Include IF HAS ANY
+                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               )))) {
 
-               //Include IF HAS ANY
-               if(count($list_config[27984])>0 && !count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                   )))){
-                   //Must be included in ALL Sources, since not lets continue:
-                   unset($query_string[$key]);
-               }
+               //If Discovered Any && Include IF HAS ANY
+               //Must be included in ALL Sources, since not lets continue:
+               unset($query_string[$key]);
 
-               //Include IF HAS ALL
-               if(count($list_config[43513])>0 && count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                   )))<count($list_config[43513])){
-                   //Must be included in ALL Sources, since not lets continue:
-                   unset($query_string[$key]);
-               }
+           } elseif (count($list_config[40791]) && count($list_config[43513]) && count($CI->X_model->fetch(array(
+                   'x__follower' => $x['e__id'],
+                   'x__following IN (' . join(',', $list_config[43513]) . ')' => null, //Include IF HAS ALL
+                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+               )))<count($list_config[43513])) {
+
+               //If Discovered Any && Include IF HAS ALL
+               //Must be included in ALL Sources, since not lets continue:
+               unset($query_string[$key]);
 
            }
 
