@@ -650,7 +650,7 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
                    'x__follower' => $x['e__id'],
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               )))==count($list_config[26600])) {
+               )))==( $x__player>0 ? 1  : count($list_config[26600]) )) {
 
                //Exclude IF HAS ALL
                unset($query_string[$key]);
@@ -692,7 +692,7 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
                    'x__following IN (' . join(',', $list_config[43513]) . ')' => null, //Include IF HAS ALL
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               )))<count($list_config[43513])) {
+               )))<( $x__player>0 ? 1 : count($list_config[43513]))) {
 
                //If Discovered Any && Include IF HAS ALL
                //Must be included in ALL Sources, since not lets continue:
