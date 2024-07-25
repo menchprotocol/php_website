@@ -676,7 +676,7 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
                //They have discovered at-least one, so skip this:
                unset($query_string[$key]);
 
-           } elseif (count($list_config[40791]) && count($list_config[27984]) && !count($CI->X_model->fetch(array(
+           } elseif (count($list_config[27984]) && !count($CI->X_model->fetch(array( //count($list_config[40791]) &&
                    'x__follower' => $x['e__id'],
                    'x__following IN (' . join(',', $list_config[27984]) . ')' => null, //Include IF HAS ANY
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -687,7 +687,7 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
                //Must be included in ALL Sources, since not lets continue:
                unset($query_string[$key]);
 
-           } elseif (count($list_config[40791]) && count($list_config[43513]) && count($CI->X_model->fetch(array(
+           } elseif (count($list_config[43513]) && count($CI->X_model->fetch(array( //count($list_config[40791]) &&
                    'x__follower' => $x['e__id'],
                    'x__following IN (' . join(',', $list_config[43513]) . ')' => null, //Include IF HAS ALL
                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
