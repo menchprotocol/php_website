@@ -2083,10 +2083,13 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
         }
 
         //Setting Blocks: (Include IF HAS ANY/all, or Excludes IF HAS ANY/all, etc...)
-        $list_settings = list_settings($i['i__hashtag'], false, );
-        if($list_settings['access_is_blocked']){
-            return 0;
+        if($player_e){
+            $list_settings = list_settings($i['i__hashtag'], false, $player_e['e__id']);
+            if($list_settings['access_is_blocked']){
+                return 0;
+            }
         }
+
 
         //Privacy level:
         $is_public = in_array($i['i__privacy'], $CI->config->item('n___42952'));
