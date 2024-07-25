@@ -106,7 +106,6 @@ foreach($list_settings['query_string'] as $x){
             'x__following' => $e['e__id'],
         ));
 
-
         $message_clean = '';
         if(count($fetch_data)){
             if(strlen($fetch_data[0]['x__message'])){

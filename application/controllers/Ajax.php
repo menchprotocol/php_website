@@ -2138,6 +2138,21 @@ class Ajax extends CI_Controller
 
         } else {
 
+            $_POST['input_modal'] = trim($_POST['input_modal']);
+
+            //Let's determine the data type:
+            $link_type = 0;
+            foreach($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__following IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Data Types
+                'x__follower' => $_POST['e__id'],
+            )) as $data_type) {
+                $link_type = intval($data_type['x__following']);
+            }
+            $requires_written_answer = $link_type && in_array($link_type, $this->config->item('n___43510')); //Required Settings
+
+
             $already_added = $this->X_model->fetch(array(
                 'x__following' => $_POST['e__id'],
                 'x__follower' => $_POST['x__player'],
@@ -2147,15 +2162,18 @@ class Ajax extends CI_Controller
 
             if(count($already_added)){
 
-                if(intval($_POST['input_modal']) && trim($_POST['modal_value'])!=$already_added[0]['x__message']){
+                if(strlen($_POST['input_modal'])){
 
-                    //Updating current value:
-                    $this->X_model->update($already_added[0]['x__id'], array(
-                        'x__message' => trim($_POST['modal_value']),
-                    ));
+                    //Updating current value if changed:
+                    if(trim($_POST['modal_value'])!=$already_added[0]['x__message']){
+                        $this->X_model->update($already_added[0]['x__id'], array(
+                            'x__message' => $_POST['input_modal'],
+                        ));
+                    }
+
                     return view_json(array(
                         'status' => 1,
-                        'message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : $already_added[0]['e__cover'] ),
+                        'message' => $_POST['input_modal'],
                     ));
 
                 } else {
@@ -2174,32 +2192,38 @@ class Ajax extends CI_Controller
 
             } else {
 
-                foreach($this->E_model->fetch(array(
-                    'e__id' => $_POST['e__id'],
-                )) as $e){
+                if($requires_written_answer && !strlen($_POST['input_modal'])){
 
-                    //Does not exist, Add:
-                    $this->X_model->create(array(
-                        'x__following' => $_POST['e__id'],
-                        'x__follower' => $_POST['x__player'],
-                        'x__player' => $player_e['e__id'],
-                        'x__message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : null ),
-                        'x__type' => 4251,
-                    ));
-
+                    //Nothing to do
                     return view_json(array(
                         'status' => 1,
-                        'message' => ( intval($_POST['input_modal']) && strlen($_POST['modal_value']) ? trim($_POST['modal_value']) : $e['e__cover'] ),
+                        'message' => '',
                     ));
 
+                } else {
+
+                    foreach($this->E_model->fetch(array(
+                        'e__id' => $_POST['e__id'],
+                    )) as $e){
+
+                        //Does not exist, Add:
+                        $this->X_model->create(array(
+                            'x__following' => $_POST['e__id'],
+                            'x__follower' => $_POST['x__player'],
+                            'x__player' => $player_e['e__id'],
+                            'x__message' => $_POST['modal_value'],
+                            'x__type' => 4251,
+                        ));
+
+                        return view_json(array(
+                            'status' => 1,
+                            'message' => ( strlen($_POST['input_modal']) ? $_POST['modal_value'] : ( $requires_written_answer ? '' : view_cover($e['e__cover'], true))),
+                        ));
+
+                    }
                 }
-
-
-
             }
-
         }
-
     }
 
     function e_verify_contact(){
