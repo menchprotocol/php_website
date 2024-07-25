@@ -2160,7 +2160,7 @@ class Ajax extends CI_Controller
 
                     return view_json(array(
                         'status' => 1,
-                        'message' => $_POST['require_writing'],
+                        'message' => $_POST['written_answer'],
                     ));
 
                 } else {
