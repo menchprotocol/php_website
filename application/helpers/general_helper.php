@@ -620,7 +620,7 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
            if($x__player > 0){
                $filters['x__follower'] = $x__player;
            }
-           $query_string = $CI->X_model->fetch($filters, array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'), '*', 'x__follower having count(*) = '.count($list_config[43513]));
+           $query_string = $CI->X_model->fetch($filters, array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
 
        } else {
 
