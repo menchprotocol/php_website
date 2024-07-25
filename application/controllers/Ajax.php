@@ -2138,20 +2138,7 @@ class Ajax extends CI_Controller
 
         } else {
 
-            $_POST['input_modal'] = trim($_POST['input_modal']);
-
-            //Let's determine the data type:
-            $link_type = 0;
-            foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__following IN (' . join(',', $this->config->item('n___4592')) . ')' => null, //Data Types
-                'x__follower' => $_POST['e__id'],
-            )) as $data_type) {
-                $link_type = intval($data_type['x__following']);
-            }
-            $requires_written_answer = $link_type && in_array($link_type, $this->config->item('n___43510')); //Required Settings
-
+            $_POST['require_writing'] = intval($_POST['require_writing']);
 
             $already_added = $this->X_model->fetch(array(
                 'x__following' => $_POST['e__id'],
@@ -2162,18 +2149,18 @@ class Ajax extends CI_Controller
 
             if(count($already_added)){
 
-                if(strlen($_POST['input_modal'])){
+                if(intval($_POST['require_writing'])){
 
                     //Updating current value if changed:
-                    if(trim($_POST['modal_value'])!=$already_added[0]['x__message']){
+                    if(trim($_POST['written_answer'])!=$already_added[0]['x__message']){
                         $this->X_model->update($already_added[0]['x__id'], array(
-                            'x__message' => $_POST['input_modal'],
+                            'x__message' => $_POST['written_answer'],
                         ));
                     }
 
                     return view_json(array(
                         'status' => 1,
-                        'message' => $_POST['input_modal'],
+                        'message' => $_POST['require_writing'],
                     ));
 
                 } else {
@@ -2185,14 +2172,14 @@ class Ajax extends CI_Controller
 
                     return view_json(array(
                         'status' => 1,
-                        'message' => ' ',
+                        'message' => '',
                     ));
 
                 }
 
             } else {
 
-                if($requires_written_answer && !strlen($_POST['input_modal'])){
+                if(intval($_POST['require_writing']) && !strlen($_POST['written_answer'])){
 
                     //Nothing to do
                     return view_json(array(
@@ -2211,13 +2198,13 @@ class Ajax extends CI_Controller
                             'x__following' => $_POST['e__id'],
                             'x__follower' => $_POST['x__player'],
                             'x__player' => $player_e['e__id'],
-                            'x__message' => $_POST['modal_value'],
+                            'x__message' => $_POST['written_answer'],
                             'x__type' => 4251,
                         ));
 
                         return view_json(array(
                             'status' => 1,
-                            'message' => ( strlen($_POST['input_modal']) ? $_POST['modal_value'] : ( $requires_written_answer ? '' : view_cover($e['e__cover'], true))),
+                            'message' => ( intval($_POST['require_writing']) ? $_POST['written_answer'] : view_cover($e['e__cover'], true) ),
                         ));
 
                     }
