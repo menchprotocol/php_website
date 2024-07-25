@@ -265,6 +265,9 @@ echo '</table>';
             var written_answer = '';
             if(require_writing){
                 written_answer = prompt("Enter value:", $('.x__player_' + $(this).attr('e__id') + '_' + $(this).attr('x__player')).text());
+                if(!written_answer.length){
+                    return false;
+                }
             }
 
             var modify_data = {
