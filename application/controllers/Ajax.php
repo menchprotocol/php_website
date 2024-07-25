@@ -1853,7 +1853,7 @@ class Ajax extends CI_Controller
                         'x__next' => $i['i__id'], //Is this the template?
                     )))){
                         //Found the email template to send:
-                        $total_sent = $this->X_model->send_i_dm(array($player_e), $i, website_setting(0), false);
+                        $total_sent = $this->X_model->send_i_mass_dm(array($player_e), $i, website_setting(0), false);
                         break; //Just the first template match
                     }
                 }

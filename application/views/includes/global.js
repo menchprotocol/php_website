@@ -6,19 +6,21 @@ var focus_x__group = 0;
 
 
 
-//Microsoft Clarity
-(function(c,l,a,r,i,t,y){
-    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    //Append custom variables:
-    clarity("set", "website_id", website_id);
-    clarity("set", "website_uri", js_request_uri);
-    clarity("set", "user_id", js_pl_id);
-    clarity("set", "user_name", js_pl_name);
-    clarity("set", "user_handle", js_pl_handle);
-})(window, document, "clarity", "script", "59riunqvfm");
 
+if(!js_pl_id || !js_n___43512.includes(js_pl_id)){
+    //Microsoft Clarity=
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        //Append custom variables:
+        clarity("set", "website_id", website_id);
+        clarity("set", "website_uri", js_request_uri);
+        clarity("set", "user_id", js_pl_id);
+        clarity("set", "user_name", js_pl_name);
+        clarity("set", "user_handle", js_pl_handle);
+    })(window, document, "clarity", "script", "59riunqvfm");
+}
 
 
 

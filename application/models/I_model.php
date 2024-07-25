@@ -680,8 +680,8 @@ class I_model extends CI_Model
 
                         $e_mapper = array(
                             12591 => 4983,  //Sources
-                            27985 => 27984, //Following Includes All
-                            27082 => 26600, //Following Excludes All
+                            27985 => 27984, //Include IF HAS ANY
+                            27082 => 26600, //Exclude IF HAS ALL
                             27084 => 7545,  //Following Add
                             27086 => 26599, //Following Remove
                         );

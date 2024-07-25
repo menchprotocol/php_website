@@ -57,7 +57,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                         echo '<tr class="mobile-shrink">';
                         echo '<td class="center" colspan="2" title="@'.$e___42263[$headline_link]['m__handle'].'">';
 
-                        //Search for sibling if Has Family:
+                        //Search for sibling IF HAS Family:
                         if(in_array($e__id2, $this->config->item('n___42792'))){
                             foreach($this->X_model->fetch(array(
                                 'x__follower' => $headline_link,

@@ -394,7 +394,7 @@ class E_model extends CI_Model
                     'x__next' => $i['i__id'], //Is this the template?
                 )))){
                     //Found the email template to send:
-                    $total_sent = $this->X_model->send_i_dm(array($added_e['new_e']), $i, $x__website);
+                    $total_sent = $this->X_model->send_i_mass_dm(array($added_e['new_e']), $i, $x__website);
                     break; //Just the first template match
                 }
             }
@@ -584,7 +584,7 @@ class E_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
-                //Must exclude all sources, skip:
+                //Must Exclude IF HAS ALL sources, skip:
                 $qualified_e = false;
             }
 

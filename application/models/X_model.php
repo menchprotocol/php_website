@@ -839,7 +839,7 @@ class X_model extends CI_Model
 
 
 
-    function send_i_dm($list_of_e__id, $i, $x__website = 0, $ensure_undiscovered = true){
+    function send_i_mass_dm($list_of_e__id, $i, $x__website = 0, $ensure_undiscovered = true){
 
         $children = $this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
@@ -863,7 +863,7 @@ class X_model extends CI_Model
                 //Invalid input for sending:
                 $this->X_model->create(array(
                     'x__type' => 4246, //Platform Bug Reports
-                    'x__message' => 'send_i_dm() Invalid user row',
+                    'x__message' => 'send_i_mass_dm() Invalid user row',
                     'x__metadata' => array(
                         '$i' => $i,
                         '$list_of_e__id' => $list_of_e__id,
@@ -874,7 +874,8 @@ class X_model extends CI_Model
             } elseif($ensure_undiscovered && count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
-                'x__type' => 43142, //Message Sent
+
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 //Already discovered:
