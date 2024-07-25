@@ -2152,10 +2152,14 @@ class Ajax extends CI_Controller
                 if(intval($_POST['require_writing'])){
 
                     //Updating current value if changed:
-                    if(trim($_POST['written_answer'])!=$already_added[0]['x__message']){
+                    if(strlen($_POST['written_answer']) && trim($_POST['written_answer'])!=$already_added[0]['x__message']){
                         $this->X_model->update($already_added[0]['x__id'], array(
                             'x__message' => $_POST['written_answer'],
                         ));
+                    } elseif(!strlen($_POST['written_answer'])){
+                        $this->X_model->update($already_added[0]['x__id'], array(
+                            'x__privacy' => 6173, //Transaction Deleted
+                        ), $player_e['e__id'], 10673 /* Member Transaction Unpublished */);
                     }
 
                     return view_json(array(
