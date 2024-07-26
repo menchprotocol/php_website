@@ -584,7 +584,7 @@ class E_model extends CI_Model
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
-                //Must Exclude IF HAS ALL sources, skip:
+                //Must Exclude If Has ALL sources, skip:
                 $qualified_e = false;
             }
 

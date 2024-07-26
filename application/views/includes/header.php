@@ -762,7 +762,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                                 } elseif($action_e__id==11956){
 
-                                    //IF HAS THIS
+                                    //If Has THIS
                                     $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="IF THIS SOURCE" class="form-control algolia_finder e_text_finder border '.$is_upper.'">';
 
                                     //ADD THIS
