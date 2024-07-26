@@ -19,12 +19,13 @@ foreach ($this->X_model->fetch(array(
         //Any responses by this user?
         $set_x__message = $dicovered['x__message'];
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', array(42997,42998)) . ')' => null, //PUBLIC
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__type' => 33532, //Share Idea
             'x__previous' => $addition_sync['x__next'],
             'x__player' => $dicovered['x__player'],
-        ), array(), 1) as $x) {
-            $set_x__message = $x['x__message'];
+        ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
+            $set_x__message = $response['i__message'];
         }
 
         //lets append this source:
