@@ -470,6 +470,8 @@ function verify_cookie(){
 
 function auto_login_player($is_ajax) {
 
+    return false; //TODO remove_later
+
     date_default_timezone_set('America/Los_Angeles');
     @session_start();
     $CI =& get_instance();
