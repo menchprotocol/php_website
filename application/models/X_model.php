@@ -193,7 +193,7 @@ class X_model extends CI_Model
 
     }
 
-    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null, $must_be_discovered = false)
+    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -240,19 +240,13 @@ class X_model extends CI_Model
         $results = $q->result_array();
 
 
-
         //Verify Access to each item:
-        if($select=='*' && 0){
+        if($select=='*'){
             if(array_intersect(array('x__previous','x__next'), $joins_objects)){
                 //Idea results:
                 $player_e = superpower_unlocked();
                 foreach($results as $key => $value){
-                    if(!access_level_i(null, $value['i__id'], $value) || ($must_be_discovered && (!$player_e || !count($this->X_model->fetch(array(
-                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                                    'x__player' => $player_e['e__id'],
-                                    'x__previous' => $value['i__id'],
-                                )))))){
+                    if(!access_level_i(null, $value['i__id'], $value)){
                         unset($results[$key]); //Remove this option
                     }
                 }

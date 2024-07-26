@@ -538,7 +538,7 @@ function round_minutes($seconds){
 
 
 
-function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
+function list_settings($i__hashtag, $fetch_contact = false){
 
     $CI =& get_instance();
     $e___6287 = $CI->config->item('e___6287'); //APP
@@ -586,112 +586,38 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
        if(count($list_config[40791])){
 
            //If Discovered Any
-           $filters = array(
+           $query_string = $CI->X_model->fetch(array(
                'x__previous IN (' . join(',', $list_config[40791]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-           );
-           if($x__player > 0){
-               $filters['x__player'] = $x__player;
-           }
-           $query_string = $CI->X_model->fetch($filters, array('x__player'), 0, 0, array('x__id' => 'DESC'));
+           ), array('x__player'), 0, 0, array('x__id' => 'DESC'));
 
        } elseif(count($list_config[27984])>0){
 
            //Include IF HAS ANY
-           $filters = array(
+           $query_string = $CI->X_model->fetch(array(
                'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-           );
-           if($x__player > 0){
-               $filters['x__follower'] = $x__player;
-           }
-           $query_string = $CI->X_model->fetch($filters, array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+           ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
 
        } elseif(count($list_config[43513])>0){
 
            //Include IF HAS ALL
-           $filters = array(
+           $query_string = $CI->X_model->fetch(array(
                'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-           );
-           if($x__player > 0){
-               $filters['x__follower'] = $x__player;
-           }
-           $query_string = $CI->X_model->fetch($filters, array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-
-
-           /*
-
-            } elseif (count($list_config[26600]) && count($CI->X_model->fetch(array(
-                   'x__following IN (' . join(',', $list_config[26600]) . ')' => null, //All of these
-                   'x__follower' => $x['e__id'],
-                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               )))==count($list_config[26600])) {
-
-               //Exclude IF HAS ALL
-               unset($query_string[$key]);
-
-           } elseif (count($list_config[43514]) && count($CI->X_model->fetch(array(
-                   'x__following IN (' . join(',', $list_config[43514]) . ')' => null, //ANY of these
-                   'x__follower' => $x['e__id'],
-                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               )))>0) {
-
-               //Exclude IF HAS ANY
-               unset($query_string[$key]);
-
-           } elseif (count($list_config[40793]) && count($CI->X_model->fetch(array(
-                   'x__previous IN (' . join(',', $list_config[40793]) . ')' => null, //All of these
-                   'x__player' => $x['e__id'],
-                   'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               )))) {
-
-               //If Not Discovered Any
-               //They have discovered at-least one, so skip this:
-               unset($query_string[$key]);
-
-           } elseif (count($list_config[27984]) && !count($CI->X_model->fetch(array( //count($list_config[40791]) &&
-                   'x__follower' => $x['e__id'],
-                   'x__following IN (' . join(',', $list_config[27984]) . ')' => null, //Include IF HAS ANY
-                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               )))) {
-
-               //Include IF HAS ANY
-               //Must be included in ALL Sources, since not lets continue:
-               unset($query_string[$key]);
-
-           } elseif (count($list_config[43513]) && count($CI->X_model->fetch(array( //count($list_config[40791]) &&
-                   'x__follower' => $x['e__id'],
-                   'x__following IN (' . join(',', $list_config[43513]) . ')' => null, //Include IF HAS ALL
-                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               )))<count($list_config[43513])) {
-
-               //Include IF HAS ALL
-               //Must be included in ALL Sources, since not lets continue:
-               unset($query_string[$key]);
-
-            * */
+           ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
 
        } else {
 
            //All Discoveries:
-           $filters = array(
+           $query_string = $CI->X_model->fetch(array(
                'x__previous' => $i['i__id'],
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-           );
-           if($x__player > 0){
-               $filters['x__player'] = $x__player;
-           }
-           $query_string = $CI->X_model->fetch($filters, array('x__player'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+           ), array('x__player'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
 
        }
 
@@ -843,31 +769,12 @@ function list_settings($i__hashtag, $fetch_contact = false, $x__player = 0){
            $column_i[$key]['must_follow'] = $must_follow;
        }
 
-
-       //Access Logic:
-       $access_is_blocked = 0;
-       if(count($list_config[27984]) && !count($query_string)){
-           //Include IF HAS ANY
-           $access_is_blocked = 1;
-       } elseif(count($list_config[43513]) && count($query_string)<count($list_config[43513])){
-           //Include IF HAS ALL
-           $access_is_blocked = 1;
-       } elseif(count($list_config[43514]) && count($query_string)>0){
-           //Exclude IF HAS ANY
-           $access_is_blocked = 1;
-       } elseif(count($list_config[26600]) && count($query_string)==count($list_config[26600])){
-           //Exclude IF HAS ALL
-           $access_is_blocked = 1;
-       }
-
-
        return array(
            'i' => $i,
            'list_config' => $list_config,
            'column_e' => $column_e,
            'column_i' => $column_i,
            'query_string' => $query_string,
-           'access_is_blocked' => $access_is_blocked,
            'contact_details' => $contact_details, //Optional addon
        );
     }
@@ -2140,10 +2047,112 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
             return 0;
         }
 
-        //Setting Blocks: (Include IF HAS ANY/all, or Excludes IF HAS ANY/all, etc...)
-        if($player_e){
-            $list_settings = list_settings($i['i__hashtag'], false, $player_e['e__id']);
-            if($list_settings['access_is_blocked']){
+
+        //Include IF HAS ANY
+        $fetch_27984 = $CI->X_model->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 27984, //Must Include All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__following'), 0);
+        if(count($fetch_27984)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_27984 as $e_pre){
+                    if((( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__following' => $e_pre['x__following'],
+                            'x__follower' => $player_e['e__id'],
+                        ))))){
+                        $the_counter++;
+                    }
+                }
+            }
+            if(!$the_counter){
+                return 0;
+            }
+        }
+
+
+        //Include IF HAS ALL
+        $fetch_43513 = $CI->X_model->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 43513, //Must Include All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__following'), 0);
+        if(count($fetch_43513)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_43513 as $e_pre){
+                    if((( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__following' => $e_pre['x__following'],
+                            'x__follower' => $player_e['e__id'],
+                        ))))){
+                        $the_counter++;
+                    }
+                }
+            }
+            if($the_counter < count($fetch_43513)){
+                return 0;
+            }
+        }
+
+
+        //Exclude IF HAS ANY
+        $fetch_43514 = $CI->X_model->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 43514, //Must Exclude All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__following'), 0);
+        if(count($fetch_43514)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_43514 as $e_pre){
+                    if(( $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__following' => $e_pre['x__following'],
+                            'x__follower' => $player_e['e__id'],
+                        )))){
+                        //Found an exclusion, so skip this:
+                        $the_counter++;
+                        break;
+                    }
+                }
+            }
+            if($the_counter>0){
+                return 0;
+            }
+        }
+
+        //Exclude IF HAS ALL
+        $fetch_26600 = $CI->X_model->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 26600, //Must Exclude All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
+        ), array('x__following'), 0);
+        if(count($fetch_26600)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_26600 as $e_pre){
+                    if(( $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
+                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'x__following' => $e_pre['x__following'],
+                            'x__follower' => $player_e['e__id'],
+                        )))){
+                        //Found an exclusion, so skip this:
+                        $the_counter++;
+                    }
+                }
+            }
+            if($the_counter==count($fetch_26600)){
                 return 0;
             }
         }
