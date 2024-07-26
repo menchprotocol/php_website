@@ -1637,7 +1637,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
 
-    if($x__player ){
+    if($x__player){
 
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
@@ -1650,8 +1650,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             'x__previous' => $i['i__id'],
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__next'));
-
-
 
 
         //Any inputs for this idea?
@@ -1997,8 +1995,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     foreach($CI->config->item('e___31904') as $x__type_target_bar => $m_target_bar) {
-
-        break;
 
         //See if missing superpower?
         $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_target_bar['m__following']);
