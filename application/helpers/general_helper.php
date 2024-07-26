@@ -608,7 +608,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-           ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'), '*', 'x__id', 'count(*)='.count($list_config[43513]));
+           ), array('x__follower'), 0, 0, array(), '*', 'x__follower', 'count(*) ='.count($list_config[43513]));
 
        } else {
 
