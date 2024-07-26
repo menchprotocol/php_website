@@ -93,7 +93,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
                         <!-- Cover Demo -->
                         <div class="section_demo">
-                            <div class="card_cover demo_cover">
+                            <div class="card_cover demo_cover uploader_42359">
                                 <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
                             </div>
                         </div>
