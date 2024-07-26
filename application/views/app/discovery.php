@@ -138,7 +138,7 @@ if($player_e || isset($_GET['open'])){
 
         //Show percentage progress on next button:
         if(parseInt($('.progress-bar').attr('aria-valuenow'))>0 && parseInt($('.progress-bar').attr('aria-valuenow'))<100){
-            $('.go_next_btn').append(' <span title="'+$('.progress-bar').attr('aria-valuenow')+'% Completed">✅'+$('.progress-bar').attr('aria-valuenow')+'%</span>');
+            $('.go_next_btn').append(' <span title="'+$('.progress-bar').attr('aria-valuenow')+'% Completed">'+$('.progress-bar').attr('aria-valuenow')+'% Done</span>');
         }
 
         //Detect if no scroll bar, load instantly:

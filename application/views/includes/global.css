@@ -3223,6 +3223,10 @@ h4.main__title{
 
 @media (max-width:610px) {
 
+    .post_button{
+        font-size: 0.89em !important;
+    }
+
     .fixed-bottom{
         border-left: 0 !important;
         border-right: 0 !important;
