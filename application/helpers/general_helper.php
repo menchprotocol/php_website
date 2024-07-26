@@ -670,9 +670,9 @@ function list_settings($i__hashtag, $fetch_contact = false){
                $total_found_43513 = 0;
                foreach($list_config[43513] as $this_filter){
                    $total_found_43513 += ( count($CI->X_model->fetch(array(
-                       'x__player' => $x['e__id'],
-                       'x__previous' => $this_filter,
-                       'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                       'x__follower' => $x['e__id'],
+                       'x__following' => $this_filter,
+                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                    ))) ? 1 : 0 );
                }
