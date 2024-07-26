@@ -1638,7 +1638,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
 
-    if($x__player && 0){
+    if($x__player ){
 
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
@@ -2220,7 +2220,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     //Bottom Bar menu
-    if(!$focus__node && !$is_locked && !$is_cache && 0){
+    if(!$focus__node && !$is_locked && !$is_cache ){
         foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
 
             $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_bottom_bar['m__following']);
@@ -2244,7 +2244,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
 
-    if($bottom_bar_ui && 0){
+    if($bottom_bar_ui ){
         $ui .= '<div class="'.( $focus__node && $discovery_mode ? ' container fixed-bottom hidden ' : '' ).'">';
         $ui .= '<div class="card_covers">';
         $ui .= $bottom_bar_ui;
