@@ -646,7 +646,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                    )))>0) ||
 
                //Include If Has ANY
-               (count($list_config[40791]) && count($list_config[27984]) && !count($CI->X_model->fetch(array(
+               (count($list_config[27984]) && !count($CI->X_model->fetch(array(
                        'x__follower' => $x['e__id'],
                        'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -654,7 +654,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                    )))) ||
 
                //Include If Has ALL
-               (count($list_config[40791]) && count($list_config[43513]) && count($CI->X_model->fetch(array(
+               (count($list_config[43513]) && count($CI->X_model->fetch(array(
                        'x__follower' => $x['e__id'],
                        'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
