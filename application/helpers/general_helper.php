@@ -610,15 +610,6 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
            ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
 
-           $total_found_43513 = 0;
-           foreach($list_config[43513] as $this_filter){
-               $total_found_43513 += ( count($CI->X_model->fetch(array(
-                   'x__previous' => $this_filter,
-                   'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                   'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-               ), array('x__player'), 0, 0, array('x__id' => 'DESC'))) ? 1 : 0 );
-           }
-
        } else {
 
            //All Discoveries:
@@ -637,9 +628,6 @@ function list_settings($i__hashtag, $fetch_contact = false){
            if(
 
                (in_array(intval($x['e__id']), $unique_users_count)) ||
-
-               //Include If Has ALL
-               (count($list_config[43513]) && $total_found_43513<count($list_config[43513])) ||
 
                //Include If Has ANY
                (count($list_config[27984]) && !count($CI->X_model->fetch(array(
@@ -674,7 +662,23 @@ function list_settings($i__hashtag, $fetch_contact = false){
                    ))))
 
            ){
+
                unset($query_string[$key]);
+
+           } elseif(count($list_config[43513])){
+               //Include If Has ALL
+               $total_found_43513 = 0;
+               foreach($list_config[43513] as $this_filter){
+                   $total_found_43513 += ( count($CI->X_model->fetch(array(
+                       'x__player' => $x['e__id'],
+                       'x__previous' => $this_filter,
+                       'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                       'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                   ))) ? 1 : 0 );
+               }
+               if($total_found_43513<count($list_config[43513])){
+                   unset($query_string[$key]);
+               }
            }
 
            array_push($unique_users_count, intval($x['e__id']));
