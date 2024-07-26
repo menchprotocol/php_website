@@ -302,6 +302,8 @@ function view_more($href, $is_current, $x__type, $o__privacy, $o__type, $o__titl
 
 function e_view_body($x__type, $counter, $e__id, $js_request_uri){
 
+    return '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">WOW</div>';
+
     $CI =& get_instance();
     $limit = view_memory(6404,11064);
     $player_e = superpower_unlocked();
@@ -320,9 +322,6 @@ function e_view_body($x__type, $counter, $e__id, $js_request_uri){
         return false;
     }
     $ui = '';
-
-    return '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">WOW</div>';
-
 
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
