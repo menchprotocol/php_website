@@ -39,7 +39,7 @@ class X_model extends CI_Model
 
         //Clean metadata is provided:
         if (isset($add_fields['x__metadata']) && is_array($add_fields['x__metadata'])) {
-            $add_fields['x__metadata'] = serialize($add_fields['x__metadata']);
+            $add_fields['x__metadata'] = utf8_encode(serialize($add_fields['x__metadata']));
         } else {
             $add_fields['x__metadata'] = null;
         }
@@ -47,6 +47,8 @@ class X_model extends CI_Model
         //Set some defaults:
         if (!isset($add_fields['x__message'])) {
             $add_fields['x__message'] = null;
+        } else {
+            $add_fields['x__message'] = utf8_encode($add_fields['x__message']);
         }
 
         //Set some defaults:
@@ -71,13 +73,6 @@ class X_model extends CI_Model
         foreach(array('x__next', 'x__previous', 'x__follower', 'x__following', 'x__reference', 'x__weight') as $dz) {
             if (!isset($add_fields[$dz])) {
                 $add_fields[$dz] = 0;
-            }
-        }
-
-        //Cleanup Text Fields:
-        foreach(array('x__message', 'x__metadata') as $dz) {
-            if (isset($add_fields[$dz]) && strlen($add_fields[$dz])) {
-                $add_fields[$dz] = utf8_encode($add_fields[$dz]);
             }
         }
 
