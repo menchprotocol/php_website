@@ -322,8 +322,6 @@ function e_view_body($x__type, $counter, $e__id, $js_request_uri){
     }
     $ui = '';
 
-    return '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">WOW</div>';
-
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
         //Ideas:
@@ -434,6 +432,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
      * Loads Source
      *
      * */
+    return null;
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
