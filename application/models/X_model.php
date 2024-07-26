@@ -1184,7 +1184,7 @@ class X_model extends CI_Model
 
                     //Link to this idea:
                     $this->X_model->create(array(
-                        'x__type' => 33532,
+                        'x__type' => 33532, //REPLY
                         'x__player' => $x__player,
                         'x__previous' => $i['i__id'],
                         'x__next' => $i_new['i__id'],

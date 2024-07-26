@@ -300,9 +300,7 @@ function view_more($href, $is_current, $x__type, $o__privacy, $o__type, $o__titl
 
 
 
-function e_view_body($x__type, $counter, $e__id){
-
-
+function e_view_body($x__type, $counter, $e__id, $js_request_uri){
 
     $CI =& get_instance();
     $limit = view_memory(6404,11064);
@@ -314,7 +312,7 @@ function e_view_body($x__type, $counter, $e__id){
     }
 
     $list_results = view_e_covers($x__type, $e__id, 1);
-    $focus_e = ($e__id==$player_e['e__id'] ? $player_e : false);
+    $focus_e__id = ( $e__id>0 ? $e__id : ( $player_e ? $player_e['e__id'] : 0 ) );
     $es = $CI->E_model->fetch(array(
         'e__id' => $e__id,
     ));
@@ -329,7 +327,7 @@ function e_view_body($x__type, $counter, $e__id){
         //Ideas:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach($list_results as $i){
-            $ui .= view_card_i($x__type, $i, null, null, $focus_e);
+            $ui .= view_card_i($x__type, $i, null, null, $focus_e__id);
         }
         $ui .= '</div>';
 
@@ -347,7 +345,7 @@ function e_view_body($x__type, $counter, $e__id){
         //Discoveries:
         $ui .= '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">';
         foreach ($list_results as $i) {
-            $ui .= view_card_i($x__type,  $i, null, null, $focus_e);
+            $ui .= view_card_i($x__type,  $i, null, null, $focus_e__id);
         }
         $ui .= '</div>';
 
@@ -1448,7 +1446,7 @@ function view_i_nav($discovery_mode, $focus_i){
     
 }
 
-function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null, $focus_e = false){
+function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null, $focus_e__id = 0){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -1464,7 +1462,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $superpower_10939 = superpower_unlocked(10939);
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i, $is_cache);
     $i_startable = i_startable($i);
-    $x__player = ( $focus_e ? $focus_e['e__id'] : ( $player_e ? $player_e['e__id'] : 0 ) );
+    $x__player = ( $focus_e__id>0 ? $focus_e__id : ( $player_e ? $player_e['e__id'] : 0 ) );
     $link_creator = isset($i['x__player']) && $i['x__player']==$x__player;
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );

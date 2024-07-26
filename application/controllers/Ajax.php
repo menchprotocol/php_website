@@ -737,7 +737,7 @@ class Ajax extends CI_Controller
         if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['x__type']) || intval($_POST['x__type']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
-            echo e_view_body($_POST['x__type'], $_POST['counter'], $_POST['e__id']);
+            echo e_view_body($_POST['x__type'], $_POST['counter'], $_POST['e__id'], $_POST['js_request_uri']);
         }
     }
 
@@ -2495,7 +2495,7 @@ class Ajax extends CI_Controller
                     echo view_card_e($_POST['x__type'], $s);
                     $success = true;
                 } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___42284')) || in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___11020'))) {
-                    echo view_card_i($_POST['x__type'], $s, $previous_i, null, $focus_e);
+                    echo view_card_i($_POST['x__type'], $s, $previous_i, null, $focus_e['e__id']);
                     $success = true;
                 }
             }
@@ -2510,7 +2510,7 @@ class Ajax extends CI_Controller
 
             foreach(view_i_covers($_POST['x__type'], $_POST['focus__id'], $_POST['current_page']) as $s) {
                 if (in_array($_POST['x__type'], $this->config->item('n___11020'))) {
-                    echo view_card_i($_POST['x__type'], $s, $previous_i, null, $focus_e);
+                    echo view_card_i($_POST['x__type'], $s, $previous_i, null, $focus_e['e__id']);
                     $success = true;
                 } else if ($_POST['x__type']==6255 || in_array($_POST['x__type'], $this->config->item('n___42261')) || in_array($_POST['x__type'], $this->config->item('n___42284')) || in_array($_POST['x__type'], $this->config->item('n___11028'))) {
                     echo view_card_e($_POST['x__type'], $s);
@@ -2803,218 +2803,6 @@ class Ajax extends CI_Controller
         return view_json(array(
             'status' => 0,
             'message' => 'Invalid Idea',
-        ));
-
-    }
-
-
-    function x_write(){
-
-        //Any Preg Remove?
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $_POST['i__id'],
-            'x__following' => 32103, //Preg Remove
-        )) as $preg_query){
-            $new_form = preg_replace($preg_query['x__message'], "", $_POST['x_write'] );
-            if($new_form != $_POST['x_write']) {
-                $_POST['x_write'] = $new_form;
-                //Log preg removal
-                $this->X_model->create(array(
-                    'x__type' => 32103, //Preg Remove
-                    'x__player' => $player_e['e__id'],
-                    'x__message' => '['.$_POST['x_write'].'] Transformed to ['.$new_form.']',
-                    'x__previous' => $_POST['target_i__id'],
-                    'x__next' => $_POST['i__id'],
-                ));
-            }
-        }
-
-        $_POST['x_write'] = trim($_POST['x_write']);
-
-        //Trying to Skip?
-        if(!strlen($_POST['x_write'])){
-
-            if(!i_required($i)){
-                //Log Skip:
-                $this->X_model->mark_complete(31022, $player_e['e__id'], intval($_POST['target_i__id']), $is[0], array(), array(
-                    'x__message' => $_POST['x_write'],
-                ));
-                //All good:
-                return view_json(array(
-                    'status' => 1,
-                    'message' => 'Skipped & Next',
-                ));
-            } else {
-                //Cannot Skip:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Write a response before going next.',
-                ));
-            }
-        }
-
-
-
-        //Type Specific Requirements?
-        if ($is[0]['i__type']==30350) {
-
-            $x__type = 31798; //Set Time
-
-            $time_starts = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $_POST['i__id'],
-                'x__following' => 42203, //Time Equal or Greater Than
-            ), array(), 1);
-            $time_ends = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $_POST['i__id'],
-                'x__following' => 26557, //Time Ends
-            ), array(), 1);
-
-            if(!strtotime($_POST['x_write'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Error: Please enter a valid time.',
-                ));
-            } elseif(count($time_starts) && strtotime($time_starts[0]['x__message'])<strtotime($_POST['x_write'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Error: Enter a date after '.$time_starts[0]['x__message'],
-                ));
-            } elseif(count($time_ends) && strtotime($time_ends[0]['x__message'])>strtotime($_POST['x_write'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Error: Enter a date before '.$time_ends[0]['x__message'],
-                ));
-            }
-
-        } elseif ($is[0]['i__type']==31794) {
-
-            $x__type = 31797; //Entered Number
-
-            $min_value = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $_POST['i__id'],
-                'x__following' => 31800, //Min Value
-            ), array(), 1);
-            $max_value = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $_POST['i__id'],
-                'x__following' => 31801, //Max Value
-            ), array(), 1);
-
-            if(!is_numeric($_POST['x_write'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Error: Please enter a valid number.',
-                ));
-            } elseif(count($min_value) && floatval($min_value[0]['x__message'])<floatval($_POST['x_write'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Error: Enter a number bigger than '.$min_value[0]['x__message'],
-                ));
-            } elseif(count($max_value) && floatval($max_value[0]['x__message'])>floatval($_POST['x_write'])){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Error: Enter a number smaller than '.$max_value[0]['x__message'],
-                ));
-            }
-
-        } elseif ($is[0]['i__type']==42915) {
-
-            $x__type = 31799; //Entered URL
-
-            if(!filter_var($_POST['x_write'], FILTER_VALIDATE_URL)){
-                return view_json(array(
-                    'status' => 0,
-                    'message' => 'Error: Please enter a valid URL.',
-                ));
-            }
-
-        } elseif ($is[0]['i__type']==6683) {
-
-            $x__type = 6144; //Text Replied
-
-        } else {
-
-            //Unknown type!
-            $this->X_model->create(array(
-                'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'x_write() Unknown text reply',
-                'x__metadata' => array(
-                    'post' => $_POST,
-                ),
-            ));
-            return false;
-
-        }
-
-
-        //Any Preg Match?
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $_POST['i__id'],
-            'x__following' => 26611, //Preg Match
-        )) as $preg_query){
-            if(!preg_match($preg_query['x__message'], $_POST['x_write'])) {
-
-                //Do we have a custom message:
-                $preg_query_message = $this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                    'x__next' => $_POST['i__id'],
-                    'x__following' => 30998, //Preg Match Error
-                ));
-
-                $error_message = ( count($preg_query_message) && strlen($preg_query_message[0]['x__message']) ? $preg_query_message[0]['x__message'] : 'Invalid Input, Please try again' );
-
-                //Log preg match failure
-                $this->X_model->create(array(
-                    'x__type' => 30998, //Preg Match Error Message
-                    'x__player' => $player_e['e__id'],
-                    'x__message' => $error_message,
-                    'x__previous' => $_POST['target_i__id'],
-                    'x__next' => $_POST['i__id'],
-                ));
-
-                //We have an error, let the user know:
-                return view_json(array(
-                    'status' => 0,
-                    'message' => $error_message,
-                ));
-
-            }
-        }
-
-
-        //Delete previous answer(s) if any:
-        foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__previous' => $is[0]['i__id'],
-            'x__player' => $player_e['e__id'],
-        )) as $x_progress){
-            $this->X_model->update($x_progress['x__id'], array(
-                'x__privacy' => 6173, //Transaction Removed
-            ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
-        }
-
-        //Save new answer:
-        $this->X_model->mark_complete($x__type, $player_e['e__id'], intval($_POST['target_i__id']), $is[0], array(), array(
-            'x__message' => $_POST['x_write'],
-        ));
-
-        //All good:
-        return view_json(array(
-            'status' => 1,
-            'message' => 'Saved & Next',
         ));
 
     }
