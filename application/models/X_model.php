@@ -178,7 +178,7 @@ class X_model extends CI_Model
             //Send to all Watchers:
             foreach($tr_watchers as $tr_watcher) {
                 //Do not inform the member who just took the action:
-                if($tr_watcher['e__id']!=$add_fields['x__player'] || 1){
+                if($tr_watcher['e__id']!=$add_fields['x__player']){
                     $this->X_model->send_dm($tr_watcher['e__id'], $subject, $html_message, array(
                         'x__reference' => $add_fields['x__id'], //Save transaction
                         'x__next' => $add_fields['x__next'],
@@ -837,13 +837,6 @@ class X_model extends CI_Model
 
     function send_i_mass_dm($list_of_e__id, $i, $x__website = 0, $ensure_undiscovered = true){
 
-        $children = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
-            'x__previous' => $i['i__id'],
-        ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
-
         $total_sent = 0;
         $x__website = ( $x__website>0 ? $x__website : ( isset($i['x__website']) ? $i['x__website'] : 0 ) );
         $subject_line = view_i_title($i, true);
@@ -880,7 +873,12 @@ class X_model extends CI_Model
 
             //Append children as options:
             $html_message = '';
-            foreach($children as $down_or){
+            foreach($this->X_model->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+                'x__previous' => $i['i__id'],
+            ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $down_or){
                 //Has this user discovered this idea or no?
                 $html_message .= '<div class="line">'.view_i_title($down_or, true).':</div>';
                 $html_message .= '<div class="line">'.'https://'.get_domain('m__message', $x['e__id'], $x__website).view_memory(42903,33286).$down_or['i__hashtag'].( i_startable($down_or) ? '/'.view_memory(6404,4235) : '' ).'?e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']).'</div>';
@@ -891,7 +889,7 @@ class X_model extends CI_Model
                 //We have direction to place the next step somewhere specific:
                 $content_message = str_replace('next_step', $html_message, $content_message);
             } else {
-                $content_message = $content_message;
+                $content_message = $content_message . $html_message;
             }
 
             $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message, array(
