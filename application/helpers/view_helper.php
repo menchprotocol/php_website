@@ -307,6 +307,8 @@ function e_view_body($x__type, $counter, $e__id, $js_request_uri){
     $limit = view_memory(6404,11064);
     $player_e = superpower_unlocked();
 
+    return '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">WOW</div>';
+
     //Check Permission:
     if(in_array($x__type, $CI->config->item('n___42376')) && !access_level_e(null, $e__id)){
         return '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
@@ -321,8 +323,6 @@ function e_view_body($x__type, $counter, $e__id, $js_request_uri){
         return false;
     }
     $ui = '';
-
-    return '<div class="row justify-content hideIfEmpty" id="list-in-'.$x__type.'">WOW</div>';
 
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
