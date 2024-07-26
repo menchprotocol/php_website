@@ -1567,7 +1567,7 @@ label {
 }
 .uploader_42359,
 .inputfile + label {
-    cursor: pointer; /* "hand" cursor */
+    cursor: pointer !important; /* "hand" cursor */
 }
 
 .inputfile:focus + label {
