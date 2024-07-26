@@ -608,7 +608,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
                'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-           ), array('x__follower'), 0, 0, array(), '*', '"x__id", "e__id"', 'count(x__follower) ='.count($list_config[43513]));
+           ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
 
        } else {
 
@@ -629,6 +629,22 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
                (in_array(intval($x['e__id']), $unique_users_count)) ||
 
+               //Include If Has ALL
+               (count($list_config[43513]) && count($CI->X_model->fetch(array(
+                       'x__follower' => $x['e__id'],
+                       'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
+                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                       'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                   )))<count($list_config[43513])) ||
+
+               //Include If Has ANY
+               (count($list_config[27984]) && !count($CI->X_model->fetch(array(
+                       'x__follower' => $x['e__id'],
+                       'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
+                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                       'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                   )))) ||
+
                //Exclude If Has ALL
                (count($list_config[26600]) && count($CI->X_model->fetch(array(
                        'x__follower' => $x['e__id'],
@@ -644,22 +660,6 @@ function list_settings($i__hashtag, $fetch_contact = false){
                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                    )))>0) ||
-
-               //Include If Has ANY
-               (count($list_config[27984]) && !count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                   )))) ||
-
-               //Include If Has ALL
-               (count($list_config[43513]) && count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                       'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                   )))<count($list_config[43513])) ||
 
                //If Not Discovered Any
                (count($list_config[40793]) && !count($CI->X_model->fetch(array(
