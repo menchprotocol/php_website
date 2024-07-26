@@ -519,9 +519,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     if($page_num > 0){
 
         $limit = view_memory(6404,11064);
-        print_r(array('$query_filters' => $query_filters, '$joins_objects' => $joins_objects, '$limit' => $limit, '$offset' => ($page_num-1)*$limit, '$order_columns' => $order_columns));
-        die('done');
-
+        //print_r(array('$query_filters' => $query_filters, '$joins_objects' => $joins_objects, '$limit' => $limit, '$offset' => ($page_num-1)*$limit, '$order_columns' => $order_columns)); die('done');
         $query = $CI->X_model->fetch($query_filters, $joins_objects, $limit, ($page_num-1)*$limit, $order_columns);
         return $query;
 
