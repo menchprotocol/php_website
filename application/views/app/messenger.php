@@ -36,7 +36,14 @@ foreach($this->X_model->fetch(array(
     }
 
     if(isset($_GET['test'])){
-        echo '<table>';
+        echo '<style> 
+ 
+ .testing_table{ border:1px solid #000; }
+ .testing_table td { padding:3px; }
+ .testing_table td img { max-width:89px; max-height:89px; }
+ 
+ </style>';
+        echo '<table class="testing_table">';
     }
 
     //Now let's see who will receive this:
