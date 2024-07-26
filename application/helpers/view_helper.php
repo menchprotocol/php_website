@@ -433,8 +433,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
      *
      * */
 
-    return array();
-
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
     $privacy_privacy = ( superpower_unlocked(12703) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
@@ -521,6 +519,9 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
     if($page_num > 0){
 
         $limit = view_memory(6404,11064);
+        print_r(array('$query_filters' => $query_filters, '$joins_objects' => $joins_objects, '$limit' => $limit, '$offset' => ($page_num-1)*$limit, '$order_columns' => $order_columns));
+        die('done');
+
         $query = $CI->X_model->fetch($query_filters, $joins_objects, $limit, ($page_num-1)*$limit, $order_columns);
         return $query;
 
