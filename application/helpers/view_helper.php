@@ -432,7 +432,8 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
      * Loads Source
      *
      * */
-    return 0;
+
+    return array();
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
