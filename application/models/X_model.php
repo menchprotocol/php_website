@@ -195,13 +195,13 @@ class X_model extends CI_Model
 
     }
 
-    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null)
+    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null, $having = null)
     {
 
         $this->db->select($select);
         $this->db->from('table__x');
 
-        //IDA JOIN?
+        //IDEA JOIN?
         if (in_array('x__previous', $joins_objects)) {
             $this->db->join('table__i', 'x__previous=i__id','left');
         } elseif (in_array('x__next', $joins_objects)) {
@@ -229,6 +229,10 @@ class X_model extends CI_Model
 
         if ($group_by) {
             $this->db->group_by($group_by);
+        }
+
+        if ($having) {
+            $this->db->having($having);
         }
 
         foreach($order_columns as $key => $value) {
