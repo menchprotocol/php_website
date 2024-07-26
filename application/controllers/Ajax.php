@@ -2287,7 +2287,7 @@ class Ajax extends CI_Controller
         if($valid_email) {
 
             //Email:
-            send_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $x__player, array(), 0, 0, false);
+            dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $x__player, array(), 0, 0, false);
 
 
             //Log new key:
@@ -2305,7 +2305,7 @@ class Ajax extends CI_Controller
         } elseif($possible_phone) {
 
             //SMS:
-            send_sms($_POST['account_email_phone'], $html_message, 0, array(), 0, 0, false);
+            dispatch_sms($_POST['account_email_phone'], $html_message, 0, array(), 0, 0, false);
 
             //Log new key:
             $this->X_model->create(array(
