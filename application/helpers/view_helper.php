@@ -520,9 +520,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
         $limit = view_memory(6404,11064);
         $query = $CI->X_model->fetch($query_filters, $joins_objects, $limit, ($page_num-1)*$limit, $order_columns);
-
-        echo $CI->db->last_query(); die('done');
-
         return $query;
 
     } else {
