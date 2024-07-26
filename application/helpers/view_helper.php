@@ -1491,7 +1491,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     $has_sortable = $x__id > 0 && !$focus__node && $access_level_i>=3 && in_array($x__type, $CI->config->item('n___4603')) && ($x__type!=42256 || $i['x__type']==34513);
-    $has_discovered = false;
+    $has_discovered = 0;
     if(!$is_cache && $x__player){
         $discoveries = $CI->X_model->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1502,7 +1502,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $has_discovered = count($discoveries);
     }
     if($has_discovered && $discovery_mode){
-        $i = array_merge($i, $discoveries[0]);
+        //$i = array_merge($i, $discoveries[0]);
     }
 
     if($has_discovered && !$target_i__hashtag){
