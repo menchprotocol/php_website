@@ -1565,6 +1565,7 @@ label {
 .is_locked{
     cursor: not-allowed;
 }
+.uploader_42359,
 .inputfile + label {
     cursor: pointer; /* "hand" cursor */
 }

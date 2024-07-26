@@ -92,8 +92,8 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
                         <div class="icons_small cover_history_content hidden section_subframe"></div>
 
                         <!-- Cover Demo -->
-                        <div class="section_demo">
-                            <div class="card_cover demo_cover uploader_42359">
+                        <div class="section_demo uploader_42359">
+                            <div class="card_cover demo_cover">
                                 <div class="cover-wrapper"><div class="black-background-obs cover-link" style=""><div class="cover-btn"></div></div></div>
                             </div>
                         </div>
