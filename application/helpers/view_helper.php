@@ -2515,7 +2515,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 $featured_sources .= view_single_select_instant(6177, $e['e__privacy'], $access_level_e, false, $e['e__id'], $x__id);
                 $featured_sources .= '</span>';
 
-            } elseif($x__type_target_bar==42795 && $x__player && $x__player!=$e['e__id'] && count($CI->X_model->fetch(array(
+            } elseif($x__type_target_bar==42795 && $player_e && $player_e['e__id']!=$e['e__id'] && count($CI->X_model->fetch(array(
                     'x__follower' => $e['e__id'],
                     'x__following' => 4430, //Active Member
                     'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
@@ -2525,14 +2525,14 @@ function view_card_e($x__type, $e, $extra_class = null)
                 //Allow to follow fellow players:
                 $followings = $CI->X_model->fetch(array(
                     'x__following' => $e['e__id'],
-                    'x__follower' => $x__player,
+                    'x__follower' => $player_e['e__id'],
                     'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
                     'x__type !=' => 10673,
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 ), array(), 1, 0, array('x__weight' => 'ASC'));
 
                 if(count($followings) || $access_level_e>=3){
-                    $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $x__player && $access_level_e>=3, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
+                    $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $player_e && $access_level_e>=3, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
                 }
 
             } elseif($x__type_target_bar==31912 && $access_level_e>=3){
@@ -2715,7 +2715,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                 if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
                     continue;
                 }
-                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$x__player){
+                if(in_array($e__id_bottom_bar, $CI->config->item('n___42376')) && !$player_e){
                     //Private content without being a member, so dont even show the counters:
                     continue;
                 }
