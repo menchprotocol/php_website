@@ -195,7 +195,7 @@ class X_model extends CI_Model
 
     }
 
-    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null, $having = null)
+    function fetch($query_filters = array(), $joins_objects = array(), $limit = 100, $limit_offset = 0, $order_columns = array('x__id' => 'DESC'), $select = '*', $group_by = null)
     {
 
         $this->db->select($select);
@@ -229,10 +229,6 @@ class X_model extends CI_Model
 
         if ($group_by) {
             $this->db->group_by($group_by);
-        }
-
-        if ($having) {
-            $this->db->having($having);
         }
 
         foreach($order_columns as $key => $value) {
