@@ -1556,7 +1556,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         )))){
         //Add required icon:
         //Before class used to be: .cache_frame_'.$i['i__id'].' .first_line
-        $ui .= '<script> $(document).ready(function () { setTimeout(function () { $(\'.nav__'.$i['i__id'].' .nav-item .active .xtypetitle\').append(\'<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).' asterisk" title="Required">*</span>\'); }, 611); }); }); </script>';
+        $ui .= '<script> $(document).ready(function () { setTimeout(function () { $(\'.nav__'.$i['i__id'].' .nav-item .active .xtypetitle\').append(\'<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).' asterisk" title="Required">*</span>\'); }, 611); }); </script>';
     }
 
     if($focus_i__or){
