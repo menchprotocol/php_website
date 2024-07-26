@@ -1035,6 +1035,10 @@ function view__hash($string){
 
 function view_i_title($i, $string_only = false){
 
+    if(!isset($i['i__message'])){
+        return null;
+    }
+
     //Break down by lines:
     foreach(explode("\n", $i['i__message']) as $line){
         if(strlen($line) && !filter_var($line, FILTER_VALIDATE_URL)){

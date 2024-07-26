@@ -74,6 +74,13 @@ class X_model extends CI_Model
             }
         }
 
+        //Cleanup Text Fields:
+        foreach(array('x__message', 'x__metadata') as $dz) {
+            if (isset($add_fields[$dz]) && strlen($add_fields[$dz])) {
+                $add_fields[$dz] = utf8_encode($add_fields[$dz]);
+            }
+        }
+
         //Lets log:
         $this->db->insert('table__x', $add_fields);
 
