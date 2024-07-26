@@ -41,7 +41,7 @@ foreach($this->X_model->fetch(array(
 
     //Now let's see who will receive this:
     $list_settings = list_settings($i['i__hashtag']);
-    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website']);
+    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true, isset($_GET['test']));
 
     if(isset($_GET['test'])){
         echo '</table>';
