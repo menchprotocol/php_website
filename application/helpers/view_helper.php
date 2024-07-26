@@ -1502,7 +1502,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         $has_discovered = count($discoveries);
     }
     if($has_discovered && $discovery_mode){
-        //$i = array_merge($i, $discoveries[0]);
+        $i = array_merge($i, $discoveries[0]);
     }
 
     if($has_discovered && !$target_i__hashtag){
