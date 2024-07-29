@@ -2,7 +2,7 @@
 
 $this->X_model->create(array(
     'x__type' => 4246, //Platform Bug Reports
-    'x__message' => 'test bug 66 i '.$i['i__id'],
+    'x__message' => 'test bug 66 i',
 ));
 
 foreach($this->X_model->fetch(array(
