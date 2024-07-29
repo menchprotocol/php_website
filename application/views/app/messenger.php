@@ -1,5 +1,10 @@
 <?php
 
+$this->X_model->create(array(
+    'x__type' => 4246, //Platform Bug Reports
+    'x__message' => 'test bug',
+));
+
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 33600, //Draft

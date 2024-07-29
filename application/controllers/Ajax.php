@@ -810,17 +810,17 @@ class Ajax extends CI_Controller
         //Authenticate Member:
         $player_e = superpower_unlocked(10939, 0, $this->player_e);
         if (!$player_e) {
-            view_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1) {
-            view_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid e__id',
             ));
         } elseif (!isset($_POST['new_x__weight']) || !is_array($_POST['new_x__weight']) || count($_POST['new_x__weight']) < 1) {
-            view_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
             ));
@@ -842,14 +842,14 @@ class Ajax extends CI_Controller
 
             if (count($es) < 1) {
 
-                view_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Invalid e__id',
                 ));
 
             } elseif($list_e_count[0]['totals'] > view_memory(6404,11064)){
 
-                view_json(array(
+                return view_json(array(
                     'status' => 0,
                     'message' => 'Cannot sort sources if greater than '.view_memory(6404,11064),
                 ));
@@ -864,7 +864,7 @@ class Ajax extends CI_Controller
                 }
 
                 //Display message:
-                view_json(array(
+                return view_json(array(
                     'status' => 1,
                 ));
 
@@ -2532,17 +2532,17 @@ class Ajax extends CI_Controller
         $player_e = superpower_unlocked(13422, 0, $this->player_e);
 
         if (!$player_e) {
-            view_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => view_unauthorized_message(13422),
             ));
         } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('n___28956'))) {
-            view_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid focus__node',
             ));
         } elseif (!isset($_POST['focus__id']) || intval($_POST['focus__id']) < 1) {
-            view_json(array(
+            return view_json(array(
                 'status' => 0,
                 'message' => 'Invalid focus__id',
             ));

@@ -1074,6 +1074,11 @@ function view_valid_handle_reverse_i($string, $check_db = false){
 
 
 function view_i__links($i, $replace_links = true, $focus__node = false){
+
+    if(!isset($i['i__id'])){
+        return null;
+    }
+
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
         view_i_media($i).

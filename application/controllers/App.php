@@ -153,6 +153,13 @@ class App extends CI_Controller
         $player_e = false;
         $player_http_request = ( isset($_SERVER['SERVER_NAME']) ? 1 : 0 );
 
+        if(!$player_http_request){
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__message' => 'test bug 2',
+            ));
+        }
+
         if($memory_detected && in_array($app_e__id, $this->config->item('n___42920'))){
             boost_power();
         }
