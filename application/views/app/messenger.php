@@ -6,6 +6,11 @@ foreach($this->X_model->fetch(array(
     'x__following' => 26582,
 ), array('x__next'), 0) as $i){
 
+    $this->X_model->create(array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__message' => 'test bugzzz i '.$i['i__id'],
+    ));
+
     //Determine if it's time to send this message:
     $time_starts = 0;
     foreach($this->X_model->fetch(array(
