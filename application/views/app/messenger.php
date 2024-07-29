@@ -2,14 +2,18 @@
 
 $this->X_model->create(array(
     'x__type' => 4246, //Platform Bug Reports
-    'x__message' => 'test bug 66 i',
+    'x__message' => 'test bug 6677 i '.print_r($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 33600, //Draft
+            'x__following' => 26582,
+        ), array('x__next')), true),
 ));
 
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 33600, //Draft
     'x__following' => 26582,
-), array('x__next'), 0) as $i){
+), array('x__next')) as $i){
 
     $this->X_model->create(array(
         'x__type' => 4246, //Platform Bug Reports
