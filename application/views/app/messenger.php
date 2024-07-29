@@ -1,5 +1,14 @@
 <?php
 
+$this->X_model->create(array(
+    'x__type' => 4246, //Platform Bug Reports
+    'x__message' => 'test bugzzz '.count($this->X_model->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 33600, //Draft
+            'x__following' => 26582,
+        ), array('x__next'), 0)),
+));
+
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 33600, //Draft
