@@ -726,7 +726,7 @@ class X_model extends CI_Model
         );
 
     }
-    function send_dm($e__id, $subject, $html_message, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $is_test = false)
+    function send_dm($e__id, $subject, $html_message, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true)
     {
 
         $sms_subscriber = false;
@@ -780,7 +780,7 @@ class X_model extends CI_Model
 
         if(count($stats['email_addresses']) > 0){
             //Send email:
-            dispatch_email($stats['email_addresses'], $subject, $html_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr, $is_test);
+            dispatch_email($stats['email_addresses'], $subject, $html_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr);
         }
 
 
@@ -807,7 +807,7 @@ class X_model extends CI_Model
 
                 foreach(explode('|||',wordwrap($sms_message, view_memory(6404,27891), "|||")) as $single_message){
 
-                    $sms_sent = dispatch_sms($e_data['x__message'], $single_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr, $is_test);
+                    $sms_sent = dispatch_sms($e_data['x__message'], $single_message, $e__id, $x_data, $template_i__id, $x__website, $log_tr);
 
                     if(!$sms_sent){
                         //bad number, remove it:
@@ -835,7 +835,7 @@ class X_model extends CI_Model
 
 
 
-    function send_i_mass_dm($list_of_e__id, $i, $x__website = 0, $ensure_undiscovered = true, $is_test = false){
+    function send_i_mass_dm($list_of_e__id, $i, $x__website = 0, $ensure_undiscovered = true){
 
         $total_sent = 0;
         $x__website = ( $x__website>0 ? $x__website : ( isset($i['x__website']) ? $i['x__website'] : 0 ) );
@@ -894,7 +894,7 @@ class X_model extends CI_Model
 
             $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message, array(
                 'x__previous' => $i['i__id'],
-            ), $i['i__id'], $x__website, true, $is_test);
+            ), $i['i__id'], $x__website, true);
 
             //Mark as discovered:
             if($send_dm['status']){

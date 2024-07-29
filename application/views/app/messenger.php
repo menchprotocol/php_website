@@ -35,24 +35,10 @@ foreach($this->X_model->fetch(array(
         break;
     }
 
-    if(isset($_GET['test'])){
-        echo '<style> 
- 
- .testing_table{ border:1px solid #000; }
- .testing_table td { padding:3px; }
- .testing_table td img { max-width:89px; max-height:89px; }
- 
- </style>';
-        echo '<table class="testing_table">';
-    }
-
     //Now let's see who will receive this:
     $list_settings = list_settings($i['i__hashtag']);
-    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true, isset($_GET['test']));
+    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true);
 
-    if(isset($_GET['test'])){
-        echo '</table>';
-    }
 
     echo view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members<hr />';
 

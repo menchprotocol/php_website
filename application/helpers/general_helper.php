@@ -1641,12 +1641,7 @@ function random_adjective(){
 
 
 
-function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $is_test = false){
-
-    if($is_test){
-        echo '<tr><td>@'.$e__id.'</td><td>'.$to_phone.'</td><td>'.$single_message.'</td></tr>';
-        return false;
-    }
+function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true){
 
     $CI =& get_instance();
     $twilio_account_sid = website_setting(30859);
@@ -1713,12 +1708,7 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
 
 }
 
-function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $is_test = false){
-
-    if($is_test){
-        echo '<tr><td>@'.$e__id.'</td><td>'.join($to_emails,', ').'</td><td>'.$subject.'<hr />'.$email_body.'</td></tr>';
-        return false;
-    }
+function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true){
 
     $CI =& get_instance();
     $domain_name = get_domain('m__title', $e__id, $x__website);
