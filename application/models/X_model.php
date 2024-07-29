@@ -243,7 +243,7 @@ class X_model extends CI_Model
 
 
         //Verify Access to each item:
-        if($select=='*'){
+        if($select=='*' && isset($_SERVER['SERVER_NAME'])){
             if(array_intersect(array('x__previous','x__next'), $joins_objects)){
                 //Idea results:
                 $player_e = superpower_unlocked();
@@ -263,7 +263,6 @@ class X_model extends CI_Model
         }
 
         return $results;
-
 
     }
 
