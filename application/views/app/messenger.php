@@ -1,14 +1,5 @@
 <?php
 
-$this->X_model->create(array(
-    'x__type' => 4246, //Platform Bug Reports
-    'x__message' => 'test bugzzz '.count($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 33600, //Draft
-            'x__following' => 26582,
-        ), array('x__next'), 0)),
-));
-
 foreach($this->X_model->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 33600, //Draft
@@ -48,6 +39,11 @@ foreach($this->X_model->fetch(array(
     $list_settings = list_settings($i['i__hashtag']);
     $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true);
 
+
+    $this->X_model->create(array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__message' => 'test bugzzz sent '.$total_sent.' ['.view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members.] '.print_r($list_settings, true),
+    ));
 
     echo view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members<hr />';
 
