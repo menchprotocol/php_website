@@ -2945,7 +2945,7 @@ function i_sort_load(x__type){
                 }
             });
         }
-    }, 987);
+    }, 1500);
 
 }
 
