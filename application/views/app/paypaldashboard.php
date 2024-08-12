@@ -44,6 +44,8 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
 
     //List all payment Ideas and their total earnings
     $x_updated = 0;
+    echo '<p>'.count($i_query).' results found:</p>';
+
     $sale_type_content = '';
     foreach($i_query as $i){
 
