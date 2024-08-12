@@ -84,7 +84,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
                 $x__metadata['mc_fee'] = $x__metadata2['mc_fee'] * -1;
             } elseif(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
                 $this_quantity = $x__metadata['quantity'];
-            } elseif($x2['x__weight']>=2){
+            } elseif(isset(v) && $x2['x__weight']>=2){
                 $this_quantity = $x2['x__weight'];
             }
 
