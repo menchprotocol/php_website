@@ -16,7 +16,7 @@ $all_e = array();
 
 
 
-if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
+if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handle'] || $_GET['e__handle']=='0'){
     
     echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
     foreach($this->E_model->fetch_recursive(11029, $player_e['e__id'], array(27004)) as $e){
