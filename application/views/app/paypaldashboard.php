@@ -36,7 +36,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
 
     $i_query = $this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
         'x__following' => $es[0]['e__id'],
     ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
