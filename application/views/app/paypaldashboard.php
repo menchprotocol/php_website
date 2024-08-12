@@ -27,7 +27,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle'])){
 
 
     //Show header:
-    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
+    echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$e___6287[27004]['m__title'].' @'.$_GET['e__handle'].'</b></a></div>';
 
     $es = $this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),

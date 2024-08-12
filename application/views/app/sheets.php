@@ -264,6 +264,9 @@ echo '</table>';
             var require_writing = parseInt($(this).attr('require_writing'));
             var written_answer = '';
             if(require_writing){
+
+                return e_editor_load(e__id = 0, x__id = 0, $(this).attr('title'), $('.x__player_' + $(this).attr('e__id') + '_' + $(this).attr('x__player')).text());
+
                 written_answer = prompt($(this).attr('title') + ":", $('.x__player_' + $(this).attr('e__id') + '_' + $(this).attr('x__player')).text());
                 if(written_answer == null){
                     return false;
