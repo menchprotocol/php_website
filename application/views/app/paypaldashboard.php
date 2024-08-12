@@ -69,7 +69,6 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
 
             //Source for quantity?
             unset($x__metadata2);
-            $x2 = array();
             if($x['x__reference']>0){
                 //This is a refund, fetch quantity from original transaction:
                 foreach($this->X_model->fetch(array(
@@ -85,7 +84,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
                 $x__metadata['mc_fee'] = $x__metadata2['mc_fee'] * -1;
             } elseif(isset($x__metadata['quantity']) && $x__metadata['quantity']>1){
                 $this_quantity = $x__metadata['quantity'];
-            } elseif(count($x2) && $x2['x__weight']>=2){
+            } elseif($x['x__reference']>0 && count($x2) && $x2['x__weight']>=2){
                 $this_quantity = $x2['x__weight'];
             }
 
