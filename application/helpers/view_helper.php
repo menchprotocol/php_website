@@ -1081,6 +1081,11 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
 
     //Append Custom Reference Link contents, if any:
     $CI =& get_instance();
+
+    if($replace_links){
+        $i['i__cache'] = str_replace('spanaa','a',$i['i__cache']);
+    }
+
     if($e__id>0){
         foreach($CI->X_model->fetch(array(
             'x__next' => $i['i__id'],
@@ -1105,16 +1110,13 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'LENGTH(x__message) > 0' => null,
             ), array(), 1) as $reference_profile){
-                $i['i__cache'] = str_replace('@'.$message_references['e__handle'], $message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
+                $i['i__cache'] = str_replace('>@'.$message_references['e__handle'], '>'.$message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
             }
         }
     }
-    
 
     return
-        ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
-        view_i_media($i).
-        ( $focus__node || !substr_count($i['i__cache'], 'show_more_line') ? view_list_e($i, !$replace_links) : '' );
+        $i['i__cache']. view_i_media($i). ( $focus__node || !substr_count($i['i__cache'], 'show_more_line') ? view_list_e($i, !$replace_links) : '' );
 }
 
 function idea_author($i__id){
