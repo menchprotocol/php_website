@@ -36,13 +36,14 @@ foreach($this->X_model->fetch(array(
     }
 
     //Now let's see who will receive this:
+    $demo_only = true;
     $list_settings = list_settings($i['i__hashtag']);
-    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true, true);
+    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true, $demo_only);
 
     echo view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members<hr />';
 
     //Mark this as complete?
-    if(!$end_sending || $end_sending<time()){
+    if(!$demo_only && (!$end_sending || $end_sending<time())){
         //Ready to be done:
         $this->X_model->update($i['x__id'], array(
             'x__type' => ( $total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */ ),
