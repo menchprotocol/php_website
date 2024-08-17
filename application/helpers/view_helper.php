@@ -1092,7 +1092,6 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
                 'x__follower' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
             ), array(), 0) as $reference_profile){
                 if(strlen($reference_profile['x__message'])){
                     //We found a reference with content that we should append here:
