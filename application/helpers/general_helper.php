@@ -1675,7 +1675,7 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
     );
 
     if($demo_only){
-        echo print_r($post, true);
+        echo print_r($post);
         return false;
     }
 
@@ -1820,7 +1820,7 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     );
 
     if($demo_only){
-        echo print_r($email_data, true);
+        echo print_r($email_data);
         return false;
     }
 
