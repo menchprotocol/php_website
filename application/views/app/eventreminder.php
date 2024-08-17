@@ -230,7 +230,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         $list_settings = list_settings($i['i__hashtag']);
         $subject_line = view_i_title($i, true);
 
-        foreach ($list_settings['query_string'] as $x) {
+        foreach ($list_settings['query_string_filtered'] as $x) {
 
             if (count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],

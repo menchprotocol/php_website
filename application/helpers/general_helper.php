@@ -582,11 +582,11 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
 
        //Generate filter:
-       $query_string = array();
+       $query_string_all = array();
        if(count($list_config[40791])){
 
            //If Discovered Any
-           $query_string = $CI->X_model->fetch(array(
+           $query_string_all = $CI->X_model->fetch(array(
                'x__previous IN (' . join(',', $list_config[40791]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -595,7 +595,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
        } elseif(count($list_config[27984])){
 
            //Include If Has ANY
-           $query_string = $CI->X_model->fetch(array(
+           $query_string_all = $CI->X_model->fetch(array(
                'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -604,7 +604,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
        } elseif(count($list_config[43513])){
 
            //Include If Has ALL
-           $query_string = $CI->X_model->fetch(array(
+           $query_string_all = $CI->X_model->fetch(array(
                'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -613,7 +613,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
        } else {
 
            //All Discoveries:
-           $query_string = $CI->X_model->fetch(array(
+           $query_string_all = $CI->X_model->fetch(array(
                'x__previous' => $i['i__id'],
                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -622,8 +622,9 @@ function list_settings($i__hashtag, $fetch_contact = false){
        }
 
        //Filter list:
+       $query_string_filtered = array();
        $unique_users_count = array();
-       foreach($query_string as $key => $x) {
+       foreach($query_string_all as $key => $x) {
 
            if(
 
@@ -663,7 +664,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
            ){
 
-               unset($query_string[$key]);
+               continue;
 
            } elseif(count($list_config[43513])){
                //Include If Has ALL
@@ -677,10 +678,12 @@ function list_settings($i__hashtag, $fetch_contact = false){
                    ))) ? 1 : 0 );
                }
                if($total_found_43513<count($list_config[43513])){
-                   unset($query_string[$key]);
+                   continue;
                }
            }
 
+           //Passed all filters:
+           array_push($query_string_filtered, $x);
            array_push($unique_users_count, intval($x['e__id']));
 
        }
@@ -712,7 +715,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
 
 
        if($fetch_contact){
-           foreach($query_string as $count => $x){
+           foreach($query_string_filtered as $count => $x){
 
                //Fetch email & phone:
                $fetch_names = $CI->X_model->fetch(array(
@@ -734,19 +737,18 @@ function list_settings($i__hashtag, $fetch_contact = false){
                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                ));
 
-               $query_string[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
-               $query_string[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
-               $query_string[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
+               $query_string_filtered[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
+               $query_string_filtered[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
+               $query_string_filtered[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
 
-               $contact_details['full_list'] .= $query_string[$count]['extension_name']."\t".$query_string[$count]['extension_email']."\t".$query_string[$count]['extension_phone']."\n";
+               $contact_details['full_list'] .= $query_string_filtered[$count]['extension_name']."\t".$query_string_filtered[$count]['extension_email']."\t".$query_string_filtered[$count]['extension_phone']."\n";
 
 
-
-               if($query_string[$count]['extension_email']){
+               if($query_string_filtered[$count]['extension_email']){
                    $contact_details['email_count']++;
-                   $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string[$count]['extension_email'];
+                   $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string_filtered[$count]['extension_email'];
                }
-               if($query_string[$count]['extension_phone']){
+               if($query_string_filtered[$count]['extension_phone']){
                    $contact_details['phone_count']++;
                }
            }
@@ -771,7 +773,7 @@ function list_settings($i__hashtag, $fetch_contact = false){
            'list_config' => $list_config,
            'column_e' => $column_e,
            'column_i' => $column_i,
-           'query_string' => $query_string,
+           'query_string_filtered' => $query_string_filtered,
            'contact_details' => $contact_details, //Optional addon
        );
     }
