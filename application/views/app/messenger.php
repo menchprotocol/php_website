@@ -37,7 +37,7 @@ foreach($this->X_model->fetch(array(
 
     //Now let's see who will receive this:
     $list_settings = list_settings($i['i__hashtag']);
-    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true);
+    $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string'], $i, $i['x__website'], true, true);
 
     echo view_i_title($i).' Sent '.$total_sent.' Messages to '.count($list_settings['query_string']).' Members<hr />';
 

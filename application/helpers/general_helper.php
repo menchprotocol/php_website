@@ -1641,7 +1641,7 @@ function random_adjective(){
 
 
 
-function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true){
+function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $demo_only = false){
 
     $CI =& get_instance();
     $twilio_account_sid = website_setting(30859);
@@ -1673,6 +1673,10 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
         'Body' => $single_message,
         'To' => $to_phone,
     );
+
+    if($demo_only){
+        return print_r($post, true);
+    }
 
     $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$twilio_account_sid."/Messages.json");
     curl_setopt($x, CURLOPT_POST, true);
@@ -1708,7 +1712,7 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
 
 }
 
-function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true){
+function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $demo_only = false){
 
     $CI =& get_instance();
     $domain_name = get_domain('m__title', $e__id, $x__website);
@@ -1779,17 +1783,7 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     $email_message = str_replace("\n",'<div style="padding:3px 0 0; line-height:100%;">&nbsp;</div>', $email_message);
     $email_message = str_replace('href="/','href="'.$base_domain.'/', $email_message);
 
-    //Loadup amazon SES:
-    require_once('application/libraries/aws/aws-autoloader.php');
-
-    $client = new Aws\Ses\SesClient([
-        //'profile' => 'default',
-        'version' => 'latest',
-        'region' => 'us-west-2',
-        'credentials' => $CI->config->item('cred_aws'),
-    ]);
-
-    $response = $client->sendEmail(array(
+    $email_data = array(
         // Source is required
         'Source' => $email_domain,
         // Destination is required
@@ -1822,7 +1816,23 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
         ),
         'ReplyToAddresses' => $ReplyToAddresses,
         'ReturnPath' => $email_domain,
-    ));
+    );
+
+    if($demo_only){
+        return print_r($email_data, true);
+    }
+
+    //Loadup amazon SES:
+    require_once('application/libraries/aws/aws-autoloader.php');
+
+    $client = new Aws\Ses\SesClient([
+        //'profile' => 'default',
+        'version' => 'latest',
+        'region' => 'us-west-2',
+        'credentials' => $CI->config->item('cred_aws'),
+    ]);
+
+    $response = $client->sendEmail();
 
     //Log transaction:
     if($log_tr){
