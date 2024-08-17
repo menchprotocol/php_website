@@ -1675,7 +1675,8 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
     );
 
     if($demo_only){
-        return print_r($post, true);
+        echo print_r($post, true);
+        return false;
     }
 
     $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$twilio_account_sid."/Messages.json");
@@ -1819,7 +1820,8 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     );
 
     if($demo_only){
-        return print_r($email_data, true);
+        echo print_r($email_data, true);
+        return false;
     }
 
     //Loadup amazon SES:
