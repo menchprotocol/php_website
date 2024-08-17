@@ -1836,7 +1836,7 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
         'credentials' => $CI->config->item('cred_aws'),
     ]);
 
-    $response = $client->sendEmail();
+    $response = $client->sendEmail($email_data);
 
     //Log transaction:
     if($log_tr){
