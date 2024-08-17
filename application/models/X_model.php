@@ -896,12 +896,8 @@ class X_model extends CI_Model
                 'x__previous' => $i['i__id'],
             ), $i['i__id'], $x__website, true, $demo_only);
 
-            if($demo_only){
-                print_r();
-            }
-
             //Mark as discovered:
-            if($send_dm['status']){
+            if($send_dm['status'] && !$demo_only){
                 $this->X_model->mark_complete(43142, $x['e__id'], 0, $i);
                 $total_sent ++;
             }
