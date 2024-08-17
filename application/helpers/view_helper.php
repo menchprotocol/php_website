@@ -1087,16 +1087,20 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
             'x__type' => 31835, //References
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__follower'), 0) as $message_references){
+
+            $i['i__cache'] .= '[['.$message_references['e__title'].']]';
+
             foreach($CI->X_model->fetch(array(
-                'x__follower' => $message_references['e__id'],
-                'x__following' => $e__id,
+                'x__follower' => $e__id,
+                'x__following' => $message_references['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 0) as $reference_profile){
                 if(strlen($reference_profile['x__message'])){
                     //We found a reference with content that we should append here:
-                    $i['i__cache'] = str_replace('@'.$message_references['e__handle'],'@'.$message_references['e__handle'].' ['.$message_references['e__title'].': '.$reference_profile['x__message'].']',$i['i__cache']);
-                    break;
+                    //$i['i__cache'] = str_replace('@'.$message_references['e__handle'],'@'.$message_references['e__handle'].' ['.$message_references['e__title'].': '.$reference_profile['x__message'].']',$i['i__cache']);
+                    $i['i__cache'] .= $message_references['e__title'].': '.$reference_profile['x__message'];
+                    //break;
                 }
             }
         }
