@@ -36,7 +36,7 @@ foreach($this->X_model->fetch(array(
     }
 
     //Now let's see who will receive this:
-    $demo_only = true;
+    $demo_only = false;
     $list_settings = list_settings($i['i__hashtag']);
     $total_sent = $this->X_model->send_i_mass_dm($list_settings['query_string_filtered'], $i, $i['x__website'], true, $demo_only);
 
