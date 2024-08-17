@@ -1088,8 +1088,8 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__follower'), 0) as $message_references){
             foreach($CI->X_model->fetch(array(
-                'x__following' => $message_references['e__id'],
-                'x__follower' => $e__id,
+                'x__follower' => $message_references['e__id'],
+                'x__following' => $e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             ), array(), 0) as $reference_profile){
