@@ -1084,9 +1084,20 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
     if($e__id>0){
         foreach($CI->X_model->fetch(array(
             'x__next' => $i['i__id'],
+            'x__following > 0' => null,
             'x__type' => 31835, //References
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__following'), 0) as $message_references){
+            if(!substr_count($i['i__cache'], '@'.$message_references['e__handle'])){
+                //Strange!
+                $CI->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__following' => $e__id,
+                    'x__next' => $i['i__id'],
+                    'x__message' => 'view_i__links() Missing referenced source from message content @'.$message_references['e__handle'],
+                ));
+                continue;
+            }
             foreach($CI->X_model->fetch(array(
                 'x__follower' => $e__id,
                 'x__following' => $message_references['e__id'],
@@ -1094,7 +1105,7 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'LENGTH(x__message) > 0' => null,
             ), array(), 1) as $reference_profile){
-                $i['i__cache'] = str_replace('@'.$message_references['e__handle'], $message_references['x__id'].'/'.$message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
+                $i['i__cache'] = str_replace('@'.$message_references['e__handle'], $reference_profile['x__id'].'/'.$message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
             }
         }
     }
