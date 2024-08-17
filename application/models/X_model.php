@@ -839,8 +839,32 @@ class X_model extends CI_Model
         $total_sent = 0;
         $x__website = ( $x__website>0 ? $x__website : ( isset($i['x__website']) ? $i['x__website'] : 0 ) );
         $subject_line = view_i_title($i, true);
+        $wacth_repeat_handles = array();
 
-        foreach($list_of_e__id as $x) {
+        foreach($list_of_e__id as $count => $x) {
+
+            if(in_array($x['e__handle'], $wacth_repeat_handles)){
+                //This should not happen! Report bug:
+                $this->X_model->create(array(
+                    'x__type' => 4246, //Platform Bug Reports
+                    'x__message' => 'send_i_mass_dm() Detected duplicate Source Handle Bug: '.$x['e__handle'],
+                    'x__metadata' => array(
+                        'list_of_e__id' => $list_of_e__id,
+                        'i' => $i,
+                        'x__website' => $x__website,
+                        'ensure_undiscovered' => $ensure_undiscovered,
+                        'demo_only' => $demo_only,
+                        'count' => $count,
+                        'x' => $x,
+                        'subject_line' => $subject_line,
+                    ),
+                ));
+                break; //Stop sending more messages!
+            }
+
+            //Map this handle:
+            array_push($wacth_repeat_handles, $x['e__handle']);
+
 
             if(!isset($x['e__id'])){
                 //Invalid input for sending:
