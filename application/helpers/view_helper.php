@@ -1105,7 +1105,7 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'LENGTH(x__message) > 0' => null,
             ), array(), 1) as $reference_profile){
-                $i['i__cache'] = str_replace('@'.$message_references['e__handle'], $reference_profile['x__id'].'/'.$message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
+                $i['i__cache'] = str_replace('@'.$message_references['e__handle'], $message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
             }
         }
     }
