@@ -26,7 +26,7 @@ $count_totals = array(
 $list_settings = list_settings($_GET['i__hashtag']);
 
 echo '<h1>' . view_i_title($list_settings['i']) . '</h1>';
-echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_i__links($list_settings['i']) . '</div>';
+echo '<div class="center-frame hide-subline maxwidth hideIfEmpty remove_first_line">' . view_i__links($list_settings['i'], ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 )) . '</div>';
 
 foreach($list_settings['query_string'] as $x){
 

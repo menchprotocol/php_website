@@ -1073,11 +1073,36 @@ function view_valid_handle_reverse_i($string, $check_db = false){
 }
 
 
-function view_i__links($i, $replace_links = true, $focus__node = false){
+function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = false){
 
     if(!isset($i['i__id'])){
         return null;
     }
+
+    //Append Custom Reference Link contents, if any:
+    $CI =& get_instance();
+    if($e__id>0){
+        foreach($CI->X_model->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 31835, //References
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array('x__follower'), 0) as $message_references){
+            foreach($CI->X_model->fetch(array(
+                'x__following' => $message_references['e__id'],
+                'x__follower' => $e__id,
+                'x__type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+            ), array(), 0) as $reference_profile){
+                if(strlen($reference_profile['x__message'])){
+                    //We found a reference with content that we should append here:
+                    $i['i__cache'] = str_replace('@'.$message_references['e__handle'],'@'.$message_references['e__handle'].' ['.$message_references['e__title'].': '.$reference_profile['x__message'].']',$i['i__cache']);
+                    break;
+                }
+            }
+        }
+    }
+    
 
     return
         ( $replace_links ? str_replace('spanaa','a',$i['i__cache']) : $i['i__cache'] ).
@@ -1521,8 +1546,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             'x__player' => $x__player,
             'x__previous' => $i['i__id'],
             'x__next > 0' => null,
-        ), array('x__next')) as $this_dis){
-            $target_i__hashtag = $this_dis['i__hashtag'];
+        ), array('x__next')) as $CI_dis){
+            $target_i__hashtag = $CI_dis['i__hashtag'];
         }
     }
 
@@ -1627,9 +1652,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $ui .= '</div>';
 
 
-
     //Idea Message (Remaining)
-    $ui .= '<div class="ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, ($focus__node || 1), $focus__node).'</div>';
+    $ui .= '<div class="ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view_i__links($i, $x__player, ($focus__node || 1), $focus__node).'</div>';
 
 
     //Raw Data:

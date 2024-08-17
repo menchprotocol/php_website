@@ -839,11 +839,6 @@ class X_model extends CI_Model
         $total_sent = 0;
         $x__website = ( $x__website>0 ? $x__website : ( isset($i['x__website']) ? $i['x__website'] : 0 ) );
         $subject_line = view_i_title($i, true);
-        $content_message = view_i__links($i, true); //Hide the show more content if any
-        if(!(substr($subject_line, 0, 1)=='#' && !substr_count($subject_line, ' '))){
-            //Let's remove the first line since it's used in the title:
-            $content_message = delete_all_between('<div class="line first_line">','</div>', $content_message);
-        }
 
         foreach($list_of_e__id as $x) {
 
@@ -862,12 +857,18 @@ class X_model extends CI_Model
             } elseif($ensure_undiscovered && count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
-
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 //Already discovered:
                 continue;
+            }
+
+
+            $content_message = view_i__links($i, $x['e__id'], true); //Hide the show more content if any
+            if(!(substr($subject_line, 0, 1)=='#' && !substr_count($subject_line, ' '))){
+                //Let's remove the first line since it's used in the title:
+                $content_message = delete_all_between('<div class="line first_line">','</div>', $content_message);
             }
 
             //Append children as options:

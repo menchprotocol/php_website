@@ -578,7 +578,7 @@ class Ajax extends CI_Controller
         return view_json(array(
             'status' => 1,
             'return_i__cache' => $view_sync_links['i__cache'],
-            'return_i__cache_links' => view_i__links($is[0], $focus__node, $focus__node),
+            'return_i__cache_links' => view_i__links($is[0], $player_e['e__id'], $focus__node, $focus__node),
             'return_i__cache_full' => view_card_i($_POST['focus_x__group'], $is[0]),
             'redirect_idea' => ( isset($is[0]['i__hashtag']) ? view_memory(42903,33286).$is[0]['i__hashtag'] : null ),
             'message' => $media_stats['total_current'].' current & '.$media_stats['total_submitted'].' submitted media: '.$media_stats['total_submitted'].' Created, '.$media_stats['adjust_updated'].' Updated & '.$media_stats['adjust_removed'].' Removed while detected '.$media_stats['adjust_duplicated'].' duplicate uploads. '.$view_sync_links['sync_stats']['old_links_removed'].' old links removed, '.$view_sync_links['sync_stats']['old_links_kept'].' old links kept, '.$view_sync_links['sync_stats']['new_links_added'].' new links added.',

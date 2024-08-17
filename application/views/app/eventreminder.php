@@ -229,44 +229,48 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         $total_sent = 0;
         $list_settings = list_settings($i['i__hashtag']);
         $subject_line = view_i_title($i, true);
-        $content_message = view_i__links($i);
-        if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
-            //Let's remove the first line since it's used in the title:
-            $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);
-        }
 
         foreach ($list_settings['query_string'] as $x) {
 
-            //Send to everyone who has not received an email yet:
-            if (!count($this->X_model->fetch(array(
+            if (count($this->X_model->fetch(array(
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))) {
+                //Skip since they already discovered this idea:
+                continue;
+            }
 
-                //Append children as options:
-                $html_message = '';
-                foreach ($children as $down_or) {
+            $content_message = view_i__links($i, $x['e__id']);
+            if (!(substr($subject_line, 0, 1) == '#' && !substr_count($subject_line, ' '))) {
+                //Let's remove the first line since it's used in the title:
+                $content_message = delete_all_between('<div class="line first_line">', '</div>', $content_message);
+            }
 
-                    $discoveries = $this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                        'x__player' => $x['e__id'],
-                        'x__previous' => $down_or['i__id'],
-                    ));
-                    //Has this user discovered this idea or no?
-                    $html_message .= view_i_title($down_or, true) . ":\n";
-                    $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . view_memory(42903,33286) . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view__hash(time().$x['e__handle']) : '') . "\n\n";
 
-                }
+            //Append children as options:
+            $html_message = '';
+            foreach ($children as $down_or) {
 
-                $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message . "\n" . trim($html_message), array(
-                    'x__previous' => $i['i__id'],
-                ), $i['i__id'], $i['x__website'], true);
-                $total_sent += ($send_dm['status'] ? 1 : 0);
+                $discoveries = $this->X_model->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__player' => $x['e__id'],
+                    'x__previous' => $down_or['i__id'],
+                ));
+                //Has this user discovered this idea or no?
+                $html_message .= view_i_title($down_or, true) . ":\n";
+                $html_message .= 'https://' . get_domain('m__message', $x['e__id'], $i['x__website']) . view_memory(42903,33286) . $down_or['i__hashtag'] . (!count($discoveries) ? '?e__handle=' . $x['e__handle'] . '&e__time='.time().'&e__hash=' . view__hash(time().$x['e__handle']) : '') . "\n\n";
 
             }
+
+            $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message . "\n" . trim($html_message), array(
+                'x__previous' => $i['i__id'],
+            ), $i['i__id'], $i['x__website'], true);
+            $total_sent += ($send_dm['status'] ? 1 : 0);
+
+
         }
 
         //Mark this as complete?
