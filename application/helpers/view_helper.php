@@ -1093,7 +1093,7 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
             'x__type' => 31835, //References
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__following'), 0) as $message_references){
-            if(!substr_count($i['i__cache'], '@'.$message_references['e__handle'])){
+            if(!substr_count(strtolower($i['i__cache']), '>@'.strtolower($message_references['e__handle']))){
                 //Strange!
                 $CI->X_model->create(array(
                     'x__type' => 4246, //Platform Bug Reports
@@ -1110,7 +1110,7 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
                 'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                 'LENGTH(x__message) > 0' => null,
             ), array(), 1) as $reference_profile){
-                $i['i__cache'] = str_replace('>@'.$message_references['e__handle'], '>'.$message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
+                $i['i__cache'] = str_ireplace('>@'.$message_references['e__handle'], '>'.$message_references['e__title'].': '.$reference_profile['x__message'], $i['i__cache']);
             }
         }
     }
