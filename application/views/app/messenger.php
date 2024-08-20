@@ -12,7 +12,7 @@ foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
-        'x__following' => 26556, //Time Starts
+        'x__following' => 43743, //Sending Starts
     )) as $time){
         $time_starts = strtotime($time['x__message']);
         break;
@@ -29,7 +29,7 @@ foreach($this->X_model->fetch(array(
         'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
-        'x__following' => 26557, //Time Ends
+        'x__following' => 43744, //Sending Ends
     )) as $time){
         $end_sending = strtotime($time['x__message']);
         break;
