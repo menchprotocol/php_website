@@ -1113,7 +1113,7 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
                 if(strlen($reference_profile['x__message'])){
 
                     if(filter_var($reference_profile['x__message'], FILTER_VALIDATE_URL)){
-                        $i['i__cache'] = str_ireplace('@'.$message_references['e__handle'].'</a>', '@'.$message_references['e__handle'].'</a>'.'<br /><br />'.$reference_profile['x__message'], $i['i__cache']);
+                        $i['i__cache'] = str_ireplace('@'.$message_references['e__handle'].'</a>','</a>'.$reference_profile['x__message'], $i['i__cache']);
 
                     } else {
                         $i['i__cache'] = str_ireplace('@'.$message_references['e__handle'], ( filter_var($reference_profile['x__message'], FILTER_VALIDATE_URL) ? '' : '@'.$message_references['e__handle'].' ' ).$reference_profile['x__message'], $i['i__cache']);
