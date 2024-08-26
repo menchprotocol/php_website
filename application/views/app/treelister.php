@@ -30,12 +30,14 @@ foreach($this->X_model->fetch(array(
     echo '<div class="this_frame">';
     echo '<h3 style="margin-top: 55px;"><a href="'.view_memory(42903,33286).$link_i['i__hashtag'].'">'.view_i_title($link_i).'</a></h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
-    foreach($sub_list_settings['query_string_filtered'] as $x){
-        echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+    echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
+    foreach($sub_list_settings['query_string_filtered'] as $count => $x){
         echo '<td><div class="this_name">'.$x['extension_name'].'</div></td>';
-        echo '<td>&nbsp;</td>';
-        echo '</tr>';
+        if(!fmod($count,3)){
+            echo '</tr><tr class="panel-title down-border" style="font-weight:bold !important;">';
+        }
     }
+    echo '</tr>';
     echo '</table>';
     echo '</div>';
 
