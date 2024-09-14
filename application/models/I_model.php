@@ -410,7 +410,7 @@ class I_model extends CI_Model
     function i_link($i, $x__type, $next_i, $x__player){
 
         //Links ideas with the causality link ensuring not a duplicate:
-        if($x__type==4228 && count($this->X_model->find_previous(0, $next_i['i__hashtag'], $i['i__id']))){
+        if(0 && $x__type==4228 && count($this->X_model->find_previous(0, $next_i['i__hashtag'], $i['i__id']))){
             return array(
                 'status' => 0,
                 'message' => 'Idea already added in the inverse direction, so it cannot be added here',
