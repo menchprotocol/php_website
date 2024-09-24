@@ -1627,7 +1627,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 
 .icon-block-sm, .icon-block-sm .icon-block{ width:25px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 1.1em !important; }
 
-.icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 0.89em !important; }
+.icon-block-xs, .icon-block-xs .icon-block-sm, .icon-block-xs .icon-block { width:21px !important; display: inline-block; text-align: center; overflow: visible; line-height: 121% !important; font-weight: bold; font-size: 0.80em !important; }
 
 .dropdown-item .icon-block,
 .btn .dropdown-item .icon-block {
@@ -1686,7 +1686,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 .popover-body .icon-block-xs{
     width:16px !important;
     height:16px !important;
-    font-size: 0.89em !important;
+    font-size: 0.80em !important;
 }
 
 .popover-body .dropdown .icon-block-xs{
@@ -2551,7 +2551,7 @@ input.form-control {
 }
 
 .cover-content .i_cache{
-    font-size: 0.89em !important;
+    font-size: 0.80em !important;
 }
 .focus-cover .cover-content .i_cache{
     font-size: 1.44em !important;
@@ -3217,7 +3217,7 @@ h4.main__title{
 }
 .asterisk{
     color:#FF0000;
-    font-size: 0.89em;
+    font-size: 0.80em;
 }
 
 
@@ -4450,7 +4450,7 @@ main {
 
 .fa_search{
     margin-top: -21px;
-    font-size: 0.89em !important;
+    font-size: 0.80em !important;
     float: right;
     width: 34px;
 }
