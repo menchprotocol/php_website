@@ -1774,7 +1774,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     height: 24px !important;
 }
 
-.inner-content .center .main__title { font-size: 1.55em !important; }
+.inner-content .center .main__title { font-size: 1.44em !important; }
 .focus-cover .inner-content .center .main__title { font-size: 2.1em !important; }
 
 .inner-content .center .main__title {
@@ -2554,7 +2554,7 @@ input.form-control {
     font-size: 0.89em !important;
 }
 .focus-cover .cover-content .i_cache{
-    font-size: 1.55em !important;
+    font-size: 1.44em !important;
 }
 
 .doright{
@@ -3268,7 +3268,7 @@ h4.main__title{
     }
 
     .i_cache .first_line{
-        font-size: 1.55em;
+        font-size: 1.44em;
     }
 
     .info-td{
