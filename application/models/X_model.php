@@ -210,13 +210,13 @@ class X_model extends CI_Model
 
         //SOURCE JOIN?
         if (in_array('x__following', $joins_objects)) {
-            $this->db->join('table__e', 'x__following=e__id','left');
+            $this->db->join('cache_sources', 'x__following=e__id','left');
         } elseif (in_array('x__follower', $joins_objects)) {
-            $this->db->join('table__e', 'x__follower=e__id','left');
+            $this->db->join('cache_sources', 'x__follower=e__id','left');
         } elseif (in_array('x__type', $joins_objects)) {
-            $this->db->join('table__e', 'x__type=e__id','left');
+            $this->db->join('cache_sources', 'x__type=e__id','left');
         } elseif (in_array('x__player', $joins_objects)) {
-            $this->db->join('table__e', 'x__player=e__id','left');
+            $this->db->join('cache_sources', 'x__player=e__id','left');
         }
 
         foreach($query_filters as $key => $value) {
