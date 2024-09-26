@@ -203,9 +203,9 @@ class X_model extends CI_Model
 
         //IDEA JOIN?
         if (in_array('x__previous', $joins_objects)) {
-            $this->db->join('table__i', 'x__previous=i__id','left');
+            $this->db->join('cache_ideas', 'x__previous=i__id','left');
         } elseif (in_array('x__next', $joins_objects)) {
-            $this->db->join('table__i', 'x__next=i__id','left');
+            $this->db->join('cache_ideas', 'x__next=i__id','left');
         }
 
         //SOURCE JOIN?
