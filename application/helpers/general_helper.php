@@ -2357,9 +2357,11 @@ function update_algolia($focus__node = null, $s__id = 0) {
             //Attempt to fetch Algolia object ID from object Metadata:
             if($focus__node){
 
-                if (intval($s['algolia__id']) > 0) {
+                $external_name = ( $focus__node==12273 ? 'i__external' : 'e__external' );
+
+                if (intval($s[$external_name]) > 0) {
                     //We found it! Let's just update existing algolia record
-                    $export_row['objectID'] = intval($s['algolia__id']);
+                    $export_row['objectID'] = intval($s[$external_name]);
                 }
 
             } else {
@@ -2367,11 +2369,11 @@ function update_algolia($focus__node = null, $s__id = 0) {
                 //Clear possible metadata algolia ID's that have been cached:
                 if ($loop_obj==12273) {
                     $CI->I_model->update($s['i__id'], array(
-                        'algolia__id' => null,
+                        'i__external' => null,
                     ));
                 } elseif ($loop_obj==12274) {
                     $CI->E_model->update($s['e__id'], array(
-                        'algolia__id' => null,
+                        'e__external' => null,
                     ));
                 }
 
@@ -2544,11 +2546,11 @@ function update_algolia($focus__node = null, $s__id = 0) {
                     foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
                         if ($focus__node==12273) {
                             $CI->I_model->update($all_db_rows[$key][$focus_field_id], array(
-                                'algolia__id' => $algolia_id,
+                                'i__external' => $algolia_id,
                             ));
                         } elseif ($focus__node==12274) {
                             $CI->E_model->update($all_db_rows[$key][$focus_field_id], array(
-                                'algolia__id' => $algolia_id,
+                                'e__external' => $algolia_id,
                             ));
                         }
                     }
@@ -2583,11 +2585,11 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
                 if (isset($all_db_rows[$key]['i__id'])) {
                     $CI->I_model->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
-                        'algolia__id' => intval($algolia_id),
+                        'i__external' => intval($algolia_id),
                     ));
                 } else {
                     $CI->E_model->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
-                        'algolia__id' => intval($algolia_id),
+                        'e__external' => intval($algolia_id),
                     ));
                 }
 
