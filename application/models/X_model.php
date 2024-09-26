@@ -77,7 +77,7 @@ class X_model extends CI_Model
         }
 
         //Lets log:
-        $this->db->insert('table__x', $add_fields);
+        $this->db->insert('mench_ledger', $add_fields);
 
 
         //Fetch inserted id:
@@ -199,7 +199,7 @@ class X_model extends CI_Model
     {
 
         $this->db->select($select);
-        $this->db->from('table__x');
+        $this->db->from('mench_ledger');
 
         //IDEA JOIN?
         if (in_array('x__previous', $joins_objects)) {
@@ -310,7 +310,7 @@ class X_model extends CI_Model
 
         //Update:
         $this->db->where('x__id', $id);
-        $this->db->update('table__x', $update_columns);
+        $this->db->update('mench_ledger', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Log changes if successful:

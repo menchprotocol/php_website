@@ -82,7 +82,7 @@ if(!$is_good){
         //No need to log this for now since we get errors for when invoices are paid or refunded, etc...
         $this->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'Invalid item number',
+            'x__message' => 'Unrecognized item number',
             'x__metadata' => array(
                 'new_x' => $completion_status['new_x'],
                 'post' => $_POST,
@@ -90,6 +90,4 @@ if(!$is_good){
         ));
     }
 }
-
-
 
