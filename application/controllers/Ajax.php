@@ -84,6 +84,7 @@ class Ajax extends CI_Controller
                 ));
             }
 
+
             $i__id = intval($is[0]['i__id']);
             if(!$i__type){
                 $i__type = intval($is[0]['i__type']);
