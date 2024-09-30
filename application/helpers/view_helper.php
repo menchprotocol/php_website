@@ -1802,7 +1802,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__player)) + doubleval(website_setting(27017, $x__player)))/100 ), 2, ".", "");
 
                     //Append information to cart about Paypal:
-                    $info_append .= '<div class="sub_note">For Your Information: No need to create a Paypal account as you can pay simply checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.</div>';
+                    $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.</div>';
 
                 }
 
