@@ -1801,19 +1801,8 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $unit_price = doubleval($total_dues[0]['x__message']);
                     $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__player)) + doubleval(website_setting(27017, $x__player)))/100 ), 2, ".", "");
 
-                    //Append information to cart:
-                    $info_append .= '<div class="sub_note">';
-                    if(!count($CI->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                        'x__next' => $i['i__id'],
-                        'x__following' => 30615, //Is Refundable
-                    )))){
-                        $info_append .= 'Final sale. ';
-                    }
-
-                    $info_append .= 'No need to create a Paypal account: You can pay by only entering your credit card details to checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.';
-                    $info_append .= '</div>';
+                    //Append information to cart about Paypal:
+                    $info_append .= '<div class="sub_note">For Your Information: No need to create a Paypal account as you can pay simply checkout as a guest. Once paid, click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view_app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.</div>';
 
                 }
 
