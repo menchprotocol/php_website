@@ -4,7 +4,7 @@
 
 
 //Do a query to detect Ideas with the exact same title:
-$q = $this->db->query('select in1.* from cache_ideas in1 where (select count(*) from cache_ideas in2 where in2.i__message = in1.i__message AND in2.i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')) > 1 AND in1.i__privacy IN (' . join(',', $this->config->item('n___31871')) . ') ORDER BY in1.i__message ASC');
+$q = $this->db->query('select in1.* from mench_ideas in1 where (select count(*) from mench_ideas in2 where in2.i__message = in1.i__message AND in2.i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')) > 1 AND in1.i__privacy IN (' . join(',', $this->config->item('n___31871')) . ') ORDER BY in1.i__message ASC');
 $duplicates = $q->result_array();
 
 if(count($duplicates) > 0){

@@ -2209,20 +2209,6 @@ function flag_for_search_indexing($focus__node = null, $s__id = 0) {
     //Update live for now:
     return update_algolia($focus__node, $s__id);
 
-    /*
-    if($focus__node==12273){
-        //Update idea flag
-        $CI->I_model->update($s__id, array(
-            'i__flag' => true,
-        ));
-    } elseif($focus__node==12274){
-        //Update idea flag
-        $CI->E_model->update($s__id, array(
-            'e__flag' => true,
-        ));
-    }
-    */
-
 }
 
 function search_enabled(){

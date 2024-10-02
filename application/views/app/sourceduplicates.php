@@ -37,7 +37,7 @@ if(isset($_GET['e__handle'])){
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from cache_sources en1 where (select count(*) from cache_sources en2 where en2.e__title = en1.e__title AND en2.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
+    $q = $this->db->query('select en1.* from mench_sources en1 where (select count(*) from mench_sources en2 where en2.e__title = en1.e__title AND en2.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){
