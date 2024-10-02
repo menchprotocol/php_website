@@ -29,7 +29,7 @@ class I_model extends CI_Model
         }
 
         //Lets now add:
-        $this->db->insert('mench_ideas', $add_fields);
+        $this->db->insert('cache_ideas', $add_fields);
 
         //Fetch inserted id:
         if (!isset($add_fields['i__id'])) {
@@ -121,7 +121,7 @@ class I_model extends CI_Model
 
         //The basic fetcher for Ideas
         $this->db->select($select);
-        $this->db->from('mench_ideas');
+        $this->db->from('cache_ideas');
 
         foreach($query_filters as $key => $value) {
             $this->db->where($key, $value);
@@ -172,7 +172,7 @@ class I_model extends CI_Model
 
         //Update:
         $this->db->where('i__id', $id);
-        $this->db->update('mench_ideas', $update_columns);
+        $this->db->update('cache_ideas', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?

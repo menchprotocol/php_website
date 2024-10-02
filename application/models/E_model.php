@@ -432,7 +432,7 @@ class E_model extends CI_Model
         $add_fields['e__handle'] = generate_handle(12274, $add_fields['e__title']);
 
         //Lets now add:
-        $this->db->insert('mench_sources', $add_fields);
+        $this->db->insert('cache_sources', $add_fields);
 
         //Fetch inserted id:
         if (!isset($add_fields['e__id'])) {
@@ -496,7 +496,7 @@ class E_model extends CI_Model
 
         //Fetch the target sources:
         $this->db->select($select);
-        $this->db->from('mench_sources');
+        $this->db->from('cache_sources');
         foreach($query_filters as $key => $value) {
             if (!is_null($value)) {
                 $this->db->where($key, $value);
@@ -627,7 +627,7 @@ class E_model extends CI_Model
 
         //Update:
         $this->db->where('e__id', $id);
-        $this->db->update('mench_sources', $update_columns);
+        $this->db->update('cache_sources', $update_columns);
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?

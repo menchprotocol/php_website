@@ -203,20 +203,20 @@ class X_model extends CI_Model
 
         //IDEA JOIN?
         if (in_array('x__previous', $joins_objects)) {
-            $this->db->join('mench_ideas', 'x__previous=i__id','left');
+            $this->db->join('cache_ideas', 'x__previous=i__id','left');
         } elseif (in_array('x__next', $joins_objects)) {
-            $this->db->join('mench_ideas', 'x__next=i__id','left');
+            $this->db->join('cache_ideas', 'x__next=i__id','left');
         }
 
         //SOURCE JOIN?
         if (in_array('x__following', $joins_objects)) {
-            $this->db->join('mench_sources', 'x__following=e__id','left');
+            $this->db->join('cache_sources', 'x__following=e__id','left');
         } elseif (in_array('x__follower', $joins_objects)) {
-            $this->db->join('mench_sources', 'x__follower=e__id','left');
+            $this->db->join('cache_sources', 'x__follower=e__id','left');
         } elseif (in_array('x__type', $joins_objects)) {
-            $this->db->join('mench_sources', 'x__type=e__id','left');
+            $this->db->join('cache_sources', 'x__type=e__id','left');
         } elseif (in_array('x__player', $joins_objects)) {
-            $this->db->join('mench_sources', 'x__player=e__id','left');
+            $this->db->join('cache_sources', 'x__player=e__id','left');
         }
 
         foreach($query_filters as $key => $value) {
