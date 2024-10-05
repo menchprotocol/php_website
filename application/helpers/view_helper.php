@@ -1592,7 +1592,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     if($discovery_mode && $x__player && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
     }
-    if($discovery_mode && ($is_locked || $focus_i__or)){
+    if(1 || ($discovery_mode && ($is_locked || $focus_i__or))){
         $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
     }
     if($is_locked){
