@@ -369,10 +369,10 @@ class App extends CI_Controller
                 $this->X_model->mark_complete(i__discovery_link($target_i), $player_e['e__id'], $target_i['i__id'], $target_i);
 
                 //Now return next idea:
-                $next_i__hashtag = $this->X_model->find_next($player_e['e__id'], $target_i['i__hashtag'], $target_i);
-                if($next_i__hashtag){
+                $next__url = $this->X_model->find_next($player_e['e__id'], $target_i['i__hashtag'], $target_i);
+                if($next__url){
                     //Go Next:
-                    return redirect_message(view_memory(42903,30795).$target_i['i__hashtag'].'/'.$next_i__hashtag );
+                    return redirect_message(view_memory(42903,30795).$target_i['i__hashtag'].'/'.$next__url );
                 }
 
             }

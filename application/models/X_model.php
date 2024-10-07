@@ -1079,9 +1079,9 @@ class X_model extends CI_Model
             }
 
             //Keep looking deeper:
-            $next_i__hashtag = $this->X_model->find_next($e__id, $target_i__hashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
-            if ($next_i__hashtag) {
-                return $next_i__hashtag;
+            $next__url = $this->X_model->find_next($e__id, $target_i__hashtag, $next_i, 0, false, $target_completed, $loop_breaker_ids);
+            if ($next__url) {
+                return $next__url;
             }
 
         }
@@ -1093,9 +1093,9 @@ class X_model extends CI_Model
             $current_previous = $i['i__id'];
             foreach (array_reverse($this->X_model->find_previous($e__id, $target_i__hashtag, $i['i__id'])) as $p_i) {
                 //Find the next siblings:
-                $next_i__hashtag = $this->X_model->find_next($e__id, $target_i__hashtag, $p_i, $current_previous, false, $target_completed);
-                if ($next_i__hashtag) {
-                    return $next_i__hashtag;
+                $next__url = $this->X_model->find_next($e__id, $target_i__hashtag, $p_i, $current_previous, false, $target_completed);
+                if ($next__url) {
+                    return $next__url;
                 }
                 $current_previous = $p_i['i__id'];
             }

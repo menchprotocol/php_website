@@ -2798,7 +2798,7 @@ class Ajax extends CI_Controller
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next_i__hashtag' => ( $i_redirect ? $i_redirect : ( $find_next ? $find_next : 'start' ) ),
+                'next__url' => ( $i_redirect ? $i_redirect : ( $find_next ? $find_next : 'start' ) ),
             ));
 
         }
