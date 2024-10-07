@@ -1,5 +1,6 @@
 <?php
 
+$item_numbers = array();
 $completion_status = array();
 $is_good = false;
 
