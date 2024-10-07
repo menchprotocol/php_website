@@ -8,7 +8,6 @@ if(access_level_i($focus_i['i__hashtag'], 0, $focus_i)){
 }
 */
 
-
 $x__player = ( $player_e ? $player_e['e__id'] : 0 );
 $target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
 
