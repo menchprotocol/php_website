@@ -82,7 +82,6 @@ if(!$is_good){
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'Unrecognized item number',
             'x__metadata' => array(
-                'new_x' => $completion_status['new_x'],
                 'item_numbers' => $item_numbers,
                 'post' => $_POST,
             ),
