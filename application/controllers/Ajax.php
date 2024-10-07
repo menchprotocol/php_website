@@ -2794,10 +2794,13 @@ class Ajax extends CI_Controller
             }
 
             //Find Next:
-            $primary_is = $this->I_model->fetch(array(
+            $i_redirect = false;
+            foreach($this->I_model->fetch(array(
                 'i__id' => $primary_i__id,
-            ));
-            $i_redirect = i_redirect($primary_is[0]);
+            )) as $primary_i){
+                $i_redirect = i_redirect($primary_i);
+            }
+
             if(!$i_redirect){
                 $find_next = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
             }
