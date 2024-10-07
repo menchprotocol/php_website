@@ -1847,7 +1847,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     $input_ui .= '<input type="hidden" class="paypal_handling" name="handling" value="'.$unit_fee.'">';
                     $input_ui .= '<input type="hidden" class="i__quantity" name="quantity" value="'.$min_allowed.'">'; //Dynamic Variable that JS will update
-                    $input_ui .= '<input type="hidden" name="item_name" value="'.mb_convert_encoding(view_i_title($i, true), 'UTF-8', 'UTF-8').'">';
+                    $input_ui .= '<input type="hidden" name="item_name" value="'.remove_emoji(view_i_title($i, true)).'">';
                     $input_ui .= '<input type="hidden" name="item_number" value="'.( $target_i__hashtag ? $target_i__hashtag.' #' : '' ).$i['i__hashtag'].' @'.get_domain('m__handle').' @'.$player_e['e__handle'].'">';
 
                     $input_ui .= '<input type="hidden" name="amount" value="'.$unit_price.'">';

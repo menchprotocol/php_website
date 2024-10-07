@@ -303,23 +303,31 @@ if($website_id==39599){
 //Called when the paypal payment is complete:
 if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
 
-    //Log New Payment:
-    $item_numbers = explode('@', $_POST['item_number']);
-    $idea_refs = explode('#', $item_numbers[0]);
-    $hash_target = count($idea_refs)>=3 && strlen($idea_refs[2]);
+    $item_numbers = array();
+    $completion_status = array();
+    $is_good = false;
 
+    //Log New Payment:
+    $item_parts = explode(' ', $_POST['item_number']);
+
+    $item_numbers['i_target'] = strtolower(( count($item_parts)==4 ? trim(str_replace('#','',$item_parts[0])) : false ));
+    $item_numbers['i_destination'] = strtolower(( count($item_parts)==4 ? trim(str_replace('#','',$item_parts[1])) : trim($item_parts[0]) ));
+    $item_numbers['e_wesbite'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 2 : 1 )])));
+    $item_numbers['e_player'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 3 : 2 )])));
+
+    //Fetch Objects based on handles:
     $player_es = $this->E_model->fetch(array(
-        'LOWER(e__handle)' => strtolower($item_numbers[1]),
+        'LOWER(e__handle)' => $item_numbers['e_player'],
     ));
     $website_es = $this->E_model->fetch(array(
-        'LOWER(e__handle)' => strtolower($item_numbers[2]),
+        'LOWER(e__handle)' => $item_numbers['e_wesbite'],
     ));
     $next_is = $this->I_model->fetch(array(
-        'LOWER(i__hashtag)' => strtolower(( $hash_target ? $idea_refs[2] : $idea_refs[1] )),
+        'LOWER(i__hashtag)' => $item_numbers['i_destination'],
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     ));
-    $target_is = ($hash_target ? $this->I_model->fetch(array(
-        'LOWER(i__hashtag)' => strtolower($idea_refs[1]),
+    $target_is = ($item_numbers['i_target'] ? $this->I_model->fetch(array(
+        'LOWER(i__hashtag)' => $item_numbers['i_target'],
         'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
     )) : false);
 
@@ -327,9 +335,10 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     if(count($player_es) && count($next_is)) {
 
         $is_pending = ($_POST['payment_status']=='Pending');
-        $pay_amount = doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross']));
+        $is_good = true;
 
-        if($pay_amount > 0){
+        //Is the payment amount greater than zero?
+        if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
             //Paid:
             $x__type = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
@@ -343,7 +352,6 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
         } else {
 
             $x__type = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
-
 
             //Find issued tickets:
             $original_payment = $this->X_model->fetch(array(
