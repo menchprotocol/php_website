@@ -391,6 +391,21 @@ function object_to_array($obj) {
     }
 }
 
+function i_redirect($i){
+    $CI =& get_instance();
+    if(count($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'x__next' => $i['i__id'],
+        'x__following' => 43871, //Required
+    )))){
+        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['i__message'], $match);
+        return ( filter_var(end($match[0]), FILTER_VALIDATE_URL) ? end($match[0]) : false );
+    } else {
+        return false;
+    }
+}
+
 function i_required($i){
     $CI =& get_instance();
     return in_array($i['i__type'], $CI->config->item('n___43009')) || count($CI->X_model->fetch(array(

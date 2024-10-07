@@ -2789,13 +2789,16 @@ class Ajax extends CI_Controller
             }
 
             //Find Next:
-            $find_next = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
+            $i_redirect = i_redirect($focus_i);
+            if(!$i_redirect){
+                $find_next = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
+            }
 
             //All good:
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next_i__hashtag' => ( $find_next ? $find_next : 'start' ),
+                'next_i__hashtag' => ( $i_redirect ? $i_redirect : ( $find_next ? $find_next : 'start' ) ),
             ));
 
         }
