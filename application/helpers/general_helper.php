@@ -828,6 +828,8 @@ function i_startable($i, $x__player = 0){
     ))) );
 }
 
+
+
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $session_player_e = false)
 {
 
