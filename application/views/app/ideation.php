@@ -17,7 +17,7 @@ if(superpower_unlocked(10939) || isset($_GET['open'])){
 
 
 echo '<hr />';
-echo '|'.i_redirect($focus_i).'|';
+echo '||||||'.i_redirect($focus_i).'|';
 
 ?>
 
