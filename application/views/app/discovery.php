@@ -13,8 +13,6 @@ $x__player = ( $player_e ? $player_e['e__id'] : 0 );
 $target_i__hashtag = ( count($target_i) && $x__player ? $target_i['i__hashtag'] : null );
 
 
-
-
 //Breadcrump for logged in users NOT at the starting point...
 $breadcrum_content = null;
 if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){

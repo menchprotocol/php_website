@@ -813,14 +813,19 @@ function home_url(){
     return ( $player_e ? view_memory(42903,42902).$player_e['e__handle'] : view_memory(42903,14565) );
 }
 
-function i_startable($i){
+function i_startable($i, $x__player = 0){
     $CI =& get_instance();
-    return count($CI->X_model->fetch(array(
+    return ( $x__player>0 ? count($CI->X_model->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__player' => $x__player,
+        'x__type' => 4235, //Get started
+        'x__next' => $i['i__id'],
+    ))) : count($CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
         'x__following' => 4235,
-    )));
+    ))) );
 }
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $session_player_e = false)
