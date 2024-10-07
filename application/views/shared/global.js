@@ -3388,8 +3388,10 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            alert('GO:'+data.next__url);
-            //js_redirect(data.next__url);
+            console.log(data.next__url);
+            setTimeout(function () {
+                js_redirect(data.next__url);
+            }, 3000);
         } else {
             //Show error:
             $('.go_next_btn').html(original_html);
