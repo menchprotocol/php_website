@@ -120,20 +120,6 @@ if($player_e || isset($_GET['open'])){
 }
 
 
-echo '<hr />';
-
-echo preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', view_i_title($target_i, true));
-
-echo '<hr />';
-
-echo preg_replace('/[\x00-\x1F\x7F]/u', '', view_i_title($target_i, true));
-
-echo '<hr />';
-
-echo preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', view_i_title($target_i, true));
-
-
-
 ?>
 
 <script>
