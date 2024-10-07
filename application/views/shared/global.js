@@ -3362,7 +3362,7 @@ function go_next(do_skip){
 
 
     //Load:
-    $('.go_next_btn').html('<span class="icon-block" style="margin-top:5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.go_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
     $.post("/ajax/go_next", {
@@ -3381,7 +3381,7 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            $('.go_next_btn').html('<span class="icon-block" style="margin-top:5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+            $('.go_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
             js_redirect(data.next_i__hashtag);
         } else {
             //Show error:
