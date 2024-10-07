@@ -3362,7 +3362,7 @@ function go_next(do_skip){
 
 
     //Load:
-    $('.go-next').html('<i class="fas fa-yin-yang fa-spin"></i>');
+    $('.go_next_btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
 
     //Submit to go next:
     $.post("/ajax/go_next", {
@@ -3381,7 +3381,7 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            $('.go-next').html('<i class="fas fa-yin-yang fa-spin"></i>');
+            $('.go_next_btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
             js_redirect(data.next_i__hashtag);
         } else {
             //Show error:
