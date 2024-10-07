@@ -400,10 +400,14 @@ function i_redirect($i){
         'x__following' => 43871, //Required
     )))){
         preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['i__message'], $match);
-        return ( filter_var(end($match[0]), FILTER_VALIDATE_URL) ? end($match[0]) : false );
-    } else {
-        return false;
+        foreach($match as $url){
+            if(filter_var($url, FILTER_VALIDATE_URL)){
+                return $url;
+            }
+        }
     }
+
+    return false;
 }
 
 function i_required($i){
