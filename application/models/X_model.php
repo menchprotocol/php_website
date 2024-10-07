@@ -1177,9 +1177,8 @@ class X_model extends CI_Model
             ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
 
 
-            //All validated, lets make the new idea:
+            //All validated, lets create the new idea:
             if(strlen($focus_i_data['i__text']) || count($focus_i_data['uploaded_media'])){
-
 
                 if(count($x_responses)){
 

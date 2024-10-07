@@ -829,7 +829,9 @@ function i_startable($i, $x__player = 0){
 }
 
 
-
+function remove_none_utf8($string){
+    return preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $string);
+}
 
 
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $session_player_e = false)
