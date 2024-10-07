@@ -912,10 +912,12 @@ function load_card_clickers(){
 
     if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
         var is_single_choice = ( focus_i__type==6684 );
-        $(".this_selector").click(function (e) { //unbind().
+        $(".this_selector").click(function (e) {
             console.log('CLICKED');
 
             if($('.this_selector_'+$(this).attr('selection_i__id')+' i').hasClass('fa-square-check')){
+
+                console.log('Already Selected');
 
                 //Already selected, so unselect:
                 $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
@@ -924,6 +926,9 @@ function load_card_clickers(){
 
                 //Not selected, so Select now:
                 if(is_single_choice){
+
+                    console.log('Single Choice');
+
                     //Unselect the previously selected:
                     $('.this_selector:not(.this_selector_'+$(this).attr('selection_i__id')+') i.fa-square-check').each(function () {
                         $(this).removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
@@ -939,6 +944,7 @@ function load_card_clickers(){
                         $(".fixed-bottom").removeClass('hidden');
                     }
                 } else {
+                    console.log('NOT Single Choice');
                     //Make button visible if hidden:
                     $(".fixed-bottom").removeClass('hidden');
                 }
