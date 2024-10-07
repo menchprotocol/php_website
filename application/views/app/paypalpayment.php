@@ -78,7 +78,7 @@ if(!$is_good){
 
     echo '<div class="alert alert-danger" role="alert">Missing Paypal API Variables.</div>';
 
-    if(isset($_POST) && count($_POST) && 0){
+    if(isset($_POST) && count($_POST)){
         //No need to log this for now since we get errors for when invoices are paid or refunded, etc...
         $this->X_model->create(array(
             'x__type' => 4246, //Platform Bug Reports
