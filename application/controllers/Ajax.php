@@ -2614,6 +2614,7 @@ class Ajax extends CI_Controller
 
 
         //Discover Focus Idea:
+        $primary_i__id = null;
         foreach($this->I_model->fetch(array(
             'i__id' => $_POST['focus_i_data']['i__id'],
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -2625,6 +2626,10 @@ class Ajax extends CI_Controller
             $total_selected = count($_POST['selection_i__id']);
             $trying_to_skip = ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['focus_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media'])) || ($input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media']) && !strlen($_POST['focus_i_data']['i__text'])));
             $i_required = i_required($focus_i);
+
+            if(!$primary_i__id){
+                $primary_i__id = ( $total_selected ? end($_POST['selection_i__id']) : $focus_i['i__id'] );
+            }
 
             //If skipping, make sure they can:
             if($i_required && $trying_to_skip){
@@ -2789,7 +2794,10 @@ class Ajax extends CI_Controller
             }
 
             //Find Next:
-            $i_redirect = i_redirect($focus_i);
+            $primary_is = $this->I_model->fetch(array(
+                'i__id' => $primary_i__id,
+            ));
+            $i_redirect = i_redirect($primary_is[0]);
             if(!$i_redirect){
                 $find_next = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
             }
