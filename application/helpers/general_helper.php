@@ -393,7 +393,7 @@ function object_to_array($obj) {
 
 function i_redirect($i){
     $CI =& get_instance();
-    if(count($CI->X_model->fetch(array(
+    if(strlen($i['i__message']) && count($CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],

@@ -15,6 +15,10 @@ if(superpower_unlocked(10939) || isset($_GET['open'])){
     echo view_i_nav(false, $focus_i);
 }
 
+
+echo '<hr />';
+echo i_redirect($focus_i);
+
 ?>
 
 <script>
