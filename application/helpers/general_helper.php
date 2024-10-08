@@ -1480,7 +1480,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Hashtag Missing',
+            'message' => 'Missing Handle',
         );
 
     } elseif (!ctype_alnum($str)) {
