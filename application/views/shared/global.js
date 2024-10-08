@@ -3377,7 +3377,7 @@ function go_next(do_skip){
         if (data.status) {
             //Go to redirect message:
             if(data.i_popup_url.length){
-                popitup(data.i_popup_url);
+                openPopUp(data.i_popup_url);
             } else {
                 js_redirect(data.next__url);
             }
@@ -3390,10 +3390,7 @@ function go_next(do_skip){
 
 }
 
-
-function popitup(url)
-{
-    newwindow=window.open(url,'name','height=300,width=650,screenX=400,screenY=350');
-    if (window.focus) {newwindow.focus()}
-    return false;
+function openPopUp(url){
+    popUp = window.open(url, "popUp", "width=200,height=200");
+    popUp.focus();
 }
