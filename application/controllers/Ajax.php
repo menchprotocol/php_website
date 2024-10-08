@@ -1232,16 +1232,8 @@ class Ajax extends CI_Controller
 
         //We need to check to ensure this is not a duplicate transaction if adding an existing source:
         $ur2 = array();
-        $e_already_linked = 0;
 
         if($adding_to_i) {
-
-            $e_already_linked = count($this->X_model->fetch(array(
-                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'x__following' => $focus_e['e__id'],
-                'x__next' => $fetch_o[0]['i__id'],
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )));
 
             //Add Reference:
             $ur2 = $this->X_model->create(array(
@@ -1275,13 +1267,6 @@ class Ajax extends CI_Controller
 
             $x__message = null;
 
-            $e_already_linked = count($this->X_model->fetch(array(
-                'x__follower' => $x__follower,
-                'x__following' => $x__following,
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )));
-
             //Create transaction:
             if(!count($this->X_model->fetch(array(
                 'x__type' => 4251,
@@ -1305,7 +1290,6 @@ class Ajax extends CI_Controller
         return view_json(array(
             'status' => 1,
             'e_new_echo' => view_card_e($_POST['x__type'], array_merge($focus_e, $ur2), null),
-            'e_already_linked' => $e_already_linked,
         ));
 
     }

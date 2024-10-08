@@ -2574,43 +2574,31 @@ function e__add(x__type, e_existing_id) {
 
         if (data.status) {
 
-            if(data.e_already_linked){
-                var r = confirm("This is already linked here! Are you sure you want to double link it?");
-                if (r==true) {
-                    data.e_already_linked = false;
-                } else {
-                    $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html(original_photo);
-                }
+            //Raw input to make it ready for next URL:
+            //input.focus();
+
+            //Add new object to list:
+            adjust_counter(x__type, 1);
+
+            //See if we previously have a list in place?
+            if ($("#list-in-" + x__type + " .card-12274").length > 0) {
+                //Downwards add to start"
+                $("#list-in-" + x__type + " .card-12274:first").before(data.e_new_echo);
+            } else {
+                //Raw list, add before input filed:
+                $("#list-in-" + x__type).prepend(data.e_new_echo);
             }
 
-            if(!data.e_already_linked){
+            //Allow inline editing if enabled:
+            x_set_start_text();
 
-                //Raw input to make it ready for next URL:
-                //input.focus();
+            setTimeout(function () {
+                activate_popover();
+                e_sort_load(x__type);
+            }, 987);
 
-                //Add new object to list:
-                adjust_counter(x__type, 1);
-
-                //See if we previously have a list in place?
-                if ($("#list-in-" + x__type + " .card-12274").length > 0) {
-                    //Downwards add to start"
-                    $("#list-in-" + x__type + " .card-12274:first").before(data.e_new_echo);
-                } else {
-                    //Raw list, add before input filed:
-                    $("#list-in-" + x__type).prepend(data.e_new_echo);
-                }
-
-                //Allow inline editing if enabled:
-                x_set_start_text();
-
-                setTimeout(function () {
-                    activate_popover();
-                    e_sort_load(x__type);
-                }, 987);
-
-                //Hide Coin:
-                $('.mini-cover.card-12274.card-id-'+e_existing_id).fadeOut();
-            }
+            //Hide Coin:
+            $('.mini-cover.card-12274.card-id-'+e_existing_id).fadeOut();
 
         } else {
             //We had an error:
