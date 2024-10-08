@@ -3540,7 +3540,9 @@ a,
 
 
 
-
+.black-background-obs{
+    border: 1px solid #000000;
+}
 
 .coinType6287 {
     border-radius: 13px !important;
