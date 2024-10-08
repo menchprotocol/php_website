@@ -1373,7 +1373,7 @@ class X_model extends CI_Model
                         $es_creator[0]['e__title'] = $x_data['x__message'];
                         $this->E_model->activate_session($es_creator[0], true);
 
-                    } elseif($x_tag['x__following']==6198 && filter_var($media_stats['media_e__cover'], FILTER_VALIDATE_URL)){
+                    } elseif($x_tag['x__following']==6198 && isset($media_stats['media_e__cover']) && filter_var($media_stats['media_e__cover'], FILTER_VALIDATE_URL)){
 
                         //Update Source Cover:
                         //Update profile picture for current user:
