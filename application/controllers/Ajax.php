@@ -1268,21 +1268,14 @@ class Ajax extends CI_Controller
             $x__message = null;
 
             //Create transaction:
-            if(!count($this->X_model->fetch(array(
+            $ur2 = $this->X_model->create(array(
+                'x__player' => $player_e['e__id'],
                 'x__type' => 4251,
+                'x__message' => $x__message,
                 'x__follower' => $x__follower,
                 'x__following' => $x__following,
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))){
-                $ur2 = $this->X_model->create(array(
-                    'x__player' => $player_e['e__id'],
-                    'x__type' => 4251,
-                    'x__message' => $x__message,
-                    'x__follower' => $x__follower,
-                    'x__following' => $x__following,
-                    'x__weight' => $x__weight,
-                ));
-            }
+                'x__weight' => $x__weight,
+            ));
         }
 
 
