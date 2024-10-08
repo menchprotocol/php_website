@@ -3391,6 +3391,6 @@ function go_next(do_skip, i_popup_url = ''){
 }
 
 function openPopUp(url){
-    popUp = window.open(url, "popUp", "width=200,height=200");
+    popUp = window.open(url, "newWin", "width="+screen.availWidth+",height="+screen.availHeight);
     popUp.focus();
 }
