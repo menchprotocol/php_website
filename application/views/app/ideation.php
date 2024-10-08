@@ -15,7 +15,7 @@ if(superpower_unlocked(10939) || isset($_GET['open'])){
     echo view_i_nav(false, $focus_i);
 }
 
-echo '<a href="#" onclick="openPopUp(\''.i_popup_url($focus_i).'\')">'.i_popup_url($focus_i).'</a>';
+echo '<a href="#" onclick="openPopUp(\''.i_redirect_url($focus_i).'\')">'.i_redirect_url($focus_i).'</a>';
 
 ?>
 

@@ -3306,9 +3306,13 @@ function x_reset_sorting(){
 
 
 
-function go_next(do_skip){
+function go_next(do_skip, i_popup_url = ''){
 
     var selection_i__id = [];
+
+    if(i_popup_url.length){
+        openPopUp(i_popup_url);
+    }
 
     if (js_n___7712.includes(focus_i__type)){
         //Choose
@@ -3376,11 +3380,7 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            if(data.i_popup_url.length){
-                openPopUp(data.i_popup_url);
-            } else {
-                js_redirect(data.next__url);
-            }
+            js_redirect(data.next__url);
         } else {
             //Show error:
             $('.go_next_btn').html(original_html);
