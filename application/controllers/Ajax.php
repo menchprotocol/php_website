@@ -2771,22 +2771,21 @@ class Ajax extends CI_Controller
             }
 
             //Find Next:
-            $i_redirect = false;
+            $i_popup_url = null;
             foreach($this->I_model->fetch(array(
                 'i__id' => $primary_i__id,
             )) as $primary_i){
-                $i_redirect = i_redirect($primary_i);
+                $i_popup_url = i_popup_url($primary_i);
+                break;
             }
-
-            if(!$i_redirect){
-                $find_next = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
-            }
+            $find_next = $this->X_model->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
 
             //All good:
             return view_json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next__url' => ( $i_redirect ? $i_redirect : ( $find_next ? $find_next : 'start' ) ),
+                'next__url' => ( $find_next ? $find_next : 'start' ),
+                'i_popup_url' => $i_popup_url,
             ));
 
         }

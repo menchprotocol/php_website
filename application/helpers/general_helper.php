@@ -391,7 +391,7 @@ function object_to_array($obj) {
     }
 }
 
-function i_redirect($i){
+function i_popup_url($i){
     $CI =& get_instance();
     if(strlen($i['i__message']) && count($CI->X_model->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC

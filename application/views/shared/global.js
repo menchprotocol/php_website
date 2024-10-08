@@ -3376,7 +3376,11 @@ function go_next(do_skip){
     }, function (data) {
         if (data.status) {
             //Go to redirect message:
-            js_redirect(data.next__url);
+            if(data.i_popup_url.length){
+                popitup(data.i_popup_url);
+            } else {
+                js_redirect(data.next__url);
+            }
         } else {
             //Show error:
             $('.go_next_btn').html(original_html);
@@ -3387,3 +3391,9 @@ function go_next(do_skip){
 }
 
 
+function popitup(url)
+{
+    newwindow=window.open(url,'name','height=300,width=650,screenX=400,screenY=350');
+    if (window.focus) {newwindow.focus()}
+    return false;
+}
