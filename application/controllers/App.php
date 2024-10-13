@@ -231,7 +231,7 @@ class App extends CI_Controller
             }
 
 
-            if($missing_access){
+            if($missing_access && 0){
                 //Redirect:
                 return redirect_message((!$player_e ? view_app_link(4269).'?url='.urlencode($_SERVER['REQUEST_URI']) : home_url() ), '<div class="alert alert-warning" role="alert">'.$missing_access.'</div>');
             }
