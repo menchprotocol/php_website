@@ -204,7 +204,7 @@ function x_mass_apply_preview(apply_id, s__id){
 
     //Load Ppeview:
     $('#modal'+apply_id+' .x_mass_apply_preview').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading');
-    $.post("/apps/x_mass_apply_preview", {
+    $.post("/app/x_mass_apply_preview", {
         apply_id: apply_id,
         s__id: s__id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -563,7 +563,7 @@ function toggle_pills(x__type_hash){
 
             if(focus__node==12273){
 
-                var loading_url = "/apps/i_view_body";
+                var loading_url = "/app/i_view_body";
                 var loading_data = {
                     focus__node:focus__node,
                     x__type:x__type,
@@ -574,7 +574,7 @@ function toggle_pills(x__type_hash){
 
             } else if(focus__node==12274){
 
-                var loading_url = "/apps/e_view_body";
+                var loading_url = "/app/e_view_body";
                 var loading_data = {
                     focus__node:focus__node,
                     x__type:x__type,
@@ -648,7 +648,7 @@ function toggle_pills(x__type_hash){
 function i_copy(i__id, do_recursive){
 
     //Go ahead and delete:
-    $.post("/apps/i_copy", {
+    $.post("/app/i_copy", {
         i__id:i__id,
         do_recursive:do_recursive,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -681,7 +681,7 @@ function e_copy(e__id){
     }
 
     //Go ahead and delete:
-    $.post("/apps/e_copy", {
+    $.post("/app/e_copy", {
         e__id:e__id,
         copy_source_title:copy_source_title,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -739,7 +739,7 @@ function x_remove(x__id, x__type, i__hashtag){
     }
 
     //Save changes:
-    $.post("/apps/x_remove", {
+    $.post("/app/x_remove", {
         x__id:x__id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -804,7 +804,7 @@ function e_load_cover(x__type, e__id, counter, first_segment){
 
     $('.coins_e_'+e__id+'_'+x__type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/apps/e_load_cover", {
+    $.post("/app/e_load_cover", {
         x__type:x__type,
         e__id:e__id,
         counter:counter,
@@ -825,7 +825,7 @@ function i_load_cover(x__type, i__id, counter, first_segment, current_e){
 
     $('.coins_i_'+i__id+'_'+x__type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/apps/i_load_cover", {
+    $.post("/app/i_load_cover", {
         x__type:x__type,
         i__id:i__id,
         counter:counter,
@@ -1016,7 +1016,7 @@ function activate_popover(){
         html: true,
         //title: '<a class="close" href="javascript:void(0);" style="display: block;">Close</a>',
         content: function (inner_content) {
-            $.post("/apps/load_popover", {
+            $.post("/app/load_popover", {
                 handle_string:inner_content.innerText,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
@@ -1638,7 +1638,7 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
     $(".dynamic_editing_loading").removeClass('hidden');
     var created_i__id = 0;
 
-    $.post("/apps/i_editor_load", {
+    $.post("/app/i_editor_load", {
         i__id: i__id,
         x__id: x__id,
         current_i__type: current_i__type,
@@ -1795,7 +1795,7 @@ function i_editor_save(){
         }
     }
 
-    $.post("/apps/i_editor_save", modify_data, function (data) {
+    $.post("/app/i_editor_save", modify_data, function (data) {
 
         //Load Images:
         i_saving = false;
@@ -2247,7 +2247,7 @@ function e_editor_load(e__id = 0, x__id = 0, bar_title = null, x__message = null
 
 
 
-    $.post("/apps/e_editor_load", {
+    $.post("/app/e_editor_load", {
         e__id: e__id,
         x__id: x__id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2383,7 +2383,7 @@ function e_editor_save(){
         }
     }
 
-    $.post("/apps/e_editor_save", modify_data, function (data) {
+    $.post("/app/e_editor_save", modify_data, function (data) {
 
         e_saving = false;
         $(".e_editor_save").html('SAVE');
@@ -2488,7 +2488,7 @@ function x_view_load_page() {
 
     current_page[focus_x__group]++; //Now we can increment current page
     $('<div class="load-more"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>Loading More</div>').insertAfter('#list-in-'+focus_x__group);
-    $.post("/apps/x_view_load_page", {
+    $.post("/app/x_view_load_page", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         x__type: focus_x__group,
@@ -2553,7 +2553,7 @@ function e__add(x__type, e_existing_id) {
     }
 
     //Add via Ajax:
-    $.post("/apps/e__add", {
+    $.post("/app/e__add", {
 
         focus__node: parseInt($('#focus__node').val()),
         x__type: x__type,
@@ -2641,7 +2641,7 @@ function i__add(x__type, link_i__id) {
     add_to_list(x__type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
-    $.post("/apps/i__add", {
+    $.post("/app/i__add", {
         x__type: x__type,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
@@ -2684,7 +2684,7 @@ function e_delete(x__id, x__type) {
 
     var r = confirm("Unlink this source?");
     if (r==true) {
-        $.post("/apps/e_delete", {
+        $.post("/app/e_delete", {
 
             x__id: x__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2716,7 +2716,7 @@ function x_link_toggle(x__type, i__id){
 
     if(!x__id){
         //Add:
-        $.post("/apps/x_link_toggle", {
+        $.post("/app/x_link_toggle", {
             x__type:x__type,
             i__id:i__id,
             target_i__id:$('#target_i__id').val(),
@@ -2732,7 +2732,7 @@ function x_link_toggle(x__type, i__id){
         });
     } else {
         //REMOVE
-        $.post("/apps/x_remove", {
+        $.post("/app/x_remove", {
             x__id:x__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
@@ -2821,7 +2821,7 @@ function x_set_text(this_grabr){
 
     //Grey background to indicate saving
     var target_element = '.text__'+modify_data['cache_e__id']+'_'+modify_data['s__id'];
-    $.post("/apps/x_set_text", modify_data, function (data) {
+    $.post("/app/x_set_text", modify_data, function (data) {
 
         if (!data.status) {
 
@@ -2918,7 +2918,7 @@ function i_sort_load(x__type){
 
                     //Update order:
                     if(sort_rank > 0){
-                        $.post("/apps/i_sort_load", {
+                        $.post("/app/i_sort_load", {
                             new_x_order:new_x_order,
                             x__type:x__type,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -2991,7 +2991,7 @@ function e_select_apply(focus__id, selected_e__id, enable_mulitiselect, down_e__
         $('.radio-'+focus__id+' .item-'+selected_e__id+' .inner_headline').after('<span class="icon-block-sm checked_icon"><i class="far fa-check"></i></span>');
     }
 
-    $.post("/apps/e_select_apply", {
+    $.post("/app/e_select_apply", {
         focus__id: focus__id,
         down_e__id: down_e__id,
         right_i__id: right_i__id,
@@ -3167,7 +3167,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, x__id = 0, sh
     }
     $('.dropd_instant_'+element_id+'_'+o__id+'_'+x__id+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
-    $.post("/apps/x_update_instant_select", {
+    $.post("/app/x_update_instant_select", {
         focus__id:parseInt($('#focus__id').val()),
         o__id: o__id,
         element_id: element_id,
@@ -3240,7 +3240,7 @@ function e_sort_save(x__type) {
     //It might be zero for lists that have jsut been emptied
     if (sort_rank > 0) {
         //Update backend:
-        $.post("/apps/e_sort_save", {
+        $.post("/app/e_sort_save", {
             e__id: parseInt($('#focus__id').val()),
             x__type:x__type,
             new_x__weight: new_x__weight,
@@ -3266,7 +3266,7 @@ function x_reset_sorting(){
         var focus_handle = $('#focus_handle').val();
 
         //Update via call:
-        $.post("/apps/x_reset_sorting", {
+        $.post("/app/x_reset_sorting", {
             focus__node: focus__node,
             focus__id: focus__id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
@@ -3358,7 +3358,7 @@ function go_next(do_skip, i_popup_url = ''){
     $('.go_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     //Submit to go next:
-    $.post("/apps/go_next", {
+    $.post("/app/go_next", {
         target_i__hashtag: $('#target_i__hashtag').val(),
         target_i__id: parseInt($('#target_i__id').val()),
         focus_i_data: {

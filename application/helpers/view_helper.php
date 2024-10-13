@@ -1508,7 +1508,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $link_creator = isset($i['x__player']) && $i['x__player'] == $x__player;
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = (isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/') == 2 ? one_two_explode('/', '/', $_POST['js_request_uri']) : false);
-    $discovery_seg = (strtolower($CI->uri->segment(1)) != 'apps' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
+    $discovery_seg = (strtolower($CI->uri->segment(1)) != 'app' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false);
     $discovery_mode = $x__player && ($discovery_uri || $discovery_seg);
     $focus_i_uri = ($discovery_uri ? one_two_explode('/', '', substr($_POST['js_request_uri'], 1)) : false);
     $focus_i_seg = ($discovery_seg ? $CI->uri->segment(2) : false);

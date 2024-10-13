@@ -203,7 +203,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
         $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
-        $.post("/apps/x_4341", {
+        $.post("/app/x_4341", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
             x__message_find:x__message_find,

@@ -169,8 +169,8 @@ fclose($memory_file);
 
 //Now generate Routes file:
 $routes_text .= '$route[\'translate_uri_dashes\'] = FALSE;'."\n";
-$routes_text .= '$route[\'default_controller\'] = "apps/index"; //Home'."\n";
-$routes_text .= '$route[\'404_override\'] = "apps/load"; //Error'."\n";
+$routes_text .= '$route[\'default_controller\'] = "app/index"; //Home'."\n";
+$routes_text .= '$route[\'404_override\'] = "app/load"; //Error'."\n";
 $routes_text .= "\n";
 
 $special_route_text = '';
@@ -185,31 +185,31 @@ foreach($this->Ledger->read(array(
     if(in_array($app['e__id'], $this->config->item('n___42905'))){
         //Source Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "apps/load/'.$app['e__id'].'/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "apps/load/'.$app['e__id'].'/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
         }
     }
     if(in_array($app['e__id'], $this->config->item('n___42923'))){
         //Discoveries Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "apps/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "apps/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         }
     }
     if(in_array($app['e__id'], $this->config->item('n___42911'))){
         //Idea Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "apps/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "apps/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         }
     }
 
     //Always Have no Input option:
     if(!$special_routes){
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "apps/load/'.$app['e__id'].'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
     }
 
 

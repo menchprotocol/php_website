@@ -279,7 +279,7 @@ echo '</table>';
             $('.x__player_' + modify_data['e__id'] + '_' + modify_data['x__player']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
-            $.post("/apps/e_toggle_e", modify_data, function (data) {
+            $.post("/app/e_toggle_e", modify_data, function (data) {
 
                 if (data.status) {
 

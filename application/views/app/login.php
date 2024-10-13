@@ -177,7 +177,7 @@ if(superpower_unlocked()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/apps/e_verify_contact", {
+            $.post("/app/e_verify_contact", {
 
                 account_email_phone: account_email_phone,
                 sign_i__id: sign_i__id,
@@ -244,7 +244,7 @@ if(superpower_unlocked()) {
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:
-            $.post("/apps/e_contact_auth", {
+            $.post("/app/e_contact_auth", {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),

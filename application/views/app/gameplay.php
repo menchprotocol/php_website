@@ -99,7 +99,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 <script>
 
     function x__refresh_gameplay(){
-        $.post("/apps/x__refresh_gameplay", {
+        $.post("/app/x__refresh_gameplay", {
             e__handle: '<?= $e__handle ?>',
             i__hashtag: '<?= $i__hashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls

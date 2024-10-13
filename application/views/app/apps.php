@@ -29,8 +29,8 @@ echo '</div>';
 
 
 //List Regular Apps:
-echo '<div class="extra_apps center" style="padding: 34px 0;"><a href="javascript:void(0)" onclick="$(\'.extra_apps\').toggleClass(\'hidden\');"><i class="far fa-search-plus"></i> SEE MORE</a></div>';
-echo '<div class="row extra_apps hidden">';
+echo '<div class="extra_mem center" style="padding: 34px 0;"><a href="javascript:void(0)" onclick="$(\'.extra_mem\').toggleClass(\'hidden\');"><i class="far fa-search-plus"></i> SEE MORE</a></div>';
+echo '<div class="row extra_mem hidden">';
 foreach ($this->Ledger->read(array(
     'x__following' => 6287, //Featured Apps
     'x__follower NOT IN (' . join(',', $already_loaded) . ')' => null, //SOURCE LINKS

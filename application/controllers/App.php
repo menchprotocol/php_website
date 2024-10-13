@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Apps extends CI_Controller
+class App extends CI_Controller
 {
 
     public $player_e = array();
@@ -304,7 +304,7 @@ class Apps extends CI_Controller
 
         if (!$ui) {
             //Prep view:
-            $raw_app = $this->load->view('apps/' . strtolower($e___6287[$app_e__id]['m__handle']), $view_input, true);
+            $raw_app = $this->load->view('app/' . strtolower($e___6287[$app_e__id]['m__handle']), $view_input, true);
             $ui .= $raw_app;
         }
 
