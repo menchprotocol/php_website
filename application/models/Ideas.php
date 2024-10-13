@@ -144,7 +144,7 @@ class Ideas extends CI_Model
         $results = $q->result_array();
 
         //Make sure user has access to each item:
-        if ($select == '*') {
+        if ($select == '*' && 0) {
             foreach ($results as $key => $value) {
                 if (!access_level_i($value['i__hashtag'], 0, $value)) {
                     unset($results[$key]); //Remove this option
