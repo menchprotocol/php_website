@@ -2174,19 +2174,19 @@ function cloudinary_preview_source(uploader_id, info_id, media_e__id, playback_c
     if(media_e__id == 4258){
 
         //Video
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__13422" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
         //<video id="video_player_'+playback_code+'" controls class="cld-video-player vjs-fade-out cld-fluid cld-video-player-skin-light" poster="'+e__cover+'"></video>
         //play_video(playback_code);
 
     } else if(media_e__id == 4260){
 
         //Image
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__13422" /><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__10939" /><img src="'+e__cover+'" /><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
 
     } else if(media_e__id == 4259){
 
         //Audio
-        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__13422" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><audio controls src="'+playback_code+'"></audio><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
+        $('#'+info_id).html('<input type="text" value="'+e__title+'" placeholder="Source Title" class="hidden_superpower__10939" /><span title="'+js_e___42294[media_e__id]['m__title']+'">'+js_e___42294[media_e__id]['m__cover']+'</span><audio controls src="'+playback_code+'"></audio><a href="javascript:void(0)" onclick="delete_media(\''+uploader_id+'\',\''+info_id+'\')"><i class="far fa-xmark"></i></a>');
 
     } else {
 

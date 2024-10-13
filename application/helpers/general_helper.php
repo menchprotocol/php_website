@@ -1996,7 +1996,7 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
-    if(superpower_unlocked(13422)){
+    if(superpower_unlocked(10939)){
         return 3;
     } elseif($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id'])){
         return 3;

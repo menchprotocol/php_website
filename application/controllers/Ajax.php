@@ -2507,12 +2507,12 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_e = superpower_unlocked(13422, 0, $this->player_e);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(13422),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('n___28956'))) {
             return view_json(array(
