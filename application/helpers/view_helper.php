@@ -577,7 +577,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $i__privacy = ( superpower_unlocked(10939) ? $CI->config->item('n___31871') /* Active */ : $CI->config->item('n___42948') /* Pubicly Listed Ideas */  );
+    $i__privacy = ( superpower_unlocked(10939) ? $CI->config->item('n___31871') /* Active */ : ( superpower_unlocked() ? $CI->config->item('n___42952') /* Pubicly Accessible Ideas */ : $CI->config->item('n___42948') /* Pubicly Listed Ideas */ ) );
 
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
