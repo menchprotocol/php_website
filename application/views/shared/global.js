@@ -911,13 +911,16 @@ function load_card_clickers(){
     });
 
     if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
+
         var is_single_choice = ( focus_i__type==6684 );
+
+        if(is_single_choice && $(".this_selector").length==1){
+            //Auto select if only 1 choice is available:
+            $(".this_selector").click();
+        }
+
         $(".this_selector").click(function (e) {
-            console.log('CLICKED');
-
             if($('.this_selector_'+$(this).attr('selection_i__id')+' i').hasClass('fa-square-check')){
-
-                console.log('Already Selected');
 
                 //Already selected, so unselect:
                 $('.this_selector_'+$(this).attr('selection_i__id')+' i').removeClass('fas').removeClass('fa-square-check').addClass('far').addClass('fa-square');
