@@ -435,7 +435,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $privacy_privacy = ( superpower_unlocked(12703) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
 
     if(in_array($x__type, $CI->config->item('n___42377'))){
 
@@ -445,8 +444,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__following' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___42276'))){
@@ -457,8 +454,6 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__follower' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___11028'))){
@@ -469,18 +464,14 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__following' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item($privacy_privacy)) . ')' => null,
         );
 
     } elseif(in_array($x__type, $CI->config->item('n___42261'))){
 
         //IDEAS
         $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__following' => $e__id,
+                    'x__following' => $e__id,
         );
 
         $joins_objects = array('x__next');
@@ -504,9 +495,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
         $query_filters = array(
             'x__player' => $e__id,
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERY GROUP
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        );
+                );
 
     } else {
 
@@ -577,14 +566,12 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $i__privacy = ( superpower_unlocked(10939) ? $CI->config->item('n___31871') /* Active */ : $CI->config->item('n___42948') /* Pubicly Listed Ideas */  );
 
     if(in_array($x__type, $CI->config->item('n___42261'))){
 
         //SOURCES
         $joins_objects = array('x__following');
         $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'x__next' => $i__id,
         );
@@ -601,9 +588,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__id' => 'DESC');
         $joins_objects = array('x__previous');
         $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $i__privacy) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //IDEA LINKS
+                        'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //IDEA LINKS
             'x__next' => $i__id,
         );
 
@@ -613,9 +598,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__weight' => 'ASC');
         $joins_objects = array('x__next');
         $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $i__privacy) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
+                        'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
             'x__previous' => $i__id,
         );
 
@@ -633,8 +616,7 @@ function view_i_covers($x__type, $i__id, $page_num = 0, $append_card_icon = true
         $order_columns = array('x__id' => 'DESC');
         $joins_objects = array('x__player');
         $query_filters = array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
+                'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null, //DISCOVERIES
             'x__previous' => $i__id,
         );
 
@@ -744,8 +726,6 @@ function view_instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
     $selection_options = $CI->X_model->fetch(array(
         'x__following' => $focus__id,
         'x__type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__follower'), 0, 0, array('x__weight' => 'ASC'));
     foreach($selection_options as $list_item){
         array_push($selection_ids, $list_item['e__id']);
@@ -766,8 +746,7 @@ function view_instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
                 'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
                 'x__follower' => $down_e__id,
                 'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            )) as $sel){
+                )) as $sel){
                 array_push($already_selected, $sel['x__following']);
             }
         }
@@ -790,7 +769,6 @@ function view_instant_select($focus__id, $down_e__id = 0, $right_i__id = 0){
             'x__following IN (' . join(',', $selection_ids) . ')' => null, //All possible answers
             'x__next' => $right_i__id,
             'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $sel){
             array_push($already_selected, $sel['x__following']);
         }
@@ -931,7 +909,6 @@ function view_single_select_instant($cache_e__id, $selected_e__id, $access_level
             'x__following IN (' . join(',', $CI->config->item('n___'.$cache_e__id)) . ')' => null, //SOURCE LINKS
             'x__follower' => $player_e['e__id'],
             'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $x) {
             //Supports one for now
             $selected_e__id = $x['x__following'];
@@ -1091,7 +1068,6 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
             'x__next' => $i['i__id'],
             'x__following > 0' => null,
             'x__type' => 31835, //References
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__following'), 0) as $message_references){
             if(!substr_count(strtolower($i['i__cache']), '>@'.strtolower($message_references['e__handle']))){
                 //Strange!
@@ -1107,8 +1083,7 @@ function view_i__links($i, $e__id = 0, $replace_links = true, $focus__node = fal
                 'x__follower' => $e__id,
                 'x__following' => $message_references['e__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___33337')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'LENGTH(x__message) > 0' => null,
+                    'LENGTH(x__message) > 0' => null,
             ), array(), 1) as $reference_profile){
                 if(strlen($reference_profile['x__message'])){
 
@@ -1132,7 +1107,6 @@ function idea_author($i__id){
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
         'x__next' => $i__id,
-        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__following'];
     }
@@ -1145,7 +1119,6 @@ function idea_creation_time($i__id){
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
         'x__next' => $i__id,
-        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, array('x__type = \'4250\' DESC' => null)) as $x){
         return $x['x__time'];
     }
@@ -1293,7 +1266,6 @@ function view_sync_links($str, $return_array = false, $save_i__id = 0) {
         $references_add_to_db = $i__references;
         $player_e = superpower_unlocked();
         foreach($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___4736')) . ')' => null, //Idea Message Links 3x
             'x__next' => $save_i__id,
         )) as $x){
@@ -1535,8 +1507,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
         foreach($CI->I_model->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__type IN (' . join(',', $CI->config->item('n___7712')) . ')' => null, //Input Choice
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        )) as $focus_i){
+                )) as $focus_i){
             $focus_i__or = $focus_i;
         }
     }
@@ -1545,7 +1516,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $has_discovered = 0;
     if(!$is_cache && $x__player){
         $discoveries = $CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $x__player,
             'x__previous' => $i['i__id'],
@@ -1558,7 +1528,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     if($has_discovered && !$target_i__hashtag){
         foreach($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $x__player,
             'x__previous' => $i['i__id'],
@@ -1600,7 +1569,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     }
 
     if(count($CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 28239, //Required
@@ -1611,8 +1579,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     if($focus_i__or){
         $ui .= '<div class="this_selector this_selector_'.$i['i__id'].'" selection_i__id="'.$i['i__id'].'"><span class="icon-block-sm">'.( count($CI->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 7712, //Input Choice
+                    'x__type' => 7712, //Input Choice
                 'x__player' => $x__player,
                 'x__previous' => $focus_i__or['i__id'],
                 'x__next' => $i['i__id'],
@@ -1631,7 +1598,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     foreach($CI->X_model->fetch(array(
         'x__type' => 4250,
         'x__next' => $i['i__id'],
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
     ), array('x__following')) as $creator){
 
         array_push($headline_authors, $creator['e__id']);
@@ -1642,8 +1608,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 'x__follower' => $x__player,
                 'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
                 'x__type !=' => 10673,
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1, 0, array('x__weight' => 'ASC'));
+                ), array(), 1, 0, array('x__weight' => 'ASC'));
             $follow_btn = view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $access_level_i, false, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
         }
 
@@ -1655,8 +1620,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     foreach($CI->X_model->fetch(array(
         'x__type' => 41949, //Locate
         'x__next' => $i['i__id'],
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__following')) as $location){
         $ui .= view_featured_links(41949, $location, null, $focus__node);
     }
@@ -1694,12 +1657,10 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
         //Fetch discovery
         $x_completes = $CI->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $x__player,
             'x__previous' => $i['i__id'],
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('x__next'));
+                ), array('x__next'));
 
 
         //Any inputs for this idea?
@@ -1746,26 +1707,22 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 $paypal_email =  website_setting(30882);
 
                 $currency_types = $CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
                     'x__following IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
                 ));
                 $total_dues = $CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
                     'x__following' => 26562, //Total Due
                 ));
                 $cart_max = $CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
                     'x__following' => 29651, //Cart Max Quantity
                 ));
                 $cart_min = $CI->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                     'x__next' => $i['i__id'],
                     'x__following' => 31008, //Cart Min Quantity
                 ));
@@ -1790,7 +1747,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                     $e___26661 = $CI->config->item('e___26661'); //Currency
 
                     $digest_fees = count($CI->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 30589, //Digest Fees
@@ -1878,9 +1834,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             //Find the created idea if any:
             $x_responses = $CI->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__type' => 33532, //Share Idea
+                                    'x__type' => 33532, //Share Idea
                 'x__previous' => $i['i__id'],
                 'x__player' => $x__player,
             ), array('x__next'), 0, 1, array('x__id' => 'DESC'));
@@ -1906,7 +1860,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     //Steps
                     foreach($CI->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 31813, //Steps
@@ -1918,7 +1871,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     //Min Value
                     foreach($CI->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 31800, //Min Value
@@ -1930,7 +1882,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
                     //Max Value
                     foreach($CI->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 31801, //Max Value
@@ -1943,7 +1894,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 } elseif($i['i__type']==30350){
 
                     $has_time = count($CI->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 32442, //Select Time
@@ -2056,7 +2006,6 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             if($i['x__player'] > 0){
                 foreach($CI->E_model->fetch(array(
                     'e__id' => $i['x__player'],
-                    'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
                 )) as $creator){
                     $creator_name = 'Linked by '.$creator['e__title'].' @'.$creator['e__handle'].' on ';
                     $creator_details = '<a href="'.view_memory(42903,33286).$i['i__hashtag'].'"><span class="icon-block-sm">'.view_cover($creator['e__cover']).'</span></a>';
@@ -2086,7 +2035,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             $bottom_bar_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node && 0 ? $m_target_bar['m__title'] : '' ).'</a>';
             $bottom_bar_ui .= '</span>';
 
-        } elseif(0 && $x__type_target_bar==42819 && !$is_cache && superpower_unlocked(13422) && $access_level_i>=3 && !$is_locked){
+        } elseif(0 && $x__type_target_bar==42819 && !$is_cache && superpower_unlocked(10939) && $access_level_i>=3 && !$is_locked){
 
             //New Source
             $bottom_bar_ui .= '<span class="mini_button main__title">';
@@ -2100,8 +2049,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                 'x__following' => $x__player,
                 'x__next' => $i['i__id'],
                 'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1);
+                ), array(), 1);
             $bottom_bar_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
             $bottom_bar_ui .= view_single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, 0 && $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
             $bottom_bar_ui .= '</div></span>';
@@ -2188,10 +2136,16 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         //Idea Editor
                         $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==10673 && $x__id && $access_level_i>=3){ //!in_array($i['x__type'], $CI->config->item('n___31776')) &&
+                    } elseif($e__id_dropdown==10673 && $x__id && $access_level_i>=3){
 
                         //Unlink
-                        $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$x__id.', '.$x__type.',\''.$i['i__hashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        if(in_array($i['x__type'], $CI->config->item('n___31776'))){
+                            //Unlink is disabled since the link type is unremovable:
+                            $action_buttons .= '<a href="javascript:void(0);" class="dropdown-item main__title" title="LOCKED">'.$anchor.' [DISABLED]</a>';
+                        } else {
+                            //Give option to unlink:
+                            $action_buttons .= '<a href="javascript:void(0);" onclick="x_remove('.$x__id.', '.$x__type.',\''.$i['i__hashtag'].'\')" class="dropdown-item main__title">'.$anchor.'</a>';
+                        }
 
                     } elseif($e__id_dropdown==30873 && $access_level_i>=3){
 
@@ -2219,7 +2173,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         $action_buttons .= '<li><hr class="dropdown-divider"></li>';
                         $action_buttons .= '<a href="javascript:void();" this_id="'.$i['i__privacy'].'" onclick="x_update_instant_select(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(28727)){
+                    } elseif($e__id_dropdown==28637 && isset($i['x__type']) && $access_level_i>=3){
 
                         //Paypal Details
                         $x__metadata = @unserialize($i['x__metadata']);
@@ -2316,7 +2270,6 @@ function view_list_e($i, $plain_no_html = false){
 
     //Query Relevant Sources:
     foreach($CI->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Writer Links Active
         'x__next' => $i['i__id'],
         'x__following IN (' . join(',', $CI->config->item('n___42421')) . ')' => null, //Featured Inputs
@@ -2344,7 +2297,6 @@ function view_i_media($i){
 
     //Query Relevant Sources:
     foreach($CI->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
         'x__next' => $i['i__id'],
     ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $x){
@@ -2487,8 +2439,6 @@ function view_card_e($x__type, $e, $extra_class = null)
     foreach($CI->X_model->fetch(array(
         'x__type IN (' . join(',', $CI->config->item('n___42777')) . ')' => null, //Featured Profile
         'x__follower' => $e['e__id'],
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $CI->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ), array('x__following'), 0, 0, $order_columns) as $location){
         $ui .= view_featured_links($location['x__type'], $location, $e___42777[$location['x__type']], $focus__node);
     }
@@ -2555,8 +2505,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__follower' => $e['e__id'],
                     'x__following' => 4430, //Active Member
                     'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
+                        )))){
 
                 //Allow to follow fellow players:
                 $followings = $CI->X_model->fetch(array(
@@ -2564,8 +2513,7 @@ function view_card_e($x__type, $e, $extra_class = null)
                     'x__follower' => $player_e['e__id'],
                     'x__type IN (' . join(',', $CI->config->item('n___42795')) . ')' => null, //Follow
                     'x__type !=' => 10673,
-                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array(), 1, 0, array('x__weight' => 'ASC'));
+                        ), array(), 1, 0, array('x__weight' => 'ASC'));
 
                 if(count($followings) || $access_level_e>=3){
                     $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view_single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $player_e && $access_level_e>=3, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
@@ -2695,7 +2643,6 @@ function view_card_e($x__type, $e, $extra_class = null)
         'x__following IN (' . join(',', $CI->config->item('n___14036')) . ')' => null, //Featured Sources
         'x__follower' => $e['e__id'],
         'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $CI->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array(), 0, 0, $order_columns) as $social_link){
 
         if(in_array($social_link['x__following'], $CI->config->item('n___32172'))){

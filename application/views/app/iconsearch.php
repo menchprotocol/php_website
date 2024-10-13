@@ -47,8 +47,7 @@ echo '<input type="submit" class="btn" value="Search">';
 if($icon_keyword){
 
     $matching_results = $this->E_model->fetch(array(
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'LOWER(e__cover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
+            'LOWER(e__cover) LIKE \'%'.strtolower($icon_keyword).'%\'' => null,
     ));
 
     //List the matching search:

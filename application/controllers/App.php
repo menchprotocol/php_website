@@ -254,7 +254,6 @@ class App extends CI_Controller
                         'x__previous' => $x__previous,
                         'x__next' => $x__next,
                         'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     ), array(), 1, 0, array('x__time' => 'DESC')) as $latest_cache){
                         $ui = $latest_cache['x__message'];
                         $cache_x__time = '<div class="texttransparent center main__title">Updated ' . view_time_difference($latest_cache['x__time']) . ' Ago</div>';

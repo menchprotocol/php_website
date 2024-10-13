@@ -14,7 +14,7 @@ $routes_text = $memory_text;
 if(is_array($this->config->item('n___6287')) && count($this->config->item('n___6287'))){
 
     //EASY:
-    $n___7357 = $this->config->item('n___7357'); //LIMITED ACCESS
+    $n___7357 = $this->config->item('n___7357'); //Conditional Access
     $n___7359 = $this->config->item('n___7359');
     $n___33337 = $this->config->item('n___33337');
     $e___42921 = $this->config->item('e___42921');
@@ -22,7 +22,7 @@ if(is_array($this->config->item('n___6287')) && count($this->config->item('n___6
 } else {
 
     //Define Manually (Might need to be updated)
-    $n___7357 = array(41980, 6181, 4755);
+    $n___7357 = array(41980, 6181, 4755); //Conditional Access
     $n___7359 = array(6176);
     $n___33337 = array(42897, 42849, 42791, 42659, 4251, 42581, 42580, 42579, 42570, 42567, 42554, 42518, 42516, 42440, 42427, 42335, 41011, 32489, 32486, 4230);
 
@@ -40,7 +40,6 @@ foreach($this->X_model->fetch(array(
     'x__following' => 4527,
     'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-    'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
 ), array('x__follower'), 0, 0, array('e__id' => 'ASC')) as $en){
 
     //Now fetch all its followers:
@@ -48,7 +47,6 @@ foreach($this->X_model->fetch(array(
         'x__following' => $en['x__follower'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
     ), array('x__follower'), 0, 0, sort__e());
 
 
@@ -77,7 +75,6 @@ foreach($this->X_model->fetch(array(
         foreach($this->X_model->fetch(array(
             'x__following' => $follower['e__id'],
             'x__type' => 41011, //PINNED FOLLOWER
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x_pinned) {
             if(!isset($pinned_down[$follower['e__id']])){
                 $pinned_down[$follower['e__id']] = array($x_pinned['x__follower']);
@@ -100,7 +97,6 @@ foreach($this->X_model->fetch(array(
             'x__follower' => $follower['e__id'],
             'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-            'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
         ), array('x__following'), 0) as $cp_en){
             array_push($down_up_ids, intval($cp_en['e__id']));
         }
@@ -134,7 +130,6 @@ foreach($this->X_model->fetch(array(
         'x__following' => $handle['e__id'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
-        'e__privacy IN (' . join(',', $n___7357) . ')' => null, //LIMITED ACCESS
     ), array('x__follower'), 0) as $app){
         $memory_text .= '     \''.strtolower($app['e__handle']).'\' => '.$app['e__id'].','."\n";
     }
@@ -182,10 +177,7 @@ $special_route_text = '';
 $routes_text .= '//APPS:'."\n\n";
 foreach($this->X_model->fetch(array(
     'x__following' => 6287, //Apps
-    //'x__follower NOT IN (' . join(',', $this->config->item('n___42927')) . ')' => null, //Hide App
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
     $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);

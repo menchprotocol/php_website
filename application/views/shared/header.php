@@ -324,12 +324,10 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     ));
     $next_is = $this->I_model->fetch(array(
         'LOWER(i__hashtag)' => $item_numbers['i_destination'],
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ));
+        ));
     $target_is = ($item_numbers['i_target'] ? $this->I_model->fetch(array(
         'LOWER(i__hashtag)' => $item_numbers['i_target'],
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    )) : false);
+        )) : false);
 
 
     if(count($player_es) && count($next_is)) {
@@ -373,73 +371,8 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
 }
 
 
-
-$i_view = 0;
-$quick_id = 0;
-$discovery_i__hashtag = ( strlen($first_segment) ? ( strlen($second_segment) ? $second_segment : $first_segment ) : 0 );
-if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
-
-    //Ideation Mode:
-    $_GET['i__hashtag'] = $discovery_i__hashtag;
-    $i_view = 30795;
-    $quick_href = view_memory(42903, 33286);
-
-} elseif(!strlen($first_segment) && superpower_unlocked(12703)) {
-
-    //Edit Website Home Page:
-    $quick_href = view_memory(42903, 42902);
-    $quick_id = 33287;
-
-} elseif($e_segment && $e_segment==$e___14870[$website_id]['m__handle']) {
-
-    //Edit Website Home Page:
-    $quick_href = '/?reset_cache=1';
-    $quick_id = 6287;
-
-} elseif(substr($first_segment, 0, 1)=='~') {
-
-    //Ideation Mode:
-    $_GET['i__hashtag'] = substr($first_segment, 1);
-    $i_view = 33286;
-    $quick_href = view_memory(42903, 33286);
-
-} elseif(array_key_exists(strtolower($first_segment), $this->config->item('handle___6287'))) {
-
-    //Source Mode:
-    if(array_key_exists(strtolower($first_segment), $handle___40904) && isset($_GET['i__hashtag'])){
-        $i_view = $handle___40904[strtolower($first_segment)];
-    } else {
-        $quick_id = 33287;
-    }
-    $quick_href = view_memory(42903, 42902);
-
-} elseif($e_segment && array_key_exists(strtolower($e_segment), $this->config->item('handle___6287'))) {
-
-    //App Store:
-    if(array_key_exists(strtolower($e_segment), $handle___40904) && isset($_GET['i__hashtag'])){
-        $i_view = $handle___40904[strtolower($e_segment)];
-    } else {
-        $quick_id = 6287;
-    }
-    $quick_href = view_memory(42903, 6287);
-
-} elseif(isset($_GET['e__handle']) && strlen($_GET['e__handle'])) {
-
-    //Source Mode:
-    $quick_href = view_memory(42903, 42902);
-    $quick_id = 33287;
-
-} elseif(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])) {
-
-    //Ideation Mode:
-    $quick_href = view_memory(42903, 33286);
-    $quick_id = 33286;
-
-}
-
 echo '<body class="'.$body_class.'" id="main_body">';
 echo $bgVideo;
-
 
 
 //JS Variables for this app on page...
@@ -516,42 +449,6 @@ if(!$basic_header_footer){
 
                     echo '</div>';
                     echo '</td>';
-
-
-                    /*
-                    if($i_view > 0){
-                        $e___40904 = $this->config->item('e___40904'); //Idea Views
-                        echo '<td class="block-menu">';
-                        echo '<div class="dropdown inline-block">';
-                        echo '<button type="button" class="btn no-side-padding dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">';
-                        echo '<span class="e_cover e_cover_mini menu-cover">' . $e___40904[$i_view]['m__cover'] .'</span>';
-                        echo '</button>';
-                        echo '<div class="dropdown-menu">';
-                        foreach($e___40904 as $x__type => $m) {
-
-                            $superpowers_required = array_intersect($this->config->item('n___10957'), $m['m__following']);
-                            if(count($superpowers_required) && !superpower_unlocked(end($superpowers_required))){
-                                continue;
-                            }
-
-                            $hosted_domains = array_intersect($this->config->item('n___14870'), $m['m__following']);
-                            if(count($hosted_domains) && !in_array($website_id, $hosted_domains)){
-                                continue;
-                            }
-
-                            echo '<a href="'.$m['m__message'].$_GET['i__hashtag'].'" class="dropdown-item main__title"><span class="icon-block">'.$m['m__cover'].'</span>'.$m['m__title'].'</a>';
-
-                        }
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</td>';
-                    }
-
-                    if($quick_id > 0){
-                        echo '<td class="block-x icon_finder"><a href="'.$quick_href.'" title="'.$e___11035[$quick_id]['m__title'].'">'.$e___11035[$quick_id]['m__cover'].'</a></td>';
-                    }
-
-                    */
 
 
                     if(search_enabled() && $player_e){
@@ -645,7 +542,7 @@ if(!$basic_header_footer){
 
 
                     //Add Source
-                    if(superpower_unlocked(13422)){
+                    if(superpower_unlocked(10939)){
                         //echo '<td class="block-x"><a href="javascript:void(0);" onclick="e_editor_load()" title="'.$e___11035[42819]['m__title'].'">'.$e___11035[42819]['m__cover'].'</a></td>';
                     }
 
@@ -712,9 +609,10 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
         $dynamic_edit .= '</div>';
     }
 
-    //Apply to All Sources
-    if(superpower_unlocked(12703)){
+    if(superpower_unlocked(12700)){
         ?>
+
+        <!-- Apply to All Sources -->
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
@@ -867,13 +765,11 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                 </form>
             </div>
         </div>
-        <?php
-    }
 
 
-    //Apply to All Ideas
-    if(superpower_unlocked(12700)){
-        ?>
+
+
+        <!-- Apply to All Ideas -->
         <div class="modal fade" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
@@ -985,7 +881,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             </div>
 
                             <!-- Toggle Direction -->
-                            <div class="dynamic_editing_input no_padde idea_link_direction hidden hidden_superpower__42817">
+                            <div class="dynamic_editing_input no_padde idea_link_direction hidden hidden_superpower__10939">
                                 <a class="icon-block" href="javascript:void(0);" onclick="" title="Switch Direction"><i class="far fa-arrow-up-arrow-down"></i></a>
                             </div>
 
@@ -1013,8 +909,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             foreach($this->X_model->fetch(array(
                                 'x__following' => $player_e['e__id'],
                                 'x__type' => 41011, //PINNED FOLLOWER
-                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
+                                                    ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {
                                 echo '<div class="creator_headline"><span class="icon-block">'.view_cover($x_pinned['e__cover']).'</span><b>'.$x_pinned['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$x_pinned['e__handle'].'</span></div>';
                                 //TODO maybe give the option to remove?
                             }
@@ -1146,7 +1041,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                         <!-- Upload Cover -->
                                         <a class="uploader_42359" class="icon-block-sm" href="javascript:void(0);" title="<?= $e___11035[42359]['m__title'] ?>"><?= $e___11035[42359]['m__cover'] ?></a>
                                     </td>
-                                    <td class="hidden_superpower__13758">
+                                    <td class="hidden_superpower__10939">
                                         <!-- EMOJI -->
                                         <div class="icon-block-sm">
                                             <div class="dropdown emoji_selector" style="max-height: 21px; margin-top: -18px;">
@@ -1155,11 +1050,11 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="hidden_superpower__13758">
+                                    <td class="hidden_superpower__10939">
                                         <!-- Font Awesome Insert -->
                                         <a href="javascript:void(0);" class="icon-block-sm" onclick="update__cover('far fa-icons')" title="Use Font Awesome"><i class="far fa-icons"></i></a>
                                     </td>
-                                    <td class="hidden_superpower__13758 cover_history_button">
+                                    <td class="hidden_superpower__10939 cover_history_button">
                                         <!-- History -->
                                         <a href="javascript:void(0);" class="icon-block-sm" onclick="$('.cover_history_content').toggleClass('hidden');" title="Toggle Previously Used Covers"><i class="far fa-clock-rotate-left"></i></a>
                                     </td>
@@ -1174,10 +1069,10 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                             <h3 class="mini-font"><?= '<span class="icon-block">'.$e___6206[6198]['m__cover'].'</span>'.$e___6206[6198]['m__title'].': ';  ?></h3>
 
                             <!-- Cover HIDDEN Input (Editable for font awesome icons only) -->
-                            <input type="text" class="form-control unsaved_warning save_e__cover hidden_superpower__13758" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
+                            <input type="text" class="form-control unsaved_warning save_e__cover hidden_superpower__10939" data-lpignore="true" placeholder="Emoji, Image URL or Cover Code">
 
                             <!-- Font Awesome Search -->
-                            <div class="hidden_superpower__13758 fa_search hidden">
+                            <div class="hidden_superpower__10939 fa_search hidden">
                                 <a href="https://fontawesome.com/search" class="icon-block-sm" target="_blank" title="Open New Window to Search on Font Awesome"><i class="far fa-search-plus"></i></a>
                             </div>
                             <div class="doclear">&nbsp;</div>

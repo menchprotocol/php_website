@@ -6,7 +6,6 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     //This is a request to cancel, do so and redirect:
     if(view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__id' => $_GET['x__id'],
             'LOWER(e__handle)' => strtolower($_GET['e__handle']),
@@ -59,12 +58,10 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     $i_scanned = array();
 
     foreach ($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+            'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
         'x__following IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
         'i__type' => 30874, //Events
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__next'), 0) as $i) {
+        ), array('x__next'), 0) as $i) {
 
         //Make sure not handled this idea with a different reminder:
         if(!in_array($i['i__id'], $i_scanned)){
@@ -74,8 +71,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             //Fetch Start time for this idea:
             $time_starts = 0;
             foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $i['i__id'],
                 'x__following' => 26556, //Time Starts
             )) as $time){
@@ -91,7 +87,6 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                     //End time?
                     $time_ends = $this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 26557, //Time Ends
@@ -100,7 +95,6 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     //Navigation?
                     $must_follow = array();
                     foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 32235, //Navigation
                         'x__next' => $i['i__id'],
                     )) as $follow){
@@ -113,7 +107,6 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
                     //The time is here! Send event reminders to those who successfully discovered this:
                     foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'x__previous' => $i['i__id'],
                     ), array('x__player'), 0) as $x){
@@ -123,8 +116,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                                 'x__follower' => $x['e__id'],
                                 'x__following IN (' . join(',', $must_follow) . ')' => null,
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            )))){
+                                    )))){
                             //User does not have all navigation items, skip for now:
                             continue;
                         }
@@ -179,18 +171,15 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     }
 
     foreach ($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__weight >' => time(), //Future event
         'x__following' => 26556, //Time Starts
         'i__type' => 30874, //Events
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), array('x__next'), 0) as $i) {
+        ), array('x__next'), 0) as $i) {
 
         //Determine if it's time to send this message:
         $time_starts = 0;
         foreach ($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26556, //Time Starts
@@ -207,7 +196,6 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         //Does it have an end time?
         $end_sending = 0;
         foreach ($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26557, //Time Ends
@@ -218,9 +206,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
 
         $children = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+                        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
             'x__previous' => $i['i__id'],
         ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
@@ -236,8 +222,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            )))) {
+                )))) {
                 //Skip since they already discovered this idea:
                 continue;
             }
@@ -254,8 +239,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             foreach ($children as $down_or) {
 
                 $discoveries = $this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                     'x__player' => $x['e__id'],
                     'x__previous' => $down_or['i__id'],
                 ));

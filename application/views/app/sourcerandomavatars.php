@@ -5,9 +5,7 @@ if(isset($_GET['update_u_icons'])){
     $base_filters = array(
         'x__following IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Member
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    );
+            );
 
     if(!isset($_GET['force'])) {
         $base_filters['(LENGTH(e__cover) < 1 OR e__cover IS NULL)'] = null;

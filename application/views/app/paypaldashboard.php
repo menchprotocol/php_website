@@ -35,8 +35,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
     echo '<h2>'.$es[0]['e__title'].' @'.$es[0]['e__handle'].'</h2>';
 
     $i_query = $this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
         'x__following' => $es[0]['e__id'],
     ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
@@ -58,7 +57,6 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         $currencies = array();
 
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__previous' => $i['i__id'],
         ), array(), 0, 0, array('x__player' => 'ASC')) as $x){
@@ -178,7 +176,6 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         $gross_payout += $payout;
 
         $max_available = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26189,
@@ -223,7 +220,6 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e){
         $filters = array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__following' => $e['e__id'], //Member
         );
@@ -362,8 +358,7 @@ if(count($i_query)){
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->X_model->fetch(array(
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                             'x__next' => $origin,
                             'x__following' => 30564, //None Promoter
                         )))){

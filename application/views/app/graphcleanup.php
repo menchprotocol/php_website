@@ -20,8 +20,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
     $edited = 0;
     $edited_sources = 0;
     foreach($this->I_model->fetch(array(
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    ), 0) as $i_fix){
+        ), 0) as $i_fix){
 
         $view_sync_links = view_sync_links($i_fix['i__message'], true, $i_fix['i__id']);
 
@@ -72,8 +71,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
         )) as $e_append){
             $completed = 0;
             foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                 'x__previous' => $is[0]['i__id'],
             ), array(), 0) as $x){
                 if(!count($this->X_model->fetch(array(
@@ -81,8 +79,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
                     'x__follower' => $x['x__player'],
                     'x__message' => $x['x__message'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                )))){
+                        )))){
                     //Increment source link:
                     $completed++;
                     $this->X_model->create(array(
@@ -103,9 +100,7 @@ if(isset($_GET['action']) && $_GET['action']=='i_messages'){
 
     $count = 0;
     foreach($this->X_model->fetch(array(
-        //'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 42243,
+            'x__type' => 42243,
     ), array('x__previous'), 0) as $prev_i){
         if($prev_i['i__privacy']!=42626 || $prev_i['x__type']!=4228){
             $count++;

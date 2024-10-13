@@ -26,7 +26,6 @@ if(superpower_unlocked()) {
 
     $es = $this->E_model->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-        'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
     ));
 
     if(count($es)){

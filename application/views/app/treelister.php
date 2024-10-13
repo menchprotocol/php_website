@@ -16,10 +16,8 @@ if(!count($list_settings['list_config'][34513])){
 
 
 foreach($this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
     'x__following IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $link_i){
 
     $sub_list_settings = list_settings($link_i['i__hashtag'], true);

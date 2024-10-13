@@ -10,7 +10,6 @@ if(isset($_GET['e__handle'])){
     foreach($this->X_model->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
     ), array('x__following'), 0) as $x) {
         $x__message_md5 = substr(md5($x['x__message']), 0, 16);
         if(!isset($main_index[$x__message_md5])){
@@ -37,7 +36,7 @@ if(isset($_GET['e__handle'])){
 } else {
 
     //Find by name:
-    $q = $this->db->query('select en1.* from cache_sources en1 where (select count(*) from cache_sources en2 where en2.e__title = en1.e__title AND en2.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')) > 1 AND en1.e__privacy IN (' . join(',', $this->config->item('n___7358')) . ') ORDER BY en1.e__title ASC');
+    $q = $this->db->query('select en1.* from cache_sources en1 where (select count(*) from cache_sources en2 where en2.e__title = en1.e__title AND en2.e__privacy IN (' . join(',', dynamic_privacy_e()) . ')) > 1 AND en1.e__privacy IN (' . join(',', dynamic_privacy_e(null, 0)) . ') ORDER BY en1.e__title ASC');
     $duplicates = $q->result_array();
 
     if(count($duplicates) > 0){

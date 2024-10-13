@@ -13,7 +13,6 @@ if(!isset($_GET['confirm'])){
 
     //Fetch their current progress transactions:
     $progress_x = $this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
         'x__player' => $focus_e['e__id'],
     ), array(), 0);

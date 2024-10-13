@@ -1,7 +1,6 @@
 <?php
 
 $filters = array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
     'x__following' => 28199,
 );
@@ -26,14 +25,12 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
 
     //Now go through everyone who discovered this selection:
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansions
+            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansions
         'x__previous' => $expires['i__id'],
     ), array('x__player'), 0) as $x_progress){
 
         //Now see if the answer is completed:
         $answer_completed = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
             'x__previous' => $x_progress['x__next'],
             'x__player' => $x_progress['e__id'],
@@ -45,8 +42,7 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
             foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+                        'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
                 'x__previous' => $expires['i__id'],
                 'x__player' => $x_progress['e__id'],
             ), array(), 0) as $delete){

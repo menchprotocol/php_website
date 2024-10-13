@@ -47,9 +47,7 @@ if($player_http_request && !isset($_GET['email_trigger'])){
     $subscriber_filters = array(
         'x__following' => 12114,
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    );
+            );
 
     //Should we limit the scope?
     if($player_http_request){

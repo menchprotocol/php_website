@@ -7,8 +7,7 @@ foreach($this->I_model->fetch(array(
     echo '<h2>' . view_i_title($i) . '</h2>';
 
     $preg_query = $this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
         'x__following' => 32103,
     ));
@@ -17,8 +16,7 @@ foreach($this->I_model->fetch(array(
     //See apply to sources:
     $apply_to = array();
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type' => 7545, //Following Add
+            'x__type' => 7545, //Following Add
         'x__next' => $i['i__id'],
     ), array('x__following')) as $x_tag){
         array_push($apply_to, intval($x_tag['x__following']));
@@ -43,8 +41,7 @@ foreach($this->I_model->fetch(array(
                 foreach($this->X_model->fetch(array(
                     'x__following' => $e['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ), array('x__follower'), 0) as $x) {
+                        ), array('x__follower'), 0) as $x) {
 
                     $responses++;
                     $new_form = preg_replace($preg_query[0]['x__message'], "", $x['x__message'] );
@@ -66,8 +63,7 @@ foreach($this->I_model->fetch(array(
                                         'x__following' => $apply_e__id,
                                         'x__follower' => $x['x__player'],
                                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                    ), array(), 0) as $follow_appended) {
+                                                    ), array(), 0) as $follow_appended) {
                                         $links_updated++;
                                         $this->X_model->update($follow_appended['x__id'], array(
                                             'x__message' => $new_form,
@@ -93,8 +89,7 @@ foreach($this->I_model->fetch(array(
                                         'x__following' => $apply_e__id,
                                         'x__follower' => $x['x__player'],
                                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                    ), array(), 0) as $follow_appended) {
+                                                    ), array(), 0) as $follow_appended) {
                                         $links_removed++;
                                         $this->X_model->update($follow_appended['x__id'], array(
                                             'x__privacy' => 6173,
@@ -123,7 +118,6 @@ foreach($this->I_model->fetch(array(
         echo '<p>Applying against ['.$preg_query[0]['x__message'].'] results in:</p>';
 
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'LENGTH(x__message)>0' => null,
             'x__previous' => $i['i__id'],
@@ -148,8 +142,7 @@ foreach($this->I_model->fetch(array(
                                 'x__following' => $apply_e__id,
                                 'x__follower' => $x['x__player'],
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            ), array(), 0) as $follow_appended) {
+                                    ), array(), 0) as $follow_appended) {
                                 $links_updated++;
                                 $this->X_model->update($follow_appended['x__id'], array(
                                     'x__message' => $new_form,
@@ -174,8 +167,7 @@ foreach($this->I_model->fetch(array(
                                 'x__following' => $apply_e__id,
                                 'x__follower' => $x['x__player'],
                                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            ), array(), 0) as $follow_appended) {
+                                    ), array(), 0) as $follow_appended) {
                                 $links_removed++;
                                 $this->X_model->update($follow_appended['x__id'], array(
                                     'x__privacy' => 6173,

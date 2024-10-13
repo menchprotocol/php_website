@@ -62,8 +62,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                             foreach($this->X_model->fetch(array(
                                 'x__follower' => $headline_link,
                                 'x__type' => 42570, //Family
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            ), array('x__following'), 1) as $sibling){
+                                    ), array('x__following'), 1) as $sibling){
                                 echo '<a href="'.view_memory(42903,42902).$sibling['e__handle'].'"><span class="icon-block-sm grey">'.view_cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
                             }
                         }

@@ -8,7 +8,6 @@ if(isset($_GET['i__hashtag'])){
         echo '<h2>' . view_i_title($i) . '</h2>';
 
         $preg_query = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26611,
@@ -22,7 +21,6 @@ if(isset($_GET['i__hashtag'])){
             echo '<p>Mismatches against ['.$preg_query[0]['x__message'].'] are:</p>';
 
             foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 6144, //Written Response
                 'x__previous' => $i['i__id'],
             ), array(), 0) as $x) {

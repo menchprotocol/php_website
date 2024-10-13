@@ -168,7 +168,6 @@ class Ajax extends CI_Controller
                 $unique_values = array();
                 if($i__id > 0){ //Must have an original ID to possibly have a value...
                     foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                         'x__next' => $i__id,
                         'x__following' => $dynamic_e__id,
@@ -333,8 +332,7 @@ class Ajax extends CI_Controller
                         $valid_hashtag = false;
                         foreach($this->I_model->fetch(array(
                             'LOWER(i__hashtag)' => strtolower(substr($word, 1)),
-                            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                        )) as $i_found){
+                                                )) as $i_found){
                             $found_hashtag = true;
                             $valid_hashtag = true;
                             array_push($i_references, $i_found);
@@ -457,7 +455,6 @@ class Ajax extends CI_Controller
 
                 if(!$d_x__id || !count($values)){
                     $values = $this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
                         'x__next' => $is[0]['i__id'],
                         'x__following' => $dynamic_e__id,
@@ -519,8 +516,7 @@ class Ajax extends CI_Controller
             foreach ($this->X_model->fetch(array(
                 'x__previous' => $is[0]['i__id'],
                 'x__type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('x__next')) as $ref) {
+                    ), array('x__next')) as $ref) {
                 view_sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
 
@@ -830,16 +826,13 @@ class Ajax extends CI_Controller
             //Validate Source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e__id'],
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
             //Count followers:
             $list_e_count = $this->X_model->fetch(array(
                 'x__following' => $_POST['e__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__follower'), 0, 0, array(), 'COUNT(e__id) as totals');
+                    ), array('x__follower'), 0, 0, array(), 'COUNT(e__id) as totals');
 
             if (count($es) < 1) {
 
@@ -927,8 +920,7 @@ class Ajax extends CI_Controller
         //Validate Source:
         $fetch_o = $this->E_model->fetch(array(
             'e__id' => $_POST['e__id'],
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
+                ));
         if (count($fetch_o) < 1) {
             return view_json(array(
                 'status' => 0,
@@ -953,8 +945,7 @@ class Ajax extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__following' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0) as $x) {
+            ), array(), 0) as $x) {
             //Make sure none existent in new source:
             if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
@@ -985,8 +976,7 @@ class Ajax extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__follower' => $_POST['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0) as $x) {
+            ), array(), 0) as $x) {
             if(!count($this->X_model->fetch(array(
                 'x__type' => $x['x__type'],
                 'x__following' => $x['x__following'],
@@ -1013,8 +1003,7 @@ class Ajax extends CI_Controller
 
         //Ideas:
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
+                'x__type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
             'x__following' => $_POST['e__id'],
         ), array(), 0) as $x){
             if(!count($this->X_model->fetch(array(
@@ -1104,8 +1093,7 @@ class Ajax extends CI_Controller
             //Fetch transaction idea to determine idea type:
             $x_i = $this->I_model->fetch(array(
                 'i__id' => intval($_POST['link_i__id']),
-                'i__access IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ));
+                        ));
             if(count($x_i)==0){
                 //validate Idea:
                 return view_json(array(
@@ -1169,7 +1157,6 @@ class Ajax extends CI_Controller
             //Validate Source:
             $fetch_o = $this->E_model->fetch(array(
                 'e__id' => $_POST['focus__id'],
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if (count($fetch_o) < 1) {
                 return view_json(array(
@@ -1202,7 +1189,6 @@ class Ajax extends CI_Controller
             //Validate this existing source:
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['e_existing_id'],
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
 
             if (count($es) < 1) {
@@ -1308,8 +1294,7 @@ class Ajax extends CI_Controller
 
         $es = $this->E_model->fetch(array(
             'e__id' => $_POST['e__id'],
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
+                ));
         if (!count($es)) {
             return view_json(array(
                 'status' => 0,
@@ -1335,8 +1320,7 @@ class Ajax extends CI_Controller
             'x__following IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //Dynamic Sources
             'x__follower' => $es[0]['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('x__following'), 0, 0, sort_by(42178)) as $e_group) {
+            ), array('x__following'), 0, 0, sort_by(42178)) as $e_group) {
 
             if(in_array($e_group['e__id'], $scanned_sources)){
                 continue;
@@ -1347,8 +1331,7 @@ class Ajax extends CI_Controller
                 'x__follower' => $e_group['e__id'],
                 'x__following IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('x__following'), 0, 0, $order_42145) as $e_template) {
+                    ), array('x__following'), 0, 0, $order_42145) as $e_template) {
 
                 $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">'.view_cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'<a href="'.view_memory(42903,42902).$e_group['e__handle'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow '.$e_group['e__title'].'... Click to Open in a New Window"><span class="icon-block-sm">'.view_cover($e_group['e__cover']).'</span></a></div>';
 
@@ -1439,8 +1422,7 @@ class Ajax extends CI_Controller
                         $counted = 0;
                         $unique_values = array();
                         foreach($this->X_model->fetch(array(
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                             'x__follower' => $es[0]['e__id'],
                             'x__following' => $dynamic_e__id,
                         ), array('x__following')) as $selected_e){
@@ -1491,7 +1473,6 @@ class Ajax extends CI_Controller
                 foreach(array_intersect($e___42776[$selected_e['e__id']]['m__following'], $this->config->item('n___4592')) as $data_type){
                     //Any value?
                     $values = $this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                         'x__follower' => $es[0]['e__id'],
                         'x__following' => $selected_e['e__id'],
@@ -1518,8 +1499,7 @@ class Ajax extends CI_Controller
         foreach($this->X_model->fetch(array(
             'x__follower' => $_POST['e__id'],
             'x__type' => 10653, //Source Cover Update
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
+            ), array(), 0, 0, array('x__id' => 'DESC')) as $x) {
             $x__metadata = unserialize($x['x__metadata']);
             if(strlen($x__metadata['before'])){
                 $cover = ( substr_count($x__metadata['before'], 'class="') ? one_two_explode('class="','"',$x__metadata['before']) : $x__metadata['before'] );
@@ -1600,8 +1580,7 @@ class Ajax extends CI_Controller
 
         $es = $this->E_model->fetch(array(
             'e__id' => $_POST['save_e__id'],
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ));
+                ));
         if(!count($es)){
             return view_json(array(
                 'status' => 0,
@@ -1655,7 +1634,6 @@ class Ajax extends CI_Controller
 
             if(!$d_x__id || !count($values)){
                 $values = $this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__following' => $dynamic_e__id,
                     'x__follower' => $es[0]['e__id'],
@@ -1820,12 +1798,10 @@ class Ajax extends CI_Controller
             //Dispatch Any Emails Necessary:
             if(isset($_POST['selected_e__id']) && intval($_POST['selected_e__id'])>0){
                 foreach($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 33600, //Draft
+                            'x__type' => 33600, //Draft
                     'x__following' => $_POST['selected_e__id'],
                 ), array('x__next'), 0) as $i){
                     if(count($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type' => 33600, //Draft
                         'x__following' => 31065, //Choice Update Email Templates
                         'x__next' => $i['i__id'], //Is this the template?
@@ -1862,9 +1838,7 @@ class Ajax extends CI_Controller
             $query_filters = array(
                 'x__following' => $_POST['focus__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            );
+                );
 
             if((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
@@ -1884,15 +1858,13 @@ class Ajax extends CI_Controller
                     'x__following IN (' . join(',', $possible_answers) . ')' => null,
                     'x__follower' => $_POST['down_e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ));
+                        ));
             } elseif($_POST['right_i__id']){
                 $delete_query = $this->X_model->fetch(array(
                     'x__following IN (' . join(',', $possible_answers) . ')' => null,
                     'x__next' => $_POST['right_i__id'],
                     'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ));
+                        ));
             }
 
             foreach($delete_query as $delete){
@@ -1921,8 +1893,7 @@ class Ajax extends CI_Controller
                     'x__type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
                     'x__following' => $_POST['selected_e__id'],
                     'x__next' => $_POST['right_i__id'],
-                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                )))){
+                            )))){
                     $stats['added']++;
                     $this->X_model->create(array(
                         'x__player' => $player_e['e__id'],
@@ -2099,12 +2070,19 @@ class Ajax extends CI_Controller
 
     function e_toggle_e(){
 
-        $player_e = superpower_unlocked(28714, 0, $this->player_e);
+        $player_e = superpower_unlocked();
         if(!$player_e){
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(28714),
+                'message' => view_unauthorized_message(),
+            ));
+
+        } elseif(access_level_e(null, $_POST['e__id'])<3){
+
+            return view_json(array(
+                'status' => 0,
+                'message' => 'You do not have editing access for this source',
             ));
 
         } elseif(!isset($_POST['x__player']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){
@@ -2122,8 +2100,7 @@ class Ajax extends CI_Controller
                 'x__following' => $_POST['e__id'],
                 'x__follower' => $_POST['x__player'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__following'));
+                ), array('x__following'));
 
             if(count($already_added)){
 
@@ -2229,8 +2206,7 @@ class Ajax extends CI_Controller
         if(intval($_POST['sign_i__id']) > 0){
             //Fetch the idea:
             $referrer_i = $this->I_model->fetch(array(
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'i__id' => $_POST['sign_i__id'],
+                            'i__id' => $_POST['sign_i__id'],
             ));
         } else {
             $referrer_i = array();
@@ -2240,12 +2216,10 @@ class Ajax extends CI_Controller
         //Search for email/phone to see if it exists
         $x__player = 0;
         foreach($this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__message' => $_POST['account_email_phone'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__following' => ( filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783 ), //Email / Phone
-            'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__follower')) as $map_e){
+                ), array('x__follower')) as $map_e){
             $u = $map_e;
             $x__player = $map_e['e__id'];
             break;
@@ -2335,7 +2309,6 @@ class Ajax extends CI_Controller
 
             $es = $this->E_model->fetch(array(
                 'e__id' => $_POST['s__id'],
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             ));
             if(!count($es)){
                 return view_json(array(
@@ -2422,9 +2395,7 @@ class Ajax extends CI_Controller
 
                 //idea list:
                 $is_next = $this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
-                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                     'x__previous' => $_POST['s__id'],
                 ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
                 $counter = count($is_next);
@@ -2507,12 +2478,12 @@ class Ajax extends CI_Controller
     {
 
         //Authenticate Member:
-        $player_e = superpower_unlocked(13422, 0, $this->player_e);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
 
         if (!$player_e) {
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(13422),
+                'message' => view_unauthorized_message(10939),
             ));
         } elseif (!isset($_POST['focus__node']) || !in_array($_POST['focus__node'], $this->config->item('n___28956'))) {
             return view_json(array(
@@ -2530,9 +2501,7 @@ class Ajax extends CI_Controller
             //Ideas order based on alphabetical order
             $order = 0;
             foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                 'x__previous' => $_POST['focus__id'],
             ), array('x__next'), 0, 0, array('i__message' => 'ASC')) as $x) {
                 $order++;
@@ -2545,9 +2514,7 @@ class Ajax extends CI_Controller
             foreach($this->X_model->fetch(array(
                 'x__following' => $_POST['focus__id'],
                 'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('x__follower'), 0, 0) as $x) {
+                    ), array('x__follower'), 0, 0) as $x) {
                 $this->X_model->update($x['x__id'], array(
                     'x__weight' => 0,
                 ), $player_e['e__id'], 13007 /* SOURCE SORT RESET */);
@@ -2594,8 +2561,7 @@ class Ajax extends CI_Controller
         $primary_i__id = null;
         foreach($this->I_model->fetch(array(
             'i__id' => $_POST['focus_i_data']['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        )) as $focus_i){
+                )) as $focus_i){
 
             $input__selection = in_array($focus_i['i__type'], $this->config->item('n___7712'));
             $input__upload = in_array($focus_i['i__type'], $this->config->item('n___43004'));
@@ -2624,7 +2590,6 @@ class Ajax extends CI_Controller
                 //How about the min selection?
                 if($i_required && !$is_single_selection){
                     foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $focus_i['i__id'],
                         'x__following' => 40834, //Min Selection
@@ -2642,7 +2607,6 @@ class Ajax extends CI_Controller
                 //How about max selection?
                 if(!$is_single_selection){
                     foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                         'x__next' => $focus_i['i__id'],
                         'x__following' => 40833, //Max Selection
@@ -2661,8 +2625,7 @@ class Ajax extends CI_Controller
                 $already_answered = array();
                 foreach($this->X_model->fetch(array(
                     'i__type NOT IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Ignore paid answers since they cannot be removed!
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type' => 7712, //Input Choice
+                            'x__type' => 7712, //Input Choice
                     'x__player' => $player_e['e__id'],
                     'x__previous' => $focus_i['i__id'],
                 ), array('x__next')) as $x_selection){
@@ -2679,7 +2642,6 @@ class Ajax extends CI_Controller
 
                     //Remove discovery:
                     foreach($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__previous' => $x_selection['i__id'],
                         'x__player' => $player_e['e__id'],
@@ -2741,9 +2703,7 @@ class Ajax extends CI_Controller
 
                     //Can we auto-complete?
                     if(in_array($i_next['i__type'], $this->config->item('n___43039')) || (!strlen($next_i_data['i__text']) && !count($next_i_data['uploaded_media']) && count($this->X_model->fetch(array(
-                            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
-                            'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
+                                        'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
                             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
                             'x__previous' => $i_next['i__id'],
                         ), array('x__next'), 0, 0)))){
@@ -2880,8 +2840,7 @@ class Ajax extends CI_Controller
 
         $is = $this->I_model->fetch(array(
             'i__id' => $_POST['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ));
+                ));
         if (!count($is)) {
             return view_json(array(
                 'status' => 0,
@@ -3081,28 +3040,24 @@ class Ajax extends CI_Controller
                         if($has_handle){
 
                             $sub_counter = $this->X_model->fetch(array(
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                                 'x__following' => $es[0]['e__id'],
                                 'i__type' => $x__type3,
-                                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                            ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
+                                                        ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->I_model->fetch(array(
                                 'i__type' => $x__type3,
-                                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                                'i__id IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
+                                                            'i__id IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
                             ), 0, 0, array(), 'COUNT(i__id) as totals');
 
                         } else {
 
                             $sub_counter = $this->I_model->fetch(array(
                                 'i__type' => $x__type3,
-                                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                            ), 0, 0, array(), 'COUNT(i__id) as totals');
+                                                        ), 0, 0, array(), 'COUNT(i__id) as totals');
 
                         }
 
@@ -3111,8 +3066,7 @@ class Ajax extends CI_Controller
                         if($has_handle){
 
                             $sub_counter = $this->X_model->fetch(array(
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                                 'x__following' => $es[0]['e__id'],
                                 'e__privacy' => $x__type3,
                             ), array('x__follower'), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -3121,8 +3075,7 @@ class Ajax extends CI_Controller
 
                             //See stats for this idea:
                             $sub_counter = $this->X_model->fetch(array(
-                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                                        'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
                                 'x__next IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
                                 'e__privacy' => $x__type3,
                             ), array('x__following'), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -3142,23 +3095,20 @@ class Ajax extends CI_Controller
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
                                 '( x__follower = ' . $es[0]['e__id'] . ' OR x__following = ' . $es[0]['e__id'] . ' OR x__player = ' . $es[0]['e__id'] . ' )' => null,
-                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+                                                    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
                                 '( x__previous IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ') OR x__next IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . '))' => null,
-                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+                                                    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         } else {
 
                             $sub_counter = $this->X_model->fetch(array(
                                 'x__type' => $x__type3,
-                                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+                                                    ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
                         }
 

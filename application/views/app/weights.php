@@ -17,8 +17,7 @@ if(!$obj || $obj==12273){
 
     //Update the weights for active ideas
     foreach($this->I_model->fetch(array(
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-    )) as $in) {
+        )) as $in) {
         $stats['i_scanned']++;
         $stats['i_updated'] += i__weight_calculator($in);
     }
@@ -29,8 +28,7 @@ if(!$obj || $obj==12273){
 if(!$obj || $obj==12274){
     //Update the weights for active sources:
     foreach($this->E_model->fetch(array(
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-    )) as $en) {
+        )) as $en) {
         $stats['e_scanned']++;
         $stats['e_changed'] += e__weight_calculator($en);
     }

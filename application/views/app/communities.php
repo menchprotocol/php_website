@@ -7,8 +7,7 @@ foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->E_mod
     foreach($this->X_model->fetch(array(
         'x__following' => $e_item['e__id'],
         'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x) {
+        ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x) {
 
         $total_count = view_e_covers(12274, $x['e__id'], 0, false);
 

@@ -33,9 +33,7 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
 
             //Does this have a follower list?
             $query_subset = $this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+                                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
                 'x__previous' => $followings_i['i__id'],
             ), array('x__next'), 0, 0, array('x__weight' => 'ASC'), '*', null, true);
 
@@ -53,7 +51,6 @@ if($x__player && $target_i__hashtag!=$focus_i['i__hashtag']){
                 foreach ($query_subset as $i_subset) {
 
                     if(count($this->X_model->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
                         'x__player' => $x__player,
                         'x__previous' => $i_subset['i__id'],

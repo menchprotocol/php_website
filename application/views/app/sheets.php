@@ -42,7 +42,6 @@ foreach($list_settings['query_string_filtered'] as $x){
             'x__previous' => $i_var['i__id'],
             'x__player' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1);
 
         if(count($discoveries)){
@@ -68,8 +67,7 @@ foreach($list_settings['query_string_filtered'] as $x){
                     'x__follower' => $x['e__id'],
                     'x__following IN (' . join(',', $i_var['must_follow']) . ')' => null,
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                ))))){
+                        ))))){
             if(!isset($count_totals['i'][$i_var['i__id']])){
                 $count_totals['i'][$i_var['i__id']] = 0;
             }
@@ -96,11 +94,9 @@ foreach($list_settings['query_string_filtered'] as $x){
             'x__following IN (' . join(',', $this->config->item('n___43510')) . ')' => null, //Require Written Answers
             'x__follower' => $e['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )));
 
         $fetch_data = $this->X_model->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__follower' => $x['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__following' => $e['e__id'],
@@ -125,8 +121,7 @@ foreach($list_settings['query_string_filtered'] as $x){
             }
         }
 
-
-        $body_content .= '<td title="'.$x['e__title'].' x '.$e['e__title'].'" class="'.( superpower_unlocked(28714) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__player_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__player="'.$x['e__id'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
+        $body_content .= '<td title="'.$x['e__title'].' x '.$e['e__title'].'" class="'.( access_level_e(null, $e['e__id'], $e) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__player_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__player="'.$x['e__id'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
 
         if(strlen($message_clean)>0){
 
@@ -135,8 +130,7 @@ foreach($list_settings['query_string_filtered'] as $x){
             }
 
             $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__follower' => $e['e__id'],
+                            'x__follower' => $e['e__id'],
                     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__following IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['x__message'])) : 1 );
@@ -164,8 +158,7 @@ foreach($list_settings['column_e'] as $e){
 foreach($list_settings['column_i'] as $i_var){
 
     $max_available = $this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i_var['i__id'],
         'x__following' => 26189,
     ), array(), 1);

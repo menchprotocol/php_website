@@ -2,7 +2,6 @@
 
 //Make sure member:
 if(!count($this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__following IN (' . join(',', $this->config->item('n___32537')) . ')' => null, //Interested Member
     'x__follower' => $focus_e['e__id'],

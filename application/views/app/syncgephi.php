@@ -23,7 +23,6 @@ $id_prefix = array(
 
 //Add Ideas:
 $is = $this->I_model->fetch(array(
-    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ));
 foreach($is as $in){
 
@@ -38,9 +37,7 @@ foreach($is as $in){
 
     //Fetch Next Ideas:
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
         'x__previous' => $in['i__id'],
     ), array('x__next'), 0, 0) as $next_i){
 
@@ -59,7 +56,6 @@ foreach($is as $in){
 
 //Transfer sources:
 $es = $this->E_model->fetch(array(
-    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
 ));
 foreach($es as $en){
 
@@ -74,9 +70,7 @@ foreach($es as $en){
 
     //Fetch followers:
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
         'x__following' => $en['e__id'],
     ), array('x__follower'), 0, 0) as $e_down){
 

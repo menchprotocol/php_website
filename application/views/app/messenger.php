@@ -1,7 +1,6 @@
 <?php
 
 foreach($this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
     'x__type' => 33600, //Draft
     'x__following' => 26582,
 ), array('x__next')) as $i){
@@ -9,8 +8,7 @@ foreach($this->X_model->fetch(array(
     //Determine if it's time to send this message:
     $time_starts = 0;
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
         'x__following' => 43743, //Sending Starts
     )) as $time){
@@ -26,8 +24,7 @@ foreach($this->X_model->fetch(array(
     //Does it have an end time?
     $end_sending = 0;
     foreach($this->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
         'x__following' => 43744, //Sending Ends
     )) as $time){

@@ -16,8 +16,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
             //echo $email.'<hr />';
 
             foreach($this->X_model->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                 'x__following' => 3288, //Email
                 'x__message' => trim(strtolower($email)),
             )) as $e_data){
@@ -26,8 +25,7 @@ if(isset($_POST['list_emails']) && strlen($_POST['list_emails'])){
 
                 //Do we need to add?
                 if(isset($_POST['import_e__id']) && intval($_POST['import_e__id']) && !count($this->X_model->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                     'x__following' => $_POST['import_e__id'],
                     'x__follower' => $e_data['x__follower'],
                 )))){
