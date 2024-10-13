@@ -316,16 +316,16 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
     $item_numbers['e_player'] = strtolower(trim(str_replace('@','',$item_parts[( count($item_parts)==4 ? 3 : 2 )])));
 
     //Fetch Objects based on handles:
-    $player_es = $this->E_model->fetch(array(
+    $player_es = $this->Sources->read(array(
         'LOWER(e__handle)' => $item_numbers['e_player'],
     ));
-    $website_es = $this->E_model->fetch(array(
+    $website_es = $this->Sources->read(array(
         'LOWER(e__handle)' => $item_numbers['e_wesbite'],
     ));
-    $next_is = $this->I_model->fetch(array(
+    $next_is = $this->Ideas->read(array(
         'LOWER(i__hashtag)' => $item_numbers['i_destination'],
         ));
-    $target_is = ($item_numbers['i_target'] ? $this->I_model->fetch(array(
+    $target_is = ($item_numbers['i_target'] ? $this->Ideas->read(array(
         'LOWER(i__hashtag)' => $item_numbers['i_target'],
         )) : false);
 
@@ -342,7 +342,7 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             $x__type = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->X_model->mark_complete($x__type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Ledger->mark_complete($x__type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
                 'x__weight' => intval($_POST['quantity']),
                 'x__metadata' => $_POST,
             ));
@@ -352,14 +352,14 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
             $x__type = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
 
             //Find issued tickets:
-            $original_payment = $this->X_model->fetch(array(
+            $original_payment = $this->Ledger->read(array(
                 'x__type' => 26595,
                 'x__player' => $player_es[0]['e__id'],
                 'x__previous' => $next_is[0]['i__id'],
             ));
 
             //Log Refund:
-            $completion_status = $this->X_model->mark_complete($x__type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
+            $completion_status = $this->Ledger->mark_complete($x__type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
                 'x__weight' => (-1 * ( isset($original_payment[0]['x__weight']) ? $original_payment[0]['x__weight'] : 1 )),
                 'x__metadata' => $_POST,
                 'x__reference' => ( isset($original_payment[0]['x__id']) ? $original_payment[0]['x__id'] : 0 ),
@@ -612,7 +612,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     if(superpower_unlocked(12700)){
         ?>
 
-        <!-- Apply to All Sources -->
+        <!-- Apply to All sources -->
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
@@ -769,7 +769,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 
 
-        <!-- Apply to All Ideas -->
+        <!-- Apply to All ideas -->
         <div class="modal fade" id="modal12589" tabindex="-1" role="dialog" aria-labelledby="modal12589Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content long_flat">
@@ -805,7 +805,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Source search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources" class="form-control algolia_finder e_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources" class="form-control algolia_finder e_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="text" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -815,7 +815,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     //Source search box:
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Sources" class="form-control algolia_finder e_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search sources" class="form-control algolia_finder e_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -823,7 +823,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                 } elseif(in_array($action_e__id, array(12611,12612,27240,28801))){
 
                                     //String command:
-                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search Ideas" class="form-control algolia_finder i_text_finder border main__title">';
+                                    $input_options .= '<input type="text" name="mass_value1_'.$action_e__id.'"  placeholder="Search ideas" class="form-control algolia_finder i_text_finder border main__title">';
 
                                     //We don't need the second value field here:
                                     $input_options .= '<input type="hidden" name="mass_value2_'.$action_e__id.'" value="" />';
@@ -906,7 +906,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Creator(s) -->
                         <div class="creator_box">
                             <?php
-                            foreach($this->X_model->fetch(array(
+                            foreach($this->Ledger->read(array(
                                 'x__following' => $player_e['e__id'],
                                 'x__type' => 41011, //PINNED FOLLOWER
                                                     ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x_pinned) {

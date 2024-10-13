@@ -46,7 +46,7 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     $subscriber_filters = array(
         'x__following' => 12114,
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
             );
 
     //Should we limit the scope?
@@ -57,9 +57,9 @@ if($player_http_request && !isset($_GET['email_trigger'])){
 
     $email_recipients = 0;
     //Send email to all subscribers:
-    foreach($this->X_model->fetch($subscriber_filters, array('x__follower')) as $subscribed_u){
+    foreach($this->Ledger->read($subscriber_filters, array('x__follower')) as $subscribed_u){
 
-        $this->X_model->send_dm($subscribed_u['e__id'], $subject, $html_message);
+        $this->Ledger->send_dm($subscribed_u['e__id'], $subject, $html_message);
         $email_recipients++;
 
     }

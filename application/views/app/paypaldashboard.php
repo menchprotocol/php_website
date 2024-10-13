@@ -19,7 +19,7 @@ $all_e = array();
 if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handle'] || $_GET['e__handle']=='0'){
     
     echo '<h1>'.$e___6287[27004]['m__title'].'</h1>';
-    foreach($this->E_model->fetch_recursive(11029, $player_e['e__id'], array(27004)) as $e){
+    foreach($this->Sources->fetch_recursive(11029, $player_e['e__id'], array(27004)) as $e){
         echo '<div><a href="'.view_app_link(27004).view_memory(42903,42902).$e['e__handle'].'" class="main__title">'.$e['e__title'].'</a></div>';
     }
 
@@ -29,19 +29,19 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
     //Show header:
     echo '<div style="padding: 0 0 0 10px; font-weight: bold; margin-bottom: -13px;"><a href="'.view_app_link(27004).'"><b>'.$e___6287[27004]['m__title'].'</b></a></div>';
 
-    $es = $this->E_model->fetch(array(
+    $es = $this->Sources->read(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     ));
     echo '<h2>'.$es[0]['e__title'].' @'.$es[0]['e__handle'].'</h2>';
 
-    $i_query = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-        'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
+    $i_query = $this->Ledger->read(array(
+            'x__type IN (' . njoin(33602) . ')' => null, //Idea/Source Links Active
+        'i__type IN (' . njoin(41055) . ')' => null, //Payment ideas
         'x__following' => $es[0]['e__id'],
     ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
 
-    //List all payment Ideas and their total earnings
+    //List all payment ideas and their total earnings
     $x_updated = 0;
     echo '<p>'.count($i_query).' results found:</p>';
 
@@ -56,8 +56,8 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         $total_paypal_fee = 0;
         $currencies = array();
 
-        foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        foreach($this->Ledger->read(array(
+            'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
             'x__previous' => $i['i__id'],
         ), array(), 0, 0, array('x__player' => 'ASC')) as $x){
 
@@ -69,7 +69,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
             unset($x__metadata2);
             if($x['x__reference']>0){
                 //This is a refund, fetch quantity from original transaction:
-                foreach($this->X_model->fetch(array(
+                foreach($this->Ledger->read(array(
                     'x__id' => $x['x__reference'],
                 )) as $x2){
                     $x__metadata2 = unserialize($x2['x__metadata']);
@@ -123,7 +123,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
             $item_parts = explode('-',$x__metadata['item_number']);
             $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['x__player'] );
             array_push($all_e, $this_e);
-            $es = $this->E_model->fetch(array(
+            $es = $this->Sources->read(array(
                 'e__id' => $this_e,
             ));
 
@@ -175,8 +175,8 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         $gross_commission += $total_commission;
         $gross_payout += $payout;
 
-        $max_available = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        $max_available = $this->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26189,
         ), array(), 1);
@@ -216,17 +216,17 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
 
     $other_es = array();
 
-    foreach($this->E_model->fetch(array(
+    foreach($this->Sources->read(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e){
         $filters = array(
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
             'x__following' => $e['e__id'], //Member
         );
         if(count($all_e)){
             $filters[ 'x__follower NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->X_model->fetch($filters, array('x__follower'), 0);
+        $other_es = $this->Ledger->read($filters, array('x__follower'), 0);
     }
 
 
@@ -237,7 +237,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
 
         $e___4593 = $this->config->item('e___4593');
 
-        //Show Other Sources:
+        //Show Other sources:
         $other_e_content .= '<tr class="main__title">';
         $other_e_content .= '<td><a href="javascript:void(0)" onclick="$(\'.thr_e\').toggleClass(\'hidden\');" style="font-weight:bold;"><u>'.$e___4593[29393]['m__title'].'</u></a></td>';
         $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">0</td>';
@@ -357,8 +357,8 @@ if(count($i_query)){
                 <?php
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
-                    if(($sales/$gross_revenue)>=0.5 || count($this->X_model->fetch(array(
-                                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                    if(($sales/$gross_revenue)>=0.5 || count($this->Ledger->read(array(
+                                'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
                             'x__next' => $origin,
                             'x__following' => 30564, //None Promoter
                         )))){
@@ -367,7 +367,7 @@ if(count($i_query)){
                     }
                     if($sales > 0){
                         //Fetch this origin:
-                        $is = $this->I_model->fetch(array(
+                        $is = $this->Ideas->read(array(
                             'i__id' => $origin,
                         ));
                         echo "['".( count($is) ? '$'.number_format($sales, 0).' '.str_replace('\'','`',view_i_title($is[0], true)) : 'Unknown' )."', ".number_format($sales, 0, '.', '')."],";

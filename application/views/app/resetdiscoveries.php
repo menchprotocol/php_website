@@ -12,8 +12,8 @@ if(!isset($_GET['confirm'])){
 } else {
 
     //Fetch their current progress transactions:
-    $progress_x = $this->X_model->fetch(array(
-        'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+    $progress_x = $this->Ledger->read(array(
+        'x__type IN (' . njoin(31777) . ')' => null, //EXPANDED DISCOVERIES
         'x__player' => $focus_e['e__id'],
     ), array(), 0);
 
@@ -23,7 +23,7 @@ if(!isset($_GET['confirm'])){
         $message = 'Deleted all '.count($progress_x).' discoveries';
 
         //Log transaction:
-        $clear_all_x = $this->X_model->create(array(
+        $clear_all_x = $this->Ledger->write(array(
             'x__message' => $message,
             'x__type' => 6415,
             'x__player' => $focus_e['e__id'],
@@ -31,7 +31,7 @@ if(!isset($_GET['confirm'])){
 
         //Delete all progressions:
         foreach($progress_x as $progress_x){
-            $this->X_model->update($progress_x['x__id'], array(
+            $this->Ledger->edit($progress_x['x__id'], array(
                 'x__privacy' => 6173, //Transaction Removed
                 'x__reference' => $clear_all_x['x__id'], //To indicate when it was deleted
             ), $focus_e['e__id'], 6415 /* Reset All discoveries */);

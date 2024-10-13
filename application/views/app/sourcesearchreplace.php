@@ -14,12 +14,12 @@ $replace_with_confirmed = false;
 
 if($search_for_set){
 
-    $matching_results = $this->E_model->fetch(array(
+    $matching_results = $this->Sources->read(array(
             'e__title LIKE \'%'.$_GET['search_for'].'%\'' => null,
     ));
 
     //List the matching search:
-    echo '<div>'.count($matching_results).' Sources Found</div>';
+    echo '<div>'.count($matching_results).' sources Found</div>';
     if(count($matching_results) < 1){
 
         $replace_with_set = false;
@@ -43,7 +43,7 @@ if($search_for_set){
 
                 if($replace_with_confirmed){
                     //Update idea:
-                    $res = $this->E_model->update($en['e__id'], array(
+                    $res = $this->Sources->edit($en['e__id'], array(
                         'e__title' => $en['e__title'],
                     ), true, $player_e['e__id']);
                     $replaced++;

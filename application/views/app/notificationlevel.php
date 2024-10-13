@@ -7,7 +7,7 @@ $e__handle = ( isset($_GET['e__handle']) && isset($_GET['e__hash']) && isset($_G
 if(strlen($e__handle)){
 
     //Notification Settings
-    foreach($this->E_model->fetch(array(
+    foreach($this->Sources->read(array(
         'e__handle' => $e__handle,
     )) as $e){
         echo '<h3 style="text-align: center; margin: -10px 0 21px 0;">'.$e['e__title'].'</h3>';

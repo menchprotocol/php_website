@@ -8,13 +8,13 @@ $e___42263 = $this->config->item('e___42263'); //Link Groups
 
 
 if($e__handle){
-    foreach($this->E_model->fetch(array(
+    foreach($this->Sources->read(array(
         'LOWER(e__handle)' => strtolower($e__handle),
     )) as $e){
         echo '<h2 class="center"><a href="'.view_memory(42903,42902).$e__handle.'"><span class="icon-block">'.view_cover($e['e__cover']).'</span> <u>' . $e['e__title'] . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
     }
 } elseif($i__hashtag){
-    foreach($this->I_model->fetch(array(
+    foreach($this->Ideas->read(array(
         'LOWER(i__hashtag)' => strtolower($i__hashtag),
     )) as $i){
         echo '<h2 class="center"><a href="'.view_memory(42903,33286).$i__hashtag.'"><u>' . view_i_title($i, true) . '</u></a> <a href="'.view_memory(42903,33286).$this->uri->segment(1).'"><i class="far fa-filter-slash"></i></a></h2>';
@@ -59,7 +59,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 
                         //Search for sibling If Has Family:
                         if(in_array($e__id2, $this->config->item('n___42792'))){
-                            foreach($this->X_model->fetch(array(
+                            foreach($this->Ledger->read(array(
                                 'x__follower' => $headline_link,
                                 'x__type' => 42570, //Family
                                     ), array('x__following'), 1) as $sibling){
@@ -99,7 +99,7 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
 <script>
 
     function x__refresh_gameplay(){
-        $.post("/ajax/x__refresh_gameplay", {
+        $.post("/apps/x__refresh_gameplay", {
             e__handle: '<?= $e__handle ?>',
             i__hashtag: '<?= $i__hashtag ?>',
             js_request_uri: js_request_uri, //Always append to AJAX Calls

@@ -7,9 +7,9 @@ if(isset($_GET['e__handle'])){
     //Find Link Content Duplicates for this Source:
     $main_index = array();
     $duplicates_found = array();
-    foreach($this->X_model->fetch(array(
+    foreach($this->Ledger->read(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
     ), array('x__following'), 0) as $x) {
         $x__message_md5 = substr(md5($x['x__message']), 0, 16);
         if(!isset($main_index[$x__message_md5])){
@@ -31,7 +31,7 @@ if(isset($_GET['e__handle'])){
 
 } elseif(!isset($_GET['search_by_name'])){
 
-    echo '<p>Either enter ?e__id= in URL to search specific source Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_link(7268).'?search_by_name=1"><b>Find Duplicate Sources by Name</b></a></p>.';
+    echo '<p>Either enter ?e__id= in URL to search specific source Follower Message Duplicates (Finding duplicate emails for example) or <a href="'.view_app_link(7268).'?search_by_name=1"><b>Find Duplicate sources by Name</b></a></p>.';
 
 } else {
 

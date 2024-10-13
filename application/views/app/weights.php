@@ -16,7 +16,7 @@ $stats = array(
 if(!$obj || $obj==12273){
 
     //Update the weights for active ideas
-    foreach($this->I_model->fetch(array(
+    foreach($this->Ideas->read(array(
         )) as $in) {
         $stats['i_scanned']++;
         $stats['i_updated'] += i__weight_calculator($in);
@@ -27,7 +27,7 @@ if(!$obj || $obj==12273){
 
 if(!$obj || $obj==12274){
     //Update the weights for active sources:
-    foreach($this->E_model->fetch(array(
+    foreach($this->Sources->read(array(
         )) as $en) {
         $stats['e_scanned']++;
         $stats['e_changed'] += e__weight_calculator($en);

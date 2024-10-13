@@ -16,7 +16,7 @@ if(in_array($website_id, $this->config->item('n___30984'))){
 
 $primary_i = array();
 $secondary_i_list = array();
-foreach($this->X_model->fetch(array(
+foreach($this->Ledger->read(array(
     'x__type' => 34513, //Pinned
     'x__following' => $website_id,
     'i__privacy IN (' . join(',', dynamic_privacy_i()) . ')' => null,
@@ -67,12 +67,12 @@ if($domain_phone || $email_domain) {
 
 
 //Any Info Boxes?
-foreach($this->E_model->scissor_e($website_id, 14903) as $e_item) {
+foreach($this->Sources->scissor_e($website_id, 14903) as $e_item) {
     //Any Followers?
     $info_item = null;
-    foreach($this->X_model->fetch(array(
+    foreach($this->Ledger->read(array(
         'x__following' => $e_item['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
         ), array('x__follower'), 0, 0, array('x__weight' => 'ASC')) as $info_element) {
         $info_item .= '<div class="col-12 col-md-4">';
         $info_item .= '<div class="info_box">';
@@ -112,7 +112,7 @@ if($messages){
 
 
 
-//List Relevant Ideas in order:
+//List Relevant ideas in order:
 $secondary_i = '';
 foreach($secondary_i_list as $ref_i){
     $secondary_i .= view_card_i(14565,  $ref_i);
@@ -131,10 +131,10 @@ if(strlen($secondary_i)){
 $social_ui = null;
 $e___14870 = $this->config->item('e___14870'); //Website Partner
 foreach($this->config->item('e___14036') as $e__id => $m){
-    foreach($this->X_model->fetch(array(
+    foreach($this->Ledger->read(array(
         'x__following' => $e__id,
         'x__follower' => $website_id,
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
     ), array(), 0, 0) as $social_link){
 
         //Determine link type:

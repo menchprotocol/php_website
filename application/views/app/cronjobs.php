@@ -3,8 +3,8 @@
 //List CronJobs command:
 $longest_time = 0;
 $longest_id = 0;
-$cron_jobs = $this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+$cron_jobs = $this->Ledger->read(array(
+    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
     'x__following' => 7274,
 ), array('x__follower'), view_memory(6404,11064), 0, array('x__weight' => 'ASC'));
 foreach($cron_jobs as $cron_job){

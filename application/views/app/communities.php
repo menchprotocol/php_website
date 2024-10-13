@@ -2,11 +2,11 @@
 
 $community_pills = '';
 
-foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->E_model->fetch(array('LOWER(e__handle)' => strtolower($_GET['e__handle']))) : $this->E_model->scissor_e(website_setting(0), 13207) ) as $e_item) {
+foreach(( isset($_GET['e__handle']) && strlen($_GET['e__handle']) ? $this->Sources->read(array('LOWER(e__handle)' => strtolower($_GET['e__handle']))) : $this->Sources->scissor_e(website_setting(0), 13207) ) as $e_item) {
 
-    foreach($this->X_model->fetch(array(
+    foreach($this->Ledger->read(array(
         'x__following' => $e_item['e__id'],
-        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
         ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC')) as $x) {
 
         $total_count = view_e_covers(12274, $x['e__id'], 0, false);

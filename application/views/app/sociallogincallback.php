@@ -5,9 +5,9 @@ $has_idea = isset($_GET['i__hashtag']) && $_GET['i__hashtag'];
 if($has_idea && isset($_GET['name']) && isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)){
 
     //New account to be created:
-    $player_result = $this->E_model->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0));
+    $player_result = $this->Sources->add_member(urldecode($_GET['name']), urldecode($_GET['email']), null, null, website_setting(0));
     if(!$player_result['status']) {
-        $this->X_model->create(array(
+        $this->Ledger->write(array(
             'x__type' => 4246, //Platform Bug Reports
             'x__message' => 'auth0_callback() Failed to create new member: '.$player_result['message'],
         ));
@@ -64,8 +64,8 @@ if($has_idea && isset($_GET['name']) && isset($_GET['email']) && filter_var($_GE
     if($userInfo && isset($userInfo['email'])){
 
         //We have their email already?
-        $player_emails = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        $player_emails = $this->Ledger->read(array(
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
             'x__following' => 3288, //Email
             'x__message' => $userInfo['email'],
         ), array('x__follower'));
@@ -79,7 +79,7 @@ if($has_idea && isset($_GET['name']) && isset($_GET['email']) && filter_var($_GE
             }
         }
 
-        $this->X_model->create(array(
+        $this->Ledger->write(array(
             'x__type' => 14436, //Social Sign in
             'x__player' => ( count($player_emails) ? $player_emails[0]['e__id'] : 0 ),
             'x__following' => $signin_method,
@@ -97,7 +97,7 @@ if($has_idea && isset($_GET['name']) && isset($_GET['email']) && filter_var($_GE
         if(count($player_emails)){
 
             //Activate Session:
-            $this->E_model->activate_session($player_emails[0], true);
+            $this->Sources->activate_session($player_emails[0], true);
             js_php_redirect($redirect_url, 13);
 
         } else {
@@ -110,7 +110,7 @@ if($has_idea && isset($_GET['name']) && isset($_GET['email']) && filter_var($_GE
 
         if(strlen($userInfo)) {
             //Log this error:
-            $this->X_model->create(array(
+            $this->Ledger->write(array(
                 'x__type' => 4246, //Platform Bug Reports
                 'x__message' => 'APP @14564 Failed to fetch data from server',
                 'x__metadata' => array(

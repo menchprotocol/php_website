@@ -15,8 +15,8 @@ if(!count($list_settings['list_config'][34513])){
 }
 
 
-foreach($this->X_model->fetch(array(
-    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+foreach($this->Ledger->read(array(
+    'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
     'x__following IN (' . join(',', $list_settings['list_config'][34513]) . ')' => null, //Active Writes
 ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $link_i){
 

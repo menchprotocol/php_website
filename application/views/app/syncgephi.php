@@ -21,8 +21,8 @@ $id_prefix = array(
     12274 => 200,
 );
 
-//Add Ideas:
-$is = $this->I_model->fetch(array(
+//Add ideas:
+$is = $this->Ideas->read(array(
 ));
 foreach($is as $in){
 
@@ -35,9 +35,9 @@ foreach($is as $in){
         'node_status' => $in['i__type'],
     ));
 
-    //Fetch Next Ideas:
-    foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+    //Fetch Next ideas:
+    foreach($this->Ledger->read(array(
+            'x__type IN (' . njoin(42267) . ')' => null, //IDEA LINKS
         'x__previous' => $in['i__id'],
     ), array('x__next'), 0, 0) as $next_i){
 
@@ -55,7 +55,7 @@ foreach($is as $in){
 
 
 //Transfer sources:
-$es = $this->E_model->fetch(array(
+$es = $this->Sources->read(array(
 ));
 foreach($es as $en){
 
@@ -69,8 +69,8 @@ foreach($es as $en){
     ));
 
     //Fetch followers:
-    foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    foreach($this->Ledger->read(array(
+            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
         'x__following' => $en['e__id'],
     ), array('x__follower'), 0, 0) as $e_down){
 

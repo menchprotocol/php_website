@@ -10,7 +10,7 @@ if(!isset($_GET['x__id']) || !intval($_GET['x__id'])){
 
 
     //Fetch transaction metadata and display it:
-    $x = $this->X_model->fetch(array(
+    $x = $this->Ledger->read(array(
         'x__id' => $_GET['x__id'],
     ));
 

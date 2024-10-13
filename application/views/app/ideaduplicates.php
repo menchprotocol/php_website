@@ -3,7 +3,7 @@
 //Idea List Duplicates
 
 
-//Do a query to detect Ideas with the exact same title:
+//Do a query to detect ideas with the exact same title:
 $q = $this->db->query('select in1.* from cache_ideas in1 where (select count(*) from cache_ideas in2 where in2.i__message = in1.i__message AND in2.i__privacy IN (' . join(',', dynamic_privacy_i(null, 0)) . ')) > 1 AND in1.i__privacy IN (' . join(',', dynamic_privacy_i(null, 0)) . ') ORDER BY in1.i__message ASC');
 $duplicates = $q->result_array();
 

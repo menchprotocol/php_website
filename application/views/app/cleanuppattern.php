@@ -1,13 +1,13 @@
 <?php
 
-foreach($this->I_model->fetch(array(
+foreach($this->Ideas->read(array(
     'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
 )) as $i){
 
     echo '<h2>' . view_i_title($i) . '</h2>';
 
-    $preg_query = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+    $preg_query = $this->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
         'x__following' => 32103,
     ));
@@ -15,7 +15,7 @@ foreach($this->I_model->fetch(array(
 
     //See apply to sources:
     $apply_to = array();
-    foreach($this->X_model->fetch(array(
+    foreach($this->Ledger->read(array(
             'x__type' => 7545, //Following Add
         'x__next' => $i['i__id'],
     ), array('x__following')) as $x_tag){
@@ -35,12 +35,12 @@ foreach($this->I_model->fetch(array(
 
             echo '<p>SOURCES Applying against ['.$preg_query[0]['x__message'].'] results in:</p>';
 
-            foreach($this->E_model->fetch(array(
+            foreach($this->Sources->read(array(
                 'LOWER(e__handle)' => strtolower($_GET['e__handle']),
             )) as $e){
-                foreach($this->X_model->fetch(array(
+                foreach($this->Ledger->read(array(
                     'x__following' => $e['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                         ), array('x__follower'), 0) as $x) {
 
                     $responses++;
@@ -54,18 +54,18 @@ foreach($this->I_model->fetch(array(
                             $updated++;
                             if(isset($_GET['update'])){
 
-                                $this->X_model->update($x['x__id'], array(
+                                $this->Ledger->edit($x['x__id'], array(
                                     'x__message' => $new_form,
                                 ));
 
                                 foreach($apply_to as $apply_e__id){
-                                    foreach($this->X_model->fetch(array(
+                                    foreach($this->Ledger->read(array(
                                         'x__following' => $apply_e__id,
                                         'x__follower' => $x['x__player'],
-                                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                                                     ), array(), 0) as $follow_appended) {
                                         $links_updated++;
-                                        $this->X_model->update($follow_appended['x__id'], array(
+                                        $this->Ledger->edit($follow_appended['x__id'], array(
                                             'x__message' => $new_form,
                                         ));
                                     }
@@ -79,19 +79,19 @@ foreach($this->I_model->fetch(array(
                             $removed++;
                             if(isset($_GET['update'])){
 
-                                $this->X_model->update($x['x__id'], array(
+                                $this->Ledger->edit($x['x__id'], array(
                                     'x__privacy' => 6173,
                                 ));
 
                                 //Also update follower link?
                                 foreach($apply_to as $apply_e__id){
-                                    foreach($this->X_model->fetch(array(
+                                    foreach($this->Ledger->read(array(
                                         'x__following' => $apply_e__id,
                                         'x__follower' => $x['x__player'],
-                                        'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                                                     ), array(), 0) as $follow_appended) {
                                         $links_removed++;
-                                        $this->X_model->update($follow_appended['x__id'], array(
+                                        $this->Ledger->edit($follow_appended['x__id'], array(
                                             'x__privacy' => 6173,
                                         ));
                                     }
@@ -117,8 +117,8 @@ foreach($this->I_model->fetch(array(
 
         echo '<p>Applying against ['.$preg_query[0]['x__message'].'] results in:</p>';
 
-        foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        foreach($this->Ledger->read(array(
+            'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
             'LENGTH(x__message)>0' => null,
             'x__previous' => $i['i__id'],
         ), array(), 0) as $x) {
@@ -133,18 +133,18 @@ foreach($this->I_model->fetch(array(
                     $updated++;
                     if(isset($_GET['update'])){
 
-                        $this->X_model->update($x['x__id'], array(
+                        $this->Ledger->edit($x['x__id'], array(
                             'x__message' => $new_form,
                         ));
 
                         foreach($apply_to as $apply_e__id){
-                            foreach($this->X_model->fetch(array(
+                            foreach($this->Ledger->read(array(
                                 'x__following' => $apply_e__id,
                                 'x__follower' => $x['x__player'],
-                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                                     ), array(), 0) as $follow_appended) {
                                 $links_updated++;
-                                $this->X_model->update($follow_appended['x__id'], array(
+                                $this->Ledger->edit($follow_appended['x__id'], array(
                                     'x__message' => $new_form,
                                 ));
                             }
@@ -157,19 +157,19 @@ foreach($this->I_model->fetch(array(
                     $removed++;
                     if(isset($_GET['update'])){
 
-                        $this->X_model->update($x['x__id'], array(
+                        $this->Ledger->edit($x['x__id'], array(
                             'x__privacy' => 6173,
                         ));
 
                         //Also update follower link?
                         foreach($apply_to as $apply_e__id){
-                            foreach($this->X_model->fetch(array(
+                            foreach($this->Ledger->read(array(
                                 'x__following' => $apply_e__id,
                                 'x__follower' => $x['x__player'],
-                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                                     ), array(), 0) as $follow_appended) {
                                 $links_removed++;
-                                $this->X_model->update($follow_appended['x__id'], array(
+                                $this->Ledger->edit($follow_appended['x__id'], array(
                                     'x__privacy' => 6173,
                                 ));
                             }

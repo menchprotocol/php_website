@@ -11,7 +11,7 @@ $input_i = ( isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag']) > 0 );
 $focus_i = false;
 
 if($input_e){
-    foreach($this->E_model->fetch(array(
+    foreach($this->Sources->read(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e_found){
         $focus_e = $e_found;
@@ -24,7 +24,7 @@ if($input_e){
 }
 
 if($input_i){
-    foreach($this->I_model->fetch(array(
+    foreach($this->Ideas->read(array(
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     )) as $i_found){
         $focus_i = $i_found;
@@ -203,7 +203,7 @@ $e___11035 = $this->config->item('e___11035'); //Encyclopedia
         $('#x_page_'+page_num).html('<div class="main__title center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>' + js_view_shuffle_message(12694) +  '</div>').hide().fadeIn();
 
         //Load report based on input fields:
-        $.post("/ajax/x_4341", {
+        $.post("/apps/x_4341", {
             x_filters: x_filters,
             x_joined_by: x_joined_by,
             x__message_find:x__message_find,
@@ -360,7 +360,7 @@ if(isset($_GET['x__type']) && substr_count($_GET['x__type'], ',')>0){
         //Fetch details for this member:
         $all_x_count = 0;
         $select_ui = '';
-        foreach($this->X_model->fetch($ini_filter, array('x__type'), 0, 0, sort__e(), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $x) {
+        foreach($this->Ledger->read($ini_filter, array('x__type'), 0, 0, sort__e(), 'COUNT(x__type) as total_count, e__title, x__type', 'x__type, e__title') as $x) {
             //Echo drop down:
             $select_ui .= '<option value="' . $x['x__type'] . '" ' . ((isset($_GET['x__type']) && $_GET['x__type']==$x['x__type']) ? 'selected="selected"' : '') . '>' . $x['e__title'] . ' ('  . number_format($x['total_count'], 0) . ')</option>';
             $all_x_count += $x['total_count'];

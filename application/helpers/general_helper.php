@@ -3,7 +3,7 @@
 function includes_any($str, $items)
 {
     //Determines if any of the items in array $items includes $str
-    foreach($items as $item) {
+    foreach ($items as $item) {
         if (substr_count($str, $item) > 0) {
             return $item;
         }
@@ -24,8 +24,8 @@ function load_algolia($index_name)
 function detect_missing_columns($add_fields, $required_columns, $x__player)
 {
     //A function used to review and require certain fields when inserting new rows in DB
-    foreach($required_columns as $req_field) {
-        if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field])==0) {
+    foreach ($required_columns as $req_field) {
+        if (!isset($add_fields[$req_field]) || strlen($add_fields[$req_field]) == 0) {
             return true; //Ooops, we're missing this required field
         }
     }
@@ -35,16 +35,17 @@ function detect_missing_columns($add_fields, $required_columns, $x__player)
 }
 
 
-function second_calc($str){
+function second_calc($str)
+{
     $seconds = -1; //Error
-    $parts = explode(':',$str);
-    if(count($parts)==3 && $parts[0] < 60 && $parts[1] < 60 && $parts[2] < 60){
+    $parts = explode(':', $str);
+    if (count($parts) == 3 && $parts[0] < 60 && $parts[1] < 60 && $parts[2] < 60) {
         //HH:MM:SS
         $seconds = (intval($parts[0]) * 3600) + (intval($parts[1]) * 60) + intval($parts[2]);
-    } elseif(count($parts)==2 && $parts[0] < 60 && $parts[1] < 60){
+    } elseif (count($parts) == 2 && $parts[0] < 60 && $parts[1] < 60) {
         //MM:SS
         $seconds = (intval($parts[0]) * 60) + intval($parts[1]);
-    } elseif(count($parts)==1 && $parts[0] < 60) {
+    } elseif (count($parts) == 1 && $parts[0] < 60) {
         //SS
         $seconds = intval($parts[0]);
     }
@@ -67,45 +68,49 @@ function is_valid_date($str)
     }
 }
 
-function target_disccovery(){
-    return ( isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1)=='/' && substr_count($_POST['js_request_uri'], '/')==2 ? '/'.strtok(substr($_POST['js_request_uri'], 1), '/') : null );
+function target_disccovery()
+{
+    return (isset($_POST['js_request_uri']) && substr($_POST['js_request_uri'], 0, 1) == '/' && substr_count($_POST['js_request_uri'], '/') == 2 ? '/' . strtok(substr($_POST['js_request_uri'], 1), '/') : null);
 }
-function e_pinned($e__id, $return_itself = false, $first_pin_only = true){
+
+function e_pinned($e__id, $return_itself = false, $first_pin_only = true)
+{
 
     $CI =& get_instance();
     $pinned_down = $CI->config->item('pinned_down');
-    if(isset($pinned_down[$e__id])){
-        return ( $first_pin_only ? reset($pinned_down[$e__id]) : $pinned_down[$e__id] );
+    if (isset($pinned_down[$e__id])) {
+        return ($first_pin_only ? reset($pinned_down[$e__id]) : $pinned_down[$e__id]);
     }
 
     $pinned_up = $CI->config->item('pinned_up');
-    if(isset($pinned_up[$e__id])){
-        return ( $first_pin_only ? reset($pinned_up[$e__id]) : $pinned_up[$e__id] );
+    if (isset($pinned_up[$e__id])) {
+        return ($first_pin_only ? reset($pinned_up[$e__id]) : $pinned_up[$e__id]);
     }
 
-    return ( $first_pin_only ? ( $return_itself ? $e__id : 0 ) : array() );
+    return ($first_pin_only ? ($return_itself ? $e__id : 0) : array());
 
 }
 
-function i__discovery_link($i, $trying_to_skip = false){
+function i__discovery_link($i, $trying_to_skip = false)
+{
 
-    if($trying_to_skip){
+    if ($trying_to_skip) {
         return 31022;
     }
 
     $CI =& get_instance();
-    if(in_array($i['i__type'], $CI->config->item('n___41055'))){
-        $currency_types = $CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+    if (in_array($i['i__type'], $CI->config->item('n___41055'))) {
+        $currency_types = $CI->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
-            'x__following IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
+            'x__following IN (' . njoin(26661) . ')' => null, //Currency
         ));
-        $total_dues = $CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        $total_dues = $CI->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26562, //Total Due
         ));
-        return ( count($total_dues) && doubleval($total_dues[0]['x__message']) && count($currency_types) ? 26595 : 42332 );
+        return (count($total_dues) && doubleval($total_dues[0]['x__message']) && count($currency_types) ? 26595 : 42332);
     } else {
         return e_pinned($i['i__type']);
     }
@@ -113,26 +118,29 @@ function i__discovery_link($i, $trying_to_skip = false){
 }
 
 
-
-function string_is_icon($string){
-    return substr_count($string,'fa-');
+function string_is_icon($string)
+{
+    return substr_count($string, 'fa-');
 }
-function string_is_emoji($string){
+
+function string_is_emoji($string)
+{
     return preg_match('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', $string);
 }
 
 
-function i__weight_calculator($i){
+function i__weight_calculator($i)
+{
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-    $count_x = $CI->X_model->fetch(array(
-        '(x__previous='.$i['i__id'].' OR x__next='.$i['i__id'].')' => null,
+    $count_x = $CI->Ledger->read(array(
+        '(x__previous=' . $i['i__id'] . ' OR x__next=' . $i['i__id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
-    if($count_x[0]['totals'] != $i['i__weight']){
-        return $CI->I_model->update($i['i__id'], array(
+    if ($count_x[0]['totals'] != $i['i__weight']) {
+        return $CI->Ideas->edit($i['i__id'], array(
             'i__weight' => $count_x[0]['totals'],
         ));
     } else {
@@ -141,17 +149,18 @@ function i__weight_calculator($i){
 
 }
 
-function e__weight_calculator($e){
+function e__weight_calculator($e)
+{
 
     //TODO Improve later (This is a very basic logic)
     $CI =& get_instance();
-    $count_x = $CI->X_model->fetch(array(
-        '(x__follower='.$e['e__id'].' OR x__following='.$e['e__id'].' OR x__player='.$e['e__id'].')' => null,
+    $count_x = $CI->Ledger->read(array(
+        '(x__follower=' . $e['e__id'] . ' OR x__following=' . $e['e__id'] . ' OR x__player=' . $e['e__id'] . ')' => null,
     ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     //Should we update?
-    if($count_x[0]['totals'] != $e['e__weight']){
-        return $CI->E_model->update($e['e__id'], array(
+    if ($count_x[0]['totals'] != $e['e__weight']) {
+        return $CI->Sources->edit($e['e__id'], array(
             'e__weight' => $count_x[0]['totals'],
         ));
     } else {
@@ -161,7 +170,8 @@ function e__weight_calculator($e){
 }
 
 
-function random_string($length_of_string){
+function random_string($length_of_string)
+{
     $characters = '123456789abcdefghijklmnpqrstuvwxyz';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -171,75 +181,81 @@ function random_string($length_of_string){
     return $randomString;
 }
 
-function update_description($before_string, $after_string){
-    return 'Updated from ['.$before_string.'] to ['.$after_string.']';
+function update_description($before_string, $after_string)
+{
+    return 'Updated from [' . $before_string . '] to [' . $after_string . ']';
 }
 
-function phone_href($x__type, $number){
+function phone_href($x__type, $number)
+{
 
     $number = preg_replace("/[^0-9]/", "", $number);
 
-    if($x__type==13815){
+    if ($x__type == 13815) {
         //WhatsApp
-        return 'https://wa.me/'.$number;
-    } elseif($x__type==20337){
+        return 'https://wa.me/' . $number;
+    } elseif ($x__type == 20337) {
         //Telegram
-        return 'https://t.me/'.$number;
+        return 'https://t.me/' . $number;
     } else {
         //general number:
-        return 'tel:'.$number;
+        return 'tel:' . $number;
     }
 }
 
-function random_cover($e__id){
+function random_cover($e__id)
+{
     $CI =& get_instance();
-    $fetch = $CI->config->item('e___'.$e__id);
-    return trim(one_two_explode('class="','"',$fetch[array_rand($fetch)]['m__cover']));
+    $fetch = $CI->config->item('e___' . $e__id);
+    return trim(one_two_explode('class="', '"', $fetch[array_rand($fetch)]['m__cover']));
 }
 
-function format_percentage($percent){
-    return number_format($percent, ( $percent < 10 ? 1 : 0 ));
+function format_percentage($percent)
+{
+    return number_format($percent, ($percent < 10 ? 1 : 0));
 }
 
 
-function new_player_redirect($e__id, $sign_i__hashtag){
+function new_player_redirect($e__id, $sign_i__hashtag)
+{
     //Is there a redirect app?
-    if(strlen($sign_i__hashtag)) {
-        return view_memory(42903,33286) . $sign_i__hashtag;
-    } elseif(isset($_GET['url'])) {
+    if (strlen($sign_i__hashtag)) {
+        return view_memory(42903, 33286) . $sign_i__hashtag;
+    } elseif (isset($_GET['url'])) {
         return $_GET['url'];
     } else {
         return home_url();
     }
 }
 
-function prefix_common_words($strs) {
+function prefix_common_words($strs)
+{
 
     $prefix_common_words = array();
 
-    if(count($strs)>=2){
+    if (count($strs) >= 2) {
 
-        $prefix_common_words = explode(' ',$strs[0]);
+        $prefix_common_words = explode(' ', $strs[0]);
 
-        foreach($strs as $str){
+        foreach ($strs as $str) {
 
-            if(!count($prefix_common_words)){
+            if (!count($prefix_common_words)) {
                 break;  //No common words, terminate
             }
 
-            $words = explode(' ',$str);
-            foreach($words as $word_count => $word){
-                if(!isset($prefix_common_words[$word_count])) {
+            $words = explode(' ', $str);
+            foreach ($words as $word_count => $word) {
+                if (!isset($prefix_common_words[$word_count])) {
 
                     break;
 
-                } elseif($prefix_common_words[$word_count]!=$word){
+                } elseif ($prefix_common_words[$word_count] != $word) {
 
                     //We have some common words left, continue to remove these words onwards:
                     $total_words = count($prefix_common_words);
 
-                    for($i=$word_count;$i<=$total_words;$i++){
-                        if(isset($prefix_common_words[$i])){
+                    for ($i = $word_count; $i <= $total_words; $i++) {
+                        if (isset($prefix_common_words[$i])) {
                             unset($prefix_common_words[$i]);
                         }
                     }
@@ -250,21 +266,22 @@ function prefix_common_words($strs) {
         }
     }
 
-    return ( count($prefix_common_words) ? join(' ',$prefix_common_words).' '  : false );
+    return (count($prefix_common_words) ? join(' ', $prefix_common_words) . ' ' : false);
 
 }
 
 
-function reset_cache($x__player){
+function reset_cache($x__player)
+{
     $CI =& get_instance();
     $count = 0;
-    foreach($CI->X_model->fetch(array(
+    foreach ($CI->Ledger->read(array(
         'x__type' => 14599, //Cache App
-        'x__following IN (' . join(',', $CI->config->item('n___14599')) . ')' => null, //Cache Apps
-        'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404,14599))),
-    )) as $delete_cahce){
+        'x__following IN (' . njoin(14599) . ')' => null, //Cache Apps
+        'x__time >' => date("Y-m-d H:i:s", (time() - view_memory(6404, 14599))),
+    )) as $delete_cahce) {
         //Delete email:
-        $count += $CI->X_model->update($delete_cahce['x__id'], array(
+        $count += $CI->Ledger->edit($delete_cahce['x__id'], array(
             'x__privacy' => 6173, //Transaction Removed
         ), $x__player, 14600 /* Delete Cache */);
     }
@@ -280,9 +297,9 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 
     $all_matches = array();
-    foreach($array as $key => $value) {
-        if (isset($value[$match_key]) && ( is_array($match_value) ? in_array($value[$match_key], $match_value) : $value[$match_key]==$match_value )) {
-            if($return_all){
+    foreach ($array as $key => $value) {
+        if (isset($value[$match_key]) && (is_array($match_value) ? in_array($value[$match_key], $match_value) : $value[$match_key] == $match_value)) {
+            if ($return_all) {
                 array_push($all_matches, $value[$match_key]);
             } else {
                 return $array[$key];
@@ -291,7 +308,7 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 
 
-    if($return_all){
+    if ($return_all) {
 
         return $all_matches;
 
@@ -301,92 +318,94 @@ function filter_array($array, $match_key, $match_value, $return_all = false)
     }
 }
 
-function i_spots_remaining($i__id){
+function i_spots_remaining($i__id)
+{
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
 
     //Any Limits on Selection?
     $spots_remaining = -1; //No limits
-    $max_available = $CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+    $max_available = $CI->Ledger->read(array(
+        'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
         'x__next' => $i__id,
         'x__following' => 26189,
     ), array(), 1);
-    if(count($max_available) && is_numeric($max_available[0]['x__message'])){
+    if (count($max_available) && is_numeric($max_available[0]['x__message'])) {
 
         //We have a limit! See if we've met it already:
         $query_filters = array(
-            'x__type IN (' . join(',', $CI->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+            'x__type IN (' . njoin(40986) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__previous' => $i__id,
         );
-        if($player_e){
+        if ($player_e) {
             //Do not count current user to give them option to edit & resubmit:
             $query_filters['x__player !='] = $player_e['e__id'];
         }
 
         //Navigation?
         $must_follow = array();
-        foreach($CI->X_model->fetch(array(
+        foreach ($CI->Ledger->read(array(
             'x__type' => 32235, //Navigation
             'x__next' => $i__id,
-        )) as $follow){
+        )) as $follow) {
             array_push($must_follow, $follow['x__following']);
         }
 
         $current_discoveries = 0;
-        if(count($must_follow)){
+        if (count($must_follow)) {
             //We must qualify each discovery individually:
-            foreach($CI->X_model->fetch($query_filters) as $e){
-                if(count($must_follow)==count($CI->X_model->fetch(array(
+            foreach ($CI->Ledger->read($query_filters) as $e) {
+                if (count($must_follow) == count($CI->Ledger->read(array(
                         'x__follower' => $e['x__player'],
                         'x__following IN (' . join(',', $must_follow) . ')' => null,
-                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    )))){
+                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                    )))) {
                     $current_discoveries++;
                 }
             }
         } else {
-            $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+            $query = $CI->Ledger->read($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
             $current_discoveries = $query[0]['totals'];
         }
 
 
-        $spots_remaining = intval($max_available[0]['x__message'])-$current_discoveries;
-        if($spots_remaining < 0){
+        $spots_remaining = intval($max_available[0]['x__message']) - $current_discoveries;
+        if ($spots_remaining < 0) {
             $spots_remaining = 0;
         }
     }
-    
+
     return $spots_remaining;
 }
 
-function object_to_array($obj) {
+function object_to_array($obj)
+{
     //only process if it's an object or array being passed to the function
-    if(is_object($obj) || is_array($obj)) {
-        $ret = (array) $obj;
-        foreach($ret as &$item) {
+    if (is_object($obj) || is_array($obj)) {
+        $ret = (array)$obj;
+        foreach ($ret as &$item) {
             //recursively process EACH element regardless of type
             $item = object_to_array($item);
         }
         return $ret;
-    }
-    //otherwise (i.e. for scalar values) return without modification
+    } //otherwise (i.e. for scalar values) return without modification
     else {
         return $obj;
     }
 }
 
-function i_redirect_url($i){
+function i_redirect_url($i)
+{
     $CI =& get_instance();
-    if(strlen($i['i__message']) && count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+    if (strlen($i['i__message']) && count($CI->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 43871, //Redirect URL
-        )))){
+        )))) {
         preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['i__message'], $match);
-        foreach($match[0] as $url){
-            if(filter_var($url, FILTER_VALIDATE_URL)){
+        foreach ($match[0] as $url) {
+            if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
             }
         }
@@ -395,16 +414,17 @@ function i_redirect_url($i){
     return false;
 }
 
-function i_popup_url($i){
+function i_popup_url($i)
+{
     $CI =& get_instance();
-    if(strlen($i['i__message']) && count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+    if (strlen($i['i__message']) && count($CI->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 43912, //Popup URL
-        )))){
+        )))) {
         preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['i__message'], $match);
-        foreach($match[0] as $url){
-            if(filter_var($url, FILTER_VALIDATE_URL)){
+        foreach ($match[0] as $url) {
+            if (filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
             }
         }
@@ -413,10 +433,11 @@ function i_popup_url($i){
     return false;
 }
 
-function i_required($i){
+function i_required($i)
+{
     $CI =& get_instance();
-    return in_array($i['i__type'], $CI->config->item('n___43009')) || count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+    return in_array($i['i__type'], $CI->config->item('n___43009')) || count($CI->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 28239, //Required
         )));
@@ -433,12 +454,12 @@ function redirect_message($url, $message = null, $log_error = false)
         $CI->session->set_flashdata('flash_message', $message);
     }
 
-    if($log_error){
+    if ($log_error) {
         //Log thie error:
-        $CI->X_model->create(array(
-            'x__message' => $url.' '.stripslashes($message),
+        $CI->Ledger->write(array(
+            'x__message' => $url . ' ' . stripslashes($message),
             'x__type' => 4246, //Platform Bug Reports
-            'x__player' => ( $player_e ? $player_e['e__id'] : 0 ),
+            'x__player' => ($player_e ? $player_e['e__id'] : 0),
         ));
     }
 
@@ -452,31 +473,34 @@ function redirect_message($url, $message = null, $log_error = false)
     }
 }
 
-function session_delete(){
+function session_delete()
+{
     $CI =& get_instance();
     $CI->session->sess_destroy();
     cookie_delete();
 }
 
-function cookie_delete(){
+function cookie_delete()
+{
     unset($_COOKIE['auth_cookie']);
     setcookie('auth_cookie', null, -1, '/');
 }
 
-function verify_cookie(){
+function verify_cookie()
+{
 
     //Authenticate Cookie:
-    $cookie_parts = explode('ABCEFG',$_COOKIE['auth_cookie']);
+    $cookie_parts = explode('ABCEFG', $_COOKIE['auth_cookie']);
     $CI =& get_instance();
 
-    $es = $CI->E_model->fetch(array(
+    $es = $CI->Sources->read(array(
         'e__id' => $cookie_parts[0],
     ));
 
-    if(count($es) && $cookie_parts[2]==view__hash($cookie_parts[0].$cookie_parts[1])){
+    if (count($es) && $cookie_parts[2] == view__hash($cookie_parts[0] . $cookie_parts[1])) {
 
         //Assign session & log transaction:
-        $CI->E_model->activate_session($es[0], false, true);
+        $CI->Sources->activate_session($es[0], false, true);
         return $es[0];
 
     } else {
@@ -489,7 +513,8 @@ function verify_cookie(){
 
 }
 
-function auto_login_player($is_ajax) {
+function auto_login_player($is_ajax)
+{
 
     date_default_timezone_set('America/Los_Angeles');
     @session_start();
@@ -497,42 +522,42 @@ function auto_login_player($is_ajax) {
 
 
     $e_user = false;
-    $first_segment = ( $is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $CI->uri->segment(1));
-    $_SERVER['REQUEST_URI'] = ( isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI'] );
-    $_SERVER['REQUEST_URI'] = ( strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_link(4269) );
+    $first_segment = ($is_ajax && isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : $CI->uri->segment(1));
+    $_SERVER['REQUEST_URI'] = (isset($_POST['js_request_uri']) ? $_POST['js_request_uri'] : @$_SERVER['REQUEST_URI']);
+    $_SERVER['REQUEST_URI'] = (strlen($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : view_app_link(4269));
     $player_e = superpower_unlocked();
-    $is_login_verified = isset($_GET['e__handle']) && $_GET['e__handle']!='SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time']+604800)>time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash'];
+    $is_login_verified = isset($_GET['e__handle']) && $_GET['e__handle'] != 'SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && ($_GET['e__time'] + 604800) > time() && strlen($_GET['e__handle']) && view__hash($_GET['e__time'] . $_GET['e__handle']) == $_GET['e__hash'];
 
-    if(
+    if (
         !$player_e //User must not be logged in
         && !array_key_exists(strtolower($first_segment), $CI->config->item('handle___14582'))
         && (isset($_COOKIE['auth_cookie']) || $is_login_verified) //We can auto login with either method:
     ) {
 
 
-        if($is_login_verified){
+        if ($is_login_verified) {
 
-            foreach($CI->E_model->fetch(array(
+            foreach ($CI->Sources->read(array(
                 'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-            )) as $player_e){
+            )) as $player_e) {
 
                 //Login:
-                $CI->E_model->activate_session($player_e, true);
+                $CI->Sources->activate_session($player_e, true);
 
                 //Log them in:
-                if(!$is_ajax){
+                if (!$is_ajax) {
                     header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
                     exit;
                 }
 
             }
 
-        } elseif(isset($_COOKIE['auth_cookie'])) {
+        } elseif (isset($_COOKIE['auth_cookie'])) {
 
             $player_e = verify_cookie();
-            if($player_e){
+            if ($player_e) {
                 //Log them in:
-                if(!$is_ajax){
+                if (!$is_ajax) {
                     header("Location: " . $_SERVER['REQUEST_URI'], true, 307);
                     exit;
                 }
@@ -541,8 +566,8 @@ function auto_login_player($is_ajax) {
 
 
         //Log them in:
-        if(!$is_ajax){
-            header("Location: " . view_app_link(4269).( strlen($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' ), true, 307);
+        if (!$is_ajax) {
+            header("Location: " . view_app_link(4269) . (strlen($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : ''), true, 307);
             exit;
         }
 
@@ -552,14 +577,15 @@ function auto_login_player($is_ajax) {
 
 }
 
-function round_minutes($seconds){
-    $minutes = round($seconds/60);
-    return ($minutes <= 1 ? 1 : $minutes );
+function round_minutes($seconds)
+{
+    $minutes = round($seconds / 60);
+    return ($minutes <= 1 ? 1 : $minutes);
 }
 
 
-
-function list_settings($i__hashtag, $fetch_contact = false){
+function list_settings($i__hashtag, $fetch_contact = false)
+{
 
     $CI =& get_instance();
     $e___6287 = $CI->config->item('e___6287'); //APP
@@ -575,258 +601,258 @@ function list_settings($i__hashtag, $fetch_contact = false){
         'phone_count' => 0,
     );
 
-   foreach($CI->I_model->fetch(array(
-       'LOWER(i__hashtag)' => strtolower($i__hashtag),
-   )) as $i){
+    foreach ($CI->Ideas->read(array(
+        'LOWER(i__hashtag)' => strtolower($i__hashtag),
+    )) as $i) {
 
-       foreach($e___40946 as $x__type => $m) {
-           $list_config[intval($x__type)] = array(); //Assume no links for this type
-       }
-       //Now search for these settings across sources:
-       foreach($CI->X_model->fetch(array(
-           'x__next' => $i['i__id'],
-           'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
-          ), array('x__following'), 0) as $setting_link){
-           array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
-       }
-       //Now search for these settings across ideas:
-       foreach($CI->X_model->fetch(array(
-           'x__previous' => $i['i__id'],
-           'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
-                 ), array('x__next'), 0) as $setting_link){
-           array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
-       }
-
-
-       //Generate filter:
-       $query_string_all = array();
-       if(count($list_config[40791])){
-
-           //If Discovered Any
-           $query_string_all = $CI->X_model->fetch(array(
-               'x__previous IN (' . join(',', $list_config[40791]) . ')' => null,
-               'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-              ), array('x__player'), 0, 0, array('x__id' => 'DESC'));
-
-       } elseif(count($list_config[27984])){
-
-           //Include If Has ANY
-           $query_string_all = $CI->X_model->fetch(array(
-               'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
-               'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-              ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-
-       } elseif(count($list_config[43513])){
-
-           //Include If Has ALL
-           $query_string_all = $CI->X_model->fetch(array(
-               'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
-               'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-              ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-
-       } else {
-
-           //All Discoveries:
-           $query_string_all = $CI->X_model->fetch(array(
-               'x__previous' => $i['i__id'],
-                  'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-           ), array('x__player'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
-
-       }
-
-       //Filter list:
-       $query_string_filtered = array();
-       $unique_users_count = array();
-       foreach($query_string_all as $key => $x) {
-
-           if(
-
-               (in_array(intval($x['e__id']), $unique_users_count)) ||
-
-               //Include If Has ANY
-               (count($list_config[27984]) && !count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                              )))) ||
-
-               //Exclude If Has ALL
-               (count($list_config[26600]) && count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following IN (' . join(',', $list_config[26600]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                              )))==count($list_config[26600])) ||
-
-               //Exclude If Has ANY
-               (count($list_config[43514]) && count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following IN (' . join(',', $list_config[43514]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                              )))>0) ||
-
-               //If Not Discovered Any
-               (count($list_config[40793]) && !count($CI->X_model->fetch(array(
-                       'x__player' => $x['e__id'],
-                       'x__previous IN (' . join(',', $list_config[40793]) . ')' => null,
-                       'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                              ))))
-
-           ){
-
-               continue;
-
-           } elseif(count($list_config[43513])){
-               //Include If Has ALL
-               $total_found_43513 = 0;
-               foreach($list_config[43513] as $this_filter){
-                   $total_found_43513 += ( count($CI->X_model->fetch(array(
-                       'x__follower' => $x['e__id'],
-                       'x__following' => $this_filter,
-                       'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                              ))) ? 1 : 0 );
-               }
-               if($total_found_43513<count($list_config[43513])){
-                   continue;
-               }
-           }
-
-           //Passed all filters:
-           array_push($query_string_filtered, $x);
-           array_push($unique_users_count, intval($x['e__id']));
-
-       }
+        foreach ($e___40946 as $x__type => $m) {
+            $list_config[intval($x__type)] = array(); //Assume no links for this type
+        }
+        //Now search for these settings across sources:
+        foreach ($CI->Ledger->read(array(
+            'x__next' => $i['i__id'],
+            'x__type IN (' . njoin(40946) . ')' => null, //Source List Controllers
+        ), array('x__following'), 0) as $setting_link) {
+            array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['e__id']));
+        }
+        //Now search for these settings across ideas:
+        foreach ($CI->Ledger->read(array(
+            'x__previous' => $i['i__id'],
+            'x__type IN (' . njoin(40946) . ')' => null, //Source List Controllers
+        ), array('x__next'), 0) as $setting_link) {
+            array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
+        }
 
 
+        //Generate filter:
+        $query_string_all = array();
+        if (count($list_config[40791])) {
+
+            //If Discovered Any
+            $query_string_all = $CI->Ledger->read(array(
+                'x__previous IN (' . join(',', $list_config[40791]) . ')' => null,
+                'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
+            ), array('x__player'), 0, 0, array('x__id' => 'DESC'));
+
+        } elseif (count($list_config[27984])) {
+
+            //Include If Has ANY
+            $query_string_all = $CI->Ledger->read(array(
+                'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
+                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+            ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+
+        } elseif (count($list_config[43513])) {
+
+            //Include If Has ALL
+            $query_string_all = $CI->Ledger->read(array(
+                'x__following IN (' . join(',', $list_config[43513]) . ')' => null,
+                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+            ), array('x__follower'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+
+        } else {
+
+            //All Discoveries:
+            $query_string_all = $CI->Ledger->read(array(
+                'x__previous' => $i['i__id'],
+                'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
+            ), array('x__player'), 0, 0, array('x__weight' => 'ASC', 'x__id' => 'DESC'));
+
+        }
+
+        //Filter list:
+        $query_string_filtered = array();
+        $unique_users_count = array();
+        foreach ($query_string_all as $key => $x) {
+
+            if (
+
+                (in_array(intval($x['e__id']), $unique_users_count)) ||
+
+                //Include If Has ANY
+                (count($list_config[27984]) && !count($CI->Ledger->read(array(
+                        'x__follower' => $x['e__id'],
+                        'x__following IN (' . join(',', $list_config[27984]) . ')' => null,
+                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                    )))) ||
+
+                //Exclude If Has ALL
+                (count($list_config[26600]) && count($CI->Ledger->read(array(
+                        'x__follower' => $x['e__id'],
+                        'x__following IN (' . join(',', $list_config[26600]) . ')' => null,
+                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                    ))) == count($list_config[26600])) ||
+
+                //Exclude If Has ANY
+                (count($list_config[43514]) && count($CI->Ledger->read(array(
+                        'x__follower' => $x['e__id'],
+                        'x__following IN (' . join(',', $list_config[43514]) . ')' => null,
+                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                    ))) > 0) ||
+
+                //If Not Discovered Any
+                (count($list_config[40793]) && !count($CI->Ledger->read(array(
+                        'x__player' => $x['e__id'],
+                        'x__previous IN (' . join(',', $list_config[40793]) . ')' => null,
+                        'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
+                    ))))
+
+            ) {
+
+                continue;
+
+            } elseif (count($list_config[43513])) {
+                //Include If Has ALL
+                $total_found_43513 = 0;
+                foreach ($list_config[43513] as $this_filter) {
+                    $total_found_43513 += (count($CI->Ledger->read(array(
+                        'x__follower' => $x['e__id'],
+                        'x__following' => $this_filter,
+                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                    ))) ? 1 : 0);
+                }
+                if ($total_found_43513 < count($list_config[43513])) {
+                    continue;
+                }
+            }
+
+            //Passed all filters:
+            array_push($query_string_filtered, $x);
+            array_push($unique_users_count, intval($x['e__id']));
+
+        }
 
 
-       //Determine columns if any:
-       if(count($list_config[34513])){
+        //Determine columns if any:
+        if (count($list_config[34513])) {
 
-           $column_e = $CI->X_model->fetch(array(
-               'x__following IN (' . join(',', $list_config[34513]) . ')' => null,
-               'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-              ), array('x__follower'), 0, 0, sort__e());
+            $column_e = $CI->Ledger->read(array(
+                'x__following IN (' . join(',', $list_config[34513]) . ')' => null,
+                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+            ), array('x__follower'), 0, 0, sort__e());
 
-           foreach($CI->X_model->fetch(array(
-                  'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-               'x__following IN (' . join(',', $list_config[34513]) . ')' => null,
-               'x__next !=' => $i['i__id'],
-           ), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i){
-               array_push($column_i, $link_i);
-           }
+            foreach ($CI->Ledger->read(array(
+                'x__type IN (' . njoin(33602) . ')' => null, //Idea/Source Links Active
+                'x__following IN (' . join(',', $list_config[34513]) . ')' => null,
+                'x__next !=' => $i['i__id'],
+            ), array('x__next'), 0, 0, array('x__weight' => 'ASC', 'i__message' => 'ASC')) as $link_i) {
+                array_push($column_i, $link_i);
+            }
 
-       }
-
-
-       if($fetch_contact){
-           foreach($query_string_filtered as $count => $x){
-
-               //Fetch email & phone:
-               $fetch_names = $CI->X_model->fetch(array(
-                   'x__following' => 42584, //First Name
-                   'x__follower' => $x['e__id'],
-                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                      ));
-               $fetch_emails = $CI->X_model->fetch(array(
-                   'x__following' => 3288, //Email
-                   'x__follower' => $x['e__id'],
-                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                      ));
-               $fetch_phones = $CI->X_model->fetch(array(
-                   'x__following' => 4783, //Phone
-                   'x__follower' => $x['e__id'],
-                   'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                      ));
-
-               $query_string_filtered[$count]['extension_name'] = ( count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title'] );
-               $query_string_filtered[$count]['extension_email'] = ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false );
-               $query_string_filtered[$count]['extension_phone'] = ( count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=10 ? $fetch_phones[0]['x__message'] : false );
-
-               $contact_details['full_list'] .= $query_string_filtered[$count]['extension_name']."\t".$query_string_filtered[$count]['extension_email']."\t".$query_string_filtered[$count]['extension_phone']."\n";
+        }
 
 
-               if($query_string_filtered[$count]['extension_email']){
-                   $contact_details['email_count']++;
-                   $contact_details['email_list'] .= ( strlen($contact_details['email_list']) ? ", " : '' ).$query_string_filtered[$count]['extension_email'];
-               }
-               if($query_string_filtered[$count]['extension_phone']){
-                   $contact_details['phone_count']++;
-               }
-           }
-       }
+        if ($fetch_contact) {
+            foreach ($query_string_filtered as $count => $x) {
+
+                //Fetch email & phone:
+                $fetch_names = $CI->Ledger->read(array(
+                    'x__following' => 42584, //First Name
+                    'x__follower' => $x['e__id'],
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                ));
+                $fetch_emails = $CI->Ledger->read(array(
+                    'x__following' => 3288, //Email
+                    'x__follower' => $x['e__id'],
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                ));
+                $fetch_phones = $CI->Ledger->read(array(
+                    'x__following' => 4783, //Phone
+                    'x__follower' => $x['e__id'],
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                ));
+
+                $query_string_filtered[$count]['extension_name'] = (count($fetch_names) && strlen($fetch_names[0]['x__message']) ? $fetch_names[0]['x__message'] : $x['e__title']);
+                $query_string_filtered[$count]['extension_email'] = (count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : false);
+                $query_string_filtered[$count]['extension_phone'] = (count($fetch_phones) && strlen($fetch_phones[0]['x__message']) >= 10 ? $fetch_phones[0]['x__message'] : false);
+
+                $contact_details['full_list'] .= $query_string_filtered[$count]['extension_name'] . "\t" . $query_string_filtered[$count]['extension_email'] . "\t" . $query_string_filtered[$count]['extension_phone'] . "\n";
 
 
-       //Append Navigation:
-       foreach($column_i as $key => $i_var){
-           $must_follow = array();
-           foreach($CI->X_model->fetch(array(
-                  'x__type' => 32235, //Navigation
-               'x__next' => $i_var['i__id'],
-           )) as $follow){
-               array_push($must_follow, $follow['x__following']);
-           }
-           $column_i[$key]['must_follow'] = $must_follow;
-       }
+                if ($query_string_filtered[$count]['extension_email']) {
+                    $contact_details['email_count']++;
+                    $contact_details['email_list'] .= (strlen($contact_details['email_list']) ? ", " : '') . $query_string_filtered[$count]['extension_email'];
+                }
+                if ($query_string_filtered[$count]['extension_phone']) {
+                    $contact_details['phone_count']++;
+                }
+            }
+        }
 
-       return array(
-           'i' => $i,
-           'list_config' => $list_config,
-           'column_e' => $column_e,
-           'column_i' => $column_i,
-           'query_string_filtered' => $query_string_filtered,
-           'contact_details' => $contact_details, //Optional addon
-       );
+
+        //Append Navigation:
+        foreach ($column_i as $key => $i_var) {
+            $must_follow = array();
+            foreach ($CI->Ledger->read(array(
+                'x__type' => 32235, //Navigation
+                'x__next' => $i_var['i__id'],
+            )) as $follow) {
+                array_push($must_follow, $follow['x__following']);
+            }
+            $column_i[$key]['must_follow'] = $must_follow;
+        }
+
+        return array(
+            'i' => $i,
+            'list_config' => $list_config,
+            'column_e' => $column_e,
+            'column_i' => $column_i,
+            'query_string_filtered' => $query_string_filtered,
+            'contact_details' => $contact_details, //Optional addon
+        );
     }
 }
 
 
-function count_link_groups($x__type, $x__time_start = null, $x__time_end = null){
+function count_link_groups($x__type, $x__time_start = null, $x__time_end = null)
+{
 
     $CI =& get_instance();
-    if(!is_array($CI->config->item('n___'.$x__type))){
+    if (!is_array($CI->config->item('n___' . $x__type))) {
         return 0;
     }
     $query_filters = array(
-        'x__type IN (' . join(',', $CI->config->item('n___'.$x__type)) . ')' => null,
+        'x__type IN (' . njoin($x__type) . ')' => null,
     );
 
-    if(strtotime($x__time_start) > 0){
+    if (strtotime($x__time_start) > 0) {
         $query_filters['x__time >='] = $x__time_start;
     }
-    if(strtotime($x__time_end) > 0){
+    if (strtotime($x__time_end) > 0) {
         $query_filters['x__time <='] = $x__time_end;
     }
 
     //Fetch Results:
-    $query = $CI->X_model->fetch($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
+    $query = $CI->Ledger->read($query_filters, array(), 1, 0, array(), 'COUNT(x__id) as totals');
     return intval($query[0]['totals']);
 
 }
 
 
-
-
-function home_url(){
+function home_url()
+{
     $CI =& get_instance();
     $player_e = superpower_unlocked();
-    return ( $player_e ? view_memory(42903,42902).$player_e['e__handle'] : view_memory(42903,14565) );
+    return ($player_e ? view_memory(42903, 42902) . $player_e['e__handle'] : view_memory(42903, 14565));
 }
 
-function i_startable($i, $x__player = 0){
+function i_startable($i, $x__player = 0)
+{
     $CI =& get_instance();
-    return ( $x__player>0 ? count($CI->X_model->fetch(array(
+    return ($x__player > 0 ? count($CI->Ledger->read(array(
         'x__player' => $x__player,
         'x__type' => 4235, //Get started
         'x__next' => $i['i__id'],
-    ))) : count($CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+    ))) : count($CI->Ledger->read(array(
+        'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
         'x__next' => $i['i__id'],
         'x__following' => 4235,
-    ))) );
+    ))));
 }
 
 
-function remove_none_utf8($string){
+function remove_none_utf8($string)
+{
     return preg_replace('/[\x00-\x1F\x7F-\xFF]/', ' ', $string);
 }
 
@@ -834,14 +860,14 @@ function remove_none_utf8($string){
 function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $session_player_e = false)
 {
 
-    if(isset($session_player_e['e__id'])){
+    if (isset($session_player_e['e__id'])) {
         //We have the player!
         return $session_player_e;
     }
     //Authenticates logged-in members with their session information
     $CI =& get_instance();
     $player_e = $CI->session->userdata('session_up');
-    $has_session = ( is_array($player_e) && count($player_e) > 0 && $player_e );
+    $has_session = (is_array($player_e) && count($player_e) > 0 && $player_e);
 
     //Let's start checking various ways we can give member access:
     if ($has_session && !$superpower_e__id) {
@@ -865,33 +891,36 @@ function superpower_unlocked($superpower_e__id = null, $force_redirect = 0, $ses
     } else {
 
         //Block access:
-        if($has_session){
-            $goto_url = view_memory(42903,42902).$player_e['e__handle'];
+        if ($has_session) {
+            $goto_url = view_memory(42903, 42902) . $player_e['e__handle'];
         } else {
-            $goto_url = view_app_link(4269).( isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '' );
+            $goto_url = view_app_link(4269) . (isset($_SERVER['REQUEST_URI']) ? '?url=' . urlencode($_SERVER['REQUEST_URI']) : '');
         }
 
         //Now redirect:
-        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>'.view_unauthorized_message($superpower_e__id).'</div>');
+        return redirect_message($goto_url, '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>' . view_unauthorized_message($superpower_e__id) . '</div>');
     }
 
 }
 
-function sort__e(){
+function sort__e()
+{
     return array(
         'x__weight' => 'ASC', //Applies if sources have been manually sorted
         'x__time' => 'DESC' //Always applies
     );
 }
 
-function get_server($var_name){
-    return ( isset($_SERVER[$var_name]) ? $_SERVER[$var_name] : null );
+function get_server($var_name)
+{
+    return (isset($_SERVER[$var_name]) ? $_SERVER[$var_name] : null);
 }
 
-function html_input_type($data_type){
+function html_input_type($data_type)
+{
     $CI =& get_instance();
     $e___42291 = $CI->config->item('e___42291'); //HTML Input Types
-    if(isset($e___42291[$data_type]['m__message']) && strlen($e___42291[$data_type]['m__message'])){
+    if (isset($e___42291[$data_type]['m__message']) && strlen($e___42291[$data_type]['m__message'])) {
         return $e___42291[$data_type]['m__message'];
     } else {
         //Default option:
@@ -899,61 +928,64 @@ function html_input_type($data_type){
     }
 }
 
-function js_php_redirect($url, $timer = 0){
-    echo '<script> $(document).ready(function () { js_redirect(\''.$url.'\', '.$timer.'); }); </script>';
+function js_php_redirect($url, $timer = 0)
+{
+    echo '<script> $(document).ready(function () { js_redirect(\'' . $url . '\', ' . $timer . '); }); </script>';
 }
 
-function js_reload($timer = 1){
-    echo '<script> $(document).ready(function () { setTimeout(function () { location.reload(true); }, '.$timer.'); }); </script>';
+function js_reload($timer = 1)
+{
+    echo '<script> $(document).ready(function () { setTimeout(function () { location.reload(true); }, ' . $timer . '); }); </script>';
 }
 
 
-function generate_handle($focus__node, $str, $suggestion = null, $increment = 1){
+function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
+{
 
     //Generates a Suitable Handle from the title:
     $CI =& get_instance();
 
     //Previous suggestion did not work, let's tweak and try again:
-    $max_allowed_length = view_memory(6404,41985);
+    $max_allowed_length = view_memory(6404, 41985);
     $max_adj_length = $max_allowed_length - 3; //Reduce target_element to give space for $increment extension up to 99999
-    $recommended_length = $max_allowed_length/2;
+    $recommended_length = $max_allowed_length / 2;
 
-    if(strlen($suggestion)){
+    if (strlen($suggestion)) {
 
         //Previous suggestion that was a duplicate, so it needs to be modified:
-        if(strlen($suggestion)>$max_adj_length){
+        if (strlen($suggestion) > $max_adj_length) {
             $suggestion = substr($suggestion, 0, $max_adj_length);
         }
-        $suggestion = ($increment==1 ? $suggestion : substr($suggestion, 0, -strlen($increment)) ).$increment;
+        $suggestion = ($increment == 1 ? $suggestion : substr($suggestion, 0, -strlen($increment))) . $increment;
         $increment++;
 
     } else {
 
         //Create new suggestion from string:
         $str = preg_replace("/[^A-Za-z0-9]/", "", $str);
-        if(strlen($str)>$max_allowed_length){
+        if (strlen($str) > $max_allowed_length) {
             //Shorten and remove the last word:
             $word_arr = explode(' ', substr($str, 0, $max_allowed_length));
-            unset($word_arr[count($word_arr)-1]);
-            $str = join(' ',$word_arr);
+            unset($word_arr[count($word_arr) - 1]);
+            $str = join(' ', $word_arr);
         }
         $suggestion = preg_replace("/[^A-Za-z0-9]/", '', $str);
 
     }
 
-    if(strlen($suggestion)<4 || is_numeric($suggestion)){
-        $suggestion = ( $focus__node==12273 ? 'Idea' : 'Source' ).$suggestion;
+    if (strlen($suggestion) < 4 || is_numeric($suggestion)) {
+        $suggestion = ($focus__node == 12273 ? 'Idea' : 'Source') . $suggestion;
     }
 
 
     //Make sure no duplicates:
-    if($focus__node==12273 && count($CI->I_model->fetch(array(
+    if ($focus__node == 12273 && count($CI->Ideas->read(array(
             'LOWER(i__hashtag)' => strtolower($suggestion),
-        )))){
+        )))) {
         return generate_handle(12273, $str, $suggestion, $increment);
-    } elseif($focus__node==12274 && count($CI->E_model->fetch(array(
+    } elseif ($focus__node == 12274 && count($CI->Sources->read(array(
             'LOWER(e__handle)' => strtolower($suggestion),
-        )))){
+        )))) {
         return generate_handle(12274, $str, $suggestion, $increment);
     } else {
         //All good:
@@ -963,7 +995,8 @@ function generate_handle($focus__node, $str, $suggestion = null, $increment = 1)
 }
 
 
-function process_media($i__id, $uploaded_media){
+function process_media($i__id, $uploaded_media)
+{
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
@@ -981,7 +1014,7 @@ function process_media($i__id, $uploaded_media){
     );
 
 
-    if(!$player_e){
+    if (!$player_e) {
         return $media_stats;
     }
 
@@ -990,10 +1023,10 @@ function process_media($i__id, $uploaded_media){
     $sort_count = 0;
 
     //Fetch current media:
-    foreach($CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('n___42294')) . ')' => null, //Media
+    foreach ($CI->Ledger->read(array(
+        'x__type IN (' . njoin(42294) . ')' => null, //Media
         'x__next' => $i__id,
-    ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
+    ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media) {
         $media_stats['total_current']++;
         $current_media_e__ids[$sort_count] = intval($media['x__following']);
         $full_media[$media['x__following']] = $media;
@@ -1002,37 +1035,37 @@ function process_media($i__id, $uploaded_media){
 
     //Fetch submitted media:
     $upload_media_e__ids = array();
-    if(count($uploaded_media)>0){
+    if (count($uploaded_media) > 0) {
 
         //We have media to process:
         $sort_count = 0; //Reset sorting to compare to submitted media...
-        foreach($uploaded_media as $upload_media){
+        foreach ($uploaded_media as $upload_media) {
 
-            if($upload_media['e__id']>0){
+            if ($upload_media['e__id'] > 0) {
 
                 $adjust_updated = false;
 
                 //Update media order?
-                if($current_media_e__ids[$sort_count]!=$upload_media['e__id']){
+                if ($current_media_e__ids[$sort_count] != $upload_media['e__id']) {
                     //Order has changed, update it:
                     $adjust_updated = true;
-                    $CI->X_model->update($full_media[$upload_media['e__id']]['x__id'], array(
+                    $CI->Ledger->edit($full_media[$upload_media['e__id']]['x__id'], array(
                         'x__weight' => $sort_count,
                     ), $player_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
                 //Update the source title?
                 $validate_e__title = validate_e__title($upload_media['e__title']);
-                if($validate_e__title['status'] && $full_media[$upload_media['e__id']]['e__title']!=$upload_media['e__title']){
+                if ($validate_e__title['status'] && $full_media[$upload_media['e__id']]['e__title'] != $upload_media['e__title']) {
                     $adjust_updated = true;
-                    $CI->E_model->update($upload_media['e__id'], array(
+                    $CI->Sources->edit($upload_media['e__id'], array(
                         'e__title' => trim($upload_media['e__title']),
                     ), true, $player_e['e__id']);
                 }
 
                 $media_stats['media_e__cover'] = $upload_media['e__cover'];
 
-                if($adjust_updated){
+                if ($adjust_updated) {
                     $media_stats['adjust_updated']++;
                 }
 
@@ -1041,30 +1074,30 @@ function process_media($i__id, $uploaded_media){
                 //Adding new media...
                 //Search eTag to see if we already have it:
                 $etag_detected = false;
-                if(isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])){
+                if (isset($upload_media['media_cache']['etag']) && strlen($upload_media['media_cache']['etag'])) {
                     //We we already have this asset, link to that source without giving this new source the authority over it...
                     //First person to upload a source will get authority over its created source...
-                    foreach($CI->X_model->fetch(array(
-                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    foreach ($CI->Ledger->read(array(
+                        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                         'x__following' => 42662, //etag
                         'x__message' => $upload_media['media_cache']['etag'],
-                    ), array('x__follower'), 1) as $existing_media){
+                    ), array('x__follower'), 1) as $existing_media) {
                         $media_stats['adjust_duplicated']++;
                         $upload_media['e__id'] = $existing_media['e__id'];
                         $etag_detected = true;
                     }
                 }
 
-                if(!$upload_media['e__id']){
+                if (!$upload_media['e__id']) {
 
                     $media_stats['media_e__cover'] = $upload_media['e__cover'];
 
                     //Create Source for this new media:
-                    $added_e = $CI->E_model->verify_create($upload_media['e__title'], $player_e['e__id'], ( $upload_media['media_e__id']==4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover'] ), true);
-                    if(!$added_e['status']){
-                        $CI->X_model->create(array(
+                    $added_e = $CI->Sources->verify_write($upload_media['e__title'], $player_e['e__id'], ($upload_media['media_e__id'] == 4259 /* Audio has no thumbnail! */ ? 'far fa-volume-up' : $upload_media['e__cover']), true);
+                    if (!$added_e['status']) {
+                        $CI->Ledger->write(array(
                             'x__type' => 4246, //Platform Bug Reports
-                            'x__message' => 'Failed to create a new source for ['.$upload_media['e__title'].'] with cover ['.$upload_media['e__cover'].']',
+                            'x__message' => 'Failed to create a new source for [' . $upload_media['e__title'] . '] with cover [' . $upload_media['e__cover'] . ']',
                             'x__metadata' => array(
                                 'submitted_media' => $upload_media,
                                 'post' => $_POST,
@@ -1079,48 +1112,48 @@ function process_media($i__id, $uploaded_media){
 
                     //new asset, create new source and insert tags...
                     $e___32088 = $CI->config->item('e___32088'); //Platform Variables
-                    foreach($CI->config->item('e___42679') as $x__type => $m) {
+                    foreach ($CI->config->item('e___42679') as $x__type => $m) {
 
                         //Ensure variable name exists so we can check the API call:
                         $target_variable = false;
-                        if(isset($e___32088[$x__type]['m__message'])){
+                        if (isset($e___32088[$x__type]['m__message'])) {
                             //Determine if variable exists...
-                            if(in_array($x__type, $CI->config->item('n___42763')) && isset($upload_media['media_cache']['video'][$e___32088[$x__type]['m__message']])){
+                            if (in_array($x__type, $CI->config->item('n___42763')) && isset($upload_media['media_cache']['video'][$e___32088[$x__type]['m__message']])) {
                                 //Video info:
                                 $target_variable = $upload_media['media_cache']['video'][$e___32088[$x__type]['m__message']];
-                            } elseif(in_array($x__type, $CI->config->item('n___42675')) && isset($upload_media['media_cache']['audio'][$e___32088[$x__type]['m__message']])){
+                            } elseif (in_array($x__type, $CI->config->item('n___42675')) && isset($upload_media['media_cache']['audio'][$e___32088[$x__type]['m__message']])) {
                                 //Audio info:
                                 $target_variable = $upload_media['media_cache']['audio'][$e___32088[$x__type]['m__message']];
-                            } elseif(isset($upload_media['media_cache'][$e___32088[$x__type]['m__message']])) {
+                            } elseif (isset($upload_media['media_cache'][$e___32088[$x__type]['m__message']])) {
                                 //Media info:
                                 $target_variable = $upload_media['media_cache'][$e___32088[$x__type]['m__message']];
                             }
                         }
-                        if(!strlen($target_variable) || $target_variable=='0'){
+                        if (!strlen($target_variable) || $target_variable == '0') {
                             //This variable does not have a value, move on...
                             continue;
                         }
 
                         //We have a variable, see what it is...
-                        if(in_array($x__type, $CI->config->item('n___33331'))){
+                        if (in_array($x__type, $CI->config->item('n___33331'))) {
 
                             //Single select that needs auto creation of sources if missing:
                             $child_id = 0;
-                            foreach($CI->X_model->fetch(array(
-                                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            foreach ($CI->Ledger->read(array(
+                                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                                 'x__following' => $x__type,
                                 'e__title' => $target_variable,
-                            ), array('x__follower'), 1, 0, array('x__id' => 'ASC')) as $child_source){
+                            ), array('x__follower'), 1, 0, array('x__id' => 'ASC')) as $child_source) {
                                 $child_id = $child_source['e__id'];
                             }
 
                             //If not found create the child:
-                            if(!$child_id){
-                                $added_child = $CI->E_model->verify_create($target_variable, 14068);
-                                if(!$added_child['status']){
-                                    $CI->X_model->create(array(
+                            if (!$child_id) {
+                                $added_child = $CI->Sources->verify_write($target_variable, 14068);
+                                if (!$added_child['status']) {
+                                    $CI->Ledger->write(array(
                                         'x__type' => 4246, //Platform Bug Reports
-                                        'x__message' => 'Failed to create a new source for ['.$target_variable.']',
+                                        'x__message' => 'Failed to create a new source for [' . $target_variable . ']',
                                         'x__metadata' => array(
                                             'submitted_media' => $upload_media,
                                             'post' => $_POST,
@@ -1130,7 +1163,7 @@ function process_media($i__id, $uploaded_media){
                                 }
 
                                 //Add links for this new source:
-                                $CI->X_model->create(array(
+                                $CI->Ledger->write(array(
                                     'x__player' => $player_e['e__id'],
                                     'x__following' => $x__type,
                                     'x__follower' => $added_child['new_e']['e__id'],
@@ -1142,9 +1175,9 @@ function process_media($i__id, $uploaded_media){
 
                             }
 
-                            if($child_id){
+                            if ($child_id) {
                                 //Child source found, simply link:
-                                $CI->X_model->create(array(
+                                $CI->Ledger->write(array(
                                     'x__player' => $player_e['e__id'],
                                     'x__following' => $child_id,
                                     'x__follower' => $upload_media['e__id'],
@@ -1155,7 +1188,7 @@ function process_media($i__id, $uploaded_media){
                         } else {
 
                             //Save variable as is:
-                            $CI->X_model->create(array(
+                            $CI->Ledger->write(array(
                                 'x__player' => $player_e['e__id'],
                                 'x__following' => $x__type,
                                 'x__follower' => $upload_media['e__id'],
@@ -1169,15 +1202,15 @@ function process_media($i__id, $uploaded_media){
 
 
                 //By now have the media source, create necessary links:
-                if($upload_media['e__id'] && $upload_media['media_e__id']){
+                if ($upload_media['e__id'] && $upload_media['media_e__id']) {
 
                     //Link to Idea:
-                    if(!count($CI->X_model->fetch(array(
+                    if (!count($CI->Ledger->read(array(
                         'x__next' => $i__id,
                         'x__following' => $upload_media['e__id'],
                         'x__type' => $upload_media['media_e__id'],
-                    )))){
-                        $CI->X_model->create(array(
+                    )))) {
+                        $CI->Ledger->write(array(
                             'x__player' => $player_e['e__id'],
                             'x__next' => $i__id,
                             'x__following' => $upload_media['e__id'],
@@ -1189,28 +1222,28 @@ function process_media($i__id, $uploaded_media){
 
 
                     //Link to Source as Uploader:
-                    if(!count($CI->X_model->fetch(array(
+                    if (!count($CI->Ledger->read(array(
                         'x__following' => $player_e['e__id'],
                         'x__follower' => $upload_media['e__id'],
-                        'x__type IN (' . join(',', $CI->config->item('n___42657')) . ')' => null, //Uploads
-                    )))){
-                        $CI->X_model->create(array(
+                        'x__type IN (' . njoin(42657) . ')' => null, //Uploads
+                    )))) {
+                        $CI->Ledger->write(array(
                             'x__player' => $player_e['e__id'],
                             'x__following' => $player_e['e__id'],
                             'x__follower' => $upload_media['e__id'],
-                            'x__type' => ( $etag_detected ? 42849 : 42659 ), //Reupload vs Upload
+                            'x__type' => ($etag_detected ? 42849 : 42659), //Reupload vs Upload
                             'x__message' => $upload_media['playback_code'],
                         ));
                     }
 
 
                     //Link to Media Type:
-                    if(!count($CI->X_model->fetch(array(
+                    if (!count($CI->Ledger->read(array(
                         'x__following' => $upload_media['media_e__id'],
                         'x__follower' => $upload_media['e__id'],
                         'x__type' => 4251,
-                    )))){
-                        $CI->X_model->create(array(
+                    )))) {
+                        $CI->Ledger->write(array(
                             'x__player' => $player_e['e__id'],
                             'x__following' => $upload_media['media_e__id'],
                             'x__follower' => $upload_media['e__id'],
@@ -1231,9 +1264,9 @@ function process_media($i__id, $uploaded_media){
     }
 
     //Remove current media missing from submitted (Removed during editing):
-    foreach(array_diff($current_media_e__ids, $upload_media_e__ids) as $deleted_media_e__id){
+    foreach (array_diff($current_media_e__ids, $upload_media_e__ids) as $deleted_media_e__id) {
         $media_stats['adjust_removed']++;
-        $CI->X_model->update($full_media[$deleted_media_e__id]['x__id'], array(
+        $CI->Ledger->edit($full_media[$deleted_media_e__id]['x__id'], array(
             'x__privacy' => 6173, //Transaction Removed
         ), $player_e['e__id'], 42694); //Media Removed
     }
@@ -1246,14 +1279,15 @@ function process_media($i__id, $uploaded_media){
 }
 
 
-function append_source($x__following, $x__player, $x__message, $i__id){
+function append_source($x__following, $x__player, $x__message, $i__id)
+{
 
     $CI =& get_instance();
 
     //First validate data type to ensure it matches:
-    foreach($CI->X_model->fetch(array(
-        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'x__following IN (' . join(',', $CI->config->item('n___4592')) . ')' => null, //Data Types
+    foreach ($CI->Ledger->read(array(
+        'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+        'x__following IN (' . njoin(4592) . ')' => null, //Data Types
         'x__follower' => $x__following,
     )) as $data_type) {
         $data_type_validate = data_type_validate($data_type['x__following'], $x__message);
@@ -1264,29 +1298,29 @@ function append_source($x__following, $x__player, $x__message, $i__id){
     }
 
     //Now check existing links:
-    $existing_x = $CI->X_model->fetch(array(
+    $existing_x = $CI->Ledger->read(array(
         'x__type' => 4251, //SOURCE LINKS
         'x__following' => $x__following,
         'x__follower' => $x__player,
     ));
 
-    if(count($existing_x)){
+    if (count($existing_x)) {
 
         //Transaction previously exists, see if content value is the same:
-        if(strtolower($existing_x[0]['x__message'])==strtolower($x__message)){
+        if (strtolower($existing_x[0]['x__message']) == strtolower($x__message)) {
             //Everything is the same, nothing to do here:
             return false;
         }
 
         //Content value has changed, update the transaction:
-        $CI->X_model->update($existing_x[0]['x__id'], array(
+        $CI->Ledger->edit($existing_x[0]['x__id'], array(
             'x__message' => $x__message,
         ), $x__player, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
     } else {
 
         //Create transaction:
-        $CI->X_model->create(array(
+        $CI->Ledger->write(array(
             'x__type' => 4251, //Follow Source
             'x__message' => $x__message,
             'x__player' => $x__player,
@@ -1296,7 +1330,7 @@ function append_source($x__following, $x__player, $x__message, $i__id){
 
     }
 
-    $CI->X_model->create(array(
+    $CI->Ledger->write(array(
         'x__type' => 12197, //Following Added
         'x__player' => $x__player,
         'x__following' => $x__following,
@@ -1309,57 +1343,58 @@ function append_source($x__following, $x__player, $x__message, $i__id){
 
 }
 
-function data_type_validate($data_type, $data_value, $data_title = null){
+function data_type_validate($data_type, $data_value, $data_title = null)
+{
 
     $CI =& get_instance();
     $e___4592 = $CI->config->item('e___4592'); //Data types
 
-    if($data_type==4319 && !is_numeric($data_value)){
+    if ($data_type == 4319 && !is_numeric($data_value)) {
         //Number:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $e___4592[$data_type]['m__title'],
         );
-    } elseif($data_type==42181 && ( strlen(preg_replace('/[^0-9]/', '', $data_value))<10 || strlen(preg_replace('/[^0-9]/', '', $data_value))>14 )){
+    } elseif ($data_type == 42181 && (strlen(preg_replace('/[^0-9]/', '', $data_value)) < 10 || strlen(preg_replace('/[^0-9]/', '', $data_value)) > 14)) {
         //Phone Number:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'].' with 10-14 numbers including country code.',
+            'message' => $data_title . ' must be set to a valid ' . $e___4592[$data_type]['m__title'] . ' with 10-14 numbers including country code.',
         );
-    } elseif($data_type==4318 && !strtotime($data_value)){
+    } elseif ($data_type == 4318 && !strtotime($data_value)) {
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $e___4592[$data_type]['m__title'],
         );
-    } elseif($data_type==4255 && !strlen($data_value)){
+    } elseif ($data_type == 4255 && !strlen($data_value)) {
         //Text:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $e___4592[$data_type]['m__title'],
         );
-    } elseif($data_type==32097 && !filter_var($data_value, FILTER_VALIDATE_EMAIL)){
+    } elseif ($data_type == 32097 && !filter_var($data_value, FILTER_VALIDATE_EMAIL)) {
         //Email:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $e___4592[$data_type]['m__title'],
         );
-    } elseif($data_type==42947 && (!is_numeric($data_value) || $data_value<0 || $data_value>1)){
+    } elseif ($data_type == 42947 && (!is_numeric($data_value) || $data_value < 0 || $data_value > 1)) {
         //Percentage:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a number between 0.00 & 1.00.',
+            'message' => $data_title . ' must be set to a number between 0.00 & 1.00.',
         );
-    } elseif(in_array($data_type, $CI->config->item('n___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)){
+    } elseif (in_array($data_type, $CI->config->item('n___42189')) && !filter_var($data_value, FILTER_VALIDATE_URL)) {
         //URL:
         return array(
             'status' => 0,
-            'message' => $data_title.' must be set to a valid '.$e___4592[$data_type]['m__title'],
+            'message' => $data_title . ' must be set to a valid ' . $e___4592[$data_type]['m__title'],
         );
-    } elseif(in_array($data_type, $CI->config->item('n___42188'))){
+    } elseif (in_array($data_type, $CI->config->item('n___42188'))) {
         //Single Choice of Multi Choice source types should not be validated here
-        $CI->X_model->create(array(
+        $CI->Ledger->write(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'data_type_validate() was asked to validate choice options for @'.$data_type.' ['.$data_value.'] ['.$data_title.']',
+            'x__message' => 'data_type_validate() was asked to validate choice options for @' . $data_type . ' [' . $data_value . '] [' . $data_title . ']',
         ));
     }
 
@@ -1372,13 +1407,14 @@ function data_type_validate($data_type, $data_value, $data_title = null){
 }
 
 
-function data_type_format($data_type, $data_value){
+function data_type_format($data_type, $data_value)
+{
 
     $CI =& get_instance();
 
-    if(in_array($data_type, $CI->config->item('n___4318')) && strtotime($data_value)>0){
+    if (in_array($data_type, $CI->config->item('n___4318')) && strtotime($data_value) > 0) {
         //Format Time:
-        return date(view_memory(6404,4318), strtotime($data_value));
+        return date(view_memory(6404, 4318), strtotime($data_value));
     }
 
     //No special formatting needed:
@@ -1386,56 +1422,60 @@ function data_type_format($data_type, $data_value){
 
 }
 
-function change_handle($old_handle){
-    $max_length = view_memory(6404,41985);
-    if(strlen($old_handle) < $max_length){
+function change_handle($old_handle)
+{
+    $max_length = view_memory(6404, 41985);
+    if (strlen($old_handle) < $max_length) {
         //We have some room to change:
-        return substr($old_handle.rand(100000,999999), 0, $max_length);
+        return substr($old_handle . rand(100000, 999999), 0, $max_length);
     } else {
         //No room to change, remove some words from the end:
-        return substr($old_handle, 0, ($max_length-6)).rand(100000,999999);
+        return substr($old_handle, 0, ($max_length - 6)) . rand(100000, 999999);
     }
 }
 
-function sort_by($e__id, $custom_sort = array()){
+function sort_by($e__id, $custom_sort = array())
+{
 
     $CI =& get_instance();
     $order_by = array();
-    foreach($CI->config->item('e___'.$e__id) as $x__sort_id => $sort) {
-        $order_by['x__following = \''.$x__sort_id.'\' DESC'] = null;
+    foreach ($CI->config->item('e___' . $e__id) as $x__sort_id => $sort) {
+        $order_by['x__following = \'' . $x__sort_id . '\' DESC'] = null;
     }
 
-    if(is_array($custom_sort)){
+    if (is_array($custom_sort)) {
         return array_merge($order_by, $custom_sort);
     } else {
         return $order_by;
     }
 }
 
-function sync_handle_references($e, $new_handle_string){
+function sync_handle_references($e, $new_handle_string)
+{
 
-    if($e['e__handle']==$new_handle_string){
+    if ($e['e__handle'] == $new_handle_string) {
         return false; //Nothing changed...
     }
 
     //Update Handles everywhere they are referenced:
     $CI =& get_instance();
-    foreach ($CI->X_model->fetch(array(
+    foreach ($CI->Ledger->read(array(
         'x__following' => $e['e__id'],
         'x__type' => 31835, //Source Mention
     ), array('x__next')) as $ref) {
-        view_sync_links(str_replace('@'.$e['e__handle'], '@'.$new_handle_string, $ref['i__message']), true, $ref['i__id']);
+        view_sync_links(str_replace('@' . $e['e__handle'], '@' . $new_handle_string, $ref['i__message']), true, $ref['i__id']);
     }
     return $new_handle_string;
 }
 
-function validate_update_handle($str, $i__id = null, $e__id = null){
+function validate_update_handle($str, $i__id = null, $e__id = null)
+{
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
 
     //Validate:
-    if(($i__id && $e__id) || (!$i__id && !$e__id)){
+    if (($i__id && $e__id) || (!$i__id && !$e__id)) {
 
         return array(
             'status' => 0,
@@ -1443,7 +1483,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
             'message' => 'Must set either Idea or Source ID! Pick one',
         );
 
-    } elseif(!strlen($str)){
+    } elseif (!strlen($str)) {
 
         return array(
             'status' => 0,
@@ -1467,12 +1507,12 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
             'message' => 'Hashtag Must contain at-least one letter between A-Z',
         );
 
-    } elseif (strlen($str) > view_memory(6404,41985)) {
+    } elseif (strlen($str) > view_memory(6404, 41985)) {
 
         return array(
             'status' => 0,
             'db_duplicate' => 0,
-            'message' => 'Hashtag Must be '.view_memory(6404,41985).' characters or less',
+            'message' => 'Hashtag Must be ' . view_memory(6404, 41985) . ' characters or less',
         );
 
     } elseif ($i__id && array_key_exists(strtolower($str), $CI->config->item('handle___6287'))) {
@@ -1480,22 +1520,22 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
         return array(
             'status' => 0,
             'db_duplicate' => 1,
-            'message' => 'Hashtag "'.$str.'" already in use.',
+            'message' => 'Hashtag "' . $str . '" already in use.',
         );
 
     }
 
     //Syntax good! Now let's check the DB for duplicates
-    if($i__id > 0){
-        foreach($CI->I_model->fetch(array(
+    if ($i__id > 0) {
+        foreach ($CI->Ideas->read(array(
             'i__id !=' => $i__id,
             'LOWER(i__hashtag)' => strtolower($str),
-        ), 0) as $matched){
+        ), 0) as $matched) {
             //Is it active?
-            if(!in_array($matched['i__privacy'], $CI->config->item('n___31871')) && $player_e){
+            if (!in_array($matched['i__privacy'], $CI->config->item('n___31871')) && $player_e) {
 
                 //Since not active we can replace this:
-                $CI->I_model->update($matched['i__id'], array(
+                $CI->Ideas->edit($matched['i__id'], array(
                     'i__hashtag' => change_handle($matched['i__hashtag']),
                 ), true, $player_e['e__id']);
 
@@ -1503,21 +1543,21 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
                 return array(
                     'status' => 0,
                     'db_duplicate' => 1,
-                    'message' => 'Hashtag "'.$str.'" already in use.',
+                    'message' => 'Hashtag "' . $str . '" already in use.',
                 );
             }
         }
-    } elseif($e__id>0){
+    } elseif ($e__id > 0) {
 
-        foreach($CI->E_model->fetch(array(
+        foreach ($CI->Sources->read(array(
             'e__id !=' => $e__id,
             'LOWER(e__handle)' => strtolower($str),
-        ), 0) as $matched){
+        ), 0) as $matched) {
             //Is it active?
-            if(!in_array($matched['e__privacy'], $CI->config->item('n___7358')) && $player_e){
+            if (!in_array($matched['e__privacy'], $CI->config->item('n___7358')) && $player_e) {
 
                 //Since not active we can replace this:
-                $CI->E_model->update($matched['e__id'], array(
+                $CI->Sources->edit($matched['e__id'], array(
                     'e__handle' => change_handle($matched['e__handle']),
                 ), true, $player_e['e__id']);
 
@@ -1525,7 +1565,7 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
                 return array(
                     'status' => 0,
                     'db_duplicate' => 1,
-                    'message' => 'Hashtag "'.$str.'" already in use.',
+                    'message' => 'Hashtag "' . $str . '" already in use.',
                 );
             }
         }
@@ -1543,33 +1583,34 @@ function validate_update_handle($str, $i__id = null, $e__id = null){
 }
 
 
-function validate_e__title($str){
+function validate_e__title($str)
+{
 
     //Validate:
     $title_clean = trim($str);
-    while(substr_count($title_clean , '  ') > 0){
-        $title_clean = str_replace('  ',' ',$title_clean);
+    while (substr_count($title_clean, '  ') > 0) {
+        $title_clean = str_replace('  ', ' ', $title_clean);
     }
 
-    if(!strlen(trim($str))){
+    if (!strlen(trim($str))) {
 
         return array(
             'status' => 0,
             'message' => 'Source title missing',
         );
 
-    } elseif(strlen(trim($str)) < 1){
+    } elseif (strlen(trim($str)) < 1) {
 
         return array(
             'status' => 0,
             'message' => 'Enter Source title to continue.',
         );
 
-    } elseif (strlen($str) > view_memory(6404,6197)) {
+    } elseif (strlen($str) > view_memory(6404, 6197)) {
 
         return array(
             'status' => 0,
-            'message' => 'Source title must be '.view_memory(6404,6197).' characters or less',
+            'message' => 'Source title must be ' . view_memory(6404, 6197) . ' characters or less',
         );
 
     }
@@ -1582,20 +1623,22 @@ function validate_e__title($str){
 
 }
 
-function number_x__weight($str){
+function number_x__weight($str)
+{
     //Set x__weight for caching purposes if message value is numerical:
-    if($str!=0 && is_numeric($str)){
+    if ($str != 0 && is_numeric($str)) {
         return intval($str);
-    } elseif($str!=0 && is_double($str)){
+    } elseif ($str != 0 && is_double($str)) {
         return doubleval($str);
-    } elseif(strtotime($str) > 0){
+    } elseif (strtotime($str) > 0) {
         return strtotime($str);
     } else {
         return 0;
     }
 }
 
-function delete_all_between($beginning, $end, $string) {
+function delete_all_between($beginning, $end, $string)
+{
     $beginningPos = strpos($string, $beginning);
     $endPos = strpos($string, $end);
     if ($beginningPos === false || $endPos === false) {
@@ -1607,32 +1650,35 @@ function delete_all_between($beginning, $end, $string) {
     return delete_all_between($beginning, $end, str_replace($textToDelete, '', $string)); // recursion to ensure all occurrences are replaced
 }
 
-function user_website($x__player){
+function user_website($x__player)
+{
     $CI =& get_instance();
-    foreach($CI->X_model->fetch(array(
+    foreach ($CI->Ledger->read(array(
         'x__follower' => $x__player,
         'x__type' => 4251, //New Source Created
-    ), array(), 1) as $e_created){
+    ), array(), 1) as $e_created) {
         return $e_created['x__website'];
     }
-    foreach($CI->X_model->fetch(array(
+    foreach ($CI->Ledger->read(array(
         'x__player' => $x__player,
-    ), array(), 1) as $e_created){
+    ), array(), 1) as $e_created) {
         return $e_created['x__website'];
     }
     return 0;
 }
 
 
-function clean_phone($phone){
+function clean_phone($phone)
+{
     $phone_numbers = preg_replace('/\D/', '', $phone);
-    if(strlen($phone_numbers)==10){
-        $phone_numbers = '+1'.$phone_numbers;
+    if (strlen($phone_numbers) == 10) {
+        $phone_numbers = '+1' . $phone_numbers;
     }
     return $phone_numbers;
 }
 
-function random_adjective(){
+function random_adjective()
+{
 
     $adjectives = array('Amazing', 'Awesome', 'Adventurous', 'Ambitious', 'Adorable', 'Artistic', 'Agile', 'Acrobatic', 'Attractive', 'Alluring', 'Astonishing', 'Authentic', 'Awkward', 'Ancient', 'American', 'Australian', 'Austrian', 'African', 'Asian', 'Brave', 'Beautiful', 'Bright', 'Busy', 'Big', 'Bold', 'Basic', 'Blissful', 'Bouncy', 'Beneficial', 'Bashful', 'Black', 'Brown', 'Burgundy', 'Broad', 'British', 'Belgian', 'Brazilian', 'Creative', 'Confident', 'Cheerful', 'Calm', 'Cute', 'Clever', 'Curious', 'Charming', 'Courageous', 'Clean', 'Cool', 'Considerate', 'Caring', 'Crazy', 'Classic', 'Chic', 'Cloudy', 'Colombian', 'Chinese', 'Delightful', 'Dreamy', 'Daring', 'Dynamic', 'Dark', 'Decent', 'Drastic', 'Defiant', 'Dedicated', 'Deep', 'Desirable', 'Dirty', 'Dramatic', 'Dizzy', 'Demanding', 'Diligent', 'Dutch', 'Danish', 'Delicious', 'Dazzling', 'Easy', 'Elegant', 'Enthusiastic', 'Eager', 'Efficient', 'Empathetic', 'Excellent', 'Exciting', 'Effective', 'Extravagant', 'Entertaining', 'Exotic', 'Expressive', 'Expensive', 'Elaborate', 'European', 'Egyptian', 'Eastern', 'Elderly', 'Educational', 'Fantastic', 'Fabulous', 'Friendly', 'Funny', 'Fearless', 'Fresh', 'Fascinating', 'Fluffy', 'Fierce', 'Fine', 'Free', 'Frugal', 'French', 'Futuristic', 'Fast', 'Flat', 'Famous', 'Flawless', 'Formal', 'Frizzy', 'Gorgeous', 'Great', 'Gentle', 'Generous', 'Gracious', 'Genuine', 'Glorious', 'Graceful', 'Golden', 'Grand', 'Green', 'Growing', 'Groovy', 'Greek', 'Grumpy', 'Gothic', 'Gargantuan', 'Gigantic', 'German', 'Georgian', 'Happy', 'Hot', 'Humble', 'Honest', 'Healthy', 'Heavy', 'Handsome', 'High', 'Helpful', 'Hilarious', 'Heavenly', 'Harmonious', 'Hardworking', 'Historical', 'Heartfelt', 'Homey', 'Hungry', 'Huge', 'Hispanic', 'Hindu', 'Interesting', 'Intelligent', 'Incredible', 'Inspiring', 'Impressive', 'Imaginative', 'Inquisitive', 'Iconic', 'Indigo', 'Industrious', 'Inevitable', 'Inexpensive', 'Incomparable', 'Idealistic', 'Illustrious', 'Indian', 'Italian', 'Irresistible', 'Irrelevant', 'Icy', 'Joyful', 'Jolly', 'Jovial', 'Jaunty', 'Jaded', 'Jazzy', 'Jumpy', 'Juicy', 'Judgmental', 'Jumbled', 'Japanese', 'Javanese', 'Jewish', 'Jittery', 'Junior', 'Justified', 'Jubilant', 'Jade', 'Jumbo', 'Joint', 'Kind', 'Knowledgeable', 'Keen', 'Kooky', 'Knotty', 'Kinetic', 'Known', 'Keen-eyed', 'Knightly', 'Keen-witted', 'Kempt', 'Knockout', 'Knackered', 'Kindhearted', 'Kenyan', 'Kiddy', 'Knotted', 'Kyrgyzstani', 'Kindred', 'Kentuckian', 'Loud', 'Lively', 'Lazy', 'Loyal', 'Long', 'Lonely', 'Lovely', 'Large', 'Light', 'Low', 'Luxurious', 'Lasting', 'Literal', 'Learned', 'Lucky', 'Magnificent', 'Mysterious', 'Modern', 'Moody', 'Musical', 'Mighty', 'Masculine', 'Mesmerizing', 'Mindful', 'Memorable', 'Multicultural', 'Moral', 'Majestic', 'Mischievous', 'Mouthwatering', 'Mellow', 'Modest', 'Magical', 'Melodic', 'Mature', 'Nervous', 'Natural', 'New', 'Nice', 'Noble', 'Naughty', 'Neat', 'Nonchalant', 'Noisy', 'Narrow', 'Nostalgic', 'Needy', 'Negative', 'Nutritious', 'Nonstop', 'Noteworthy', 'Numerous', 'Notable', 'Nurturing', 'Nifty', 'Obvious', 'Original', 'Optimistic', 'Ordinary', 'Official', 'Outstanding', 'Open', 'Organic', 'Odd', 'Observant', 'Obedient', 'Opaque', 'Obsolete', 'Offensive', 'Oily', 'Old-fashioned', 'Ornate', 'Onyx', 'Overwhelming', 'Oceanic', 'Perfect', 'Patient', 'Positive', 'Powerful', 'Popular', 'Polite', 'Peaceful', 'Playful', 'Pleasant', 'Precious', 'Practical', 'Private', 'Proud', 'Profound', 'Pretty', 'Painful', 'Priceless', 'Puzzled', 'Persistent', 'Passionate', 'Quaint', 'Quick', 'Quiet', 'Quirky', 'Quizzical', 'Queenly', 'Quivering', 'Quotable', 'Qualified', 'Quantifiable', 'Questionable', 'Quarrelsome', 'Queasy', 'Quenched', 'Quack', 'Quilted', 'Quizzing', 'Reliable', 'Responsible', 'Romantic', 'Rich', 'Rude', 'Real', 'Radiant', 'Royal', 'Rough', 'Respectful', 'Red', 'Rational', 'Rustic', 'Radiant', 'Robust', 'Rare', 'Resilient', 'Reckless', 'Ready', 'Rambunctious', 'Strong', 'Smart', 'Serious', 'Sad', 'Special', 'Simple', 'Super', 'Sincere', 'Safe', 'Stunning', 'Sweet', 'Shy', 'Successful', 'Satisfied', 'Shiny', 'Silent', 'Sparkling', 'Strong-willed', 'Scary', 'Surprised', 'Tall', 'Talkative', 'Tasty', 'Tender', 'Terrific', 'Terrible', 'Thoughtful', 'Thrifty', 'Timely', 'Tough', 'Traditional', 'Trustworthy', 'Tremendous', 'Tricky', 'Tolerant', 'Tenacious', 'Tiny', 'Tired', 'Top', 'Trembling', 'Ugly', 'Ultimate', 'Unbelievable', 'Uncertain', 'Uncommon', 'Unconditional', 'Unconscious', 'Understanding', 'Unforgettable', 'Unhappy', 'Unique', 'United', 'Universal', 'Unusual', 'Upbeat', 'Uplifting', 'Urbane', 'Urgent', 'Useful', 'Useless', 'Valuable', 'Vague', 'Valid', 'Vast', 'Various', 'Vengeful', 'Vibrant', 'Victorious', 'Vigorous', 'Villainous', 'Vital', 'Vivacious', 'Vocal', 'Volatile', 'Volcanic', 'Voracious', 'Vulnerable', 'Vicious', 'Velvet', 'Verbal', 'Warm', 'Wild', 'Witty', 'Wise', 'Wonderful', 'Worried', 'Wondrous', 'Wealthy', 'Whimsical', 'Wicked', 'Wide', 'Wavy', 'Watery', 'Weighty', 'Wooden', 'Weak', 'Wary', 'Winning', 'Well-groomed', 'Wholesome', 'Xeric', 'Xerophytic', 'Xerotic', 'Xyloid', 'Xylonic', 'Xylophagous', 'Xanthic', 'Xanthous', 'Xerarch', 'Xylotomous', 'Xerographic', 'Xenial', 'Xenogenetic', 'Xenolithic', 'Xylophilous', 'Yellow', 'Young', 'Yielding', 'Yearly', 'Yummy', 'Yawning', 'Yucky', 'Yearning', 'Yeasty', 'Yielding', 'Youthful', 'Yare', 'Yclept', 'Yellowish', 'Yearlong', 'Youth', 'Zealous', 'Zesty', 'Zigzag', 'Zillionth', 'Zinciferous', 'Zingy', 'Zippered', 'Zippy', 'Zoological', 'Zonal', 'Ambitious', 'Amiable', 'Analytical', 'Assertive', 'Authentic', 'Bold', 'Calm', 'Charismatic', 'Charming', 'Cheerful', 'Compassionate', 'Confident', 'Conscientious', 'Considerate', 'Creative', 'Curious', 'Dependable', 'Diligent', 'Disciplined', 'Easygoing', 'Empathetic', 'Enthusiastic', 'Extraverted', 'Flexible', 'Friendly', 'Generous', 'Genuine', 'Gracious', 'Hardworking', 'Honest', 'Humble', 'Independent', 'Innovative', 'Insightful', 'Intelligent', 'Kind', 'Logical', 'Loyal', 'Open-minded', 'Optimistic', 'Outgoing', 'Passionate', 'Patient', 'Persistent', 'Practical', 'Rational', 'Reliable', 'Resourceful', 'Responsible', 'Self-confident', 'Happy', 'Sad', 'Angry', 'Fearful', 'Anxious', 'Excited', 'Frustrated', 'Nostalgic', 'Hopeful', 'Envious', 'Jealous', 'Empathetic', 'Curious', 'Surprised', 'Disappointed', 'Grateful', 'Confused', 'Content', 'Lonely', 'Loved', 'Joyful', 'Melancholic', 'Irritated', 'Apprehensive', 'Restless', 'Ecstatic', 'Distraught', 'Panicked', 'Annoyed', 'Numb', 'Scared', 'Enraged', 'Heartbroken', 'Amused', 'Overwhelmed', 'Grateful', 'Conflicted', 'Peaceful', 'Devastated', 'Empowered');
 
@@ -1640,19 +1686,19 @@ function random_adjective(){
 }
 
 
-
-function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $demo_only = false){
+function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $demo_only = false)
+{
 
     $CI =& get_instance();
     $twilio_account_sid = website_setting(30859);
     $twilio_auth_token = website_setting(30860);
     $twilio_from_number = website_setting(27673);
-    if(!$twilio_from_number || !$twilio_auth_token || !$twilio_account_sid){
+    if (!$twilio_from_number || !$twilio_auth_token || !$twilio_account_sid) {
 
         //No way to send an SMS:
-        if($log_tr){
-            $CI->X_model->create(array(
-                'x__message' => 'dispatch_sms() missing either: '.$twilio_account_sid.' / '.$twilio_auth_token.' / '.$twilio_from_number,
+        if ($log_tr) {
+            $CI->Ledger->write(array(
+                'x__message' => 'dispatch_sms() missing either: ' . $twilio_account_sid . ' / ' . $twilio_auth_token . ' / ' . $twilio_from_number,
                 'x__type' => 4246, //Platform Bug Reports
                 'x__player' => $e__id,
                 'x__website' => $x__website,
@@ -1674,31 +1720,31 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
         'To' => $to_phone,
     );
 
-    if($demo_only){
+    if ($demo_only) {
         echo print_r($post);
         return false;
     }
 
-    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/".$twilio_account_sid."/Messages.json");
+    $x = curl_init("https://api.twilio.com/2010-04-01/Accounts/" . $twilio_account_sid . "/Messages.json");
     curl_setopt($x, CURLOPT_POST, true);
     curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    curl_setopt($x, CURLOPT_USERPWD, $twilio_account_sid.":".$twilio_auth_token);
+    curl_setopt($x, CURLOPT_USERPWD, $twilio_account_sid . ":" . $twilio_auth_token);
     curl_setopt($x, CURLOPT_POSTFIELDS, http_build_query($post));
     $y = curl_exec($x);
     curl_close($x);
 
-    if(substr_count($y, '"code": 21211')){
+    if (substr_count($y, '"code": 21211')) {
         //Invalid input, must be returned:
         return false;
     }
     $sms_success = !substr_count($y, '"status": 400');
 
     //Log transaction:
-    if($log_tr){
-        $CI->X_model->create(array_merge($x_data, array(
-            'x__type' => ( $sms_success ? 27676 : 27678 ), //System SMS Success/Fail
+    if ($log_tr) {
+        $CI->Ledger->write(array_merge($x_data, array(
+            'x__type' => ($sms_success ? 27676 : 27678), //System SMS Success/Fail
             'x__player' => $e__id,
             'x__message' => $single_message,
             'x__next' => $template_i__id,
@@ -1713,41 +1759,42 @@ function dispatch_sms($to_phone, $single_message, $e__id = 0, $x_data = array(),
 
 }
 
-function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $demo_only = false){
+function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data = array(), $template_i__id = 0, $x__website = 0, $log_tr = true, $demo_only = false)
+{
 
     $CI =& get_instance();
     $domain_name = get_domain('m__title', $e__id, $x__website);
     $domain_email = website_setting(28614, $e__id, $x__website);
 
-    if(!strlen($domain_email)){
+    if (!strlen($domain_email)) {
         $domain_name = 'MENCH';
         $domain_name = 'support@mench.com';
-        $CI->X_model->create(array(
+        $CI->Ledger->write(array(
             'x__type' => 4246, //Platform Bug Reports
-            'x__message' => 'Domain email is missing! ('.$domain_name.') ('.$domain_email.') ('.join(' & ',$to_emails).')',
+            'x__message' => 'Domain email is missing! (' . $domain_name . ') (' . $domain_email . ') (' . join(' & ', $to_emails) . ')',
         ));
     }
 
-    $email_domain = '"'.$domain_name.'" <'.$domain_email.'>';
+    $email_domain = '"' . $domain_name . '" <' . $domain_email . '>';
     $name = 'New User';
     $ReplyToAddresses = array($email_domain);
 
-    if($e__id > 0){
+    if ($e__id > 0) {
 
-        $es = $CI->E_model->fetch(array(
+        $es = $CI->Sources->read(array(
             'e__id' => $e__id,
         ));
-        if(count($es)){
+        if (count($es)) {
 
             $name = $es[0]['e__title'];
 
             //Also fetch email for this user to populate the reply to:
-            $fetch_emails = $CI->X_model->fetch(array(
+            $fetch_emails = $CI->Ledger->read(array(
                 'x__following' => 3288, //Email
                 'x__follower' => $e__id,
-                'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                ));
-            if(count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)){
+                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+            ));
+            if (count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)) {
                 array_push($ReplyToAddresses, trim($fetch_emails[0]['x__message']));
             }
         }
@@ -1755,32 +1802,32 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
 
     //Email has no word limit to add header & footer:
     $e___6287 = $CI->config->item('e___6287'); //APP
-    $base_domain = 'https://'.get_domain('m__message', $e__id, $x__website);
+    $base_domain = 'https://' . get_domain('m__message', $e__id, $x__website);
 
-    $email_message = '<div class="line">'.view_shuffle_message(29749).' '.$name.' '.view_shuffle_message(29750).'</div>';
-    $email_message .= $email_body."\n";
-    $email_message .= '<div class="line">'.view_shuffle_message(12691).'</div>';
-    $email_message .= '<div class="line">'.get_domain('m__title', $e__id, $x__website).'</div>';
+    $email_message = '<div class="line">' . view_shuffle_message(29749) . ' ' . $name . ' ' . view_shuffle_message(29750) . '</div>';
+    $email_message .= $email_body . "\n";
+    $email_message .= '<div class="line">' . view_shuffle_message(12691) . '</div>';
+    $email_message .= '<div class="line">' . get_domain('m__title', $e__id, $x__website) . '</div>';
 
 
-    if($e__id > 0 && count($es) && (!$template_i__id || !count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___42256')) . ')' => null, //Writes
-            'x__following' => 31779, //Mandatory Emails
-            'x__next' => $template_i__id,
-        ))))){
+    if ($e__id > 0 && count($es) && (!$template_i__id || !count($CI->Ledger->read(array(
+                'x__type IN (' . njoin(42256) . ')' => null, //Writes
+                'x__following' => 31779, //Mandatory Emails
+                'x__next' => $template_i__id,
+            ))))) {
         //User specific notifications:
-        $email_message .= '<div class="line"><a href="'.$base_domain.view_app_link(28904).'?e__handle='.$es[0]['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$es[0]['e__handle']).'" style="font-size:13px;">'.$e___6287[28904]['m__title'].'</a></div>';
+        $email_message .= '<div class="line"><a href="' . $base_domain . view_app_link(28904) . '?e__handle=' . $es[0]['e__handle'] . '&e__time=' . time() . '&e__hash=' . view__hash(time() . $es[0]['e__handle']) . '" style="font-size:13px;">' . $e___6287[28904]['m__title'] . '</a></div>';
     }
 
 
     $general_style = 'width:100%; max-width:610px; font-size:16px; margin-bottom:8px; line-height:134%;';
 
     //Email HTML Transformations:
-    $email_message = str_replace('>Show more<','><', $email_message); //Hide the show more content if any
-    $email_message = str_replace('<img ','<img style="'.$general_style.'" ', $email_message);
-    $email_message = str_replace('<div class="line','<div style="'.$general_style.'" class="line', $email_message);
-    $email_message = str_replace("\n",'<div style="padding:3px 0 0; line-height:100%;">&nbsp;</div>', $email_message);
-    $email_message = str_replace('href="/','href="'.$base_domain.'/', $email_message);
+    $email_message = str_replace('>Show more<', '><', $email_message); //Hide the show more content if any
+    $email_message = str_replace('<img ', '<img style="' . $general_style . '" ', $email_message);
+    $email_message = str_replace('<div class="line', '<div style="' . $general_style . '" class="line', $email_message);
+    $email_message = str_replace("\n", '<div style="padding:3px 0 0; line-height:100%;">&nbsp;</div>', $email_message);
+    $email_message = str_replace('href="/', 'href="' . $base_domain . '/', $email_message);
 
     $email_data = array(
         // Source is required
@@ -1803,7 +1850,7 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
             'Body' => array(
                 'Text' => array(
                     // Data is required
-                    'Data' => strip_tags(str_replace("\n","\n\n",$email_message)),
+                    'Data' => strip_tags(str_replace("\n", "\n\n", $email_message)),
                     'Charset' => 'UTF-8',
                 ),
                 'Html' => array(
@@ -1817,7 +1864,7 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
         'ReturnPath' => $email_domain,
     );
 
-    if($demo_only){
+    if ($demo_only) {
         echo print_r($email_data);
         return false;
     }
@@ -1835,14 +1882,14 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     $response = $client->sendEmail($email_data);
 
     //Log transaction:
-    if($log_tr){
+    if ($log_tr) {
 
         //Let's log a system email as the last resort way to record this transaction:
-        $CI->X_model->create(array_merge($x_data, array(
+        $CI->Ledger->write(array_merge($x_data, array(
             'x__type' => 29399,
             'x__next' => $template_i__id,
             'x__player' => $e__id,
-            'x__message' => $subject."\n\n".$email_message,
+            'x__message' => $subject . "\n\n" . $email_message,
             'x__metadata' => array(
                 'to' => $to_emails,
                 'subject' => $subject,
@@ -1852,11 +1899,11 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
         )));
 
         //Can we also mark the discovery as complete?
-        if($e__id && isset($x_data['x__previous']) && $x_data['x__previous']>0 && isset($x_data['x__next'])) {
-            foreach ($CI->I_model->fetch(array(
+        if ($e__id && isset($x_data['x__previous']) && $x_data['x__previous'] > 0 && isset($x_data['x__next'])) {
+            foreach ($CI->Ideas->read(array(
                 'i__id' => $x_data['x__previous'],
             )) as $email_i) {
-                $CI->X_model->mark_complete(i__discovery_link($email_i), $e__id, $x_data['x__next'], $email_i, $x_data);
+                $CI->Ledger->mark_complete(i__discovery_link($email_i), $e__id, $x_data['x__next'], $email_i, $x_data);
             }
         }
 
@@ -1867,48 +1914,49 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
 
 }
 
-function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = true){
+function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = true)
+{
 
     $CI =& get_instance();
     $e_id = 0; //Assume no domain unless found below
 
-    if(!$initiator_e__id){
+    if (!$initiator_e__id) {
         $player_e = superpower_unlocked();
-        if($player_e && $player_e['e__id']>0){
+        if ($player_e && $player_e['e__id'] > 0) {
             $initiator_e__id = $player_e['e__id'];
         }
     }
 
-    if($x__website && $force_website){
+    if ($x__website && $force_website) {
 
         $e_id = $x__website;
 
     } else {
 
         $server_name = get_server('SERVER_NAME');
-        if(strlen($server_name)){
-            foreach($CI->config->item('e___14870') as $x__type => $m) {
-                if (substr_count($m['m__message'], $server_name)==1){
+        if (strlen($server_name)) {
+            foreach ($CI->config->item('e___14870') as $x__type => $m) {
+                if (substr_count($m['m__message'], $server_name) == 1) {
                     $e_id = $x__type;
                     break;
                 }
             }
         }
 
-        $e_id = ( $e_id ? $e_id : ( $x__website > 0 ? $x__website : 2738 /* Mench */ ) );
+        $e_id = ($e_id ? $e_id : ($x__website > 0 ? $x__website : 2738 /* Mench */));
 
     }
 
 
-    if(!$setting_id){
+    if (!$setting_id) {
         return $e_id;
     }
 
 
-    $e___domain_sett = $CI->config->item('e___'.$setting_id); //DOMAINS
+    $e___domain_sett = $CI->config->item('e___' . $setting_id); //DOMAINS
 
-    if(!isset($e___domain_sett[$e_id]) || !strlen($e___domain_sett[$e_id]['m__message'])){
-        $target_return = ( in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404,$setting_id) : false );
+    if (!isset($e___domain_sett[$e_id]) || !strlen($e___domain_sett[$e_id]['m__message'])) {
+        $target_return = (in_array($setting_id, $CI->config->item('n___6404')) ? view_memory(6404, $setting_id) : false);
     } else {
         $target_return = $e___domain_sett[$e_id]['m__message'];
     }
@@ -1918,8 +1966,8 @@ function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0,
 }
 
 
-
-function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_website = true){
+function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_website = true)
+{
     $CI =& get_instance();
     $domain_e = website_setting(0, $initiator_e__id, $x__website, $force_website);
     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
@@ -1927,24 +1975,33 @@ function get_domain($var_field, $initiator_e__id = 0, $x__website = 0, $force_we
 }
 
 
-
-function dynamic_privacy_x(){
+function dynamic_privacy_x()
+{
     $CI =& get_instance();
-    return ( superpower_unlocked(12701) ? $CI->config->item('n___7360') /* Active */ : $CI->config->item('n___7359') /* Public */ );
+    return (superpower_unlocked(12701) || !isset($_SERVER['SERVER_NAME']) ? $CI->config->item('n___7360') /* Active */ : $CI->config->item('n___7359') /* Public */);
 }
 
-function dynamic_privacy_e($e__handle = null, $e__id = 0, $e = false){
+function dynamic_privacy_e($e__handle = null, $e__id = 0, $e = false)
+{
     $CI =& get_instance();
-    return ( access_level_e($e__handle, $e__id, $e)>=3 ? $CI->config->item('n___7358') /* Active */ : $CI->config->item('n___7357') /* Conditional Access */ );
+    return (access_level_e($e__handle, $e__id, $e) >= 3 || !isset($_SERVER['SERVER_NAME']) ? $CI->config->item('n___7358') /* Active */ : $CI->config->item('n___7357') /* Conditional Access */);
 }
 
-function dynamic_privacy_i($i__hashtag = null, $i__id = 0, $i = false){
+function dynamic_privacy_i($i__hashtag = null, $i__id = 0, $i = false)
+{
     $CI =& get_instance();
-    return ( access_level_i($i__hashtag, $i__id, $i)>=3 ? $CI->config->item('n___31871') /* Active */ : $CI->config->item('n___42941') /* Conditional Access */ );
+    return (access_level_i($i__hashtag, $i__id, $i) >= 3 || !isset($_SERVER['SERVER_NAME']) ? $CI->config->item('n___31871') /* Active */ : $CI->config->item('n___42941') /* Conditional Access */);
+}
+
+function njoin($e__id)
+{
+    $CI =& get_instance();
+    return join(',', $CI->config->item('n___' . $e__id));
 }
 
 
-function access_level_e($e__handle = null, $e__id = 0, $e = false){
+function access_level_e($e__handle = null, $e__id = 0, $e = false)
+{
 
     /*
      *
@@ -1959,49 +2016,50 @@ function access_level_e($e__handle = null, $e__id = 0, $e = false){
 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
-    if(superpower_unlocked(10939)){
+    if (superpower_unlocked(10939)) {
         return 3;
-    } elseif($player_e && ($e__handle==$player_e['e__handle'] || $e__id==$player_e['e__id'])){
+    } elseif ($player_e && ($e__handle == $player_e['e__handle'] || $e__id == $player_e['e__id'])) {
         return 3;
     }
 
-    if(strlen($e__handle)){
+    if (strlen($e__handle)) {
         $filters['LOWER(e__handle)'] = strtolower($e__handle);
-    } elseif(intval($e__id)){
+    } elseif (intval($e__id)) {
         $filters['e__id'] = $e__id;
-    } elseif(!$e || !$player_e){
+    } elseif (!$e || !$player_e) {
         return 0;
     }
 
-    if(!$e){
+    if (!$e) {
         //Check privacy first:
-        foreach($CI->E_model->fetch($filters) as $match_e){
+        foreach ($CI->Sources->read($filters) as $match_e) {
             $e = $match_e;
             break;
         }
     }
 
     //Source or its status is system locked?
-    if(in_array($e['e__id'], $CI->config->item('n___32145'))){
+    if (in_array($e['e__id'], $CI->config->item('n___32145'))) {
         //Read Only
         return 0;
     }
 
     $is_public = in_array($e['e__privacy'], $CI->config->item('n___33240'));
     $is_author = false;
-    if($player_e){
-        $is_author = count($CI->X_model->fetch(array(
-            'x__type IN (' . join(',', $CI->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
+    if ($player_e) {
+        $is_author = count($CI->Ledger->read(array(
+            'x__type IN (' . njoin(13548) . ')' => null, //AUTHORED SOURCES
             'x__following' => $player_e['e__id'],
             'x__follower' => $e['e__id'],
         )));
     }
 
-    return ( $is_author ? 3 : ( $is_public ? 2 : ( $e['e__privacy']==43008 ? 1 : 0 ) ) );
+    return ($is_author ? 3 : ($is_public ? 2 : ($e['e__privacy'] == 43008 ? 1 : 0)));
 
 }
 
-function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = false){
+function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = false)
+{
 
     /*
      *
@@ -2014,11 +2072,11 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
      *
      * */
 
-    if($is_cahce){
+    if ($is_cahce) {
         return 1;
     }
 
-    if(superpower_unlocked(12700)){
+    if (superpower_unlocked(12700)) {
         //Moderation Superpower on any idea:
         return 3;
     }
@@ -2026,143 +2084,143 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
     $CI =& get_instance();
     $player_e = superpower_unlocked();
 
-    if(strlen($i__hashtag)){
+    if (strlen($i__hashtag)) {
         $filters['LOWER(i__hashtag)'] = strtolower($i__hashtag);
-    } elseif(intval($i__id)){
+    } elseif (intval($i__id)) {
         $filters['i__id'] = $i__id;
-    } elseif(!$i){
+    } elseif (!$i) {
         return 0;
     }
 
-    if(!$i){
+    if (!$i) {
         //Check privacy first:
-        foreach($CI->I_model->fetch($filters) as $match_i){
+        foreach ($CI->Ideas->read($filters) as $match_i) {
             $i = $match_i;
             break;
         }
     }
 
     $is_author = false;
-    if($player_e){
-        $is_author = count($CI->X_model->fetch(array( //IDEA SOURCE
-            'x__type IN (' . join(',', $CI->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+    if ($player_e) {
+        $is_author = count($CI->Ledger->read(array( //IDEA SOURCE
+            'x__type IN (' . njoin(31919) . ')' => null, //IDEA AUTHOR
             'x__following' => $player_e['e__id'],
             'x__next' => $i['i__id'],
         )));
     }
 
-    if($is_author) {
+    if ($is_author) {
         //Authors can always edit:
         return 3;
-    } elseif(count($CI->X_model->fetch(array(
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___42953')) . ')' => null, //Mentioned Sources
+    } elseif (count($CI->Ledger->read(array(
+        'x__privacy IN (' . njoin(7359) . ')' => null, //PUBLIC
+        'x__type IN (' . njoin(42953) . ')' => null, //Mentioned sources
         'x__following' => $player_e['e__id'],
         'x__next' => $i['i__id'],
-    )))){
+    )))) {
         //Mentioned can always reply:
         return 2;
     } else {
 
         //Inventory Limits:
-        if(i_spots_remaining($i['i__id'])==0){
+        if (i_spots_remaining($i['i__id']) == 0) {
             return 0;
         }
 
 
         //Include If Has ANY
-        $fetch_27984 = $CI->X_model->fetch(array(
+        $fetch_27984 = $CI->Ledger->read(array(
             'x__next' => $i['i__id'],
             'x__type' => 27984, //Must Include All
-                ), array('x__following'), 0);
-        if(count($fetch_27984)){
+        ), array('x__following'), 0);
+        if (count($fetch_27984)) {
             $the_counter = 0;
-            if($player_e){
-                foreach($fetch_27984 as $e_pre){
-                    if((( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__following' => $e_pre['x__following'],
+            if ($player_e) {
+                foreach ($fetch_27984 as $e_pre) {
+                    if ((($player_e && $player_e['e__id'] == $e_pre['x__following']) || count($CI->Ledger->read(array(
+                            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                            'x__following' => $e_pre['x__following'],
                             'x__follower' => $player_e['e__id'],
-                        ))))){
+                        ))))) {
                         $the_counter++;
                     }
                 }
             }
-            if(!$the_counter){
+            if (!$the_counter) {
                 return 0;
             }
         }
 
 
         //Include If Has ALL
-        $fetch_43513 = $CI->X_model->fetch(array(
+        $fetch_43513 = $CI->Ledger->read(array(
             'x__next' => $i['i__id'],
             'x__type' => 43513, //Must Include All
-                ), array('x__following'), 0);
-        if(count($fetch_43513)){
+        ), array('x__following'), 0);
+        if (count($fetch_43513)) {
             $the_counter = 0;
-            if($player_e){
-                foreach($fetch_43513 as $e_pre){
-                    if((( $player_e && $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__following' => $e_pre['x__following'],
+            if ($player_e) {
+                foreach ($fetch_43513 as $e_pre) {
+                    if ((($player_e && $player_e['e__id'] == $e_pre['x__following']) || count($CI->Ledger->read(array(
+                            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                            'x__following' => $e_pre['x__following'],
                             'x__follower' => $player_e['e__id'],
-                        ))))){
+                        ))))) {
                         $the_counter++;
                     }
                 }
             }
-            if($the_counter < count($fetch_43513)){
+            if ($the_counter < count($fetch_43513)) {
                 return 0;
             }
         }
 
 
         //Exclude If Has ANY
-        $fetch_43514 = $CI->X_model->fetch(array(
+        $fetch_43514 = $CI->Ledger->read(array(
             'x__next' => $i['i__id'],
             'x__type' => 43514, //Must Exclude All
-                ), array('x__following'), 0);
-        if(count($fetch_43514)){
+        ), array('x__following'), 0);
+        if (count($fetch_43514)) {
             $the_counter = 0;
-            if($player_e){
-                foreach($fetch_43514 as $e_pre){
-                    if(( $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__following' => $e_pre['x__following'],
+            if ($player_e) {
+                foreach ($fetch_43514 as $e_pre) {
+                    if (($player_e['e__id'] == $e_pre['x__following']) || count($CI->Ledger->read(array(
+                            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                            'x__following' => $e_pre['x__following'],
                             'x__follower' => $player_e['e__id'],
-                        )))){
+                        )))) {
                         //Found an exclusion, so skip this:
                         $the_counter++;
                         break;
                     }
                 }
             }
-            if($the_counter>0){
+            if ($the_counter > 0) {
                 return 0;
             }
         }
 
         //Exclude If Has ALL
-        $fetch_26600 = $CI->X_model->fetch(array(
+        $fetch_26600 = $CI->Ledger->read(array(
             'x__next' => $i['i__id'],
             'x__type' => 26600, //Must Exclude All
-                ), array('x__following'), 0);
-        if(count($fetch_26600)){
+        ), array('x__following'), 0);
+        if (count($fetch_26600)) {
             $the_counter = 0;
-            if($player_e){
-                foreach($fetch_26600 as $e_pre){
-                    if(( $player_e['e__id']==$e_pre['x__following'] ) || count($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'x__following' => $e_pre['x__following'],
+            if ($player_e) {
+                foreach ($fetch_26600 as $e_pre) {
+                    if (($player_e['e__id'] == $e_pre['x__following']) || count($CI->Ledger->read(array(
+                            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                            'x__following' => $e_pre['x__following'],
                             'x__follower' => $player_e['e__id'],
-                        )))){
+                        )))) {
                         //Found an exclusion, so skip this:
                         $the_counter++;
                     }
                 }
             }
-            if($the_counter==count($fetch_26600)){
+            if ($the_counter == count($fetch_26600)) {
                 return 0;
             }
         }
@@ -2170,8 +2228,8 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
 
         //Privacy level:
         $is_public = in_array($i['i__privacy'], $CI->config->item('n___42952'));
-        $is_read_only = $i['i__privacy']==42929;
-        return ( $is_public ? ( $is_read_only ? 1 : 2 ) : 0 );
+        $is_read_only = $i['i__privacy'] == 42929;
+        return ($is_public ? ($is_read_only ? 1 : 2) : 0);
     }
 
 
@@ -2186,16 +2244,17 @@ function boost_power()
 }
 
 
-function flag_for_search_indexing($focus__node = null, $s__id = 0) {
+function flag_for_search_indexing($focus__node = null, $s__id = 0)
+{
 
     $CI =& get_instance();
 
-    if($focus__node && !in_array($focus__node , $CI->config->item('n___12761'))){
+    if ($focus__node && !in_array($focus__node, $CI->config->item('n___12761'))) {
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($focus__node && !$s__id) || ($s__id && !$focus__node)){
+    } elseif (($focus__node && !$s__id) || ($s__id && !$focus__node)) {
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
@@ -2207,16 +2266,18 @@ function flag_for_search_indexing($focus__node = null, $s__id = 0) {
 
 }
 
-function search_enabled(){
+function search_enabled()
+{
     $CI =& get_instance();
-    return ( $CI->config->item('universal_search_enabled') && intval(view_memory(6404,12678)) );
+    return ($CI->config->item('universal_search_enabled') && intval(view_memory(6404, 12678)));
 }
 
 
-function update_algolia($focus__node = null, $s__id = 0) {
+function update_algolia($focus__node = null, $s__id = 0)
+{
 
-    if(!search_enabled()){
-        console.log("Search engine is disabled!");
+    if (!search_enabled()) {
+        console . log("Search engine is disabled!");
         return false;
     }
 
@@ -2228,12 +2289,12 @@ function update_algolia($focus__node = null, $s__id = 0) {
      *
      * */
 
-    if($focus__node && !in_array($focus__node , $CI->config->item('n___12761'))){
+    if ($focus__node && !in_array($focus__node, $CI->config->item('n___12761'))) {
         return array(
             'status' => 0,
             'message' => 'Object type is invalid',
         );
-    } elseif(($focus__node && !$s__id) || ($s__id && !$focus__node)){
+    } elseif (($focus__node && !$s__id) || ($s__id && !$focus__node)) {
         return array(
             'status' => 0,
             'message' => 'Must define both object type and ID',
@@ -2248,10 +2309,10 @@ function update_algolia($focus__node = null, $s__id = 0) {
     $limits = array();
 
 
-    if($focus__node==12273){
+    if ($focus__node == 12273) {
         $focus_field_id = 'i__id';
         $focus_field_privacy = 'i__privacy';
-    } elseif($focus__node==12274){
+    } elseif ($focus__node == 12274) {
         $focus_field_id = 'e__id';
         $focus_field_privacy = 'e__privacy';
     }
@@ -2259,7 +2320,6 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
     //Load Algolia Index
     $search_index = load_algolia('alg_index');
-
 
 
     //Which objects are we fetching?
@@ -2286,36 +2346,34 @@ function update_algolia($focus__node = null, $s__id = 0) {
     $all_db_rows = array();
     $synced_count = 0;
 
-    foreach($fetch_objects as $loop_obj){
+    foreach ($fetch_objects as $loop_obj) {
 
         //Reset limits:
         unset($filters);
 
         //Fetch item(s) for updates including their followings:
-        if ($loop_obj==12273) {
+        if ($loop_obj == 12273) {
 
-            if($s__id){
+            if ($s__id) {
                 $filters['i__id'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->I_model->fetch($filters, 0);
+            $db_rows[$loop_obj] = $CI->Ideas->read($filters, 0);
 
-        } elseif ($loop_obj==12274) {
+        } elseif ($loop_obj == 12274) {
 
             //SOURCES
-            if($s__id){
+            if ($s__id) {
                 $filters['e__id'] = $s__id;
             }
 
-            $db_rows[$loop_obj] = $CI->E_model->fetch($filters, 0);
+            $db_rows[$loop_obj] = $CI->Sources->read($filters, 0);
 
         }
 
 
-
-
         //Build the index:
-        foreach($db_rows[$loop_obj] as $s) {
+        foreach ($db_rows[$loop_obj] as $s) {
 
             //Prepare variables:
             unset($export_row);
@@ -2323,20 +2381,20 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
 
             //Update Weight if single update:
-            if($s__id){
+            if ($s__id) {
                 //Update weight before updating this object:
-                if($focus__node==12273){
+                if ($focus__node == 12273) {
                     i__weight_calculator($s);
-                } elseif($focus__node==12274){
+                } elseif ($focus__node == 12274) {
                     e__weight_calculator($s);
                 }
             }
 
 
             //Attempt to fetch Algolia object ID from object Metadata:
-            if($focus__node){
+            if ($focus__node) {
 
-                $external_name = ( $focus__node==12273 ? 'i__external' : 'e__external' );
+                $external_name = ($focus__node == 12273 ? 'i__external' : 'e__external');
 
                 if (intval($s[$external_name]) > 0) {
                     //We found it! Let's just update existing algolia record
@@ -2346,12 +2404,12 @@ function update_algolia($focus__node = null, $s__id = 0) {
             } else {
 
                 //Clear possible metadata algolia ID's that have been cached:
-                if ($loop_obj==12273) {
-                    $CI->I_model->update($s['i__id'], array(
+                if ($loop_obj == 12273) {
+                    $CI->Ideas->edit($s['i__id'], array(
                         'i__external' => null,
                     ));
-                } elseif ($loop_obj==12274) {
-                    $CI->E_model->update($s['e__id'], array(
+                } elseif ($loop_obj == 12274) {
+                    $CI->Sources->edit($s['e__id'], array(
                         'e__external' => null,
                     ));
                 }
@@ -2363,14 +2421,14 @@ function update_algolia($focus__node = null, $s__id = 0) {
             $export_row['s__keywords'] = '';
 
             //Now build object-specific index:
-            if ($loop_obj==12273) {
+            if ($loop_obj == 12273) {
 
                 //IDEAS
                 //See if this idea has a time-range:
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['i__id']);
                 $export_row['s__handle'] = $s['i__hashtag'];
-                $export_row['s__url'] = view_memory(42903,33286) . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
+                $export_row['s__url'] = view_memory(42903, 33286) . $s['i__hashtag']; //Default to idea, forward to discovery is lacking superpowers
                 $export_row['s__privacy'] = intval($s['i__privacy']);
                 $export_row['s__cover'] = '';
                 $export_row['s__title'] = $s['i__message'];
@@ -2378,50 +2436,50 @@ function update_algolia($focus__node = null, $s__id = 0) {
                 $export_row['s__weight'] = intval($s['i__weight']);
 
                 //Top/Bottom Idea Keywords
-                foreach ($CI->X_model->fetch(array(
-                                            'x__type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
+                foreach ($CI->Ledger->read(array(
+                    'x__type IN (' . njoin(42345) . ')' => null, //Active Sequence 2-Ways
                     'x__previous' => $s['i__id'],
                 ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['i__message'] . ' ';
                 }
-                foreach ($CI->X_model->fetch(array(
-                                            'x__type IN (' . join(',', $CI->config->item('n___42345')) . ')' => null, //Active Sequence 2-Ways
+                foreach ($CI->Ledger->read(array(
+                    'x__type IN (' . njoin(42345) . ')' => null, //Active Sequence 2-Ways
                     'x__next' => $s['i__id'],
                 ), array('x__previous'), 0, 0, array('x__weight' => 'ASC')) as $i) {
                     $export_row['s__keywords'] .= $i['i__message'] . ' ';
                 }
 
-                //Idea Sources Keywords
-                foreach($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                //Idea sources Keywords
+                foreach ($CI->Ledger->read(array(
+                    'x__type IN (' . njoin(33602) . ')' => null, //Idea/Source Links Active
                     'x__next' => $s['i__id'],
-                ), array('x__following'), 0) as $x){
+                ), array('x__following'), 0) as $x) {
 
                     //Featured?
-                    if(in_array($x['e__id'], $CI->config->item('n___41804'))){
+                    if (in_array($x['e__id'], $CI->config->item('n___41804'))) {
                         array_push($export_row['_tags'], 'public_index');
                     }
 
                     //Authored?
                     $is_author = in_array($x['x__type'], $CI->config->item('n___31919'));
-                    if($is_author){
+                    if ($is_author) {
                         array_push($export_row['_tags'], 'z_' . $x['e__id']);
                     }
 
                     //Keywords?
-                    if($is_author || strlen($x['x__message'])){
-                        $export_row['s__keywords'] .= $x['e__title'].' '.( strlen($x['x__message']) ? $x['x__message'] . ' '  : '' );
+                    if ($is_author || strlen($x['x__message'])) {
+                        $export_row['s__keywords'] .= $x['e__title'] . ' ' . (strlen($x['x__message']) ? $x['x__message'] . ' ' : '');
                     }
 
                 }
 
-            } elseif ($loop_obj==12274) {
+            } elseif ($loop_obj == 12274) {
 
                 //SOURCES
                 $export_row['s__type'] = $loop_obj;
                 $export_row['s__id'] = intval($s['e__id']);
                 $export_row['s__handle'] = $s['e__handle'];
-                $export_row['s__url'] = view_memory(42903,42902). $s['e__handle'];
+                $export_row['s__url'] = view_memory(42903, 42902) . $s['e__handle'];
                 $export_row['s__privacy'] = intval($s['e__privacy']);
                 $export_row['s__cover'] = $s['e__cover'];
                 $export_row['s__title'] = $s['e__title'];
@@ -2429,33 +2487,33 @@ function update_algolia($focus__node = null, $s__id = 0) {
                 $export_row['s__weight'] = intval($s['e__weight']);
 
                 //Is this an image?
-                if(strlen($s['e__cover'])){
+                if (strlen($s['e__cover'])) {
                     array_push($export_row['_tags'], 'has_image');
                 }
-                if(in_array($s['e__privacy'], $CI->config->item('n___33240'))){
+                if (in_array($s['e__privacy'], $CI->config->item('n___33240'))) {
                     //Public Access
                     array_push($export_row['_tags'], 'public_index');
                 }
 
                 //Fetch Following:
-                foreach($CI->X_model->fetch(array(
-                    'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                foreach ($CI->Ledger->read(array(
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                     'x__follower' => $s['e__id'], //This follower source
-                                ), array('x__following'), 0, 0, array('e__title' => 'DESC')) as $x) {
+                ), array('x__following'), 0, 0, array('e__title' => 'DESC')) as $x) {
 
                     //Add tags:
                     array_push($export_row['_tags'], 'z_' . $x['e__id']);
 
                     //Add Keywords:
-                    $export_row['s__keywords'] .= $x['e__title']. ( strlen($x['x__message']) ? ' '.$x['x__message'] : '' ) . ' ';
+                    $export_row['s__keywords'] .= $x['e__title'] . (strlen($x['x__message']) ? ' ' . $x['x__message'] : '') . ' ';
 
                 }
 
                 //Append Discovery Written Responses to Keywords
-                foreach($CI->X_model->fetch(array(
-                            'x__type IN (' . join(',', $CI->config->item('n___29133')) . ')' => null, //Written Responses
+                foreach ($CI->Ledger->read(array(
+                    'x__type IN (' . njoin(29133) . ')' => null, //Written Responses
                     'x__player' => $s['e__id'], //This follower source
-                ), array('x__player'), 0, 0, array('x__time' => 'DESC')) as $x){
+                ), array('x__player'), 0, 0, array('x__time' => 'DESC')) as $x) {
                     $export_row['s__keywords'] .= $x['x__message'] . ' ';
                 }
 
@@ -2472,7 +2530,7 @@ function update_algolia($focus__node = null, $s__id = 0) {
     }
 
     //Did we find anything?
-    if(count($all_export_rows) < 1){
+    if (count($all_export_rows) < 1) {
         return false;
     }
 
@@ -2514,14 +2572,14 @@ function update_algolia($focus__node = null, $s__id = 0) {
 
 
                 //Now update local database with the new objectIDs:
-                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs'])==1 ) {
-                    foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
-                        if ($focus__node==12273) {
-                            $CI->I_model->update($all_db_rows[$key][$focus_field_id], array(
+                if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == 1) {
+                    foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
+                        if ($focus__node == 12273) {
+                            $CI->Ideas->edit($all_db_rows[$key][$focus_field_id], array(
                                 'i__external' => $algolia_id,
                             ));
-                        } elseif ($focus__node==12274) {
-                            $CI->E_model->update($all_db_rows[$key][$focus_field_id], array(
+                        } elseif ($focus__node == 12274) {
+                            $CI->Sources->edit($all_db_rows[$key][$focus_field_id], array(
                                 'e__external' => $algolia_id,
                             ));
                         }
@@ -2534,7 +2592,6 @@ function update_algolia($focus__node = null, $s__id = 0) {
         }
 
     } else {
-
 
 
         /*
@@ -2551,16 +2608,16 @@ function update_algolia($focus__node = null, $s__id = 0) {
         $algolia_results = $search_index->addObjects($all_export_rows);
 
         //Now update database with the objectIDs:
-        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs'])==count($all_db_rows) ) {
+        if (isset($algolia_results['objectIDs']) && count($algolia_results['objectIDs']) == count($all_db_rows)) {
 
-            foreach($algolia_results['objectIDs'] as $key => $algolia_id) {
+            foreach ($algolia_results['objectIDs'] as $key => $algolia_id) {
 
                 if (isset($all_db_rows[$key]['i__id'])) {
-                    $CI->I_model->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
+                    $CI->Ideas->edit($all_db_rows[$key][(isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
                         'i__external' => intval($algolia_id),
                     ));
                 } else {
-                    $CI->E_model->update($all_db_rows[$key][( isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
+                    $CI->Sources->edit($all_db_rows[$key][(isset($all_db_rows[$key]['i__id']) ? 'i__id' : 'e__id')], array(
                         'e__external' => intval($algolia_id),
                     ));
                 }
@@ -2573,16 +2630,15 @@ function update_algolia($focus__node = null, $s__id = 0) {
     }
 
 
-
     //Return results:
     return array(
-        'status' => ( $synced_count > 0 ? 1 : 0),
+        'status' => ($synced_count > 0 ? 1 : 0),
         'message' => $synced_count . ' objects sync with Algolia',
     );
 
 }
 
-function x__metadata_update($x__id, $new_fields, $x__player = 0)
+function x__metadata_edit($x__id, $new_fields, $x__player = 0)
 {
 
     $CI =& get_instance();
@@ -2605,7 +2661,7 @@ function x__metadata_update($x__id, $new_fields, $x__player = 0)
     }
 
     //Fetch metadata for this object:
-    $db_objects = $CI->X_model->fetch(array(
+    $db_objects = $CI->Ledger->read(array(
         'x__id' => $x__id,
     ));
 
@@ -2615,10 +2671,10 @@ function x__metadata_update($x__id, $new_fields, $x__player = 0)
 
 
     //Prepare newly fetched metadata:
-    $metadata = (strlen($db_objects[0]['x__metadata']) > 0 ? unserialize($db_objects[0]['x__metadata']) : array() );
+    $metadata = (strlen($db_objects[0]['x__metadata']) > 0 ? unserialize($db_objects[0]['x__metadata']) : array());
 
     //Go through all the new fields and see if they differ from current metadata fields:
-    foreach($new_fields as $metadata_key => $metadata_value) {
+    foreach ($new_fields as $metadata_key => $metadata_value) {
 
         //We are doing an absolute adjustment if needed:
         if (is_null($metadata_value)) {
@@ -2635,7 +2691,7 @@ function x__metadata_update($x__id, $new_fields, $x__player = 0)
     }
 
     //Should be all good:
-    return $CI->X_model->update($x__id, array(
+    return $CI->Ledger->edit($x__id, array(
         'x__metadata' => $metadata,
     ));
 

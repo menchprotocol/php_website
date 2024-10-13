@@ -10,8 +10,8 @@ $total_points = 0;
 $table_body = '';
 
 //Count total first:
-$totals_count = $this->X_model->fetch(array(
-    'x__privacy IN (' . join(',', $this->config->item('n___6186')) . ')' => null, //ANY PRIVACY
+$totals_count = $this->Ledger->read(array(
+    'x__privacy IN (' . njoin(6186) . ')' => null, //ANY PRIVACY
 ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 $pad_length = strlen($totals_count[0]['totals']);
 
@@ -28,7 +28,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     //List all statuses:
     $interactions_this = 0;
     foreach($this->config->item('e___6186') as $x__type1 => $m1) {
-        $list_e_count = $this->X_model->fetch(array(
+        $list_e_count = $this->Ledger->read(array(
             'x__type' => $x__type,
             'x__privacy' => $x__type1,
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -46,7 +46,7 @@ foreach($this->config->item('e___4593') as $x__type => $m) {
     $table_body .= '<th style="text-align: left; font-family: monospace, monospace;">'.str_pad(number_format(($interactions_this/$totals_count[0]['totals']*100), 3), 6, '0', STR_PAD_LEFT).'%</th>';
 
     //Points Total
-    $points = $this->X_model->fetch(array(
+    $points = $this->Ledger->read(array(
         'x__type' => $x__type,
     ), array(), 0, 0, array(), 'SUM(x__diamonds) as totals');
     $table_body .= '<td style="text-align: left;  font-family: monospace, monospace;">'.str_pad($points[0]['totals'], $pad_length, '0', STR_PAD_LEFT).'</td>';

@@ -10,28 +10,28 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
     if($x__type==12273){
 
         //IDEAS
-        $unique = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+        $unique = $this->Ledger->read(array(
+            'x__type IN (' . njoin(13480) . ')' => null, //UNIQUE IDEAS
         ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif($x__type==12274){
 
         //SOURCE
-        $unique = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //AUTHORED SOURCES
+        $unique = $this->Ledger->read(array(
+                    'x__type IN (' . njoin(13548) . ')' => null, //AUTHORED SOURCES
         ), array('x__follower'), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif(in_array($x__type, $this->config->item('n___42284'))){
 
-        $unique = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___'.$x__type)) . ')' => null,
+        $unique = $this->Ledger->read(array(
+            'x__type IN (' . njoin($x__type) . ')' => null,
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } elseif($x__type==6255){
 
         //DISCOVERY
-        $unique = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        $unique = $this->Ledger->read(array(
+            'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
 
     } else {
@@ -57,8 +57,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
         if($x__type==12273){
 
             //IDEAS
-            $query = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___13480')) . ')' => null, //UNIQUE IDEAS
+            $query = $this->Ledger->read(array(
+                    'x__type IN (' . njoin(13480) . ')' => null, //UNIQUE IDEAS
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
             ), array('x__next'), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -66,8 +66,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
         } elseif($x__type==12274){
 
             //SOURCE
-            $query = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___13548')) . ')' => null, //UNIQUE SOURCES
+            $query = $this->Ledger->read(array(
+                    'x__type IN (' . njoin(13548) . ')' => null, //UNIQUE SOURCES
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
             ), array('x__follower'), 0, 0, array(), 'COUNT(x__id) as totals');
@@ -75,8 +75,8 @@ foreach($this->config->item('e___14874') as $x__type => $m) {
         } elseif($x__type==6255){
 
             //DISCOVERY
-            $query = $this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            $query = $this->Ledger->read(array(
+                    'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
                 'x__time >=' => $time_start,
                 'x__time <' => $time_end,
             ), array(), 0, 0, array(), 'COUNT(x__id) as totals');

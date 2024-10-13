@@ -8,20 +8,20 @@ foreach($this->config->item('e___28917') as $x__type => $m) {
         $total_members = 0;
         $unsnooze_members = 0;
 
-        foreach($this->X_model->fetch(array(
+        foreach($this->Ledger->read(array(
             'x__following' => $x__type,
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
         ), array('x__follower'), 0) as $x) {
             $total_members++;
             if((time()-strtotime($x['x__time']))>(86400*intval($m['m__message']))){
 
                 //Remove from Snooze:
-                $this->X_model->update($x['x__id'], array(
+                $this->Ledger->edit($x['x__id'], array(
                     'x__privacy' => 6173, //Transaction Removed
                 ), $x['x__player'], 28917 /* Unsnooze */);
 
                 //Add to subscribers:
-                $this->X_model->create(array(
+                $this->Ledger->write(array(
                     'x__type' => 4251,
                     'x__following' => 4430, //Active Member
                     'x__player' => $x['x__player'],

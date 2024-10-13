@@ -1,7 +1,7 @@
 <?php
 
 $filters = array(
-    'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+    'x__type IN (' . njoin(42252) . ')' => null, //Plain Link
     'x__following' => 28199,
 );
 
@@ -9,7 +9,7 @@ $filters = array(
 $buffer_time = 300;
 
 if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
-    foreach($this->I_model->fetch(array(
+    foreach($this->Ideas->read(array(
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     )) as $i){
         $filters['x__next'] = $i['i__id'];
@@ -21,17 +21,17 @@ $links_deleted = 0;
 $counter = 0;
 
 //Go through all expire seconds ideas:
-foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
+foreach($this->Ledger->read($filters, array('x__next'), 0) as $expires){
 
     //Now go through everyone who discovered this selection:
-    foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___7704')) . ')' => null, //Discovery Expansions
+    foreach($this->Ledger->read(array(
+            'x__type IN (' . njoin(7704) . ')' => null, //Discovery Expansions
         'x__previous' => $expires['i__id'],
     ), array('x__player'), 0) as $x_progress){
 
         //Now see if the answer is completed:
-        $answer_completed = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+        $answer_completed = $this->Ledger->read(array(
+            'x__type IN (' . njoin(31777) . ')' => null, //EXPANDED DISCOVERIES
             'x__previous' => $x_progress['x__next'],
             'x__player' => $x_progress['e__id'],
         ));
@@ -41,14 +41,14 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
 
             //Answer not yet completed and no time left, delete response:
             $deleted = false;
-            foreach($this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___31777')) . ')' => null, //EXPANDED DISCOVERIES
+            foreach($this->Ledger->read(array(
+                        'x__type IN (' . njoin(31777) . ')' => null, //EXPANDED DISCOVERIES
                 'x__previous' => $expires['i__id'],
                 'x__player' => $x_progress['e__id'],
             ), array(), 0) as $delete){
 
                 $deleted = true;
-                $this->X_model->update($delete['x__id'], array(
+                $this->Ledger->edit($delete['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
                 ), $player_e['e__id'], 29085); //Time Expired
 
@@ -72,7 +72,7 @@ foreach($this->X_model->fetch($filters, array('x__next'), 0) as $expires){
 echo '<div style="text-align: center">'.$links_deleted.'/'.$counter.' ideas expired.</div>';
 
 if(isset($filters['x__next'])){
-    foreach($this->I_model->fetch(array('i__id' => $filters['x__next'])) as $i){
+    foreach($this->Ideas->read(array('i__id' => $filters['x__next'])) as $i){
         //We were deleting a single item, redirect back:
         js_php_redirect(view_memory(42903,33286).$i['i__hashtag'], 0);
     }

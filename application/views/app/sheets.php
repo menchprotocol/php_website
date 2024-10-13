@@ -38,10 +38,10 @@ foreach($list_settings['query_string_filtered'] as $x){
     $name = '';
     foreach($list_settings['column_i'] as $i_var){
 
-        $discoveries = $this->X_model->fetch(array(
+        $discoveries = $this->Ledger->read(array(
             'x__previous' => $i_var['i__id'],
             'x__player' => $x['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
         ), array(), 1);
 
         if(count($discoveries)){
@@ -63,10 +63,10 @@ foreach($list_settings['query_string_filtered'] as $x){
         $i_content .= '<td title="'.$x['e__title'].' x '.view_i_title($i_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.convertURLs($discoveries[0]['x__message']).'</p>' : '<span title="'.view_i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view_i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' ).( $discoveries[0]['x__type']==26595 && $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' )  : '').'</td>';
 
 
-        if(count($discoveries) && (!count($i_var['must_follow']) || count($i_var['must_follow'])!=count($this->X_model->fetch(array(
+        if(count($discoveries) && (!count($i_var['must_follow']) || count($i_var['must_follow'])!=count($this->Ledger->read(array(
                     'x__follower' => $x['e__id'],
                     'x__following IN (' . join(',', $i_var['must_follow']) . ')' => null,
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                         ))))){
             if(!isset($count_totals['i'][$i_var['i__id']])){
                 $count_totals['i'][$i_var['i__id']] = 0;
@@ -90,15 +90,15 @@ foreach($list_settings['query_string_filtered'] as $x){
     //SOURCES
     foreach($list_settings['column_e'] as $e){
 
-        $require_writing = count($this->X_model->fetch(array(
-            'x__following IN (' . join(',', $this->config->item('n___43510')) . ')' => null, //Require Written Answers
+        $require_writing = count($this->Ledger->read(array(
+            'x__following IN (' . njoin(43510) . ')' => null, //Require Written Answers
             'x__follower' => $e['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
         )));
 
-        $fetch_data = $this->X_model->fetch(array(
+        $fetch_data = $this->Ledger->read(array(
             'x__follower' => $x['e__id'],
-            'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
             'x__following' => $e['e__id'],
         ));
 
@@ -129,10 +129,10 @@ foreach($list_settings['query_string_filtered'] as $x){
                 $count_totals['e'][$e['e__id']] = 0;
             }
 
-            $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( count($this->X_model->fetch(array(
+            $count_totals['e'][$e['e__id']] = $count_totals['e'][$e['e__id']] + ( count($this->Ledger->read(array(
                             'x__follower' => $e['e__id'],
-                    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'x__following IN (' . join(',', $this->config->item('n___39609')) . ')' => null, //ADDUP NUMBER
+                    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
+                    'x__following IN (' . njoin(39609) . ')' => null, //ADDUP NUMBER
                 ))) ? doubleval(preg_replace('/[^0-9.-]+/', '', $fetch_data[0]['x__message'])) : 1 );
         }
     }
@@ -150,15 +150,15 @@ $table_sortable = array('#th_primary','#th_done');
 echo '<table style="font-size:0.8em;" id="sortable_table" class="table table-sm table-striped image-mini">';
 
 echo '<tr style="font-weight:bold; vertical-align: baseline;">';
-echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
+echo '<th id="th_primary" style="width:200px;">'.$count.' sources</th>';
 foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
     echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xs">'.$e___6177[$e['e__privacy']]['m__cover'].'</span></div><a class="icon-block-xs" href="'.view_memory(42903,42902).$e['e__handle'].'" target="_blank" title="Open in New Window">'.view_cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['e__title'].'</span></th>';
 }
 foreach($list_settings['column_i'] as $i_var){
 
-    $max_available = $this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+    $max_available = $this->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
         'x__next' => $i_var['i__id'],
         'x__following' => 26189,
     ), array(), 1);
@@ -279,7 +279,7 @@ echo '</table>';
             $('.x__player_' + modify_data['e__id'] + '_' + modify_data['x__player']).html('<i class="fas fa-yin-yang fa-spin"></i>');
 
             //Check email and validate:
-            $.post("/ajax/e_toggle_e", modify_data, function (data) {
+            $.post("/apps/e_toggle_e", modify_data, function (data) {
 
                 if (data.status) {
 

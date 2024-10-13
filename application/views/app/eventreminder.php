@@ -5,14 +5,14 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
     //This is a request to cancel, do so and redirect:
     if(view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
-        foreach($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+        foreach($this->Ledger->read(array(
+            'x__type IN (' . njoin(40986) . ')' => null, //SUCCESSFUL DISCOVERIES
             'x__id' => $_GET['x__id'],
             'LOWER(e__handle)' => strtolower($_GET['e__handle']),
         ), array('x__player'), 0) as $x){
 
             //Show Header:
-            foreach($this->I_model->fetch(array(
+            foreach($this->Ideas->read(array(
                 'i__id' => $x['x__next'],
             )) as $i_from){
                 echo '<h1><a href="'.view_memory(42903,33286).$i_from['i__hashtag'].'"><u>' . view_i_title($i_from, true) . '</u></a></h1>';
@@ -21,13 +21,13 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             if(isset($_GET['submit'])){
 
                 //They have confirmed, remove:
-                $this->X_model->update($x['x__id'], array(
+                $this->Ledger->edit($x['x__id'], array(
                     'x__type' => 42333, //RSVP No
                 ), $x['e__id'], 42251 /* Member Skipped Event */);
                 //TODO Copy th is elsewhere
 
                 //Notify and give option to go to starting point:
-                foreach($this->I_model->fetch(array(
+                foreach($this->Ideas->read(array(
                     'i__id' => $x['x__previous'],
                 )) as $i_go){
                     echo '<div class="alert alert-success" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Successfully cancelled event. You can continue to <a href="'.view_memory(42903,33286).$i_go['i__hashtag'].'">'.view_i_title($i_go, true).'</a>.</div>';
@@ -57,9 +57,9 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
     //Track successful idea dispatches:
     $i_scanned = array();
 
-    foreach ($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-        'x__following IN (' . join(',', $this->config->item('n___42216')) . ')' => null, //Event Reminder
+    foreach ($this->Ledger->read(array(
+            'x__type IN (' . njoin(42252) . ')' => null, //Plain Link
+        'x__following IN (' . njoin(42216) . ')' => null, //Event Reminder
         'i__type' => 30874, //Events
         ), array('x__next'), 0) as $i) {
 
@@ -70,8 +70,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
             //Fetch Start time for this idea:
             $time_starts = 0;
-            foreach($this->X_model->fetch(array(
-                    'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            foreach($this->Ledger->read(array(
+                    'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
                 'x__next' => $i['i__id'],
                 'x__following' => 26556, //Time Starts
             )) as $time){
@@ -86,15 +86,15 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                 if(($time_starts - intval($e___42216[$i['x__following']]['m__message'])) < time()){
 
                     //End time?
-                    $time_ends = $this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                    $time_ends = $this->Ledger->read(array(
+                        'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
                         'x__next' => $i['i__id'],
                         'x__following' => 26557, //Time Ends
                     ), array(), 1);
 
                     //Navigation?
                     $must_follow = array();
-                    foreach($this->X_model->fetch(array(
+                    foreach($this->Ledger->read(array(
                         'x__type' => 32235, //Navigation
                         'x__next' => $i['i__id'],
                     )) as $follow){
@@ -106,16 +106,16 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                     $total_sent = 0;
 
                     //The time is here! Send event reminders to those who successfully discovered this:
-                    foreach($this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___40986')) . ')' => null, //SUCCESSFUL DISCOVERIES
+                    foreach($this->Ledger->read(array(
+                        'x__type IN (' . njoin(40986) . ')' => null, //SUCCESSFUL DISCOVERIES
                         'x__previous' => $i['i__id'],
                     ), array('x__player'), 0) as $x){
 
                         //Make sure this member qualified:
-                        if(count($must_follow)>0 && count($must_follow)!=count($this->X_model->fetch(array(
+                        if(count($must_follow)>0 && count($must_follow)!=count($this->Ledger->read(array(
                                 'x__follower' => $x['e__id'],
                                 'x__following IN (' . join(',', $must_follow) . ')' => null,
-                                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
                                     )))){
                             //User does not have all navigation items, skip for now:
                             continue;
@@ -134,7 +134,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
                             "\n".'https://'.get_domain('m__message', $x['e__id'], $user_website).view_app_link(42216).'?x__id='.$x['x__id'].'&e__handle='.$x['e__handle'].'&e__time='.time().'&e__hash='.view__hash(time().$x['e__handle']);
 
                         //Send message:
-                        $send_dm = $this->X_model->send_dm($x['e__id'], $subject, $html_message, array(
+                        $send_dm = $this->Ledger->send_dm($x['e__id'], $subject, $html_message, array(
                             'x__previous' => $i['i__id'],
                         ), $i['i__id'], $user_website);
 
@@ -161,7 +161,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
         if($remind_status<0 || $remind_status>0){
             //We are done with this reminder request:
-            $this->X_model->update($i['x__id'], array(
+            $this->Ledger->edit($i['x__id'], array(
                 'x__type' => ($remind_status>0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }
@@ -170,8 +170,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
     }
 
-    foreach ($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+    foreach ($this->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
         'x__weight >' => time(), //Future event
         'x__following' => 26556, //Time Starts
         'i__type' => 30874, //Events
@@ -179,8 +179,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
         //Determine if it's time to send this message:
         $time_starts = 0;
-        foreach ($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        foreach ($this->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26556, //Time Starts
         )) as $time) {
@@ -195,8 +195,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
         //Does it have an end time?
         $end_sending = 0;
-        foreach ($this->X_model->fetch(array(
-            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+        foreach ($this->Ledger->read(array(
+            'x__type IN (' . njoin(42991) . ')' => null, //Active Writes
             'x__next' => $i['i__id'],
             'x__following' => 26557, //Time Ends
         )) as $time) {
@@ -205,8 +205,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         }
 
 
-        $children = $this->X_model->fetch(array(
-                        'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Sequence Down
+        $children = $this->Ledger->read(array(
+                        'x__type IN (' . njoin(42267) . ')' => null, //Sequence Down
             'x__previous' => $i['i__id'],
         ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
 
@@ -218,10 +218,10 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
         foreach ($list_settings['query_string_filtered'] as $x) {
 
-            if (count($this->X_model->fetch(array(
+            if (count($this->Ledger->read(array(
                 'x__previous' => $i['i__id'],
                 'x__player' => $x['e__id'],
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
                 )))) {
                 //Skip since they already discovered this idea:
                 continue;
@@ -238,8 +238,8 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
             $html_message = '';
             foreach ($children as $down_or) {
 
-                $discoveries = $this->X_model->fetch(array(
-                                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                $discoveries = $this->Ledger->read(array(
+                                'x__type IN (' . njoin(6255) . ')' => null, //DISCOVERIES
                     'x__player' => $x['e__id'],
                     'x__previous' => $down_or['i__id'],
                 ));
@@ -249,7 +249,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
 
             }
 
-            $send_dm = $this->X_model->send_dm($x['e__id'], $subject_line, $content_message . "\n" . trim($html_message), array(
+            $send_dm = $this->Ledger->send_dm($x['e__id'], $subject_line, $content_message . "\n" . trim($html_message), array(
                 'x__previous' => $i['i__id'],
             ), $i['i__id'], $i['x__website'], true);
             $total_sent += ($send_dm['status'] ? 1 : 0);
@@ -260,7 +260,7 @@ if(isset($_GET['x__id']) && isset($_GET['e__handle']) && isset($_GET['e__hash'])
         //Mark this as complete?
         if (!$end_sending || $end_sending < time()) {
             //Ready to be done:
-            $this->X_model->update($i['x__id'], array(
+            $this->Ledger->edit($i['x__id'], array(
                 'x__type' => ($total_sent > 0 ? 42292 /* Like Thumbs Up */ : 31840 /* Dislike Thumbs Down */),
             ));
         }

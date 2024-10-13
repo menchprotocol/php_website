@@ -3,7 +3,7 @@
 $sign_i = array();
 
 if(isset($_GET['i__hashtag']) && strlen($_GET['i__hashtag'])){
-    $sign_i = $this->I_model->fetch(array(
+    $sign_i = $this->Ideas->read(array(
         'LOWER(i__hashtag)' => strtolower($_GET['i__hashtag']),
     ));
 }
@@ -24,13 +24,13 @@ if(superpower_unlocked()) {
 
 } elseif(isset($_GET['e__handle']) && $_GET['e__handle']!='SuccessfulWhale' && isset($_GET['e__hash']) && isset($_GET['e__time']) && view__hash($_GET['e__time'].$_GET['e__handle'])==$_GET['e__hash']){
 
-    $es = $this->E_model->fetch(array(
+    $es = $this->Sources->read(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     ));
 
     if(count($es)){
         //Assign session & log transaction:
-        $this->E_model->activate_session($es[0], false, true);
+        $this->Sources->activate_session($es[0], false, true);
     }
 
     js_php_redirect($next_url, 13);
@@ -86,7 +86,7 @@ if(superpower_unlocked()) {
     if(count($current_sign_i_attempt)==0){
 
         //Log transaction:
-        $current_sign_i_attempt = $this->X_model->create($this_attempt);
+        $current_sign_i_attempt = $this->Ledger->write($this_attempt);
 
         //Grow the array:
         array_push($current_sign_i_attempts, $current_sign_i_attempt);
@@ -177,7 +177,7 @@ if(superpower_unlocked()) {
             $('#flash_message').html(''); //Delete previous errors, if any
 
             //Check email and validate:
-            $.post("/ajax/e_verify_contact", {
+            $.post("/apps/e_verify_contact", {
 
                 account_email_phone: account_email_phone,
                 sign_i__id: sign_i__id,
@@ -244,7 +244,7 @@ if(superpower_unlocked()) {
             $('#input_code').prop('disabled', true);
 
             //Check email/phone and validate:
-            $.post("/ajax/e_contact_auth", {
+            $.post("/apps/e_contact_auth", {
                 account_id: $('#account_id').val(), //Might be zero if new account
                 account_email_phone: $('#account_email_phone').val(),
                 new_account_email: $('#new_account_email').val(),

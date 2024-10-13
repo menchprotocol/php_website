@@ -36,14 +36,14 @@ $biggest_source_handle = '';
 
 
 //CONFIG VARS
-foreach($this->X_model->fetch(array(
+foreach($this->Ledger->read(array(
     'x__following' => 4527,
     'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
 ), array('x__follower'), 0, 0, array('e__id' => 'ASC')) as $en){
 
     //Now fetch all its followers:
-    $down__e = $this->X_model->fetch(array(
+    $down__e = $this->Ledger->read(array(
         'x__following' => $en['x__follower'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
@@ -72,7 +72,7 @@ foreach($this->X_model->fetch(array(
     foreach($down__e as $follower){
 
         //Does this have any Pins?
-        foreach($this->X_model->fetch(array(
+        foreach($this->Ledger->read(array(
             'x__following' => $follower['e__id'],
             'x__type' => 41011, //PINNED FOLLOWER
         ), array(), 0) as $x_pinned) {
@@ -93,7 +93,7 @@ foreach($this->X_model->fetch(array(
 
         //Fetch all followings for this follower:
         $down_up_ids = array(); //To be populated soon
-        foreach($this->X_model->fetch(array(
+        foreach($this->Ledger->read(array(
             'x__follower' => $follower['e__id'],
             'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
             'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
@@ -119,14 +119,14 @@ foreach($this->X_model->fetch(array(
 
 //Append all App Handlers for quick checking:
 $memory_text .= "\n"."\n";
-foreach($this->X_model->fetch(array(
+foreach($this->Ledger->read(array(
     'x__following' => 42043, //Handle Cache
     'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
     'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
 ), array('x__follower'), 0) as $handle){
 
     $memory_text .= '$config[\'handle___'.$handle['e__id'].'\'] = array('."\n";
-    foreach($this->X_model->fetch(array(
+    foreach($this->Ledger->read(array(
         'x__following' => $handle['e__id'],
         'x__privacy IN (' . join(',', $n___7359) . ')' => null, //ACTIVE
         'x__type IN (' . join(',', $n___33337) . ')' => null, //SOURCE LINKS
@@ -169,15 +169,15 @@ fclose($memory_file);
 
 //Now generate Routes file:
 $routes_text .= '$route[\'translate_uri_dashes\'] = FALSE;'."\n";
-$routes_text .= '$route[\'default_controller\'] = "app/index"; //Home'."\n";
-$routes_text .= '$route[\'404_override\'] = "app/load"; //Error'."\n";
+$routes_text .= '$route[\'default_controller\'] = "apps/index"; //Home'."\n";
+$routes_text .= '$route[\'404_override\'] = "apps/load"; //Error'."\n";
 $routes_text .= "\n";
 
 $special_route_text = '';
 $routes_text .= '//APPS:'."\n\n";
-foreach($this->X_model->fetch(array(
+foreach($this->Ledger->read(array(
     'x__following' => 6287, //Apps
-    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'x__type IN (' . njoin(32292) . ')' => null, //SOURCE LINKS
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
     $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
@@ -185,31 +185,31 @@ foreach($this->X_model->fetch(array(
     if(in_array($app['e__id'], $this->config->item('n___42905'))){
         //Source Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "apps/load/'.$app['e__id'].'/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "apps/load/'.$app['e__id'].'/$1'.'";'."\n";
         }
     }
     if(in_array($app['e__id'], $this->config->item('n___42923'))){
         //Discoveries Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "apps/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)\'] = "apps/load/'.$app['e__id'].'/0/$2/$1'.'";'."\n";
         }
     }
     if(in_array($app['e__id'], $this->config->item('n___42911'))){
         //Idea Input
         if($special_routes){
-            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "apps/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         } else {
-            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";
+            $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "apps/load/'.$app['e__id'].'/0/$1'.'";'."\n";
         }
     }
 
     //Always Have no Input option:
     if(!$special_routes){
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "app/load/'.$app['e__id'].'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'\'] = "apps/load/'.$app['e__id'].'";'."\n";
     }
 
 
@@ -226,7 +226,7 @@ fwrite($routes_file, $routes_text);
 fclose($routes_file);
 
 
-echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached '.$total_nodes.' Sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.reset_cache($x__player).'.</div><div></div></div>';
+echo '<div class="margin-top-down"><div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-check-circle"></i></span>Cached '.$total_nodes.' sources ('.$biggest_source_handle.' had '.$biggest_source_count.') & removed '.reset_cache($x__player).'.</div><div></div></div>';
 
 
 //Show:
