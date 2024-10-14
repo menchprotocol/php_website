@@ -7,8 +7,7 @@ echo view_card_e(42287, $focus_e, null);
 echo '</div>';
 
 
-$focus_menu = ( in_array($focus_e['e__id'], $this->config->item('n___4527')) ? 'e___34649' : 'e___32596' );
-$e___focus = $this->config->item($focus_menu);
+$e___focus = $this->config->item('e___32596');
 
 $coins_count = array();
 $body_content = '';
