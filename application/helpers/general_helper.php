@@ -1833,7 +1833,7 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
     $email_message = str_replace('<img ','<img style="'.$general_style.'" ', $email_message);
     $email_message = str_replace('<div class="line','<div style="'.$general_style.'" class="line', $email_message);
     $email_message = str_replace("\n",'<div style="padding:3px 0 0; line-height:100%;">&nbsp;</div>', $email_message);
-    $email_message = str_replace('href="/','href="'.$base_domain.'/', $email_message);
+    $email_message = str_replace('href="/','style="display:inline-block;" href="'.$base_domain.'/', $email_message);
 
     $email_data = array(
         // Source is required
