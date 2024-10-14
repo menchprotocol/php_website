@@ -2099,12 +2099,12 @@ class Ajax extends CI_Controller
 
     function e_toggle_e(){
 
-        $player_e = superpower_unlocked(28714, 0, $this->player_e);
+        $player_e = superpower_unlocked(10939, 0, $this->player_e);
         if(!$player_e){
 
             return view_json(array(
                 'status' => 0,
-                'message' => view_unauthorized_message(28714),
+                'message' => view_unauthorized_message(10939),
             ));
 
         } elseif(!isset($_POST['x__player']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['x__id'])){

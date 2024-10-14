@@ -2219,7 +2219,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
                         $action_buttons .= '<li><hr class="dropdown-divider"></li>';
                         $action_buttons .= '<a href="javascript:void();" this_id="'.$i['i__privacy'].'" onclick="x_update_instant_select(31004, 6182, '.$i['i__id'].', '.$x__id.', 0)" class="dropdown-item drop_item_instant_31004_'.$i['i__id'].'_'.$x__id.' main__title optiond_6182_'.$i['i__id'].'_'.$x__id.'">'.$anchor.'</a>';
 
-                    } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(28727)){
+                    } elseif($e__id_dropdown==28637 && isset($i['x__type']) && superpower_unlocked(12700)){
 
                         //Paypal Details
                         $x__metadata = @unserialize($i['x__metadata']);
