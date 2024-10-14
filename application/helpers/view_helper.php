@@ -435,7 +435,7 @@ function view_e_covers($x__type, $e__id, $page_num = 0, $append_card_icon = true
 
     $CI =& get_instance();
     $first_segment = $CI->uri->segment(1);
-    $privacy_privacy = ( superpower_unlocked(12703) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
+    $privacy_privacy = ( superpower_unlocked(12700) ? 'n___7358' /* ACTIVE */ : 'n___7357' /* PUBLIC/OWNER */  );
 
     if(in_array($x__type, $CI->config->item('n___42377'))){
 

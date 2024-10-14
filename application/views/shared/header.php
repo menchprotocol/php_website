@@ -377,14 +377,14 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
 $i_view = 0;
 $quick_id = 0;
 $discovery_i__hashtag = ( strlen($first_segment) ? ( strlen($second_segment) ? $second_segment : $first_segment ) : 0 );
-if(strlen($discovery_i__hashtag) && superpower_unlocked(12703)) {
+if(strlen($discovery_i__hashtag) && superpower_unlocked(12700)) {
 
     //Ideation Mode:
     $_GET['i__hashtag'] = $discovery_i__hashtag;
     $i_view = 30795;
     $quick_href = view_memory(42903, 33286);
 
-} elseif(!strlen($first_segment) && superpower_unlocked(12703)) {
+} elseif(!strlen($first_segment) && superpower_unlocked(12700)) {
 
     //Edit Website Home Page:
     $quick_href = view_memory(42903, 42902);
@@ -713,7 +713,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
     }
 
     //Apply to All Sources
-    if(superpower_unlocked(12703)){
+    if(superpower_unlocked(12700)){
         ?>
         <div class="modal fade" id="modal4997" tabindex="-1" role="dialog" aria-labelledby="modal4997Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
