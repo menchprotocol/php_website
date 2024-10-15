@@ -2072,6 +2072,7 @@ div.dropdown-item:hover {
     --fa-secondary-color: #999999;
     color: #999999 !important;
     background-color: #FFFFFF !important;
+    display: none;
 }
 .dropdown-item.intro_header {
     border-bottom: 1px solid #000000;
