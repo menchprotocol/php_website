@@ -845,76 +845,48 @@ class E_model extends CI_Model
             if(count($es)){
 
                 //Migrate Transactions:
-                foreach($this->X_model->fetch(array( //Idea Transactions
-                    '(x__following = '.$e__id.' OR x__follower = '.$e__id.' OR x__player = '.$e__id.')' => null,
-                ), array(), 0) as $x){
-
-                    //Make sure not duplicate, if so, delete:
-                    $update_filter = array();
-                    $filters = array(
-                        'x__id !=' => $x['x__id'],
-                        'x__privacy' => $x['x__privacy'],
-                        'x__type' => $x['x__type'],
-                        'x__reference' => $x['x__reference'],
-                        //'LOWER(x__message)' => strtolower($x['x__message']),
-
-                        'x__next' => $x['x__next'],
-                        'x__previous' => $x['x__previous'],
-                    );
-                    if($x['x__following']==$e__id){
-                        $filters['x__following'] = $es[0]['e__id'];
-                        $update_filter['x__following'] = $es[0]['e__id'];
-                    }
-                    if($x['x__follower']==$e__id){
-                        $filters['x__follower'] = $es[0]['e__id'];
-                        $update_filter['x__follower'] = $es[0]['e__id'];
-                    }
-                    if($x['x__player']==$e__id){
-                        $filters['x__player'] = $es[0]['e__id'];
-                        $update_filter['x__player'] = $es[0]['e__id'];
-                    }
-
-                    if(0 && count($this->X_model->fetch($filters))){
-
-                        //There is a duplicate of this, no point to migrate! Just Remove:
-                        $this->X_model->update($x['x__id'], array(
-                            'x__privacy' => 6173,
-                        ), $x__player, 31784 /* Source Link Migrated */);
-
-                    } else {
-
-                        //Always Migrate for now
-                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__player, 31784 /* Source Link Migrated */);
-
-                    }
-
-
-
-
-
-                    //Migrate this transaction:
-                    if($x['x__following']==$e__id){
-                        $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__following' => $es[0]['e__id'],
-                        ));
-                    }
-
-                    if($x['x__follower']==$e__id){
-                        $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__follower' => $es[0]['e__id'],
-                        ));
-                    }
-
-                    if($x['x__player']==$e__id){
-                        $x_adjusted += $this->X_model->update($x['x__id'], array(
-                            'x__player' => $es[0]['e__id'],
-                        ));
-                    }
-
-                }
+                $this->db->query("UPDATE TABLE mench_ledger SET x__following='.$es[0]['e__id'].' WHERE x__following='.$e__id.';");
+                $affected_x__following = $this->db->affected_rows();
+                $x_adjusted += $affected_x__following;
+                $this->db->query("UPDATE TABLE mench_ledger SET x__follower='.$es[0]['e__id'].' WHERE x__follower='.$e__id.';");
+                $affected_x__follower = $this->db->affected_rows();
+                $x_adjusted += $affected_x__follower;
+                $this->db->query("UPDATE TABLE mench_ledger SET x__player='.$es[0]['e__id'].' WHERE x__player='.$e__id.';");
+                $affected_x__player = $this->db->affected_rows();
+                $x_adjusted += $affected_x__player;
+                $this->db->query("UPDATE TABLE mench_ledger SET x__type='.$es[0]['e__id'].' WHERE x__type='.$e__id.';");
+                $affected_x__type = $this->db->affected_rows();
+                $x_adjusted += $affected_x__type;
+                $this->db->query("UPDATE TABLE mench_ledger SET x__privacy='.$es[0]['e__id'].' WHERE x__privacy='.$e__id.';");
+                $affected_x__privacy = $this->db->affected_rows();
+                $x_adjusted += $affected_x__privacy;
+                $this->db->query("UPDATE TABLE mench_ledger SET x__website='.$es[0]['e__id'].' WHERE x__website='.$e__id.';");
+                $affected_x__website = $this->db->affected_rows();
+                $x_adjusted += $affected_x__website;
 
                 //Clean Duplicates:
-                $this->E_model->remove_duplicate_links($es[0]['e__id']);
+                $duplicates_removed = $this->E_model->remove_duplicate_links($es[0]['e__id']);
+                $x_adjusted += $duplicates_removed;
+
+                $player_e = superpower_unlocked();
+                $this->X_model->create(array(
+                    'x__player' => ($x__player > 0 ? $x__player : $player_e['e__id'] ),
+                    'x__type' => 31784,
+                    'x__follower' => $es[0]['e__id'],
+                    'x__metadata' => array(
+                        'migrated_links' => array(
+                            'x__following' => $affected_x__following,
+                            'x__follower' => $affected_x__follower,
+                            'x__player' => $affected_x__player,
+                            'x__type' => $affected_x__type,
+                            'x__privacy' => $affected_x__privacy,
+                            'x__website' => $affected_x__website,
+                        ),
+                        'old_sources_id' => $e__id,
+                        'new_sources' => $es[0],
+                        'duplicates_removed' => $duplicates_removed,
+                    ),
+                ));
 
             }
 
@@ -930,6 +902,7 @@ class E_model extends CI_Model
                 $x_adjusted += $this->X_model->update($adjust_tr['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
                 ), $x__player, 10673 /* Member Transaction Unpublished */);
+
             }
 
         }
@@ -1135,7 +1108,7 @@ class E_model extends CI_Model
 
                 //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
-                    $this->E_model->remove($x['e__id'], $x__player);
+                    $links_removed = $this->E_model->remove($x['e__id'], $x__player);
                 }
 
                 //Update Matching Member Status:

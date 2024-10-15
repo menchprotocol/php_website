@@ -284,49 +284,30 @@ class I_model extends CI_Model
             ));
 
             if(count($is)){
+
                 //Migrate Transactions:
-                foreach($this->X_model->fetch(array( //Idea Transactions
-                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                    'x__type !=' => 13579, //Idea Transaction Unpublished
-                    '(x__next = '.$i__id.' OR x__previous = '.$i__id.')' => null,
-                ), array(), 0) as $x){
+                $this->db->query("UPDATE TABLE mench_ledger SET x__next='.$is[0]['e__id'].' WHERE x__next='.$i__id.';");
+                $affected_x__next = $this->db->affected_rows();
+                $x_adjusted += $affected_x__next;
+                $this->db->query("UPDATE TABLE mench_ledger SET x__previous='.$is[0]['e__id'].' WHERE x__previous='.$i__id.';");
+                $affected_x__previous = $this->db->affected_rows();
+                $x_adjusted += $affected_x__previous;
 
-                    //Make sure not duplicate, if so, delete:
-                    $update_filter = array();
-                    $filters = array(
-                        'x__id !=' => $x['x__id'],
-                        'x__privacy' => $x['x__privacy'],
-                        'x__type' => $x['x__type'],
-                        'x__reference' => $x['x__reference'],
-                        //'LOWER(x__message)' => strtolower($x['x__message']),
+                $player_e = superpower_unlocked();
+                $this->X_model->create(array(
+                    'x__player' => ($x__player > 0 ? $x__player : $player_e['e__id'] ),
+                    'x__type' => 26785, //idea Link Migrated
+                    'x__previous' => $is[0]['e__id'],
+                    'x__metadata' => array(
+                        'migrated_links' => array(
+                            'x__next' => $affected_x__next,
+                            'x__previous' => $affected_x__previous,
+                        ),
+                        'old_idea_id' => $i__id,
+                        'new_idea' => $is[0],
+                    ),
+                ));
 
-                        'x__player' => $x['x__player'],
-                        'x__following' => $x['x__following'],
-                        'x__follower' => $x['x__follower'],
-                    );
-                    if($x['x__next']==$i__id){
-                        $filters['x__next'] = $is[0]['i__id'];
-                        $update_filter['x__next'] = $is[0]['i__id'];
-                    }
-                    if($x['x__previous']==$i__id){
-                        $filters['x__previous'] = $is[0]['i__id'];
-                        $update_filter['x__previous'] = $is[0]['i__id'];
-                    }
-                    if(0 && count($this->X_model->fetch($filters))){
-
-                        //There is a duplicate of this, no point to migrate! Just Remove:
-                        $this->X_model->update($x['x__id'], array(
-                            'x__privacy' => 6173,
-                        ), $x__player, 26785 /* Idea Link Migrated */);
-
-                    } else {
-
-                        //Always merge for now
-                        $x_adjusted += $this->X_model->update($x['x__id'], $update_filter, $x__player, 26785 /* Idea Link Migrated */);
-
-                    }
-
-                }
             }
 
         } else {

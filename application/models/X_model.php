@@ -547,6 +547,16 @@ class X_model extends CI_Model
             //Delete?
             if(!in_array($new_e__id, $this->config->item('n___7358'))){
 
+                //Validate migration handle, if any:
+                if($migrate_s__handle && !count($this->E_model->fetch(array(
+                        'LOWER(e__handle)' => strtolower($migrate_s__handle),
+                    )))){
+                    return array(
+                        'status' => 0,
+                        'message' => '@'.$migrate_s__handle.' is an Invalid Source Handle!',
+                    );
+                }
+
                 //Determine what to do after deleted:
                 if($o__id==$focus__id){
 
@@ -1239,7 +1249,7 @@ class X_model extends CI_Model
             } elseif (count($x_responses)){
 
                 //Delete Links
-                $this->I_model->remove($x_responses[0]['i__id'] , $x__player);
+                $links_removed = $this->I_model->remove($x_responses[0]['i__id'] , $x__player);
 
                 //Delete Idea:
                 $this->I_model->update($x_responses[0]['i__id'], array(
