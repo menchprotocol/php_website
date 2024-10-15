@@ -815,7 +815,7 @@ class X_model extends CI_Model
         if($sms_subscriber && $twilio_account_sid && $twilio_auth_token && $twilio_from_number){
 
             //Yes, generate message
-            $sms_message  = 'Update: We emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (May end-up in Spam)';
+            $sms_message  = get_domain('m__title', $e__id, $x__website).' Emailed ['.$subject.'] to '.join(' & ',$stats['email_addresses']).' (Also Check Spam)';
 
             //Breakup into smaller SMS friendly messages
             $sms_message = str_replace("\n"," ",$sms_message);
