@@ -823,7 +823,7 @@ class E_model extends CI_Model
     }
 
 
-    function remove($e__id, $x__player = 0, $migrate_s__handle = null){
+    function remove($e__id, $x__player = 0, $migrate_s__id = 0){
 
         if($e__id<1){
             return 0;
@@ -832,63 +832,50 @@ class E_model extends CI_Model
         //Fetch all SOURCE LINKS:
         $x_adjusted = 0;
 
-        if(strlen($migrate_s__handle)>1){
+        if($migrate_s__id){
 
-            $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='@' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
+            //Migrate Transactions:
+            $this->db->query("UPDATE mench_ledger SET x__following=".$migrate_s__id." WHERE x__following=".$e__id.";");
+            $affected_x__following = $this->db->affected_rows();
+            $x_adjusted += $affected_x__following;
+            $this->db->query("UPDATE mench_ledger SET x__follower=".$migrate_s__id." WHERE x__follower=".$e__id.";");
+            $affected_x__follower = $this->db->affected_rows();
+            $x_adjusted += $affected_x__follower;
+            $this->db->query("UPDATE mench_ledger SET x__player=".$migrate_s__id." WHERE x__player=".$e__id.";");
+            $affected_x__player = $this->db->affected_rows();
+            $x_adjusted += $affected_x__player;
+            $this->db->query("UPDATE mench_ledger SET x__type=".$migrate_s__id." WHERE x__type=".$e__id.";");
+            $affected_x__type = $this->db->affected_rows();
+            $x_adjusted += $affected_x__type;
+            $this->db->query("UPDATE mench_ledger SET x__privacy=".$migrate_s__id." WHERE x__privacy=".$e__id.";");
+            $affected_x__privacy = $this->db->affected_rows();
+            $x_adjusted += $affected_x__privacy;
+            $this->db->query("UPDATE mench_ledger SET x__website=".$migrate_s__id." WHERE x__website=".$e__id.";");
+            $affected_x__website = $this->db->affected_rows();
+            $x_adjusted += $affected_x__website;
 
-            //Validate this migration ID:
-            $es = $this->E_model->fetch(array(
-                'LOWER(e__handle)' => strtolower($migrate_s__handle),
-                'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ));
+            //Clean Duplicates:
+            $duplicates_removed = $this->E_model->remove_duplicate_links($migrate_s__id);
+            $x_adjusted += $duplicates_removed;
 
-            if(count($es)){
-
-                //Migrate Transactions:
-                $this->db->query("UPDATE mench_ledger SET x__following=".$es[0]['e__id']." WHERE x__following=".$e__id." ;");
-                $affected_x__following = $this->db->affected_rows();
-                $x_adjusted += $affected_x__following;
-                $this->db->query("UPDATE mench_ledger SET x__follower=".$es[0]['e__id']." WHERE x__follower=".$e__id." ;");
-                $affected_x__follower = $this->db->affected_rows();
-                $x_adjusted += $affected_x__follower;
-                $this->db->query("UPDATE mench_ledger SET x__player=".$es[0]['e__id']." WHERE x__player=".$e__id." ;");
-                $affected_x__player = $this->db->affected_rows();
-                $x_adjusted += $affected_x__player;
-                $this->db->query("UPDATE mench_ledger SET x__type=".$es[0]['e__id']." WHERE x__type=".$e__id." ;");
-                $affected_x__type = $this->db->affected_rows();
-                $x_adjusted += $affected_x__type;
-                $this->db->query("UPDATE mench_ledger SET x__privacy=".$es[0]['e__id']." WHERE x__privacy=".$e__id." ;");
-                $affected_x__privacy = $this->db->affected_rows();
-                $x_adjusted += $affected_x__privacy;
-                $this->db->query("UPDATE mench_ledger SET x__website=".$es[0]['e__id']." WHERE x__website=".$e__id." ;");
-                $affected_x__website = $this->db->affected_rows();
-                $x_adjusted += $affected_x__website;
-
-                //Clean Duplicates:
-                $duplicates_removed = $this->E_model->remove_duplicate_links($es[0]['e__id']);
-                $x_adjusted += $duplicates_removed;
-
-                $player_e = superpower_unlocked();
-                $this->X_model->create(array(
-                    'x__player' => ($x__player > 0 ? $x__player : $player_e['e__id'] ),
-                    'x__type' => 31784,
-                    'x__follower' => $es[0]['e__id'],
-                    'x__metadata' => array(
-                        'migrated_links' => array(
-                            'x__following' => $affected_x__following,
-                            'x__follower' => $affected_x__follower,
-                            'x__player' => $affected_x__player,
-                            'x__type' => $affected_x__type,
-                            'x__privacy' => $affected_x__privacy,
-                            'x__website' => $affected_x__website,
-                        ),
-                        'old_sources_id' => $e__id,
-                        'new_sources' => $es[0],
-                        'duplicates_removed' => $duplicates_removed,
+            $player_e = superpower_unlocked();
+            $this->X_model->create(array(
+                'x__player' => ($x__player > 0 ? $x__player : $player_e['e__id'] ),
+                'x__type' => 31784,
+                'x__follower' => $migrate_s__id,
+                'x__metadata' => array(
+                    'migrated_links' => array(
+                        'x__following' => $affected_x__following,
+                        'x__follower' => $affected_x__follower,
+                        'x__player' => $affected_x__player,
+                        'x__type' => $affected_x__type,
+                        'x__privacy' => $affected_x__privacy,
+                        'x__website' => $affected_x__website,
                     ),
-                ));
-
-            }
+                    'old_sources_id' => $e__id,
+                    'duplicates_removed' => $duplicates_removed,
+                ),
+            ));
 
         } else {
 
@@ -902,7 +889,6 @@ class E_model extends CI_Model
                 $x_adjusted += $this->X_model->update($adjust_tr['x__id'], array(
                     'x__privacy' => 6173, //Transaction Deleted
                 ), $x__player, 10673 /* Member Transaction Unpublished */);
-
             }
 
         }

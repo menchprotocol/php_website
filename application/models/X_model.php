@@ -412,7 +412,8 @@ class X_model extends CI_Model
 
 
         //Authenticate Member:
-        $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='@' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
+        $migrate_s__handle = trim( substr($migrate_s__handle, 0, 1)=='@' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
+        $migrate_s__handle = trim( substr($migrate_s__handle, 0, 1)=='#' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
         $player_e = superpower_unlocked();
         if (!$player_e) {
             return array(
@@ -548,9 +549,11 @@ class X_model extends CI_Model
             if(!in_array($new_e__id, $this->config->item('n___7358'))){
 
                 //Validate migration handle, if any:
-                if(strlen($migrate_s__handle)){
+                $migrate_s__id = 0;
+                if(strlen($migrate_s__handle)>0){
                     $valid_handle = $this->E_model->fetch(array(
                         'LOWER(e__handle)' => strtolower($migrate_s__handle),
+                        'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
                     ));
                     if(!count($valid_handle)){
                         return array(
@@ -563,6 +566,7 @@ class X_model extends CI_Model
                             'message' => 'You cannot migrate this source to itself! Choose a different source to migrate.',
                         );
                     }
+                    $migrate_s__id = $valid_handle[0]['e__id'];
                 }
 
                 //Determine what to do after deleted:
@@ -593,19 +597,14 @@ class X_model extends CI_Model
                 }
 
                 //Delete all transactions:
-                $links_removed = $this->E_model->remove($o__id, $player_e['e__id'], $migrate_s__handle);
+                $links_removed = $this->E_model->remove($o__id, $player_e['e__id'], $migrate_s__id);
 
             }
 
             //Update:
-            if(strlen($migrate_s__handle)<2 || count($this->E_model->fetch(array(
-                    'LOWER(e__handle)' => strtolower($migrate_s__handle),
-                    'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-                )))){
-                $status = $this->E_model->update($o__id, array(
-                    'e__privacy' => $new_e__id,
-                ), true, $player_e['e__id']);
-            }
+            $status = $this->E_model->update($o__id, array(
+                'e__privacy' => $new_e__id,
+            ), true, $player_e['e__id']);
 
             //Update Search Index:
             flag_for_search_indexing(12274,  $o__id);
@@ -616,6 +615,26 @@ class X_model extends CI_Model
 
             //Delete?
             if(!in_array($new_e__id, $this->config->item('n___31871'))){
+
+                $migrate_s__id = 0;
+                if(strlen($migrate_s__handle)>0){
+                    $valid_hashtag = $this->I_model->fetch(array(
+                        'LOWER(i__hashtag)' => strtolower($migrate_s__handle),
+                        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    ));
+                    if(!count($valid_hashtag)){
+                        return array(
+                            'status' => 0,
+                            'message' => '#'.$migrate_s__handle.' is an Invalid Idea hashtag!',
+                        );
+                    } elseif($valid_hashtag[0]['i__id']==$o__id){
+                        return array(
+                            'status' => 0,
+                            'message' => 'You cannot migrate this idea to itself! Choose a different idea to migrate.',
+                        );
+                    }
+                    $migrate_s__id = $valid_hashtag[0]['i__id'];
+                }
 
                 //Determine what to do after deleted:
                 if($o__id==$focus__id){
@@ -659,7 +678,7 @@ class X_model extends CI_Model
                 }
 
                 //Delete all transactions:
-                $links_removed = $this->I_model->remove($o__id , $player_e['e__id'], $migrate_s__handle);
+                $links_removed = $this->I_model->remove($o__id , $player_e['e__id'], $migrate_s__id);
 
             }
 

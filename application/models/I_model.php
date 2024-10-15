@@ -270,45 +270,32 @@ class I_model extends CI_Model
         return $affected_rows;
     }
 
-    function remove($i__id, $x__player = 0, $migrate_s__handle = null){
+    function remove($i__id, $x__player = 0, $migrate_s__id = 0){
 
         $x_adjusted = 0;
-        if(strlen($migrate_s__handle)>1){
+        if($migrate_s__id){
 
-            $migrate_s__handle = ( substr($migrate_s__handle, 0, 1)=='#' ? trim(substr($migrate_s__handle, 1)) :  $migrate_s__handle);
+            //Migrate Transactions:
+            $this->db->query("UPDATE mench_ledger SET x__next=".$migrate_s__id." WHERE x__next=".$i__id.";");
+            $affected_x__next = $this->db->affected_rows();
+            $x_adjusted += $affected_x__next;
+            $this->db->query("UPDATE mench_ledger SET x__previous=".$migrate_s__id." WHERE x__previous=".$i__id.";");
+            $affected_x__previous = $this->db->affected_rows();
+            $x_adjusted += $affected_x__previous;
 
-            //Validate this migration ID:
-            $is = $this->I_model->fetch(array(
-                'LOWER(i__hashtag)' => strtolower($migrate_s__handle),
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            ));
-
-            if(count($is)){
-
-                //Migrate Transactions:
-                $this->db->query("UPDATE mench_ledger SET x__next=".$is[0]['i__id']." WHERE x__next=".$i__id.";");
-                $affected_x__next = $this->db->affected_rows();
-                $x_adjusted += $affected_x__next;
-                $this->db->query("UPDATE mench_ledger SET x__previous=".$is[0]['i__id']." WHERE x__previous=".$i__id.";");
-                $affected_x__previous = $this->db->affected_rows();
-                $x_adjusted += $affected_x__previous;
-
-                $player_e = superpower_unlocked();
-                $this->X_model->create(array(
-                    'x__player' => ($x__player > 0 ? $x__player : $player_e['e__id'] ),
-                    'x__type' => 26785, //idea Link Migrated
-                    'x__previous' => $is[0]['i__id'],
-                    'x__metadata' => array(
-                        'migrated_links' => array(
-                            'x__next' => $affected_x__next,
-                            'x__previous' => $affected_x__previous,
-                        ),
-                        'old_idea_id' => $i__id,
-                        'new_idea' => $is[0],
+            $player_e = superpower_unlocked();
+            $this->X_model->create(array(
+                'x__player' => ($x__player > 0 ? $x__player : $player_e['e__id'] ),
+                'x__type' => 26785, //idea Link Migrated
+                'x__previous' => $migrate_s__id,
+                'x__metadata' => array(
+                    'migrated_links' => array(
+                        'x__next' => $affected_x__next,
+                        'x__previous' => $affected_x__previous,
                     ),
-                ));
-
-            }
+                    'old_idea_id' => $i__id,
+                ),
+            ));
 
         } else {
 
@@ -325,8 +312,6 @@ class I_model extends CI_Model
             }
 
         }
-
-
 
         //Return transactions deleted:
         return $x_adjusted;
