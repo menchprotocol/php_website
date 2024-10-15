@@ -286,10 +286,10 @@ class I_model extends CI_Model
             if(count($is)){
 
                 //Migrate Transactions:
-                $this->db->query("UPDATE TABLE mench_ledger SET x__next=".$is[0]['i__id']." WHERE x__next='.$i__id.';");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__next=".$is[0]['i__id']." WHERE x__next=".$i__id.";");
                 $affected_x__next = $this->db->affected_rows();
                 $x_adjusted += $affected_x__next;
-                $this->db->query("UPDATE TABLE mench_ledger SET x__previous=".$is[0]['i__id']." WHERE x__previous='.$i__id.';");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__previous=".$is[0]['i__id']." WHERE x__previous=".$i__id.";");
                 $affected_x__previous = $this->db->affected_rows();
                 $x_adjusted += $affected_x__previous;
 
