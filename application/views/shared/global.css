@@ -3702,6 +3702,8 @@ a,
     text-align: center;
     font-size:1.15em;
 }
+
+.cover_selector .fa-lock,
 .center-frame .i_cache .icon-block-xs{
     display:none;
 }

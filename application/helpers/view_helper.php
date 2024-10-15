@@ -1619,7 +1619,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
             ))) ? '<i class="fas fa-square-check fa-sharp"></i>' : '<i class="far fa-square fa-sharp"></i>' ).'</span></div>';
     }
 
-    $ui .= '<div class="cover-content">';
+    $ui .= '<div class="cover-content '.( $focus_i__or ? ' cover_selector ' : '' ).'">';
     $ui .= '<div class="inner-content">';
     $ui .= '<div class="cover-text">';
 
