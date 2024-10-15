@@ -1634,6 +1634,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     height: 13px;
 }
 
+.icon-block .dropdown .icon-block,
+.icon-block .dropdown .icon-block-sm,
 .icon-block-sm .dropdown .icon-block,
 .icon-block-sm .dropdown .icon-block-sm,
 .dropdown .icon-block-sm,
