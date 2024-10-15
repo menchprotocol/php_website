@@ -1587,7 +1587,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( !$focus_i__or && $is_locked ? ' is_locked ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'" '.( !$focus_i__or && $is_locked && 0 ? ' title="Scroll Down & Click on the black [Go Next] button to continue" data-toggle="tooltip" data-placement="top" ' : '' ).'>';
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( !$focus_i__or && $is_locked ? ' is_locked ' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'" '.( !$focus_i__or && $is_locked ? ' onclick="alert(\'Scroll Down & Click on the black [Go Next] button to continue\')" ' : '' ).'>';
 
     if($discovery_mode && $x__player && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
