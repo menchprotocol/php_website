@@ -1634,6 +1634,8 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     height: 13px;
 }
 
+.icon-block-sm .dropdown .icon-block,
+.icon-block-sm .dropdown .icon-block-sm,
 .dropdown .icon-block-sm,
 .dropdown .icon-block-sm .icon-block,
 .icon-block-sm .dropdown .icon-block{ width:21px !important; }
@@ -1766,7 +1768,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 
 
 .dynamic_editing_input textarea.form-control.save_i__message{
-    padding-top: 8px !important;
+    padding-top: px !important;
     margin-left: 40px !important;
 }
 
