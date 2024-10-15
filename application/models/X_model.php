@@ -548,19 +548,21 @@ class X_model extends CI_Model
             if(!in_array($new_e__id, $this->config->item('n___7358'))){
 
                 //Validate migration handle, if any:
-                $valid_handle = $this->E_model->fetch(array(
-                    'LOWER(e__handle)' => strtolower($migrate_s__handle),
-                ));
-                if($migrate_s__handle && !count($valid_handle)){
-                    return array(
-                        'status' => 0,
-                        'message' => '@'.$migrate_s__handle.' is an Invalid Source Handle!',
-                    );
-                } elseif($valid_handle[0]['e__id']==$o__id){
-                    return array(
-                        'status' => 0,
-                        'message' => 'You cannot migrate this source to itself! Choose a different source to migrate.',
-                    );
+                if(strlen($migrate_s__handle)){
+                    $valid_handle = $this->E_model->fetch(array(
+                        'LOWER(e__handle)' => strtolower($migrate_s__handle),
+                    ));
+                    if(!count($valid_handle)){
+                        return array(
+                            'status' => 0,
+                            'message' => '@'.$migrate_s__handle.' is an Invalid Source Handle!',
+                        );
+                    } elseif($valid_handle[0]['e__id']==$o__id){
+                        return array(
+                            'status' => 0,
+                            'message' => 'You cannot migrate this source to itself! Choose a different source to migrate.',
+                        );
+                    }
                 }
 
                 //Determine what to do after deleted:
