@@ -910,6 +910,13 @@ function load_card_clickers(){
         }
     });
 
+    $( ".is_locked" ).click(function(e) {
+        if($(e.target).closest(ignore_clicks).length < 1){
+            alert('Note: Scroll all the way down & click the black next button to continue...');
+        }
+    });
+
+
     //For Discovery only:
     if(typeof focus_i__type !== 'undefined' && focus_i__type>0){
 
