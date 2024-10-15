@@ -844,6 +844,8 @@ class E_model extends CI_Model
 
             if(count($es)){
 
+                die("UPDATE TABLE mench_ledger SET x__following=".$es[0]['e__id']." WHERE x__following=".$e__id." ;");
+
                 //Migrate Transactions:
                 $this->db->query("UPDATE TABLE mench_ledger SET x__following=".$es[0]['e__id']." WHERE x__following=".$e__id." ;");
                 $affected_x__following = $this->db->affected_rows();
