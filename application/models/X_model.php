@@ -729,14 +729,15 @@ class X_model extends CI_Model
     {
 
         $sms_subscriber = false;
-        $bypass_notifications = count($this->X_model->fetch(array(
+
+        //Bypass notifications?
+        if(!count($this->X_model->fetch(array(
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42256')) . ')' => null, //Writes
             'x__following' => 31779, //Mandatory Emails
             'x__next' => $template_i__id,
-        )));
+        )))){
 
-        if(!$bypass_notifications){
             $notification_levels = $this->X_model->fetch(array(
                 'x__following IN (' . join(',', $this->config->item('n___30820')) . ')' => null, //Active Subscriber
                 'x__follower' => $e__id,
@@ -750,6 +751,29 @@ class X_model extends CI_Model
                 );
             }
             $sms_subscriber = in_array($notification_levels[0]['x__following'], $this->config->item('n___28915'));
+        }
+
+        //Make sure not recently contacted:
+        $minutes_limit = 60;
+        foreach($this->X_model->fetch(array(
+            'x__type' => 29399,
+            'x__player' => $e__id,
+            'x__time >=' => date("Y-m-d H:i:s", strtotime('-'.$minutes_limit.' minutes')),
+        )) as $recent_email){
+
+            //Log Report:
+            $this->X_model->create(array(
+                'x__type' => 4246, //Platform Bug Reports
+                'x__player' => $e__id,
+                'x__following' => 29399,
+                'x__message' => 'User was recently contacted less than '.$minutes_limit.' minutes ago.',
+            ));
+
+            return array(
+                'status' => 0,
+                'message' => 'User has been recently contacted',
+            );
+
         }
 
         $stats = array(
