@@ -845,22 +845,22 @@ class E_model extends CI_Model
             if(count($es)){
 
                 //Migrate Transactions:
-                $this->db->query("UPDATE TABLE mench_ledger SET x__following=".$es[0]['e__id']." WHERE x__following=".$e__id.";");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__following=".$es[0]['e__id']." WHERE x__following=".$e__id." ;");
                 $affected_x__following = $this->db->affected_rows();
                 $x_adjusted += $affected_x__following;
-                $this->db->query("UPDATE TABLE mench_ledger SET x__follower=".$es[0]['e__id']." WHERE x__follower=".$e__id.";");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__follower=".$es[0]['e__id']." WHERE x__follower=".$e__id." ;");
                 $affected_x__follower = $this->db->affected_rows();
                 $x_adjusted += $affected_x__follower;
-                $this->db->query("UPDATE TABLE mench_ledger SET x__player=".$es[0]['e__id']." WHERE x__player=".$e__id.";");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__player=".$es[0]['e__id']." WHERE x__player=".$e__id." ;");
                 $affected_x__player = $this->db->affected_rows();
                 $x_adjusted += $affected_x__player;
-                $this->db->query("UPDATE TABLE mench_ledger SET x__type=".$es[0]['e__id']." WHERE x__type=".$e__id.";");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__type=".$es[0]['e__id']." WHERE x__type=".$e__id." ;");
                 $affected_x__type = $this->db->affected_rows();
                 $x_adjusted += $affected_x__type;
-                $this->db->query("UPDATE TABLE mench_ledger SET x__privacy=".$es[0]['e__id']." WHERE x__privacy=".$e__id.";");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__privacy=".$es[0]['e__id']." WHERE x__privacy=".$e__id." ;");
                 $affected_x__privacy = $this->db->affected_rows();
                 $x_adjusted += $affected_x__privacy;
-                $this->db->query("UPDATE TABLE mench_ledger SET x__website=".$es[0]['e__id']." WHERE x__website=".$e__id.";");
+                $this->db->query("UPDATE TABLE mench_ledger SET x__website=".$es[0]['e__id']." WHERE x__website=".$e__id." ;");
                 $affected_x__website = $this->db->affected_rows();
                 $x_adjusted += $affected_x__website;
 
