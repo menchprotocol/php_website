@@ -1177,11 +1177,11 @@ class X_model extends CI_Model
 
     function mark_complete($x__type, $x__player, $target_i__id = 0, $i, $focus_i_data = array(), $x_data = array()) {
 
-        if(!$x__player || !in_array($x__type, $this->config->item('n___40986'))){
+        if(!$x__player || !in_array($x__type, $this->config->item('n___31777'))){
             $this->X_model->create(array(
                 'x__player' => $x__player,
                 'x__type' => 4246, //Platform Bug Reports
-                'x__message' => 'mark_complete() Invalid x__type @'.$x__type.' missing in @40986 OR Missing $x__player',
+                'x__message' => 'mark_complete() Invalid x__type @'.$x__type.' missing in @31777 OR Missing $x__player',
                 'x__metadata' => array(
                     '$target_i__id' => $target_i__id,
                     '$i' => $i,
