@@ -1510,7 +1510,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     $is_cache = in_array($x__type, $CI->config->item('n___14599'));
     $goto_start = in_array($x__type, $CI->config->item('n___42988'));
     $player_e = superpower_unlocked();
-    $superpower_10939 = superpower_unlocked(10939);
+    $superpower_10939 = !$is_cache && superpower_unlocked(10939);
     $access_level_i = access_level_i($i['i__hashtag'], 0, $i, $is_cache);
     $i_startable = i_startable($i);
     $x__player = ( $focus_e__id>0 ? $focus_e__id : ( $player_e ? $player_e['e__id'] : 0 ) );
@@ -2065,14 +2065,14 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
             $bottom_bar_ui .= '<span class="icon-block-sm"><div class="grey created_time" title="'.$creator_name.date("Y-m-d H:i:s", strtotime($i['x__time'])).' which is '.$time_diff.' ago | ID '.$i['x__id'].'">' . ( $creator_details ? $creator_details : $time_diff ) . '</div></span>';
 
-        } elseif($x__type_target_bar==4737 && !$is_cache && !$discovery_mode && $superpower_10939){
+        } elseif($x__type_target_bar==4737 && !$discovery_mode && $superpower_10939){
 
             //Idea Type
             $bottom_bar_ui .= '<span>';
             $bottom_bar_ui .= view_single_select_instant(4737, $i['i__type'], $access_level_i, false, $i['i__id'], $x__id);
             $bottom_bar_ui .= '</span>';
 
-        } elseif($x__type_target_bar==31004 && !$is_cache && !$discovery_mode && $access_level_i>=3 && $superpower_10939){
+        } elseif($x__type_target_bar==31004 && !$discovery_mode && $access_level_i>=3 && $superpower_10939){
 
             //Idea Access
             $bottom_bar_ui .= '<span>';
