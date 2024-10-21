@@ -1595,8 +1595,9 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
     if(1 || ($discovery_mode && ($is_locked || $focus_i__or))){
         $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
     }
+
     if($is_locked){
-        $ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').prepend(\''.$e___11035[43010]['m__cover'].' \'); }); </script>';
+        //$ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').prepend(\''.$e___11035[43010]['m__cover'].' \'); }); </script>';
     }
 
     if(count($CI->X_model->fetch(array(
@@ -2279,7 +2280,7 @@ function view_card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null
 
 
 
-    if($bottom_bar_ui ){
+    if($bottom_bar_ui){
         $ui .= '<div class="'.( $focus__node && $discovery_mode ? ' container fixed-bottom hidden ' : '' ).'">';
         $ui .= '<div class="card_covers">';
         $ui .= $bottom_bar_ui;
