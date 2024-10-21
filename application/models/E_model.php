@@ -314,7 +314,8 @@ class E_model extends CI_Model
         }
 
         //All good, create new source:
-        $added_e = $this->E_model->verify_create($full_name, 0, ( $image_url ? $image_url : random_cover(12279) ));
+        $new_private_users = in_array($x__website, $this->config->item('n___44011'));
+        $added_e = $this->E_model->verify_create($full_name, 0, ( $image_url ? $image_url : random_cover(12279) ), false, ( $new_private_users ? 4755 : 6181 ));
         if(!$added_e['status']){
             //We had an error, return it:
             return $added_e;
@@ -1145,7 +1146,7 @@ class E_model extends CI_Model
     }
 
 
-    function verify_create($e__title, $x__player = 0, $e__cover = null, $skip_creator_link = false){
+    function verify_create($e__title, $x__player = 0, $e__cover = null, $skip_creator_link = false, $e__privacy = 6181){
 
         //Validate Title
         $validate_e__title = validate_e__title($e__title);
@@ -1157,6 +1158,7 @@ class E_model extends CI_Model
         $focus_e = $this->E_model->create(array(
             'e__title' => $validate_e__title['e__title_clean'],
             'e__cover' => $e__cover,
+            'e__privacy' => $e__privacy,
         ), $x__player, $skip_creator_link);
 
         //Return success:
