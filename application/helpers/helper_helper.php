@@ -4250,7 +4250,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
     $link_creator = isset($i['x__player']) && $i['x__player']==$x__player;
     $focus__node = in_array($x__type, $CI->config->item('n___12149')); //NODE COIN
     $discovery_uri = ( isset($_POST['js_request_uri']) && substr_count($_POST['js_request_uri'], '/')==2 ? one_two_explode('/','/',$_POST['js_request_uri']) : false );
-    $discovery_seg = ( strtolower($CI->uri->segment(1))!='ajax' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false );
+    $discovery_seg = ( strtolower($CI->uri->segment(1))!='ajax' && strtolower($CI->uri->segment(1))!='app' && strlen($CI->uri->segment(2)) ? $CI->uri->segment(1) : false );
     $discovery_mode = $x__player && ( $discovery_uri || $discovery_seg );
     $focus_i_uri = ( $discovery_uri ? one_two_explode('/','',substr($_POST['js_request_uri'], 1)) : false );
     $focus_i_seg = ( $discovery_seg ? $CI->uri->segment(2) : false );
@@ -4320,7 +4320,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
     //Top action menu:
     $ui = '<div i__id="'.$i['i__id'].'" i__hashtag="'.$i['i__hashtag'].'" i__privacy="' . $i['i__privacy'] . '" i__type="' . $i['i__type'] . '" x__id="'.$x__id.'" href="'.$href.'" class="card_cover card_i_cover '.( $focus__node ? ' focus-cover slim_flat coll-md-8 coll-sm-10 col-12
-     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( !$focus_i__or && $is_locked ? ' is_locked '.$discovery_uri.'/'.$discovery_seg : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
+     ' : ' edge-cover ' . ( $discovery_mode ? ' col-12 ' : ' coll-md-4 coll-6 col-12 ' ) ).' no-padding card-12273 s__12273_'.$i['i__id'].' '.( strlen($href) ? ' card_click ' : '' ).( !$focus_i__or && $is_locked ? ' is_locked' : '' ).( $has_sortable ? ' sort_draggable ' : '' ).( $x__id ? ' cover_x_'.$x__id.' ' : '' ).'">';
 
     if($discovery_mode && $x__player && $focus__node){
         $ui .= '<style> .add_idea{ display:none; } </style>';
