@@ -1,7 +1,7 @@
 <?php
 
 // PayPal API endpoint for creating invoices (use sandbox or live URL accordingly)
-$paypalUrl = 'https://api.sandbox.paypal.com/v2/invoicing/invoices';
+$paypalUrl = 'https://api.paypal.com/v2/invoicing/invoices';
 
 // Build the invoice payload
 $data = [
