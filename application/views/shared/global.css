@@ -1652,6 +1652,9 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     margin: 0 0 0 0 !important;
     font-weight: bold;
 }
+.creator_box .icon-block img{
+    margin-top:-8px !important;
+}
 .block-x, i, .nav .icon-block i,
 
 .icon-block-sm   i { font-size: 1em !important; } /* 1.21em */

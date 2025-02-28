@@ -942,7 +942,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <!-- Idea Hashtag -->
                         <div class="dynamic_editing_input single_line hash_group" title="<?= $e___6201[32337]['m__title'] ?>">
                             <h3 class="mini-font"><span class="icon-block"><?= $e___6201[32337]['m__cover']  ?></span></h3>
-                            <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view__memory(6404,41985) ?>">
+                            <input type="text" class="form-control unsaved_warning save_i__hashtag no-border" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view__memory(6404,41985) ?>">
                         </div>
 
                         <!-- Idea Creator(s) -->
