@@ -1090,9 +1090,6 @@ h4 .halfbg {
     min-height: 21px;
     padding-top: 0;
 }
-.no-border{
-    border: 0 !important;
-}
 
 
 .btn-group-sm>.btn {
@@ -4639,4 +4636,9 @@ h1 i.fad{
 .no-horizonal-margin{
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+}
+
+.modal-content .no-border,
+.no-border{
+    border: 0 !important;
 }
