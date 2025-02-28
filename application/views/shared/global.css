@@ -3687,7 +3687,7 @@ a,
 }
 
 .i_cache .line{
-    min-height: 21px;
+    min-height: 5px;
     padding-bottom: 3px;
 }
 
@@ -4209,7 +4209,7 @@ main {
 }
 
 .source-featured{
-    padding: 21px 0 !important;
+    padding: 3px 0 0 !important;
     margin: 0 !important;
 }
 
