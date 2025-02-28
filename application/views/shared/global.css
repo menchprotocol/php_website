@@ -3051,7 +3051,7 @@ h4.main__title{
 }
 .sub__handle {
     display: inline-block;
-    padding: 0 0 0 13px !important;
+    padding: 0 1px 0 5px !important;
 }
 
 .cover-btn i {
