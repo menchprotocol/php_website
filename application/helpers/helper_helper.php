@@ -4386,6 +4386,9 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
     }
 
+
+    $ui .= ( $href ? '<a href="'.$href.'"' : '<div' ).' class="sub__handle space-content grey '.( !$superpower_10939 && ($discovery_mode || !$focus__node || !$x__player) ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span>'.( $href ? '</a>' : '</div>' );
+
     //Idea Location if any:
     foreach($CI->Mench_ledger->fetch(array(
         'x__type' => 41949, //Locate
@@ -4395,10 +4398,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
     ), array('x__following')) as $location){
         $ui .= view__featured_links(41949, $location, null, $focus__node);
     }
-
-
-    $ui .= ( $href ? '<a href="'.$href.'"' : '<div' ).' class="sub__handle space-content grey '.( !$superpower_10939 && ($discovery_mode || !$focus__node || !$x__player) ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span>'.( $href ? '</a>' : '</div>' );
-
 
     //Link Message if any:
     if($x__id){
