@@ -3041,7 +3041,9 @@ h4.main__title{
 .edge-cover .card_covers .dropdown .btn {
     margin-top: -3px;
 }
-
+.edge-cover .card_covers .dropdown .btn>span {
+    padding: 0 5px 0 0 !important;
+}
 .edge-cover.card-12274 .creator_headline{
     font-size: 0.79em;
     padding: 0;
