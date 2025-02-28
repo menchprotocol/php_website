@@ -939,6 +939,12 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                         <div class="idea_list_next cover-text hideIfEmpty"></div>
                         <div class="doclear">&nbsp;</div>
 
+                        <!-- Idea Hashtag -->
+                        <div class="dynamic_editing_input single_line hash_group" title="<?= $e___6201[32337]['m__title'] ?>">
+                            <h3 class="mini-font"><span class="icon-block-sm"><?= $e___6201[32337]['m__cover']  ?></span></h3>
+                            <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view__memory(6404,41985) ?>">
+                        </div>
+
                         <!-- Idea Creator(s) -->
                         <div class="creator_box">
                             <?php
@@ -1020,12 +1026,6 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
                             <!-- Dynamic Inputs -->
                             <div class="dynamic_frame"><?= $dynamic_edit ?></div>
-
-                            <!-- Idea Hashtag -->
-                            <div class="dynamic_editing_input single_line hash_group" title="<?= $e___6201[32337]['m__title'] ?>">
-                                <h3 class="mini-font"><span class="icon-block-sm"><?= $e___6201[32337]['m__cover']  ?></span></h3>
-                                <input type="text" class="form-control unsaved_warning save_i__hashtag" placeholder="<?= $e___6201[32337]['m__title'] ?>" maxlength="<?= view__memory(6404,41985) ?>">
-                            </div>
 
                             <!-- Link Note -->
                             <div class="dynamic_editing_input save_x__frame hidden">
