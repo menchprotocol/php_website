@@ -4382,7 +4382,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
             $follow_btn = view__single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $access_level_i, false, $creator['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 ));
         }
 
-        $ui .= '<div class="creator_headline"><a href="'.view__memory(42903,42902).$creator['e__handle'].'"><span class="icon-block">'.view__cover($creator['e__cover']).'</span><b>'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a>'.( !in_array($creator['e__id'], $CI->config->item('n___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view__time_difference($creator['x__time'], true).'</span>' : '' ).$follow_btn.'</div>';
+        $ui .= '<div class="creator_headline"><a href="'.view__memory(42903,42902).$creator['e__handle'].'"><span class="icon-block">'.view__cover($creator['e__cover']).'</span><b class="hidden">'.$creator['e__title'].'</b><span class="grey mini-font mini-padded mini-frame">@'.$creator['e__handle'].'</span></a>'.( !in_array($creator['e__id'], $CI->config->item('n___42881')) ? '<span class="grey mini-font mini-padded mini-frame mini_time" title="'.date("Y-m-d H:i:s", strtotime($creator['x__time'])).' PST">'.view__time_difference($creator['x__time'], true).'</span>' : '' ).$follow_btn.'</div>';
 
     }
 
