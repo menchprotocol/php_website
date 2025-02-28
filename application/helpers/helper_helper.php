@@ -4329,7 +4329,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
         $ui .= '<script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>';
     }
 
-    $ui .= ( $href ? '<a href="'.$href.'"' : '<div' ).' class="sub__handle space-content grey '.( !$superpower_10939 && ($discovery_mode || !$focus__node || !$x__player) ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span>'.( $href ? '</a>' : '</div>' );
 
     if($is_locked){
         //$ui .= '<script> $(document).ready(function () { $(\'.cache_frame_'.$i['i__id'].' .first_line\').prepend(\''.$e___11035[43010]['m__cover'].' \'); }); </script>';
@@ -4397,6 +4396,10 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
         $ui .= view__featured_links(41949, $location, null, $focus__node);
     }
 
+
+    $ui .= ( $href ? '<a href="'.$href.'"' : '<div' ).' class="sub__handle space-content grey '.( !$superpower_10939 && ($discovery_mode || !$focus__node || !$x__player) ? ' hidden ' : '' ).'">#<span class="ui_i__hashtag_'.$i['i__id'].'">'.$i['i__hashtag'].'</span>'.( $href ? '</a>' : '</div>' );
+
+
     //Link Message if any:
     if($x__id){
         $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . ( in_array($i['x__type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '" style="padding-left:40px;">'.htmlentities($i['x__message']).'</div>';
@@ -4435,6 +4438,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
             'x__previous' => $i['i__id'],
             'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__next'));
+
 
         //Any inputs for this idea?
         if (in_array($i['i__type'], $CI->config->item('n___7712'))) {
