@@ -1938,9 +1938,9 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 
 
 .ticket-notice {
-    background-color: #fffdb7;
     padding: 1px 0 10px !important;
     border-radius: 0px;
+    border-bottom: 1px solid #999999;
 }
 
 .title-cover{
