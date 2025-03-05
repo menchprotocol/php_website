@@ -25,7 +25,7 @@ $data = [
             "allow_partial_payment" => true,
             "minimum_amount_due"   => [
                 "currency_code" => "USD",
-                "value"         => "100.00"
+                "value"         => "1000.00"
             ],
         ],
     ],
