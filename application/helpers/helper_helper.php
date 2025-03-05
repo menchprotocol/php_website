@@ -4546,11 +4546,9 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
 
                 //Is multi selectable, allow show down for quantity:
-                $input_ui .= '<div class="source-info ticket-notice">'
+                $input_ui .= '<div class="source-info ticket-notice" title="'.$e___11035[31076]['m__title'] . '">'
                     . '<span class="icon-block">'. $e___11035[31076]['m__cover'] . '</span>'
-                    . '<span>'.$e___11035[31076]['m__title'] . '</span>'
-                    . '<div class="source_info_box">'
-                    . ( strlen($e___11035[31076]['m__message']) ? '<div class="sub_note main__title">'.nl2br($e___11035[31076]['m__message']).'</div>' : '' );
+                    . '<div class="source_info_box">';
 
                 if($max_allowed > 1 || $min_allowed > 1){
                     $input_ui .= '<div>';
