@@ -4189,7 +4189,7 @@ main {
     overflow-x: hidden;
     overflow-y: visible;
     display: block !important;
-    width: 100px;
+    width: 100%;
 }
 .cover-content .source_info_box{
     padding-left: 3px;
