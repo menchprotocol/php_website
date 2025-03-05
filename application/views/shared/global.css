@@ -4188,9 +4188,8 @@ main {
     line-height: 121%;
     overflow-x: hidden;
     overflow-y: visible;
-    display: inline-block !important;
+    display: block !important;
     width: 100px;
-    margin-bottom: -15px;
 }
 .cover-content .source_info_box{
     padding-left: 3px;
