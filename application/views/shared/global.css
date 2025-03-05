@@ -4184,10 +4184,13 @@ main {
 }
 
 .source_info_box{
-    padding:0 0 5px 34px;
-    line-height:121%;
+    padding: 0 !important;
+    line-height: 121%;
     overflow-x: hidden;
     overflow-y: visible;
+    display: inline-block !important;
+    width: 100px;
+    margin-bottom: -15px;
 }
 .cover-content .source_info_box{
     padding-left: 3px;
@@ -4195,7 +4198,7 @@ main {
 }
 
 .sale_increment{
-    padding:8px 2px;
+    padding:13px 8px;
     display: inline-block;
 }
 
