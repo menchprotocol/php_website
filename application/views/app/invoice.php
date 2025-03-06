@@ -53,7 +53,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             'note' => 'This is a message in the idea',
             'payment_term' => [
                 'term_type' => 'DUE_ON_DATE_SPECIFIED',
-                'due_date' => date('Y-m-d', strtotime('August 1st 2025'))
+                'due_date' => $invoiceData['due_date']
             ]
         ],
         'invoicer' => [
@@ -93,11 +93,6 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
                     'value' => '12.00'
                 ]
             ],
-        ],
-
-        'due_amount' => [
-            'currency_code' => 'USD',
-            'value' => '18.00'
         ],
 
         // This triggers immediate sending instead of draft creation
@@ -180,7 +175,7 @@ try {
         'reference' => 'ORDER-' . rand(1000, 9999),
         'recipient_email' => 'shervinenayati@mench.com',
         'recipient_name' => 'Ali Baba'.rand(1000, 9999),
-        'due_date' => date('Y-m-d', strtotime('+15 days')),
+        'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
         'items' => [
             [
                 'name' => 'Premium Service Package',
@@ -188,12 +183,12 @@ try {
                 'quantity' => 1,
                 'unit_amount' => [
                     'currency_code' => 'USD',
-                    'value' => '199.99'
+                    'value' => '1199.99'
                 ],
                 'unit_of_measure' => 'QUANTITY'
             ]
         ],
-        'total_amount' => '199.99'
+        'total_amount' => '1199.99'
     ];
 
     // Step 1: Get access token
