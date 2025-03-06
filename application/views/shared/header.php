@@ -50,6 +50,9 @@ if($website_id==39599){
     $body_class .= ' center-align dark-theme ';
 }
 
+
+if(!$basic_header_footer){
+
 ?><!doctype html>
 <html lang="en" >
 <head>
@@ -426,7 +429,6 @@ if(strlen($live_chat_page_id)>10){
 
 
 
-if(!$basic_header_footer){
 
     //Do not show for /sign view
     ?>
@@ -589,7 +591,7 @@ if(!$basic_header_footer){
 
 <?php
 
-}
+
 
 
 
@@ -1171,4 +1173,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
 
 }
 
+
+
+        }
 ?>
