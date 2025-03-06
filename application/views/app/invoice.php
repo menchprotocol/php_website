@@ -84,6 +84,14 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             ]
         ],
 
+        'configuration' => [
+            'allow_tip' => false,
+            'partial_payment' => true,
+            'minimum_amount_due' => [
+                'currency_code' => 'USD',
+                'value' => ( $invoiceData['total_amount'] > 10 ? '10' : $invoiceData['total_amount'] ),
+            ]
+        ],
         // This triggers immediate sending instead of draft creation
         'send_to_recipient' => true,
         'send_to_invoicer' => true  // Set to true if you want a copy
