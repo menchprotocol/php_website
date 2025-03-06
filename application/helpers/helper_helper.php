@@ -4486,7 +4486,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                 $currency_types = $CI->Mench_ledger->fetch(array(
                     'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-                    'x__next' => $i['i__id'],
+                    'x__next' => ( $previous_i['i__type']==43758 ? $previous_i['i__id'] : $i['i__id']  ),
                     'x__following IN (' . join(',', $CI->config->item('n___26661')) . ')' => null, //Currency
                 ));
                 $total_dues = $CI->Mench_ledger->fetch(array(
@@ -4537,6 +4537,8 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                         'x__next' => $i['i__id'],
                         'x__following' => 30589, //Digest Fees
                     )));
+
+
 
                     //Break down amount & currency
                     $unit_price = doubleval($total_dues[0]['x__message']);
