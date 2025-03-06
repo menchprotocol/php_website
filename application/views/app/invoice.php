@@ -95,6 +95,11 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             ],
         ],
 
+        'due_amount' => [
+            'currency_code' => 'USD',
+            'value' => '18.00'
+        ],
+
         // This triggers immediate sending instead of draft creation
         'send_to_recipient' => true,
         'send_to_invoicer' => true  // Set to true if you want a copy
