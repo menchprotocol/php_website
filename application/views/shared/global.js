@@ -1009,6 +1009,7 @@ function invoice_update(){
 
     var total_count = 0;
     var total_price = 0;
+    var total_currency = '';
 
     $(".sale_controller").each(function () {
 
@@ -1020,6 +1021,7 @@ function invoice_update(){
 
         total_count += current_count;
         total_price += (current_count * current_price);
+        total_currency = current_currency;
 
         console.log(item_i__id);
         console.log(item_i__title);
@@ -1034,7 +1036,7 @@ function invoice_update(){
     //Update UI:
     $('.go_next_btn').html('Create Invoice <span title="" class="small_font inline-block">'+total_price.toLocaleString('en-US', {
         style: 'currency',
-        currency: current_currency,
+        currency: total_currency,
     })+' ['+total_count+']</span>');
 
 }
