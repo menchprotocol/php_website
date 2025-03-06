@@ -88,6 +88,19 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             ]
         ],
 
+        'payments' => [
+            [
+                'type' => 'OTHER',
+                'amount' => [
+                    'currency_code' => 'USD',
+                    'value' => '0.00'
+                ],
+                'payment_date' => date('Y-m-d\TH:i:s\Z'),  // Current UTC time
+                'payment_method' => 'FREE',  // Indicates no payment needed
+                'note' => 'Complimentary service - no charge'
+            ]
+        ],
+
         'configuration' => [
             'allow_tip' => false,
             /*
@@ -182,6 +195,7 @@ try {
         'recipient_name' => 'Ali Baba'.rand(1000, 9999),
         'recipient_info' => 'https://discotique.org/@Alivava',
         //'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
+        'due_date' => date('Y-m-d'),
         'items' => [
             [
                 'name' => 'Premium Service Package',
