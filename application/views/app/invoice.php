@@ -19,8 +19,8 @@ foreach ($_POST['invoice_items'] as $key => $value) {
     unset($_POST['invoice_items'][$key]['i__id']);
 
     array_push($items, [
-        'name' => 'title', //$_POST['invoice_items'][$key]['name']
-        'description' => 'hiiii',
+        'name' => $_POST['invoice_items'][$key]['name'],
+        'description' => $_POST['invoice_items'][$key]['description'],
         'quantity' => $_POST['invoice_items'][$key]['quantity'],
         'unit_amount' => [
             'currency_code' => $_POST['invoice_items'][$key]['unit_amount']['currency_code'],
@@ -76,18 +76,6 @@ foreach($this->Idea_cache->fetch(array(
             'total_amount' => $_POST['total_price'],
             //'items' => $_POST['invoice_items'],
             'items' => $items,
-            'items_orig' => [
-                [
-                    'name' => 'Website Design Service',
-                    'description' => 'Professional website design and development',
-                    'quantity' => 1,
-                    'unit_amount' => [
-                        'currency_code' => 'USD',
-                        'value' => '150.00'
-                    ],
-                    'unit_of_measure' => 'QUANTITY'
-                ]
-            ],
         ];
 
         // Step 1: Get access token
