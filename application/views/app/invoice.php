@@ -88,19 +88,6 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             ]
         ],
 
-        'payments' => [
-            [
-                'type' => 'OTHER',
-                'amount' => [
-                    'currency_code' => 'USD',
-                    'value' => '0.00'
-                ],
-                'payment_date' => date('Y-m-d\TH:i:s\Z'),  // Current UTC time
-                'payment_method' => 'FREE',  // Indicates no payment needed
-                'note' => 'Complimentary service - no charge'
-            ]
-        ],
-
         'configuration' => [
             'allow_tip' => false,
             /*
