@@ -106,7 +106,10 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
     if ($httpCode == 201 && !$error) {
         $data = json_decode($response, true);
         print_r($payload);
-        return $data['id'];
+
+        echo '==================';
+        print_r($data);
+        return $data;
     }
 
     throw new Exception("Failed to create invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
