@@ -53,7 +53,7 @@ foreach($this->Idea_cache->fetch(array(
             'invoicer_website' => 'https://discotique.org/Discotique2025',
 
             'currency_code' => $_POST['currency_code'],
-            'min_payment' => ( $_POST['total_price'] > 1000 ? 1000 : 0 ),
+            'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
             //'note' => $i['i__message'],
             'note' => 'Wow nice',
 
@@ -63,7 +63,7 @@ foreach($this->Idea_cache->fetch(array(
             'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
             //'total_amount' => $_POST['total_price'],
             //'items' => $_POST['invoice_items'],
-            'total_amount' => 1150,
+            'total_amount' => "1150",
             'items' => [
                 [
                     'name' => 'Website Design Service',
@@ -71,7 +71,7 @@ foreach($this->Idea_cache->fetch(array(
                     'quantity' => 1,
                     'unit_amount' => [
                         'currency_code' => 'USD',
-                        'value' => '1150.00'
+                        'value' => "1150"
                     ],
                     'unit_of_measure' => 'QUANTITY'
                 ]
