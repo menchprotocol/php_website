@@ -181,7 +181,6 @@ foreach($this->Idea_cache->fetch(array(
             'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target, 0, false),
             'message' => 'Success: Your Invoice will be emailed to you within 1-2 minutes',
             'invoiceData' => $invoiceData,
-            'invoiceId' => $invoiceId,
         ));
 
 
