@@ -2987,6 +2987,8 @@ class App extends CI_Controller
         }
 
 
+        return view__json($_POST['invoice_items']);
+
 
         //Discover Focus Idea:
         $primary_i__id = null;
@@ -2995,67 +2997,19 @@ class App extends CI_Controller
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
         )) as $focus_i){
 
-            $input__selection = in_array($focus_i['i__type'], $this->config->item('n___7712'));
-            $input__upload = in_array($focus_i['i__type'], $this->config->item('n___43004'));
-            $input__text = in_array($focus_i['i__type'], $this->config->item('n___43002')) || in_array($focus_i['i__type'], $this->config->item('n___43003'));
-            $total_selected = count($_POST['selection_i__id']);
-            $trying_to_skip = ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['focus_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media'])) || ($input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media']) && !strlen($_POST['focus_i_data']['i__text'])));
-            $i_required = i_required($focus_i);
 
-            if(!$primary_i__id){
-                $primary_i__id = ( $total_selected ? end($_POST['selection_i__id']) : $focus_i['i__id'] );
-            }
 
-            //If skipping, make sure they can:
-            if($i_required && $trying_to_skip){
-                return view__json(array(
-                    'status' => 0,
-                    'message' => ( $input__selection ? 'Make a selection to continue...' : 'Respond to continue...' ),
-                ));
-            }
 
             //Now complete relevant next ideas, if any:
             if($input__selection){
 
                 $is_single_selection = in_array($focus_i['i__type'], $this->config->item('n___33331'));
 
-                //How about the min selection?
-                if($i_required && !$is_single_selection){
-                    foreach($this->Mench_ledger->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                        'x__next' => $focus_i['i__id'],
-                        'x__following' => 40834, //Min Selection
-                    ), array(), 1) as $limit){
-                        if(intval($limit['x__message']) > 0 && $total_selected < intval($limit['x__message'])){
-                            return view__json(array(
-                                'status' => 0,
-                                'message' => 'Select '.$limit['x__message'].' or more ideas to go next.',
-                            ));
-                        }
-                    }
-                }
 
 
-                //How about max selection?
-                if(!$is_single_selection){
-                    foreach($this->Mench_ledger->fetch(array(
-                        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                        'x__next' => $focus_i['i__id'],
-                        'x__following' => 40833, //Max Selection
-                    ), array(), 1) as $limit){
-                        if(intval($limit['x__message']) > 0 && $total_selected > intval($limit['x__message'])){
-                            return view__json(array(
-                                'status' => 0,
-                                'message' => 'You cannot select more than '.$limit['x__message'].' items.',
-                            ));
-                        }
-                    }
-                }
 
 
-                //Delete ALL previous answers that are not currently selected, if any:
+                //Delete ALL previous answers:
                 $already_answered = array();
                 foreach($this->Mench_ledger->fetch(array(
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
