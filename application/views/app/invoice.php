@@ -51,7 +51,6 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             'invoice_date' => date('Y-m-d'),
             'currency_code' => 'USD',
             'note' => 'This is a message in the idea',
-            'memo' => 'The Minimum amount due of $1000 is due immediately upon the receipt of this invoice. Full invoice balance is due by August 1st 2025',
             'payment_term' => [
                 'term_type' => 'DUE_ON_DATE_SPECIFIED',
                 'due_date' => $invoiceData['due_date']
@@ -63,6 +62,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             ],
             'email_address' => $businessEmail,
             'website' => 'https://discotique.org/Discotique2025',
+            'additional_notes' => 'The Minimum amount due of $1000 is due immediately upon the receipt of this invoice. Full invoice balance is due by August 1st 2025',
             'logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg'
         ],
         'primary_recipients' => [
