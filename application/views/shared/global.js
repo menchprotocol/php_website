@@ -1201,7 +1201,7 @@ $(document).ready(function () {
                     return view__s_js_line(suggestion,'\\');
                 },
                 replace: function (suggestion) {
-                    return ' \\' + suggestion.s__handle + ' ';
+                    return "\n" + '\\' + suggestion.s__handle + ' ';
                 }
             },
         ]);
