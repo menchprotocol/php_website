@@ -3405,11 +3405,11 @@ function go_next(do_skip, i_popup_url = ''){
 
             var this_item= {
                 i__id: item_i__id,
-                name: item_title,
-                description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
+                unit_currency_code: $(this).attr('unitcurrency')
                 quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
                 unit_value: parseFloat($(this).attr('unitprice')),
-                unit_currency_code: $(this).attr('unitcurrency')
+                name: item_title,
+                description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
             };
 
             invoice_items[i] = this_item;
