@@ -85,8 +85,12 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         ],
 
         'configuration' => [
+            'allow_tip' => false,
             'partial_payment' => true,
-            'allow_tip' => false
+            'minimum_amount_due' => [
+                'currency_code' => 'USD',
+                'value' => ( $invoiceData['total_amount'] > 1000 ? '1000' : $invoiceData['total_amount'] ),
+            ]
         ],
         // This triggers immediate sending instead of draft creation
         'send_to_recipient' => true,
