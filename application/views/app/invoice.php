@@ -69,12 +69,17 @@ foreach($this->Idea_cache->fetch(array(
         sendPaypalInvoice($accessToken, $invoiceId);
 
     } catch (Exception $e) {
-
+        return view__json(array(
+            'status' => 0,
+            'message' => $e->getMessage(),
+        ));
     }
 
     return view__json(array(
         'status' => 1,
         'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
+        'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
+        'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
         'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
     ));
 
