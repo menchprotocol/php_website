@@ -1,90 +1,104 @@
 <?php
 
-// Initialize cURL session
-$ch = curl_init('https://api.paypal.com/v2/invoicing/invoices');
+// PayPal API URLs
+$authUrl = "https://api.paypal.com/v1/oauth2/token";
+$invoiceUrl = "https://api.paypal.com/v2/invoicing/invoices";
 
-// Set cURL options
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/json",
-    "Authorization: Bearer " . $this->config->item('paypal_access_token'),
-    "Accept: application/json"
-]);
+// Function to get an access token
+function getAccessToken($clientId, $clientSecret, $authUrl)
+{
+    $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-    "detail" => [
-        "reference"      => "Title",         // Optional reference
-        "note"           => "Messages",
-        "invoice_date"   => date("Y-m-d"),      // Invoice date in YYYY-MM-DD format
-        "currency_code"  => "USD",              // Currency code
-        "payment_term"   => [
-            "term_type" => "NET_0",
-            "due_date"    => date("Y-m-d")
-        ],
-    ],
-    "configuration" => [
-        "allow_tip"                      => false,         // Optional reference
-        "tax_calculated_after_discount"  => true,
-        "tax_inclusive"                  => true,
-        "invoice_date"   => date("Y-m-d"),      // Invoice date in YYYY-MM-DD format
-        "currency_code"  => "USD",              // Currency code
-        "partial_payment"   => [
-            "allow_partial_payment" => true,
-            "minimum_amount_due"   => [
-                "currency_code" => "USD",
-                "value"         => "1000.00"
-            ],
-        ],
-    ],
-    "invoicer" => [
-        "name"          => [
-            "given_name" => "Atlas",
-            "surname"    => "Camp"
-        ],
-        "email_address" => "support@atlascamp.org",
-    ],
-    "primary_recipients" => [
-        [
-            "billing_info" => [
-                "name"          => [
-                    "given_name" => "Jane",
-                    "surname"    => "Doe"
-                ],
-                "email_address" => "recipient@example.com"
-            ]
-        ]
-    ],
-    "items" => [
-        [
-            "name"        => "Product Name",
-            "quantity"    => "1",
-            "unit_amount" => [
-                "currency_code" => "USD",
-                "value"         => "100.00"
-            ]
-        ]
-    ]
-]));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL, $authUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_USERPWD, $clientId . ":" . $clientSecret);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Accept: application/json",
+        "Accept-Language: en_US",
+    ]);
 
-// Execute the request
-$response = curl_exec($ch);
+    $response = curl_exec($ch);
+    curl_close($ch);
 
-// Get HTTP status code for error handling
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $result = json_decode($response, true);
 
-// Check for errors
-if (curl_errno($ch)) {
-    echo 'cURL Error: ' . curl_error($ch);
-} else {
-    if ($httpCode == 201) { // HTTP 201 Created
-        echo "Invoice created successfully:\n" . $response;
-    } else {
-        echo "Failed to create invoice. HTTP Status Code: $httpCode\nResponse: $response";
-    }
+    return $result['access_token'] ?? null;
 }
 
-// Close cURL session
-curl_close($ch);
+// Function to create and send an invoice
+function createInvoice($accessToken, $invoiceUrl)
+{
+    $invoiceData = [
+        "detail" => [
+            "currency_code" => "USD",
+            "note" => "Thank you for your business!",
+            "term" => "Due upon receipt",
+            "invoice_date" => date("Y-m-d"),
+        ],
+        "invoicer" => [
+            "name" => [
+                "given_name" => "Your Name",
+                "surname" => "Your Last Name",
+            ],
+            "email_address" => "support@atlascamp.org",
+        ],
+        "primary_recipients" => [
+            [
+                "billing_info" => [
+                    "name" => [
+                        "given_name" => "Ali",
+                        "surname" => "Baba",
+                    ],
+                    "email_address" => "shervinenayati@mench.com",
+                ],
+            ],
+        ],
+        "items" => [
+            [
+                "name" => "Service/Product Name",
+                "description" => "Detailed description of service or product",
+                "quantity" => "1",
+                "unit_amount" => [
+                    "currency_code" => "USD",
+                    "value" => "100.00",
+                ],
+            ],
+        ],
+    ];
 
-?>
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $invoiceUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($invoiceData));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Content-Type: application/json",
+        "Authorization: Bearer " . $accessToken,
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return json_decode($response, true);
+}
+
+// Get the PayPal access token
+$accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'), $authUrl);
+
+if ($accessToken) {
+    // Create the invoice
+    $invoiceResponse = createInvoice($accessToken, $invoiceUrl);
+
+    if (isset($invoiceResponse['id'])) {
+        echo "Invoice Created Successfully: " . $invoiceResponse['href'];
+    } else {
+        echo "Error creating invoice: ";
+        print_r($invoiceResponse);
+    }
+} else {
+    echo "Error retrieving PayPal access token.";
+}
+
