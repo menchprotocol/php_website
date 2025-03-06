@@ -1006,7 +1006,6 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
 
 function invoice_update(){
 
-    var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
     var total_count = 0;
     var total_price = 0;
     var counter = 1;
