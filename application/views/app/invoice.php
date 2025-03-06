@@ -13,6 +13,15 @@ if(!$player_e){
     ));
 }
 
+return view__json(array(
+    'status' => 0,
+    'message' => 'Error see',
+    'obj' => $_POST['invoice_items'],
+    'arr' => object_to_array($_POST['invoice_items']),
+));
+
+
+
 //Fetch User Data:
 $fetch_emails = $this->Mench_ledger->fetch(array(
     'x__following' => 3288, //Email
@@ -78,8 +87,6 @@ foreach($this->Idea_cache->fetch(array(
     return view__json(array(
         'status' => 1,
         'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
-        'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
-        'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
         'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
     ));
 
