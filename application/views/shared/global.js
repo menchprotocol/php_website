@@ -1182,7 +1182,35 @@ $(document).ready(function () {
                         //One more time to make sure it also works in mobile:
                         set_autosize($('.save_i__message'));
                     }, 144);
-                    return "\n" + '#' + suggestion.s__handle + "\n"+'#';
+                    return ' #' + suggestion.s__handle + ' ';
+                }
+            },
+            {
+                match: /(^|\s)!(\w*(?:\s*\w*))$/,
+                search: function (q, callback) {
+                    index_algolia.search(q, {
+                        hitsPerPage: js_e___6404[31112]['m__message'],
+                        filters: 's__type=12273' + search_and_filter,
+                    })
+                        .then(function searchSuccess(content) {
+                            if (content.query === q) {
+                                callback(content.hits);
+                            }
+                        })
+                        .catch(function searchFailure(err) {
+                            console.error(err);
+                        });
+                },
+                template: function (suggestion) {
+                    //Triger hieght adjust
+                    return view__s_js_line(suggestion,'!');
+                },
+                replace: function (suggestion) {
+                    setTimeout(function () {
+                        //One more time to make sure it also works in mobile:
+                        set_autosize($('.save_i__message'));
+                    }, 144);
+                    return ' !' + suggestion.s__handle + ' ';
                 }
             },
             {
@@ -1211,34 +1239,6 @@ $(document).ready(function () {
                         set_autosize($('.save_i__message'));
                     }, 144);
                     return "\n" + '\\' + suggestion.s__handle + "\n"+'\\';
-                }
-            },
-            {
-                match: /(^|\s)!(\w*(?:\s*\w*))$/,
-                search: function (q, callback) {
-                    index_algolia.search(q, {
-                        hitsPerPage: js_e___6404[31112]['m__message'],
-                        filters: 's__type=12273' + search_and_filter,
-                    })
-                        .then(function searchSuccess(content) {
-                            if (content.query === q) {
-                                callback(content.hits);
-                            }
-                        })
-                        .catch(function searchFailure(err) {
-                            console.error(err);
-                        });
-                },
-                template: function (suggestion) {
-                    //Triger hieght adjust
-                    return view__s_js_line(suggestion,'!');
-                },
-                replace: function (suggestion) {
-                    setTimeout(function () {
-                        //One more time to make sure it also works in mobile:
-                        set_autosize($('.save_i__message'));
-                    }, 144);
-                    return "\n" + '!' + suggestion.s__handle + "\n"+'!';
                 }
             },
         ]);
