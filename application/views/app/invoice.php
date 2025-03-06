@@ -137,7 +137,6 @@ function sendPaypalInvoice($accessToken, $apiBaseUrl, $invoiceId)
     $payload = [
         'send_to_recipient' => true,
         'send_to_invoicer' => true,
-        'scheduled_send_time' => date('Y-m-d\TH:i:s\Z', (now()+3600)),
         'subject' => 'Invoice from Your Company Name',  // Customize subject
         'note' => 'Thank you for your business!'       // Customize note
     ];
