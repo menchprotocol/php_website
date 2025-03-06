@@ -83,8 +83,8 @@ body {
     max-height: 610px;
 }
 .edge-cover .input_ui{
-    margin:0 40px 5px;
-    width: 155px;
+    margin:0 40px 5px 0;
+    width: calc(100% - 40px);
 }
 .focus-cover .input_ui{
     margin:0 0 5px;
@@ -683,7 +683,7 @@ textarea.main__title {
 .center-info{
     width: 100%;
     max-width:377px !important;
-    padding: 0 8px;
+    padding: 21px 8px 0;
     margin: 0 auto;
 }
 .center{
