@@ -53,7 +53,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             'note' => 'This is a message in the idea',
             'payment_term' => [
                 'term_type' => 'DUE_ON_DATE_SPECIFIED',
-                'due_date' => $invoiceData['due_date'] ?? date('Y-m-d', strtotime('August 1st 2025'))
+                'due_date' => date('Y-m-d', strtotime('August 1st 2025'))
             ]
         ],
         'invoicer' => [
