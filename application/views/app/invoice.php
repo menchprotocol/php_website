@@ -109,7 +109,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
 
         echo '==================';
         print_r($data);
-        return $data;
+        return $data['id'];
     }
 
     throw new Exception("Failed to create invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
