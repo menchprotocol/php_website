@@ -1940,7 +1940,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 .ticket-notice {
     padding: 1px 0 10px !important;
     border-radius: 0px;
-    border-bottom: 1px solid #999999;
+    background-color: #FFFFE0;
 }
 
 .title-cover{
@@ -4200,6 +4200,7 @@ main {
     display: inline-block !important;
     padding: 0 !important;
     width: 200px;
+    margin-bottom: -15px;
 }
 
 .sale_increment{
