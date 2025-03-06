@@ -61,14 +61,17 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
                 'given_name' => 'Discotique Pancake Boutique'
             ],
             'email_address' => $businessEmail,
-            'website' => 'https://discotique.org/Discotique2025'
+            'website' => 'https://discotique.org/Discotique2025',
+            'logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg'
         ],
         'primary_recipients' => [
             [
                 'billing_info' => [
+                    'additional_info_value' => $invoiceData['recipient_info'],
                     'email_address' => $invoiceData['recipient_email'],
                     'name' => [
-                        'given_name' => $invoiceData['recipient_name'] ?? ''
+                        'given_name' => $invoiceData['recipient_name'] ?? '',
+                        'surname' => $invoiceData['recipient_name'] ?? ''
                     ]
                 ]
             ]
@@ -86,11 +89,12 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         ],
 
         'configuration' => [
+            'allow_tip' => false,
             'partial_payment' => [
                 'allow_partial_payment' => true,
                 'minimum_amount_due' => [
                     'currency_code' => 'USD',
-                    'value' => '12.00'
+                    'value' => '13.00'
                 ]
             ],
         ],
@@ -175,6 +179,7 @@ try {
         'reference' => 'ORDER-' . rand(1000, 9999),
         'recipient_email' => 'shervinenayati@mench.com',
         'recipient_name' => 'Ali Baba'.rand(1000, 9999),
+        'recipient_info' => 'https://discotique.org/@Alivava',
         'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
         'items' => [
             [
