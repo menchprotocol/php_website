@@ -90,13 +90,14 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
 
         'configuration' => [
             'allow_tip' => false,
+            /*
             'partial_payment' => [
                 'allow_partial_payment' => true,
                 'minimum_amount_due' => [
                     'currency_code' => 'USD',
                     'value' => '13.00'
                 ]
-            ],
+            ],*/
         ],
 
         // This triggers immediate sending instead of draft creation
@@ -180,7 +181,7 @@ try {
         'recipient_email' => 'shervinenayati@mench.com',
         'recipient_name' => 'Ali Baba'.rand(1000, 9999),
         'recipient_info' => 'https://discotique.org/@Alivava',
-        'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
+        //'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
         'items' => [
             [
                 'name' => 'Premium Service Package',
@@ -188,12 +189,12 @@ try {
                 'quantity' => 1,
                 'unit_amount' => [
                     'currency_code' => 'USD',
-                    'value' => '11.99'
+                    'value' => '0'
                 ],
                 'unit_of_measure' => 'QUANTITY'
             ]
         ],
-        'total_amount' => '11.99'
+        'total_amount' => '0'
     ];
 
     // Step 1: Get access token
