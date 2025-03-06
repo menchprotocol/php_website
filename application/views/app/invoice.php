@@ -1,18 +1,13 @@
 <?php
 
 
-// PayPal API credentials and configuration (Production)
-$apiBaseUrl = 'https://api-m.paypal.com'; //Production
-$businessEmail = 'support@atlascamp.org';
-
-
 // Function to get PayPal access token
-function getAccessToken($clientId, $clientSecret, $apiBaseUrl)
+function getAccessToken($clientId, $clientSecret)
 {
     $curl = curl_init();
 
     curl_setopt_array($curl, [
-        CURLOPT_URL => "$apiBaseUrl/v1/oauth2/token",
+        CURLOPT_URL => "https://api-m.paypal.com/v1/oauth2/token",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_USERPWD => "$clientId:$clientSecret",
@@ -39,7 +34,7 @@ function getAccessToken($clientId, $clientSecret, $apiBaseUrl)
 }
 
 // Function to create PayPal invoice
-function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessEmail)
+function createPaypalInvoice($accessToken, $invoiceData)
 {
     $curl = curl_init();
 
@@ -48,9 +43,9 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         'detail' => [
             //'invoice_number' => $invoiceData['invoice_number'],
             'reference' => $invoiceData['reference'],
+            'currency_code' => $invoiceData['currency_code'],
+            'note' => $invoiceData['note'],
             'invoice_date' => date('Y-m-d'),
-            'currency_code' => 'USD',
-            'note' => 'The Minimum amount due of $1000 is due immediately upon the receipt of this invoice. Full invoice balance is due by August 1st. This is a message in the idea',
             'payment_term' => [
                 'term_type' => 'DUE_ON_DATE_SPECIFIED',
                 'due_date' => $invoiceData['due_date']
@@ -60,7 +55,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             'name' => [
                 'given_name' => 'Discotique Pancake Boutique'
             ],
-            'email_address' => $businessEmail,
+            'email_address' => $invoiceData['businessEmail'],
             'website' => 'https://discotique.org',
             'logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg'
         ],
@@ -106,7 +101,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
     ];
 
     curl_setopt_array($curl, [
-        CURLOPT_URL => "$apiBaseUrl/v2/invoicing/invoices",
+        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => json_encode($payload),
@@ -136,19 +131,17 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
 }
 
 // Function to send PayPal invoice
-function sendPaypalInvoice($accessToken, $apiBaseUrl, $invoiceId)
+function sendPaypalInvoice($accessToken, $invoiceId)
 {
     $curl = curl_init();
 
     $payload = [
         'send_to_recipient' => true,
         'send_to_invoicer' => false,
-        'subject' => 'Invoice from Your Company Name',  // Customize subject
-        'note' => 'Thank you for your business!'       // Customize note
     ];
 
     curl_setopt_array($curl, [
-        CURLOPT_URL => "$apiBaseUrl/v2/invoicing/invoices/$invoiceId/send",
+        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices/$invoiceId/send",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => json_encode($payload),
@@ -176,11 +169,15 @@ function sendPaypalInvoice($accessToken, $apiBaseUrl, $invoiceId)
 try {
     // Sample invoice data
     $invoiceData = [
+
         'invoice_number' => 'INV-' . time(),
+        'businessEmail' => 'support@atlascamp.org',
         'reference' => 'ORDER-' . rand(1000, 9999),
         'recipient_email' => 'shervinenayati@mench.com',
         'recipient_name' => 'Ali Baba'.rand(1000, 9999),
         'recipient_info' => 'https://discotique.org/@Alivava',
+        'currency_code' => 'USD',
+        'note' => 'The Minimum amount due of $1000 is due immediately upon the receipt of this invoice. Full invoice balance is due by August 1st. This is a message in the idea',
         //'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
         'due_date' => date('Y-m-d'),
         'items' => [
@@ -199,13 +196,13 @@ try {
     ];
 
     // Step 1: Get access token
-    $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'), $apiBaseUrl);
+    $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'));
 
     // Step 2: Create invoice
-    $invoiceId = createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessEmail);
+    $invoiceId = createPaypalInvoice($accessToken, $invoiceData);
 
     // Step 3: Send invoice
-    $sent = sendPaypalInvoice($accessToken, $apiBaseUrl, $invoiceId);
+    $sent = sendPaypalInvoice($accessToken, $invoiceId);
 
     if ($sent) {
         echo "Invoice created and sent successfully! Invoice ID: $invoiceId\n";
