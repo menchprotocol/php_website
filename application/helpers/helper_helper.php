@@ -4522,7 +4522,9 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
                 $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>$starting_point ? intval($cart_min[0]['x__message']) : $starting_point );
                 $e___26661 = $CI->config->item('e___26661'); //Currency
-                $unit_currency = $e___26661[$currency_types[0]['x__following']]['m__message'];
+                if(count($currency_types)){
+                    $unit_currency = $e___26661[$currency_types[0]['x__following']]['m__message'];
+                }
 
 
                 if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $previous_i['i__type']!=43758 && $total_dues[0]['x__message']>0 && count($currency_types)==1){
