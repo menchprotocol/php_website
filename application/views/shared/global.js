@@ -1008,7 +1008,6 @@ function invoice_update(){
 
     var total_count = 0;
     var total_price = 0;
-    var counter = 1;
 
     $(".sale_controller").each(function () {
 
@@ -1018,23 +1017,17 @@ function invoice_update(){
         var current_price = parseInt($('.input_ui_'+i__id+' .current_count').attr('unitprice'));
 
         total_count += current_count;
-        total_price += current_price;
+        total_price += (current_count * current_price);
 
-        console.log(counter);
         console.log(item_i__id);
         console.log(item_i__title);
         console.log(current_count);
         console.log(current_price);
         console.log('=========');
-        counter++;
     });
 
     console.log(total_count);
     console.log(total_price);
-
-
-    var handling_total = ( unit_fee * new_quantity );
-    var new_total = ( unit_total * new_quantity );
 
     //Update UI:
     $(".go_next_btn .small_font").text(total_price.toLocaleString(
@@ -1042,7 +1035,6 @@ function invoice_update(){
         // locale or a string like 'en-US' to override it.
         { minimumFractionDigits: 2 }
     )+' ['+total_count+']');
-    invoice_processing = false;
 
 }
 
