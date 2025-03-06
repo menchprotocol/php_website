@@ -4577,13 +4577,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                     $input_ui .= '<span class="current_count" style="display: none;">'.$min_allowed.'</span>';
                 }
 
-
-                if($unit_price > 0){
-                    $input_ui .= '<div style="padding: 8px 0 21px;" '.( $unit_fee > 0 ? ' title="Base Price of '.$unit_price.' + '.$unit_fee.' in Fees" data-toggle="tooltip" data-placement="top" ' : '' ).'><span class="main__title total_ui">'.(($unit_fee+$unit_price)*$min_allowed).'</span> '.$unit_currency.'</div>';
-                } else {
-                    $input_ui .= '<span class="total_ui" style="display: none;">0</span>';
-                }
-
                 $input_ui .= $info_append;
 
                 $input_ui .= '</div>';

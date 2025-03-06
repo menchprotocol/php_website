@@ -994,7 +994,6 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
     //Update UI:
     $(".input_ui_"+i__id+" .i__quantity").val(new_quantity);
     $(".input_ui_"+i__id+" .current_count").text(new_quantity);
-    //$(".input_ui_"+i__id+" .total_ui").text(new_total.toFixed(2));
     $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
 
     invoice_update(); //to show new numbers
@@ -1005,8 +1004,6 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
 
 
 function invoice_update(){
-
-    return 0;
 
     var total_count = 0;
     var total_price = 0;
