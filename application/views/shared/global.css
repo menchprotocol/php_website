@@ -4205,8 +4205,10 @@ main {
 }
 
 .sale_increment{
-    padding:13px 8px;
+    padding:13px 0;
     display: inline-block;
+    text-align: center;
+    min-width: 34px;
 }
 
 .scrollarea {

@@ -976,6 +976,17 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
         return false;
     }
 
+    if(new_quantity>min_allowed){
+        $(".sale_controller_"+i__id+" .sale_down>i").removeClass('hidden');
+    } else {
+        $(".sale_controller_"+i__id+" .sale_down>i").addClass('hidden');
+    }
+    if(new_quantity<max_allowed){
+        $(".sale_controller_"+i__id+" .sale_up>i").removeClass('hidden');
+    } else {
+        $(".sale_controller_"+i__id+" .sale_up>i").addClass('hidden');
+    }
+
     busy_processing = true;
 
 
