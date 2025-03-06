@@ -4276,8 +4276,6 @@ function createPaypalInvoice($accessToken, $invoiceData)
     // Invoice payload
     $payload = [
         'detail' => [
-            //'invoice_number' => $invoiceData['invoice_number'],
-            'reference' => $invoiceData['reference'],
             'currency_code' => $invoiceData['currency_code'],
             'note' => $invoiceData['note'],
             'invoice_date' => date('Y-m-d'),

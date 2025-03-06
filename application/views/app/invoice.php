@@ -5,9 +5,6 @@
 try {
     // Sample invoice data
     $invoiceData = [
-
-        //'invoice_number' => 'INV-' . time(),
-        //'reference' => 'ORDER-' . rand(1000, 9999),
         'businessEmail' => 'support@atlascamp.org',
         'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
         'invoicer_given_name' => 'Discotique Pancake Boutique',
