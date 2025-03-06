@@ -78,11 +78,6 @@ foreach($this->Idea_cache->fetch(array(
             ],
         ];
 
-        return view__json(array(
-            'status' => 0,
-            'message' => $invoiceData,
-        ));
-
         // Step 1: Get access token
         $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'));
 
@@ -95,7 +90,7 @@ foreach($this->Idea_cache->fetch(array(
     } catch (Exception $e) {
         return view__json(array(
             'status' => 0,
-            'message' => $e->getMessage(),
+            'message' => $invoiceData,
         ));
     }
 
