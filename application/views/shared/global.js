@@ -968,7 +968,7 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
     var current_quentity = parseInt($('.input_ui_'+i__id+' .current_sales').text());
     var new_quantity = current_quentity + increment;
 
-    console.log(current_quentity+' > '+new_quantity+'['+min_allowed+'-\'+max_allowed+\']');
+    console.log(current_quentity+' > '+new_quantity+'['+min_allowed+'-'+max_allowed+']');
 
     if(new_quantity<1){
         //Invalid new quantity
