@@ -61,7 +61,7 @@ foreach($this->Idea_cache->fetch(array(
             'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
             'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
             'total_amount' => $_POST['total_price'],
-            'items' => object_to_array($_POST['invoice_items']),
+            'items' => $_POST['invoice_items'],
         ];
 
         // Step 1: Get access token
