@@ -965,7 +965,7 @@ function load_card_clickers(){
 var busy_processing = false;
 function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, unit_fee){
 
-    var current_quentity = parseInt($('.input_ui_'+i__id+' .current_sales').text());
+    var current_quentity = parseInt($('.input_ui_'+i__id+' .current_count').text());
     var new_quantity = current_quentity + increment;
 
     console.log(current_quentity+' > '+new_quantity+'['+min_allowed+'-'+max_allowed+']');
@@ -995,11 +995,51 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
 
     //Update UI:
     $(".input_ui_"+i__id+" .i__quantity").val(new_quantity);
-    $(".input_ui_"+i__id+" .current_sales").text(new_quantity);
+    $(".input_ui_"+i__id+" .current_count").text(new_quantity);
     $(".input_ui_"+i__id+" .total_ui").text(new_total.toFixed(2));
     $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
 
     busy_processing = false;
+
+}
+
+
+function invoice_update(){
+
+    var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
+    var total_count = 0;
+    var total_price = 0;
+    var counter = 1;
+
+    $(".sale_controller").each(function () {
+
+        var item_i__id = parseInt($(this).attr('i__id'));
+        var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
+        var current_count = parseInt($('.input_ui_'+i__id+' .current_count').text());
+        var current_price = parseInt($('.input_ui_'+i__id+' .current_count').attr('unitprice'));
+
+        total_count += current_count;
+        total_price += current_price;
+
+        console.log(counter);
+        console.log(item_i__id);
+        console.log(item_i__title);
+        console.log(current_count);
+        console.log(current_price);
+        console.log('=========');
+        counter++;
+    });
+
+    console.log(total_count);
+    console.log(total_price);
+
+
+    var handling_total = ( unit_fee * new_quantity );
+    var new_total = ( unit_total * new_quantity );
+
+    //Update UI:
+    $(".go_next_btn .small_font").text(+' '+total_price+' ['+total_count+']');
+    invoice_processing = false;
 
 }
 

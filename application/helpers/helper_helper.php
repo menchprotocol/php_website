@@ -4553,13 +4553,13 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                     . '<div class="source_info_box">';
 
                 if($max_allowed > 1 || $min_allowed > 1){
-                    $input_ui .= '<div class="sale_controller_'.$i['i__id'].'">';
+                    $input_ui .= '<div class="sale_controller sale_controller_'.$i['i__id'].'" i__id="'.$i['i__id'].'">';
                     $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_down"><i class="fas fa-minus-circle hidden"></i></a>';
-                    $input_ui .= '<span class="main__title current_sales" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
+                    $input_ui .= '<span class="main__title current_count" unitprice="'.$unit_price.'" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
                     $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_up"><i class="fas fa-plus-circle"></i></a>';
                     $input_ui .= '</div>';
                 } else {
-                    $input_ui .= '<span class="current_sales" style="display: none;">'.$min_allowed.'</span>';
+                    $input_ui .= '<span class="current_count" style="display: none;">'.$min_allowed.'</span>';
                 }
 
 
@@ -5062,7 +5062,7 @@ function view__list_e($i, $plain_no_html = false){
         //Format data if needed:
         $x['x__message'] = data_type_format($x['x__following'], $x['x__message']);
 
-        $message_append .= '<div class="source-info">'
+        $message_append .= '<div class="source-info source_detail_'.$x['x__following'].'">'
             . '<span class="icon-block">'. $e___42421[$x['x__following']]['m__cover'] . '</span>' . $e___42421[$x['x__following']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
             . ( strlen($x['x__message']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view__url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
             . '</div>';
