@@ -1,10 +1,17 @@
 <?php
 
-// PayPal API endpoint for creating invoices (use sandbox or live URL accordingly)
-$paypalUrl = 'https://api.paypal.com/v2/invoicing/invoices';
+// Initialize cURL session
+$ch = curl_init('https://api.paypal.com/v2/invoicing/invoices');
 
-// Build the invoice payload
-$data = [
+// Set cURL options
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "Authorization: Bearer " . $this->config->item('paypal_access_token'),
+    "Accept: application/json"
+]);
+
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
     "detail" => [
         "reference"      => "Title",         // Optional reference
         "note"           => "Messages",
@@ -31,10 +38,10 @@ $data = [
     ],
     "invoicer" => [
         "name"          => [
-            "given_name" => "John",
-            "surname"    => "Doe"
+            "given_name" => "Atlas",
+            "surname"    => "Camp"
         ],
-        "email_address" => "invoicer@example.com",
+        "email_address" => "support@atlascamp.org",
     ],
     "primary_recipients" => [
         [
@@ -57,22 +64,7 @@ $data = [
             ]
         ]
     ]
-];
-
-// Encode the payload to JSON
-$jsonData = json_encode($data);
-
-// Initialize cURL session
-$ch = curl_init($paypalUrl);
-
-// Set cURL options
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/json",
-    "Authorization: Bearer " . $this->config->item('paypal_access_token'),
-    "Accept: application/json"
-]);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+]));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 // Execute the request
@@ -94,4 +86,5 @@ if (curl_errno($ch)) {
 
 // Close cURL session
 curl_close($ch);
+
 ?>
