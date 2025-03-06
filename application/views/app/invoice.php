@@ -13,6 +13,10 @@ if(!$player_e){
     ));
 }
 
+foreach ($_POST['invoice_items'] as $key => $value) {
+    unset($_POST['invoice_items'][$key]['i__id']);
+}
+
 return view__json(array(
     'status' => 0,
     'message' => 'Error see',
