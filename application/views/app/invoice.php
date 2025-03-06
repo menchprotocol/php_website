@@ -54,53 +54,58 @@ $fetch_last_names = $this->Mench_ledger->fetch(array(
 
 foreach($this->Idea_cache->fetch(array(
     'i__id' => $_POST['target_i__id'], //ACTIVE
-)) as $i){
+)) as $i_target){
 
-    // Usage example
-    try {
-        // Sample invoice data
-        $invoiceData = [
-            'businessEmail' => website_setting(30882),
-            'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
-            'invoicer_given_name' => 'Discotique Pancake Boutique 2025',
-            'invoicer_website' => 'https://discotique.org/Discotique2025',
+    foreach($this->Idea_cache->fetch(array(
+        'i__id' => $_POST['focus__id'], //ACTIVE
+    )) as $i){
 
-            'currency_code' => $_POST['currency_code'],
-            'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
-            'note' => $i['i__message'],
+        // Usage example
+        try {
+            // Sample invoice data
+            $invoiceData = [
+                'businessEmail' => website_setting(30882),
+                'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
+                'invoicer_given_name' => view__i_title($i_target),
+                'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/'.$_POST['target_i__hashtag'],
 
-            'recipient_email' => ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : 'shervin+missingemail@mench.com' ),
-            'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
-            'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
-            'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
-            'total_amount' => $_POST['total_price'],
-            'items' => $items,
-        ];
+                'currency_code' => $_POST['currency_code'],
+                'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
+                'note' => $i['i__message']."\n\n".$i_target['i__message'],
 
-        // Step 1: Get access token
-        $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'));
+                'recipient_email' => ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : 'shervin+missingemail@mench.com' ),
+                'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
+                'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
+                'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
+                'total_amount' => $_POST['total_price'],
+                'items' => $items,
+            ];
 
-        // Step 2: Create invoice
-        $invoiceId = createPaypalInvoice($accessToken, $invoiceData);
+            // Step 1: Get access token
+            $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'));
 
-        // Step 3: Send invoice
-        sendPaypalInvoice($accessToken, $invoiceId);
+            // Step 2: Create invoice
+            $invoiceId = createPaypalInvoice($accessToken, $invoiceData);
 
-    } catch (Exception $e) {
+            // Step 3: Send invoice
+            sendPaypalInvoice($accessToken, $invoiceId);
+
+        } catch (Exception $e) {
+            return view__json(array(
+                'status' => 0,
+                'message' => 'See console',
+                'items' => $items,
+                'data' => $invoiceData,
+            ));
+        }
+
         return view__json(array(
-            'status' => 0,
-            'message' => 'See console',
-            'items' => $items,
-            'data' => $invoiceData,
+            'status' => 1,
+            'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
+            'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
         ));
+
     }
-
-    return view__json(array(
-        'status' => 1,
-        'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
-        'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
-    ));
-
 }
 
 

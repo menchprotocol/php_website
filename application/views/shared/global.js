@@ -3434,6 +3434,7 @@ function go_next(do_skip, i_popup_url = ''){
             $.post("/invoice", {
                 target_i__hashtag: $('#target_i__hashtag').val(),
                 target_i__id: parseInt($('#target_i__id').val()),
+                focus__id: parseInt($('#focus__id').val()),
                 invoice_items: invoice_items,
                 currency_code: currency_code,
                 total_price: total_price,
