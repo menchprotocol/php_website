@@ -1027,6 +1027,7 @@ function invoice_update(){
         console.log(item_i__title);
         console.log(current_count);
         console.log(current_price);
+        console.log(current_currency);
         console.log('=========');
     });
 
