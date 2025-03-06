@@ -4518,12 +4518,9 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                 $max_allowed = ( count($cart_max) && is_numeric($cart_max[0]['x__message']) && $cart_max[0]['x__message']>1 ? intval($cart_max[0]['x__message']) : view__memory(6404,29651) );
                 $spots_remaining = i_spots_remaining($i['i__id']);
                 $starting_point = ( $is_required ? 1 : 0  );
-
                 $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
-                $max_allowed = ( $max_allowed < 1 ? 1 : $max_allowed );
 
-                $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>0 ? intval($cart_min[0]['x__message'])>0 : $starting_point );
-                $min_allowed = ( $min_allowed < $starting_point ? $starting_point : $min_allowed );
+                $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>$starting_point ? intval($cart_min[0]['x__message']) : $starting_point );
 
 
                 if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $total_dues[0]['x__message']>0 && count($currency_types)==1){
