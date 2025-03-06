@@ -1006,6 +1006,8 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
 
 function invoice_update(){
 
+    return 0;
+
     var total_count = 0;
     var total_price = 0;
 
