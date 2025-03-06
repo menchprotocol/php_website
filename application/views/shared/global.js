@@ -301,14 +301,6 @@ function view__s__title(suggestion){
 
 
 function view__s_js_line(suggestion, default_handle = '@'){
-
-    //Triger hieght adjust
-
-    setTimeout(function () {
-        //One more time to make sure it also works in mobile:
-        set_autosize($('.save_i__message'));
-    }, 55);
-
     if(suggestion.s__type==12273){
         return '<span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view__s__title(suggestion) + '</span>';
     } else if(suggestion.s__type==12274){
@@ -1206,6 +1198,12 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
+                    //Triger hieght adjust
+                    setTimeout(function () {
+                        //One more time to make sure it also works in mobile:
+                        set_autosize($('.save_i__message'));
+                        alert('din');
+                    }, 233);
                     return view__s_js_line(suggestion,'\\');
                 },
                 replace: function (suggestion) {
