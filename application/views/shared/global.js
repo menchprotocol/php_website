@@ -3380,10 +3380,41 @@ function go_next(do_skip, i_popup_url = ''){
     }
 
     //Payment Error?
-    if (js_n___41055.includes(focus_i__type) && !$(".tickets_issued")[0]){
+    if (focus_i__type==26560 && !$(".tickets_issued")[0]){
         //Ticket not yet issued!
         alert('Pay Now via Paypal before going next.');
         return false;
+    } else if (focus_i__type==43758){
+
+        console.log('Paypal INVOICING');
+
+        //Invoice Process, make sure something is in the cart:
+        var all_items = {};
+        var total_count = 0;
+        var total_price = 0;
+
+        $(".sale_controller").each(function () {
+
+            var this_item= {
+                item_i__id: parseInt($(this).attr('i__id')),
+                name: $('.cache_frame_'+item_i__id+' .first_line').text(),
+                description: $('.cache_frame_'+item_i__id).text().replace(name, ""),
+                quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
+                unit_value: parseFloat($(this).attr('unitprice')),
+                unit_currency_code: 'USD'
+            };
+
+            all_items.push(this_item);
+            total_count += this_item.quantity;
+            total_price += (this_item.quantity * this_item.unit_value);
+
+        });
+
+        console.log(total_count);
+        console.log(total_price);
+        console.log(all_items);
+        return false;
+
     }
 
 
