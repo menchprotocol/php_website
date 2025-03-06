@@ -4198,6 +4198,8 @@ main {
 
 .ticket-notice .source_info_box{
     display: inline-block !important;
+    padding: 0 !important;
+    width: 200px;
 }
 
 .sale_increment{
