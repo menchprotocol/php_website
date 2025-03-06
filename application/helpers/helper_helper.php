@@ -4523,7 +4523,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                 $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>$starting_point ? intval($cart_min[0]['x__message']) : $starting_point );
 
 
-                if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $total_dues[0]['x__message']>0 && (count($currency_types) || $previous_i['i__type']==43758 )==1){
+                if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $total_dues[0]['x__message']>0 && count($currency_types)==1){
 
                     $valid_currency = true;
                     $e___26661 = $CI->config->item('e___26661'); //Currency
@@ -4542,6 +4542,21 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
                     //Append information to cart about Paypal:
                     $info_append .= '<div class="sub_note">After completing the payment on PayPal click "<span style="color: #990000;">Return to Merchant</span>" to continue back here. By paying you agree to our <a href="'.view__app_link(14373).'" target="_blank"><u>Terms of Use</u></a>.</div>';
+
+                } elseif(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $previous_i['i__type']==43758 && count($total_dues) && $total_dues[0]['x__message']>0){
+
+                    $valid_currency = true;
+
+                    $digest_fees = count($CI->Mench_ledger->fetch(array(
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+                        'x__next' => $i['i__id'],
+                        'x__following' => 30589, //Digest Fees
+                    )));
+
+                    //Break down amount & currency
+                    $unit_price = doubleval($total_dues[0]['x__message']);
+                    $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__player)) + doubleval(website_setting(27017, $x__player)))/100 ), 2, ".", "");
 
                 }
 
