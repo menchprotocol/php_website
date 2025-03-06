@@ -4193,7 +4193,11 @@ main {
 }
 .cover-content .source_info_box{
     padding-left: 3px;
-    display: inline;
+    display: inline !important;
+}
+
+.ticket-notice .source_info_box{
+    display: inline-block !important;
 }
 
 .sale_increment{
