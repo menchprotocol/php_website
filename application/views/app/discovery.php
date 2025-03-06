@@ -141,23 +141,16 @@ if($player_e || isset($_GET['open'])){
         var scroll_buffer = 233;
         setTimeout(function () {
 
-            if(focus_i__type==43758){
-                invoice_update();
+            if (( $(window).height() + scroll_buffer ) > $(document).height()) {
                 $(".fixed-bottom").removeClass('hidden');
             } else {
-                if (( $(window).height() + scroll_buffer ) > $(document).height()) {
-                    $(".fixed-bottom").removeClass('hidden');
-                } else {
-                    //Detect if scroll bar:
-                    $(window).scroll(function() {
-                        if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
-                            $(".fixed-bottom").removeClass('hidden');
-                        }
-                    });
-                }
+                //Detect if scroll bar:
+                $(window).scroll(function() {
+                    if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
+                        $(".fixed-bottom").removeClass('hidden');
+                    }
+                });
             }
-
-
         }, 1597);
 
         //Check again just in case:

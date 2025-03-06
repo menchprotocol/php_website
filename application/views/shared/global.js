@@ -994,6 +994,7 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
     //Update UI:
     $(".input_ui_"+i__id+" .i__quantity").val(new_quantity);
     $(".input_ui_"+i__id+" .current_count").text(new_quantity);
+    //$(".input_ui_"+i__id+" .total_ui").text(new_total.toFixed(2));
     $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
 
     invoice_update(); //to show new numbers
@@ -1029,7 +1030,7 @@ function invoice_update(){
     console.log(total_price);
 
     //Update UI:
-    $(".go_next_btn .small_font").text(total_price+' ['+total_count+']');
+    $('.go_next_btn').html('Generarte Invoice <span title="" class="small_font inline-block">'+total_price+' ['+total_count+']</span>');
 
 }
 
