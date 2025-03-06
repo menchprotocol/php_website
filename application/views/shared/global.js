@@ -1035,10 +1035,10 @@ function invoice_update(){
     console.log(total_price);
 
     //Update UI:
-    $('.go_next_btn').html('Create Invoice <span title="" class="small_font inline-block">'+total_price.toLocaleString('en-US', {
+    $('.go_next_btn').html('Create Invoice: <span title="" class="small_font inline-block">'+total_currency+' '+total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
-    })+' '+total_currency+' ['+total_count+']</span>');
+    })+' ['+total_count+']</span>');
 
 }
 
@@ -3419,6 +3419,14 @@ function go_next(do_skip, i_popup_url = ''){
         });
 
         if(total_count > 0){
+
+            console.log({
+                target_i__hashtag: $('#target_i__hashtag').val(),
+                target_i__id: parseInt($('#target_i__id').val()),
+                invoice_items: invoice_items,
+                do_skip: do_skip,
+                js_request_uri: js_request_uri, //Always append to AJAX Calls
+            });
 
             //Submit to go next:
             $.post("/app/paypal_invoice", {

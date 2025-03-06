@@ -2979,25 +2979,13 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => view__unauthorized_message(),
             ));
-        } elseif (!isset($_POST['target_i__hashtag']) || !isset($_POST['target_i__id']) || !isset($_POST['focus_i_data']) || !isset($_POST['do_skip'])) {
+        } elseif (!isset($_POST['target_i__hashtag']) || !isset($_POST['target_i__id']) || !isset($_POST['invoice_items']) || !isset($_POST['do_skip'])) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing Core Data',
             ));
         }
 
-        if(!isset($_POST['selection_i__id'])){
-            $_POST['selection_i__id'] = array();
-        }
-        if(!isset($_POST['focus_i_data']['i__text'])){
-            $_POST['focus_i_data']['i__text'] = array();
-        }
-        if(!isset($_POST['focus_i_data']['uploaded_media'])){
-            $_POST['focus_i_data']['uploaded_media'] = array();
-        }
-        if(!isset($_POST['next_i_data'])){
-            $_POST['next_i_data'] = array();
-        }
 
 
         //Discover Focus Idea:
