@@ -3396,8 +3396,9 @@ function go_next(do_skip, i_popup_url = ''){
         $(".sale_controller").each(function () {
 
             var item_i__id = parseInt($(this).attr('i__id'));
+
             var this_item= {
-                item_i__id: item_i__id,
+                i__id: item_i__id,
                 name: $('.cache_frame_'+item_i__id+' .first_line').text(),
                 description: $('.cache_frame_'+item_i__id).text().replace(name, ""),
                 quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
