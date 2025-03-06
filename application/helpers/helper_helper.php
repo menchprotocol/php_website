@@ -4560,6 +4560,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                     $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="fas fa-minus-circle"></i></a>';
                     $input_ui .= '<span class="main__title current_sales" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
                     $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment"><i class="fas fa-plus-circle"></i></a>';
+                    $input_ui .= '<span class="main__title current_totals" style="display: inline-block; min-width:34px; text-align: center;">'.($min_allowed * $unit_price).'</span>';
                     $input_ui .= '</div>';
                 } else {
                     $input_ui .= '<span class="current_sales" style="display: none;">'.$min_allowed.'</span>';
