@@ -707,10 +707,10 @@ function list_settings($i__hashtag, $fetch_contact = false){
            } elseif(count($list_config[43513])){
                //Include If Has ALL
                $total_found_43513 = 0;
-               foreach($list_config[43513] as $this_filter){
+               foreach($list_config[43513] as $CI_filter){
                    $total_found_43513 += ( count($CI->Mench_ledger->fetch(array(
                        'x__follower' => $x['e__id'],
-                       'x__following' => $this_filter,
+                       'x__following' => $CI_filter,
                        'x__type IN (' . join(',', $CI->config->item('n___32292')) . ')' => null, //SOURCE LINKS
                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                    ))) ? 1 : 0 );
@@ -4729,8 +4729,8 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
 
                 $current_value = $min_allowed;
-                foreach($this->Mench_ledger->fetch(array(
-                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                foreach($CI->Mench_ledger->fetch(array(
+                    'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                     'x__type' => 7712, //Input Choice
                     'x__player' => $player_e['e__id'],
                     'x__next' => $i['i__id'],
