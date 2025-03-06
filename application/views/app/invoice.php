@@ -120,7 +120,7 @@ foreach($this->Idea_cache->fetch(array(
 
 
         //Invoice Generated:
-        $this->Mench_ledger->mark_complete(44245, $player_e['e__id'], $i['i__id'], $i);
+        $this->Mench_ledger->mark_complete(44245, $player_e['e__id'], $i_target['i__id'], $i);
 
 
         //Delete Old Child Answers:
@@ -154,21 +154,24 @@ foreach($this->Idea_cache->fetch(array(
 
         //Save New Child Answers:
         foreach ($_POST['invoice_items'] as $key => $value) {
+            foreach($this->Idea_cache->fetch(array(
+                'i__id' => $_POST['invoice_items'][$key]['i__id'], //ACTIVE
+            )) as $this_i){
 
-            //Complete this item:
-            $this->Mench_ledger->mark_complete(i__discovery_link($this_i), $player_e['e__id'], $this_i['i__id'], $this_i, array(), array(
-                'x__weight' => $_POST['invoice_items'][$key]['quantity'],
-            ));
+                //Complete this item:
+                $this->Mench_ledger->mark_complete(i__discovery_link($this_i), $player_e['e__id'], $i_target['i__id'], $this_i, array(), array(
+                    'x__weight' => $_POST['invoice_items'][$key]['quantity'],
+                ));
 
-            //Save Answer:
-            $this->Mench_ledger->create(array(
-                'x__type' => 7712, //Input Choice
-                'x__player' => $player_e['e__id'],
-                'x__previous' => $_POST['focus__id'],
-                'x__weight' => $_POST['invoice_items'][$key]['quantity'],
-                'x__next' => $this_i['i__id'],
-            ));
-
+                //Save Answer:
+                $this->Mench_ledger->create(array(
+                    'x__type' => 7712, //Input Choice
+                    'x__player' => $player_e['e__id'],
+                    'x__previous' => $_POST['focus__id'],
+                    'x__weight' => $_POST['invoice_items'][$key]['quantity'],
+                    'x__next' => $_POST['invoice_items'][$key]['i__id'],
+                ));
+            }
         }
 
 
