@@ -1214,7 +1214,7 @@ $(document).ready(function () {
                 }
             },
             {
-                match: /(^|\s)\\(\w*(?:\s*\w*))$/,
+                match: /(^|\s)~(\w*(?:\s*\w*))$/,
                 search: function (q, callback) {
                     index_algolia.search(q, {
                         hitsPerPage: js_e___6404[31112]['m__message'],
@@ -1231,14 +1231,14 @@ $(document).ready(function () {
                 },
                 template: function (suggestion) {
                     //Triger hieght adjust
-                    return view__s_js_line(suggestion,'\\');
+                    return view__s_js_line(suggestion,'~');
                 },
                 replace: function (suggestion) {
                     setTimeout(function () {
                         //One more time to make sure it also works in mobile:
                         set_autosize($('.save_i__message'));
                     }, 144);
-                    return "\n" + '\\' + suggestion.s__handle + "\n"+'\\';
+                    return "\n" + '~' + suggestion.s__handle + "\n"+'~';
                 }
             },
         ]);
