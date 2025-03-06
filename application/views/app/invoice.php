@@ -85,11 +85,10 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         ],
 
         'configuration' => [
-            'allow_tip' => false,
             'partial_payment' => true,
             'minimum_amount_due' => [
                 'currency_code' => 'USD',
-                'value' => '10.00'
+                'value' => 10
             ]
         ],
 
