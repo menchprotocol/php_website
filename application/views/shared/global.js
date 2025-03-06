@@ -3405,34 +3405,30 @@ function go_next(do_skip, i_popup_url = ''){
 
             var this_item= {
                 i__id: item_i__id,
-                unit_currency_code: $(this).attr('unitcurrency'),
-                quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
-                unit_value: parseFloat($(this).attr('unitprice')),
                 name: item_title,
                 description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
+                quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
+                unit_amount: {
+                    currency_code: $(this).attr('unitcurrency'),
+                    value: parseFloat($(this).attr('unitprice')),
+                },
+                unit_of_measure: 'QUANTITY',
             };
 
             invoice_items[i] = this_item;
             total_count += this_item.quantity;
-            total_price += (this_item.quantity * this_item.unit_value);
+            total_price += (this_item.quantity * this_ite.unit_amount.value);
 
         });
 
         if(total_count > 0){
-
-            console.log({
-                target_i__hashtag: $('#target_i__hashtag').val(),
-                target_i__id: parseInt($('#target_i__id').val()),
-                invoice_items: invoice_items,
-                do_skip: do_skip,
-                js_request_uri: js_request_uri, //Always append to AJAX Calls
-            });
 
             //Submit to go next:
             $.post("/app/paypal_invoice", {
                 target_i__hashtag: $('#target_i__hashtag').val(),
                 target_i__id: parseInt($('#target_i__id').val()),
                 invoice_items: invoice_items,
+                total_price: total_price,
                 do_skip: do_skip,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
             }, function (data) {
