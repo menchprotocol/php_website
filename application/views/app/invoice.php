@@ -60,6 +60,8 @@ foreach($this->Idea_cache->fetch(array(
             'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
             'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
             'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
+            //'total_amount' => $_POST['total_price'],
+            //'items' => $_POST['invoice_items'],
             'total_amount' => 150,
             'items' => [
                 [
@@ -74,6 +76,11 @@ foreach($this->Idea_cache->fetch(array(
                 ]
             ],
         ];
+
+        return view__json(array(
+            'status' => 0,
+            'message' => $invoiceData,
+        ));
 
         // Step 1: Get access token
         $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'));
