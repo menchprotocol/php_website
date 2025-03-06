@@ -83,8 +83,8 @@ body {
     max-height: 610px;
 }
 .edge-cover .input_ui{
-    margin:0 0 5px 40px;
-    width: calc(100% - 40px);
+    margin:0 10px 5px 40px;
+    width: calc(100% - 50px);
 }
 .focus-cover .input_ui{
     margin:0 0 5px;
