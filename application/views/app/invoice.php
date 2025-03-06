@@ -51,7 +51,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
             'invoice_date' => date('Y-m-d'),
             'currency_code' => 'USD',
             'note' => 'This is a message in the idea',
-            'additional_notes' => 'The Minimum amount due of $1000 is due immediately upon the receipt of this invoice. Full invoice balance is due by August 1st 2025',
+            'term' => 'The Minimum amount due of $1000 is due immediately upon the receipt of this invoice. Full invoice balance is due by August 1st 2025',
             'payment_term' => [
                 'term_type' => 'DUE_ON_DATE_SPECIFIED',
                 'due_date' => $invoiceData['due_date']
