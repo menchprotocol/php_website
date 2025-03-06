@@ -3439,6 +3439,7 @@ function go_next(do_skip, i_popup_url = ''){
             }, function (data) {
                 if (data.status) {
                     //Go to redirect message:
+                    alert(data.message);
                     js_redirect(data.next__url);
                 } else {
                     //Show error:

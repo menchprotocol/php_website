@@ -13,11 +13,6 @@ if(!$player_e){
     ));
 }
 
-return view__json(array(
-    'status' => 0,
-    'message' => 'Error',
-));
-
 //Fetch User Data:
 $fetch_emails = $this->Mench_ledger->fetch(array(
     'x__following' => 3288, //Email
@@ -76,7 +71,8 @@ foreach($this->Idea_cache->fetch(array(
 
         return view__json(array(
             'status' => 1,
-            'message' => 'Success',
+            'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
+            'message' => 'Success: Check you email within 1 minute to find your Invoice',
         ));
 
     } catch (Exception $e) {
