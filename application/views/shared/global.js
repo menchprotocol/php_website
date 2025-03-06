@@ -3430,6 +3430,10 @@ function go_next(do_skip, i_popup_url = ''){
 
         if(total_count > 0){
 
+            //Load:
+            var original_html = $('.go_next_btn').html();
+            $('.go_next_btn').html('<span class="icon-block" style="margin:5px 0 -5px;"><i class="fas fa-yin-yang fa-spin"></i></span>');
+
             //Submit to go next:
             $.post("/invoice", {
                 target_i__hashtag: $('#target_i__hashtag').val(),
@@ -3443,8 +3447,7 @@ function go_next(do_skip, i_popup_url = ''){
             }, function (data) {
                 if (data.status) {
                     //Go to redirect message:
-                    alert(data.message);
-                    //js_redirect(data.next__url);
+                    js_redirect(data.next__url);
                 } else {
                     //Show error:
                     $('.go_next_btn').html(original_html);
