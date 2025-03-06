@@ -76,6 +76,18 @@ foreach($this->Idea_cache->fetch(array(
             'total_amount' => $_POST['total_price'],
             //'items' => $_POST['invoice_items'],
             'items' => $items,
+            'items_orig' => [
+                [
+                    'name' => 'Website Design Service',
+                    'description' => 'Professional website design and development',
+                    'quantity' => 1,
+                    'unit_amount' => [
+                        'currency_code' => 'USD',
+                        'value' => '150.00'
+                    ],
+                    'unit_of_measure' => 'QUANTITY'
+                ]
+            ],
         ];
 
         // Step 1: Get access token
