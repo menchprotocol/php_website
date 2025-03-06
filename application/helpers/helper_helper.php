@@ -4545,8 +4545,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
                 } elseif(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && $previous_i['i__type']==43758 && count($total_dues) && $total_dues[0]['x__message']>0){
 
-                    $valid_currency = true;
-
                     $digest_fees = count($CI->Mench_ledger->fetch(array(
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
                         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
