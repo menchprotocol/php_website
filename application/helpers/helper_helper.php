@@ -4626,7 +4626,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                 //Referesh soon so we can check if completed or not
                 js_php_redirect(view__memory(42903, 30795) . $target_i__hashtag .'/'.$i['i__hashtag'].'?process_pay=1', 987);
 
-            } elseif(count($x_completes)){
+            } elseif($previous_i['i__type']!=43758 && count($x_completes)){
 
                 foreach($x_completes as $x_complete){
 
@@ -4734,7 +4734,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                     'x__type' => 7712, //Input Choice
                     'x__player' => $player_e['e__id'],
                     'x__next' => $i['i__id'],
-                ), array()) as $x_selection){
+                ), array(), 1) as $x_selection){
                     $current_value = $x_selection['x__weight'];
                 }
 

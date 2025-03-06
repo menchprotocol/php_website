@@ -118,11 +118,6 @@ foreach($this->Idea_cache->fetch(array(
             ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
         }
 
-
-        //Invoice Generated:
-        $this->Mench_ledger->mark_complete(44245, $player_e['e__id'], $i_target['i__id'], $i);
-
-
         //Delete Old Child Answers:
         foreach($this->Mench_ledger->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
@@ -151,6 +146,11 @@ foreach($this->Idea_cache->fetch(array(
                 }
             }
         }
+
+
+        //Save New Invoice:
+        $this->Mench_ledger->mark_complete(44245, $player_e['e__id'], $i_target['i__id'], $i);
+
 
         //Save New Child Answers:
         foreach ($_POST['invoice_items'] as $key => $value) {
