@@ -3393,7 +3393,7 @@ function go_next(do_skip, i_popup_url = ''){
         var total_count = 0;
         var total_price = 0;
 
-        $(".sale_controller").each(function () {
+        $(".sale_controller").each(function (i, e) {
 
             var item_i__id = parseInt($(this).attr('i__id'));
 
@@ -3406,7 +3406,7 @@ function go_next(do_skip, i_popup_url = ''){
                 unit_currency_code: 'USD'
             };
 
-            all_items.push(this_item);
+            all_items[i] = this_item;
             total_count += this_item.quantity;
             total_price += (this_item.quantity * this_item.unit_value);
 
