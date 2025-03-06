@@ -990,9 +990,9 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
 
     //Update UI:
     $(".input_ui_"+i__id+" .i__quantity").val(new_quantity);
-    $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
     $(".input_ui_"+i__id+" .current_sales").text(new_quantity);
     $(".input_ui_"+i__id+" .total_ui").text(new_total.toFixed(2));
+    $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
 
     busy_processing = false;
 
