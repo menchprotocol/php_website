@@ -13,8 +13,21 @@ if(!$player_e){
     ));
 }
 
+
+$items = [];
 foreach ($_POST['invoice_items'] as $key => $value) {
     unset($_POST['invoice_items'][$key]['i__id']);
+
+    array_push($items, [
+        'name' => 'title', //$_POST['invoice_items'][$key]['name']
+        'description' => 'hiiii',
+        'quantity' => $_POST['invoice_items'][$key]['quantity'],
+        'unit_amount' => [
+            'currency_code' => $_POST['invoice_items'][$key]['unit_amount']['currency_code'],
+            'value' => $_POST['invoice_items'][$key]['unit_amount']['value']
+        ],
+        'unit_of_measure' => 'QUANTITY'
+    ]);
 }
 
 
@@ -62,7 +75,8 @@ foreach($this->Idea_cache->fetch(array(
             'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
             'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
             'total_amount' => $_POST['total_price'],
-            'items' => object_to_array($_POST['invoice_items']),
+            //'items' => $_POST['invoice_items'],
+            'items' => $items,
         ];
 
         // Step 1: Get access token
