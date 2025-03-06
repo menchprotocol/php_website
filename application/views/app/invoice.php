@@ -71,7 +71,7 @@ foreach($this->Idea_cache->fetch(array(
 
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
-                'note' => $i['i__message']."\n\n".$i_target['i__message'],
+                'note' => $i['i__message'].$i_target['i__message'],
 
                 'recipient_email' => ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : 'shervin+missingemail@mench.com' ),
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
