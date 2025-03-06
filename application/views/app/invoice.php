@@ -7,6 +7,9 @@ $invoiceUrl = "https://api.paypal.com/v2/invoicing/invoices";
 // Function to get an access token
 function getAccessToken($clientId, $clientSecret, $authUrl)
 {
+
+    echo $clientId;
+    echo '<<'.$clientSecret.'>>';
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, $authUrl);
