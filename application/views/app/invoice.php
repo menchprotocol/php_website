@@ -30,11 +30,6 @@ foreach ($_POST['invoice_items'] as $key => $value) {
     ]);
 }
 
-return view__json(array(
-    'status' => 0,
-    'message' => $items,
-));
-
 //Fetch User Data:
 $fetch_emails = $this->Mench_ledger->fetch(array(
     'x__following' => 3288, //Email
@@ -95,7 +90,9 @@ foreach($this->Idea_cache->fetch(array(
     } catch (Exception $e) {
         return view__json(array(
             'status' => 0,
-            'message' => $invoiceData,
+            'message' => 'See console',
+            'items' => $items,
+            'data' => $invoiceData,
         ));
     }
 
