@@ -57,10 +57,10 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         ],
         'invoicer' => [
             'name' => [
-                'given_name' => 'Your Company Name'  // Replace with your company name
+                'given_name' => 'Discotique Pancake Boutique'
             ],
             'email_address' => $businessEmail,
-            'website' => 'https://yourwebsite.com'   // Optional: Add your website
+            'website' => 'https://discotique.org/Discotique2025'
         ],
         'primary_recipients' => [
             [
@@ -82,7 +82,15 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
                     'value' => $invoiceData['total_amount']
                 ]
             ]
-        ]
+        ],
+
+        'configuration' => [
+            'partial_payment' => true,
+            'allow_tip' => false
+        ],
+        // This triggers immediate sending instead of draft creation
+        'send_to_recipient' => true,
+        'send_to_invoicer' => true  // Set to true if you want a copy
     ];
 
     curl_setopt_array($curl, [
