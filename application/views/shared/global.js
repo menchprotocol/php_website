@@ -1205,8 +1205,7 @@ $(document).ready(function () {
                     setTimeout(function () {
                         //One more time to make sure it also works in mobile:
                         set_autosize($('.save_i__message'));
-                        alert('din');
-                    }, 233);
+                    }, 144);
                     return "\n" + '\\' + suggestion.s__handle + "\n"+'\\';
                 }
             },
