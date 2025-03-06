@@ -3403,26 +3403,29 @@ function go_next(do_skip, i_popup_url = ''){
 
             var item_i__id = parseInt($(this).attr('i__id'));
             var item_title = $('.cache_frame_'+item_i__id+' .first_line').text();
+            var quantity = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
 
-            var this_item= {
-                i__id: item_i__id,
-                name: item_title,
-                description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
-                quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
-                unit_amount: {
-                    currency_code: $(this).attr('unitcurrency'),
-                    value: parseFloat($(this).attr('unitprice')),
-                },
-                unit_of_measure: 'QUANTITY',
-            };
+            if(quantity>0){
 
-            invoice_items[i] = this_item;
-            total_count += this_item.quantity;
-            total_price += (this_item.quantity * this_item.unit_amount.value);
-            if($(this).attr('unitcurrency').length && !currency_code){
-                currency_code = $(this).attr('unitcurrency');
+                var this_item= {
+                    i__id: item_i__id,
+                    name: item_title,
+                    description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
+                    quantity: quantity,
+                    unit_amount: {
+                        currency_code: $(this).attr('unitcurrency'),
+                        value: parseFloat($(this).attr('unitprice')),
+                    },
+                    unit_of_measure: 'QUANTITY',
+                };
+
+                invoice_items[i] = this_item;
+                total_count += this_item.quantity;
+                total_price += (this_item.quantity * this_item.unit_amount.value);
+                if($(this).attr('unitcurrency').length && !currency_code){
+                    currency_code = $(this).attr('unitcurrency');
+                }
             }
-
         });
 
         if(total_count > 0){
