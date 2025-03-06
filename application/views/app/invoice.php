@@ -17,14 +17,6 @@ foreach ($_POST['invoice_items'] as $key => $value) {
     unset($_POST['invoice_items'][$key]['i__id']);
 }
 
-return view__json(array(
-    'status' => 0,
-    'message' => 'Error see',
-    'obj' => $_POST['invoice_items'],
-    'arr' => object_to_array($_POST['invoice_items']),
-));
-
-
 
 //Fetch User Data:
 $fetch_emails = $this->Mench_ledger->fetch(array(
