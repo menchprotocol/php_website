@@ -132,6 +132,10 @@ if($player_e || isset($_GET['open'])){
 
         set_autosize($('.x_write'));
 
+        if(focus_i__type==43758){
+            invoice_update();
+        }
+
         //Show percentage progress on next button:
         if(parseInt($('.progress-bar').attr('aria-valuenow'))>0 && parseInt($('.progress-bar').attr('aria-valuenow'))<100){
             $('.go_next_btn').append(' <span title="'+$('.progress-bar').attr('aria-valuenow')+'% Completed" class="small_font inline-block">['+$('.progress-bar').attr('aria-valuenow')+'% Done]</span>');

@@ -968,8 +968,6 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
     var current_quentity = parseInt($('.input_ui_'+i__id+' .current_count').text());
     var new_quantity = current_quentity + increment;
 
-    console.log(current_quentity+' > '+new_quantity+'['+min_allowed+'-'+max_allowed+']');
-
     if (new_quantity<min_allowed || new_quantity>max_allowed){
         return false;
     } else if(busy_processing){
@@ -998,6 +996,8 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
     $(".input_ui_"+i__id+" .current_count").text(new_quantity);
     $(".input_ui_"+i__id+" .total_ui").text(new_total.toFixed(2));
     $(".input_ui_"+i__id+" .paypal_handling").val(handling_total);
+
+    invoice_update(); //to show new numbers
 
     busy_processing = false;
 
