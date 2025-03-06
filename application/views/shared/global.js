@@ -1199,14 +1199,14 @@ $(document).ready(function () {
                 },
                 template: function (suggestion) {
                     //Triger hieght adjust
+                    return view__s_js_line(suggestion,'\\');
+                },
+                replace: function (suggestion) {
                     setTimeout(function () {
                         //One more time to make sure it also works in mobile:
                         set_autosize($('.save_i__message'));
                         alert('din');
                     }, 233);
-                    return view__s_js_line(suggestion,'\\');
-                },
-                replace: function (suggestion) {
                     return "\n" + '\\' + suggestion.s__handle + "\n"+'\\';
                 }
             },
