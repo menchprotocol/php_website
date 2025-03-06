@@ -3405,7 +3405,7 @@ function go_next(do_skip, i_popup_url = ''){
 
             var this_item= {
                 i__id: item_i__id,
-                unit_currency_code: $(this).attr('unitcurrency')
+                unit_currency_code: $(this).attr('unitcurrency'),
                 quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
                 unit_value: parseFloat($(this).attr('unitprice')),
                 name: item_title,
