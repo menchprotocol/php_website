@@ -132,10 +132,6 @@ if($player_e || isset($_GET['open'])){
 
         set_autosize($('.x_write'));
 
-        if(focus_i__type==43758){
-            invoice_update();
-        }
-
         //Show percentage progress on next button:
         if(parseInt($('.progress-bar').attr('aria-valuenow'))>0 && parseInt($('.progress-bar').attr('aria-valuenow'))<100){
             $('.go_next_btn').append(' <span title="'+$('.progress-bar').attr('aria-valuenow')+'% Completed" class="small_font inline-block">['+$('.progress-bar').attr('aria-valuenow')+'% Done]</span>');
@@ -144,16 +140,24 @@ if($player_e || isset($_GET['open'])){
         //Detect if no scroll bar, load instantly:
         var scroll_buffer = 233;
         setTimeout(function () {
-            if (( $(window).height() + scroll_buffer ) > $(document).height()) {
+
+            if(focus_i__type==43758){
+                invoice_update();
                 $(".fixed-bottom").removeClass('hidden');
             } else {
-                //Detect if scroll bar:
-                $(window).scroll(function() {
-                    if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
-                        $(".fixed-bottom").removeClass('hidden');
-                    }
-                });
+                if (( $(window).height() + scroll_buffer ) > $(document).height()) {
+                    $(".fixed-bottom").removeClass('hidden');
+                } else {
+                    //Detect if scroll bar:
+                    $(window).scroll(function() {
+                        if(($(window).scrollTop() + $(window).height() + scroll_buffer) >= $(document).height()) {
+                            $(".fixed-bottom").removeClass('hidden');
+                        }
+                    });
+                }
             }
+
+
         }, 1597);
 
         //Check again just in case:
