@@ -58,7 +58,7 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         ],
         'invoicer' => [
             'name' => [
-                'given_name' => 'Discotique Pancake Boutique'
+                'given_name' => 'Discotique Pancake Boutique @ Burning Man Aug24–Sep1 2025'
             ],
             'email_address' => $businessEmail,
             'website' => 'https://discotique.org/Discotique2025',
