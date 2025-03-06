@@ -37,9 +37,9 @@ $fetch_last_names = $this->Mench_ledger->fetch(array(
 foreach($this->Idea_cache->fetch(array(
     'i__id' => $_POST['target_i__id'], //ACTIVE
 )) as $i){
+
     // Usage example
     try {
-
         // Sample invoice data
         $invoiceData = [
             'businessEmail' => website_setting(30882),
@@ -69,15 +69,16 @@ foreach($this->Idea_cache->fetch(array(
         // Step 3: Send invoice
         sendPaypalInvoice($accessToken, $invoiceId);
 
-        return view__json(array(
-            'status' => 1,
-            'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
-            'message' => 'Success: Check you email within 1 minute to find your Invoice',
-        ));
-
     } catch (Exception $e) {
-        //Some error
+
     }
+
+    return view__json(array(
+        'status' => 1,
+        'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
+        'message' => 'Success: Check you email within 1 minute to find your Invoice',
+    ));
+
 }
 
 
