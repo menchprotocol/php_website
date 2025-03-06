@@ -1198,7 +1198,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion,'/');
+                    return view__s_js_line(suggestion,'\');
                 },
                 replace: function (suggestion) {
                     return ' \\' + suggestion.s__handle + ' ';
@@ -1250,7 +1250,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion, '/');
+                    return view__s_js_line(suggestion, '\');
                 },
                 replace: function (suggestion) {
                     return '/' + suggestion.s__handle + ' @';
@@ -1276,7 +1276,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion, '/');
+                    return view__s_js_line(suggestion, '\');
                 },
                 replace: function (suggestion) {
                     return '/' + suggestion.s__handle + ' @';
