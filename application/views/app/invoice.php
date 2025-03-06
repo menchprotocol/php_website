@@ -13,6 +13,10 @@ if(!$player_e){
     ));
 }
 
+return view__json(array(
+    'status' => 0,
+    'message' => 'Error',
+));
 
 //Fetch User Data:
 $fetch_emails = $this->Mench_ledger->fetch(array(

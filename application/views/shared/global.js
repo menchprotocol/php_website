@@ -3428,7 +3428,7 @@ function go_next(do_skip, i_popup_url = ''){
         if(total_count > 0){
 
             //Submit to go next:
-            $.post("/app/paypal_invoice", {
+            $.post("/invoice", {
                 target_i__hashtag: $('#target_i__hashtag').val(),
                 target_i__id: parseInt($('#target_i__id').val()),
                 invoice_items: invoice_items,
