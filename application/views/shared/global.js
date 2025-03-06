@@ -1037,7 +1037,11 @@ function invoice_update(){
     var new_total = ( unit_total * new_quantity );
 
     //Update UI:
-    $(".go_next_btn .small_font").text(+' '+total_price+' ['+total_count+']');
+    $(".go_next_btn .small_font").text(total_price.toLocaleString(
+        undefined, // leave undefined to use the visitor's browser
+        // locale or a string like 'en-US' to override it.
+        { minimumFractionDigits: 2 }
+    )+' ['+total_count+']');
     invoice_processing = false;
 
 }
