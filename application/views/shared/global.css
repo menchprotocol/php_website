@@ -84,7 +84,7 @@ body {
 }
 .edge-cover .input_ui{
     margin:0 40px 5px;
-    width: 170px;
+    width: 155px;
 }
 .focus-cover .input_ui{
     margin:0 0 5px;
@@ -4200,7 +4200,7 @@ main {
 .ticket-notice .source_info_box{
     display: inline-block !important;
     padding: 0 !important;
-    width: 144px;
+    width: 105px;
     margin-bottom: -15px;
 }
 
