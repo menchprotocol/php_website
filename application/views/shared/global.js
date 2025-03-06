@@ -970,10 +970,7 @@ function sale_increment(increment, i__id, max_allowed, min_allowed, unit_total, 
 
     console.log(current_quentity+' > '+new_quantity+'['+min_allowed+'-'+max_allowed+']');
 
-    if(new_quantity<1){
-        //Invalid new quantity
-        return false;
-    } else if (new_quantity<min_allowed){
+    if (new_quantity<min_allowed){
         if(min_allowed>1){
             alert('Error: Minimum Allowed is '+min_allowed);
         }
