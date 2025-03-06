@@ -58,10 +58,10 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         ],
         'invoicer' => [
             'name' => [
-                'given_name' => 'Discotique Pancake Boutique @ Burning Man Aug24–Sep1 2025'
+                'given_name' => 'Discotique Pancake Boutique'
             ],
             'email_address' => $businessEmail,
-            'website' => 'https://discotique.org/Discotique2025',
+            'website' => 'https://discotique.org',
             'logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg'
         ],
         'primary_recipients' => [
@@ -188,12 +188,12 @@ try {
                 'quantity' => 1,
                 'unit_amount' => [
                     'currency_code' => 'USD',
-                    'value' => '1199.99'
+                    'value' => '11.99'
                 ],
                 'unit_of_measure' => 'QUANTITY'
             ]
         ],
-        'total_amount' => '1199.99'
+        'total_amount' => '11.99'
     ];
 
     // Step 1: Get access token
