@@ -2,10 +2,9 @@
 
 
 // PayPal API credentials and configuration (Production)
-$clientId = $this->config->item('paypal_client_id');         // Replace with your PayPal Client ID
-$clientSecret = $this->config->item('paypal_secret'); // Replace with your PayPal Secret
-$apiBaseUrl = 'https://api-m.paypal.com'; // Production endpoint
-$businessEmail = 'support@atlascamp.org'; // Your PayPal business email
+$apiBaseUrl = 'https://api-m.paypal.com'; //Production
+$businessEmail = 'support@atlascamp.org';
+
 
 // Function to get PayPal access token
 function getAccessToken($clientId, $clientSecret, $apiBaseUrl)
@@ -47,12 +46,14 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
     // Invoice payload
     $payload = [
         'detail' => [
-            'invoice_number' => $invoiceData['invoice_number'],
+            //'invoice_number' => $invoiceData['invoice_number'],
             'reference' => $invoiceData['reference'],
             'invoice_date' => date('Y-m-d'),
             'currency_code' => 'USD',
-            'payment_terms' => [
-                'due_date' => $invoiceData['due_date'] ?? date('Y-m-d', strtotime('+30 days'))
+            'note' => 'This is a message in the idea',
+            'payment_term' => [
+                'term_type' => 'DUE_ON_DATE_SPECIFIED',
+                'due_date' => $invoiceData['due_date'] ?? date('Y-m-d', strtotime('August 1st 2025'))
             ]
         ],
         'invoicer' => [
@@ -136,7 +137,7 @@ function sendPaypalInvoice($accessToken, $apiBaseUrl, $invoiceId)
 
     $payload = [
         'send_to_recipient' => true,
-        'send_to_invoicer' => true,
+        'send_to_invoicer' => false,
         'subject' => 'Invoice from Your Company Name',  // Customize subject
         'note' => 'Thank you for your business!'       // Customize note
     ];
@@ -191,7 +192,7 @@ try {
     ];
 
     // Step 1: Get access token
-    $accessToken = getAccessToken($clientId, $clientSecret, $apiBaseUrl);
+    $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'), $apiBaseUrl);
 
     // Step 2: Create invoice
     $invoiceId = createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessEmail);
