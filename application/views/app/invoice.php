@@ -18,6 +18,7 @@ $items = [];
 foreach ($_POST['invoice_items'] as $key => $value) {
     unset($_POST['invoice_items'][$key]['i__id']);
 
+
     array_push($items, [
         'name' => $_POST['invoice_items'][$key]['name'],
         'description' => $_POST['invoice_items'][$key]['description'],
@@ -66,15 +67,13 @@ foreach($this->Idea_cache->fetch(array(
 
             'currency_code' => $_POST['currency_code'],
             'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
-            //'note' => $i['i__message'],
-            'note' => 'Wow nice',
+            'note' => $i['i__message'],
 
             'recipient_email' => ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : 'shervin+missingemail@mench.com' ),
             'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
             'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
             'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
             'total_amount' => $_POST['total_price'],
-            //'items' => $_POST['invoice_items'],
             'items' => $items,
         ];
 
