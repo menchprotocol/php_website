@@ -1016,7 +1016,7 @@ function invoice_update(){
         var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
         var current_count = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
         var current_price = parseFloat($(this).attr('unitprice'));
-        var current_currency = parseFloat($(this).attr('unitcurrency'));
+        var current_currency = $(this).attr('unitcurrency');
 
         total_count += current_count;
         total_price += (current_count * current_price);
@@ -3406,7 +3406,7 @@ function go_next(do_skip, i_popup_url = ''){
                 description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
                 quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
                 unit_value: parseFloat($(this).attr('unitprice')),
-                unit_currency_code: parseFloat($(this).attr('unitcurrency'))
+                unit_currency_code: $(this).attr('unitcurrency')
             };
 
             invoice_items[i] = this_item;
