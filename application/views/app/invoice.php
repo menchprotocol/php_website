@@ -160,7 +160,7 @@ try {
         'invoice_number' => 'INV-' . time(),
         'reference' => 'ORDER-' . rand(1000, 9999),
         'recipient_email' => 'shervinenayati@mench.com',
-        'recipient_name' => 'John Doe',
+        'recipient_name' => 'Ali Baba'.rand(1000, 9999),
         'due_date' => date('Y-m-d', strtotime('+15 days')),
         'items' => [
             [
