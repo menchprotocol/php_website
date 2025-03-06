@@ -79,7 +79,7 @@ foreach($this->Idea_cache->fetch(array(
 
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
-                'note' => $i['i__message']."\n\n\n\n".$i_target['i__message'],
+                'note' => $i['i__message']."\n\n".$i_target['i__message'],
 
                 'recipient_email' => ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : 'shervin+missingemail@mench.com' ),
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
@@ -172,12 +172,11 @@ foreach($this->Idea_cache->fetch(array(
         }
 
 
-
         //Return Data:
         return view__json(array(
             'status' => 1,
-            'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
-            'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
+            'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target, 0, false),
+            'message' => 'Success: Your Invoice should be emailed to you within 1-2 minutes',
         ));
 
 

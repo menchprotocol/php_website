@@ -3406,7 +3406,6 @@ function go_next(do_skip, i_popup_url = ''){
             var quantity = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
 
             if(quantity>0){
-
                 var this_item= {
                     i__id: item_i__id,
                     name: item_title,
@@ -3418,13 +3417,9 @@ function go_next(do_skip, i_popup_url = ''){
                     },
                     unit_of_measure: 'QUANTITY',
                 };
-
                 invoice_items[i] = this_item;
                 total_count += this_item.quantity;
                 total_price += (this_item.quantity * this_item.unit_amount.value);
-                if($(this).attr('unitcurrency').length && !currency_code){
-                    currency_code = $(this).attr('unitcurrency');
-                }
             }
         });
 
