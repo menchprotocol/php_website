@@ -1013,8 +1013,8 @@ function invoice_update(){
 
         var item_i__id = parseInt($(this).attr('i__id'));
         var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
-        var current_count = parseInt($('.input_ui_'+item_i__id+' .current_count').text());
-        var current_price = parseInt($('.input_ui_'+item_i__id+' .current_count').attr('unitprice'));
+        var current_count = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
+        var current_price = parseFloat($('.input_ui_'+item_i__id+' .current_count').attr('unitprice'));
 
         total_count += current_count;
         total_price += (current_count * current_price);
@@ -1030,11 +1030,7 @@ function invoice_update(){
     console.log(total_price);
 
     //Update UI:
-    $(".go_next_btn .small_font").text(total_price.toLocaleString(
-        undefined, // leave undefined to use the visitor's browser
-        // locale or a string like 'en-US' to override it.
-        { minimumFractionDigits: 2 }
-    )+' ['+total_count+']');
+    $(".go_next_btn .small_font").text(total_price+' ['+total_count+']');
 
 }
 
