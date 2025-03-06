@@ -5062,7 +5062,7 @@ function view__list_e($i, $plain_no_html = false){
         //Format data if needed:
         $x['x__message'] = data_type_format($x['x__following'], $x['x__message']);
 
-        $message_append .= '<div class="source-info source_detail_'.$x['x__following'].'">'
+        $message_append .= '<div class="source-info">'
             . '<span class="icon-block">'. $e___42421[$x['x__following']]['m__cover'] . '</span>' . $e___42421[$x['x__following']]['m__title'] . ( strlen($x['x__message']) ? ':' : '' )
             . ( strlen($x['x__message']) ? '<div class="source_info_box"><div class="sub_note main__title">'.( !$plain_no_html ? nl2br(view__url($x['x__message'])) : $x['x__message'] ).'</div></div>' : '' )
             . '</div>';
