@@ -3395,6 +3395,7 @@ function go_next(do_skip, i_popup_url = ''){
 
         //Invoice Process, make sure something is in the cart:
         var invoice_items = {};
+        var currency_code = false;
         var total_count = 0;
         var total_price = 0;
 
@@ -3418,6 +3419,9 @@ function go_next(do_skip, i_popup_url = ''){
             invoice_items[i] = this_item;
             total_count += this_item.quantity;
             total_price += (this_item.quantity * this_ite.unit_amount.value);
+            if($(this).attr('unitcurrency').length && !currency_code){
+                currency_code = $(this).attr('unitcurrency');
+            }
 
         });
 
@@ -3428,6 +3432,7 @@ function go_next(do_skip, i_popup_url = ''){
                 target_i__hashtag: $('#target_i__hashtag').val(),
                 target_i__id: parseInt($('#target_i__id').val()),
                 invoice_items: invoice_items,
+                currency_code: currency_code,
                 total_price: total_price,
                 do_skip: do_skip,
                 js_request_uri: js_request_uri, //Always append to AJAX Calls
