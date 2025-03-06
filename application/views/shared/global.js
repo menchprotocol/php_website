@@ -250,7 +250,7 @@ function load_editor(){
         },
         templates: {
             suggestion: function (suggestion) {
-                return view__s_js_line(suggestion);
+                return view__s_js_line(suggestion,'@');
             },
             empty: function (data) {
                 return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Sources Found</div>';
@@ -282,7 +282,7 @@ function load_editor(){
         },
         templates: {
             suggestion: function (suggestion) {
-                return view__s_js_line(suggestion);
+                return view__s_js_line(suggestion,'#');
             },
             empty: function (data) {
                 return '<div class="main__title"><i class="far fa-exclamation-circle"></i> No Ideas Found</div>';
@@ -302,7 +302,7 @@ function view__s__title(suggestion){
 
 function view__s_js_line(suggestion, default_handle = '@'){
     if(suggestion.s__type==12273){
-        return '<span class="grey">#' + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view__s__title(suggestion) + '</span>';
+        return '<span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view__s__title(suggestion) + '</span>';
     } else if(suggestion.s__type==12274){
         return '<span class="icon-block-xs">'+ view__cover_js(suggestion.s__cover) +'</span><span class="grey">' + default_handle + suggestion.s__handle + '</span>&nbsp;<span class="main__title">' + view__s__title(suggestion) + '</span>';
     }
@@ -1175,7 +1175,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion);
+                    return view__s_js_line(suggestion,'#');
                 },
                 replace: function (suggestion) {
                     return ' #' + suggestion.s__handle + ' ';
@@ -1198,7 +1198,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion);
+                    return view__s_js_line(suggestion,'/');
                 },
                 replace: function (suggestion) {
                     return ' \\' + suggestion.s__handle + ' ';
@@ -1224,7 +1224,7 @@ $(document).ready(function () {
                         });
                 },
                 template: function (suggestion) {
-                    return view__s_js_line(suggestion);
+                    return view__s_js_line(suggestion,'@');
                 },
                 replace: function (suggestion) {
                     return ' @' + suggestion.s__handle + ' ';
