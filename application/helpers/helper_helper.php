@@ -4233,6 +4233,170 @@ function view__i_nav($discovery_mode, $focus_i){
 
 }
 
+
+
+
+// Function to get PayPal access token
+function getAccessToken($clientId, $clientSecret)
+{
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api-m.paypal.com/v1/oauth2/token",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_USERPWD => "$clientId:$clientSecret",
+        CURLOPT_POSTFIELDS => "grant_type=client_credentials",
+        CURLOPT_HTTPHEADER => [
+            "Accept: application/json",
+            "Accept-Language: en_US"
+        ],
+        CURLOPT_SSL_VERIFYPEER => true,  // Verify SSL in production
+        CURLOPT_SSL_VERIFYHOST => 2      // Verify host in production
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+
+    if ($httpCode == 200 && !$error) {
+        $data = json_decode($response, true);
+        return $data['access_token'];
+    }
+
+    throw new Exception("Failed to get access token. HTTP Code: $httpCode, Error: $error");
+}
+
+// Function to create PayPal invoice
+function createPaypalInvoice($accessToken, $invoiceData)
+{
+    $curl = curl_init();
+
+    // Invoice payload
+    $payload = [
+        'detail' => [
+            //'invoice_number' => $invoiceData['invoice_number'],
+            'reference' => $invoiceData['reference'],
+            'currency_code' => $invoiceData['currency_code'],
+            'note' => $invoiceData['note'],
+            'invoice_date' => date('Y-m-d'),
+            'payment_term' => [
+                'term_type' => 'DUE_ON_DATE_SPECIFIED',
+                'due_date' => ( $invoiceData['due_date'] ? $invoiceData['due_date'] : date('Y-m-d') )
+            ]
+        ],
+        'invoicer' => [
+            'name' => [
+                'given_name' => $invoiceData['invoicer_given_name']
+            ],
+            'email_address' => $invoiceData['businessEmail'],
+            'website' => $invoiceData['invoicer_website'],
+            'logo_url' => $invoiceData['invoicer_logo_url'],
+        ],
+        'primary_recipients' => [
+            [
+                'billing_info' => [
+                    'additional_info_value' => $invoiceData['recipient_info'],
+                    'email_address' => $invoiceData['recipient_email'],
+                    'name' => [
+                        'given_name' => $invoiceData['recipient_name'] ?? '',
+                        'surname' => $invoiceData['recipient_name'] ?? ''
+                    ]
+                ]
+            ]
+        ],
+        'items' => $invoiceData['items'],
+        'amount' => [
+            'currency_code' => $invoiceData['currency_code'],
+            'value' => $invoiceData['total_amount'],
+            'breakdown' => [
+                'item_total' => [
+                    'currency_code' => $invoiceData['currency_code'],
+                    'value' => $invoiceData['total_amount']
+                ]
+            ]
+        ],
+
+        'configuration' => [
+            'allow_tip' => false,
+            'partial_payment' => [
+                'allow_partial_payment' => ( $invoiceData['min_payment'] > 0 ),
+                'minimum_amount_due' => [
+                    'currency_code' => $invoiceData['currency_code'],
+                    'value' => $invoiceData['min_payment']
+                ]
+            ],
+        ],
+
+        // This triggers immediate sending instead of draft creation
+        'send_to_recipient' => true,
+        'send_to_invoicer' => true  // Set to true if you want a copy
+    ];
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_HTTPHEADER => [
+            "Content-Type: application/json",
+            "Authorization: Bearer $accessToken"
+        ],
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+
+    if ($httpCode == 201 && !$error) {
+        $data = json_decode($response, true);
+        return one_two_explode('/invoices/','',$data['href']);
+    }
+
+    throw new Exception("Failed to create invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
+}
+
+// Function to send PayPal invoice
+function sendPaypalInvoice($accessToken, $invoiceId)
+{
+    $curl = curl_init();
+
+    $payload = [
+        'send_to_recipient' => true,
+        'send_to_invoicer' => false,
+    ];
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices/$invoiceId/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_HTTPHEADER => [
+            "Content-Type: application/json",
+            "Authorization: Bearer $accessToken"
+        ],
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2
+    ]);
+
+    $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $error = curl_error($curl);
+    curl_close($curl);
+
+    if ($httpCode == 202 && !$error) {
+        return true;
+    }
+
+    throw new Exception("Failed to send invoice. HTTP Code: $httpCode, Error: $error, Response: $response");
+}
+
+
+
 function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null, $focus_e__id = 0){
 
     //Search to see if an idea has a thumbnail:
