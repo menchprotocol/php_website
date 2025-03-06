@@ -85,11 +85,13 @@ function createPaypalInvoice($accessToken, $apiBaseUrl, $invoiceData, $businessE
         ],
 
         'configuration' => [
-            'partial_payment' => true,
-            'minimum_amount_due' => [
-                'currency_code' => 'USD',
-                'value' => 10
-            ]
+            'partial_payment' => [
+                'allow_partial_payment' => true,
+                'minimum_amount_due' => [
+                    'currency_code' => 'USD',
+                    'value' => '12.00'
+                ]
+            ],
         ],
 
         // This triggers immediate sending instead of draft creation
