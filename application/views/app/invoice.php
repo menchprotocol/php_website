@@ -57,7 +57,6 @@ foreach($this->Idea_cache->fetch(array(
             'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
             'total_amount' => $_POST['total_price'],
             'items' => $_POST['invoice_items'],
-
         ];
 
         // Step 1: Get access token
@@ -76,7 +75,7 @@ foreach($this->Idea_cache->fetch(array(
     return view__json(array(
         'status' => 1,
         'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $i['i__hashtag'], $i, 0, false),
-        'message' => 'Success: Check you email within 1 minute to find your Invoice',
+        'message' => 'Success: Check you email to find your Invoice within 1-2 minutes',
     ));
 
 }
