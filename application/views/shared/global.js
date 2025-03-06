@@ -3418,7 +3418,7 @@ function go_next(do_skip, i_popup_url = ''){
 
             invoice_items[i] = this_item;
             total_count += this_item.quantity;
-            total_price += (this_item.quantity * this_ite.unit_amount.value);
+            total_price += (this_item.quantity * this_item.unit_amount.value);
             if($(this).attr('unitcurrency').length && !currency_code){
                 currency_code = $(this).attr('unitcurrency');
             }
