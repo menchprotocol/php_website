@@ -4521,12 +4521,13 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                 $max_allowed = ( $spots_remaining>-1 && $spots_remaining<$max_allowed ? $spots_remaining : $max_allowed );
 
                 $min_allowed = ( count($cart_min) && is_numeric($cart_min[0]['x__message']) && intval($cart_min[0]['x__message'])>$starting_point ? intval($cart_min[0]['x__message']) : $starting_point );
+                $e___26661 = $CI->config->item('e___26661'); //Currency
+                $unit_currency = $e___26661[$currency_types[0]['x__following']]['m__message'];
 
 
                 if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $previous_i['i__type']!=43758 && $total_dues[0]['x__message']>0 && count($currency_types)==1){
 
                     $valid_currency = true;
-                    $e___26661 = $CI->config->item('e___26661'); //Currency
 
                     $digest_fees = count($CI->Mench_ledger->fetch(array(
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -4536,7 +4537,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                     )));
 
                     //Break down amount & currency
-                    $unit_currency = $e___26661[$currency_types[0]['x__following']]['m__message'];
                     $unit_price = doubleval($total_dues[0]['x__message']);
                     $unit_fee = number_format($unit_price * ( $digest_fees ? 0 : (doubleval(website_setting(30590, $x__player)) + doubleval(website_setting(27017, $x__player)))/100 ), 2, ".", "");
 
@@ -4566,7 +4566,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                     . '<div class="source_info_box">';
 
                 if($max_allowed > 0 || $min_allowed > 0){
-                    $input_ui .= '<div class="sale_controller sale_controller_'.$i['i__id'].'" unitprice="'.$unit_price.'" i__id="'.$i['i__id'].'">';
+                    $input_ui .= '<div class="sale_controller sale_controller_'.$i['i__id'].'" unitprice="'.$unit_price.'" unitcurrency="'.$unit_currency.'" i__id="'.$i['i__id'].'">';
                     $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_down"><i class="fas fa-minus-circle hidden"></i></a>';
                     $input_ui .= '<span class="main__title current_count" style="display: inline-block; min-width:34px; text-align: center;">'.$min_allowed.'</span>';
                     $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_up">'.( $max_allowed==$min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus-circle"></i>' ).'</a>';

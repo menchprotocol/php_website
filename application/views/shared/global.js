@@ -1016,6 +1016,7 @@ function invoice_update(){
         var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
         var current_count = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
         var current_price = parseFloat($(this).attr('unitprice'));
+        var current_currency = parseFloat($(this).attr('unitcurrency'));
 
         total_count += current_count;
         total_price += (current_count * current_price);
@@ -1031,7 +1032,10 @@ function invoice_update(){
     console.log(total_price);
 
     //Update UI:
-    $('.go_next_btn').html('Generarte Invoice <span title="" class="small_font inline-block">'+total_price+' ['+total_count+']</span>');
+    $('.go_next_btn').html('Create Invoice <span title="" class="small_font inline-block">'+total_price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: current_currency,
+    })+' ['+total_count+']</span>');
 
 }
 
@@ -3386,10 +3390,8 @@ function go_next(do_skip, i_popup_url = ''){
         return false;
     } else if (focus_i__type==43758){
 
-        console.log('Paypal INVOICING');
-
         //Invoice Process, make sure something is in the cart:
-        var all_items = {};
+        var invoice_items = {};
         var total_count = 0;
         var total_price = 0;
 
@@ -3404,20 +3406,41 @@ function go_next(do_skip, i_popup_url = ''){
                 description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
                 quantity: parseFloat($('.input_ui_'+item_i__id+' .current_count').text()),
                 unit_value: parseFloat($(this).attr('unitprice')),
-                unit_currency_code: 'USD'
+                unit_currency_code: parseFloat($(this).attr('unitcurrency'))
             };
 
-            all_items[i] = this_item;
+            invoice_items[i] = this_item;
             total_count += this_item.quantity;
             total_price += (this_item.quantity * this_item.unit_value);
 
         });
 
-        console.log(total_count);
-        console.log(total_price);
-        console.log(all_items);
-        return false;
+        if(total_count > 0){
 
+            //Submit to go next:
+            $.post("/app/paypal_invoice", {
+                target_i__hashtag: $('#target_i__hashtag').val(),
+                target_i__id: parseInt($('#target_i__id').val()),
+                invoice_items: invoice_items,
+                do_skip: do_skip,
+                js_request_uri: js_request_uri, //Always append to AJAX Calls
+            }, function (data) {
+                if (data.status) {
+                    //Go to redirect message:
+                    js_redirect(data.next__url);
+                } else {
+                    //Show error:
+                    $('.go_next_btn').html(original_html);
+                    alert(data.message);
+                }
+            });
+
+        } else {
+            //No items added, give an error:
+            alert('Must add some items to create an invoice');
+        }
+
+        return false;
     }
 
 
