@@ -1038,7 +1038,7 @@ function invoice_update(){
     $('.go_next_btn').html('Create Invoice <span title="" class="small_font inline-block">'+total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
-    })+' ['+total_count+']</span>');
+    })+' '+total_currency+' ['+total_count+']</span>');
 
 }
 
