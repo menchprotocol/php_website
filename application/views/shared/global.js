@@ -1014,7 +1014,7 @@ function invoice_update(){
         var item_i__id = parseInt($(this).attr('i__id'));
         var item_i__title = $('.cache_frame_'+item_i__id+' .first_line').text();
         var current_count = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
-        var current_price = parseFloat($('.input_ui_'+item_i__id+' .current_count').attr('unitprice'));
+        var current_price = parseFloat($(this).attr('unitprice'));
 
         total_count += current_count;
         total_price += (current_count * current_price);
