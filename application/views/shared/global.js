@@ -3395,12 +3395,12 @@ function go_next(do_skip, i_popup_url = ''){
 
         //Invoice Process, make sure something is in the cart:
         var invoice_items = {};
-        var currency_code = false;
         var total_count = 0;
         var total_price = 0;
 
         $(".sale_controller").each(function (i, e) {
 
+            var currency_code = $(this).attr('unitcurrency');
             var item_i__id = parseInt($(this).attr('i__id'));
             var item_title = $('.cache_frame_'+item_i__id+' .first_line').text();
             var quantity = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
@@ -3412,7 +3412,7 @@ function go_next(do_skip, i_popup_url = ''){
                     description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
                     quantity: quantity,
                     unit_amount: {
-                        currency_code: $(this).attr('unitcurrency'),
+                        currency_code: currency_code,
                         value: parseFloat($(this).attr('unitprice')),
                     },
                     unit_of_measure: 'QUANTITY',
@@ -3442,7 +3442,7 @@ function go_next(do_skip, i_popup_url = ''){
             }, function (data) {
                 if (data.status) {
                     //Go to redirect message:
-                    //js_redirect(data.next__url);
+                    js_redirect(data.next__url);
                 } else {
                     //Show error:
                     $('.go_next_btn').html(original_html);
