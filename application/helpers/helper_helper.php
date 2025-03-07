@@ -4429,7 +4429,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
     }
 
     $focus_i__or = false;
-    if($discovery_mode && $focus_i__hashtag && !$focus__node && $x__player){
+    if($discovery_mode && $focus_i__hashtag && !$focus__node && $x__player && $previous_i['i__type']!=43758){
         foreach($CI->Idea_cache->fetch(array(
             'LOWER(i__hashtag)' => strtolower($focus_i__hashtag),
             'i__type IN (' . join(',', $CI->config->item('n___7712')) . ')' => null, //Input Choice
