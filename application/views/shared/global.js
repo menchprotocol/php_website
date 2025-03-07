@@ -3412,10 +3412,8 @@ function go_next(do_skip, i_popup_url = ''){
                     name: item_title,
                     description: $('.cache_frame_'+item_i__id).text().replace(item_title, ''),
                     quantity: quantity,
-                    unit_amount: {
-                        currency_code: currency_code,
-                        value: parseFloat($(this).attr('unitprice')),
-                    },
+                    currency_code: currency_code,
+                    currency_value: parseFloat($(this).attr('unitprice')),
                     unit_of_measure: 'QUANTITY',
                 };
                 invoice_items[i] = this_item;

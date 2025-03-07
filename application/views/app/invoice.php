@@ -25,15 +25,16 @@ foreach ($_POST['invoice_items'] as $key => $value) {
             continue;
         }
 
+        //Generate Paypal API Item Array:
         array_push($items, [
             'name' => $_POST['invoice_items'][$key]['name'],
             'description' => $_POST['invoice_items'][$key]['description'],
             'quantity' => $_POST['invoice_items'][$key]['quantity'],
             'unit_amount' => [
-                'currency_code' => $_POST['invoice_items'][$key]['unit_amount']['currency_code'],
-                'value' => $_POST['invoice_items'][$key]['unit_amount']['value']
+                'currency_code' => $_POST['invoice_items'][$key]['currency_code'],
+                'value' => $_POST['invoice_items'][$key]['currency_value']
             ],
-            'unit_of_measure' => 'QUANTITY'
+            'unit_of_measure' => 'QUANTITY' //Required by Paypal API
         ]);
     }
 
