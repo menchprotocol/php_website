@@ -4151,6 +4151,12 @@ function view__i_nav($discovery_mode, $focus_i){
     $player_e = superpower_unlocked();
     $ideation_pen = superpower_unlocked(10939);
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
+    $discovery_next_hide = $discovery_mode && count($CI->Mench_ledger->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'x__next' => $focus_i['i__id'],
+        'x__following' => 44250, //Hide Next Ideas
+    )));
 
     $ui = '';
     $ui .= '<ul class="nav nav-tabs nav12273 nav__'.$focus_i['i__id'].' hideIfEmpty">';
@@ -4162,6 +4168,10 @@ function view__i_nav($discovery_mode, $focus_i){
         }
         if(in_array($x__type, $CI->config->item('n___42376')) && !$player_e){
             //Private content without being a member, so dont even show the counters:
+            continue;
+        }
+
+        if($x__type==12840 && $discovery_next_hide){
             continue;
         }
 
