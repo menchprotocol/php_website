@@ -4644,7 +4644,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
             } else {
 
-                $valid_currency = false; //Until we can find and verify from DB
+                $valid_instant_pay = false; //Until we can find and verify from DB
 
                 $paypal_email =  website_setting(30882);
 
@@ -4694,7 +4694,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
                 if(filter_var($paypal_email, FILTER_VALIDATE_EMAIL) && count($total_dues) && $previous_i['i__type']!=43758 && $total_dues[0]['x__message']>0 && count($currency_types)==1){
 
-                    $valid_currency = true;
+                    $valid_instant_pay = true;
 
                     $digest_fees = count($CI->Mench_ledger->fetch(array(
                         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -4702,8 +4702,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                         'x__next' => $i['i__id'],
                         'x__following' => 30589, //Digest Fees
                     )));
-
-
 
                     //Break down amount & currency
                     $unit_price = doubleval($total_dues[0]['x__message']);
@@ -4760,7 +4758,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                 $input_ui .= '</div>';
 
 
-                if($valid_currency){
+                if($valid_instant_pay){
 
                     $e___14870 = $CI->config->item('e___14870'); //DOMAINS
 

@@ -3397,10 +3397,11 @@ function go_next(do_skip, i_popup_url = ''){
         var invoice_items = {};
         var total_count = 0;
         var total_price = 0;
+        var currency_code = '';
 
         $(".sale_controller").each(function (i, e) {
 
-            var currency_code = $(this).attr('unitcurrency');
+            currency_code = $(this).attr('unitcurrency');
             var item_i__id = parseInt($(this).attr('i__id'));
             var item_title = $('.cache_frame_'+item_i__id+' .first_line').text();
             var quantity = parseFloat($('.input_ui_'+item_i__id+' .current_count').text());
