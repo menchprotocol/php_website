@@ -5058,9 +5058,9 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
                 if($max_allowed > 0 || $min_allowed > 0){
                     $input_ui .= '<div class="sale_controller sale_controller_'.$i['i__id'].'" unitprice="'.$unit_price.'" unitcurrency="'.$unit_currency.'" i__id="'.$i['i__id'].'">';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_down"><i class="fas fa-minus-circle '.( $current_value==$min_allowed ? ' hidden ' : '' ).'"></i></a>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(-1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_down"><i class="fas fa-minus '.( $current_value==$min_allowed ? ' hidden ' : '' ).'"></i></a>';
                     $input_ui .= '<span class="main__title current_count" style="display: inline-block; min-width:34px; text-align: center;">'.$current_value.'</span>';
-                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_up">'.( $max_allowed==$min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus-circle"></i>' ).'</a>';
+                    $input_ui .= '<a href="javascript:void(0);" onclick="sale_increment(1,'.$i['i__id'].','.$max_allowed.','.$min_allowed.','.($unit_fee+$unit_price).','.$unit_fee.')" class="sale_increment sale_up">'.( $max_allowed==$min_allowed ? '<i class="fas fa-lock islocked"></i>' : '<i class="fas fa-plus"></i>' ).'</a>';
                     $input_ui .= '</div>';
                 } else {
                     $input_ui .= '<span class="current_count" style="display: none;">'.$min_allowed.'</span>';
