@@ -139,6 +139,12 @@ if($player_e || isset($_GET['open'])){
 
         set_autosize($('.x_write'));
 
+        if (js_n___7712.includes(focus_i__type)){
+            //Choose
+            $('.xtypecounter12840').text('');
+            $('.xtypetitle_12840').text(js_e___7712[focus_i__type]['m__title']+':&nbsp;');
+        }
+
 
         //Show percentage progress on next button:
         if(parseInt($('.progress-bar').attr('aria-valuenow'))>0 && parseInt($('.progress-bar').attr('aria-valuenow'))<100){
@@ -168,8 +174,6 @@ if($player_e || isset($_GET['open'])){
                     });
                 }
             }
-
-            $('.xtypecounter12840').text($('.headline_body_12840 .card_cover').length);
 
 
         }, 1597);
