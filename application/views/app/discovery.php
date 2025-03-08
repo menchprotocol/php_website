@@ -132,6 +132,7 @@ if($player_e || isset($_GET['open'])){
 
 <script>
 
+    var total_discoveries = <?= count($x_completes) ?>;
     var focus_i__type = <?= $focus_i['i__type'] ?>;
 
     $(document).ready(function () {
@@ -148,6 +149,10 @@ if($player_e || isset($_GET['open'])){
         //Detect if no scroll bar, load instantly:
         var scroll_buffer = 233;
         setTimeout(function () {
+
+            if(total_discoveries){
+                $(".fixed-bottom").removeClass('hidden');
+            }
 
             if(focus_i__type==43758){
                 invoice_update();
