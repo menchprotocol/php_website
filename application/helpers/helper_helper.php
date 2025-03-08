@@ -4331,14 +4331,25 @@ function view__i_nav($discovery_mode, $focus_i){
 
     if(!$discovery_next_hide){
         $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\'Next\'); }); </script>';
-    } elseif($player_e && in_array($focus_i['i__type'], $CI->config->item('n___34826')) && !count($CI->Mench_ledger->fetch(array(
+    }
+
+
+    if($player_e && in_array($focus_i['i__type'], $CI->config->item('n___34826')) && $discovery_mode && !count($CI->Mench_ledger->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__player' => $player_e['e__id'],
         'x__previous' => $focus_i['i__id'],
     )))){
-        //Not yet discovered, lets go next automatically:
-        $ui .= '<script> $(document).ready(function () { setTimeout(function () { go_next(0); }, 2584); }); </script>';
+        foreach($CI->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__next' => $focus_i['i__id'],
+            'x__following' => 44262, //Skip Next If Undiscovered
+        )) as $skip){
+            //Not yet discovered, lets go next automatically:
+            $ui .= '<script> $(document).ready(function () { setTimeout(function () { go_next(0); }, '.( is_numeric($skip['x__message']) && intval($skip['x__message'])>0 ? intval($skip['x__message']) : '2584' ).'); }); </script>';
+            break;
+        }
     }
 
 
