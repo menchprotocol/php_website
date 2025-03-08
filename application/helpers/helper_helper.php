@@ -4422,12 +4422,23 @@ function createPaypalInvoice($accessToken, $invoiceData)
         'send_to_invoicer' => true  // Set to true if you want a copy
     ];
 
+    $payload['detail']['currency_code'] = $invoiceData['currency_code'];
+    $payload['amount'] = [
+        'currency_code' => $invoiceData['currency_code'],
+        'value' => $invoiceData['total_amount'],
+        'breakdown' => [
+            'item_total' => [
+                'currency_code' => $invoiceData['currency_code'],
+                'value' => $invoiceData['total_amount']
+            ]
+        ]
+    ];
+
     if($invoiceData['total_amount']>0){
         $payload['detail']['payment_term'] = [
             'term_type' => 'DUE_ON_DATE_SPECIFIED',
             'due_date' => ( $invoiceData['due_date'] ? $invoiceData['due_date'] : date('Y-m-d') )
         ];
-        $payload['detail']['currency_code'] = $invoiceData['currency_code'];
         $payload['configuration']['partial_payment'] = [
             'allow_partial_payment' => ( $invoiceData['min_payment'] > 0 ),
             'minimum_amount_due' => [
@@ -4435,16 +4446,7 @@ function createPaypalInvoice($accessToken, $invoiceData)
                 'value' => $invoiceData['min_payment']
             ]
         ];
-        $payload['amount'] = [
-            'currency_code' => $invoiceData['currency_code'],
-            'value' => $invoiceData['total_amount'],
-            'breakdown' => [
-                'item_total' => [
-                    'currency_code' => $invoiceData['currency_code'],
-                    'value' => $invoiceData['total_amount']
-                ]
-            ]
-        ];
+
     }
 
     curl_setopt_array($curl, [
