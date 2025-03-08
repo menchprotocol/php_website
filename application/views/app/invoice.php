@@ -28,7 +28,7 @@ foreach ($_POST['invoice_items'] as $key => $value) {
         //Generate Paypal API Item Array:
         array_push($items, [
             'name' => $_POST['invoice_items'][$key]['name'],
-            'description' => $_POST['invoice_items'][$key]['description'],
+            'description' => rtrim($_POST['invoice_items'][$key]['description'],'Show more'), //TO remove the 'Show more' that sometimes gets appended
             'quantity' => $_POST['invoice_items'][$key]['quantity'],
             'unit_amount' => [
                 'currency_code' => $_POST['invoice_items'][$key]['currency_code'],
