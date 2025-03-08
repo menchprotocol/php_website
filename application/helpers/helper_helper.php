@@ -4536,6 +4536,17 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
         $focus_i__hashtag = false;
     }
 
+    if($x__player){
+        //Fetch discovery
+        $x_completes = $CI->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__player' => $x__player,
+            'x__previous' => $i['i__id'],
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
+        ), array('x__next'));
+    }
+
     $focus_i__or = false;
     if($discovery_mode && $focus_i__hashtag && !$focus__node && $x__player && $previous_i['i__type']!=43758){
         foreach($CI->Idea_cache->fetch(array(
@@ -4786,12 +4797,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
             //Skip
             $bottom_bar_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
 
-        } elseif($x__type_target_bar==31911 && $access_level_i>=3 && !$discovery_mode){
-
-            //Idea Editor
-            $bottom_bar_ui .= '<span class="icon-block-sm">';
-            $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</a>';
-            $bottom_bar_ui .= '</span>';
 
         } elseif($x__type_target_bar==13909 && $access_level_i>=3 && $has_sortable && !$discovery_mode){
 
@@ -4835,6 +4840,13 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
                         //Ideation Mode
                         $action_buttons .= '<a href="'.view__memory(42903,33286).$i['i__hashtag'].'" class="dropdown-item main__title">'.$anchor.'</a>';
+
+                    } elseif($e__id_dropdown==31911 && $access_level_i>=3){
+
+                        //Idea Editor
+                        $bottom_bar_ui .= '<span class="icon-block-sm">';
+                        $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</a>';
+                        $bottom_bar_ui .= '</span>';
 
                     } elseif($e__id_dropdown==13007 && $access_level_i>=3){
 
@@ -4958,15 +4970,6 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
         //Three main actions: (Excludes reading which is no action)
         $input_ui = '';
-
-        //Fetch discovery
-        $x_completes = $CI->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'x__player' => $x__player,
-            'x__previous' => $i['i__id'],
-            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('x__next'));
 
 
         //Any inputs for this idea?
@@ -5590,13 +5593,6 @@ function view__card_e($x__type, $e, $extra_class = null)
                 if(count($followings) || $access_level_e>=3){
                     $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">'.view__single_select_instant(42795, ( count($followings) ? $followings[0]['x__type'] : 0 ), $player_e && $access_level_e>=3, false, $e['e__id'], ( count($followings) ? $followings[0]['x__id'] : 0 )).'</span>';
                 }
-
-            } elseif($x__type_target_bar==31912 && $access_level_e>=3){
-
-                //Edit Source
-                $featured_sources .= '<span class="'.( $focus__node ? 'icon-block-sm' : 'icon-block-xs' ).'">';
-                $featured_sources .= '<a href="javascript:void(0);" onclick="e_editor_load('.$e['e__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</a>';
-                $featured_sources .= '</span>';
 
             } elseif($x__type_target_bar==41037 && $access_level_e>=3 && !$focus__node){
 
