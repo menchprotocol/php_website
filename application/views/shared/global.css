@@ -1937,8 +1937,10 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     padding-top: 9px;
 }
 .link_click a {
-    color: #0000FF !important;
+    color: blue !important;
     font-size:1.44em !important;
+    padding: 8px 0;
+    text-decoration: underline;
 }
 
 .current_count{
