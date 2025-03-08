@@ -78,17 +78,18 @@ foreach($this->Idea_cache->fetch(array(
                 'invoicer_given_name' => view__i_title($i_target, true),
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']),
 
+                'note' => $i['i__message']."\n\n".$i_target['i__message'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
-                'note' => $i['i__message']."\n\n".$i_target['i__message'],
+                //'due_date' => date('Y-m-d'),
+                'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
+                'total_amount' => $_POST['total_price'],
+                'items' => $items,
 
                 'recipient_email' => ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : 'shervin+missingemail@mench.com' ),
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
                 'recipient_address' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
-                'due_date' => date('Y-m-d'), //date('Y-m-d', strtotime('August 1st 2025'))
-                'total_amount' => $_POST['total_price'],
-                'items' => $items,
             ];
 
             // Step 1: Get access token
