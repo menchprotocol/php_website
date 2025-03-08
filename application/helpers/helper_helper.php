@@ -2108,13 +2108,126 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
         }
 
 
+
+        // IDEA RELATION CHECK:
+
+        //If Discovered All
+        $fetch_44161 = $CI->Mench_ledger->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 44161, //If Discovered All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0);
+        if(count($fetch_44161)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_44161 as $e_pre){
+                    if(count($CI->Mench_ledger->fetch(array(
+                        'x__player' => $player_e['e__id'],
+                        'x__previous' => $e_pre['x__previous'],
+                        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        $the_counter++;
+                    }
+                }
+            }
+            if($the_counter < count($fetch_44161)){
+                return 0;
+            }
+        }
+
+        //If Discovered Any
+        $fetch_40791 = $CI->Mench_ledger->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 40791, //If Discovered Any
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0);
+        if(count($fetch_40791)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_40791 as $e_pre){
+                    if(count($CI->Mench_ledger->fetch(array(
+                        'x__player' => $player_e['e__id'],
+                        'x__previous' => $e_pre['x__previous'],
+                        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        $the_counter++;
+                        break;
+                    }
+                }
+            }
+            if(!$the_counter){
+                return 0;
+            }
+        }
+
+
+        //If Not Discovered All
+        $fetch_44162 = $CI->Mench_ledger->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 44162, //If Not Discovered All
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0);
+        if(count($fetch_44162)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_44161 as $e_pre){
+                    if(count($CI->Mench_ledger->fetch(array(
+                        'x__player' => $player_e['e__id'],
+                        'x__previous' => $e_pre['x__previous'],
+                        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        $the_counter++;
+                    }
+                }
+                if($the_counter >= count($fetch_44162)){
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        }
+
+
+        //If Not Discovered Any
+        $fetch_40793 = $CI->Mench_ledger->fetch(array(
+            'x__next' => $i['i__id'],
+            'x__type' => 40793, //If Not Discovered Any
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0);
+        if(count($fetch_40793)){
+            $the_counter = 0;
+            if($player_e){
+                foreach($fetch_44161 as $e_pre){
+                    if(count($CI->Mench_ledger->fetch(array(
+                        'x__player' => $player_e['e__id'],
+                        'x__previous' => $e_pre['x__previous'],
+                        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+                    )))){
+                        $the_counter++;
+                    }
+                }
+            } else {
+                return 0;
+            }
+            if($the_counter > 0){
+                return 0;
+            }
+        }
+
+
+        // SOURCE RELATION CHECK:
+
+
         //Include If Has ANY
         $fetch_27984 = $CI->Mench_ledger->fetch(array(
             'x__next' => $i['i__id'],
-            'x__type' => 27984, //Must Include All
+            'x__type' => 27984, //Include If Has Any
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__following'), 0);
+        ), array(), 0);
         if(count($fetch_27984)){
             $the_counter = 0;
             if($player_e){
@@ -2126,6 +2239,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
                             'x__follower' => $player_e['e__id'],
                         ))))){
                         $the_counter++;
+                        break;
                     }
                 }
             }
@@ -2140,8 +2254,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
             'x__next' => $i['i__id'],
             'x__type' => 43513, //Must Include All
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__following'), 0);
+        ), array(), 0);
         if(count($fetch_43513)){
             $the_counter = 0;
             if($player_e){
@@ -2167,8 +2280,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
             'x__next' => $i['i__id'],
             'x__type' => 43514, //Must Exclude All
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__following'), 0);
+        ), array(), 0);
         if(count($fetch_43514)){
             $the_counter = 0;
             if($player_e){
@@ -2195,8 +2307,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
             'x__next' => $i['i__id'],
             'x__type' => 26600, //Must Exclude All
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'e__privacy IN (' . join(',', $CI->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('x__following'), 0);
+        ), array(), 0);
         if(count($fetch_26600)){
             $the_counter = 0;
             if($player_e){
