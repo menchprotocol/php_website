@@ -2,7 +2,7 @@
 
 
 //Focus Source:
-echo '<div class="main_item view__12274 row justify-content">';
+echo '<div class="view__12274 row justify-content">';
 echo view__card_e(42287, $focus_e, null);
 echo '</div>';
 

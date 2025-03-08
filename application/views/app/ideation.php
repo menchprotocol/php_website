@@ -7,7 +7,7 @@ if($player_e && !superpower_unlocked(10939) && i_startable($focus_i, $player_e['
 }
 
 //Focus Idea:
-echo '<div class="main_item view__12273 row justify-content">';
+echo '<div class="view__12273 row justify-content">';
 echo view__card_i(42288,  $focus_i);
 echo '</div>';
 

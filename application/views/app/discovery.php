@@ -112,22 +112,22 @@ if($player_e){
 }
 
 
+
+
+
+//Focus Discovery:
+echo '<div class="row justify-content">';
+echo view__card_i(43007, $focus_i, null, null, 0, $x_completes);
+echo '</div>';
+
+
+
 $i_popup_url = i_popup_url($focus_i);
 if($i_popup_url){
     echo '<div class="row justify-content">';
     echo '<div class="link_click hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked()">'.$i_popup_url.'</a></div>';
     echo '</div>';
 }
-
-
-//Focus Discovery:
-echo '<div class="main_item row justify-content">';
-echo view__card_i(43007, $focus_i, null, null, 0, $x_completes);
-echo '</div>';
-
-
-
-
 
 
 //Main Navigation
