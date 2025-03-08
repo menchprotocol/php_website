@@ -4264,12 +4264,12 @@ function view__i_nav($discovery_mode, $focus_i, $x_completes = false){
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
 
     if($player_e && !is_array($x_completes)){
-        $x_completes = $this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        $x_completes = $CI->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__player' => $player_e['e__id'],
             'x__previous' => $focus_i['i__id'],
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
         ), array('x__next'));
     }
 
