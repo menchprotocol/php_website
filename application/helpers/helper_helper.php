@@ -4254,7 +4254,7 @@ function view__featured_links($x__type, $location, $m = null, $focus__node){
 }
 
 
-function view__i_nav($discovery_mode, $focus_i){
+function view__i_nav($discovery_mode, $focus_i, $x_completes = false){
 
     $CI =& get_instance();
     $coins_count = array();
@@ -4262,7 +4262,18 @@ function view__i_nav($discovery_mode, $focus_i){
     $player_e = superpower_unlocked();
     $ideation_pen = superpower_unlocked(10939);
     $e___loading_order = $CI->config->item('e___'.( $discovery_mode ? 26005 : 26005 ));
-    $discovery_next_hide = $discovery_mode && count($CI->Mench_ledger->fetch(array(
+
+    if($player_e && !is_array($x_completes)){
+        $x_completes = $this->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__player' => $player_e['e__id'],
+            'x__previous' => $focus_i['i__id'],
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+        ), array('x__next'));
+    }
+
+    $discovery_next_hide = $player_e && $discovery_mode && !count($x_completes) && count($CI->Mench_ledger->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
         'x__next' => $focus_i['i__id'],
@@ -4334,12 +4345,7 @@ function view__i_nav($discovery_mode, $focus_i){
     }
 
 
-    if($player_e && in_array($focus_i['i__type'], $CI->config->item('n___34826')) && $discovery_mode && !count($CI->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
-        'x__player' => $player_e['e__id'],
-        'x__previous' => $focus_i['i__id'],
-    )))){
+    if(in_array($focus_i['i__type'], $CI->config->item('n___34826')) && $player_e && $discovery_mode && !count($x_completes)){
         foreach($CI->Mench_ledger->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
@@ -4531,7 +4537,7 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 
 
 
-function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null, $focus_e__id = 0){
+function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = null, $focus_e__id = 0, $x_completes = false){
 
     //Search to see if an idea has a thumbnail:
     $CI =& get_instance();
@@ -4561,7 +4567,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
         $focus_i__hashtag = false;
     }
 
-    if($x__player){
+    if($x__player && !is_array($x_completes)){
         //Fetch discovery
         $x_completes = $CI->Mench_ledger->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC

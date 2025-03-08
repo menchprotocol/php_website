@@ -100,7 +100,16 @@ if($player_e){
     }
 }
 
-
+$x_completes = array();
+if($player_e){
+    $x_completes = $this->Mench_ledger->fetch(array(
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        'x__player' => $x__player,
+        'x__previous' => $focus_i['i__id'],
+        'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+    ), array('x__next'));
+}
 
 
 
@@ -108,7 +117,7 @@ if($player_e){
 
 //Focus Discovery:
 echo '<div class="main_item row justify-content">';
-echo view__card_i(43007, $focus_i);
+echo view__card_i(43007, $focus_i, null, null, 0, $x_completes);
 echo '</div>';
 
 
@@ -116,9 +125,8 @@ echo '</div>';
 
 //Main Navigation
 if($player_e || isset($_GET['open'])){
-    echo view__i_nav(true, $focus_i);
+    echo view__i_nav(true, $focus_i, $x_completes);
 }
-
 
 ?>
 
