@@ -4282,9 +4282,6 @@ function view__i_nav($discovery_mode, $focus_i){
             continue;
         }
 
-        if($x__type==12840 && $discovery_next_hide){
-            continue;
-        }
 
         $coins_count[$x__type] = view__i_covers($x__type, $focus_i['i__id'], 0, false);
         if(!$coins_count[$x__type] && ($discovery_mode || in_array($x__type, $CI->config->item('n___12144')))){ continue; }
@@ -4321,34 +4318,21 @@ function view__i_nav($discovery_mode, $focus_i){
         if(in_array($x__type, $CI->config->item('n___42945')) || $coins_count[$x__type]>0){
             $body_content .= '<div class="headlinebody pillbody headline_body_'.$x__type.' hidden" read-counter="'.$coins_count[$x__type].'">'.$input_content.'<div class="tab_content"></div></div>';
 
-            $ui .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'"><span class="icon-block">'.$m['m__cover'].'</span><span class="hideIfEmpty xtypecounter'.$x__type.'">'.view__number($coins_count[$x__type]) . '</span><span class="hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+
+            if($x__type!=12840 || !$discovery_next_hide){
+                $ui .= '<li class="nav-item thepill'.$x__type.'"><a class="nav-link handle_nav_'.$m['m__handle'].'" x__type="'.$x__type.'" href="#'.$m['m__handle'].'" title="'.number_format($coins_count[$x__type], 0).' '.$m['m__title'].'"><span class="icon-block">'.$m['m__cover'].'</span><span class="hideIfEmpty xtypecounter'.$x__type.'">'.view__number($coins_count[$x__type]) . '</span><span class="hidden xtypetitle xtypetitle_'.$x__type.'">&nbsp;'. $m['m__title'] . '&nbsp;</span></a></li>';
+            }
+
         }
 
     }
     $ui .= '</ul>';
     $ui .= $body_content;
 
-    if($ideation_pen || 1){
-        //Focus on next:
-        $focus_tab = 12840;
+    if(!$discovery_next_hide){
         $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\'Next\'); }); </script>';
-    } else {
-        $focus_tab = 0;
-        foreach($e___loading_order as $x__type => $m) { //Load Focus Tab:
-            if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
-                $focus_tab = $x__type;
-                $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\''.$m['m__handle'].'\'); }); </script>';
-                break;
-            }
-        }
-        if(!$focus_tab){
-            foreach($e___loading_order as $x__type => $m) { //Load Focus Tab:
-                $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\''.$m['m__handle'].'\'); }); </script>';
-                break;
-            }
-        }
-
     }
+
 
     return $ui;
 
@@ -4412,6 +4396,9 @@ function createPaypalInvoice($accessToken, $invoiceData)
             'email_address' => $invoiceData['businessEmail'],
             'website' => $invoiceData['invoicer_website'],
             'logo_url' => $invoiceData['invoicer_logo_url'],
+            'address' => [
+                'address_line_1' => $invoiceData['invoicer_address'] ?? '',
+            ],
         ],
         'primary_recipients' => [
             [
@@ -4489,7 +4476,7 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 
     $payload = [
         'send_to_recipient' => true,
-        'send_to_invoicer' => false,
+        'send_to_invoicer' => true,
     ];
 
     curl_setopt_array($curl, [
