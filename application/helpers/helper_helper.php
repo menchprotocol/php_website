@@ -4386,7 +4386,7 @@ function createPaypalInvoice($accessToken, $invoiceData)
             'invoice_date' => date('Y-m-d'),
             'payment_term' => [
                 'term_type' => 'DUE_ON_DATE_SPECIFIED',
-                'due_date' => ( $invoiceData['due_date'] && !$invoiceData['min_payment'] ? $invoiceData['due_date'] : date('Y-m-d') )
+                'due_date' => ( $invoiceData['due_date'] ? $invoiceData['due_date'] : date('Y-m-d') )
             ]
         ],
         'invoicer' => [
