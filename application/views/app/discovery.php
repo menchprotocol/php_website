@@ -124,7 +124,7 @@ echo '</div>';
 
 $i_popup_url = i_popup_url($focus_i);
 if($i_popup_url){
-    echo '<div class="row justify-content">';
+    echo '<div class="">';
     echo '<div class="link_click hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked()">'.$i_popup_url.'</a></div>';
     echo '</div>';
 }
