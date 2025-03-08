@@ -1081,7 +1081,7 @@ class App extends CI_Controller
                     foreach($this->Idea_cache->fetch(array(
                         'i__id' => $_POST['i__id'],
                     )) as $i){
-                        $ui .= view__more($target_disccovery.view__memory(42903,33286).$i['i__hashtag'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                        $ui .= view__more($target_disccovery.view__memory(42903,33286).$i['i__hashtag'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View All');
                     }
                 }
 
@@ -1213,7 +1213,7 @@ class App extends CI_Controller
                     foreach($this->Source_cache->fetch(array(
                         'e__id' => $_POST['e__id'],
                     )) as $e_this){
-                        $ui .= view__more(view__memory(42903,42902).$e_this['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View all '.number_format($_POST['counter'], 0));
+                        $ui .= view__more(view__memory(42903,42902).$e_this['e__handle'], false, '&nbsp;', '&nbsp;', '&nbsp;', 'View All');
                     }
                 }
 
