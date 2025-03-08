@@ -4748,55 +4748,10 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
             $bottom_bar_ui .= view__single_select_instant(31004, $i['i__privacy'], $access_level_i, false, $i['i__id'], $x__id);
             $bottom_bar_ui .= '</span>';
 
-        } elseif($x__type_target_bar==33532 && !$is_cache && $player_e && $access_level_i>=2 && !$is_locked){
-
-            //Reply
-            $bottom_bar_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
-            $bottom_bar_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node && 0 ? $m_target_bar['m__title'] : '' ).'</a>';
-            $bottom_bar_ui .= '</span>';
-
-        } elseif(0 && $x__type_target_bar==42819 && !$is_cache && superpower_unlocked(10939) && $access_level_i>=3 && !$is_locked){
-
-            //New Source
-            $bottom_bar_ui .= '<span class="mini_button main__title">';
-            $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
-            $bottom_bar_ui .= '</span>';
-
-        } elseif($x__type_target_bar==42260 && $player_e && !$is_locked && !$is_cache && 0){
-
-            //Reactions... Check to see if they have any?
-            $reactions = $CI->Mench_ledger->fetch(array(
-                'x__following' => $x__player,
-                'x__next' => $i['i__id'],
-                'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
-                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array(), 1);
-            $bottom_bar_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
-            $bottom_bar_ui .= view__single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, 0 && $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
-            $bottom_bar_ui .= '</div></span>';
 
         } elseif(0 && $x__type_target_bar==41037 && $focus_i__or && !$is_cache){
 
             //Selector
-
-        } elseif($x__type_target_bar==4235 && (!$discovery_mode && $i_startable && $access_level_i>=1)){
-
-            //Start
-            $bottom_bar_ui .= '<span><a href="'.view__memory(42903,30795).$i['i__hashtag'].'/'.view__memory(6404,4235).'" class="btn btn-sm btn-black"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
-
-        } elseif($x__type_target_bar==42924 && $discovery_mode && $focus__node){
-
-            //Next
-            $i_popup_url = i_popup_url($i);
-            $e___6255 = $CI->config->item('e___6255');
-            $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[i__discovery_link($i)] );
-            $bottom_bar_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0, \''.$i_popup_url.'\')" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
-
-        } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !i_required($i)){
-
-            //Skip
-            $bottom_bar_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
-
 
         } elseif($x__type_target_bar==13909 && $access_level_i>=3 && $has_sortable && !$discovery_mode){
 
@@ -5286,6 +5241,67 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
     //Bottom Bar
     $bottom_menu_ui = '';
+
+
+    foreach($CI->config->item('e___44257') as $x__type_target_bar => $m_target_bar) {
+
+        //See if missing superpower?
+        $superpowers_required = array_intersect($CI->config->item('n___10957'), $m_target_bar['m__following']);
+        if(count($superpowers_required) && (!superpower_unlocked(end($superpowers_required)) || $is_cache)){
+            continue;
+        }
+
+        //Determine hover state:
+        if($x__type_target_bar==33532 && !$is_cache && $player_e && $access_level_i>=2 && !$is_locked){
+
+            //Reply
+            $bottom_menu_ui .= '<span class="mini_button main__title" style="max-width:55px;">';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" class="btn btn-sm" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node && 0 ? $m_target_bar['m__title'] : '' ).'</a>';
+            $bottom_menu_ui .= '</span>';
+
+        } elseif(0 && $x__type_target_bar==42819 && !$is_cache && superpower_unlocked(10939) && $access_level_i>=3 && !$is_locked){
+
+            //New Source
+            $bottom_menu_ui .= '<span class="mini_button main__title">';
+            $bottom_menu_ui .= '<a href="javascript:void(0);" onclick="i_editor_load(0,0,'.( $access_level_i>=3 ? 4228 : 30901 ).','.$i['i__id'].')"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.( $focus__node ? $m_target_bar['m__title'] : '' ).'</a>';
+            $bottom_menu_ui .= '</span>';
+
+        } elseif($x__type_target_bar==42260 && $player_e && !$is_locked && !$is_cache && 0){
+
+            //Reactions... Check to see if they have any?
+            $reactions = $CI->Mench_ledger->fetch(array(
+                'x__following' => $x__player,
+                'x__next' => $i['i__id'],
+                'x__type IN (' . join(',', $CI->config->item('n___42260')) . ')' => null, //Reactions
+                'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array(), 1);
+            $bottom_menu_ui .= '<span class="mini_button" style="max-width:55px;"><div class="main__title">';
+            $bottom_menu_ui .= view__single_select_instant(42260, ( count($reactions) ? $reactions[0]['x__type'] : 0 ), $player_e, 0 && $focus__node, $i['i__id'], ( count($reactions) ? $reactions[0]['x__id'] : 0 ));
+            $bottom_menu_ui .= '</div></span>';
+
+        } elseif($x__type_target_bar==4235 && (!$discovery_mode && $i_startable && $access_level_i>=1)){
+
+            //Start
+            $bottom_menu_ui .= '<span><a href="'.view__memory(42903,30795).$i['i__hashtag'].'/'.view__memory(6404,4235).'" class="btn btn-sm btn-black"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+
+        } elseif($x__type_target_bar==42924 && $discovery_mode && $focus__node){
+
+            //Next
+            $i_popup_url = i_popup_url($i);
+            $e___6255 = $CI->config->item('e___6255');
+            $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[i__discovery_link($i)] );
+            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0, \''.$i_popup_url.'\')" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
+
+        } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !i_required($i)){
+
+            //Skip
+            $bottom_menu_ui .= '<span class="mini_button" style="max-width: 75px;"><a href="javascript:void(0);" onclick="go_next(1)" class="btn btn-sm"><span class="icon-block-sm">'.$m_target_bar['m__cover'].'</span>'.$m_target_bar['m__title'].'</a></span>';
+
+        }
+    }
+
+
+
     //Bottom Bar menu
     if(!$focus__node && !$is_locked && !$is_cache ){
         foreach($CI->config->item('e___'.( $discovery_mode ? 42877 : 31890 )) as $e__id_bottom_bar => $m_bottom_bar) {
