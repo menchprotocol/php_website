@@ -1937,6 +1937,12 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     padding-top: 9px;
 }
 
+.current_count{
+    display: inline-block;
+    min-width:34px;
+    text-align: center;
+    font-size: 1.7em;
+}
 
 .ticket-notice {
     padding: 5px 10px 10px !important;
