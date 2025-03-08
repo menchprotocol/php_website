@@ -142,7 +142,7 @@ if($player_e || isset($_GET['open'])){
         if (js_n___7712.includes(focus_i__type)){
             //Choose
             $('.xtypecounter12840').text('');
-            $('.xtypetitle_12840').text(js_e___7712[focus_i__type]['m__title']+':&nbsp;');
+            $('.xtypetitle_12840').text(js_e___7712[focus_i__type]['m__title']+': ');
         }
 
 
