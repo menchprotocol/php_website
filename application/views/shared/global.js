@@ -3330,8 +3330,8 @@ function x_reset_sorting(){
 
 
 
-function link_clicked(){
-    $(".link_click").addClass('was_clicked');
+function link_clicked(i__id){
+    $(".link_click_"+i__id).addClass('was_clicked');
 }
 
 
@@ -3339,7 +3339,7 @@ function go_next(do_skip){
 
     var selection_i__id = [];
 
-    if($(".link_click")[0] && !$(".link_click").hasClass('was_clicked')){
+    if($(".link_click")[0] && !$(".link_click_"+parseInt($('#focus__id').val())).hasClass('was_clicked')){
         alert('Click on the URL to open it in a new window before you contiue.');
         return false;
     }

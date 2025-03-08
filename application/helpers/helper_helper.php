@@ -4935,7 +4935,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
 
     $i_popup_url = i_popup_url($i);
     if($i_popup_url){
-        $ui .= '<div class="ignore-click link_click hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked()">'.$i_popup_url.'</a></div>';
+        $ui .= '<div class="ignore-click link_click link_click_'.$i['i__id'].' hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked('.$i['i__id'].')">'.$i_popup_url.'</a></div>';
     }
 
 
