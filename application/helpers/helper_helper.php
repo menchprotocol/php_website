@@ -5319,7 +5319,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
             $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[i__discovery_link($i)] );
             $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0, \''.$i_popup_url.'\')" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
             if($i_popup_url){
-                $bottom_menu_ui .= ' <script> $(document).ready(function () { $(\'.i_cache\').append(\'<div><a href="'.$i_popup_url.'" target="_blank">'.$i_popup_url.'</a></div>\'); }); </script> ';
+                $bottom_menu_ui .= ' <script> $(document).ready(function () { $(\'.link_click a\').attr(\'href\',\''.$i_popup_url.'\').text(\''.$i_popup_url.'\'); }); </script> ';
             }
 
 

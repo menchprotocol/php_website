@@ -120,7 +120,7 @@ echo '<div class="main_item row justify-content">';
 echo view__card_i(43007, $focus_i, null, null, 0, $x_completes);
 echo '</div>';
 
-
+echo '<div class="link_click hideIfEmpty"><a href="" class="hideIfEmpty" target="_blank" onclick="link_clicked()"></a></div>';
 
 
 //Main Navigation

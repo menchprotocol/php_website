@@ -3330,17 +3330,18 @@ function x_reset_sorting(){
 
 
 
-
-
+function link_clicked(){
+    $(".link_click").addClass('was_clicked');
+}
 
 
 function go_next(do_skip, i_popup_url = ''){
 
     var selection_i__id = [];
 
-    if(i_popup_url.length){
-        alert('A URL will open in a new window, and then come back here to continue.');
-        openPopUp(i_popup_url);
+    if(i_popup_url.length && !$(".link_click").hasClass('was_clicked')){
+        alert('Click on the URL to open it in a new window before you contiue.');
+        return false;
     }
 
     if (js_n___7712.includes(focus_i__type)){
@@ -3482,9 +3483,4 @@ function go_next(do_skip, i_popup_url = ''){
         }
     });
 
-}
-
-function openPopUp(url){
-    popUp = window.open(url, "newWin", "width="+screen.availWidth+",height="+screen.availHeight);
-    popUp.focus();
 }
