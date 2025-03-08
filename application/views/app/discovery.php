@@ -121,15 +121,6 @@ echo view__card_i(43007, $focus_i, null, null, 0, $x_completes);
 echo '</div>';
 
 
-
-$i_popup_url = i_popup_url($focus_i);
-if($i_popup_url){
-    echo '<div class="">';
-    echo '<div class="link_click hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked()">'.$i_popup_url.'</a></div>';
-    echo '</div>';
-}
-
-
 //Main Navigation
 if($player_e || isset($_GET['open'])){
     echo view__i_nav(true, $focus_i, $x_completes);

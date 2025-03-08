@@ -4926,6 +4926,14 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
         $ui .= '<div class="x__message_headline grey hideIfEmpty ignore-click ui_x__message_' . $x__id . ( in_array($i['x__type'], $CI->config->item('n___42294')) ? ' hidden ' : '' ) . '" style="padding-left:40px;">'.htmlentities($i['x__message']).'</div>';
     }
 
+
+    $i_popup_url = i_popup_url($focus_i);
+    if($i_popup_url){
+        $ui .= '<div class="">';
+        $ui .= '<div class="link_click hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked()">'.$i_popup_url.'</a></div>';
+        $ui .= '</div>';
+    }
+
     $ui .= '</div>';
 
 
