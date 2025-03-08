@@ -1945,7 +1945,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 
 .edge-cover .link_click a {
     font-size:1em !important;
-    padding: 3px 0;
+    padding: 2px 0 2px 40px;
 }
 
 .current_count{
