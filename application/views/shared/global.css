@@ -2473,7 +2473,7 @@ input.form-control {
 }
 
 .card-12273 .inner-content{
-    overflow-x: hidden;
+    overflow-x: visible;
     overflow-y: visible;
     padding: 5px 0;
 }
