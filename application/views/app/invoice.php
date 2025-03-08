@@ -60,6 +60,21 @@ $fetch_last_names = $this->Mench_ledger->fetch(array(
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ));
 
+$set_email = false;
+if(count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)) {
+    $set_email = $fetch_emails[0]['x__message'];
+}
+if(!$set_email){
+    //No Valid email:
+    $this->Mench_ledger->create(array(
+        'x__type' => 4246, //Platform Bug Reports
+        'x__player' => $player_e['e__id'],
+        'x__next' => $_POST['focus__id'],
+        'x__message' => 'No Valid email found for invoice',
+    ));
+    $set_email = 'support+email+error@atlascamp.org';
+}
+
 
 foreach($this->Idea_cache->fetch(array(
     'i__id' => $_POST['target_i__id'], //ACTIVE
@@ -87,7 +102,7 @@ foreach($this->Idea_cache->fetch(array(
                 'total_amount' => $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_email' => ( count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL) ? $fetch_emails[0]['x__message'] : 'shervin+missingemail@mench.com' ),
+                'recipient_email' => $set_email,
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
                 'recipient_address' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
@@ -182,7 +197,7 @@ foreach($this->Idea_cache->fetch(array(
         return view__json(array(
             'status' => 1,
             'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target, 0, false),
-            'message' => 'Success: Your Invoice will be emailed to you within 1-2 minutes',
+            'message' => 'Success: Paypal Will Send Your Invoice to '.$set_email.' within 1-2 minutes',
             'invoiceData' => $invoiceData,
         ));
 
