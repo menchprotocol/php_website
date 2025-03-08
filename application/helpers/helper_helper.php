@@ -412,20 +412,16 @@ function i_redirect_url($i){
 
 function i_popup_url($i){
     $CI =& get_instance();
-    if(strlen($i['i__message']) && count($CI->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
-            'x__next' => $i['i__id'],
-            'x__following' => 43912, //Popup URL
-        )))){
-        preg_match_all('#\bhttps?://[^,\s()<>]+(?:\([\w\d]+\)|([^,[:punct:]\s]|/))#', $i['i__message'], $match);
-        foreach($match[0] as $url){
-            if(filter_var($url, FILTER_VALIDATE_URL)){
-                return $url;
-            }
+    foreach($CI->Mench_ledger->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes
+        'x__next' => $i['i__id'],
+        'x__following' => 44266, //Popup URL
+    )) as $popup_url){
+        if(filter_var($popup_url['x__message'], FILTER_VALIDATE_URL)){
+            return $popup_url['x__message'];
         }
     }
-
     return false;
 }
 
