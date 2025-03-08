@@ -98,7 +98,7 @@ foreach($this->Idea_cache->fetch(array(
                 'note' => $i['i__message']."\n\n".$i_target['i__message'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
-                'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
+                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : now() )),
                 'total_amount' => $_POST['total_price'],
                 'items' => $items,
 
