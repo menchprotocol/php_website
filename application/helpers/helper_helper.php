@@ -4393,7 +4393,7 @@ function createPaypalInvoice($accessToken, $invoiceData)
             'name' => [
                 'given_name' => $invoiceData['invoicer_given_name']
             ],
-            'email_address' => $invoiceData['businessEmail'],
+            'email_address' => $invoiceData['invoicer_email'],
             'website' => $invoiceData['invoicer_website'],
             'logo_url' => $invoiceData['invoicer_logo_url'],
             'address' => [

@@ -88,16 +88,15 @@ foreach($this->Idea_cache->fetch(array(
         try {
             // Sample invoice data
             $invoiceData = [
-                'businessEmail' => website_setting(30882),
                 'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']),
-                'invoicer_address' => 'Nadine, Lead Communicato +1-236-866-9373',
+                'invoicer_address' => 'Lead Communicator: Nadine +12368669373 on WhatsApp',
+                'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
+                'invoicer_email' => website_setting(30882),
 
                 'note' => $i['i__message']."\n\n".$i_target['i__message'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
-                //'due_date' => date('Y-m-d'),
                 'due_date' => date('Y-m-d', strtotime('August 1st 2025')),
                 'total_amount' => $_POST['total_price'],
                 'items' => $items,
