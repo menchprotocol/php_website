@@ -1945,7 +1945,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     display: inline-block;
 }
 
-.ticket-notice i {
+.ticket-notice .sale_increment i {
     border: 1px solid #000;
     padding: 3px 5px 2px;
 }
