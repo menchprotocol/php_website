@@ -4927,16 +4927,16 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
     }
 
 
-    $i_popup_url = i_popup_url($i);
-    if($i_popup_url){
-        $ui .= '<div class="ignore-click link_click hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked()">'.$i_popup_url.'</a></div>';
-    }
-
     $ui .= '</div>';
 
 
     //Idea Message (Remaining)
     $ui .= '<div class="ui_i__cache_' . $i['i__id'] . ( !$focus__node ? ' space-content ' : '' ) . '">'.view__i__links($i, $x__player, ($focus__node || 1), $focus__node).'</div>';
+
+    $i_popup_url = i_popup_url($i);
+    if($i_popup_url){
+        $ui .= '<div class="ignore-click link_click hideIfEmpty"><a href="'.$i_popup_url.'" class="hideIfEmpty" target="_blank" onclick="link_clicked()">'.$i_popup_url.'</a></div>';
+    }
 
 
     //Raw Data:
