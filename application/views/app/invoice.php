@@ -91,9 +91,9 @@ foreach($this->Idea_cache->fetch(array(
             $invoiceData = [
                 'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_address' => 'Have Questions? Contact Lead Treasury Shervin on WhatsApp +17788826962',
+                'invoicer_address' => 'Have Questions? Contact Lead Treasury Shervin on WhatsApp +17788826962 or email '.website_setting(30882),
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
-                'invoicer_email' => website_setting(30882),
+                'invoicer_email' => 'Payment Term: We only accept Credit/Debit via Paypal or eTransfer in Canada. To pay your invoice via eTransfer in Canada you can Google exchange rate for USD/CAD and e-transfer Canadian equivalant of your invoice total to support@atlascamp.org including your invoice ID in description.',
 
                 'note' => $i['i__message']."\n\n".$i_target['i__message'],
                 'currency_code' => $_POST['currency_code'],
