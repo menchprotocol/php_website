@@ -1030,7 +1030,7 @@ function invoice_update(){
         style: 'currency',
         currency: total_currency,
     })+' ['+total_count+']</span>');
-    $(".btn.post_button").fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+    $(".btn.post_button").fadeOut(55).fadeIn(55).fadeOut(55).fadeIn(55).fadeOut(55).fadeIn(55);
 
 
 }
