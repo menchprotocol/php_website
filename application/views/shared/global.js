@@ -3339,6 +3339,7 @@ function go_next(do_skip, i_popup_url = ''){
     var selection_i__id = [];
 
     if(i_popup_url.length){
+        alert('A URL will open in a new window, and then come back here to continue.');
         openPopUp(i_popup_url);
     }
 
