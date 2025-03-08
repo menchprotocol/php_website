@@ -197,7 +197,7 @@ foreach($this->Idea_cache->fetch(array(
         return view__json(array(
             'status' => 1,
             'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target, 0, false),
-            'message' => ( $_POST['total_price']>0 ? 'Success: Paypal Will Send Your Invoice to '.$set_email.' within 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
+            'message' => ( $_POST['total_price']>0 ? 'Success: We emailed your  Will Send Your Invoice to '.$set_email.' within 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
         ));
 
