@@ -4331,6 +4331,14 @@ function view__i_nav($discovery_mode, $focus_i){
 
     if(!$discovery_next_hide){
         $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\'Next\'); }); </script>';
+    } elseif($focus_i && in_array($focus_i['i__type'], $this->config->item('n___34826')) && !count($this->Mench_ledger->fetch(array(
+        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+        'x__player' => $focus_i['e__id'],
+        'x__previous' => $focus_i['i__id'],
+    )))){
+        //Not yet discovered, lets go next automatically:
+        $ui .= '<script> $(document).ready(function () { setTimeout(function () { go_next(0); }, 2584); }); </script>';
     }
 
 
