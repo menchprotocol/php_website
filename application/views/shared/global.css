@@ -1943,6 +1943,11 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     text-decoration: underline;
 }
 
+.edge-cover .link_click a {
+    font-size:1em !important;
+    padding: 3px 0;
+}
+
 .current_count{
     display: inline-block;
     min-width:34px;
