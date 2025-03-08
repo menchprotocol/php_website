@@ -4844,9 +4844,7 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
                     } elseif($e__id_dropdown==31911 && $access_level_i>=3){
 
                         //Idea Editor
-                        $bottom_bar_ui .= '<span class="icon-block-sm">';
-                        $bottom_bar_ui .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="icon-block-sm" title="'.$m_target_bar['m__title'].'">'.$m_target_bar['m__cover'].'</a>';
-                        $bottom_bar_ui .= '</span>';
+                        $action_buttons .= '<a href="javascript:void(0);" onclick="i_editor_load('.$i['i__id'].','.$x__id.')" class="dropdown-item main__title">'.$anchor.'</a>';
 
                     } elseif($e__id_dropdown==13007 && $access_level_i>=3){
 
