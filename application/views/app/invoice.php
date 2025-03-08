@@ -99,7 +99,7 @@ foreach($this->Idea_cache->fetch(array(
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : time() )),
-                'total_amount' => $_POST['total_price'],
+                'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
                 'recipient_email' => $set_email,
@@ -197,7 +197,7 @@ foreach($this->Idea_cache->fetch(array(
         return view__json(array(
             'status' => 1,
             'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target, 0, false),
-            'message' => 'Success: Paypal Will Send Your Invoice to '.$set_email.' within 1-2 minutes',
+            'message' => ( $_POST['total_price']>0 ? 'Success: Paypal Will Send Your Invoice to '.$set_email.' within 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
         ));
 
