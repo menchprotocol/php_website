@@ -1938,6 +1938,7 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 }
 .link_click a {
     color: #0000FF !important;
+    font-size:1.44em !important;
 }
 
 .current_count{
