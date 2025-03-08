@@ -4331,9 +4331,9 @@ function view__i_nav($discovery_mode, $focus_i){
 
     if(!$discovery_next_hide){
         $ui .= '<script> $(document).ready(function () { load_hashtag_menu(\'Next\'); }); </script>';
-    } elseif($focus_i && in_array($focus_i['i__type'], $this->config->item('n___34826')) && !count($this->Mench_ledger->fetch(array(
-        'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+    } elseif($focus_i && in_array($focus_i['i__type'], $CI->config->item('n___34826')) && !count($CI->Mench_ledger->fetch(array(
+        'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
+        'x__type IN (' . join(',', $CI->config->item('n___6255')) . ')' => null, //DISCOVERIES
         'x__player' => $focus_i['e__id'],
         'x__previous' => $focus_i['i__id'],
     )))){
