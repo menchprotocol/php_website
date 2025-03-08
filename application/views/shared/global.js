@@ -3335,11 +3335,11 @@ function link_clicked(){
 }
 
 
-function go_next(do_skip, i_popup_url = ''){
+function go_next(do_skip){
 
     var selection_i__id = [];
 
-    if(i_popup_url.length && !$(".link_click").hasClass('was_clicked')){
+    if($(".link_click")[0] && !$(".link_click").hasClass('was_clicked')){
         alert('Click on the URL to open it in a new window before you contiue.');
         return false;
     }

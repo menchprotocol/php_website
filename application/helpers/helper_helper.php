@@ -5314,14 +5314,9 @@ function view__card_i($x__type, $i, $previous_i = null, $target_i__hashtag = nul
         } elseif($x__type_target_bar==42924 && $discovery_mode && $focus__node){
 
             //Next
-            $i_popup_url = i_popup_url($i);
             $e___6255 = $CI->config->item('e___6255');
             $focus_menu = ( $has_discovered ? $m_target_bar : $e___6255[i__discovery_link($i)] );
-            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0, \''.$i_popup_url.'\')" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
-            if($i_popup_url){
-                $bottom_menu_ui .= ' <script> $(document).ready(function () { $(\'.link_click a\').attr(\'href\',\''.$i_popup_url.'\').text(\''.$i_popup_url.'\'); }); </script> ';
-            }
-
+            $bottom_menu_ui .= '<span><a href="javascript:void(0);" onclick="go_next(0)" class="btn btn-sm post_button go_next_btn"><span class="icon-block-sm">'.$focus_menu['m__cover'].'</span>'.$focus_menu['m__title'].'</a></span>';
 
         } elseif($x__type_target_bar==31022 && $discovery_mode && $focus__node && $player_e && !count($x_completes) && !i_required($i)){
 
