@@ -4378,10 +4378,10 @@ function createPaypalInvoice($accessToken, $invoiceData)
 {
     $curl = curl_init();
 
-
     // Invoice payload
     $payload = [
         'detail' => [
+            'currency_code' => $invoiceData['currency_code'],
             'note' => $invoiceData['note'],
             'invoice_date' => date('Y-m-d'),
         ],
@@ -4417,22 +4417,22 @@ function createPaypalInvoice($accessToken, $invoiceData)
             'allow_tip' => false,
         ],
 
+        'amount' => [
+            'currency_code' => $invoiceData['currency_code'],
+            'value' => $invoiceData['total_amount'],
+            'breakdown' => [
+                'item_total' => [
+                    'currency_code' => $invoiceData['currency_code'],
+                    'value' => $invoiceData['total_amount']
+                ]
+            ]
+        ],
+
         // This triggers immediate sending instead of draft creation
         'send_to_recipient' => true,
         'send_to_invoicer' => true  // Set to true if you want a copy
     ];
 
-    $payload['detail']['currency_code'] = $invoiceData['currency_code'];
-    $payload['amount'] = [
-        'currency_code' => $invoiceData['currency_code'],
-        'value' => $invoiceData['total_amount'],
-        'breakdown' => [
-            'item_total' => [
-                'currency_code' => $invoiceData['currency_code'],
-                'value' => $invoiceData['total_amount']
-            ]
-        ]
-    ];
 
     if($invoiceData['total_amount']>0){
         $payload['detail']['payment_term'] = [
