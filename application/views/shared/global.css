@@ -1936,6 +1936,9 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
 .icon-title {
     padding-top: 9px;
 }
+.link_click a {
+    color: #0000FF !important;
+}
 
 .current_count{
     display: inline-block;
