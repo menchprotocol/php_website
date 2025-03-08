@@ -2168,7 +2168,7 @@ function access_level_i($i__hashtag = null, $i__id = 0, $i = false, $is_cahce = 
         if(count($fetch_44162)){
             $the_counter = 0;
             if($player_e){
-                foreach($fetch_44161 as $e_pre){
+                foreach($fetch_44162 as $e_pre){
                     if(count($CI->Mench_ledger->fetch(array(
                         'x__player' => $player_e['e__id'],
                         'x__previous' => $e_pre['x__previous'],
