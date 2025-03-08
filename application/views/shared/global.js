@@ -3418,7 +3418,7 @@ function go_next(do_skip, i_popup_url = ''){
                 };
                 invoice_items[i] = this_item;
                 total_count += this_item.quantity;
-                total_price += (this_item.quantity * this_item.unit_amount.value);
+                total_price += (this_item.quantity * this_item.currency_value);
             }
         });
 
@@ -3441,6 +3441,7 @@ function go_next(do_skip, i_popup_url = ''){
             }, function (data) {
                 if (data.status) {
                     //Go to redirect message:
+                    alert(data.message);
                     js_redirect(data.next__url);
                 } else {
                     //Show error:
