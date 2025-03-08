@@ -1142,7 +1142,7 @@ if($player_e && ( !isset($basic_header_footer) || !$basic_header_footer )){
                                     </div>
                                 </div>
 
-                                <div style="text-align: center;"><a class="uploader_42359" class="btn btn-lrg" style="border: 1px solid #000;" href="javascript:void(0);"><?= '<span class="icon-block">'.$e___11035[42359]['m__cover'].'</span>'.$e___11035[42359]['m__title'] ?></a></div>
+                                <div style="text-align: center;"><a class="uploader_42359" class="btn btn-lrg" href="javascript:void(0);"><?= '<span class="icon-block">'.$e___11035[42359]['m__cover'].'</span>'.$e___11035[42359]['m__title'] ?></a></div>
 
                             </div>
                         </div>
