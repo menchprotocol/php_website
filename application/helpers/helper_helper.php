@@ -4378,16 +4378,12 @@ function createPaypalInvoice($accessToken, $invoiceData)
 {
     $curl = curl_init();
 
+
     // Invoice payload
     $payload = [
         'detail' => [
-            'currency_code' => $invoiceData['currency_code'],
             'note' => $invoiceData['note'],
             'invoice_date' => date('Y-m-d'),
-            'payment_term' => [
-                'term_type' => 'DUE_ON_DATE_SPECIFIED',
-                'due_date' => ( $invoiceData['due_date'] && $invoiceData['total_amount']>0 ? $invoiceData['due_date'] : date('Y-m-d') )
-            ]
         ],
         'invoicer' => [
             'name' => [
@@ -4416,7 +4412,30 @@ function createPaypalInvoice($accessToken, $invoiceData)
             ]
         ],
         'items' => $invoiceData['items'],
-        'amount' => [
+
+        'configuration' => [
+            'allow_tip' => false,
+        ],
+
+        // This triggers immediate sending instead of draft creation
+        'send_to_recipient' => true,
+        'send_to_invoicer' => true  // Set to true if you want a copy
+    ];
+
+    if($invoiceData['total_amount']>0){
+        $payload['detail']['payment_term'] = [
+            'term_type' => 'DUE_ON_DATE_SPECIFIED',
+            'due_date' => ( $invoiceData['due_date'] ? $invoiceData['due_date'] : date('Y-m-d') )
+        ];
+        $payload['detail']['currency_code'] = $invoiceData['currency_code'];
+        $payload['configuration']['partial_payment'] = [
+            'allow_partial_payment' => ( $invoiceData['min_payment'] > 0 ),
+            'minimum_amount_due' => [
+                'currency_code' => $invoiceData['currency_code'],
+                'value' => $invoiceData['min_payment']
+            ]
+        ];
+        $payload['amount'] = [
             'currency_code' => $invoiceData['currency_code'],
             'value' => $invoiceData['total_amount'],
             'breakdown' => [
@@ -4425,23 +4444,8 @@ function createPaypalInvoice($accessToken, $invoiceData)
                     'value' => $invoiceData['total_amount']
                 ]
             ]
-        ],
-
-        'configuration' => [
-            'allow_tip' => false,
-            'partial_payment' => [
-                'allow_partial_payment' => ( $invoiceData['min_payment'] > 0 ),
-                'minimum_amount_due' => [
-                    'currency_code' => $invoiceData['currency_code'],
-                    'value' => $invoiceData['min_payment']
-                ]
-            ],
-        ],
-
-        // This triggers immediate sending instead of draft creation
-        'send_to_recipient' => true,
-        'send_to_invoicer' => true  // Set to true if you want a copy
-    ];
+        ];
+    }
 
     curl_setopt_array($curl, [
         CURLOPT_URL => "https://api-m.paypal.com/v2/invoicing/invoices",
