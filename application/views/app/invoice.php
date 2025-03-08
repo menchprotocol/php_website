@@ -75,6 +75,11 @@ if(!$set_email){
     $set_email = 'support+email+error@atlascamp.org';
 }
 
+if($_POST['total_price']==0){
+    $_POST['total_price'] = 0.01;
+}
+
+
 
 foreach($this->Idea_cache->fetch(array(
     'i__id' => $_POST['target_i__id'], //ACTIVE
