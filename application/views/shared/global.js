@@ -1022,23 +1022,16 @@ function invoice_update(){
         total_count += current_count;
         total_price += (current_count * current_price);
         total_currency = current_currency;
-
-        console.log(item_i__id);
-        console.log(item_i__title);
-        console.log(current_count);
-        console.log(current_price);
-        console.log(current_currency);
-        console.log('=========');
     });
 
-    console.log(total_count);
-    console.log(total_price);
 
     //Update UI:
     $('.go_next_btn').html('Create Invoice: <span title="" class="small_font inline-block">'+total_currency+' '+total_price.toLocaleString('en-US', {
         style: 'currency',
         currency: total_currency,
     })+' ['+total_count+']</span>');
+    $(".btn.post_button").val(handling_total).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+
 
 }
 
