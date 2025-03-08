@@ -1945,6 +1945,11 @@ body:not(.app__30795) .nav>.nav-item>.nav-link>.icon-block { width:28px !importa
     display: inline-block;
 }
 
+.ticket-notice i {
+    border: 1px solid #000;
+    padding: 3px 5px 2px;
+}
+
 .title-cover{
     vertical-align: top;
     margin-top: 21px;
