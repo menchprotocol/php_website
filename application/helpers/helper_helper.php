@@ -94,7 +94,7 @@ function i__discovery_link($i, $trying_to_skip = false){
     }
 
     $CI =& get_instance();
-    if(in_array($i['i__type'], $CI->config->item('n___41055'))){
+    if($i['i__type']==26560){
         $currency_types = $CI->Mench_ledger->fetch(array(
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $CI->config->item('n___42991')) . ')' => null, //Active Writes

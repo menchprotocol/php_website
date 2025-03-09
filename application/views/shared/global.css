@@ -4648,6 +4648,9 @@ h1 i.fad{
     background-color: #fff;
     border: 1px solid #000;
     border-bottom: 0;
+    margin-bottom: 5px;
+    border-radius: 21px;
+    overflow: hidden;
 }
 .fixed-bottom .card_covers {
     display: flex;
