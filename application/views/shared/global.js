@@ -3335,11 +3335,18 @@ function link_clicked(i__id){
 }
 
 
+var next_processing = false;
 function go_next(do_skip){
+
+    if(next_processing){
+        return false;
+    }
+    next_processing = true;
 
     var selection_i__id = [];
 
     if($(".link_click")[0] && !$(".was_clicked")[0]){
+        next_processing = false;
         alert('Click on the URL to open it in a new window before you continue.');
         return false;
     }
@@ -3361,6 +3368,7 @@ function go_next(do_skip){
         //Fetch Media
         var gather_media_result = gather_media('.media_frame_'+$(this).attr('i__id')+' .media_item', 43004);
         if(!gather_media_result['upload_completed']){
+            next_processing = false;
             alert('MEDIA ERROR: '+gather_media_result['error_message']);
             return false;
         }
@@ -3377,6 +3385,7 @@ function go_next(do_skip){
 
     var gather_media_result = gather_media('.media_frame_'+$('#focus__id').val()+' .media_item', 43004);
     if(!gather_media_result['upload_completed']){
+        next_processing = false;
         alert('MEDIA ERROR: '+gather_media_result['error_message']);
         return false;
     }
@@ -3385,6 +3394,7 @@ function go_next(do_skip){
     if (focus_i__type==26560 && !$(".tickets_issued")[0]){
         //Ticket not yet issued!
         alert('Pay Now via Paypal before going next.');
+        next_processing = false;
         return false;
     } else if (focus_i__type==43758){
 
@@ -3450,6 +3460,7 @@ function go_next(do_skip){
             alert('Must add some items to create an invoice');
         }
 
+        next_processing = false;
         return false;
     }
 
@@ -3480,6 +3491,7 @@ function go_next(do_skip){
             //Show error:
             $('.go_next_btn').html(original_html);
             alert(data.message);
+            next_processing = false;
         }
     });
 
