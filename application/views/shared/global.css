@@ -4648,8 +4648,8 @@ h1 i.fad{
     background-color: #fff;
     border: 0;
     border-bottom: 0;
-    margin:0 5px 5px;
-    width: calc(100% - 10px);
+    margin:0 13px 13px;
+    width: calc(100% - 26px);
     border-radius: 21px;
     overflow: hidden;
 }
