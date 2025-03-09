@@ -3203,7 +3203,7 @@ class App extends CI_Controller
             return view__json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next__url' => ( $i_redirect_url ? $i_redirect_url : ( strlen($_POST['target_i__hashtag']) ? $_POST['target_i__hashtag'].'/' : '' ).( $find_next ? $find_next : 'start' ) ),
+                'next__url' => ( $i_redirect_url ? $i_redirect_url : ( $find_next ? $find_next : 'start' ) ),
             ));
 
         }
