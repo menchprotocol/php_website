@@ -1931,7 +1931,7 @@ function fetch_next($player_e, $i__id, $i, $target_i__hashtag){
 
     //Still here? Find the next URL
     $find_next = $CI->Mench_ledger->find_next($player_e['e__id'], $target_i__hashtag, $i);
-    return ( strlen($target_i__hashtag) ? $target_i__hashtag.'/' : '' ).( strlen($find_next) && $find_next!='false' ? $find_next : 'start' );
+    return ( strlen($find_next) && $find_next!='false' ? $find_next : 'start' );
 
 }
 
