@@ -3134,7 +3134,7 @@ class App extends CI_Controller
                 'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
                 'x__next' => $focus_i['i__id'],
                 'x__following' => 44250, //Hide Next Ideas
-            )))){
+            ))) || 1){
                 foreach($_POST['next_i_data'] as $index => $next_i_data){
 
                     if(!isset($next_i_data['i__id'])){
