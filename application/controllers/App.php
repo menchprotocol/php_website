@@ -3198,7 +3198,7 @@ class App extends CI_Controller
             if(!$i_redirect_url){
                 $find_next = 'start';
                 foreach($this->Idea_cache->fetch(array(
-                    'i__id' => $_GET['target_i__id'],
+                    'i__id' => $_POST['target_i__id'],
                 )) as $i_target){
                     $find_next = $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target);
                 }
