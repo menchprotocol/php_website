@@ -3129,60 +3129,53 @@ class App extends CI_Controller
 
 
             //Look through ALL next ideas and see which ones we can complete, if any:
-            if(!count($this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $focus_i['i__id'],
-                'x__following' => 44250, //Hide Next Ideas
-            ))) || 1){
-                foreach($_POST['next_i_data'] as $index => $next_i_data){
+            foreach($_POST['next_i_data'] as $index => $next_i_data){
 
-                    if(!isset($next_i_data['i__id'])){
+                if(!isset($next_i_data['i__id'])){
+                    continue;
+                }
+                if(!isset($next_i_data['i__text'])){
+                    $next_i_data['i__text'] = null;
+                }
+                if(!isset($next_i_data['uploaded_media'])){
+                    $next_i_data['uploaded_media'] = array();
+                }
+
+                if($input__selection && !in_array($next_i_data['i__id'], $_POST['selection_i__id'])){
+                    //Not selected, move on:
+                    continue;
+                }
+
+                foreach($this->Idea_cache->fetch(array(
+                    'i__id' => $next_i_data['i__id'],
+                )) as $i_next){
+
+                    //Can we auto-complete?
+                    if(in_array($i_next['i__type'], $this->config->item('n___43039')) || (!strlen($next_i_data['i__text']) && !count($next_i_data['uploaded_media']) && count($this->Mench_ledger->fetch(array(
+                                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
+                                'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
+                                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                                'x__previous' => $i_next['i__id'],
+                            ), array('x__next'), 0, 0)))){
+                        //Focus Discovery only, so must go to next level:
                         continue;
                     }
-                    if(!isset($next_i_data['i__text'])){
-                        $next_i_data['i__text'] = null;
-                    }
-                    if(!isset($next_i_data['uploaded_media'])){
-                        $next_i_data['uploaded_media'] = array();
-                    }
 
-                    if($input__selection && !in_array($next_i_data['i__id'], $_POST['selection_i__id'])){
-                        //Not selected, move on:
-                        continue;
-                    }
+                    //Analyze input:
+                    $input__text = in_array($i_next['i__type'], $this->config->item('n___43002')) || in_array($i_next['i__type'], $this->config->item('n___43003'));
+                    $input__upload = in_array($i_next['i__type'], $this->config->item('n___43004'));
+                    $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
+                    $i_required = i_required($i_next);
 
-                    foreach($this->Idea_cache->fetch(array(
-                        'i__id' => $next_i_data['i__id'],
-                    )) as $i_next){
-
-                        //Can we auto-complete?
-                        if(in_array($i_next['i__type'], $this->config->item('n___43039')) || (!strlen($next_i_data['i__text']) && !count($next_i_data['uploaded_media']) && count($this->Mench_ledger->fetch(array(
-                                    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                    'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
-                                    'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
-                                    'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                                    'x__previous' => $i_next['i__id'],
-                                ), array('x__next'), 0, 0)))){
-                            //Focus Discovery only, so must go to next level:
-                            continue;
-                        }
-
-                        //Analyze input:
-                        $input__text = in_array($i_next['i__type'], $this->config->item('n___43002')) || in_array($i_next['i__type'], $this->config->item('n___43003'));
-                        $input__upload = in_array($i_next['i__type'], $this->config->item('n___43004'));
-                        $trying_to_skip = (($input__text && !$input__upload && !strlen($next_i_data['i__text'])) || (!$input__text && $input__upload && !count($next_i_data['uploaded_media'])) || ($input__text && $input__upload && !count($next_i_data['uploaded_media']) && !strlen($next_i_data['i__text'])));
-                        $i_required = i_required($i_next);
-
-                        if(!($i_required && $trying_to_skip)){
-                            //Try to complete:
-                            $completion_status = $this->Mench_ledger->mark_complete(i__discovery_link($i_next, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $i_next, $next_i_data, array(
-                                'x__weight' => $next_i_data['i__quantity'],
-                            ));
-                            if($i_required && !$completion_status['status']){
-                                //We had an error with data within target_i__id:
-                                return view__json($completion_status);
-                            }
+                    if(!($i_required && $trying_to_skip)){
+                        //Try to complete:
+                        $completion_status = $this->Mench_ledger->mark_complete(i__discovery_link($i_next, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $i_next, $next_i_data, array(
+                            'x__weight' => $next_i_data['i__quantity'],
+                        ));
+                        if($i_required && !$completion_status['status']){
+                            //We had an error with data within target_i__id:
+                            return view__json($completion_status);
                         }
                     }
                 }
