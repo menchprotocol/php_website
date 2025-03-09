@@ -376,7 +376,6 @@ echo '<body class="'.$body_class.'" id="main_body">';
 echo $bgVideo;
 
 
-
 //JS Variables for this app on page...
 if ($focus_i){
     echo '<input type="hidden" id="focus__node" value="12273" />

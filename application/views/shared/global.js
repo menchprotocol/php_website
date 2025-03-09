@@ -3452,6 +3452,7 @@ function go_next(do_skip){
                     //Show error:
                     $('.go_next_btn').html(original_html);
                     alert(data.message);
+                    next_processing = false;
                 }
             });
 
@@ -3460,7 +3461,6 @@ function go_next(do_skip){
             alert('Must add some items to create an invoice');
         }
 
-        next_processing = false;
         return false;
     }
 
