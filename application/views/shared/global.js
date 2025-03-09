@@ -3488,11 +3488,11 @@ function go_next(do_skip){
             //Go to redirect message:
             js_redirect(data.next__url);
         } else {
+            next_processing = false;
             //Show error:
             $('.go_next_btn').html(original_html);
             alert(data.message);
         }
     });
 
-    next_processing = false;
 }
