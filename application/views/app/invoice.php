@@ -97,7 +97,7 @@ foreach($this->Idea_cache->fetch(array(
 
                 'note' => 'Payment Term: We only accept Credit/Debit via Paypal or eTransfer in Canada. To pay your invoice via eTransfer in Canada you can Google exchange rate for USD/CAD and e-transfer Canadian equivalant of your invoice total to support@atlascamp.org including your invoice ID in description.'."\n\n".'Have Questions? Contact Lead Treasury Shervin on WhatsApp +17788826962'."\n\n".$i['i__message']."\n\n".$i_target['i__message'],
                 'currency_code' => $_POST['currency_code'],
-                'min_payment' => ( $_POST['total_price'] > 1000 ? "1000" : "0" ),
+                'min_payment' => ( $_POST['total_price'] >= 1000 ? "1000" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
@@ -196,7 +196,7 @@ foreach($this->Idea_cache->fetch(array(
         //Return Data:
         return view__json(array(
             'status' => 1,
-            'next__url' => $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target, 0, false),
+            'next__url' => fetch_next($player_e, $_POST['focus__id'], $i_target, $_POST['target_i__hashtag']),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
         ));

@@ -1916,6 +1916,25 @@ function dispatch_email($to_emails, $subject, $email_body, $e__id = 0, $x_data =
 
 }
 
+
+
+function fetch_next($player_e, $i__id, $i, $target_i__hashtag){
+
+    //Find Next:
+    $CI =& get_instance();
+    $i_redirect_url = false;
+    foreach($CI->Idea_cache->fetch(array(
+        'i__id' => $i__id,
+    )) as $primary_i){
+        return i_redirect_url($primary_i);
+    }
+
+    //Still here? Find the next URL
+    $find_next = $CI->Mench_ledger->find_next($player_e['e__id'], $target_i__hashtag, $i);
+    return ( strlen($target_i__hashtag) ? $target_i__hashtag.'/' : '' ).( $find_next ? $find_next : 'start' );
+
+}
+
 function website_setting($setting_id = 0, $initiator_e__id = 0, $x__website = 0, $force_website = true){
 
     $CI =& get_instance();
