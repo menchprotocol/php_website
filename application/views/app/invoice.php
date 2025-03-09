@@ -194,10 +194,17 @@ foreach($this->Idea_cache->fetch(array(
         }
 
 
+        //Find Next:
+        $i_redirect_url = i_redirect_url($i);
+        if(!$i_redirect_url){
+            $find_next = $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i);
+        }
+
+
         //Return Data:
         return view__json(array(
             'status' => 1,
-            'next__url' => fetch_next($player_e, $_POST['focus__id'], $i_target, $_POST['target_i__hashtag']),
+            'next__url' => ( $i_redirect_url ? $i_redirect_url : ( $find_next ? $find_next : 'start' ) ),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
         ));
