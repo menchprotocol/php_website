@@ -3491,8 +3491,8 @@ function go_next(do_skip){
             //Show error:
             $('.go_next_btn').html(original_html);
             alert(data.message);
-            next_processing = false;
         }
     });
 
+    next_processing = false;
 }
