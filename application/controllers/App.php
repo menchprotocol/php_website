@@ -3196,6 +3196,7 @@ class App extends CI_Controller
                 $i_redirect_url = i_redirect_url($primary_i);
             }
             if(!$i_redirect_url){
+                $find_next = 'start';
                 foreach($this->Idea_cache->fetch(array(
                     'i__id' => $_GET['target_i__id'],
                 )) as $i_target){
@@ -3208,7 +3209,7 @@ class App extends CI_Controller
             return view__json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next__url' => ( $i_redirect_url ? $i_redirect_url : ( $find_next ? $find_next : 'start' ) ),
+                'next__url' => ( $i_redirect_url ? $i_redirect_url : $find_next ),
             ));
 
         }
