@@ -3196,20 +3196,14 @@ class App extends CI_Controller
                 $i_redirect_url = i_redirect_url($primary_i);
             }
             if(!$i_redirect_url){
-                $find_next = 'start';
-                foreach($this->Idea_cache->fetch(array(
-                    'i__id' => $_POST['target_i__id'],
-                )) as $i_target){
-                    $find_next = $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $i_target);
-                }
-                //$find_next = $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
+                $find_next = $this->Mench_ledger->find_next($player_e['e__id'], $_POST['target_i__hashtag'], $focus_i);
             }
 
             //All good:
             return view__json(array(
                 'status' => 1,
                 'message' => 'Saved & Next',
-                'next__url' => ( $i_redirect_url ? $i_redirect_url : $find_next ),
+                'next__url' => ( $i_redirect_url ? $i_redirect_url : ( $find_next ? $find_next : 'start' ) ),
             ));
 
         }
