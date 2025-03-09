@@ -2839,6 +2839,11 @@ textarea {
     padding:5px 0 !important;
 }
 
+.card-12273.focus-cover .inner-content .main__title{
+    padding:5px 0 5px 40px !important;
+    display: block !important;
+}
+
 
 .inner-content .form-control {
     background-color: transparent !important;
