@@ -91,12 +91,12 @@ foreach($this->Idea_cache->fetch(array(
             $invoiceData = [
                 'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_address_line_1' => 'Lead Treasury: Shervin on WhatsApp +17788826962',
-                'invoicer_address_line_1' => '1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada',
+                'invoicer_address_line_1' => 'Atlas Foundation, Non-Profit Registered in BC, Canada #774760508BC0001',
+                'invoicer_address_line_2' => '1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada',
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
                 'invoicer_email' => website_setting(30882),
 
-                'note' => 'Payment Term: We only accept Credit/Debit via Paypal or eTransfer in Canada. To pay your invoice via eTransfer in Canada you can Google exchange rate for USD/CAD and e-transfer Canadian equivalant of your invoice total to support@atlascamp.org including your invoice ID in description.'."\n\n".$i['i__message']."\n\n".$i_target['i__message'],
+                'note' => 'Payment Term: We only accept Credit/Debit via Paypal or eTransfer in Canada. To pay your invoice via eTransfer in Canada you can Google exchange rate for USD/CAD and e-transfer Canadian equivalant of your invoice total to support@atlascamp.org including your invoice ID in description.'."\n\n".'Have Questions? Contact Lead Treasury Shervin on WhatsApp +17788826962'."\n\n".$i['i__message']."\n\n".$i_target['i__message'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] >= 1000 ? "1000" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : time() )),
