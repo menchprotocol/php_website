@@ -4646,7 +4646,7 @@ h1 i.fad{
 .fixed-bottom{
     padding: 0;
     background-color: #fff;
-    border: 1px solid #000;
+    border: 0;
     border-bottom: 0;
     margin-bottom: 5px;
     border-radius: 21px;
