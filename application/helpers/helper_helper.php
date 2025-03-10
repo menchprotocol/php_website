@@ -4472,7 +4472,7 @@ function createPaypalInvoice($accessToken, $invoiceData)
 
         // This triggers immediate sending instead of draft creation
         'send_to_recipient' => true,
-        'send_to_invoicer' => true  // Set to true if you want a copy
+        'send_to_invoicer' => false  // Set to true if you want a copy
     ];
 
 
@@ -4524,7 +4524,7 @@ function sendPaypalInvoice($accessToken, $invoiceId)
 
     $payload = [
         'send_to_recipient' => true,
-        'send_to_invoicer' => true,
+        'send_to_invoicer' => false,
     ];
 
     curl_setopt_array($curl, [

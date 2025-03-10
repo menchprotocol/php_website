@@ -1151,7 +1151,6 @@ class Mench_ledger extends CIdea_cache
 
         }
 
-        //echo 'Next:'.$e__id.'/'.$target_i__hashtag.'/'.$i['i__hashtag'];
 
         if ($search_up && $target_i__hashtag!=$i['i__hashtag']) {
             //Check Previous/Up
