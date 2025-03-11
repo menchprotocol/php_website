@@ -72,7 +72,7 @@ if(count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VAL
 }
 $set_phone = false;
 if(count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=8) {
-    $set_phone = $fetch_emails[0]['x__message'];
+    $set_phone = $fetch_phones[0]['x__message'];
 }
 if(!$set_email){
     //No Valid email:
