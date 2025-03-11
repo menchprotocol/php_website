@@ -106,7 +106,7 @@ foreach($this->Idea_cache->fetch(array(
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
                 'invoicer_email' => website_setting(30882),
 
-                'note' => '💸 Payment Terms: Minimum payment of $1000 USD will secure your spot. Refunds until August 1st 2025, or else full payments due by then. We only accept Credit/Debit via Paypal or eTransfer in Canada. We Do Not Accept Venmo, Zelle or Cash App as we are based in Canada.'."\n\n".'🇨🇦For Canadian eTransfer Payments follow these 3 steps: 1️⃣Google exchange rate for USD/CAD and e-transfer Canadian equivalent of your invoice total 2️⃣Send that total to support@atlascamp.org including your invoice ID in description 3️⃣ Message Lead Treasury (See below) to inform them about the payment so we can mark your invoice as paid.'."\n\n".'🏦 Lead Treasury: Tara 💬 WhatsApp +16045374541'."\n\n".$i['i__message']."\n\n".$i_target['i__message'],
+                'note' => $i['i__message']."\n\n".$i_target['i__message'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] >= 1000 ? "1000" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : time() )),
