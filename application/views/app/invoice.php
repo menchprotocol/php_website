@@ -113,11 +113,11 @@ foreach($this->Idea_cache->fetch(array(
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
-                'recipient_email' => $set_email,
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
                 'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
                 'recipient_address_line_2' => $set_phone,
+                'recipient_email' => $set_email,
             ];
 
             // Step 1: Get access token
