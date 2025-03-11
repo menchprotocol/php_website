@@ -47,6 +47,12 @@ $fetch_emails = $this->Mench_ledger->fetch(array(
     'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
     'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
 ));
+$fetch_phones = $this->Mench_ledger->fetch(array(
+    'x__following' => 4783, //Phone
+    'x__follower' => $player_e['e__id'],
+    'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+));
 $fetch_first_names = $this->Mench_ledger->fetch(array(
     'x__following' => 42584, //First Name
     'x__follower' => $player_e['e__id'],
@@ -63,6 +69,10 @@ $fetch_last_names = $this->Mench_ledger->fetch(array(
 $set_email = false;
 if(count($fetch_emails) && filter_var($fetch_emails[0]['x__message'], FILTER_VALIDATE_EMAIL)) {
     $set_email = $fetch_emails[0]['x__message'];
+}
+$set_phone = false;
+if(count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=8) {
+    $set_phone = $fetch_emails[0]['x__message'];
 }
 if(!$set_email){
     //No Valid email:
@@ -106,7 +116,8 @@ foreach($this->Idea_cache->fetch(array(
                 'recipient_email' => $set_email,
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
-                'recipient_address' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
+                'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
+                'recipient_address_line_2' => $set_phone,
             ];
 
             // Step 1: Get access token

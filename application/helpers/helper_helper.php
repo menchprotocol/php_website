@@ -4447,7 +4447,8 @@ function createPaypalInvoice($accessToken, $invoiceData)
                         'surname' => $invoiceData['recipient_surname'] ?? ''
                     ],
                     'address' => [
-                        'address_line_1' => $invoiceData['recipient_address'] ?? '',
+                        'address_line_1' => $invoiceData['recipient_address_line_1'] ?? '',
+                        'address_line_2' => $invoiceData['recipient_address_line_2'] ?? '',
                     ],
 
                 ]
