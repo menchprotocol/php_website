@@ -106,7 +106,7 @@ foreach($this->Idea_cache->fetch(array(
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
                 'invoicer_email' => website_setting(30882),
 
-                'note' => $i['i__message']."\n\n".$i_target['i__message'],
+                'note' => $i['i__message'],
                 'currency_code' => $_POST['currency_code'],
                 'min_payment' => ( $_POST['total_price'] >= 1000 ? "1000" : "0" ),
                 'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : time() )),
@@ -116,7 +116,7 @@ foreach($this->Idea_cache->fetch(array(
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
                 'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
-                'recipient_address_line_2' => $set_phone,
+                'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
             ];
 
