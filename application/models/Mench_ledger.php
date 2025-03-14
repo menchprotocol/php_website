@@ -1549,8 +1549,40 @@ class Mench_ledger extends CIdea_cache
     }
 
 
+    function tree_history($i, $e__id = 0, $i__level = 0){
 
-    function tree_progress($e__id, $i, $current_level = 0, $loop_breaker_ids = array())
+        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
+        $i['i__level'] = $i__level;
+        $i['i__next'] = array();
+        $i__level++;
+
+        foreach(( $input__selection ? $this->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 7712, //Input Choice
+            'x__player' => $e__id,
+            'x__previous' => $i['i__id'],
+        ), array()) : $this->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
+            'x__previous' => $i['i__id'],
+        ), array(), 0, 0, array('x__weight' => 'ASC')) ) as $next_i){
+            foreach($this->Mench_ledger->fetch(array(
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__previous' => $next_i['x__next'],
+                'x__player' => $e__id,
+                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array('x__next'), 1) as $x){
+                array_push($i['i__next'], $this->Mench_ledger->tree_history($x, $i__level));
+            }
+        }
+
+        return $i;
+
+    }
+
+
+    function tree_progress($e__id, $i, $i__level = 0, $loop_breaker_ids = array())
     {
 
         if(count($loop_breaker_ids)>0 && in_array($i['i__id'], $loop_breaker_ids)){
@@ -1562,7 +1594,7 @@ class Mench_ledger extends CIdea_cache
             return false;
         }
 
-        $current_level++;
+        $i__level++;
         array_push($loop_breaker_ids, intval($i['i__id']));
 
         //Count completed:
@@ -1599,7 +1631,7 @@ class Mench_ledger extends CIdea_cache
             ), array('x__next')) as $expansion_in) {
 
                 //Fetch recursive:
-                $tree_progress = $this->Mench_ledger->tree_progress($e__id, $expansion_in, $current_level, $loop_breaker_ids);
+                $tree_progress = $this->Mench_ledger->tree_progress($e__id, $expansion_in, $i__level, $loop_breaker_ids);
 
                 if(!$tree_progress && !count($this->Mench_ledger->fetch(array(
                         'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
@@ -1637,7 +1669,7 @@ class Mench_ledger extends CIdea_cache
             }
         }
 
-        if($current_level==1){
+        if($i__level==1){
 
             /*
              *

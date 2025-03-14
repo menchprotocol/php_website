@@ -189,22 +189,20 @@ foreach($this->Mench_ledger->fetch(array(
 ), array('x__follower'), 0, 0, array('e__title' => 'ASC')) as $app) {
 
     $special_routes = in_array($app['e__id'], $this->config->item('n___42921')) && isset($e___42921[$app['e__id']]['m__message']) && strlen($e___42921[$app['e__id']]['m__message']);
-    $requires_e = in_array($app['e__id'], $this->config->item('n___42905'));
-    $requires_i = in_array($app['e__id'], $this->config->item('n___42911'));
 
-    if($requires_e && $requires_i){
+    if(in_array($app['e__id'], $this->config->item('n___44330'))){
         //Source AND Idea Input
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
         $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
         $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
-    } elseif($requires_e){
+    } elseif(in_array($app['e__id'], $this->config->item('n___42905'))){
         //Source Input
         if($special_routes){
             $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
         } else {
             $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1'.'";'."\n";
         }
-    } elseif($requires_i){
+    } elseif(in_array($app['e__id'], $this->config->item('n___42911'))){
         //Idea Input
         if($special_routes){
             $special_route_text .= '$route[\''.$e___42921[$app['e__id']]['m__message'].'\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n";

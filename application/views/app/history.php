@@ -9,7 +9,7 @@ foreach($this->Idea_cache->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e){
 
-        echo '<h2>' . $e['e__title'] . ' @' . $e['e__handle'] . ' History for ' . view__i_title($i) . '</h2>';
+        echo '<h3><a href="/@' . $e['e__handle'] . '">' . $e['e__title'] . '</a> History of <a href="/' . $i['i__hashtag'] . '">' . view__i_title($i) . '</a></h3>';
 
         //Display idea info:
         $recursive_down_ids = $this->Idea_cache->recursive_down_ids($i, 'ALL');
