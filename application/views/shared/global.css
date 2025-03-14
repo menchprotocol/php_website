@@ -1531,12 +1531,13 @@ label {
     margin: 0 3px;
     border-radius: 0px;
 }
+
 .slim_title {
-    padding: 2px 0 0;
+    padding: 1px 0 0;
     font-size:1em;
     color: #999;
     font-weight: normal;
-    margin-left:3px;
+    margin-left:5px;
 }
 .slim_title .main__title{
     color: #000;
@@ -1545,7 +1546,7 @@ label {
 .slim_title .sub_frame{
     border-left: 1px dotted #999;
     border-bottom:1px dotted #999;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
 }
 
 
