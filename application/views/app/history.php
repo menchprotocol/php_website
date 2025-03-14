@@ -1,6 +1,10 @@
 <?php
 
-echo '<h3><a href="/@' . $focus_e['e__handle'] . '"><u>@' . $focus_e['e__handle'] . '</u></a> History:</h3>';
+//Focus Source:
+echo '<div class="view__12274 row justify-content">';
+echo view__card_e(42287, $focus_e, null);
+echo '</div>';
+
 
 //Display idea info:
 $recursive_down_ids = $this->Mench_ledger->tree_history($focus_i, $focus_e['e__id']);
