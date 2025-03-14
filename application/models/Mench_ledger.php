@@ -1556,25 +1556,23 @@ class Mench_ledger extends CIdea_cache
         $i['i__next'] = array();
         $i__level++;
 
-        foreach(( $input__selection ? $this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type' => 7712, //Input Choice
+        //Append Discovery if any:
+        foreach($this->Mench_ledger->fetch(array(
+            'x__previous' => $i['x__next'],
             'x__player' => $e__id,
-            'x__previous' => $i['i__id'],
-        ), array()) : $this->Mench_ledger->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 1) as $x){
+            $i = array_merge($i, $x);
+        }
+
+        foreach($this->Mench_ledger->fetch(array(
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__previous' => $i['i__id'],
-        ), array(), 0, 0, array('x__weight' => 'ASC')) ) as $next_i){
-            foreach($this->Mench_ledger->fetch(array(
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__previous' => $next_i['x__next'],
-                'x__player' => $e__id,
-                'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('x__next'), 1) as $x){
-                array_push($i['i__next'], $this->Mench_ledger->tree_history($x, $i__level));
-            }
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
+            array_push($i['i__next'], $this->Mench_ledger->tree_history($next_i, $i__level));
         }
 
         return $i;
