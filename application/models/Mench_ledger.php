@@ -1579,7 +1579,7 @@ class Mench_ledger extends CIdea_cache
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__previous' => $i['i__id'],
         ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) ) as $next_i){
-            array_push($i['i__next'], $this->Mench_ledger->tree_history($next_i, $i__level));
+            array_push($i['i__next'], $this->Mench_ledger->tree_history($next_i, $e__id, $i__level));
         }
 
         return $i;
