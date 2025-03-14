@@ -1534,6 +1534,14 @@ label {
 .slim_title{
     border-left: 1px solid #999;
     padding: 1px 2px;
+    font-size:1em;
+    color: #999;
+    font-weight: normal;
+}
+.slim_title .has_discovered {
+    border-left: 1px solid #999;
+    color: #000;
+    font-weight: bold;
 }
 
 
