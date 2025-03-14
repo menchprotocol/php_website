@@ -195,6 +195,8 @@ foreach($this->Mench_ledger->fetch(array(
     if($requires_e && $requires_i){
         //Source AND Idea Input
         $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
     } elseif($requires_e){
         //Source Input
         if($special_routes){
