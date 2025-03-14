@@ -574,7 +574,11 @@ function round_minutes($seconds){
 
 function view_tree($i){
     echo '<div class="slim_title" style="margin-left:'.($i['i__level']*8).'px;">';
-    echo '<span class="'.( isset($i['x__id']) ? ' has_discovered ' : '' ).'">'.view__i_title($i, true).'</div>'.( count($i['i__response']) ? ' ['.$i['i__response']['x__message'].']' : '' );
+
+    echo '<div>';
+    echo '<span class="'.( isset($i['x__id']) ? ' has_discovered ' : '' ).'">'.view__i_title($i, true).'</div>';
+    echo ( count($i['i__response']) ? ' ['.$i['i__response']['x__message'].']' : '' );
+    echo '</div>';
 
     foreach($i['i__next'] as $next_i){
         view_tree($next_i);
