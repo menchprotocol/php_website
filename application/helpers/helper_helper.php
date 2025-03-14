@@ -572,6 +572,13 @@ function round_minutes($seconds){
 
 
 
+function view_tree($i_array){
+
+
+
+}
+
+
 function list_settings($i__hashtag, $fetch_contact = false){
 
     $CI =& get_instance();

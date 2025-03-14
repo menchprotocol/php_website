@@ -1549,7 +1549,7 @@ class Mench_ledger extends CIdea_cache
     }
 
 
-    function tree_history($i, $e__id = 0, $i__level = 0){
+    function tree_history($i, $e__id, $i__level = 0){
 
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $i['i__level'] = $i__level;
