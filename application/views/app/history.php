@@ -5,14 +5,10 @@ echo '<h3><a href="/@' . $focus_e['e__handle'] . '">' . $focus_e['e__title'] . '
 //Display idea info:
 $recursive_down_ids = $this->Mench_ledger->tree_history($focus_i, $focus_e['e__id']);
 
-//Main Idea:
 
+//Main Idea:
 echo '<div class="row justify-content">';
-foreach($recursive_down_ids['recursive_i_ids'] as $recursive_down_id){
-    foreach($this->Idea_cache->fetch(array(
-        'i__id' => $recursive_down_id,
-    ), 0) as $this_i){
-        echo view__card_i(12273, $this_i);
-    }
+foreach($this->Mench_ledger->tree_history($focus_i, $focus_e['e__id']) as $next_i){
+    echo '<div style="padding-left:'.(($next_i['i__level']-1)*5).'px;">'.view__i_title($next_i).( isset($next_i['x__message']) ? ' ['.$next_i['x__message'].']' : '' ).'</div>';
 }
 echo '</div>';
