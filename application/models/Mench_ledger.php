@@ -1552,9 +1552,6 @@ class Mench_ledger extends CIdea_cache
     function tree_history($i, $e__id, $i__level = 0){
 
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
-        $i['i__level'] = $i__level;
-        $i['i__next'] = array();
-        $i__level++;
 
         //Append Discovery if any:
         foreach($this->Mench_ledger->fetch(array(
@@ -1565,6 +1562,10 @@ class Mench_ledger extends CIdea_cache
         ), array(), 1) as $x){
             $i = array_merge($i, $x);
         }
+
+        $i['i__level'] = $i__level;
+        $i['i__next'] = array();
+        $i__level++;
 
         foreach(( $input__selection ? $this->Mench_ledger->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
