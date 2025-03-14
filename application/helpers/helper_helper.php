@@ -583,11 +583,11 @@ function view_tree($i){
     echo ( isset($i['i__response']['i__message']) && strlen($i['i__response']['i__message']) ? ': '.$i['i__response']['i__message'] : '' );
     echo '</div>';
 
-    echo '<div class="sub_frame">';
     foreach($i['i__next'] as $next_i){
+        echo '<div class="sub_frame">';
         view_tree($next_i);
+        echo '</div>';
     }
-    echo '</div>';
 
     echo '</div>';
 }
