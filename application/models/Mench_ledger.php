@@ -1572,6 +1572,7 @@ class Mench_ledger extends CIdea_cache
         if($input__text){
             foreach($this->Mench_ledger->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__player' => $e__id,
                 'x__type' => 6144, //Written Response
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 1) as $x) {
