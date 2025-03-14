@@ -1531,7 +1531,9 @@ label {
     margin: 0 3px;
     border-radius: 0px;
 }
-
+.slim_title{
+    border-left: 1px solid #999;
+}
 
 
 
