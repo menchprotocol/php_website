@@ -10,6 +10,6 @@ print_r($recursive_down_ids);
 //Main Idea:
 echo '<div class="row justify-content">';
 foreach($this->Mench_ledger->tree_history($focus_i, $focus_e['e__id']) as $next_i){
-    echo '<div style="padding-left:'.(isset($next_i['i__level']) ? ((intval($next_i['i__level'])-1)*5) : '0' ).'px;">'.view__i_title($next_i).( isset($next_i['x__message']) ? ' ['.$next_i['x__message'].']' : '' ).'</div>';
+    echo '<div style="padding-left:'.((intval($next_i['i__level'])-1)*5).'px;">'.view__i_title($next_i).( isset($next_i['x__message']) ? ' ['.$next_i['x__message'].']' : '' ).'</div>';
 }
 echo '</div>';
