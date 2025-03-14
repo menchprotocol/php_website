@@ -1540,12 +1540,6 @@ label {
 .slim_title .sub_frame{
     border-left: 1px solid #999;
 }
-.slim_title .has_discovered {
-    border-left: 1px solid #999;
-    color: #000;
-    font-weight: bold;
-}
-
 
 
 .note-btn i {
