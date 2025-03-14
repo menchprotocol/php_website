@@ -1543,7 +1543,8 @@ label {
     font-weight: bold;
 }
 .slim_title .sub_frame{
-    border-left: 1px solid #999;
+    border-left: 1px dotted #999;
+    border-bottom:1px dotted #999;
     margin-bottom: 1px;
 }
 
