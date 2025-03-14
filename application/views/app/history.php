@@ -10,7 +10,3 @@ $recursive_down_ids = $this->Mench_ledger->tree_history($focus_i, $focus_e['e__i
 echo '<div class="row justify-content">';
 view_tree($recursive_down_ids);
 echo '</div>';
-
-
-
-print_r($recursive_down_ids);
