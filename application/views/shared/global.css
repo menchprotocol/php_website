@@ -1531,12 +1531,14 @@ label {
     margin: 0 3px;
     border-radius: 0px;
 }
-.slim_title{
-    border-left: 1px solid #999;
+.slim_title {
     padding: 1px 2px;
     font-size:1em;
     color: #999;
     font-weight: normal;
+}
+.slim_title .sub_frame{
+    border-left: 1px solid #999;
 }
 .slim_title .has_discovered {
     border-left: 1px solid #999;

@@ -580,9 +580,12 @@ function view_tree($i){
     echo ( count($i['i__response']) ? ' ['.$i['i__response']['x__message'].']' : '' );
     echo '</div>';
 
+    echo '<div class="sub_frame">';
     foreach($i['i__next'] as $next_i){
         view_tree($next_i);
     }
+    echo '</div>';
+
     echo '</div>';
 }
 
