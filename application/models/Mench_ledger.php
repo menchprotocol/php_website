@@ -1555,6 +1555,7 @@ class Mench_ledger extends CIdea_cache
         $input__text = in_array($i['i__type'], $this->config->item('n___43002'));
         $i['i__level'] = $i__level;
         $i['i__next'] = array();
+        $i['i__discover'] = array();
         $i['i__response'] = array();
         $i__level++;
 
@@ -1565,7 +1566,7 @@ class Mench_ledger extends CIdea_cache
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1) as $x){
-            $i = array_merge($i, $x);
+            $i['i__discover'] = $x;
         }
 
         if($input__text){

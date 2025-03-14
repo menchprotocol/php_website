@@ -577,7 +577,8 @@ function view_tree($i){
     echo '<div class="slim_title">';
 
     echo '<div>';
-    echo '<span class="'.( isset($i['x__id']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</span>';
+    echo '<span class="'.( count($i['i__discover']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</span>';
+    //echo ( count($i['i__discover']) ? ' ['.$i['i__response']['x__message'].']' : '' );
     echo ( count($i['i__response']) ? ' ['.$i['i__response']['x__message'].']' : '' );
     echo '</div>';
 
