@@ -2990,7 +2990,7 @@ class App extends CI_Controller
             $_POST['selection_i__id'] = array();
         }
         if(!isset($_POST['focus_i_data']['i__text'])){
-            $_POST['focus_i_data']['i__text'] = array();
+            $_POST['focus_i_data']['i__text'] = null;
         }
         if(!isset($_POST['focus_i_data']['uploaded_media'])){
             $_POST['focus_i_data']['uploaded_media'] = array();
@@ -3009,9 +3009,17 @@ class App extends CI_Controller
 
             $input__selection = in_array($focus_i['i__type'], $this->config->item('n___7712'));
             $input__upload = in_array($focus_i['i__type'], $this->config->item('n___43004'));
+            $skipping_not_allowed = in_array($focus_i['i__type'], $this->config->item('n___43009'));
             $input__text = in_array($focus_i['i__type'], $this->config->item('n___43002')) || in_array($focus_i['i__type'], $this->config->item('n___43003'));
             $total_selected = count($_POST['selection_i__id']);
-            $trying_to_skip = !in_array($focus_i['i__type'], $this->config->item('n___43009')) && ( intval($_POST['do_skip']) || ($input__selection && !$total_selected) || ($input__text && !$input__upload && !strlen($_POST['focus_i_data']['i__text'])) || (!$input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media'])) || ($input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media']) && !strlen($_POST['focus_i_data']['i__text'])));
+            $trying_to_skip = !$skipping_not_allowed &&
+                (
+                        intval($_POST['do_skip'])
+                    || ($input__selection && !$total_selected)
+                    || ($input__text && !$input__upload && !strlen($_POST['focus_i_data']['i__text']))
+                    || (!$input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media']))
+                    || ($input__text && $input__upload && !count($_POST['focus_i_data']['uploaded_media']) && !strlen($_POST['focus_i_data']['i__text']))
+                );
             $i_required = i_required($focus_i);
 
             if(!$primary_i__id){
