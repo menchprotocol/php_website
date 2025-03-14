@@ -5,7 +5,6 @@ echo '<h3><a href="/@' . $focus_e['e__handle'] . '">' . $focus_e['e__title'] . '
 //Display idea info:
 $recursive_down_ids = $this->Mench_ledger->tree_history($focus_i, $focus_e['e__id']);
 
-print_r($recursive_down_ids);
 
 //Main Idea:
 echo '<div class="row justify-content">';
