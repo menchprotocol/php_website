@@ -1544,7 +1544,8 @@ label {
 }
 .slim_title .sub_frame{
     border-left: 1px solid #999;
-    margin-bottom: 2px;
+    border-top:1px solid #999;
+    margin-bottom: 1px;
 }
 
 
