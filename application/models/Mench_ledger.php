@@ -1578,7 +1578,7 @@ class Mench_ledger extends CIdea_cache
                 'x__player' => $e__id,
                 'LENGTH(i__message) > 0' => null,
             ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
-                $i['i__response'] = $x;
+                $i['i__response'] = $response;
             }
         }
 
