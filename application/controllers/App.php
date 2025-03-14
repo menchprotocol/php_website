@@ -141,7 +141,7 @@ class App extends CI_Controller
             //Validate Required App input:
             if(in_array($app_e__id, $this->config->item('n___42905')) && !$focus_e){
                 return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: @'.$_GET['e__handle'].' is not a valid source handle.</div>');
-            } elseif(in_array($app_e__id, $this->config->item('n___42923')) && (!$focus_i || !$target_i)){
+            } elseif(in_array($app_e__id, $this->config->item('n___44329')) && (!$focus_i || !$target_i)){
                 return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: Both #'.$_GET['i__hashtag'].' & #'.$target_hashtag.' must be valid hashtags.</div>');
             } elseif(in_array($app_e__id, $this->config->item('n___42911')) && !$focus_i){
                 return redirect_message( home_url(), '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Error: #'.$_GET['i__hashtag'].' is not a valid idea hashtag.</div>');
