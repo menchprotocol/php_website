@@ -1558,7 +1558,7 @@ class Mench_ledger extends CIdea_cache
 
         //Append Discovery if any:
         foreach($this->Mench_ledger->fetch(array(
-            'x__previous' => $i['x__next'],
+            'x__previous' => $i['i__id'],
             'x__player' => $e__id,
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1566,12 +1566,18 @@ class Mench_ledger extends CIdea_cache
             $i = array_merge($i, $x);
         }
 
-        foreach($this->Mench_ledger->fetch(array(
+        foreach(( $input__selection ? $this->Mench_ledger->fetch(array(
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type' => 7712, //Input Choice
+            'x__player' => $e__id,
+            'x__previous' => $i['i__id'],
+        ), array('x__next')) : $this->Mench_ledger->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
             'x__previous' => $i['i__id'],
-        ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) ) as $next_i){
             array_push($i['i__next'], $this->Mench_ledger->tree_history($next_i, $i__level));
         }
 
