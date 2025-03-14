@@ -192,7 +192,7 @@ foreach($this->Mench_ledger->fetch(array(
 
     if(in_array($app['e__id'], $this->config->item('n___44330'))){
         //Source AND Idea Input
-        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
+        $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$2/$1'.'";'."\n";
         $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/0/$1'.'";'."\n"; //Should give error
         $routes_text .= '$route[\'(?i)'.$app['e__handle'].'/@([a-zA-Z0-9]+)\'] = "app/load/'.$app['e__id'].'/$1/0'.'";'."\n"; //Should give error
     } elseif(in_array($app['e__id'], $this->config->item('n___42905'))){
