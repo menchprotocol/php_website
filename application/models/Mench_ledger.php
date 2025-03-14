@@ -1574,7 +1574,6 @@ class Mench_ledger extends CIdea_cache
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type' => 6144, //Written Response
                 'x__previous' => $i['i__id'],
-                'LENGTH(x__message) > 0' => null,
             ), array(), 0) as $x) {
                 $i['i__response'] = $x;
             }
