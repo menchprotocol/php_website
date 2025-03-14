@@ -11,3 +11,6 @@ echo '<div class="row justify-content">';
 view_tree($recursive_down_ids);
 echo '</div>';
 
+
+
+print_r($recursive_down_ids);

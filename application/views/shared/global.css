@@ -1536,6 +1536,7 @@ label {
     font-size:1em;
     color: #999;
     font-weight: normal;
+    margin-left:13px;
 }
 .slim_title .sub_frame{
     border-left: 1px solid #999;

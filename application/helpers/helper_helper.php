@@ -574,7 +574,7 @@ function round_minutes($seconds){
 
 function view_tree($i){
 
-    echo '<div class="slim_title" style="margin-left:'.($i['i__level']*8).'px;">';
+    echo '<div class="slim_title">';
 
     echo '<div>';
     echo '<span class="'.( isset($i['x__id']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</span>';
