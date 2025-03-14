@@ -1537,6 +1537,7 @@ label {
     color: #999;
     font-weight: normal;
     margin-left:8px;
+    margin-bottom: 1px;
 }
 .slim_title .main__title{
     color: #000;
@@ -1544,7 +1545,6 @@ label {
 }
 .slim_title .sub_frame{
     border-left: 1px solid #999;
-    margin-bottom: 1px;
 }
 
 
