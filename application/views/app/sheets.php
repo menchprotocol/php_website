@@ -9,6 +9,7 @@ $e___6287 = $this->config->item('e___6287'); //APP
 $e___4737 = $this->config->item('e___4737'); //Idea Types
 $e___6177 = $this->config->item('e___6177'); //Source Privacy
 $e___31004 = $this->config->item('e___31004'); //Idea Status
+$e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 $recursive_i_ids = array();
@@ -134,11 +135,8 @@ foreach($list_settings['query_string_filtered'] as $x){
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
             ), array('x__previous'), 1) as $target_i){
-
-                $tree_progress = $this->Mench_ledger->tree_progress($x['e__id'], $target_i);
-
                 //See History for this user:
-                $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank">'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' '.$tree_progress['fixed_completed_percentage'].'% Done</a>';
+                $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank"><span class="icon-block">'.$e___11035[44328]['m__cover'].'</span>'.$e___11035[44328]['m__title'].'</a>';
             }
         }
 
