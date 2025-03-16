@@ -127,8 +127,19 @@ foreach($list_settings['query_string_filtered'] as $x){
 
 
         if($e['e__id']==44328){
-            //See History for this user:
-            $message_clean = '<a href="'.view__app_link(44328).'/'.$focus_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank">View History</a>';
+            //Fetch primary filter:
+            foreach($this->Mench_ledger->fetch(array(
+                'x__next' => $focus_i['i__id'],
+                'x__type IN (' . join(',', $this->config->item('n___44344')) . ')' => null, //Idea Filter Additions
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+            ), array('x__previous'), 1) as $target_i){
+
+                $tree_progress = $this->Mench_ledger->tree_progress($x['e__id'], $target_i);
+
+                //See History for this user:
+                $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank">'.$tree_progress['fixed_discovered'].'/'.$tree_progress['fixed_total'].' '.$tree_progress['fixed_completed_percentage'].'% Done</a>';
+            }
         }
 
         $body_content .= '<td title="'.$x['e__title'].' x '.$e['e__title'].'" class="'.( superpower_unlocked(10939) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__player_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__player="'.$x['e__id'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
