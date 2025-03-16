@@ -22,16 +22,16 @@ foreach($this->Mench_ledger->fetch(array(
     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
 ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $link_i){
 
-    $sub_list_settings = list_settings($link_i['i__hashtag'], true);
-    if(!count($sub_list_settings['query_string_filtered'])){
+    $list_settings = list_settings($link_i['i__hashtag'], true);
+    if(!count($list_settings['query_string_filtered'])){
         continue;
     }
 
     echo '<div class="this_frame">';
-    echo '<h3 style="margin-top: 55px;"><a href="'.view__memory(42903,33286).$link_i['i__hashtag'].'">'.view__i_title($link_i).'</a> ['.count($sub_list_settings['query_string_filtered']).' Total]</h3>';
+    echo '<h3 style="margin-top: 55px;"><a href="'.view__memory(42903,33286).$link_i['i__hashtag'].'">'.view__i_title($link_i).'</a> ['.count($list_settings['query_string_filtered']).' Total]</h3>';
     echo '<table class="table table-sm table-striped stats-table mini-stats-table">';
     echo '<tr class="panel-title down-border" style="font-weight:bold !important;">';
-    foreach($sub_list_settings['query_string_filtered'] as $count => $x){
+    foreach($list_settings['query_string_filtered'] as $count => $x){
         echo '<td><div class="this_name">'.$x['extension_name'].'</div></td>';
         if(fmod($count,3)==2){
             echo '</tr><tr class="panel-title down-border" style="font-weight:bold !important;">';
