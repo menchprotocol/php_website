@@ -74,6 +74,7 @@ $set_phone = false;
 if(count($fetch_phones) && strlen($fetch_phones[0]['x__message'])>=8) {
     $set_phone = $fetch_phones[0]['x__message'];
 }
+
 if(!$set_email){
     //No Valid email:
     $this->Mench_ledger->create(array(
@@ -82,7 +83,10 @@ if(!$set_email){
         'x__next' => $_POST['focus__id'],
         'x__message' => 'No Valid email found for invoice',
     ));
-    $set_email = 'support+email+error@atlascamp.org';
+    return view__json(array(
+        'status' => 0,
+        'message' => 'Your account does not have a valid email address for us to send your invoice. Click on Edit Profile from Top/Right menu, edit your email address, and try again.',
+    ));
 }
 
 
