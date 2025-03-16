@@ -627,11 +627,11 @@ function list_settings($i__hashtag, $fetch_contact = false){
        }
        //Now search for these settings across ideas:
        foreach($CI->Mench_ledger->fetch(array(
-           'x__previous' => $i['i__id'],
+           'x__next' => $i['i__id'],
            'x__type IN (' . join(',', $CI->config->item('n___40946')) . ')' => null, //Source List Controllers
            'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
            'i__privacy IN (' . join(',', $CI->config->item('n___31871')) . ')' => null, //ACTIVE
-       ), array('x__next'), 0) as $setting_link){
+       ), array('x__previous'), 0) as $setting_link){
            array_push($list_config[intval($setting_link['x__type'])], intval($setting_link['i__id']));
        }
 
