@@ -128,7 +128,7 @@ foreach($list_settings['query_string_filtered'] as $x){
 
         if($x['e__id']==44328){
             //See History for this user:
-            $message_clean = '<a href="'.view__app_link(44328).'/'.$focus_i['i__hahstag'].'@'.$x['e__handle'].'" target="_blank">View History';
+            $message_clean = '<a href="'.view__app_link(44328).'/'.$focus_i['i__hahstag'].'@'.$x['e__handle'].'" target="_blank">View History</a>';
         }
 
         $body_content .= '<td title="'.$x['e__title'].' x '.$e['e__title'].'" class="'.( superpower_unlocked(10939) && !in_array($e['e__id'], $this->config->item('n___37695')) ? 'editable x__player_'.$e['e__id'].'_'.$x['e__id'] : '' ).'" i__id="0" e__id="'.$e['e__id'].'" x__player="'.$x['e__id'].'" require_writing="'.( $require_writing ? 1 : 0 ).'" x__id="'.$x['x__id'].'"><div class="limit_height">'.$message_clean.'</div></td>';
