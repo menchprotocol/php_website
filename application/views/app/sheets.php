@@ -136,7 +136,7 @@ foreach($list_settings['query_string_filtered'] as $x){
                 'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
             ), array('x__previous'), 1) as $target_i){
                 //See History for this user:
-                $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank"><span class="icon-block">'.$e___11035[44328]['m__cover'].'</span>'.$e___11035[44328]['m__title'].'</a>';
+                $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank"><span class="icon-block-sm">'.$e___11035[44328]['m__cover'].'</span>'.$e___11035[44328]['m__title'].'</a>';
             }
         }
 
