@@ -126,7 +126,7 @@ foreach($list_settings['query_string_filtered'] as $x){
         }
 
 
-        if($x['e__id']==44328){
+        if($e['e__id']==44328){
             //See History for this user:
             $message_clean = '<a href="'.view__app_link(44328).'/'.$focus_i['i__hahstag'].'@'.$x['e__handle'].'" target="_blank">View History</a>';
         }
