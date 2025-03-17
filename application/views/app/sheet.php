@@ -41,9 +41,7 @@ foreach($list_settings['query_string_filtered'] as $x){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1);
 
-        $set_x__message = '';
         if(count($discoveries)){
-            $set_x__message = $discoveries[0]['x__message'];
 
             $x__metadata = @unserialize($discoveries[0]['x__metadata']);
             if(isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2){
@@ -56,17 +54,38 @@ foreach($list_settings['query_string_filtered'] as $x){
         }
 
 
-        foreach($this->Mench_ledger->fetch(array(
-            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__type' => 33532, //Share Idea
-            'x__previous' => $i_var['i__id'],
-            'x__player' => $x['e__id'],
-        ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
-            $set_x__message = $response['i__message'];
+
+        $i_content .= '<td title="'.$x['e__title'].' x '.view__i_title($i_var, true).'">';
+        if(count($discoveries)){
+
+            $set_x__message = '';
+            foreach($this->Mench_ledger->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__type' => 33532, //Share Idea
+                'x__previous' => $i_var['i__id'],
+                'x__player' => $x['e__id'],
+            ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
+                $set_x__message = $response['i__message'];
+            }
+
+            if($set_x__message){
+
+                $i_content .= ( isset($_GET['expand']) ? '<p data-placement="top" '.$underdot_class.'>'.$set_x__message.'</p>' : '<span title="'.$set_x__message.' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>ℹ️️</span>'  );
+
+            } elseif(strlen($discoveries[0]['x__message']) > 0){
+                $i_content .= ( isset($_GET['expand']) ? '<p data-placement="top" '.$underdot_class.' title="'.$discoveries[0]['x__message'].'">'.$discoveries[0]['x__message'].'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>ℹ️️</span>'  );
+            } else {
+                $i_content .= '<span title="'.view__i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>';
+            }
+
+            if($discoveries[0]['x__type']==26595 && $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0){
+                $i_content .= '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ';
+            }
+
         }
 
-        $i_content .= '<td title="'.$x['e__title'].' x '.view__i_title($i_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p data-placement="top" '.$underdot_class.'>'.$set_x__message.'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view__i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' ).( $discoveries[0]['x__type']==26595 && $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' )  : '').'</td>';
+        $i_content .= '</td>';
 
 
         if(count($discoveries) && (!count($i_var['must_follow']) || count($i_var['must_follow'])!=count($this->Mench_ledger->fetch(array(
