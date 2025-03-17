@@ -16,6 +16,16 @@ foreach ($this->Mench_ledger->fetch(array(
         'x__previous' => $addition_sync['x__next'],
     ), array('x__player'), 0, 0, array('x__id' => 'DESC')) as $dicovered) {
 
+        //Make sure no previous removed link between these two sources:
+        if(!count($this->Mench_ledger->fetch(array(
+            'x__type' => 10673, //Unlink
+            'x__following' => $addition_sync['x__following'],
+            'x__follower' => $dicovered['x__player'],
+        )))){
+            //We would not recreate a removed link:
+            continue;
+        }
+
         //Any responses by this user?
         $set_x__message = $dicovered['x__message'];
         foreach($this->Mench_ledger->fetch(array(

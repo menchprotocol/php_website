@@ -1363,15 +1363,6 @@ function append_source($x__following, $x__player, $x__message, $i__id){
 
     }
 
-    $CI->Mench_ledger->create(array(
-        'x__type' => 12197, //Following Added
-        'x__player' => $x__player,
-        'x__following' => $x__following,
-        'x__follower' => $x__player,
-        'x__previous' => $i__id,
-        'x__message' => $x__message,
-    ));
-
     return true;
 
 }
