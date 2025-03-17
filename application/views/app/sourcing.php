@@ -71,14 +71,14 @@ $focus_tab = 0;
 foreach($e___focus as $x__type => $m) {
     if(isset($coins_count[$x__type]) && $coins_count[$x__type] > 0){
         $focus_tab = $x__type;
-        echo '<script> $(document).ready(function () { load_hashtag_menu(\''.$m['m__handle'].'\'); }); </script>';
+        echo '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
         break;
     }
 }
 if(!$focus_tab){
     foreach($e___focus as $x__type => $m) {
         $focus_tab = $x__type;
-        echo '<script> $(document).ready(function () { load_hashtag_menu(\''.$m['m__handle'].'\'); }); </script>';
+        echo '<script> $(document).ready(function () { if(!document.location.hash) { load_hashtag_menu(\''.$m['m__handle'].'\'); } }); </script>';
         break;
     }
 }
