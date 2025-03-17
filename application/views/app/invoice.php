@@ -11,6 +11,11 @@ if(!$player_e){
         'status' => 0,
         'message' => 'Missing Core Data',
     ));
+} elseif(!(filter_var(website_setting(30882), FILTER_VALIDATE_EMAIL) && strlen(website_setting(44355))>10 && strlen(website_setting(44354))>10)) {
+    return view__json(array(
+        'status' => 0,
+        'message' => 'Paypal Invoicing is Not Active on This Domain... Contact Webmaster...',
+    ));
 }
 
 
@@ -125,7 +130,7 @@ foreach($this->Idea_cache->fetch(array(
             ];
 
             // Step 1: Get access token
-            $accessToken = getAccessToken($this->config->item('paypal_client_id'), $this->config->item('paypal_secret'));
+            $accessToken = getAccessToken(website_setting(44354), website_setting(44355));
 
             // Step 2: Create invoice
             $invoiceId = createPaypalInvoice($accessToken, $invoiceData);
