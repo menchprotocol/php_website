@@ -7,7 +7,6 @@ if(!isset($_GET['i__hashtag'])){
 //Sheet
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
-$underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
 $recursive_i_ids = array();
 $is_with_action_es = array();
 $es_added = array();
@@ -71,10 +70,12 @@ foreach($list_settings['query_string_filtered'] as $x){
 
             if($set_x__message){
 
-                $i_content .= ( isset($_GET['expand']) ? '<p data-placement="top" '.$underdot_class.'>'.$set_x__message.'</p>' : '<span title="'.$set_x__message.' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>ℹ️️</span>'  );
+                $i_content .= ( isset($_GET['expand']) ? '<p data-placement="top">'.$set_x__message.'</p>' : '<span title="'.$set_x__message.' ['.$discoveries[0]['x__time'].']">ℹ️️</span>'  );
 
             } elseif(strlen($discoveries[0]['x__message']) > 0){
-                $i_content .= ( isset($_GET['expand']) ? '<p data-placement="top" '.$underdot_class.' title="'.$discoveries[0]['x__message'].'">'.$discoveries[0]['x__message'].'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>ℹ️️</span>'  );
+
+                $i_content .= ( isset($_GET['expand']) ? '<p data-placement="top" title="'.$discoveries[0]['x__message'].'">'.$discoveries[0]['x__message'].'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']">ℹ️️</span>'  );
+
             } else {
                 $i_content .= '<span title="'.view__i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>';
             }
@@ -132,14 +133,14 @@ foreach($list_settings['query_string_filtered'] as $x){
             if(strlen($fetch_data[0]['x__message'])){
                 if(filter_var($fetch_data[0]['x__message'], FILTER_VALIDATE_URL)){
                     //Sheet Click to Expand
-                    $message_clean = '<a '.$underdot_class.' href="'.$fetch_data[0]['x__message'].'" target="_blank" title="Open in a New Window">'.view__cover($e['e__cover'], '🔗️', ' ').'</a>';
+                    $message_clean = '<a href="'.$fetch_data[0]['x__message'].'" target="_blank" title="Open in a New Window">'.view__cover($e['e__cover'], '🔗️', ' ').'</a>';
                 } elseif(!isset($_GET['expand']) && in_array($e['e__id'], $this->config->item('n___40945'))){
                     //Sheet Click to Expand
-                    $message_clean = '<span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'\').toggleClass(\'hidden\')" '.$underdot_class.' title="'.$fetch_data[0]['x__message'].' [Click to Expand]">'.view__cover($e['e__cover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].' hidden">'.$fetch_data[0]['x__message'].'</span>';
+                    $message_clean = '<span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'"><a href="javascript:void(0);" onclick="$(\'.click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].'\').toggleClass(\'hidden\')" title="'.$fetch_data[0]['x__message'].' [Click to Expand]">'.view__cover($e['e__cover'], '✔️', ' ').'</a></span><span class="click_2_see_'.$e['e__id'].'_'.$fetch_data[0]['x__id'].' hidden">'.$fetch_data[0]['x__message'].'</span>';
                 } elseif(isset($_GET['expand']) || $require_writing){
                     $message_clean = $fetch_data[0]['x__message'];
                 } else {
-                    $message_clean = '<span '.$underdot_class.' title="'.$fetch_data[0]['x__message'].'">'.view__cover($e['e__cover'], '✔️', ' ').'</span>';
+                    $message_clean = '<span title="'.$fetch_data[0]['x__message'].'">'.view__cover($e['e__cover'], '✔️', ' ').'</span>';
                 }
             } else {
                 $message_clean = '<span class="icon-block-xs">'.view__cover($e['e__cover'], '✔️', ' ').'</span>';
