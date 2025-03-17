@@ -5,10 +5,6 @@ if(!isset($_GET['i__hashtag'])){
 }
 
 //Sheet
-$e___6287 = $this->config->item('e___6287'); //APP
-$e___4737 = $this->config->item('e___4737'); //Idea Types
-$e___6177 = $this->config->item('e___6177'); //Source Privacy
-$e___31004 = $this->config->item('e___31004'); //Idea Status
 $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
 $underdot_class = ( !isset($_GET['expand']) ? ' class="underdot" ' : '' );
@@ -136,7 +132,7 @@ foreach($list_settings['query_string_filtered'] as $x){
                 'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
             ), array('x__previous'), 1) as $target_i){
                 //See History for this user:
-                $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank"><span class="icon-block-sm">'.$e___11035[44328]['m__cover'].'</span>'.$e___11035[44328]['m__title'].'</a>';
+                $message_clean = '<a href="'.view__app_link(44328).'/'.$target_i['i__hashtag'].'@'.$x['e__handle'].'" target="_blank" title="'.$e___11035[44328]['m__title'].'"><span class="icon-block-sm">'.$e___11035[44328]['m__cover'].'</span></a>';
             }
         }
 
@@ -174,7 +170,7 @@ echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
 
 foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
-    echo '<th id="th_e_'.$e['e__id'].'"><div><span class="icon-block-xs">'.$e___6177[$e['e__privacy']]['m__cover'].'</span></div><a class="icon-block-xs" href="'.view__memory(42903,42902).$e['e__handle'].'" target="_blank" title="Open in New Window">'.view__cover($e['e__cover'], '✔️', ' ').'</a><span class="vertical_col"><span class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</span><i class="far fa-sort"></i>'.$e['e__title'].'</span></th>';
+    echo '<th id="th_e_'.$e['e__id'].'"><span class="vertical_col"><a class="icon-block-xs" href="'.view__memory(42903,42902).$e['e__handle'].'" target="_blank" title="Open in New Window" class="col_stat">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</a>'.view__cover($e['e__cover'], '✔️', ' ').$e['e__title'].'</span></th>';
 }
 
 foreach($list_settings['column_i'] as $i_var){
@@ -190,7 +186,7 @@ foreach($list_settings['column_i'] as $i_var){
 
     array_push($table_sortable, '#th_i_'.$i_var['i__id']);
 
-    echo '<th id="th_i_'.$i_var['i__id'].'"><div></div><a class="icon-block-xs" href="'.view__memory(42903,33286).$i_var['i__hashtag'].'" target="_blank" title="Open in New Window">'.$e___4737[$i_var['i__type']]['m__cover'].'</a><span class="vertical_col"><span class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</span><i class="far fa-sort"></i>'.( strlen($i_var['x__message']) ? $i_var['x__message'] : view__i_title($i_var, true) ).'</span></th>';
+    echo '<th id="th_i_'.$i_var['i__id'].'"><div></div><span class="vertical_col"><a class="icon-block-xs" href="'.view__memory(42903,33286).$i_var['i__hashtag'].'" target="_blank" title="Open in New Window" class="col_stat '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</a>'.( strlen($i_var['x__message']) ? $i_var['x__message'] : view__i_title($i_var, true) ).'</span></th>';
 
 }
 echo '</tr>';
@@ -233,7 +229,7 @@ echo '</table>';
         border-bottom: 1px dotted #000000 !important;
         font-size: 1.15em;
     }
-    .fa-filter, .fa-sort{
+    .fa-filter173{
         font-size: 1.01em !important;
         margin-bottom: 3px;
     }
