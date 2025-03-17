@@ -170,7 +170,7 @@ echo '<th id="th_primary" style="width:200px;">'.$count.' Sources</th>';
 
 foreach($list_settings['column_e'] as $e){
     array_push($table_sortable, '#th_e_'.$e['e__id']);
-    echo '<th id="th_e_'.$e['e__id'].'"><span class="vertical_col"><span class="col_stat"><a class="icon-block-xs" href="'.view__memory(42903,42902).$e['e__handle'].'" target="_blank" title="Open in New Window">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</a></span>'.view__cover($e['e__cover'], '✔️', ' ').$e['e__title'].'</span></th>';
+    echo '<th id="th_e_'.$e['e__id'].'"><a class="icon-block-xs" href="'.view__memory(42903,42902).$e['e__handle'].'" target="_blank" title="Open in New Window">'.( isset($count_totals['e'][$e['e__id']]) ? str_replace('.00','',number_format($count_totals['e'][$e['e__id']], 2)) : '0' ).'</a><span class="vertical_col">'.view__cover($e['e__cover'], '✔️', ' ').$e['e__title'].'</span></th>';
 }
 
 foreach($list_settings['column_i'] as $i_var){
@@ -186,7 +186,7 @@ foreach($list_settings['column_i'] as $i_var){
 
     array_push($table_sortable, '#th_i_'.$i_var['i__id']);
 
-    echo '<th id="th_i_'.$i_var['i__id'].'"><div></div><span class="vertical_col"><span class="col_stat"><a class="icon-block-xs" href="'.view__memory(42903,33286).$i_var['i__hashtag'].'" target="_blank" title="Open in New Window" '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</a></span>'.( strlen($i_var['x__message']) ? $i_var['x__message'] : view__i_title($i_var, true) ).'</span></th>';
+    echo '<th id="th_i_'.$i_var['i__id'].'"><a class="icon-block-xs" href="'.view__memory(42903,33286).$i_var['i__hashtag'].'" target="_blank" title="Open in New Window" '.( $max_limit ? ( $current_x>=$max_limit ? ''  : ( ($current_x/$max_limit)>=0.5 ? 'isgold' : 'isred' ) ) : '' ).'">'.$current_x.( $max_limit ? '/'.$max_limit : '').'</a><span class="vertical_col">'.( strlen($i_var['x__message']) ? $i_var['x__message'] : view__i_title($i_var, true) ).'</span></th>';
 
 }
 echo '</tr>';
