@@ -118,7 +118,7 @@ if(superpower_unlocked()) {
             var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
             if (document.documentElement.classList ){
                 if (isInstagram) {
-                    $('.social-frame').addClass('hidden');
+                    $('.login-content').html('Instagram Frame detected! Visit us from A Web Browser like Google Chrome or Safari to Continue...');
                 }
             }
         });
@@ -303,19 +303,6 @@ if(superpower_unlocked()) {
 
 
                 <?php
-
-                //SOCIAL LOGIN:
-                if(strlen(website_setting(14881)) && strlen(website_setting(14882))){
-                    echo '<div class="social-frame">';
-                    echo '<div class="mid-text-line"><span>OR</span></div>';
-                    echo '<div class="full-width-btn center top-margin"><a href="'.view__app_link(14436).'" onclick="load_away()" class="btn btn-large btn-default">';
-                    echo $e___11035[14436]['m__title'].' '.$e___11035[14436]['m__cover'];
-                    echo '</a></div>';
-                    echo '</div>';
-                }
-
-
-
                 //ANONYMOUS LOGIN:
                 if(intval(view__memory(6404,14938)) && count($sign_i)){
                     echo '<div class="social-frame">';

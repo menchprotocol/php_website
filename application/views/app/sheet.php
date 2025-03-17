@@ -40,6 +40,8 @@ foreach($list_settings['query_string_filtered'] as $x){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1);
 
+        $i_content .= '<td title="'.$x['e__title'].' x '.view__i_title($i_var, true).'">';
+
         if(count($discoveries)){
 
             $x__metadata = @unserialize($discoveries[0]['x__metadata']);
@@ -50,12 +52,6 @@ foreach($list_settings['query_string_filtered'] as $x){
             if($this_quantity<2 && intval($discoveries[0]['x__weight'])>=2){
                 $this_quantity = $discoveries[0]['x__weight'];
             }
-        }
-
-
-
-        $i_content .= '<td title="'.$x['e__title'].' x '.view__i_title($i_var, true).'">';
-        if(count($discoveries)){
 
             $set_x__message = '';
             foreach($this->Mench_ledger->fetch(array(
