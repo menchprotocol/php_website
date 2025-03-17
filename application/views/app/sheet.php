@@ -237,10 +237,6 @@ echo '</table>';
         overflow: scroll;
     }
 
-    #sortable_table a {
-        text-decoration: underline !important;
-    }
-
     .maxwidth {
         max-width: 1200px !important;
     }
