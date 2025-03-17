@@ -473,7 +473,10 @@ function load_hashtag_menu(load_hashtag = null, is_first_load = true){
     } else if(document.location.hash){
         var hashtag = document.location.hash.substr(1);
         if(hashtag && hashtag.length>0){
-            toggle_pills(hashtag, is_first_load);
+            setTimeout(function () {
+                console.log('TRYING to LOAD '+hashtag);
+                toggle_pills(hashtag, is_first_load);
+            }, 89);
         }
     }
 }
