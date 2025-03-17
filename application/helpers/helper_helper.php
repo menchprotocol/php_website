@@ -411,6 +411,9 @@ function i_redirect_url($i){
 }
 
 function i_popup_url($i){
+    if(!superpower_unlocked()){
+        return false;
+    }
     $CI =& get_instance();
     foreach($CI->Mench_ledger->fetch(array(
         'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
