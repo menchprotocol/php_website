@@ -32,7 +32,6 @@ foreach($list_settings['query_string_filtered'] as $x){
     //IDEAS
     $i_content = '';
     $this_quantity = 1;
-    $name = '';
     foreach($list_settings['column_i'] as $i_var){
 
         $discoveries = $this->Mench_ledger->fetch(array(
@@ -42,7 +41,9 @@ foreach($list_settings['query_string_filtered'] as $x){
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1);
 
+        $set_x__message = '';
         if(count($discoveries)){
+            $set_x__message = $discoveries[0]['x__message'];
 
             $x__metadata = @unserialize($discoveries[0]['x__metadata']);
             if(isset($x__metadata['quantity']) && $x__metadata['quantity'] >= 2){
@@ -52,13 +53,20 @@ foreach($list_settings['query_string_filtered'] as $x){
             if($this_quantity<2 && intval($discoveries[0]['x__weight'])>=2){
                 $this_quantity = $discoveries[0]['x__weight'];
             }
-
-            if($i_var['i__id']==15736){
-                $name = $discoveries[0]['x__message'];
-            }
         }
 
-        $i_content .= '<td title="'.$x['e__title'].' x '.view__i_title($i_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view__i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' ).( $discoveries[0]['x__type']==26595 && $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' )  : '').'</td>';
+
+        foreach($this->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__type' => 33532, //Share Idea
+            'x__previous' => $i_var['i__id'],
+            'x__player' => $x['e__id'],
+        ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
+            $set_x__message = $response['i__message'];
+        }
+
+        $i_content .= '<td title="'.$x['e__title'].' x '.view__i_title($i_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p data-placement="top" '.$underdot_class.'>'.$set_x__message.'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view__i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' ).( $discoveries[0]['x__type']==26595 && $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' )  : '').'</td>';
 
 
         if(count($discoveries) && (!count($i_var['must_follow']) || count($i_var['must_follow'])!=count($this->Mench_ledger->fetch(array(
@@ -79,10 +87,7 @@ foreach($list_settings['query_string_filtered'] as $x){
 
 
 
-
-    $plus_info = ' '.( $this_quantity > 0 ? '+'.$this_quantity : '' );
-
-    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view__cover($x['e__cover'], true).'</span><a href="'.view__memory(42903,42902).$x['e__handle'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.$name.$plus_info.'</td>';
+    $body_content .= '<td style="padding-top: 2px;"><span class="icon-block-xs">'.view__cover($x['e__cover'], true).'</span><a href="'.view__memory(42903,42902).$x['e__handle'].'" style="font-weight:bold;">'.$x['e__title'].'</a>'.( $this_quantity > 0 ? ' +'.$this_quantity : '' ).'</td>';
 
 
 

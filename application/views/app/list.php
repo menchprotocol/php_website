@@ -58,9 +58,7 @@ foreach($list_settings['query_string_filtered'] as $x){
                 $this_quantity = $discoveries[0]['x__weight'];
             }
 
-            if($i_var['i__id']==15736){
-                $name = $discoveries[0]['x__message'];
-            }
+
         }
 
         $i_content .= '<td title="'.$x['e__title'].' x '.view__i_title($i_var, true).'">'.( count($discoveries) ? ( strlen($discoveries[0]['x__message']) > 0 ? ( isset($_GET['expand']) ? '<p title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].'" data-placement="top" '.$underdot_class.'>'.$discoveries[0]['x__message'].'</p>' : '<span title="'.view__i_title($i_var, true).': '.$discoveries[0]['x__message'].' ['.$discoveries[0]['x__time'].']" '.$underdot_class.'>✔️</span>'  ) : '<span title="'.view__i_title($i_var, true).' ['.$discoveries[0]['x__time'].']">✔️</span>' ).( $discoveries[0]['x__type']==26595 && $x__metadata['mc_gross']!=0 && strlen($x__metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$x__metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' )  : '').'</td>';
