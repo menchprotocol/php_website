@@ -104,7 +104,7 @@ if(superpower_unlocked()) {
             $('.login-content').html('<div class="center"><span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span></div>');
         }
 
-        //Disable social login for Instagram as it has a bug within auth0
+        //Disable login for Instagram Frame:
         $(document).ready(function () {
 
             //Watch for 4 digit code:
