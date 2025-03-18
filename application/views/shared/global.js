@@ -1751,8 +1751,8 @@ function load_i_dynamic(i__id, x__id, current_i__type, initial_loading){
 
                     if(x__id && parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        $("#modal31911 .save_x__message").val('IGNORE_INPUT');
-                        $("#modal31911 .save_x__frame").addClass('hidden');
+                        //$("#modal31911 .save_x__message").val('IGNORE_INPUT');
+                        //$("#modal31911 .save_x__frame").addClass('hidden');
                     }
                 }
 
@@ -2341,8 +2341,8 @@ function e_editor_load(e__id = 0, x__id = 0, bar_title = null, x__message = null
 
                     if(x__id && ( (parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"]==e__id )){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        $("#modal31912 .save_x__message").val('IGNORE_INPUT');
-                        $("#modal31912 .save_x__frame").addClass('hidden');
+                        //$("#modal31912 .save_x__message").val('IGNORE_INPUT');
+                        //$("#modal31912 .save_x__frame").addClass('hidden');
                     }
                 }
             }
