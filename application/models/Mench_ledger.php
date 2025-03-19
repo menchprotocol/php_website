@@ -1605,6 +1605,33 @@ class Mench_ledger extends CIdea_cache
 
     }
 
+    function tree_doc($i, $i__level = 0){
+
+        $i['i__level'] = $i__level;
+        $i['i__next'] = array();
+        $i__level++;
+
+        //Append Total Discoveries if any:
+        $sub_counter = $this->Mench_ledger->fetch(array(
+            'x__previous' => $i['i__id'],
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
+        $i['i__count_discovery'] = $sub_counter[0]['totals'];
+
+        foreach($this->Mench_ledger->fetch(array(
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
+            'x__previous' => $i['i__id'],
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
+            array_push($i['i__next'], $this->Mench_ledger->tree_doc($next_i, $i__level));
+        }
+
+        return $i;
+
+    }
+
 
     function tree_progress($e__id, $i, $i__level = 0, $loop_breaker_ids = array())
     {
