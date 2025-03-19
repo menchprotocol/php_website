@@ -2183,7 +2183,8 @@ function delete_media(uploader_id, info_id, remove_cache = true, skip_check = fa
         has_unsaved_changes = true;
     }
 
-    $('#'+info_id).empty();
+    $('#'+info_id).remove();
+    $('.media_frame #'+info_id).remove();
 
     if(remove_cache && media_cache[uploader_id][info_id]){
         console.log('Media removed');
