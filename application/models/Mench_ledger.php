@@ -1652,7 +1652,9 @@ class Mench_ledger extends CIdea_cache
             }
 
             $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
-            $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
+            if(!$input__selection || $is_required){
+                $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
+            }
             $i['stats']['or_steps'] += $result_i['stats']['or_steps'];
 
         }
