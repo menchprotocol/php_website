@@ -596,10 +596,18 @@ function view_tree($i){
         echo '<span class="icon-block-sm"><i class="far fa-eye"></i></span>'.$i['i__count_discovery'];
     }
     if(isset($i['stats'])){
-        echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>'.$i['stats']['max_level'];
-        echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>'.$i['stats']['min_steps'];
-        echo '<span class="icon-block-sm"><i class="far fa-gauge-max"></i></span>'.$i['stats']['max_steps'];
-        echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>'.$i['stats']['or_steps'];
+        if($i['stats']['max_level']){
+            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>'.$i['stats']['max_level'];
+        }
+        if($i['stats']['min_steps']>0){
+            echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>'.$i['stats']['min_steps'];
+        }
+        if($i['stats']['max_steps']>0){
+            echo '<span class="icon-block-sm"><i class="far fa-gauge-max"></i></span>'.$i['stats']['max_steps'];
+        }
+        if($i['stats']['or_steps']>0){
+            echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>'.$i['stats']['or_steps'];
+        }
     }
 
     echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line extra_message">'. view__i__links($i).'</div><script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>' : '' );
