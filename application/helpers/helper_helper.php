@@ -584,7 +584,19 @@ function view_tree($i){
     echo '<a href="/'.$i['i__hashtag'].'" target="_blank" class="'.( !isset($i['i__discover']) || count($i['i__discover']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</a>';
     //echo ( count($i['i__discover']) ? ' ['.$i['i__response']['x__message'].']' : '' );
     echo ( isset($i['i__response']['i__message']) && strlen($i['i__response']['i__message']) ? ' '.$i['i__response']['i__message'] : '' );
-    echo ( isset($i['i__count_discovery']) && intval($i['i__count_discovery'])>0 ? '<span class="icon-block-sm"><i class="far fa-eye"></i></span>'.$i['i__count_discovery'] : '' );
+
+
+    if(isset($i['i__count_discovery']) && intval($i['i__count_discovery'])>0){
+        echo '<span class="icon-block-sm"><i class="far fa-eye"></i></span>'.$i['i__count_discovery'];
+    }
+    if(isset($i['stats']) && $i['i__level']==1){
+        echo '<span class="icon-block-sm">LV</span>'.$i['stats']['max_level'];
+        echo '<span class="icon-block-sm">MX</span>'.$i['stats']['max_steps'];
+        echo '<span class="icon-block-sm">AV</span>'.$i['stats']['avg_steps'];
+        echo '<span class="icon-block-sm">MI</span>'.$i['stats']['min_steps'];
+        echo '<span class="icon-block-sm">OR</span>'.$i['stats']['or_steps'];
+    }
+
     echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line">'. view__i__links($i).'</div><script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>' : '' );
     echo '</div>';
 

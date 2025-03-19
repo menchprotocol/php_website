@@ -1608,8 +1608,23 @@ class Mench_ledger extends CIdea_cache
     function tree_doc($i, $i__level = 0){
 
         $i['i__level'] = $i__level;
-        $i['i__next'] = array();
         $i__level++;
+        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
+        $total_next = $this->Mench_ledger->fetch(array(
+            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
+            'x__previous' => $i['i__id'],
+        ), array('x__next'), 0, 0, array('x__weight' => 'ASC'));
+
+        $i['stats'] = array(
+            'max_level' => $i__level,
+            'max_steps' => 1 + count($total_next),
+            'avg_steps' => 1 + ( $input__selection ? 0 : count($total_next) ), //Can be improved later...
+            'min_steps' => ( $input__selection ? 1 : count($total_next) ),
+            'or_steps' => ( $input__selection ? 1 : 0 ),
+        );
+        $i['i__next'] = array();
 
         //Append Total Discoveries if any:
         $sub_counter = $this->Mench_ledger->fetch(array(
@@ -1619,13 +1634,22 @@ class Mench_ledger extends CIdea_cache
         ), array(), 0, 0, array(), 'COUNT(x__id) as totals');
         $i['i__count_discovery'] = $sub_counter[0]['totals'];
 
-        foreach($this->Mench_ledger->fetch(array(
-            'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
-            'x__previous' => $i['i__id'],
-        ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
-            array_push($i['i__next'], $this->Mench_ledger->tree_doc($next_i, $i__level));
+
+
+        foreach($total_next as $next_i){
+
+            $result_i = $this->Mench_ledger->tree_doc($next_i, $i__level);
+            array_push($i['i__next'], $result_i);
+
+            if($result_i['stats']['max_level']>$i['stats']['max_level']){
+                $i['stats']['max_level'] = $result_i['stats']['max_level'];
+            }
+
+            $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
+            $i['stats']['avg_steps'] += $result_i['stats']['avg_steps'];
+            $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
+            $i['stats']['or_steps'] += $result_i['stats']['or_steps'];
+
         }
 
         return $i;
