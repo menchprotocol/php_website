@@ -585,8 +585,9 @@ function view_tree($i){
     //echo ( count($i['i__discover']) ? ' ['.$i['i__response']['x__message'].']' : '' );
     echo ( isset($i['i__response']['i__message']) && strlen($i['i__response']['i__message']) ? ' '.$i['i__response']['i__message'] : '' );
     echo ( isset($i['i__count_discovery']) && intval($i['i__count_discovery'])>0 ? '<span class="icon-block-sm"><i class="far fa-eye"></i></span>'.$i['i__count_discovery'] : '' );
-    echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line">'. view__i__links($i).'</div>' : '' );
+    echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line">'. view__i__links($i).'</div><script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>' : '' );
     echo '</div>';
+
 
     foreach($i['i__next'] as $next_i){
         echo '<div class="sub_frame">';
