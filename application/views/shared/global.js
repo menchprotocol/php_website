@@ -2049,7 +2049,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
             //Show error if any:
             if(result.failed && result.status && result.status.length>0){
                 alert('ERROR for File ['+result.info.name+']: '+result.status);
-                delete_media(uploader_id, result.info.id, true, true);
+                delete_media(uploader_id, result.info.id,  true);
             }
             //Log error
             console.log('ERROR');
@@ -2171,7 +2171,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
 
 var confirm_removal_once_done = false;
-function delete_media(uploader_id, info_id, remove_cache = true, skip_check = false){
+function delete_media(uploader_id, info_id, skip_check = false){
 
     if(!skip_check && !confirm_removal_once_done){
         //Confirm removal once:
@@ -2186,14 +2186,8 @@ function delete_media(uploader_id, info_id, remove_cache = true, skip_check = fa
     $('#'+info_id).remove();
     $('.media_frame #'+info_id).remove();
 
-    if(remove_cache && media_cache[uploader_id][info_id]){
-        console.log('Media removed');
+    if(media_cache[uploader_id][info_id]){
         delete media_cache[uploader_id][info_id];
-    } else {
-        console.log('Media NOT removed');
-        console.log(uploader_id);
-        console.log(info_id);
-        console.log(media_cache);
     }
 
 }
@@ -2229,7 +2223,7 @@ function cloudinary_preview__source(uploader_id, info_id, media_e__id, playback_
 
         //Unsupported file, should not happen since we limited file extensions to those we know:
         alert('Upload Error: Uploaded File '+e__title+' is not a valid Video, Image or Audio file.');
-        delete_media(uploader_id, info_id, true, true);
+        delete_media(uploader_id, info_id, true);
 
     }
 
