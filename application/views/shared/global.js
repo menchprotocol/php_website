@@ -2187,6 +2187,9 @@ function delete_media(uploader_id, info_id, remove_cache = true, skip_check = fa
         delete media_cache[uploader_id][info_id];
     } else {
         console.log('Media NOT removed');
+        console.log(uploader_id);
+        console.log(info_id);
+        console.log(media_cache);
     }
 
 }
