@@ -1610,6 +1610,13 @@ class Mench_ledger extends CIdea_cache
         $i['i__level'] = $i__level;
         $i__level++;
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
+        $single_choice = in_array($i['i__type'], $this->config->item('n___33331'));
+        $is_required = count($this->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__next' => $i['i__id'],
+            'x__following' => 28239, //Required
+        )));
         $total_next = $this->Mench_ledger->fetch(array(
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1619,10 +1626,9 @@ class Mench_ledger extends CIdea_cache
 
         $i['stats'] = array(
             'max_level' => $i__level,
-            'max_steps' => 1 + count($total_next),
-            'avg_steps' => 1 + ( $input__selection ? 0 : count($total_next) ), //Can be improved later...
-            'min_steps' => ( $input__selection ? 1 : count($total_next) ),
-            'or_steps' => ( $input__selection ? 1 : 0 ),
+            'max_steps' => ( $input__selection ? ( $single_choice ? 1 : count($total_next) ) : count($total_next) ),
+            'min_steps' => ( $input__selection ? ( $is_required ? 1 : 0 ) : count($total_next) ), //Can be improved later...
+            'or_steps' => ( $input__selection && count($total_next) ? 1 : 0 ),
         );
         $i['i__next'] = array();
 
@@ -1646,7 +1652,6 @@ class Mench_ledger extends CIdea_cache
             }
 
             $i['stats']['max_steps'] += $result_i['stats']['max_steps'];
-            $i['stats']['avg_steps'] += $result_i['stats']['avg_steps'];
             $i['stats']['min_steps'] += $result_i['stats']['min_steps'];
             $i['stats']['or_steps'] += $result_i['stats']['or_steps'];
 
