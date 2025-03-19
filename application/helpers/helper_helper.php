@@ -596,8 +596,11 @@ function view_tree($i){
         echo '<span class="icon-block-sm"><i class="far fa-eye"></i></span>'.$i['i__count_discovery'];
     }
     if(isset($i['stats'])){
-        if($i['stats']['max_level']){
-            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>'.$i['stats']['max_level'];
+        if($i['stats']['max_level'] && $i['i__level']==0){
+            echo '<span class="icon-block-sm"><i class="fas fa-layer-group"></i></span>'.$i['stats']['max_level'];
+        }
+        if($i['i__level']>0){
+            echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>'.$i['i__level'];
         }
         if($i['stats']['min_steps']>0){
             echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>'.$i['stats']['min_steps'];
