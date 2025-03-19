@@ -589,12 +589,12 @@ function view_tree($i){
     if(isset($i['i__count_discovery']) && intval($i['i__count_discovery'])>0){
         echo '<span class="icon-block-sm"><i class="far fa-eye"></i></span>'.$i['i__count_discovery'];
     }
-    if(isset($i['stats']) && $i['i__level']==1){
-        echo '<span class="icon-block-sm">LV</span>'.$i['stats']['max_level'];
-        echo '<span class="icon-block-sm">MX</span>'.$i['stats']['max_steps'];
-        echo '<span class="icon-block-sm">AV</span>'.$i['stats']['avg_steps'];
-        echo '<span class="icon-block-sm">MI</span>'.$i['stats']['min_steps'];
-        echo '<span class="icon-block-sm">OR</span>'.$i['stats']['or_steps'];
+    if(isset($i['stats']) && $i['i__level']==0){
+        echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>'.$i['stats']['max_level'];
+        echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>'.$i['stats']['min_steps'];
+        echo '<span class="icon-block-sm"><i class="far fa-gauge"></i></span>'.$i['stats']['avg_steps'];
+        echo '<span class="icon-block-sm"><i class="far fa-gauge-max"></i></span>'.$i['stats']['max_steps'];
+        echo '<span class="icon-block-sm"><i class="far fa-split"></i></span>'.$i['stats']['or_steps'];
     }
 
     echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line">'. view__i__links($i).'</div><script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>' : '' );
