@@ -2172,6 +2172,7 @@ function load_cloudinary(uploader_id, s__id, uploader_tags = [], loading_button 
 
 var confirm_removal_once_done = false;
 function delete_media(uploader_id, info_id, remove_cache = true, skip_check = false){
+
     if(!skip_check && !confirm_removal_once_done){
         //Confirm removal once:
         var r = confirm("Are you sure you want to delete this?");
@@ -2181,7 +2182,9 @@ function delete_media(uploader_id, info_id, remove_cache = true, skip_check = fa
         confirm_removal_once_done = true; //Dont ask again
         has_unsaved_changes = true;
     }
-    $('#'+info_id).remove();
+
+    $('#'+info_id).empty();
+
     if(remove_cache && media_cache[uploader_id][info_id]){
         console.log('Media removed');
         delete media_cache[uploader_id][info_id];
