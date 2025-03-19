@@ -580,9 +580,11 @@ function view_tree($i){
     echo '<div class="slim_title">';
 
     echo '<div>';
-    echo ( isset($i['i__discover']['x__weight']) && intval($i['i__discover']['x__weight'])>1 ? $i['i__discover']['x__weight'].'x ' : '' );
+    echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_'.$i['i__id'].'\').toggleClass(\'hidden\')"><span class="icon-block-sm hidden frame_id_'.$i['i__id'].'"><i class="far fa-circle-plus"></i></span></a>';
+    echo '<a href="javascript:void(0);" onclick="$(\'.frame_id_'.$i['i__id'].'\').toggleClass(\'hidden\')"><span class="icon-block-sm frame_id_'.$i['i__id'].'"><i class="far fa-circle-minus"></i></span></a>';
+
     echo '<a href="/'.$i['i__hashtag'].'" target="_blank" class="'.( !isset($i['i__discover']) || count($i['i__discover']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</a>';
-    //echo ( count($i['i__discover']) ? ' ['.$i['i__response']['x__message'].']' : '' );
+    echo ( isset($i['i__discover']['x__weight']) && intval($i['i__discover']['x__weight'])>1 ? $i['i__discover']['x__weight'].'x ' : '' );
     echo ( isset($i['i__response']['i__message']) && strlen($i['i__response']['i__message']) ? ' '.$i['i__response']['i__message'] : '' );
 
 
@@ -593,7 +595,7 @@ function view_tree($i){
         echo '<span class="icon-block-sm"><i class="far fa-layer-group"></i></span>'.$i['stats']['max_level'];
         echo '<span class="icon-block-sm"><i class="far fa-gauge-min"></i></span>'.$i['stats']['min_steps'];
         echo '<span class="icon-block-sm"><i class="far fa-gauge-max"></i></span>'.$i['stats']['max_steps'];
-        echo '<span class="icon-block-sm"><i class="far fa-split"></i></span>'.$i['stats']['or_steps'];
+        echo '<span class="icon-block-sm"><i class="far fa-split rotate90"></i></span>'.$i['stats']['or_steps'];
     }
 
     echo ( isset($i['i__count_discovery']) ? '<div class="grey hide-subline maxwidth hideIfEmpty remove_first_line">'. view__i__links($i).'</div><script> $(document).ready(function () {show_more('.$i['i__id'].'); }); </script>' : '' );
@@ -601,7 +603,7 @@ function view_tree($i){
 
 
     foreach($i['i__next'] as $next_i){
-        echo '<div class="sub_frame">';
+        echo '<div class="sub_frame frame_id_'.$i['i__id'].'">';
         view_tree($next_i);
         echo '</div>';
     }
