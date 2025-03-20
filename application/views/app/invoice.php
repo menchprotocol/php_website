@@ -97,56 +97,37 @@ if(!$set_email){
 
 
 foreach($this->Idea_cache->fetch(array(
-    'i__id' => $_POST['target_i__id'],
+    'i__id' => $_POST['target_i__id'], //ACTIVE
 )) as $i_target){
 
     foreach($this->Idea_cache->fetch(array(
-        'i__id' => $_POST['focus__id'],
+        'i__id' => $_POST['focus__id'], //ACTIVE
     )) as $i){
 
         // Usage example
         try {
-
-            $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
-            $website_logo = 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg';
-            $invoice_due_dates = $this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $i['i__id'],
-                'x__following' => 44378, //Invoice Due Date
-            ));
-            $invoice_min_payments = $this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                'x__next' => $i['i__id'],
-                'x__following' => 44379, //Invoice Min Payment
-            ));
-            $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
-            $min_pay = 1000;
-            $invoice_due_dates[0]['x__message'] = 'Aug 1 2025';
-
             // Sample invoice data
             $invoiceData = [
-                'invoicer_logo_url' => ( filter_var($website_logo, FILTER_VALIDATE_URL) ? $website_logo : '' ),
+                'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_address_line_1' => 'Burning Man Camp', //Atlas Foundation; Non-Profit #774760508BC0001
-                'invoicer_address_line_2' => 'In Dust We Trust', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
-                'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']),
+                'invoicer_address_line_1' => 'Atlas Foundation; Non-Profit #774760508BC0001',
+                'invoicer_address_line_2' => '1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada',
+                'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
                 'invoicer_email' => website_setting(30882),
 
                 'note' => $i['i__message'],
-                'min_payment' => ($min_pay>0 && $_POST['total_price']>=$min_pay ? $min_pay."" : 0 ),
                 'currency_code' => $_POST['currency_code'],
-                'due_date' => ($_POST['total_price']>0 && isset($invoice_due_dates[0]['x__message']) && strtotime($invoice_due_dates[0]['x__message'])>0 ? strtotime($invoice_due_dates[0]['x__message']) : false),
+                'min_payment' => ( $_POST['total_price'] >= 1000 ? "1000" : "0" ),
+                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
+
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
                 'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
             ];
-
 
             // Step 1: Get access token
             $accessToken = getAccessToken(website_setting(44354), website_setting(44355));
