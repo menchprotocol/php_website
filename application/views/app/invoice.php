@@ -106,19 +106,35 @@ foreach($this->Idea_cache->fetch(array(
 
         // Usage example
         try {
+
+            $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
+            $invoice_due_dates = $this->Mench_ledger->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                'x__next' => $i['i__id'],
+                'x__following' => 44378, //Invoice Due Date
+            ));
+            $invoice_min_payments = $this->Mench_ledger->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                'x__next' => $i['i__id'],
+                'x__following' => 44379, //Invoice Min Payment
+            ));
+            $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
+
             // Sample invoice data
             $invoiceData = [
-                'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
+                'invoicer_logo_url' => ( filter_var($website_logo, FILTER_VALIDATE_URL) ? $website_logo : '' ),
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_address_line_1' => 'Atlas Foundation; Non-Profit #774760508BC0001',
-                'invoicer_address_line_2' => '1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada',
-                'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
+                //'invoicer_address_line_1' => 'Atlas Foundation; Non-Profit #774760508BC0001',
+                //'invoicer_address_line_2' => '1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada',
+                'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']),
                 'invoicer_email' => website_setting(30882),
 
                 'note' => $i['i__message'],
                 'currency_code' => $_POST['currency_code'],
-                'min_payment' => ( $_POST['total_price'] >= 1000 ? "1000" : "0" ),
-                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 ? strtotime('August 1st 2025') : time() )),
+                'min_payment' => ( $min_pay>0 && $_POST['total_price']>=$min_pay ? $min_pay : "0" ),
+                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && count($invoice_due_dates) && strtotime($invoice_due_dates[0]['x__message'])>0 ? strtotime($invoice_due_dates[0]['x__message']) : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
