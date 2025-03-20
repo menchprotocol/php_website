@@ -97,11 +97,11 @@ if(!$set_email){
 
 
 foreach($this->Idea_cache->fetch(array(
-    'i__id' => $_POST['target_i__id'], //ACTIVE
+    'i__id' => $_POST['target_i__id'],
 )) as $i_target){
 
     foreach($this->Idea_cache->fetch(array(
-        'i__id' => $_POST['focus__id'], //ACTIVE
+        'i__id' => $_POST['focus__id'],
     )) as $i){
 
         // Usage example
@@ -121,6 +121,7 @@ foreach($this->Idea_cache->fetch(array(
                 'x__following' => 44379, //Invoice Min Payment
             ));
             $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
+            $invoice_due = ( count($invoice_due_dates) ? $invoice_due_dates[0]['x__message'] : 0 );
 
             // Sample invoice data
             $invoiceData = [
@@ -240,6 +241,8 @@ foreach($this->Idea_cache->fetch(array(
         //Return Data:
         return view__json(array(
             'status' => 1,
+            'min_pay' => $min_pay,
+            'invoice_due' => $invoice_due,
             'next__url' => ( $i_redirect_url ? $i_redirect_url : ( $find_next ? $find_next : 'start' ) ),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
@@ -248,7 +251,6 @@ foreach($this->Idea_cache->fetch(array(
 
     }
 }
-
 
 
 
