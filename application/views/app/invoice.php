@@ -132,10 +132,11 @@ foreach($this->Idea_cache->fetch(array(
                 'invoicer_email' => website_setting(30882),
 
                 'note' => $i['i__message'],
+                'min_payment' => ($min_pay>0 && $_POST['total_price']>=$min_pay ? $min_pay : 0 ),
                 'currency_code' => $_POST['currency_code'],
+                'due_date' => ($_POST['total_price']>0 && count($invoice_due_dates) && strtotime($invoice_due_dates[0]['x__message'])>0 ? strtotime($invoice_due_dates[0]['x__message']) : false),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
-
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
                 'recipient_surname' => count($fetch_last_names) ? $fetch_last_names[0]['x__message'] : '',
                 'recipient_address_line_1' => 'https://'.get_domain('m__message', $player_e['e__id']).'/@'.$player_e['e__handle'],
@@ -143,12 +144,6 @@ foreach($this->Idea_cache->fetch(array(
                 'recipient_email' => $set_email,
             ];
 
-            if($min_pay>0 && $_POST['total_price']>=$min_pay){
-                $invoiceData['min_payment'] = $min_pay;
-            }
-            if($_POST['total_price']>0 && count($invoice_due_dates) && strtotime($invoice_due_dates[0]['x__message'])>0){
-                $invoiceData['due_date'] = strtotime($invoice_due_dates[0]['x__message']);
-            }
 
             // Step 1: Get access token
             $accessToken = getAccessToken(website_setting(44354), website_setting(44355));
