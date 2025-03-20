@@ -121,7 +121,6 @@ foreach($this->Idea_cache->fetch(array(
                 'x__following' => 44379, //Invoice Min Payment
             ));
             $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
-            $invoice_due = ( count($invoice_due_dates) ? $invoice_due_dates[0]['x__message'] : 0 );
 
             // Sample invoice data
             $invoiceData = [
@@ -134,8 +133,6 @@ foreach($this->Idea_cache->fetch(array(
 
                 'note' => $i['i__message'],
                 'currency_code' => $_POST['currency_code'],
-                'min_payment' => ( $min_pay>0 && $_POST['total_price']>=$min_pay ? $min_pay : "0" ),
-                'due_date' => date('Y-m-d', ( $_POST['total_price']>0 && count($invoice_due_dates) && strtotime($invoice_due_dates[0]['x__message'])>0 ? strtotime($invoice_due_dates[0]['x__message']) : time() )),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
 
@@ -145,6 +142,13 @@ foreach($this->Idea_cache->fetch(array(
                 'recipient_address_line_2' => ( $set_phone ? $set_phone : '' ),
                 'recipient_email' => $set_email,
             ];
+
+            if($min_pay>0 && $_POST['total_price']>=$min_pay){
+                $invoiceData['min_payment'] = $min_pay;
+            }
+            if($_POST['total_price']>0 && count($invoice_due_dates) && strtotime($invoice_due_dates[0]['x__message'])>0){
+                $invoiceData['due_date'] = strtotime($invoice_due_dates[0]['x__message']);
+            }
 
             // Step 1: Get access token
             $accessToken = getAccessToken(website_setting(44354), website_setting(44355));
@@ -241,8 +245,6 @@ foreach($this->Idea_cache->fetch(array(
         //Return Data:
         return view__json(array(
             'status' => 1,
-            'min_pay' => $min_pay,
-            'invoice_due' => $invoice_due,
             'next__url' => ( $i_redirect_url ? $i_redirect_url : ( $find_next ? $find_next : 'start' ) ),
             'message' => ( $_POST['total_price']>0 ? 'Success: Paypal invoice emailed to '.$set_email.' which you should receive in 1-2 minutes' : 'You have a Zero Balance invoice, so you are all set!' ),
             'invoiceData' => $invoiceData,
