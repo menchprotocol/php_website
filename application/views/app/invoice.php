@@ -126,8 +126,8 @@ foreach($this->Idea_cache->fetch(array(
             $invoiceData = [
                 'invoicer_logo_url' => ( filter_var($website_logo, FILTER_VALIDATE_URL) ? $website_logo : '' ),
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_address_line_1' => '', //Atlas Foundation; Non-Profit #774760508BC0001
-                'invoicer_address_line_2' => '', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
+                'invoicer_address_line_1' => get_domain('m__title'), //Atlas Foundation; Non-Profit #774760508BC0001
+                'invoicer_address_line_2' => 'In Dust We Trust', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']),
                 'invoicer_email' => website_setting(30882),
 
