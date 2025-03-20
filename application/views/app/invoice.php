@@ -118,7 +118,6 @@ foreach($this->Idea_cache->fetch(array(
             'x__following' => 44379, //Invoice Min Payment
         ));
         $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
-        $invoice_due_dates[0]['x__message'] = '2025-07-31 12:00:00';
 
         // Usage example
         try {
