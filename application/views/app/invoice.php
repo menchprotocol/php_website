@@ -129,15 +129,15 @@ foreach($this->Idea_cache->fetch(array(
             $invoiceData = [
                 'invoicer_logo_url' => ( filter_var($website_logo, FILTER_VALIDATE_URL) ? $website_logo : '' ),
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_address_line_1' => get_domain('m__title'), //Atlas Foundation; Non-Profit #774760508BC0001
+                'invoicer_address_line_1' => 'Burning Man Camp', //Atlas Foundation; Non-Profit #774760508BC0001
                 'invoicer_address_line_2' => 'In Dust We Trust', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']),
                 'invoicer_email' => website_setting(30882),
 
                 'note' => $i['i__message'],
-                'min_payment' => ($min_pay>0 && $_POST['total_price']>=$min_pay ? $min_pay : 0 ),
+                'min_payment' => ($min_pay>0 && $_POST['total_price']>=$min_pay ? $min_pay."" : 0 ),
                 'currency_code' => $_POST['currency_code'],
-                'due_date' => ($_POST['total_price']>0 && count($invoice_due_dates) && strtotime($invoice_due_dates[0]['x__message'])>0 ? strtotime($invoice_due_dates[0]['x__message']) : false),
+                'due_date' => ($_POST['total_price']>0 && isset($invoice_due_dates[0]['x__message']) && strtotime($invoice_due_dates[0]['x__message'])>0 ? strtotime($invoice_due_dates[0]['x__message']) : false),
                 'total_amount' =>  $_POST['total_price'],
                 'items' => $items,
                 'recipient_name' => count($fetch_first_names) && strlen($fetch_first_names[0]['x__message']) ? $fetch_first_names[0]['x__message'] : $player_e['e__title'],
