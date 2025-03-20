@@ -108,6 +108,7 @@ foreach($this->Idea_cache->fetch(array(
         try {
 
             $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
+            $website_logo = 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg';
             $invoice_due_dates = $this->Mench_ledger->fetch(array(
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
@@ -121,6 +122,8 @@ foreach($this->Idea_cache->fetch(array(
                 'x__following' => 44379, //Invoice Min Payment
             ));
             $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
+            $min_pay = 1000;
+            $invoice_due_dates[0]['x__message'] = 'Aug 1 2025';
 
             // Sample invoice data
             $invoiceData = [
