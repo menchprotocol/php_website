@@ -104,14 +104,32 @@ foreach($this->Idea_cache->fetch(array(
         'i__id' => $_POST['focus__id'], //ACTIVE
     )) as $i){
 
+        $website_logo = one_two_explode('img src="','"',get_domain('m__cover'));
+        $website_logo = 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg';
+        $invoice_due_dates = $this->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__next' => $i['i__id'],
+            'x__following' => 44378, //Invoice Due Date
+        ));
+        $invoice_min_payments = $this->Mench_ledger->fetch(array(
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'x__type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'x__next' => $i['i__id'],
+            'x__following' => 44379, //Invoice Min Payment
+        ));
+        $min_pay = ( count($invoice_min_payments) && floatval($invoice_min_payments[0]['x__message'])>0 ? floatval($invoice_min_payments[0]['x__message']) : 0 );
+        $min_pay = 1000;
+        $invoice_due_dates[0]['x__message'] = 'Aug 1 2025';
+
         // Usage example
         try {
             // Sample invoice data
             $invoiceData = [
-                'invoicer_logo_url' => 'https://s3foundation.s3-us-west-2.amazonaws.com/7e9d37da38c8d1d3c8adb2b5ff722945.jpg',
+                'invoicer_logo_url' => $website_logo,
                 'invoicer_given_name' => view__i_title($i_target, true),
-                'invoicer_address_line_1' => 'Atlas Foundation; Non-Profit #774760508BC0001',
-                'invoicer_address_line_2' => '1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada',
+                'invoicer_address_line_1' => '', //Atlas Foundation; Non-Profit #774760508BC0001
+                'invoicer_address_line_2' => '', //1122 W 41st Ave, Vancouver, BC, V6M 1W8, Canada
                 'invoicer_website' => 'https://'.get_domain('m__message', $player_e['e__id']).'/Discotique2025',
                 'invoicer_email' => website_setting(30882),
 
@@ -232,6 +250,4 @@ foreach($this->Idea_cache->fetch(array(
 
     }
 }
-
-
 
