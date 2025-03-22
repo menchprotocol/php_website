@@ -1565,7 +1565,9 @@ class Mench_ledger extends CIdea_cache
         unset($i['x__website']);
         unset($i['x__diamonds']);
         unset($i['x__void']);
-
+        unset($i['x__player']);
+        unset($i['x__previous']);
+        unset($i['x__next']);
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $input__text = in_array($i['i__type'], $this->config->item('n___43002'));
         $i['uploaded_media'] = array();
@@ -1592,6 +1594,10 @@ class Mench_ledger extends CIdea_cache
             unset($x['x__website']);
             unset($x['x__diamonds']);
             unset($x['x__void']);
+            unset($x['x__reference']);
+            unset($x['x__previous']);
+            unset($x['x__next']);
+            unset($x['x__player']);
 
             $i['user_discovered'] = $x;
 
