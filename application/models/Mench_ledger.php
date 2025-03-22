@@ -1552,7 +1552,6 @@ class Mench_ledger extends CIdea_cache
     function tree_full_history($i, $e__id, $i__level = 0){
 
         unset($i['i__weight']);
-        unset($i['i__weight']);
         unset($i['i__external']);
         unset($i['i__privacy']);
         unset($i['i__cache']);
@@ -1580,6 +1579,30 @@ class Mench_ledger extends CIdea_cache
         $i['i__level'] = $i__level;
         $i['i__next'] = array();
         $i__level++;
+        
+        //Append media if any:
+        foreach($this->Mench_ledger->fetch(array(
+            'x__type IN (' . join(',', $this->config->item('n___42294')) . ')' => null, //Media
+            'x__next' => $i['i__id'],
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
+        ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
+            unset($media['x__following']);
+            unset($media['x__follower']);
+            unset($media['x__weight']);
+            unset($media['x__metadata']);
+            unset($media['x__privacy']);
+            unset($media['x__website']);
+            unset($media['x__diamonds']);
+            unset($media['x__void']);
+            unset($media['x__player']);
+            unset($media['x__previous']);
+            unset($media['x__next']);
+            unset($media['x__id']);
+            unset($media['x__reference']);
+
+            array_push($i['uploaded_media'], $media);
+        }
 
         //Append Discovery if any:
         foreach($this->Mench_ledger->fetch(array(
