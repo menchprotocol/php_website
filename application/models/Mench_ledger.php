@@ -1551,10 +1551,17 @@ class Mench_ledger extends CIdea_cache
 
     function tree_full_history($i, $e__id, $i__level = 0){
 
+        unset($i['i__weight']);
+        unset($i['i__external']);
+        unset($i['i__privacy']);
+        unset($i['i__cache']);
+        unset($i['i__cache']);
+
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $input__text = in_array($i['i__type'], $this->config->item('n___43002'));
         $i['i__level'] = $i__level;
         $i['i__next'] = array();
+        $i['uploaded_media'] = array();
         $i['user_discovered'] = array();
         $i['user_written_response'] = array();
         $i__level++;
