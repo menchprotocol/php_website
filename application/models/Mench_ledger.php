@@ -1552,18 +1552,27 @@ class Mench_ledger extends CIdea_cache
     function tree_full_history($i, $e__id, $i__level = 0){
 
         unset($i['i__weight']);
+        unset($i['i__weight']);
         unset($i['i__external']);
         unset($i['i__privacy']);
         unset($i['i__cache']);
-        unset($i['i__cache']);
+        unset($i['x__type']);
+        unset($i['x__following']);
+        unset($i['x__follower']);
+        unset($i['x__weight']);
+        unset($i['x__metadata']);
+        unset($i['x__privacy']);
+        unset($i['x__website']);
+        unset($i['x__diamonds']);
+        unset($i['x__void']);
 
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $input__text = in_array($i['i__type'], $this->config->item('n___43002'));
-        $i['i__level'] = $i__level;
-        $i['i__next'] = array();
         $i['uploaded_media'] = array();
         $i['user_discovered'] = array();
         $i['user_written_response'] = array();
+        $i['i__level'] = $i__level;
+        $i['i__next'] = array();
         $i__level++;
 
         //Append Discovery if any:
@@ -1573,6 +1582,16 @@ class Mench_ledger extends CIdea_cache
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1) as $x){
+
+            unset($x['x__type']);
+            unset($x['x__following']);
+            unset($x['x__follower']);
+            unset($x['x__weight']);
+            unset($x['x__metadata']);
+            unset($x['x__privacy']);
+            unset($x['x__website']);
+            unset($x['x__diamonds']);
+            unset($x['x__void']);
 
             $i['user_discovered'] = $x;
 
