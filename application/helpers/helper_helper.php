@@ -587,9 +587,9 @@ function view_tree($i){
     }
 
 
-    echo '<a href="/'.$i['i__hashtag'].'" target="_blank" class="'.( !isset($i['i__discover']) || count($i['i__discover']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</a>';
-    echo ( isset($i['i__discover']['x__weight']) && intval($i['i__discover']['x__weight'])>1 ? $i['i__discover']['x__weight'].'x ' : '' );
-    echo ( isset($i['i__response']['i__message']) && strlen($i['i__response']['i__message']) ? ' '.$i['i__response']['i__message'] : '' );
+    echo '<a href="/'.$i['i__hashtag'].'" target="_blank" class="'.( !isset($i['user_discovered']) || count($i['user_discovered']) ? ' main__title ' : '' ).'">'.view__i_title($i, true).'</a>';
+    echo ( isset($i['user_discovered']['x__weight']) && intval($i['user_discovered']['x__weight'])>1 ? $i['user_discovered']['x__weight'].'x ' : '' );
+    echo ( isset($i['user_written_response']['i__message']) && strlen($i['user_written_response']['i__message']) ? ' '.$i['user_written_response']['i__message'] : '' );
 
 
     if(isset($i['i__count_discovery']) && intval($i['i__count_discovery'])>0){

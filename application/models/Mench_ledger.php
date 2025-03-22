@@ -1549,14 +1549,14 @@ class Mench_ledger extends CIdea_cache
     }
 
 
-    function tree_history($i, $e__id, $i__level = 0){
+    function tree_full_history($i, $e__id, $i__level = 0){
 
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $input__text = in_array($i['i__type'], $this->config->item('n___43002'));
         $i['i__level'] = $i__level;
         $i['i__next'] = array();
-        $i['i__discover'] = array();
-        $i['i__response'] = array();
+        $i['user_discovered'] = array();
+        $i['user_written_response'] = array();
         $i__level++;
 
         //Append Discovery if any:
@@ -1566,24 +1566,28 @@ class Mench_ledger extends CIdea_cache
             'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 1) as $x){
-            $i['i__discover'] = $x;
-        }
 
-        if($input__text){
-            foreach($this->Mench_ledger->fetch(array(
-                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__type' => 33532, //Share Idea
-                'x__previous' => $i['i__id'],
-                'x__player' => $e__id,
-                'LENGTH(i__message) > 0' => null,
-            ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
-                $i['i__response'] = $response;
+            $i['user_discovered'] = $x;
+
+            if($input__text){
+                //Since it has been discovered and its a text input, lots fetch the written response:
+                foreach($this->Mench_ledger->fetch(array(
+                    'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                    'x__type' => 33532, //Share Idea
+                    'x__previous' => $i['i__id'],
+                    'x__player' => $e__id,
+                    'LENGTH(i__message) > 0' => null,
+                ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
+                    $i['user_written_response'] = $response;
+                }
             }
         }
 
 
-        if($i['i__discover']){
+
+
+        if($i['user_discovered']){
             foreach(( $input__selection ? $this->Mench_ledger->fetch(array(
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
@@ -1596,7 +1600,63 @@ class Mench_ledger extends CIdea_cache
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
                 'x__previous' => $i['i__id'],
             ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) ) as $next_i){
-                array_push($i['i__next'], $this->Mench_ledger->tree_history($next_i, $e__id, $i__level));
+                array_push($i['i__next'], $this->Mench_ledger->tree_discovered_history($next_i, $e__id, $i__level));
+            }
+        }
+
+
+        return $i;
+
+    }
+
+    function tree_discovered_history($i, $e__id, $i__level = 0){
+
+        $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
+        $input__text = in_array($i['i__type'], $this->config->item('n___43002'));
+        $i['i__level'] = $i__level;
+        $i['i__next'] = array();
+        $i['user_discovered'] = array();
+        $i['user_written_response'] = array();
+        $i__level++;
+
+        //Append Discovery if any:
+        foreach($this->Mench_ledger->fetch(array(
+            'x__previous' => $i['i__id'],
+            'x__player' => $e__id,
+            'x__type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        ), array(), 1) as $x){
+            $i['user_discovered'] = $x;
+        }
+
+        if($input__text){
+            foreach($this->Mench_ledger->fetch(array(
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__type' => 33532, //Share Idea
+                'x__previous' => $i['i__id'],
+                'x__player' => $e__id,
+                'LENGTH(i__message) > 0' => null,
+            ), array('x__next'), 0, 1, array('x__id' => 'DESC')) as $response){
+                $i['user_written_response'] = $response;
+            }
+        }
+
+
+        if($i['user_discovered']){
+            foreach(( $input__selection ? $this->Mench_ledger->fetch(array(
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type' => 7712, //Input Choice
+                'x__player' => $e__id,
+                'x__previous' => $i['i__id'],
+            ), array('x__next')) : $this->Mench_ledger->fetch(array(
+                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
+                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
+                'x__previous' => $i['i__id'],
+            ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) ) as $next_i){
+                array_push($i['i__next'], $this->Mench_ledger->tree_discovered_history($next_i, $e__id, $i__level));
             }
         }
 

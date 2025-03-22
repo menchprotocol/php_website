@@ -7,5 +7,5 @@ echo '</div>';
 
 //Idea Tree:
 echo '<div class="row justify-content">';
-view_tree($this->Mench_ledger->tree_history($focus_i, $focus_e['e__id']));
+view_tree($this->Mench_ledger->tree_discovered_history($focus_i, $focus_e['e__id']));
 echo '</div>';
