@@ -1570,6 +1570,7 @@ class Mench_ledger extends CIdea_cache
         unset($i['x__next']);
         unset($i['x__id']);
         unset($i['x__message']);
+        unset($i['x__reference']);
 
         $input__selection = in_array($i['i__type'], $this->config->item('n___7712'));
         $input__text = in_array($i['i__type'], $this->config->item('n___43002'));
