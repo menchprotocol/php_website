@@ -1585,21 +1585,13 @@ class Mench_ledger extends CIdea_cache
         }
 
 
-
-
         if($i['user_discovered']){
-            foreach(( $input__selection ? $this->Mench_ledger->fetch(array(
-                'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'x__type' => 7712, //Input Choice
-                'x__player' => $e__id,
-                'x__previous' => $i['i__id'],
-            ), array('x__next')) : $this->Mench_ledger->fetch(array(
+            foreach($this->Mench_ledger->fetch(array(
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                 'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'x__type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //Active Sequence Down
                 'x__previous' => $i['i__id'],
-            ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) ) as $next_i){
+            ), array('x__next'), 0, 0, array('x__weight' => 'ASC')) as $next_i){
                 array_push($i['i__next'], $this->Mench_ledger->tree_full_history($next_i, $e__id, $i__level));
             }
         }
