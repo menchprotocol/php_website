@@ -1587,6 +1587,19 @@ class Mench_ledger extends CIdea_cache
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
+
+            //Get metadata:
+            foreach($this->Mench_ledger->fetch(array(
+                'x__following IN (' . join(',', $this->config->item('n___44393')) . ')' => null, //Media JSON
+                'x__follower' => $media['e__id'],
+                'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ), array('x__following'), 0) as $e_group) {
+                if(strlen($e_group['x__message'])){
+                    $media[$e_group['e__handle']] = $e_group['x__message'];
+                }
+            }
+
             unset($media['x__time']);
             unset($media['x__following']);
             unset($media['x__follower']);
@@ -1602,6 +1615,7 @@ class Mench_ledger extends CIdea_cache
             unset($media['x__id']);
             unset($media['x__reference']);
             unset($media['e__id']);
+            unset($media['x__message']);
             unset($media['e__title']);
             unset($media['e__handle']);
             unset($media['e__privacy']);
