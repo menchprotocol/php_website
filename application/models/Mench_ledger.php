@@ -1614,14 +1614,15 @@ class Mench_ledger extends CIdea_cache
             unset($media['x__next']);
             unset($media['x__id']);
             unset($media['x__reference']);
-            unset($media['e__id']);
             unset($media['x__message']);
+            unset($media['e__id']);
             unset($media['e__title']);
             unset($media['e__handle']);
             unset($media['e__privacy']);
             unset($media['e__weight']);
             unset($media['e__external']);
             unset($media['e__cache']);
+            unset($media['e__cover']);
 
             array_push($i['uploaded_media'], $media);
         }
