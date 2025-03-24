@@ -4028,12 +4028,9 @@ function view__i__links($i, $e__id = 0, $replace_links = true, $focus__node = fa
             'x__privacy IN (' . join(',', $CI->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array('x__following'), 0) as $message_references){
             if(!substr_count(strtolower($i['i__cache']), '>@'.strtolower($message_references['e__handle']))){
-                //Strange!
-                $CI->Mench_ledger->create(array(
-                    'x__type' => 4246, //Platform Bug Reports
-                    'x__following' => $e__id,
-                    'x__next' => $i['i__id'],
-                    'x__message' => 'view__i__links() Missing referenced source from message content @'.$message_references['e__handle'],
+                //Maybe because it was duplicated, etc... REMOVE IT:
+                $CI->Mench_ledger->update($message_references['x__id'], array(
+                    'x__privacy' => 6173, //Transaction Deleted
                 ));
                 continue;
             }
