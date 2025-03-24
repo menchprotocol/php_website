@@ -2,32 +2,32 @@
 
 //Auto unsnooze members who is time for them to get unsnoozed.
 
-foreach($this->config->item('e___28917') as $LinkType => $m) {
+foreach($this->config->item('e___28917') as $link_type => $m) {
     if(isset($m['m__message']) && intval($m['m__message'])>0){
 
         $total_members = 0;
         $unsnooze_members = 0;
 
         foreach($this->Mench_ledger->fetch(array(
-            'LinkUp' => $LinkType,
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_up' => $link_type,
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('LinkDown'), 0) as $x) {
+        ), array('link_down'), 0) as $x) {
             $total_members++;
-            if((time()-strtotime($x['LinkTime']))>(86400*intval($m['m__message']))){
+            if((time()-strtotime($x['link_time']))>(86400*intval($m['m__message']))){
 
                 //Remove from Snooze:
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkPrivacy' => 6173, //Transaction Removed
-                ), $x['LinkPlayer'], 28917 /* Unsnooze */);
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_privacy' => 6173, //Transaction Removed
+                ), $x['link_player'], 28917 /* Unsnooze */);
 
                 //Add to subscribers:
                 $this->Mench_ledger->create(array(
-                    'LinkType' => 4251,
-                    'LinkPlayer' => $x['LinkPlayer'],
-                    'LinkUp' => 4430, //Active Member
-                    'LinkDown' => $x['LinkPlayer'],
+                    'link_type' => 4251,
+                    'link_player' => $x['link_player'],
+                    'link_up' => 4430, //Active Member
+                    'link_down' => $x['link_player'],
                 ));
 
                 $unsnooze_members++;

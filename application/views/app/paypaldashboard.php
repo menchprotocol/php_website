@@ -35,11 +35,11 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
     echo '<h2>'.$es[0]['e__title'].' @'.$es[0]['e__handle'].'</h2>';
 
     $i_query = $this->Mench_ledger->fetch(array(
-        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-        'LinkType IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+        'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
         'i__type IN (' . join(',', $this->config->item('n___41055')) . ')' => null, //Payment Ideas
-        'LinkUp' => $es[0]['e__id'],
-    ), array('LinkRight'), 0, 0, array('LinkNumber' => 'ASC'));
+        'link_up' => $es[0]['e__id'],
+    ), array('link_right'), 0, 0, array('link_number' => 'ASC'));
 
 
     //List all payment Ideas and their total earnings
@@ -58,72 +58,72 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         $currencies = array();
 
         foreach($this->Mench_ledger->fetch(array(
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-            'LinkLeft' => $i['i__id'],
-        ), array(), 0, 0, array('LinkPlayer' => 'ASC')) as $x){
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+            'link_left' => $i['i__id'],
+        ), array(), 0, 0, array('link_player' => 'ASC')) as $x){
 
-            $LinkMetadata = unserialize($x['LinkMetadata']);
+            $link_metadata = unserialize($x['link_metadata']);
             $total_transactions++;
             $this_quantity = 1;//Default assumption:
 
             //Source for quantity?
-            unset($LinkMetadata2);
-            if($x['LinkReference']>0){
+            unset($link_metadata2);
+            if($x['link_reference']>0){
                 //This is a refund, fetch quantity from original transaction:
                 foreach($this->Mench_ledger->fetch(array(
-                    'LinkId' => $x['LinkReference'],
+                    'link_id' => $x['link_reference'],
                 )) as $x2){
-                    $LinkMetadata2 = unserialize($x2['LinkMetadata']);
+                    $link_metadata2 = unserialize($x2['link_metadata']);
                     break;
                 }
             }
 
-            if(isset($LinkMetadata2) && $LinkMetadata2['quantity']>1){
-                $this_quantity = $LinkMetadata2['quantity'];
-                $LinkMetadata['mc_fee'] = $LinkMetadata2['mc_fee'] * -1;
-            } elseif(isset($LinkMetadata['quantity']) && $LinkMetadata['quantity']>1){
-                $this_quantity = $LinkMetadata['quantity'];
-            } elseif($x['LinkReference']>0 && count($x2) && $x2['LinkNumber']>=2){
-                $this_quantity = $x2['LinkNumber'];
+            if(isset($link_metadata2) && $link_metadata2['quantity']>1){
+                $this_quantity = $link_metadata2['quantity'];
+                $link_metadata['mc_fee'] = $link_metadata2['mc_fee'] * -1;
+            } elseif(isset($link_metadata['quantity']) && $link_metadata['quantity']>1){
+                $this_quantity = $link_metadata['quantity'];
+            } elseif($x['link_reference']>0 && count($x2) && $x2['link_number']>=2){
+                $this_quantity = $x2['link_number'];
             }
 
             //Count only if a TICKET idea:
-            if(!in_array($x['LinkType'], $this->config->item('n___30469'))){
-                $LinkMetadata['mc_gross'] = 0;
-                $LinkMetadata['mc_fee'] = 0;
-                $LinkMetadata['mc_currency'] = '';
-                $LinkMetadata['item_number'] = '';
-                $LinkMetadata['first_name'] = '';
-                $LinkMetadata['last_name'] = '';
+            if(!in_array($x['link_type'], $this->config->item('n___30469'))){
+                $link_metadata['mc_gross'] = 0;
+                $link_metadata['mc_fee'] = 0;
+                $link_metadata['mc_currency'] = '';
+                $link_metadata['item_number'] = '';
+                $link_metadata['first_name'] = '';
+                $link_metadata['last_name'] = '';
             }
 
-            if(!isset($LinkMetadata['mc_currency'])){
+            if(!isset($link_metadata['mc_currency'])){
                 continue;
             }
 
-            if(!isset($LinkMetadata['mc_fee'])){
-                $LinkMetadata['mc_fee'] = 0;
+            if(!isset($link_metadata['mc_fee'])){
+                $link_metadata['mc_fee'] = 0;
             }
 
-            $this_commission = $LinkMetadata['mc_gross']*$commission_rate;
-            $this_payout = $LinkMetadata['mc_gross']-$LinkMetadata['mc_fee']-$this_commission;
+            $this_commission = $link_metadata['mc_gross']*$commission_rate;
+            $this_payout = $link_metadata['mc_gross']-$link_metadata['mc_fee']-$this_commission;
             if($this_payout < 0){
                 $this_quantity = $this_quantity * -1;
             }
 
             $total_sales += $this_quantity;
-            $total_paypal_fee += doubleval($LinkMetadata['mc_fee']);
-            $total_revenue += doubleval($LinkMetadata['mc_gross']);
-            if(!in_array($LinkMetadata['mc_currency'], $currencies) && strlen($LinkMetadata['mc_currency'])>0){
-                array_push($currencies, $LinkMetadata['mc_currency']);
+            $total_paypal_fee += doubleval($link_metadata['mc_fee']);
+            $total_revenue += doubleval($link_metadata['mc_gross']);
+            if(!in_array($link_metadata['mc_currency'], $currencies) && strlen($link_metadata['mc_currency'])>0){
+                array_push($currencies, $link_metadata['mc_currency']);
             }
-            if(!in_array($LinkMetadata['mc_currency'], $gross_currencies) && strlen($LinkMetadata['mc_currency'])>0){
-                array_push($gross_currencies, $LinkMetadata['mc_currency']);
+            if(!in_array($link_metadata['mc_currency'], $gross_currencies) && strlen($link_metadata['mc_currency'])>0){
+                array_push($gross_currencies, $link_metadata['mc_currency']);
             }
 
-            $item_parts = explode('-',$LinkMetadata['item_number']);
-            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['LinkPlayer'] );
+            $item_parts = explode('-',$link_metadata['item_number']);
+            $this_e = intval(isset($item_parts[3]) ? $item_parts[3] : $x['link_player'] );
             array_push($all_e, $this_e);
             $es = $this->Source_cache->fetch(array(
                 'e__id' => $this_e,
@@ -131,28 +131,28 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
 
 
             $transaction_content .= '<tr class="transaction_columns transactions_'.$i['i__id'].' hidden">';
-            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view__cover($es[0]['e__cover'],true).'</span><a href="'.view__memory(42903,42902).$es[0]['e__handle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$LinkMetadata['first_name'].' '.$LinkMetadata['last_name'].'</td>';
-            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $LinkMetadata['mc_gross']!=0 && strlen($LinkMetadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$LinkMetadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view__app_link(4341).'?LinkId='.$x['LinkId'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
+            $transaction_content .= '<td>'.( count($es) ? '<span class="icon-block-sm e_cover_micro">'.view__cover($es[0]['e__cover'],true).'</span><a href="'.view__memory(42903,42902).$es[0]['e__handle'].'" style="font-weight:bold; display: inline-block;"><u>'.$es[0]['e__title'].'</u></a> ' : '' ).$link_metadata['first_name'].' '.$link_metadata['last_name'].'</td>';
+            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.( $link_metadata['mc_gross']!=0 && strlen($link_metadata['txn_id'])>0 ? '<a href="https://www.paypal.com/activity/payment/'.$link_metadata['txn_id'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="View Paypal Transaction"><i class="fab fa-paypal" style="font-size:1em !important;"></i></a> ' : '' ).'<a href="'.view__app_link(4341).'?link_id='.$x['link_id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
             $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $transaction_content .= '<td style="text-align: right;">'.$this_quantity.'&nbsp;x</td>';
-            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($LinkMetadata['mc_gross'], 2).'</td>';
+            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;">$'.number_format($link_metadata['mc_gross'], 2).'</td>';
             $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.($commission_rate*100).'%">$'.number_format($this_commission, 2).'</td>';
-            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $LinkMetadata['mc_gross'] > 0 ? ($LinkMetadata['mc_fee']/$LinkMetadata['mc_gross']*100) : 0 ).'%">$'.number_format($LinkMetadata['mc_fee'], 2).'</td>';
+            $transaction_content .= '<td class="advance_columns hidden" style="text-align: right;" title="'.( $link_metadata['mc_gross'] > 0 ? ($link_metadata['mc_fee']/$link_metadata['mc_gross']*100) : 0 ).'%">$'.number_format($link_metadata['mc_fee'], 2).'</td>';
             $transaction_content .= '<td style="text-align: left;"><b>&nbsp;'.( $this_quantity>1 ? '$'.number_format(($this_payout/$this_quantity), 2) : '' ).'</b></td>';
             $transaction_content .= '<td style="text-align: right;">$'.number_format($this_payout, 2).'</td>';
-            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$LinkMetadata['mc_currency'].'</td>';
+            $transaction_content .= '<td style="text-align: right;" class="advance_columns hidden">'.$link_metadata['mc_currency'].'</td>';
 
             $transaction_content .= '</tr>';
 
             if($this_payout > 0){
-                $date = date("md", strtotime($x['LinkTime']));
+                $date = date("md", strtotime($x['link_time']));
                 if(isset($daily_sales[$date])){
                     $daily_sales[$date] += $this_payout;
                 } else {
                     $daily_sales[$date] = $this_payout;
                 }
 
-                $origin_e = $x['LinkRight'];
+                $origin_e = $x['link_right'];
                 if(isset($origin_sales[$origin_e])){
                     $origin_sales[$origin_e] += number_format($this_payout, 0, '','');
                 } else {
@@ -178,12 +178,12 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         $gross_payout += $payout;
 
         $max_available = $this->Mench_ledger->fetch(array(
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-            'LinkRight' => $i['i__id'],
-            'LinkUp' => 26189,
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+            'link_right' => $i['i__id'],
+            'link_up' => 26189,
         ), array(), 1);
-        $available_transactions = (count($max_available) && is_numeric($max_available[0]['LinkText']) ? intval($max_available[0]['LinkText']) : '∞');
+        $available_transactions = (count($max_available) && is_numeric($max_available[0]['link_text']) ? intval($max_available[0]['link_text']) : '∞');
 
         if(fmod($total_transactions, 2)==1){
             $transaction_content .= '<tr class="transaction_columns hidden"></tr>';
@@ -223,14 +223,14 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
     )) as $e){
         $filters = array(
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkUp' => $e['e__id'], //Member
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_up' => $e['e__id'], //Member
         );
         if(count($all_e)){
-            $filters[ 'LinkDown NOT IN (' . join(',', $all_e) . ')'] = null;
+            $filters[ 'link_down NOT IN (' . join(',', $all_e) . ')'] = null;
         }
-        $other_es = $this->Mench_ledger->fetch($filters, array('LinkDown'), 0);
+        $other_es = $this->Mench_ledger->fetch($filters, array('link_down'), 0);
     }
 
 
@@ -262,7 +262,7 @@ if(!isset($_GET['e__handle']) || !strlen($_GET['e__handle']) || !$_GET['e__handl
             $other_e_content .= '<td><span class="icon-block e_cover_micro">'.view__cover($other_e['e__cover'],true).'</span><a href="'.view__memory(42903,42902).$other_e['e__handle'].'" style="font-weight:bold; display: inline-block;"><u>'.$other_e['e__title'].'</u></a></td>';
             $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
             $other_e_content .= '<td style="text-align: right;" class="advance_columns hidden">&nbsp;</td>';
-            $other_e_content .= '<td style="text-align: right;"><a href="'.view__app_link(4341).'?LinkId='.$other_e['LinkId'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
+            $other_e_content .= '<td style="text-align: right;"><a href="'.view__app_link(4341).'?link_id='.$other_e['link_id'].'" target="_blank" style="font-size:1em !important;" data-toggle="tooltip" data-placement="top" title="View Platform Transaction"><i class="far fa-atlas"></i></a></td>';
             $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
             $other_e_content .= '<td class="advance_columns hidden" style="text-align: right;">&nbsp;</td>';
@@ -362,10 +362,10 @@ if(count($i_query)){
                 arsort($origin_sales);
                 foreach($origin_sales as $origin => $sales){
                     if(($sales/$gross_revenue)>=0.5 || count($this->Mench_ledger->fetch(array(
-                            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                            'LinkRight' => $origin,
-                            'LinkUp' => 30564, //None Promoter
+                            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'link_type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                            'link_right' => $origin,
+                            'link_up' => 30564, //None Promoter
                         )))){
                         //This item has more than 50% of sales, remove it:
                         continue;

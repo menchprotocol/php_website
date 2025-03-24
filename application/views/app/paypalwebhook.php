@@ -41,31 +41,31 @@ if(isset($_POST['payment_status']) && isset($_POST['item_number'])){
         if(doubleval(( strlen($_POST['payment_gross']) ? $_POST['payment_gross'] : $_POST['mc_gross'])) > 0){
 
             //Paid:
-            $LinkType = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
+            $link_type = ( $is_pending ? 35572 /* Pending Payment */ : 26595 );
 
             //Log Payment:
-            $completion_status = $this->Mench_ledger->mark_complete($LinkType, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
-                'LinkNumber' => intval($_POST['quantity']),
-                'LinkMetadata' => $_POST,
+            $completion_status = $this->Mench_ledger->mark_complete($link_type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
+                'link_number' => intval($_POST['quantity']),
+                'link_metadata' => $_POST,
             ));
 
         } else {
 
-            $LinkType = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
+            $link_type = ( $is_pending ? 39597 /* Pending Refund */ : 31967 );
 
             //Find issued tickets:
             $original_payment = $this->Mench_ledger->fetch(array(
-                'LinkType' => 26595,
-                'LinkPlayer' => $player_es[0]['e__id'],
-                'LinkLeft' => $next_is[0]['i__id'],
+                'link_type' => 26595,
+                'link_player' => $player_es[0]['e__id'],
+                'link_left' => $next_is[0]['i__id'],
             ));
 
             //Log Refund:
-            $completion_status = $this->Mench_ledger->mark_complete($LinkType, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
-                'LinkNumber' => (-1 * ( isset($original_payment[0]['LinkNumber']) ? $original_payment[0]['LinkNumber'] : 1 )),
-                'LinkMetadata' => $_POST,
-                'LinkReference' => ( isset($original_payment[0]['LinkId']) ? $original_payment[0]['LinkId'] : 0 ),
-                'LinkDomain' => ( isset($original_payment[0]['LinkDomain']) && $original_payment[0]['LinkDomain']>0 ? $original_payment[0]['LinkDomain'] : 0 ),
+            $completion_status = $this->Mench_ledger->mark_complete($link_type, $player_es[0]['e__id'], ( isset($target_is[0]['i__id']) ? $target_is[0]['i__id'] : 0 ), $next_is[0], array(), array(
+                'link_number' => (-1 * ( isset($original_payment[0]['link_number']) ? $original_payment[0]['link_number'] : 1 )),
+                'link_metadata' => $_POST,
+                'link_reference' => ( isset($original_payment[0]['link_id']) ? $original_payment[0]['link_id'] : 0 ),
+                'link_domain' => ( isset($original_payment[0]['link_domain']) && $original_payment[0]['link_domain']>0 ? $original_payment[0]['link_domain'] : 0 ),
             ));
 
         }

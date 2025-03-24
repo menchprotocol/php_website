@@ -59,10 +59,10 @@ foreach($this->config->item('e___33292') as $e__id1 => $m1) {
                         //Search for sibling If Has Family:
                         if(in_array($e__id2, $this->config->item('n___42792'))){
                             foreach($this->Mench_ledger->fetch(array(
-                                'LinkDown' => $headline_link,
-                                'LinkType' => 42570, //Family
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            ), array('LinkUp'), 1) as $sibling){
+                                'link_down' => $headline_link,
+                                'link_type' => 42570, //Family
+                                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            ), array('link_up'), 1) as $sibling){
                                 echo '<a href="'.view__memory(42903,42902).$sibling['e__handle'].'"><span class="icon-block-sm grey">'.view__cover($sibling['e__cover']).'</span><b class="main__title grey"><u>'.$sibling['e__title'].'</u></b></a><b class="main__title grey"> & </b></b>';
                             }
                         }

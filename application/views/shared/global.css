@@ -63,11 +63,11 @@ body {
     max-width:610px !important;
     margin: 0 auto !important;
 }
-.LinkText video {
+.link_text video {
     max-width:610px;
 
 }
-.LinkText img, .content-image {
+.link_text img, .content-image {
     max-width: 100%;
     max-height: 610px;
 
@@ -1228,7 +1228,7 @@ a.headline {
     left: 0;
     top: 34px;
 }
-.LinkText {
+.link_text {
     display:inline-block;
     overflow: hidden;
     width: 100%;
@@ -3387,7 +3387,7 @@ h4.main__title{
 
     .content-image{ max-height:144px; }
 
-    .media-content, .LinkText img, .LinkText video { max-width: 100%; }
+    .media-content, .link_text img, .link_text video { max-width: 100%; }
     .content-image {
         max-height: 100%;
     }
@@ -4463,10 +4463,10 @@ main {
 }
 
 
-.media-content, .LinkText video {
+.media-content, .link_text video {
     max-width:610px;
 }
-.LinkText img, .content-image {
+.link_text img, .content-image {
     margin: 0;
     max-width: 100%;
     border-radius: 0px;
@@ -4547,7 +4547,7 @@ main {
     padding-top: 3px !important;
 }
 
-.LinkText_headline{
+.link_text_headline{
     display: block;
     line-height: 108%;
     padding: 0 2px;

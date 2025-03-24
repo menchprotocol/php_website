@@ -9,21 +9,21 @@ if(isset($_GET['e__handle'])){
     $duplicates_found = array();
     foreach($this->Mench_ledger->fetch(array(
         'LOWER(e__handle)' => strtolower($_GET['e__handle']),
-        'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-        'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-    ), array('LinkUp'), 0) as $x) {
-        $LinkText_md5 = substr(md5($x['LinkText']), 0, 16);
-        if(!isset($main_index[$LinkText_md5])){
-            $main_index[$LinkText_md5] = array();
+        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+        'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+    ), array('link_up'), 0) as $x) {
+        $link_text_md5 = substr(md5($x['link_text']), 0, 16);
+        if(!isset($main_index[$link_text_md5])){
+            $main_index[$link_text_md5] = array();
         } else {
             //Found Duplicate!
-            if(!isset($duplicates_found[$LinkText_md5])){
-                $duplicates_found[$LinkText_md5] = $main_index[$LinkText_md5];
+            if(!isset($duplicates_found[$link_text_md5])){
+                $duplicates_found[$link_text_md5] = $main_index[$link_text_md5];
             }
-            array_push($duplicates_found[$LinkText_md5], $x['LinkDown']);
+            array_push($duplicates_found[$link_text_md5], $x['link_down']);
         }
 
-        array_push($main_index[$LinkText_md5], $x['LinkDown']);
+        array_push($main_index[$link_text_md5], $x['link_down']);
 
     }
 

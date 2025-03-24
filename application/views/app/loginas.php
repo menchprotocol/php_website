@@ -2,10 +2,10 @@
 
 //Make sure member:
 if(!count($this->Mench_ledger->fetch(array(
-    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-    'LinkUp IN (' . join(',', $this->config->item('n___32537')) . ')' => null, //Interested Member
-    'LinkDown' => $focus_e['e__id'],
+    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+    'link_up IN (' . join(',', $this->config->item('n___32537')) . ')' => null, //Interested Member
+    'link_down' => $focus_e['e__id'],
 )))){
 
     return view__json(array(

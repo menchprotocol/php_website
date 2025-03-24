@@ -56,8 +56,8 @@ if(superpower_unlocked()) {
     $e___11035 = $this->config->item('e___11035'); //Encyclopedia
 
     $this_attempt = array(
-        'LinkType' => ( count($sign_i) ? 7560 : 7561 ),
-        'LinkLeft' => ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ),
+        'link_type' => ( count($sign_i) ? 7560 : 7561 ),
+        'link_left' => ( count($sign_i) ? $sign_i[0]['i__id'] : 0 ),
     );
 
     $current_sign_i_attempt = array(); //Will try to find this
@@ -66,7 +66,7 @@ if(superpower_unlocked()) {
         //See if any of the current sign-in attempts match this:
         foreach($current_sign_i_attempts as $sign_i_attempt){
             $all_match = true;
-            foreach(array('LinkLeft') as $sign_i_attempt_field){
+            foreach(array('link_left') as $sign_i_attempt_field){
                 if(intval($this_attempt[$sign_i_attempt_field]) != intval($sign_i_attempt[$sign_i_attempt_field])){
                     $all_match = false;
                     break;

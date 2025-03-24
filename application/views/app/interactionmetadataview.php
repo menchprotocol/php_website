@@ -1,8 +1,8 @@
 <?php
 
-if(!isset($_GET['LinkId']) || !intval($_GET['LinkId'])){
+if(!isset($_GET['link_id']) || !intval($_GET['link_id'])){
 
-    echo 'Missing TRANSACTION ID (Append ?LinkId=TRANSACTION_ID in URL)';
+    echo 'Missing TRANSACTION ID (Append ?link_id=TRANSACTION_ID in URL)';
 
 } else {
 
@@ -11,7 +11,7 @@ if(!isset($_GET['LinkId']) || !intval($_GET['LinkId'])){
 
     //Fetch transaction metadata and display it:
     $x = $this->Mench_ledger->fetch(array(
-        'LinkId' => $_GET['LinkId'],
+        'link_id' => $_GET['link_id'],
     ));
 
     if (count($x) < 1) {
@@ -25,8 +25,8 @@ if(!isset($_GET['LinkId']) || !intval($_GET['LinkId'])){
     } else {
 
         //unserialize metadata if needed:
-        if(strlen($x[0]['LinkMetadata']) > 0){
-            $x[0]['LinkMetadata'] = unserialize($x[0]['LinkMetadata']);
+        if(strlen($x[0]['link_metadata']) > 0){
+            $x[0]['link_metadata'] = unserialize($x[0]['link_metadata']);
         }
 
         //Print on scree:

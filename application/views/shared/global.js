@@ -308,37 +308,37 @@ function view__s_js_line(suggestion, default_handle = '@'){
     }
 }
 
-function e_load_finder(LinkType) {
-    console.log(LinkType + " e_load_finder()");
+function e_load_finder(link_type) {
+    console.log(link_type + " e_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-'+LinkType + ' .add-input').keypress(function (e) {
+    $('.new-list-'+link_type + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            e__add(LinkType, 0);
+            e__add(link_type, 0);
             return true;
         }
     });
 }
 
-function i_load_finder(LinkType) {
-    console.log(LinkType + " i_load_finder()");
+function i_load_finder(link_type) {
+    console.log(link_type + " i_load_finder()");
     //Load Search:
     var icons_listed = [];
-    $('.new-list-'+LinkType + ' .add-input').keypress(function (e) {
+    $('.new-list-'+link_type + ' .add-input').keypress(function (e) {
         icons_listed = [];
         var code = (e.keyCode ? e.keyCode : e.which);
         if ((code==13) || (e.ctrlKey && code==13)) {
-            i__add(LinkType, 0);
+            i__add(link_type, 0);
             return true;
         }
     });
 }
 
-function view__s_js_cover(LinkType, suggestion, action_id){
+function view__s_js_cover(link_type, suggestion, action_id){
 
-    if(!js_n___26010.includes(LinkType)){
+    if(!js_n___26010.includes(link_type)){
         alert('Missing type in JS UI');
         return false;
     }
@@ -355,12 +355,12 @@ function view__s_js_cover(LinkType, suggestion, action_id){
     }
 
     //Return appropriate UI:
-    if(LinkType==26011){
+    if(link_type==26011){
         //Mini Coin
         var search_only_app = $("#website_finder").val().charAt(0)=='-';
         var target_url = ( search_only_app ? suggestion.s__url.replace('/@','/') : suggestion.s__url );
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' '+( search_only_app ? ' card-6287 ' : '' )+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="'+target_url+'" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="'+target_url+'" class="main__title">'+(suggestion.s__cache.length ? suggestion.s__cache : '<span class="main__title">'+suggestion.s__title+'</span>' )+'</a></div></div></div>';
-    } else if(LinkType==26013){
+    } else if(link_type==26013){
         //Link Source
         return '<div title="ID '+suggestion.s__id+'" class="card_cover mini-cover card-'+suggestion.s__type+' card-id-'+suggestion.s__id+' col-4 col-md-2 col-sm-3 no-padding"><div class="cover-wrapper"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="black-background-obs cover-link coinType'+suggestion.s__type+'" '+background_image+'><div class="cover-btn">'+icon_image+'</div></a></div><div class="cover-content"><div class="inner-content"><a href="javascript:void(0);" onclick="e__add('+action_id+', '+suggestion.s__id+')" class="main__title">'+suggestion.s__title+'</a></div></div></div>';
     }
@@ -371,26 +371,26 @@ function view__s_mini_js(s__cover,s__title){
 }
 
 
-function toggle_headline(LinkType){
+function toggle_headline(link_type){
 
-    var LinkDown = 0;
-    var LinkRight = 0;
+    var link_down = 0;
+    var link_right = 0;
     var focus__node = parseInt($('#focus__node').val());
     if(focus__node==12273){
-        LinkRight = parseInt($('#focus__id').val());
+        link_right = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        LinkDown = parseInt($('#focus__id').val());
+        link_down = parseInt($('#focus__id').val());
     }
 
-    if($('.headline_title_' + LinkType+' .icon_26008').hasClass('hidden')){
+    if($('.headline_title_' + link_type+' .icon_26008').hasClass('hidden')){
 
         //Currently open, must now be closed:
         var action_id = 26008; //Close
-        $('.headline_title_' + LinkType+ ' .icon_26008').removeClass('hidden');
-        $('.headline_title_' + LinkType+ ' .icon_26007').addClass('hidden');
-        $('.headline_body_' + LinkType).addClass('hidden');
+        $('.headline_title_' + link_type+ ' .icon_26008').removeClass('hidden');
+        $('.headline_title_' + link_type+ ' .icon_26007').addClass('hidden');
+        $('.headline_body_' + link_type).addClass('hidden');
 
-        if (LinkType==6255){
+        if (link_type==6255){
             $('.navigate_12273').removeClass('active');
         }
 
@@ -403,17 +403,17 @@ function toggle_headline(LinkType){
 
         //Currently closed, must now be opened
         var action_id = 26007; //Open
-        $('.headline_title_' + LinkType+ ' .icon_26007').removeClass('hidden');
-        $('.headline_title_' + LinkType+ ' .icon_26008').addClass('hidden');
-        $('.headline_body_' + LinkType).removeClass('hidden');
+        $('.headline_title_' + link_type+ ' .icon_26007').removeClass('hidden');
+        $('.headline_title_' + link_type+ ' .icon_26008').addClass('hidden');
+        $('.headline_body_' + link_type).removeClass('hidden');
 
-        if (LinkType==6255){
+        if (link_type==6255){
             $('.navigate_12273').addClass('active');
         }
 
         //Scroll To:
         $('html, body').animate({
-            scrollTop: $('.headline_body_' + LinkType).offset().top
+            scrollTop: $('.headline_body_' + link_type).offset().top
         }, 13);
 
     }
@@ -421,24 +421,24 @@ function toggle_headline(LinkType){
 }
 
 
-function e_sort_load(LinkType) {
+function e_sort_load(link_type) {
 
     load_covers();
 
-    console.log('Tring to load Source Sort for @'+LinkType);
+    console.log('Tring to load Source Sort for @'+link_type);
 
-    var sort_item_count = parseInt($('.headline_body_' + LinkType).attr('read-counter'));
+    var sort_item_count = parseInt($('.headline_body_' + link_type).attr('read-counter'));
 
-    if(!js_n___13911.includes(LinkType)){
+    if(!js_n___13911.includes(link_type)){
         //Does not support sorting:
-        console.log(LinkType+' is not sortable');
+        console.log(link_type+' is not sortable');
         return false;
     } else if(sort_item_count<1 || sort_item_count>parseInt(js_e___6404[11064]['m__message'])){
         return false;
     }
 
     setTimeout(function () {
-        var theobject = document.getElementById("list-in-"+LinkType);
+        var theobject = document.getElementById("list-in-"+link_type);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
             console.log('No object');
@@ -446,15 +446,15 @@ function e_sort_load(LinkType) {
         }
 
         //Show sort icon:
-        console.log('Completed Loading Sorting for @'+LinkType)
+        console.log('Completed Loading Sorting for @'+link_type)
         $('.sort_e_frame').removeClass('hidden');
 
         var sort = Sortable.create(theobject, {
             animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-            draggable: "#list-in-"+LinkType+" .sort_draggable", // Specifies which items inside the element should be sortable
-            handle: "#list-in-"+LinkType+" .sort_e_grab", // Restricts sort start click/touch to the specified element
+            draggable: "#list-in-"+link_type+" .sort_draggable", // Specifies which items inside the element should be sortable
+            handle: "#list-in-"+link_type+" .sort_e_grab", // Restricts sort start click/touch to the specified element
             onUpdate: function (evt/**Event*/) {
-                e_sort_save(LinkType);
+                e_sort_save(link_type);
             }
         });
     }, 377);
@@ -486,47 +486,47 @@ function load_hashtag_menu(load_hashtag = null, is_first_load = true){
 var loading_in_progress = false;
 var pills_loading = null;
 var loaded_pills = [];
-function toggle_pills(LinkType_hash, is_first_load){
+function toggle_pills(link_type_hash, is_first_load){
 
-    console.log('Toggle Pill: '+LinkType_hash);
+    console.log('Toggle Pill: '+link_type_hash);
 
-    if(pills_loading && !loaded_pills.includes(LinkType_hash)){
+    if(pills_loading && !loaded_pills.includes(link_type_hash)){
         return false;
     } else if (loading_in_progress){
         return false;
     }
 
-    console.log('Toggle Pill Active: '+LinkType_hash);
+    console.log('Toggle Pill Active: '+link_type_hash);
 
-    if($('.handle_nav_'+LinkType_hash).attr('LinkType') && $('.handle_nav_'+LinkType_hash).attr('LinkType').length){
-        LinkType = parseInt($('.handle_nav_'+LinkType_hash).attr('LinkType'));
+    if($('.handle_nav_'+link_type_hash).attr('link_type') && $('.handle_nav_'+link_type_hash).attr('link_type').length){
+        link_type = parseInt($('.handle_nav_'+link_type_hash).attr('link_type'));
     } else {
-        console.log('ERROR: #'+LinkType_hash+' is not a valid menu.');
+        console.log('ERROR: #'+link_type_hash+' is not a valid menu.');
         return false;
     }
 
     loading_in_progress = true;
 
-    if(!loaded_pills.includes(LinkType_hash)){
-        pills_loading = LinkType_hash;
+    if(!loaded_pills.includes(link_type_hash)){
+        pills_loading = link_type_hash;
     }
 
-    var LinkDown = 0;
-    var LinkRight = 0;
+    var link_down = 0;
+    var link_right = 0;
     var focus__node = parseInt($('#focus__node').val());
 
     if(focus__node==12273){
-        LinkRight = parseInt($('#focus__id').val());
+        link_right = parseInt($('#focus__id').val());
     } else if (focus__node==12274){
-        LinkDown = parseInt($('#focus__id').val());
+        link_down = parseInt($('#focus__id').val());
     }
 
     //Toggle view
     $('.xtypetitle').addClass('hidden');
-    $('.xtypetitle_'+LinkType).removeClass('hidden');
+    $('.xtypetitle_'+link_type).removeClass('hidden');
 
 
-    if(!$('.thepill' + LinkType+' .nav-link').hasClass('active')){
+    if(!$('.thepill' + link_type+' .nav-link').hasClass('active')){
 
         //Currently closed, must now be opened:
         var action_id = 26007; //Open
@@ -534,31 +534,31 @@ function toggle_pills(LinkType_hash, is_first_load){
         //Hide all elements
         $('.nav-link').removeClass('active');
         $('.headlinebody').addClass('hidden');
-        $('.thepill' + LinkType+ ' .nav-link').addClass('active');
-        $('.headline_body_' + LinkType).removeClass('hidden');
+        $('.thepill' + link_type+ ' .nav-link').addClass('active');
+        $('.headline_body_' + link_type).removeClass('hidden');
 
         //Set focus tab:
-        console.log('focus_group Updated from '+focus_group+' to '+LinkType);
-        focus_group = LinkType;
-        if(!is_first_load && (!window.location.hash || window.location.hash!=$('.thepill' + LinkType+' .nav-link').attr('href'))) {
-            window.location.hash = $('.thepill' + LinkType+' .nav-link').attr('href');
+        console.log('focus_group Updated from '+focus_group+' to '+link_type);
+        focus_group = link_type;
+        if(!is_first_load && (!window.location.hash || window.location.hash!=$('.thepill' + link_type+' .nav-link').attr('href'))) {
+            window.location.hash = $('.thepill' + link_type+' .nav-link').attr('href');
         }
 
         //Do we need to load data via ajax?
-        if( !loaded_pills.includes(LinkType_hash) ){
+        if( !loaded_pills.includes(link_type_hash) ){
 
-            $('.headline_body_' + LinkType + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
+            $('.headline_body_' + link_type + ' .tab_content').html('<div class="center" style="padding-top: 13px;"><i class="fas fa-yin-yang fa-spin"></i></div>');
 
             var focus__node = parseInt($('#focus__node').val());
-            console.log('Tab loading from @'+focus__node+' for @'+LinkType);
+            console.log('Tab loading from @'+focus__node+' for @'+link_type);
 
             if(focus__node==12273){
 
                 var loading_url = "/app/view__i_body";
                 var loading_data = {
                     focus__node:focus__node,
-                    LinkType:LinkType,
-                    counter:$('.headline_body_' + LinkType).attr('read-counter'),
+                    link_type:link_type,
+                    counter:$('.headline_body_' + link_type).attr('read-counter'),
                     i__id:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
@@ -568,8 +568,8 @@ function toggle_pills(LinkType_hash, is_first_load){
                 var loading_url = "/app/view__e_body";
                 var loading_data = {
                     focus__node:focus__node,
-                    LinkType:LinkType,
-                    counter:$('.headline_body_'+LinkType).attr('read-counter'),
+                    link_type:link_type,
+                    counter:$('.headline_body_'+link_type).attr('read-counter'),
                     e__id:parseInt($('#focus__id').val()),
                     js_request_uri: js_request_uri, //Always append to AJAX Calls
                 };
@@ -587,9 +587,9 @@ function toggle_pills(LinkType_hash, is_first_load){
             $.post(loading_url, loading_data, function (data) {
 
                 //Add data to the page:
-                $('.headline_body_' + LinkType + ' .tab_content').html(data);
+                $('.headline_body_' + link_type + ' .tab_content').html(data);
 
-                loaded_pills.push(LinkType_hash);
+                loaded_pills.push(link_type_hash);
 
                 load_card_clickers();
                 initiate_algolia();
@@ -609,10 +609,10 @@ function toggle_pills(LinkType_hash, is_first_load){
 
                 setTimeout(function () {
 
-                    if(js_n___11020.includes(LinkType) || (focus__node==12274 && (js_n___42261.includes(LinkType) || js_n___42284.includes(LinkType)))){
-                        i_sort_load(LinkType);
-                    } else if(js_n___11028.includes(LinkType) || (focus__node==12273 && (js_n___42261.includes(LinkType) || js_n___42284.includes(LinkType)))) {
-                        e_sort_load(LinkType);
+                    if(js_n___11020.includes(link_type) || (focus__node==12274 && (js_n___42261.includes(link_type) || js_n___42284.includes(link_type)))){
+                        i_sort_load(link_type);
+                    } else if(js_n___11028.includes(link_type) || (focus__node==12273 && (js_n___42261.includes(link_type) || js_n___42284.includes(link_type)))) {
+                        e_sort_load(link_type);
                     }
 
                     activate_popover();
@@ -703,26 +703,26 @@ function js_view__shuffle_message(e__id){
 }
 
 
-function loadtab(LinkType, tab_data_id){
+function loadtab(link_type, tab_data_id){
 
     //Hide all tabs:
-    $('.tab-group-'+LinkType).addClass('hidden');
-    $('.tab-nav-'+LinkType).removeClass('active');
+    $('.tab-group-'+link_type).addClass('hidden');
+    $('.tab-nav-'+link_type).removeClass('active');
 
     //Show this tab:
-    $('.tab-group-'+LinkType+'.tab-data-'+tab_data_id).removeClass('hidden');
-    $('.tab-nav-'+LinkType+'.tab-head-'+tab_data_id).addClass('active');
+    $('.tab-group-'+link_type+'.tab-data-'+tab_data_id).removeClass('hidden');
+    $('.tab-nav-'+link_type+'.tab-head-'+tab_data_id).addClass('active');
 
 }
 
 
 var init_in_process = 0;
-function x_remove(LinkId, LinkType, i__hashtag){
+function x_remove(link_id, link_type, i__hashtag){
 
-    if(init_in_process==LinkId){
+    if(init_in_process==link_id){
         return false;
     }
-    init_in_process = LinkId;
+    init_in_process = link_id;
 
     var r = confirm("Remove idea #"+i__hashtag+"?");
     if (!(r==true)) {
@@ -731,7 +731,7 @@ function x_remove(LinkId, LinkType, i__hashtag){
 
     //Save changes:
     $.post("/app/x_remove", {
-        LinkId:LinkId,
+        link_id:link_id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         //Update UI to confirm with member:
@@ -742,15 +742,15 @@ function x_remove(LinkId, LinkType, i__hashtag){
 
         } else {
 
-            adjust_counter(LinkType, -1);
+            adjust_counter(link_type, -1);
 
             //REMOVE BOOKMARK from UI:
-            $('.cover_x_'+LinkId).fadeOut();
+            $('.cover_x_'+link_id).fadeOut();
 
             setTimeout(function () {
 
                 //Delete from body:
-                $('.cover_x_'+LinkId).remove();
+                $('.cover_x_'+link_id).remove();
 
             }, 233);
         }
@@ -786,44 +786,44 @@ function initiate_algolia(){
     });
 }
 
-function e_load_cover(LinkType, e__id, counter, first_segment){
+function e_load_cover(link_type, e__id, counter, first_segment){
 
-    if($('.coins_e_'+e__id+'_'+LinkType).html().length){
+    if($('.coins_e_'+e__id+'_'+link_type).html().length){
         //Already loaded:
        return false;
     }
 
-    $('.coins_e_'+e__id+'_'+LinkType).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_e_'+e__id+'_'+link_type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/e_load_cover", {
-        LinkType:LinkType,
+        link_type:link_type,
         e__id:e__id,
         counter:counter,
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_e_'+e__id+'_'+LinkType).html(data);
+        $('.coins_e_'+e__id+'_'+link_type).html(data);
     });
 
 }
 
-function i_load_cover(LinkType, i__id, counter, first_segment, current_e){
+function i_load_cover(link_type, i__id, counter, first_segment, current_e){
 
-    if($('.coins_i_'+i__id+'_'+LinkType).html().length){
+    if($('.coins_i_'+i__id+'_'+link_type).html().length){
         //Already loaded:
         return false;
     }
 
-    $('.coins_i_'+i__id+'_'+LinkType).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.coins_i_'+i__id+'_'+link_type).html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/i_load_cover", {
-        LinkType:LinkType,
+        link_type:link_type,
         i__id:i__id,
         counter:counter,
         first_segment:first_segment,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
-        $('.coins_i_'+i__id+'_'+LinkType).html(data);
+        $('.coins_i_'+i__id+'_'+link_type).html(data);
     });
 
 }
@@ -868,10 +868,10 @@ function load_covers(){
     $(".load_e_covers, .load_i_covers").unbind();
 
     $(".load_e_covers").click(function(event) {
-        e_load_cover($(this).attr('load_LinkType'),$(this).attr('load_e__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        e_load_cover($(this).attr('load_link_type'),$(this).attr('load_e__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
     $(".load_i_covers").click(function(event) {
-        i_load_cover($(this).attr('load_LinkType'),$(this).attr('load_i__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
+        i_load_cover($(this).attr('load_link_type'),$(this).attr('load_i__id'),$(this).attr('load_counter'),$(this).attr('load_first_segment'));
     });
 }
 
@@ -894,7 +894,7 @@ function add_media(result_info){
 function load_card_clickers(){
 
     $(".card_click").unbind();
-    var ignore_clicks = 'a, .btn, textarea, .LinkText, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
+    var ignore_clicks = 'a, .btn, textarea, .link_text, .cover_wrapper12273, .ignore-click, .focus-cover, .ref_source, .this_selector';
     $( ".card_click" ).click(function(e) {
         if($(e.target).closest(ignore_clicks).length < 1 && $(this).attr('href').length){
             js_redirect($(this).attr('href'));
@@ -1159,8 +1159,8 @@ $(document).ready(function () {
     set_autosize($('.texttype__lg'));
 
     $('.trigger_modal').click(function (e) {
-        var LinkType = parseInt($(this).attr('LinkType'));
-        $('#modal'+LinkType).modal('show');
+        var link_type = parseInt($(this).attr('link_type'));
+        $('#modal'+link_type).modal('show');
     });
 
 
@@ -1451,12 +1451,12 @@ function update_cover_mini(cover_code, target_css){
 
 
 
-function i_editor_switch(link_LinkType = 0, next_i__id = 0, previous_i__id = 0, do_checks = 0){
+function i_editor_switch(link_link_type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 0){
 
-    console.log('SWITCHING TO '+link_LinkType+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks+'/'+$('#modal31911 .save_i__message').val()+'/'+parseInt($('#modal31911 .created_i__id').val()));
+    console.log('SWITCHING TO '+link_link_type+'/'+next_i__id+'/'+previous_i__id+'/'+do_checks+'/'+$('#modal31911 .save_i__message').val()+'/'+parseInt($('#modal31911 .created_i__id').val()));
 
     /*
-    if(!next_i__id && !previous_i__id && !link_LinkType && !do_checks){
+    if(!next_i__id && !previous_i__id && !link_link_type && !do_checks){
         var r = confirm("Are you sure you want to unlink this idea?");
         if (!(r==true)) {
             return false;
@@ -1465,7 +1465,7 @@ function i_editor_switch(link_LinkType = 0, next_i__id = 0, previous_i__id = 0, 
     */
 
     //Will switch the nature/direction of the link:
-    return i_editor_load(0, 0, link_LinkType, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .created_i__id').val()));
+    return i_editor_load(0, 0, link_link_type, next_i__id, previous_i__id, do_checks, $('#modal31911 .save_i__message').val(), parseInt($('#modal31911 .created_i__id').val()));
 }
 
 function display_media(mediaframe_id, uploader_id, i__id){
@@ -1477,7 +1477,7 @@ function display_media(mediaframe_id, uploader_id, i__id){
     sort_media(mediaframe_id);
 }
 
-function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
+function i_editor_load(i__id = 0, link_id = 0, link_link_type = 0, next_i__id = 0, previous_i__id = 0, do_checks = 1, load_message = '', passon_i__id = 0){
 
 
     $(".idea_link_direction, .idea_link_unlink, .idea_link_type").addClass('hidden');
@@ -1489,32 +1489,32 @@ function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0,
         //Reset Fields:
         has_unsaved_changes = false;
         $('#modal31911 .media_frame').html('');
-        $("#modal31911 .dynamic_item").attr('d__id','').attr('d_LinkId','');
+        $("#modal31911 .dynamic_item").attr('d__id','').attr('d_link_id','');
         $("#modal31911 .dynamic_item input").attr('placeholder', '').val('');
         $('#modal31911 .created_i__id').val(0);
         $("#modal31911 .unsaved_warning").val('');
         $("#modal31911 .save_frame").addClass('hidden');
-        $('#modal31911 .save_i__id, #modal31911 .save_LinkId').val(0);
+        $('#modal31911 .save_i__id, #modal31911 .save_link_id').val(0);
 
         //Are we adding an idea for a target action tab?
         console.log('i Modal loaded for '+focus_group);
-        if(focus_i_id && do_checks && focus_group>0 && !next_i__id && !previous_i__id && !i__id && !LinkId && !link_LinkType){
+        if(focus_i_id && do_checks && focus_group>0 && !next_i__id && !previous_i__id && !i__id && !link_id && !link_link_type){
             if(js_n___42265.includes(focus_group) || !js_session_superpowers_unlocked.includes(10939)){
                 //Next idea group:
                 next_i__id = focus_i_id;
-                link_LinkType = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                link_link_type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             } else if(js_n___42380.includes(focus_group)) {
                 //Previous idea group:
                 previous_i__id = focus_i_id;
-                link_LinkType = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
+                link_link_type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901); //Sequence or Comment
             }
         }
 
 
-        if(!link_LinkType && do_checks && !i__id && !next_i__id && !previous_i__id && focus_i_id){
+        if(!link_link_type && do_checks && !i__id && !next_i__id && !previous_i__id && focus_i_id){
             console.log('MATCH');
             next_i__id = focus_i_id;
-            link_LinkType = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
+            link_link_type = ( js_session_superpowers_unlocked.includes(10939) ? 4228 : 30901);
         }
     }
 
@@ -1525,13 +1525,13 @@ function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0,
     $("#modal31911 .idea_list_next").html('');
     $("#modal31911 .idea_list_previous").html('');
 
-    var is_next = next_i__id && js_n___4486.includes(link_LinkType);
-    var is_prev = previous_i__id && js_n___4486.includes(link_LinkType);
+    var is_next = next_i__id && js_n___4486.includes(link_link_type);
+    var is_prev = previous_i__id && js_n___4486.includes(link_link_type);
 
     if(is_next || is_prev){
 
         i__id = 0;
-        LinkId = 0;
+        link_id = 0;
         var force_next_simplify = is_prev && !js_session_superpowers_unlocked.includes(42817);
 
         if(is_next || force_next_simplify){
@@ -1549,7 +1549,7 @@ function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0,
             $("#modal31911 .idea_list_next").append('<div class="idea_response">' + $('.ui_i__cache_'+next_i__id).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_LinkType+',0,'+next_i__id+',1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_link_type+',0,'+next_i__id+',1)');
 
         } else if(is_prev){
 
@@ -1561,13 +1561,13 @@ function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0,
             $("#modal31911 .idea_list_previous").append('<div class="idea_response">' + $('.ui_i__cache_'+previous_i__id).html() + '</div>');
 
             //Adjust Link:
-            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_LinkType+','+previous_i__id+',0,1)');
+            $('.idea_link_direction').removeClass('hidden').attr('onclick','i_editor_switch('+link_link_type+','+previous_i__id+',0,1)');
 
         }
 
         $('.idea_link_unlink, .idea_link_type').removeClass('hidden');
         if(!passon_i__id){
-            update_form_select(4486, link_LinkType, 1, false);
+            update_form_select(4486, link_link_type, 1, false);
         }
     }
 
@@ -1625,12 +1625,12 @@ function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0,
 
     }
 
-    if(LinkId){
-        $('#modal31911 .save_LinkId').val(LinkId);
+    if(link_id){
+        $('#modal31911 .save_link_id').val(link_id);
 
         //Idea<>Idea links do not have an interaction message
-        if(parseInt($('#focus__node').val())!=12273 || ($('.ui_LinkText_'+LinkId+':first') && $('.ui_LinkText_'+LinkId+':first').text().length>0)){
-            $('#modal31911 .save_LinkText').val($('.ui_LinkText_'+LinkId+':first').text());
+        if(parseInt($('#focus__node').val())!=12273 || ($('.ui_link_text_'+link_id+':first') && $('.ui_link_text_'+link_id+':first').text().length>0)){
+            $('#modal31911 .save_link_text').val($('.ui_link_text_'+link_id+':first').text());
             $('#modal31911 .save_frame').removeClass('hidden');
         }
     }
@@ -1650,10 +1650,10 @@ function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0,
         setTimeout(function () {
             //Adjust sizes:
             set_autosize($('#modal31911 .save_i__message'));
-            set_autosize($('#modal31911 .save_LinkText'));
+            set_autosize($('#modal31911 .save_link_text'));
         }, 233);
 
-        var created_i__id = load_i_dynamic(i__id, LinkId, current_i__type, true);
+        var created_i__id = load_i_dynamic(i__id, link_id, current_i__type, true);
 
     }
 
@@ -1664,7 +1664,7 @@ function i_editor_load(i__id = 0, LinkId = 0, link_LinkType = 0, next_i__id = 0,
 
 }
 
-function load_i_dynamic(i__id, LinkId, current_i__type, initial_loading){
+function load_i_dynamic(i__id, link_id, current_i__type, initial_loading){
 
     $(".dynamic_item").addClass('hidden'); //Hide all current items...
     $(".dynamic_editing_loading").removeClass('hidden');
@@ -1672,7 +1672,7 @@ function load_i_dynamic(i__id, LinkId, current_i__type, initial_loading){
 
     $.post("/app/i_editor_load", {
         i__id: i__id,
-        LinkId: LinkId,
+        link_id: link_id,
         current_i__type: current_i__type,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -1710,7 +1710,7 @@ function load_i_dynamic(i__id, LinkId, current_i__type, initial_loading){
                 if(data.return_inputs[index_i] == undefined){
                     data.return_inputs[index_i] = [];
                     data.return_inputs[index_i]["d__id"] = 0;
-                    data.return_inputs[index_i]["d_LinkId"] = 0;
+                    data.return_inputs[index_i]["d_link_id"] = 0;
                     data.return_inputs[index_i]["d__html"] = '';
                     data.return_inputs[index_i]["d__value"] = '';
                     data.return_inputs[index_i]["d__type_name"] = '';
@@ -1738,7 +1738,7 @@ function load_i_dynamic(i__id, LinkId, current_i__type, initial_loading){
                 }
 
                 $("#modal31911 .dynamic_"+i+" .radio_frame").remove();
-                $("#modal31911 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_LinkId',data.return_inputs[index_i]["d_LinkId"]);
+                $("#modal31911 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_link_id',data.return_inputs[index_i]["d_link_id"]);
 
                 if(data.return_inputs[index_i]["d__is_radio"]){
                     $("#modal31911 .dynamic_"+i).prepend( '<div class="radio_frame hideIfEmpty">' + data.return_inputs[index_i]["d__profile_header"] + data.return_inputs[index_i]["d__html"] + '</div>' );
@@ -1749,9 +1749,9 @@ function load_i_dynamic(i__id, LinkId, current_i__type, initial_loading){
                     $("#modal31911 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31911 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(LinkId && parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())){
+                    if(link_id && parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        //$("#modal31911 .save_LinkText").val('IGNORE_INPUT');
+                        //$("#modal31911 .save_link_text").val('IGNORE_INPUT');
                         //$("#modal31911 .save_frame").addClass('hidden');
                     }
                 }
@@ -1803,12 +1803,12 @@ function i_editor_save(){
         focus__node:         parseInt($('#focus__node').val()),
         focus__id:           parseInt($('#focus__id').val()),
         save_i__id:         ( current_i__id>0 ? current_i__id : created_i__id ),
-        save_LinkId:         $('#modal31911 .save_LinkId').val(),
+        save_link_id:         $('#modal31911 .save_link_id').val(),
         next_i__id:         $('#modal31911 .next_i__id').val(),
         previous_i__id:     $('#modal31911 .previous_i__id').val(),
-        save_LinkType:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
+        save_link_type:       $('.dropd_form_4486').attr('selected_value').trim(), //The final link type as selected by user if they have the superpower
         focus_group:     focus_group,
-        save_LinkText:    $('#modal31911 .save_LinkText').val().trim(),
+        save_link_text:    $('#modal31911 .save_link_text').val().trim(),
         save_i__message:    $('#modal31911 .save_i__message').val().trim(),
         save_i__hashtag:    $('#modal31911 .save_i__hashtag').val().trim(),
         save_i__type:       $('.dropd_form_4737').attr('selected_value').trim(),
@@ -1820,7 +1820,7 @@ function i_editor_save(){
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31911 .dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31911 .dynamic_'+i).attr('d_LinkId').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_'+i).val().trim();
+            modify_data['save_dynamic_'+i] = $('#modal31911 .dynamic_'+i).attr('d_link_id').trim() + 'EXPLODETERMABC' + $('#modal31911 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31911 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;
@@ -1858,11 +1858,11 @@ function i_editor_save(){
 
             //Update Source Reference:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__type', modify_data['save_i__type']);
-            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_LinkId'], false);
+            ui_instant_select(4737, modify_data['save_i__type'], modify_data['save_i__id'], modify_data['save_link_id'], false);
 
             //Update Idea Privacy:
             $('.s__12273_'+modify_data['save_i__id']).attr('i__privacy', modify_data['save_i__privacy']);
-            ui_instant_select(31004, modify_data['save_i__privacy'], modify_data['save_i__id'], modify_data['save_LinkId'], false);
+            ui_instant_select(31004, modify_data['save_i__privacy'], modify_data['save_i__id'], modify_data['save_link_id'], false);
 
             //Update Handle & Href links if needed:
             if(old_handle!=new_handle){
@@ -1887,7 +1887,7 @@ function i_editor_save(){
             console.log('START INSERTING');
             if(!current_i__id && created_i__id>0 && focus_group>0){
 
-                console.log('ADD NEW '+modify_data['save_LinkType']+' & x GROUP: '+focus_group);
+                console.log('ADD NEW '+modify_data['save_link_type']+' & x GROUP: '+focus_group);
 
                 $("#list-in-" + focus_group).append(data.return_i__cache_full);
 
@@ -1899,7 +1899,7 @@ function i_editor_save(){
 
             } else {
 
-                console.log('UPDATE  '+modify_data['save_LinkType']+' & x GROUP: '+focus_group);
+                console.log('UPDATE  '+modify_data['save_link_type']+' & x GROUP: '+focus_group);
 
                 //Update Cache otherwise:
                 $('.ui_i__cache_'+modify_data['save_i__id']).html(data.return_i__cache_links);
@@ -1911,8 +1911,8 @@ function i_editor_save(){
                 show_more(modify_data['save_i__id']);
             }
 
-            if(modify_data['save_LinkId'] && modify_data['save_LinkText']!='IGNORE_INPUT'){
-                $('.ui_LinkText_'+modify_data['save_LinkId']).text(modify_data['save_LinkText']);
+            if(modify_data['save_link_id'] && modify_data['save_link_text']!='IGNORE_INPUT'){
+                $('.ui_link_text_'+modify_data['save_link_id']).text(modify_data['save_link_text']);
             }
 
             //Tooltips:
@@ -2232,7 +2232,7 @@ function cloudinary_preview__source(uploader_id, info_id, media_e__id, playback_
 }
 
 
-function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null){
+function e_editor_load(e__id = 0, link_id = 0, bar_title = null, link_text = null){
 
     //Activate Modal:
     $('#modal31912').modal('show');
@@ -2244,7 +2244,7 @@ function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null)
 
     $('#modal31912 .save_results').html('');
     $("#modal31912 .save_frame").addClass('hidden');
-    $("#modal31912 .dynamic_item").attr('d__id','').attr('d_LinkId','');
+    $("#modal31912 .dynamic_item").attr('d__id','').attr('d_link_id','');
     $("#modal31912 .dynamic_item").attr('placeholder', '').val('');
 
     //Source resets:
@@ -2259,7 +2259,7 @@ function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null)
     var current_privacy = $('.s__12274_'+e__id).attr('e__privacy');
 
     $('#modal31912 .save_e__id').val(e__id);
-    $('#modal31912 .save_LinkId').val(LinkId);
+    $('#modal31912 .save_link_id').val(link_id);
     $('#modal31912 .save_e__handle').val($('.ui_e__handle_'+e__id+':first').text());
     $('#modal31912 .save_e__title').val(current_title);
 
@@ -2271,11 +2271,11 @@ function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null)
     update__cover(current_cover, false);
 
 
-    if(LinkId){
-        $('#modal31912 .save_LinkText').val($('.ui_LinkText_'+LinkId).text());
+    if(link_id){
+        $('#modal31912 .save_link_text').val($('.ui_link_text_'+link_id).text());
         $('#modal31912 .save_frame').removeClass('hidden');
         setTimeout(function () {
-            set_autosize($('#modal31912 .save_LinkText'));
+            set_autosize($('#modal31912 .save_link_text'));
         }, 377);
     }
     setTimeout(function () {
@@ -2286,7 +2286,7 @@ function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null)
 
     $.post("/app/e_editor_load", {
         e__id: e__id,
-        LinkId: LinkId,
+        link_id: link_id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
 
@@ -2305,7 +2305,7 @@ function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null)
                 if(data.return_inputs[index_i] == undefined){
                     data.return_inputs[index_i] = [];
                     data.return_inputs[index_i]["d__id"] = 0;
-                    data.return_inputs[index_i]["d_LinkId"] = 0;
+                    data.return_inputs[index_i]["d_link_id"] = 0;
                     data.return_inputs[index_i]["d__html"] = '';
                     data.return_inputs[index_i]["d__value"] = '';
                     data.return_inputs[index_i]["d__type_name"] = '';
@@ -2325,7 +2325,7 @@ function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null)
                 }
 
                 $("#modal31912 .dynamic_"+i+" .radio_frame").remove();
-                $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_LinkId',data.return_inputs[index_i]["d_LinkId"]);
+                $("#modal31912 .dynamic_"+i).attr('d__id',data.return_inputs[index_i]["d__id"]).attr('d_link_id',data.return_inputs[index_i]["d_link_id"]);
 
                 var is_locked = js_n___32145.includes(parseInt(data.return_inputs[index_i]["d__id"]));
                 if(is_locked && !data.return_inputs[index_i]["d__value"].length){
@@ -2344,9 +2344,9 @@ function e_editor_load(e__id = 0, LinkId = 0, bar_title = null, LinkText = null)
                     $("#modal31912 .dynamic_"+i+" h3").html(data.return_inputs[index_i]["d__html"]);
                     $("#modal31912 .dynamic_"+i+" input").attr('placeholder',data.return_inputs[index_i]["d__placeholder"]).attr('type',data.return_inputs[index_i]["d__type_name"]).val(data.return_inputs[index_i]["d__value"]).prop('disabled', is_locked);
 
-                    if(LinkId && ( (parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"]==e__id )){
+                    if(link_id && ( (parseInt($('#focus__node').val())==12274 && data.return_inputs[index_i]["d__id"]==parseInt($('#focus__id').val())) || data.return_inputs[index_i]["d__id"]==e__id )){
                         //Hide message textarea since this is already loaded in the dynamic inputs:
-                        //$("#modal31912 .save_LinkText").val('IGNORE_INPUT');
+                        //$("#modal31912 .save_link_text").val('IGNORE_INPUT');
                         //$("#modal31912 .save_frame").addClass('hidden');
                     }
                 }
@@ -2404,8 +2404,8 @@ function e_editor_save(){
         save_e__title:      $('#modal31912 .save_e__title').val().trim(),
         save_e__cover:      $('#modal31912 .save_e__cover').val().trim(),
         save_e__handle:     $('#modal31912 .save_e__handle').val().trim(),
-        save_LinkId:         $('#modal31912 .save_LinkId').val(),
-        save_LinkText:    $('#modal31912 .save_LinkText').val().trim(),
+        save_link_id:         $('#modal31912 .save_link_id').val(),
+        save_link_text:    $('#modal31912 .save_link_text').val().trim(),
         save_e__privacy:    $('.dropd_form_6177').attr('selected_value').trim(),
         js_request_uri:     js_request_uri, //Always append to AJAX Calls
     };
@@ -2413,7 +2413,7 @@ function e_editor_save(){
     //Append Dynamic Data:
     for(let i=1;i<=js_e___6404[42206]['m__message'];i++) {
         if($('#modal31912 .dynamic_'+i).attr('d__id').length){
-            modify_data['save_dynamic_'+i] = $('#modal31912 .dynamic_'+i).attr('d_LinkId').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_'+i).val().trim();
+            modify_data['save_dynamic_'+i] = $('#modal31912 .dynamic_'+i).attr('d_link_id').trim() + 'EXPLODETERMABC' + $('#modal31912 .dynamic_'+i).attr('d__id').trim() + 'EXPLODETERMABC' + $('#modal31912 .save_dynamic_'+i).val().trim();
         } else {
             //Should be the end of variables:
             break;
@@ -2452,7 +2452,7 @@ function e_editor_save(){
 
             //Update Privacy:
             $('.s__12274_'+modify_data['save_e__id']).attr('e__privacy', modify_data['save_e__privacy']);
-            ui_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_LinkId'], false);
+            ui_instant_select(6177, modify_data['save_e__privacy'], modify_data['save_e__id'], modify_data['save_link_id'], false);
 
             //Update Raw Cover:
             $('.ui_e__cover_'+modify_data['save_e__id']+':first').attr('raw_cover', modify_data['save_e__cover']);
@@ -2460,8 +2460,8 @@ function e_editor_save(){
             //Update Main Cover:
             update_cover_main(modify_data['save_e__cover'], '.s__12274_'+modify_data['save_e__id']);
 
-            if( modify_data['save_LinkId'] && modify_data['save_LinkText']!='IGNORE_INPUT'){
-                $('.ui_LinkText_'+ modify_data['save_LinkId']).text(modify_data['save_LinkText']);
+            if( modify_data['save_link_id'] && modify_data['save_link_text']!='IGNORE_INPUT'){
+                $('.ui_link_text_'+ modify_data['save_link_id']).text(modify_data['save_link_text']);
             }
 
             //Tooltips:
@@ -2528,7 +2528,7 @@ function x_view__load_page() {
     $.post("/app/x_view__load_page", {
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
-        LinkType: focus_group,
+        link_type: focus_group,
         current_page: current_page[focus_group],
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
@@ -2565,7 +2565,7 @@ function toggle_max_view(css_class){
 
 //Adds OR transactions sources to sources
 var e_is_adding = false;
-function e__add(LinkType, e_existing_id) {
+function e__add(link_type, e_existing_id) {
 
     if(e_is_adding){
         return false;
@@ -2575,7 +2575,7 @@ function e__add(LinkType, e_existing_id) {
     //If e_existing_id=0 it means we are creating a new source and then adding it, in which case e_new_string is required
     e_is_adding = true;
 
-    var input = $('.new-list-'+LinkType+' .add-input');
+    var input = $('.new-list-'+link_type+' .add-input');
 
     var original_photo = $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html();
     $('.mini-cover.card-12274.card-id-'+e_existing_id+' .cover-btn').html('<i class="fas fa-yin-yang fa-spin"></i>');
@@ -2593,7 +2593,7 @@ function e__add(LinkType, e_existing_id) {
     $.post("/app/e__add", {
 
         focus__node: parseInt($('#focus__node').val()),
-        LinkType: LinkType,
+        link_type: link_type,
         focus__id: parseInt($('#focus__id').val()),
         e_existing_id: e_existing_id,
         e_new_string: e_new_string,
@@ -2609,15 +2609,15 @@ function e__add(LinkType, e_existing_id) {
             //input.focus();
 
             //Add new object to list:
-            adjust_counter(LinkType, 1);
+            adjust_counter(link_type, 1);
 
             //See if we previously have a list in place?
-            if ($("#list-in-" + LinkType + " .card-12274").length > 0) {
+            if ($("#list-in-" + link_type + " .card-12274").length > 0) {
                 //Downwards add to start"
-                $("#list-in-" + LinkType + " .card-12274:first").before(data.e_new_echo);
+                $("#list-in-" + link_type + " .card-12274:first").before(data.e_new_echo);
             } else {
                 //Raw list, add before input filed:
-                $("#list-in-" + LinkType).prepend(data.e_new_echo);
+                $("#list-in-" + link_type).prepend(data.e_new_echo);
             }
 
             //Allow inline editing if enabled:
@@ -2625,7 +2625,7 @@ function e__add(LinkType, e_existing_id) {
 
             setTimeout(function () {
                 activate_popover();
-                e_sort_load(LinkType);
+                e_sort_load(link_type);
             }, 987);
 
             //Hide Coin:
@@ -2642,7 +2642,7 @@ function e__add(LinkType, e_existing_id) {
 
 
 var i_is_adding = false;
-function i__add(LinkType, link_i__id) {
+function i__add(link_type, link_i__id) {
 
     alert('not up yet');
     return false;
@@ -2662,7 +2662,7 @@ function i__add(LinkType, link_i__id) {
     //Remove results:
     i_is_adding = true;
     var sort_i_grabr = ".card_cover";
-    var input_field = $('.new-list-'+LinkType+' .add-input');
+    var input_field = $('.new-list-'+link_type+' .add-input');
     var new_i__message = input_field.val();
 
 
@@ -2675,11 +2675,11 @@ function i__add(LinkType, link_i__id) {
 
     //Set processing status:
     input_field.addClass('dynamic_saving');
-    add_to_list(LinkType, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
+    add_to_list(link_type, sort_i_grabr, '<div id="tempLoader" class="col-6 col-md-4 no-padding show_all_i"><div class="cover-wrapper"><div class="black-background-obs cover-link"><div class="cover-btn"><i class="fas fa-yin-yang fa-spin"></i></div></div></div></div>', 0);
 
     //Update backend:
     $.post("/app/i__add", {
-        LinkType: LinkType,
+        link_type: link_type,
         focus__node: parseInt($('#focus__node').val()),
         focus__id: parseInt($('#focus__id').val()),
         new_i__message: new_i__message,
@@ -2694,7 +2694,7 @@ function i__add(LinkType, link_i__id) {
         if (data.status) {
 
             //Add new
-            add_to_list(LinkType, sort_i_grabr, data.new_i_html, 1);
+            add_to_list(link_type, sort_i_grabr, data.new_i_html, 1);
 
             //Lookout for textinput updates
             x_set_start_text();
@@ -2717,22 +2717,22 @@ function i__add(LinkType, link_i__id) {
 }
 
 
-function e_delete(LinkId, LinkType) {
+function e_delete(link_id, link_type) {
 
     var r = confirm("Unlink this source?");
     if (r==true) {
         $.post("/app/e_delete", {
 
-            LinkId: LinkId,
+            link_id: link_id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
 
         }, function (data) {
             if (data.status) {
 
-                adjust_counter(LinkType, -1);
-                $(".cover_x_" + LinkId).fadeOut();
+                adjust_counter(link_type, -1);
+                $(".cover_x_" + link_id).fadeOut();
                 setTimeout(function () {
-                    $(".cover_x_" + LinkId).remove();
+                    $(".cover_x_" + link_id).remove();
                 }, 610);
 
             } else {
@@ -2746,41 +2746,41 @@ function e_delete(LinkId, LinkType) {
 
 
 
-function x_link_toggle(LinkType, i__id){
+function x_link_toggle(link_type, i__id){
 
-    $('.btn_toggle_'+LinkType).toggleClass('hidden');
-    var LinkId = parseInt($('.btn_control_'+LinkType).attr('current_LinkId'));
+    $('.btn_toggle_'+link_type).toggleClass('hidden');
+    var link_id = parseInt($('.btn_control_'+link_type).attr('current_link_id'));
 
-    if(!LinkId){
+    if(!link_id){
         //Add:
         $.post("/app/x_link_toggle", {
-            LinkType:LinkType,
+            link_type:link_type,
             i__id:i__id,
             target_i__id:$('#target_i__id').val(),
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             if (!data.status) {
                 alert(data.message);
-                $('.btn_toggle_'+LinkType).toggleClass('hidden');
+                $('.btn_toggle_'+link_type).toggleClass('hidden');
             } else {
                 //Update new link ID:
-                $('.btn_control_'+LinkType).attr('current_LinkId', data.LinkId);
+                $('.btn_control_'+link_type).attr('current_link_id', data.link_id);
             }
         });
     } else {
         //REMOVE
         $.post("/app/x_remove", {
-            LinkId:LinkId,
+            link_id:link_id,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             //Update UI to confirm with member:
             if (!data.status) {
                 //There was some sort of an error returned!
                 alert(data.message);
-                $('.btn_toggle_'+LinkType).toggleClass('hidden');
+                $('.btn_toggle_'+link_type).toggleClass('hidden');
             } else {
                 //Update new link ID:
-                $('.btn_control_'+LinkType).attr('current_LinkId', 0);
+                $('.btn_control_'+link_type).attr('current_link_id', 0);
             }
         });
     }
@@ -2881,8 +2881,8 @@ function x_set_text(this_grabr){
 
 
 
-function adjust_counter(LinkType, adjustment_count){
-    $('.xtypecounter'+LinkType).text((parseInt($('.headline_body_' + LinkType).attr('read-counter')) + adjustment_count));
+function adjust_counter(link_type, adjustment_count){
+    $('.xtypecounter'+link_type).text((parseInt($('.headline_body_' + link_type).attr('read-counter')) + adjustment_count));
 }
 
 
@@ -2905,51 +2905,51 @@ function set_autosize(theobject){
 
 
 
-function i_sort_load(LinkType){
+function i_sort_load(link_type){
 
     load_covers();
 
-    console.log('Tring to load Idea Sort for @'+LinkType);
-    if(!js_n___4603.includes(LinkType)){
-        console.log(LinkType+' is not sortable');
+    console.log('Tring to load Idea Sort for @'+link_type);
+    if(!js_n___4603.includes(link_type)){
+        console.log(link_type+' is not sortable');
         return false;
     }
 
     setTimeout(function () {
 
-        var theobject = document.getElementById("list-in-" + LinkType);
+        var theobject = document.getElementById("list-in-" + link_type);
         if (!theobject) {
             //due to duplicate ideas belonging in this idea:
-            console.log(LinkType+' failed to find sortable object');
+            console.log(link_type+' failed to find sortable object');
             return false;
         }
 
         //Make sure beow minimum sorting requirement:
-        if($("#list-in-"+LinkType+" .sort_draggable").length>=parseInt(js_e___6404[11064]['m__message'])){
-            console.log(LinkType+' has '+$("#list-in-"+LinkType+" .sort_draggable").length+' items which is more than the page limit of '+js_e___6404[11064]['m__message']);
+        if($("#list-in-"+link_type+" .sort_draggable").length>=parseInt(js_e___6404[11064]['m__message'])){
+            console.log(link_type+' has '+$("#list-in-"+link_type+" .sort_draggable").length+' items which is more than the page limit of '+js_e___6404[11064]['m__message']);
             return false;
-        } else if($("#list-in-"+LinkType+" .sort_draggable").length<2){
-            console.log('Less than 2 items to sort '+LinkType);
+        } else if($("#list-in-"+link_type+" .sort_draggable").length<2){
+            console.log('Less than 2 items to sort '+link_type);
             return false;
         } else {
 
-            console.log(LinkType+' sorting load success');
+            console.log(link_type+' sorting load success');
             $('.sort_i_frame').removeClass('hidden');
 
             //Load sorter:
             var sort = Sortable.create(theobject, {
                 animation: 144, // ms, animation speed moving items when sorting, `0` � without animation
-                draggable: "#list-in-"+LinkType+" .sort_draggable", // Specifies which items inside the element should be sortable
-                handle: "#list-in-"+LinkType+" .sort_i_grab", // Restricts sort start click/touch to the specified element
+                draggable: "#list-in-"+link_type+" .sort_draggable", // Specifies which items inside the element should be sortable
+                handle: "#list-in-"+link_type+" .sort_i_grab", // Restricts sort start click/touch to the specified element
                 onUpdate: function (evt/**Event*/) {
 
                     var sort_rank = 0;
                     var new_x_order = [];
-                    $("#list-in-"+LinkType+" .sort_draggable").each(function () {
-                        var LinkId = parseInt($(this).attr('LinkId'));
-                        if(LinkId > 0){
+                    $("#list-in-"+link_type+" .sort_draggable").each(function () {
+                        var link_id = parseInt($(this).attr('link_id'));
+                        if(link_id > 0){
                             sort_rank++;
-                            new_x_order[sort_rank] = LinkId;
+                            new_x_order[sort_rank] = link_id;
                         }
                     });
 
@@ -2957,7 +2957,7 @@ function i_sort_load(LinkType){
                     if(sort_rank > 0){
                         $.post("/app/i_sort_load", {
                             new_x_order:new_x_order,
-                            LinkType:LinkType,
+                            link_type:link_type,
                             js_request_uri: js_request_uri, //Always append to AJAX Calls
                         }, function (data) {
                             //Update UI to confirm with member:
@@ -3084,18 +3084,18 @@ function update_form_select(element_id, new_e__id, initial_loading, show_title){
     }
 }
 
-function ui_instant_select(element_id, new_e__id, o__id, LinkId, show_full_name){
+function ui_instant_select(element_id, new_e__id, o__id, link_id, show_full_name){
 
     //Update x:
-    console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+LinkId+' .btn' + new_e__id);
+    console.log('UI instant .dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .btn' + new_e__id);
     var data_object = eval('js_e___'+element_id);
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+LinkId+' .btn').html('<span class="icon-block-sm">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .btn').html('<span class="icon-block-sm">'+data_object[new_e__id]['m__cover']+'</span>' + ( show_full_name ? data_object[new_e__id]['m__title'] : '' ));
 
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+LinkId+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + LinkId).removeClass('active');
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+LinkId+' .optiond_' + new_e__id+'_'+o__id+ '_' + LinkId).addClass('active');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .drop_item_instant_' + element_id +'_'+o__id+ '_' + link_id).removeClass('active');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .optiond_' + new_e__id+'_'+o__id+ '_' + link_id).addClass('active');
 
-    var selected_e__id = $('.dropd_instant_'+element_id+'_'+o__id+'_'+LinkId).attr('selected_value');
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+LinkId).attr('selected_value' , new_e__id);
+    var selected_e__id = $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id).attr('selected_value');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id).attr('selected_value' , new_e__id);
 
 
     var main_object_type = 0;
@@ -3123,7 +3123,7 @@ function ui_instant_select(element_id, new_e__id, o__id, LinkId, show_full_name)
 
 }
 
-function x_update_instant_select(element_id, new_e__id, o__id = 0, LinkId = 0, show_full_name = false){
+function x_update_instant_select(element_id, new_e__id, o__id = 0, link_id = 0, show_full_name = false){
 
     /*
     *
@@ -3140,7 +3140,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, LinkId = 0, s
 
     if($('.dropmenu_instant_'+element_id).length && !o__id){
         o__id = $('.dropmenu_instant_'+element_id+':first').attr('o__id');
-        LinkId = $('.dropmenu_instant_'+element_id+':first').attr('LinkId');
+        link_id = $('.dropmenu_instant_'+element_id+':first').attr('link_id');
     }
 
     console.log('Attempt to update dropdown @'+element_id+' to @'+new_e__id);
@@ -3201,10 +3201,10 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, LinkId = 0, s
     //Show Loading
     var data_object = eval('js_e___'+element_id);
     if(!data_object[new_e__id]){
-        alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ LinkId +'/'+ show_full_name);
+        alert('Invalid element ID: '+element_id +'/'+ new_e__id +'/'+ o__id +'/'+ link_id +'/'+ show_full_name);
         return false;
     }
-    $('.dropd_instant_'+element_id+'_'+o__id+'_'+LinkId+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
+    $('.dropd_instant_'+element_id+'_'+o__id+'_'+link_id+' .btn').html('<span class="icon-block-sm"><i class="fas fa-yin-yang fa-spin"></i></span>');
 
     $.post("/app/x_update_instant_select", {
         focus__id:parseInt($('#focus__id').val()),
@@ -3212,13 +3212,13 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, LinkId = 0, s
         element_id: element_id,
         new_e__id: new_e__id,
         migrate_s__handle: migrate_s__handle,
-        LinkId: LinkId,
+        link_id: link_id,
         js_request_uri: js_request_uri, //Always append to AJAX Calls
     }, function (data) {
         if (data.status) {
 
             //Update on page:
-            ui_instant_select(element_id, new_e__id, o__id, LinkId, show_full_name);
+            ui_instant_select(element_id, new_e__id, o__id, link_id, show_full_name);
 
             if( data.deletion_redirect && data.deletion_redirect.length > 0 ){
 
@@ -3241,7 +3241,7 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, LinkId = 0, s
 
             if( data.auto_open_i_editor_modal ){
                 //We need to show idea modal:
-                i_editor_load(o__id, $('.s__12273_'+o__id).attr('LinkId'));
+                i_editor_load(o__id, $('.s__12273_'+o__id).attr('link_id'));
             }
 
         } else {
@@ -3260,20 +3260,20 @@ function x_update_instant_select(element_id, new_e__id, o__id = 0, LinkId = 0, s
 
 
 
-function e_sort_save(LinkType) {
+function e_sort_save(link_type) {
 
-    var new_LinkNumber = [];
+    var new_link_number = [];
     var sort_rank = 0;
 
-    $("#list-in-"+LinkType+" .card-12274").each(function () {
+    $("#list-in-"+link_type+" .card-12274").each(function () {
         //Fetch variables for this idea:
         var e__id = parseInt($(this).attr('e__id'));
-        var LinkId = parseInt($(this).attr('LinkId'));
+        var link_id = parseInt($(this).attr('link_id'));
 
         sort_rank++;
 
         //Store in DB:
-        new_LinkNumber[sort_rank] = LinkId;
+        new_link_number[sort_rank] = link_id;
     });
 
     //It might be zero for lists that have jsut been emptied
@@ -3281,8 +3281,8 @@ function e_sort_save(LinkType) {
         //Update backend:
         $.post("/app/e_sort_save", {
             e__id: parseInt($('#focus__id').val()),
-            LinkType:LinkType,
-            new_LinkNumber: new_LinkNumber,
+            link_type:link_type,
+            new_link_number: new_link_number,
             js_request_uri: js_request_uri, //Always append to AJAX Calls
         }, function (data) {
             //Update UI to confirm with member:

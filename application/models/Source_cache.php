@@ -15,18 +15,18 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function activate_subscription($e__id, $LinkDomain = 0){
+    function activate_subscription($e__id, $link_domain = 0){
 
 
         //Remove from Anonymous:
         foreach($this->Mench_ledger->fetch(array(
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkUp IN (' . join(',', $this->config->item('n___32540')) . ')' => null, //Unsubscribers
-            'LinkDown' => $e__id,
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_up IN (' . join(',', $this->config->item('n___32540')) . ')' => null, //Unsubscribers
+            'link_down' => $e__id,
         )) as $unsubscriber_x){
-            $this->Mench_ledger->update($unsubscriber_x['LinkId'], array(
-                'LinkPrivacy' => 6173,
+            $this->Mench_ledger->update($unsubscriber_x['link_id'], array(
+                'link_privacy' => 6173,
             ), $e__id, 10673 /* IDEA NOTES Unpublished */);
         }
 
@@ -36,11 +36,11 @@ class Source_cache extends CIdea_cache
 
         //Add to Subscriber:
         $this->Mench_ledger->create(array(
-            'LinkUp' => 4430, //Subscriber
-            'LinkType' => 4251,
-            'LinkPlayer' => $e__id,
-            'LinkDown' => $e__id,
-            'LinkDomain' => $LinkDomain,
+            'link_up' => 4430, //Subscriber
+            'link_type' => 4251,
+            'link_player' => $e__id,
+            'link_down' => $e__id,
+            'link_domain' => $link_domain,
         ));
 
 
@@ -65,22 +65,22 @@ class Source_cache extends CIdea_cache
         //Remove their subscribe:
         $resubscribed = 0;
         foreach($this->Mench_ledger->fetch(array(
-            'LinkUp IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
-            'LinkDown' => $e['e__id'],
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_up IN (' . join(',', $this->config->item('n___29648')) . ')' => null, //Unsubscribers
+            'link_down' => $e['e__id'],
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         )) as $unsubscribe){
-            $resubscribed += $this->Mench_ledger->update($unsubscribe['LinkId'], array(
-                'LinkPrivacy' => 6173, //Transaction Removed
+            $resubscribed += $this->Mench_ledger->update($unsubscribe['link_id'], array(
+                'link_privacy' => 6173, //Transaction Removed
             ), $e['e__id'], 31064 /* Login Resubscribe */);
         }
         if($resubscribed > 0){
             //Add Back to Subscribers:
             $this->Mench_ledger->create(array(
-                'LinkType' => 4251,
-                'LinkUp' => 4430, //Active Member
-                'LinkPlayer' => $e['e__id'],
-                'LinkDown' => $e['e__id'],
+                'link_type' => 4251,
+                'link_up' => 4430, //Active Member
+                'link_player' => $e['e__id'],
+                'link_down' => $e['e__id'],
             ));
         }
 
@@ -98,8 +98,8 @@ class Source_cache extends CIdea_cache
             }
 
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $e['e__id'],
-                'LinkType' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* MEMBER SIGN */ ),
+                'link_player' => $e['e__id'],
+                'link_type' => ( $is_cookie ? 14032 /* COOKIE SIGN */ : 7564 /* MEMBER SIGN */ ),
             ));
 
         }
@@ -110,34 +110,34 @@ class Source_cache extends CIdea_cache
         //Fetch Platform Defaults:
         $platform_theme = array();
         foreach($this->Mench_ledger->fetch(array(
-            'LinkUp IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
-            'LinkDown' => 6404, //Platform Default
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
+            'link_down' => 6404, //Platform Default
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x) {
-            array_push($platform_theme, intval($x['LinkUp']));
+            array_push($platform_theme, intval($x['link_up']));
         }
 
         //Fetch Website Defaults:
         $website_theme = array();
         foreach($this->Mench_ledger->fetch(array(
-            'LinkUp IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
-            'LinkDown' => website_setting(0), //Website ID
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_up IN (' . join(',', $this->config->item('n___14926')) . ')' => null, //Website Theme Items
+            'link_down' => website_setting(0), //Website ID
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $x) {
-            array_push($website_theme, intval($x['LinkUp']));
+            array_push($website_theme, intval($x['link_up']));
         }
 
 
         //Fetch User Defaults:
         $user_theme = array();
         foreach($this->Mench_ledger->fetch(array(
-            'LinkDown' => $e['e__id'], //This follower source
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_down' => $e['e__id'], //This follower source
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('LinkUp'), 0) as $e_up){
+        ), array('link_up'), 0) as $e_up){
 
             //Push to followings IDs:
             array_push($session_data['session_up_ids'], intval($e_up['e__id']));
@@ -204,23 +204,23 @@ class Source_cache extends CIdea_cache
         /*
         $unsubscribed_time = null;
         foreach($this->Mench_ledger->fetch(array(
-            'LinkUp IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
-            'LinkDown' => $e['e__id'], //This follower source
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_up IN (' . join(',', $this->config->item('n___31057')) . ')' => null, //Permanently Unsubscribed
+            'link_down' => $e['e__id'], //This follower source
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
         ), array(), 0) as $unsubscribed){
-            $unsubscribed_time = $unsubscribed['LinkTime'];
-            $this->Mench_ledger->update($unsubscribed['LinkId'], array(
-                'LinkPrivacy' => 6173,
+            $unsubscribed_time = $unsubscribed['link_time'];
+            $this->Mench_ledger->update($unsubscribed['link_id'], array(
+                'link_privacy' => 6173,
             ), $e['e__id'], 31064); //Resubscribe
         }
         if($unsubscribed_time){
             //Add to subscribed again:
             $this->Mench_ledger->create(array(
-                'LinkType' => 4251,
-                'LinkUp' => 4430, //Active Member
-                'LinkPlayer' => $e['e__id'],
-                'LinkDown' => $e['e__id'],
+                'link_type' => 4251,
+                'link_up' => 4430, //Active Member
+                'link_player' => $e['e__id'],
+                'link_down' => $e['e__id'],
             ));
             $this->session->set_flashdata('flash_message', '<div class="alert alert-info" role="alert"><span class="icon-block"><i class="far fa-user-check"></i></span>Welcome Back! You Have Been Re-Subscribed :)</div>');
         }
@@ -231,41 +231,41 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function add_regular_e($LinkUp, $LinkDown, $LinkText = null) {
+    function add_regular_e($link_up, $link_down, $link_text = null) {
         //Add if link not already there:
         if(!count($this->Mench_ledger->fetch(array(
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkUp' => $LinkUp,
-            'LinkDown' => $LinkDown,
-            'LinkText' => $LinkText,
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_up' => $link_up,
+            'link_down' => $link_down,
+            'link_text' => $link_text,
         )))){
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $LinkDown, //Belongs to this Member
-                'LinkType' => 4251,
-                'LinkText' => $LinkText,
-                'LinkUp' => $LinkUp,
-                'LinkDown' => $LinkDown,
+                'link_player' => $link_down, //Belongs to this Member
+                'link_type' => 4251,
+                'link_text' => $link_text,
+                'link_up' => $link_up,
+                'link_down' => $link_down,
             ));
         }
     }
 
-    function scissor_e($LinkUp, $sub_id){
+    function scissor_e($link_up, $sub_id){
 
         $all_results = $this->Mench_ledger->fetch(array(
-            'LinkUp' => $LinkUp,
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_up' => $link_up,
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
-        ), array('LinkDown'), 0, 0, sort__e());
+        ), array('link_down'), 0, 0, sort__e());
 
         //Remove if not in the secondary group:
         foreach($all_results as $key => $primary_list){
             if(!count($this->Mench_ledger->fetch(array(
-                'LinkUp' => $sub_id,
-                'LinkDown' => $primary_list['e__id'],
-                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC/OWNER
+                'link_up' => $sub_id,
+                'link_down' => $primary_list['e__id'],
+                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC/OWNER
             ), array(), 0))){
                 unset($all_results[$key]);
             }
@@ -276,22 +276,22 @@ class Source_cache extends CIdea_cache
 
     }
 
-    function scissor_i($LinkUp, $sub_id){
+    function scissor_i($link_up, $sub_id){
 
         $all_results = $this->Mench_ledger->fetch(array(
-            'LinkUp' => $LinkUp,
-            'LinkType IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_up' => $link_up,
+            'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-        ), array('LinkRight'), 0, 0, array('LinkNumber' => 'ASC'));
+        ), array('link_right'), 0, 0, array('link_number' => 'ASC'));
 
         //Remove if not in the secondary group:
         foreach($all_results as $key => $primary_list){
             if(!count($this->Mench_ledger->fetch(array(
-                'LinkUp' => $sub_id,
-                'LinkRight' => $primary_list['i__id'],
-                'LinkType IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'link_up' => $sub_id,
+                'link_right' => $primary_list['i__id'],
+                'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             )))){
                 unset($all_results[$key]);
             }
@@ -304,15 +304,15 @@ class Source_cache extends CIdea_cache
 
 
 
-    function add_member($full_name, $email = null, $phone_number = null, $image_url = null, $LinkDomain = 0){
+    function add_member($full_name, $email = null, $phone_number = null, $image_url = null, $link_domain = 0){
 
         //Set website if not set:
-        if(!$LinkDomain){
-            $LinkDomain = website_setting(0);
+        if(!$link_domain){
+            $link_domain = website_setting(0);
         }
 
         //All good, create new source:
-        $new_private_users = in_array($LinkDomain, $this->config->item('n___44011'));
+        $new_private_users = in_array($link_domain, $this->config->item('n___44011'));
         $added_e = $this->Source_cache->verify_create($full_name, 0, ( $image_url ? $image_url : random_cover(12279) ), false, ( $new_private_users ? 4755 : 6181 ));
         if(!$added_e['status']){
             //We had an error, return it:
@@ -332,40 +332,40 @@ class Source_cache extends CIdea_cache
         //Add email?
         if($email){
             $this->Mench_ledger->create(array(
-                'LinkType' => 4251,
-                'LinkText' => trim(strtolower($email)),
-                'LinkUp' => 3288, //Email
-                'LinkPlayer' => $added_e['new_e']['e__id'],
-                'LinkDown' => $added_e['new_e']['e__id'],
-                'LinkDomain' => $LinkDomain,
+                'link_type' => 4251,
+                'link_text' => trim(strtolower($email)),
+                'link_up' => 3288, //Email
+                'link_player' => $added_e['new_e']['e__id'],
+                'link_down' => $added_e['new_e']['e__id'],
+                'link_domain' => $link_domain,
             ));
         }
 
         //Add Number?
         if($phone_number){
             $this->Mench_ledger->create(array(
-                'LinkUp' => 4783, //Phone
-                'LinkType' => 4251,
-                'LinkText' => $phone_number,
-                'LinkPlayer' => $added_e['new_e']['e__id'],
-                'LinkDown' => $added_e['new_e']['e__id'],
-                'LinkDomain' => $LinkDomain,
+                'link_up' => 4783, //Phone
+                'link_type' => 4251,
+                'link_text' => $phone_number,
+                'link_player' => $added_e['new_e']['e__id'],
+                'link_down' => $added_e['new_e']['e__id'],
+                'link_domain' => $link_domain,
             ));
         }
 
         if($email || $phone_number){
 
-            $this->Source_cache->activate_subscription( $added_e['new_e']['e__id'], $LinkDomain );
+            $this->Source_cache->activate_subscription( $added_e['new_e']['e__id'], $link_domain );
 
         } else {
 
             //Add to anonymous:
             $this->Mench_ledger->create(array(
-                'LinkUp' => 14938, //Guest
-                'LinkType' => 4251,
-                'LinkPlayer' => $added_e['new_e']['e__id'],
-                'LinkDown' => $added_e['new_e']['e__id'],
-                'LinkDomain' => $LinkDomain,
+                'link_up' => 14938, //Guest
+                'link_type' => 4251,
+                'link_player' => $added_e['new_e']['e__id'],
+                'link_down' => $added_e['new_e']['e__id'],
+                'link_domain' => $link_domain,
             ));
 
             //Assign session key:
@@ -376,24 +376,24 @@ class Source_cache extends CIdea_cache
 
 
         //Add member to Domain Member Group(s):
-        $this->Source_cache->add_regular_e($LinkDomain, $added_e['new_e']['e__id']);
+        $this->Source_cache->add_regular_e($link_domain, $added_e['new_e']['e__id']);
 
 
         //Send Welcome Email if any:
         if($email){
             foreach($this->Mench_ledger->fetch(array(
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                'LinkType' => 33600, //Draft
-                'LinkUp' => 14929, //Website Welcome Email Templates
-            ), array('LinkRight'), 0) as $i){
+                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'link_type' => 33600, //Draft
+                'link_up' => 14929, //Website Welcome Email Templates
+            ), array('link_right'), 0) as $i){
                 if(count($this->Mench_ledger->fetch(array(
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'LinkType' => 33600, //Draft
-                    'LinkUp' => $LinkDomain, //for Current website
-                    'LinkRight' => $i['i__id'], //Is this the template?
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_type' => 33600, //Draft
+                    'link_up' => $link_domain, //for Current website
+                    'link_right' => $i['i__id'], //Is this the template?
                 )))){
                     //Found the email template to send:
-                    $total_sent = $this->Mench_ledger->send_i_mass_dm(array($added_e['new_e']), $i, $LinkDomain);
+                    $total_sent = $this->Mench_ledger->send_i_mass_dm(array($added_e['new_e']), $i, $link_domain);
                     break; //Just the first template match
                 }
             }
@@ -415,11 +415,11 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function create($add_fields, $LinkPlayer = 14068, $skip_creator_link = false)
+    function create($add_fields, $link_player = 14068, $skip_creator_link = false)
     {
 
         //What is required to create a new Idea?
-        if (detect_missing_columns($add_fields, array('e__title'), $LinkPlayer)) {
+        if (detect_missing_columns($add_fields, array('e__title'), $link_player)) {
             return false;
         }
 
@@ -441,28 +441,28 @@ class Source_cache extends CIdea_cache
         if ($add_fields['e__id'] > 0) {
 
             //Log transaction new source:
-            $creator = ($LinkPlayer > 0 ? $LinkPlayer : $add_fields['e__id']);
+            $creator = ($link_player > 0 ? $link_player : $add_fields['e__id']);
             if(!$skip_creator_link && $creator!=$add_fields['e__id'] && !count($this->Mench_ledger->fetch(array(
-                    'LinkUp' => $creator,
-                    'LinkDown' => $add_fields['e__id'],
-                    'LinkType' => 4251, //New Source Created
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_up' => $creator,
+                    'link_down' => $add_fields['e__id'],
+                    'link_type' => 4251, //New Source Created
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => $creator,
-                    'LinkUp' => $creator,
-                    'LinkDown' => $add_fields['e__id'],
-                    'LinkType' => 4251, //New Source Created
+                    'link_player' => $creator,
+                    'link_up' => $creator,
+                    'link_down' => $add_fields['e__id'],
+                    'link_type' => 4251, //New Source Created
                 ));
             }
 
 
             //Log transaction new Idea hashtag:
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $LinkPlayer,
-                'LinkRight' => $add_fields['e__id'],
-                'LinkText' => $add_fields['e__handle'],
-                'LinkType' => 42169, //Source Generated Handle
+                'link_player' => $link_player,
+                'link_right' => $add_fields['e__id'],
+                'link_text' => $add_fields['e__handle'],
+                'link_type' => 42169, //Source Generated Handle
             ));
 
             //Fetch to return the complete source data:
@@ -479,11 +479,11 @@ class Source_cache extends CIdea_cache
 
             //Ooopsi, something went wrong!
             $this->Mench_ledger->create(array(
-                'LinkUp' => $LinkPlayer,
-                'LinkText' => 'create() failed to create a new source',
-                'LinkType' => 4246, //Platform Bug Reports
-                'LinkPlayer' => $LinkPlayer,
-                'LinkMetadata' => $add_fields,
+                'link_up' => $link_player,
+                'link_text' => 'create() failed to create a new source',
+                'link_type' => 4246, //Platform Bug Reports
+                'link_player' => $link_player,
+                'link_metadata' => $add_fields,
             ));
             return false;
 
@@ -530,31 +530,31 @@ class Source_cache extends CIdea_cache
 
     }
 
-    function fetch_recursive($LinkType, $e__id, $include_any_e = array(), $exclude_all_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
+    function fetch_recursive($link_type, $e__id, $include_any_e = array(), $exclude_all_e= array(), $hard_level = 3, $hard_limit = 100, $s__level = 0){
 
         $flat_items = array();
         $s__level++;
 
-        if(in_array($LinkType, $this->config->item('n___42276'))){
+        if(in_array($link_type, $this->config->item('n___42276'))){
 
             //Up Source Link Groups:
-            $order_columns = array('LinkType = \'41011\' DESC' => null, 'LinkNumber' => 'ASC', 'LinkTime' => 'DESC');
-            $joins_objects = array('LinkUp');
+            $order_columns = array('link_type = \'41011\' DESC' => null, 'link_number' => 'ASC', 'link_time' => 'DESC');
+            $joins_objects = array('link_up');
             $query_filters = array(
-                'LinkDown' => $e__id,
-                'LinkType IN (' . join(',', $this->config->item('n___'.$LinkType)) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'link_down' => $e__id,
+                'link_type IN (' . join(',', $this->config->item('n___'.$link_type)) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
 
-        } elseif(in_array($LinkType, $this->config->item('n___42377'))){
+        } elseif(in_array($link_type, $this->config->item('n___42377'))){
 
             //Down Source Link Groups:
-            $order_columns = array('LinkType = \'41011\' DESC' => null, 'LinkNumber' => 'ASC', 'LinkTime' => 'DESC');
-            $joins_objects = array('LinkDown');
+            $order_columns = array('link_type = \'41011\' DESC' => null, 'link_number' => 'ASC', 'link_time' => 'DESC');
+            $joins_objects = array('link_down');
             $query_filters = array(
-                'LinkUp' => $e__id,
-                'LinkType IN (' . join(',', $this->config->item('n___'.$LinkType)) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'link_up' => $e__id,
+                'link_type IN (' . join(',', $this->config->item('n___'.$link_type)) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             );
 
         } else {
@@ -569,19 +569,19 @@ class Source_cache extends CIdea_cache
             //Filter Sources, if needed:
             $qualified_e = true;
             if(count($include_any_e) && !count($this->Mench_ledger->fetch(array(
-                    'LinkUp IN (' . join(',', $include_any_e) . ')' => null,
-                    'LinkDown' => $e_down['e__id'],
-                    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_up IN (' . join(',', $include_any_e) . ')' => null,
+                    'link_down' => $e_down['e__id'],
+                    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 )))){
                 //Must include all sources, skip:
                 $qualified_e = false;
             }
             if(count($exclude_all_e) && count($this->Mench_ledger->fetch(array(
-                    'LinkUp IN (' . join(',', $exclude_all_e) . ')' => null,
-                    'LinkDown' => $e_down['e__id'],
-                    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'link_up IN (' . join(',', $exclude_all_e) . ')' => null,
+                    'link_down' => $e_down['e__id'],
+                    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                 //Must Exclude If Has ALL sources, skip:
                 $qualified_e = false;
@@ -600,7 +600,7 @@ class Source_cache extends CIdea_cache
                 break;
             }
 
-            foreach($this->Source_cache->fetch_recursive($LinkType, $e_down['e__id'], $include_any_e, $exclude_all_e, $hard_level, $hard_limit, $s__level) as $e_recursive_down){
+            foreach($this->Source_cache->fetch_recursive($link_type, $e_down['e__id'], $include_any_e, $exclude_all_e, $hard_level, $hard_limit, $s__level) as $e_recursive_down){
                 if(!isset($flat_items[$e_recursive_down['e__id']])){
                     $e_recursive_down['s__count'] = count($flat_items)+1;
                     $flat_items[$e_recursive_down['e__id']] = $e_recursive_down;
@@ -611,7 +611,7 @@ class Source_cache extends CIdea_cache
         return $flat_items;
     }
 
-    function update($id, $update_columns, $external_sync = false, $LinkPlayer = 0, $LinkType = 0)
+    function update($id, $update_columns, $external_sync = false, $link_player = 0, $link_type = 0)
     {
 
         $id = intval($id);
@@ -620,7 +620,7 @@ class Source_cache extends CIdea_cache
         }
 
         //Fetch current source filed values so we can compare later on after we've updated it:
-        if($LinkPlayer > 0){
+        if($link_player > 0){
             $before_data = $this->Source_cache->fetch(array('e__id' => $id));
         }
 
@@ -630,7 +630,7 @@ class Source_cache extends CIdea_cache
         $affected_rows = $this->db->affected_rows();
 
         //Do we need to do any additional work?
-        if ($affected_rows > 0 && $LinkPlayer > 0) {
+        if ($affected_rows > 0 && $link_player > 0) {
 
             if($external_sync){
                 //Sync algolia:
@@ -645,30 +645,30 @@ class Source_cache extends CIdea_cache
                     continue;
                 }
 
-                if($LinkType){
+                if($link_type){
 
-                    $LinkText = update_description($before_data[0][$key], $value);
+                    $link_text = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='e__handle') {
 
-                    $LinkType = 41983; //Source Handle Update
-                    $LinkText = update_description($before_data[0][$key], $value);
+                    $link_type = 41983; //Source Handle Update
+                    $link_text = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='e__title') {
 
-                    $LinkType = 10646; //Source Title Update
-                    $LinkText = update_description($before_data[0][$key], $value);
+                    $link_type = 10646; //Source Title Update
+                    $link_text = update_description($before_data[0][$key], $value);
 
                 } elseif($key=='e__privacy') {
 
-                    $LinkType = 10654; //Source Privacy Updated
+                    $link_type = 10654; //Source Privacy Updated
                     $e___6177 = $this->config->item('e___6177'); //Source Privacy
-                    $LinkText = view__db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
+                    $link_text = view__db_field($key) . ' updated from [' . $e___6177[$before_data[0][$key]]['m__title'] . '] to [' . $e___6177[$value]['m__title'] . ']';
 
                 } elseif($key=='e__cover') {
 
-                    $LinkType = 10653; //Member Updated Cover
-                    $LinkText = view__db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
+                    $link_type = 10653; //Member Updated Cover
+                    $link_text = view__db_field($key) . ' updated from [' . $before_data[0][$key] . '] to [' . $value . ']';
 
                 } else {
 
@@ -679,11 +679,11 @@ class Source_cache extends CIdea_cache
 
                 //Value has changed, log transaction:
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => ($LinkPlayer > 0 ? $LinkPlayer : $id),
-                    'LinkType' => $LinkType,
-                    'LinkDown' => $id,
-                    'LinkText' => $LinkText,
-                    'LinkMetadata' => array(
+                    'link_player' => ($link_player > 0 ? $link_player : $id),
+                    'link_type' => $link_type,
+                    'link_down' => $id,
+                    'link_text' => $link_text,
+                    'link_metadata' => array(
                         'e__id' => $id,
                         'field' => $key,
                         'before' => $before_data[0][$key],
@@ -697,11 +697,11 @@ class Source_cache extends CIdea_cache
 
             //This should not happen:
             $this->Mench_ledger->create(array(
-                'LinkDown' => $id,
-                'LinkType' => 4246, //Platform Bug Reports
-                'LinkPlayer' => $LinkPlayer,
-                'LinkText' => 'update() Failed to update',
-                'LinkMetadata' => array(
+                'link_down' => $id,
+                'link_type' => 4246, //Platform Bug Reports
+                'link_player' => $link_player,
+                'link_text' => 'update() Failed to update',
+                'link_metadata' => array(
                     'input' => $update_columns,
                 ),
             ));
@@ -712,14 +712,14 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function radio_set($e_up_bucket_id, $set_e_down_id, $LinkPlayer)
+    function radio_set($e_up_bucket_id, $set_e_down_id, $link_player)
     {
 
         /*
          * Treats an source follower group as a drop down menu where:
          *
          *  $e_up_bucket_id is the followings of the drop down
-         *  $LinkPlayer is the member source ID that one of the followers of $e_up_bucket_id should be assigned (like a drop down)
+         *  $link_player is the member source ID that one of the followers of $e_up_bucket_id should be assigned (like a drop down)
          *  $set_e_down_id is the new value to be assigned, which could also be null (meaning just delete all current values)
          *
          * This function is helpful to manage things like Member communication levels
@@ -741,21 +741,21 @@ class Source_cache extends CIdea_cache
         $previously_assigned = ($set_e_down_id < 1);
         $x_update_id = 0;
         foreach($this->Mench_ledger->fetch(array(
-            'LinkDown' => $LinkPlayer,
-            'LinkUp IN (' . join(',', $followers) . ')' => null, //Current followers
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'link_down' => $link_player,
+            'link_up IN (' . join(',', $followers) . ')' => null, //Current followers
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), view__memory(6404,11064)) as $x) {
 
-            if (!$previously_assigned && $x['LinkUp']==$set_e_down_id) {
+            if (!$previously_assigned && $x['link_up']==$set_e_down_id) {
                 $previously_assigned = true;
             } else {
                 //Delete assignment:
-                $x_update_id = $x['LinkId'];
+                $x_update_id = $x['link_id'];
 
                 //Do not log update transaction here as we would log it further below:
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkPrivacy' => 6173, //Transaction Deleted
-                ), $LinkPlayer, 6224 /* Member Account Updated */);
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_privacy' => 6173, //Transaction Deleted
+                ), $link_player, 6224 /* Member Account Updated */);
             }
 
         }
@@ -765,11 +765,11 @@ class Source_cache extends CIdea_cache
         if (!$previously_assigned) {
             //Let's go ahead and add desired source as parent:
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $LinkPlayer,
-                'LinkDown' => $LinkPlayer,
-                'LinkUp' => $set_e_down_id,
-                'LinkType' => 4251,
-                'LinkReference' => $x_update_id,
+                'link_player' => $link_player,
+                'link_down' => $link_player,
+                'link_up' => $set_e_down_id,
+                'link_type' => 4251,
+                'link_reference' => $x_update_id,
             ));
         }
 
@@ -784,16 +784,16 @@ class Source_cache extends CIdea_cache
 
         //Check followings to see if there are duplicates:
         foreach($this->Mench_ledger->fetch(array(
-            'LinkDown' => $e__id,
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'link_down' => $e__id,
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('LinkUp'), 0, 0, array('LinkUp' => 'ASC', 'LinkId' => 'ASC')) as $x) {
+        ), array('link_up'), 0, 0, array('link_up' => 'ASC', 'link_id' => 'ASC')) as $x) {
 
             //Does this match any in the list so far?
             $duplicate_found = false;
             foreach($current_up as $up){
-                if($up['LinkUp']==$x['LinkUp'] && $up['LinkType']==$x['LinkType'] && $up['LinkPrivacy']==$x['LinkPrivacy'] && $up['LinkText']==$x['LinkText']){
+                if($up['link_up']==$x['link_up'] && $up['link_type']==$x['link_type'] && $up['link_privacy']==$x['link_privacy'] && $up['link_text']==$x['link_text']){
                     $duplicate_found = true;
                     break;
                 }
@@ -802,16 +802,16 @@ class Source_cache extends CIdea_cache
             if($duplicate_found){
                 //Remove it:
                 $duplicates_removed++;
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkPrivacy' => 6173,
-                ), $x['LinkPlayer'], 29331); //Duplicate Link Removed
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_privacy' => 6173,
+                ), $x['link_player'], 29331); //Duplicate Link Removed
             } else {
                 //Add it to main list:
                 array_push($current_up, array(
-                    'LinkUp' => $x['LinkUp'],
-                    'LinkType' => $x['LinkType'],
-                    'LinkPrivacy' => $x['LinkPrivacy'],
-                    'LinkText' => $x['LinkText'],
+                    'link_up' => $x['link_up'],
+                    'link_type' => $x['link_type'],
+                    'link_privacy' => $x['link_privacy'],
+                    'link_text' => $x['link_text'],
                 ));
             }
 
@@ -822,7 +822,7 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function remove($e__id, $LinkPlayer = 0, $migrate_s__id = 0){
+    function remove($e__id, $link_player = 0, $migrate_s__id = 0){
 
         if($e__id<1){
             return 0;
@@ -834,24 +834,24 @@ class Source_cache extends CIdea_cache
         if($migrate_s__id){
 
             //Migrate Transactions:
-            $this->db->query("UPDATE mench_ledger SET LinkUp=".$migrate_s__id." WHERE LinkUp=".$e__id.";");
-            $affected_LinkUp = $this->db->affected_rows();
-            $x_adjusted += $affected_LinkUp;
-            $this->db->query("UPDATE mench_ledger SET LinkDown=".$migrate_s__id." WHERE LinkDown=".$e__id.";");
-            $affected_LinkDown = $this->db->affected_rows();
-            $x_adjusted += $affected_LinkDown;
-            $this->db->query("UPDATE mench_ledger SET LinkPlayer=".$migrate_s__id." WHERE LinkPlayer=".$e__id.";");
-            $affected_LinkPlayer = $this->db->affected_rows();
-            $x_adjusted += $affected_LinkPlayer;
-            $this->db->query("UPDATE mench_ledger SET LinkType=".$migrate_s__id." WHERE LinkType=".$e__id.";");
-            $affected_LinkType = $this->db->affected_rows();
-            $x_adjusted += $affected_LinkType;
-            $this->db->query("UPDATE mench_ledger SET LinkPrivacy=".$migrate_s__id." WHERE LinkPrivacy=".$e__id.";");
-            $affected_LinkPrivacy = $this->db->affected_rows();
-            $x_adjusted += $affected_LinkPrivacy;
-            $this->db->query("UPDATE mench_ledger SET LinkDomain=".$migrate_s__id." WHERE LinkDomain=".$e__id.";");
-            $affected_LinkDomain = $this->db->affected_rows();
-            $x_adjusted += $affected_LinkDomain;
+            $this->db->query("UPDATE mench_ledger SET link_up=".$migrate_s__id." WHERE link_up=".$e__id.";");
+            $affected_link_up = $this->db->affected_rows();
+            $x_adjusted += $affected_link_up;
+            $this->db->query("UPDATE mench_ledger SET link_down=".$migrate_s__id." WHERE link_down=".$e__id.";");
+            $affected_link_down = $this->db->affected_rows();
+            $x_adjusted += $affected_link_down;
+            $this->db->query("UPDATE mench_ledger SET link_player=".$migrate_s__id." WHERE link_player=".$e__id.";");
+            $affected_link_player = $this->db->affected_rows();
+            $x_adjusted += $affected_link_player;
+            $this->db->query("UPDATE mench_ledger SET link_type=".$migrate_s__id." WHERE link_type=".$e__id.";");
+            $affected_link_type = $this->db->affected_rows();
+            $x_adjusted += $affected_link_type;
+            $this->db->query("UPDATE mench_ledger SET link_privacy=".$migrate_s__id." WHERE link_privacy=".$e__id.";");
+            $affected_link_privacy = $this->db->affected_rows();
+            $x_adjusted += $affected_link_privacy;
+            $this->db->query("UPDATE mench_ledger SET link_domain=".$migrate_s__id." WHERE link_domain=".$e__id.";");
+            $affected_link_domain = $this->db->affected_rows();
+            $x_adjusted += $affected_link_domain;
 
             //Clean Duplicates:
             $duplicates_removed = $this->Source_cache->remove_duplicate_links($migrate_s__id);
@@ -859,17 +859,17 @@ class Source_cache extends CIdea_cache
 
             $player_e = superpower_unlocked();
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => ($LinkPlayer > 0 ? $LinkPlayer : $player_e['e__id'] ),
-                'LinkType' => 31784,
-                'LinkDown' => $migrate_s__id,
-                'LinkMetadata' => array(
+                'link_player' => ($link_player > 0 ? $link_player : $player_e['e__id'] ),
+                'link_type' => 31784,
+                'link_down' => $migrate_s__id,
+                'link_metadata' => array(
                     'migrated_links' => array(
-                        'LinkUp' => $affected_LinkUp,
-                        'LinkDown' => $affected_LinkDown,
-                        'LinkPlayer' => $affected_LinkPlayer,
-                        'LinkType' => $affected_LinkType,
-                        'LinkPrivacy' => $affected_LinkPrivacy,
-                        'LinkDomain' => $affected_LinkDomain,
+                        'link_up' => $affected_link_up,
+                        'link_down' => $affected_link_down,
+                        'link_player' => $affected_link_player,
+                        'link_type' => $affected_link_type,
+                        'link_privacy' => $affected_link_privacy,
+                        'link_domain' => $affected_link_domain,
                     ),
                     'old_sources_id' => $e__id,
                     'duplicates_removed' => $duplicates_removed,
@@ -880,14 +880,14 @@ class Source_cache extends CIdea_cache
 
             //REMOVE TRANSACTIONS
             foreach($this->Mench_ledger->fetch(array(
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                'LinkType !=' => 10673, //Member Transaction Unpublished
-                '(LinkDown = ' . $e__id . ' OR LinkUp = ' . $e__id . ' OR LinkPlayer = ' . $e__id . ')' => null,
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'link_type !=' => 10673, //Member Transaction Unpublished
+                '(link_down = ' . $e__id . ' OR link_up = ' . $e__id . ' OR link_player = ' . $e__id . ')' => null,
             ), array(), 0) as $adjust_tr){
                 //Delete this transaction:
-                $x_adjusted += $this->Mench_ledger->update($adjust_tr['LinkId'], array(
-                    'LinkPrivacy' => 6173, //Transaction Deleted
-                ), $LinkPlayer, 10673 /* Member Transaction Unpublished */);
+                $x_adjusted += $this->Mench_ledger->update($adjust_tr['link_id'], array(
+                    'link_privacy' => 6173, //Transaction Deleted
+                ), $link_player, 10673 /* Member Transaction Unpublished */);
             }
 
         }
@@ -896,7 +896,7 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $LinkPlayer)
+    function mass_update($e__id, $action_e__id, $action_command1, $action_command2, $link_player)
     {
 
         //Alert: Has a twin function called i_mass_update()
@@ -939,11 +939,11 @@ class Source_cache extends CIdea_cache
 
         //Fetch all followers:
         $followers = $this->Mench_ledger->fetch(array(
-            'LinkUp' => $e__id,
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'link_up' => $e__id,
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('LinkDown'), 0);
+        ), array('link_down'), 0);
 
 
         //Process request:
@@ -956,7 +956,7 @@ class Source_cache extends CIdea_cache
 
                 $this->Source_cache->update($x['e__id'], array(
                     'e__title' => $action_command1 . $x['e__title'],
-                ), true, $LinkPlayer);
+                ), true, $link_player);
 
                 $applied_success++;
 
@@ -964,7 +964,7 @@ class Source_cache extends CIdea_cache
 
                 $this->Source_cache->update($x['e__id'], array(
                     'e__title' => $x['e__title'] . $action_command1,
-                ), true, $LinkPlayer);
+                ), true, $link_player);
 
                 $applied_success++;
 
@@ -977,24 +977,24 @@ class Source_cache extends CIdea_cache
 
                     //See if follower source has searched followings source:
                     $down_up_e = $this->Mench_ledger->fetch(array(
-                        'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'LinkDown' => $x['e__id'], //This follower source
-                        'LinkUp' => $e['e__id'],
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'link_down' => $x['e__id'], //This follower source
+                        'link_up' => $e['e__id'],
+                        'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     ));
 
                     if((in_array($action_e__id, array(5981, 13441)) && count($down_up_e)==0)){
 
                         $add_fields = array(
-                            'LinkPlayer' => $LinkPlayer,
-                            'LinkType' => 4251,
-                            'LinkDown' => $x['e__id'], //This follower source
-                            'LinkUp' => $e['e__id'],
+                            'link_player' => $link_player,
+                            'link_type' => 4251,
+                            'link_down' => $x['e__id'], //This follower source
+                            'link_up' => $e['e__id'],
                         );
 
                         if($action_e__id==13441){
                             //Copy message only if moving:
-                            $add_fields['LinkText'] = $x['LinkText'];
+                            $add_fields['link_text'] = $x['link_text'];
                         }
 
                         //Following Member Addition
@@ -1004,9 +1004,9 @@ class Source_cache extends CIdea_cache
 
                         if($action_e__id==13441){
                             //Since we're migrating we should remove from here:
-                            $this->Mench_ledger->update($x['LinkId'], array(
-                                'LinkPrivacy' => 6173, //Transaction Deleted
-                            ), $LinkPlayer, 10673 /* Member Transaction Unpublished  */);
+                            $this->Mench_ledger->update($x['link_id'], array(
+                                'link_privacy' => 6173, //Transaction Deleted
+                            ), $link_player, 10673 /* Member Transaction Unpublished  */);
                         }
 
                     } elseif(in_array($action_e__id, array(5982, 11956)) && count($down_up_e) > 0){
@@ -1015,9 +1015,9 @@ class Source_cache extends CIdea_cache
 
                             //Following Member Removal
                             foreach($down_up_e as $delete_tr){
-                                $this->Mench_ledger->update($delete_tr['LinkId'], array(
-                                    'LinkPrivacy' => 6173, //Transaction Deleted
-                                ), $LinkPlayer, 10673 /* Member Transaction Unpublished  */);
+                                $this->Mench_ledger->update($delete_tr['link_id'], array(
+                                    'link_privacy' => 6173, //Transaction Deleted
+                                ), $link_player, 10673 /* Member Transaction Unpublished  */);
                                 $applied_success++;
                             }
 
@@ -1028,10 +1028,10 @@ class Source_cache extends CIdea_cache
                             )) as $e){
                                 //Add as a followings because it meets the condition
                                 $this->Mench_ledger->create(array(
-                                    'LinkPlayer' => $LinkPlayer,
-                                    'LinkType' => 4251,
-                                    'LinkDown' => $x['e__id'], //This follower source
-                                    'LinkUp' => $e['e__id'],
+                                    'link_player' => $link_player,
+                                    'link_type' => 4251,
+                                    'link_down' => $x['e__id'], //This follower source
+                                    'link_up' => $e['e__id'],
                                 ));
                                 $applied_success++;
                             }
@@ -1043,7 +1043,7 @@ class Source_cache extends CIdea_cache
 
                 $this->Source_cache->update($x['e__id'], array(
                     'e__cover' => $action_command1,
-                ), true, $LinkPlayer);
+                ), true, $link_player);
 
                 $applied_success++;
 
@@ -1051,7 +1051,7 @@ class Source_cache extends CIdea_cache
 
                 $this->Source_cache->update($x['e__id'], array(
                     'e__cover' => $action_command1,
-                ), true, $LinkPlayer);
+                ), true, $link_player);
 
                 $applied_success++;
 
@@ -1059,7 +1059,7 @@ class Source_cache extends CIdea_cache
 
                 $this->Source_cache->update($x['e__id'], array(
                     'e__title' => str_ireplace($action_command1, $action_command2, $x['e__title']),
-                ), true, $LinkPlayer);
+                ), true, $link_player);
 
                 $applied_success++;
 
@@ -1067,25 +1067,25 @@ class Source_cache extends CIdea_cache
 
                 $this->Source_cache->update($x['e__id'], array(
                     'e__cover' => str_replace($action_command1, $action_command2, $x['e__cover']),
-                ), true, $LinkPlayer);
+                ), true, $link_player);
 
                 $applied_success++;
 
-            } elseif ($action_e__id==5001 && substr_count($x['LinkText'], $action_command1) > 0) { //Replace Transaction Matching String
+            } elseif ($action_e__id==5001 && substr_count($x['link_text'], $action_command1) > 0) { //Replace Transaction Matching String
 
-                $new_message = str_replace($action_command1, $action_command2, $x['LinkText']);
+                $new_message = str_replace($action_command1, $action_command2, $x['link_text']);
 
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkText' => $new_message,
-                ), $LinkPlayer, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_text' => $new_message,
+                ), $link_player, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
 
             } elseif ($action_e__id==26093) { //Replace Transaction Matching String
 
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkText' => $action_command1,
-                ), $LinkPlayer, 10657 /* SOURCE LINK CONTENT UPDATE  */);
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_text' => $action_command1,
+                ), $link_player, 10657 /* SOURCE LINK CONTENT UPDATE  */);
 
                 $applied_success++;
 
@@ -1093,29 +1093,29 @@ class Source_cache extends CIdea_cache
 
                 //Being deleted? Remove as well if that's the case:
                 if(!in_array($action_command2, $this->config->item('n___7358'))){
-                    $links_removed = $this->Source_cache->remove($x['e__id'], $LinkPlayer);
+                    $links_removed = $this->Source_cache->remove($x['e__id'], $link_player);
                 }
 
                 //Update Matching Member Status:
                 $this->Source_cache->update($x['e__id'], array(
                     'e__privacy' => $action_command2,
-                ), true, $LinkPlayer);
+                ), true, $link_player);
 
                 $applied_success++;
 
-            } elseif ($action_e__id==5865 && ($action_command1=='*' || $x['LinkPrivacy']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Interaction Privacy */)) { //Update Matching Interaction Privacy
+            } elseif ($action_e__id==5865 && ($action_command1=='*' || $x['link_privacy']==$action_command1) && in_array($action_command2, $this->config->item('n___6186') /* Interaction Privacy */)) { //Update Matching Interaction Privacy
 
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkPrivacy' => $action_command2,
-                ), $LinkPlayer, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_privacy' => $action_command2,
+                ), $link_player, ( in_array($action_command2, $this->config->item('n___7360') /* ACTIVE */) ? 10656 /* Member Transaction Updated Status */ : 10673 /* Member Transaction Unpublished */ ));
 
                 $applied_success++;
 
-            } elseif ($action_e__id==42804 && ($action_command1=='*' || $x['LinkType']==$action_command1) && in_array($action_command2, $this->config->item('n___32292') /* Source Link Types */)) { //Update Matching Interaction Type
+            } elseif ($action_e__id==42804 && ($action_command1=='*' || $x['link_type']==$action_command1) && in_array($action_command2, $this->config->item('n___32292') /* Source Link Types */)) { //Update Matching Interaction Type
 
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkType' => $action_command2,
-                ), $LinkPlayer, 42805);
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_type' => $action_command2,
+                ), $link_player, 42805);
                 $applied_success++;
 
             }
@@ -1123,10 +1123,10 @@ class Source_cache extends CIdea_cache
 
         //Log mass source edit transaction:
         $this->Mench_ledger->create(array(
-            'LinkPlayer' => $LinkPlayer,
-            'LinkType' => $action_e__id,
-            'LinkDown' => $e__id,
-            'LinkMetadata' => array(
+            'link_player' => $link_player,
+            'link_type' => $action_e__id,
+            'link_down' => $e__id,
+            'link_metadata' => array(
                 'payload' => $_POST,
                 'e_total' => count($followers),
                 'e_updated' => $applied_success,
@@ -1144,7 +1144,7 @@ class Source_cache extends CIdea_cache
     }
 
 
-    function verify_create($e__title, $LinkPlayer = 0, $e__cover = null, $skip_creator_link = false, $e__privacy = 6181){
+    function verify_create($e__title, $link_player = 0, $e__cover = null, $skip_creator_link = false, $e__privacy = 6181){
 
         //Validate Title
         $validate_e__title = validate_e__title($e__title);
@@ -1157,7 +1157,7 @@ class Source_cache extends CIdea_cache
             'e__title' => $validate_e__title['e__title_clean'],
             'e__cover' => $e__cover,
             'e__privacy' => $e__privacy,
-        ), $LinkPlayer, $skip_creator_link);
+        ), $link_player, $skip_creator_link);
 
         //Return success:
         return array(

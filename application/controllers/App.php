@@ -150,9 +150,9 @@ class App extends CI_Controller
 
 
 
-        $LinkDown = ( $focus_e ? $focus_e['e__id'] : 0 );
-        $LinkRight = ( $focus_i ? $focus_i['i__id'] : 0 );
-        $LinkLeft = ($target_i ? $target_i['i__id'] : 0 );
+        $link_down = ( $focus_e ? $focus_e['e__id'] : 0 );
+        $link_right = ( $focus_i ? $focus_i['i__id'] : 0 );
+        $link_left = ($target_i ? $target_i['i__id'] : 0 );
 
         //Run App
         $player_e = false;
@@ -196,7 +196,7 @@ class App extends CI_Controller
 
 
         //Cache App?
-        $LinkMetadata = array(
+        $link_metadata = array(
             'current_link' => 'https://' .get_server('SERVER_NAME') . get_server('REQUEST_URI'),
             '$_GET' => $_GET,
             '$_POST' => $_POST,
@@ -205,8 +205,8 @@ class App extends CI_Controller
         );
         $ui = null;
         $new_cache = false;
-        $cache_LinkTime = null;
-        $LinkPlayer = ( $player_http_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
+        $cache_link_time = null;
+        $link_player = ( $player_http_request ? ( $player_e ? $player_e['e__id'] : 14068 /* GUEST */ ) : 7274 /* CRON JOB */ );
         $skip_i_privacy_check = in_array($app_e__id, $this->config->item('n___43388'));
         $access_level_e = access_level_e(null, $focus_e['e__id'], $focus_e);
         $access_level_i = access_level_i(null, $focus_i['i__id'], $focus_i);
@@ -252,17 +252,17 @@ class App extends CI_Controller
                 if(!isset($_GET['reset_cache'])){
                     //Fetch Most Recent Cache:
                     foreach($this->Mench_ledger->fetch(array(
-                        'LinkDomain' => website_setting(0),
-                        'LinkType' => 14599, //Cache App
-                        'LinkUp' => $app_e__id,
-                        'LinkDown' => $LinkDown,
-                        'LinkLeft' => $LinkLeft,
-                        'LinkRight' => $LinkRight,
-                        'LinkTime >' => date("Y-m-d H:i:s", (time() - view__memory(6404,14599))),
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    ), array(), 1, 0, array('LinkTime' => 'DESC')) as $latest_cache){
-                        $ui = $latest_cache['LinkText'];
-                        $cache_LinkTime = '<div class="texttransparent center main__title">Updated ' . view__time_difference($latest_cache['LinkTime']) . ' Ago</div>';
+                        'link_domain' => website_setting(0),
+                        'link_type' => 14599, //Cache App
+                        'link_up' => $app_e__id,
+                        'link_down' => $link_down,
+                        'link_left' => $link_left,
+                        'link_right' => $link_right,
+                        'link_time >' => date("Y-m-d H:i:s", (time() - view__memory(6404,14599))),
+                        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    ), array(), 1, 0, array('link_time' => 'DESC')) as $latest_cache){
+                        $ui = $latest_cache['link_text'];
+                        $cache_link_time = '<div class="texttransparent center main__title">Updated ' . view__time_difference($latest_cache['link_time']) . ' Ago</div>';
                     }
                 }
 
@@ -295,7 +295,7 @@ class App extends CI_Controller
 
         $view_input = array(
             'app_e__id' => $app_e__id,
-            'LinkPlayer' => $LinkPlayer,
+            'link_player' => $link_player,
             'player_e' => $player_e,
             'player_http_request' => $player_http_request,
             'memory_detected' => $memory_detected,
@@ -321,14 +321,14 @@ class App extends CI_Controller
 
         if($new_cache){
             $cache_x = $this->Mench_ledger->create(array(
-                'LinkPlayer' => $LinkPlayer,
-                'LinkType' => 14599, //Cache App
-                'LinkUp' => $app_e__id,
-                'LinkText' => $ui,
+                'link_player' => $link_player,
+                'link_type' => 14599, //Cache App
+                'link_up' => $app_e__id,
+                'link_text' => $ui,
 
-                'LinkDown' => $LinkDown,
-                'LinkLeft' => $LinkLeft,
-                'LinkRight' => $LinkRight,
+                'link_down' => $link_down,
+                'link_left' => $link_left,
+                'link_right' => $link_right,
             ));
         }
 
@@ -354,10 +354,10 @@ class App extends CI_Controller
 
                 //Not yet started, add to their starting point:
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkType' => 4235, //Get started
-                    'LinkRight' => $target_i['i__id'],
-                    'LinkLeft' => $target_i['i__id'],
+                    'link_player' => $player_e['e__id'],
+                    'link_type' => 4235, //Get started
+                    'link_right' => $target_i['i__id'],
+                    'link_left' => $target_i['i__id'],
                 ));
 
                 //Mark as complete:
@@ -395,7 +395,7 @@ class App extends CI_Controller
                 //Load App:
                 echo $this->load->view('shared/header', $view_input, true);
                 echo $ui;
-                echo $cache_LinkTime;
+                echo $cache_link_time;
                 echo $this->load->view('shared/footer', array(), true);
 
             }
@@ -470,7 +470,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => view__unauthorized_message(),
             ));
-        } elseif (!isset($_POST['i__id']) || !isset($_POST['LinkId']) || !isset($_POST['current_i__type'])) {
+        } elseif (!isset($_POST['i__id']) || !isset($_POST['link_id']) || !isset($_POST['current_i__type'])) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -539,13 +539,13 @@ class App extends CI_Controller
             if(count($data_types)!=1) {
                 //This is strange, we are expecting 1 match only report this:
                 $this->Mench_ledger->create(array(
-                    'LinkType' => 4246, //Platform Bug Reports
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkUp' => 42179, //Dynamic Input Fields
-                    'LinkDown' => $dynamic_e__id,
-                    'LinkRight' => $i__id,
-                    'LinkReference' => $_POST['LinkId'],
-                    'LinkText' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong',
+                    'link_type' => 4246, //Platform Bug Reports
+                    'link_player' => $player_e['e__id'],
+                    'link_up' => 42179, //Dynamic Input Fields
+                    'link_down' => $dynamic_e__id,
+                    'link_right' => $i__id,
+                    'link_reference' => $_POST['link_id'],
+                    'link_text' => 'Found ' . count($data_types) . ' Data Types (Expecting exactly 1) for @' . $dynamic_e__id . ': Check @4592 to see what is wrong',
                 ));
                 continue; //Go to the next dynamic data type
             }
@@ -562,7 +562,7 @@ class App extends CI_Controller
                 array_push($return_inputs, array(
                     'd__id' => $dynamic_e__id,
                     'd__is_radio' => 1,
-                    'd_LinkId' => 0,
+                    'd_link_id' => 0,
                     'd__html' => view__instant_select($dynamic_e__id, 0, $i__id),
                     'd__value' => ( $i__id>0 ? $i__id : '' ),
                     'd__type_name' => '',
@@ -583,20 +583,20 @@ class App extends CI_Controller
                 $unique_values = array();
                 if($i__id > 0){ //Must have an original ID to possibly have a value...
                     foreach($this->Mench_ledger->fetch(array(
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'LinkType IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                        'LinkRight' => $i__id,
-                        'LinkUp' => $dynamic_e__id,
-                    ), array('LinkUp')) as $selected_e){
-                        if(strlen($selected_e['LinkText']) && !in_array($selected_e['LinkText'], $unique_values)){
+                        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'link_type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+                        'link_right' => $i__id,
+                        'link_up' => $dynamic_e__id,
+                    ), array('link_up')) as $selected_e){
+                        if(strlen($selected_e['link_text']) && !in_array($selected_e['link_text'], $unique_values)){
                             $counted++;
-                            array_push($unique_values, $selected_e['LinkText']);
+                            array_push($unique_values, $selected_e['link_text']);
                             array_push($return_inputs, array(
                                 'd__id' => $dynamic_e__id,
                                 'd__is_radio' => 0,
-                                'd_LinkId' => $selected_e['LinkId'],
+                                'd_link_id' => $selected_e['link_id'],
                                 'd__html' => view__dynamic_headline($dynamic_e__id, $e___42179[$dynamic_e__id], $selected_e),
-                                'd__value' => $selected_e['LinkText'],
+                                'd__value' => $selected_e['link_text'],
                                 'd__type_name' => html_input_type($data_type),
                                 'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
                                 'd__profile_header' => '',
@@ -613,7 +613,7 @@ class App extends CI_Controller
                         array_push($return_inputs, array(
                             'd__id' => $dynamic_e__id,
                             'd__is_radio' => 0,
-                            'd_LinkId' => 0,
+                            'd_link_id' => 0,
                             'd__html' => view__dynamic_headline($dynamic_e__id, $e___42179[$dynamic_e__id], $selected_e),
                             'd__value' => '',
                             'd__type_name' => html_input_type($data_type),
@@ -633,12 +633,12 @@ class App extends CI_Controller
 
         //Log Modal View:
         $this->Mench_ledger->create(array(
-            'LinkPlayer' => $player_e['e__id'],
-            'LinkType' => 14576, //MODAL VIEWED
-            'LinkUp' => 31911, //Edit Idea
-            'LinkRight' => $i__id,
-            'LinkReference' => $_POST['LinkId'],
-            'LinkMetadata' => $return_array,
+            'link_player' => $player_e['e__id'],
+            'link_type' => 14576, //MODAL VIEWED
+            'link_up' => 31911, //Edit Idea
+            'link_right' => $i__id,
+            'link_reference' => $_POST['link_id'],
+            'link_metadata' => $return_array,
         ));
 
         //Return everything we found:
@@ -685,14 +685,14 @@ class App extends CI_Controller
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif(!isset($_POST['next_i__id']) || !isset($_POST['previous_i__id']) || !isset($_POST['save_LinkType'])){
+        } elseif(!isset($_POST['next_i__id']) || !isset($_POST['previous_i__id']) || !isset($_POST['save_link_type'])){
 
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing Next/Previous ID',
             ));
 
-        } elseif(!isset($_POST['save_LinkId']) || !isset($_POST['save_LinkText'])){
+        } elseif(!isset($_POST['save_link_id']) || !isset($_POST['save_link_text'])){
 
             return view__json(array(
                 'status' => 0,
@@ -738,7 +738,7 @@ class App extends CI_Controller
         if( $is[0]['i__privacy']==42636 ){
 
             //See if references only:
-            if(strlen($_POST['save_i__message']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_i__message'], "\n") && intval($_POST['save_LinkType']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
+            if(strlen($_POST['save_i__message']) && !count($_POST['uploaded_media']) && !substr_count($_POST['save_i__message'], "\n") && intval($_POST['save_link_type']) && (intval($_POST['next_i__id']) || intval($_POST['previous_i__id']))){
 
                 $all_hashtags = true;
                 $i_references = array();
@@ -767,7 +767,7 @@ class App extends CI_Controller
                     }
                 }
 
-                if($all_hashtags && count($i_references) && $_POST['save_LinkType']>0){
+                if($all_hashtags && count($i_references) && $_POST['save_link_type']>0){
 
                     //Return success:
                     foreach($this->Idea_cache->fetch(array(
@@ -777,9 +777,9 @@ class App extends CI_Controller
                         //Append all of these hashtags:
                         foreach($i_references as $reference_i){
                             if(intval($_POST['next_i__id'])>0){
-                                $status = $this->Idea_cache->i_link($focus_i, $_POST['save_LinkType'], $reference_i, $player_e['e__id']);
+                                $status = $this->Idea_cache->i_link($focus_i, $_POST['save_link_type'], $reference_i, $player_e['e__id']);
                             } elseif(intval($_POST['previous_i__id'])>0){
-                                $status = $this->Idea_cache->i_link($reference_i, $_POST['save_LinkType'], $focus_i, $player_e['e__id']);
+                                $status = $this->Idea_cache->i_link($reference_i, $_POST['save_link_type'], $focus_i, $player_e['e__id']);
                             }
                             if(!$status['status']){
                                 return view__json($status);
@@ -842,7 +842,7 @@ class App extends CI_Controller
                 if(!isset($input_parts[0]) || !isset($input_parts[1])){
                     continue;
                 }
-                $d_LinkId = $input_parts[0];
+                $d_link_id = $input_parts[0];
                 $dynamic_e__id = $input_parts[1];
                 $dynamic_value = trim($input_parts[2]);
 
@@ -867,18 +867,18 @@ class App extends CI_Controller
 
 
                 //Fetch the current value:
-                if($d_LinkId > 0){
+                if($d_link_id > 0){
                     $values = $this->Mench_ledger->fetch(array(
-                        'LinkId' => $d_LinkId,
+                        'link_id' => $d_link_id,
                     ));
                 }
 
-                if(!$d_LinkId || !count($values)){
+                if(!$d_link_id || !count($values)){
                     $values = $this->Mench_ledger->fetch(array(
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'LinkType IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
-                        'LinkRight' => $is[0]['i__id'],
-                        'LinkUp' => $dynamic_e__id,
+                        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'link_type IN (' . join(',', $this->config->item('n___42252')) . ')' => null, //Plain Link
+                        'link_right' => $is[0]['i__id'],
+                        'link_up' => $dynamic_e__id,
                     ));
                 }
 
@@ -888,8 +888,8 @@ class App extends CI_Controller
 
                     //Remove Link if we have one:
                     if(count($values) && $dynamic_e__id!=11035 /* HACK: Summary are key links that should not be removed */){
-                        $this->Mench_ledger->update($values[0]['LinkId'], array(
-                            'LinkPrivacy' => 6173, //Transaction Removed
+                        $this->Mench_ledger->update($values[0]['link_id'], array(
+                            'link_privacy' => 6173, //Transaction Removed
                         ), $player_e['e__id'], 42175 /* Dynamic Link Content Removed */);
                     }
 
@@ -897,19 +897,19 @@ class App extends CI_Controller
 
                     //Create New Link:
                     $this->Mench_ledger->create(array(
-                        'LinkPlayer' => $player_e['e__id'],
-                        'LinkType' => 4983, //Co-Author
-                        'LinkUp' => $dynamic_e__id,
-                        'LinkRight' => $is[0]['i__id'],
-                        'LinkText' => $dynamic_value,
-                        'LinkNumber' => number_LinkNumber($dynamic_value),
+                        'link_player' => $player_e['e__id'],
+                        'link_type' => 4983, //Co-Author
+                        'link_up' => $dynamic_e__id,
+                        'link_right' => $is[0]['i__id'],
+                        'link_text' => $dynamic_value,
+                        'link_number' => number_link_number($dynamic_value),
                     ));
 
-                } elseif($values[0]['LinkText']!=$dynamic_value){
+                } elseif($values[0]['link_text']!=$dynamic_value){
 
                     //Update Link:
-                    $this->Mench_ledger->update($values[0]['LinkId'], array(
-                        'LinkText' => $dynamic_value,
+                    $this->Mench_ledger->update($values[0]['link_id'], array(
+                        'link_text' => $dynamic_value,
                     ), $player_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
                 }
@@ -935,10 +935,10 @@ class App extends CI_Controller
 
             //Now Handles everywhere they are referenced:
             foreach ($this->Mench_ledger->fetch(array(
-                'LinkLeft' => $is[0]['i__id'],
-                'LinkType IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('LinkRight')) as $ref) {
+                'link_left' => $is[0]['i__id'],
+                'link_type IN (' . join(',', $this->config->item('n___42341')) . ')' => null, //Idea References
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ), array('link_right')) as $ref) {
                 view__sync_links(str_replace('#'.$is[0]['i__hashtag'], '#'.trim($_POST['save_i__hashtag']), $ref['i__message']), true, $ref['i__id']);
             }
 
@@ -949,35 +949,35 @@ class App extends CI_Controller
 
 
         //Also have to add as a comment to another idea?
-        if(intval($_POST['next_i__id'])>0 && $_POST['save_LinkType']>0){
+        if(intval($_POST['next_i__id'])>0 && $_POST['save_link_type']>0){
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $player_e['e__id'],
-                'LinkLeft' => $_POST['next_i__id'],
-                'LinkRight' => $is[0]['i__id'],
-                'LinkType' => $_POST['save_LinkType'],
+                'link_player' => $player_e['e__id'],
+                'link_left' => $_POST['next_i__id'],
+                'link_right' => $is[0]['i__id'],
+                'link_type' => $_POST['save_link_type'],
             ));
-        } elseif(intval($_POST['previous_i__id'])>0 && $_POST['save_LinkType']>0){
+        } elseif(intval($_POST['previous_i__id'])>0 && $_POST['save_link_type']>0){
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $player_e['e__id'],
-                'LinkLeft' => $is[0]['i__id'],
-                'LinkRight' => $_POST['previous_i__id'],
-                'LinkType' => $_POST['save_LinkType'],
+                'link_player' => $player_e['e__id'],
+                'link_left' => $is[0]['i__id'],
+                'link_right' => $_POST['previous_i__id'],
+                'link_type' => $_POST['save_link_type'],
             ));
         }
 
 
         //Do we have a link reference message that need to be saved?
-        if($_POST['save_LinkId']>0 && $_POST['save_LinkText']!='IGNORE_INPUT'){
+        if($_POST['save_link_id']>0 && $_POST['save_link_text']!='IGNORE_INPUT'){
             //Fetch transaction:
             foreach($this->Mench_ledger->fetch(array(
-                'LinkId' => $_POST['save_LinkId'],
+                'link_id' => $_POST['save_link_id'],
             )) as $this_x){
 
                 $is[0] = array_merge($is[0], $this_x);
 
-                if($this_x['LinkText'] != trim($_POST['save_LinkText'])){
-                    $this->Mench_ledger->update($this_x['LinkId'], array(
-                        'LinkText' => trim($_POST['save_LinkText']),
+                if($this_x['link_text'] != trim($_POST['save_link_text'])){
+                    $this->Mench_ledger->update($this_x['link_id'], array(
+                        'link_text' => trim($_POST['save_link_text']),
                     ), $player_e['e__id'], 42171);
                 }
             }
@@ -1033,11 +1033,11 @@ class App extends CI_Controller
 
     function i_load_cover(){
 
-        if (!isset($_POST['i__id']) || !isset($_POST['LinkType']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
+        if (!isset($_POST['i__id']) || !isset($_POST['link_type']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
 
-            if(in_array($_POST['LinkType'], $this->config->item('n___42376')) && !access_level_i(null, $_POST['i__id'])){
+            if(in_array($_POST['link_type'], $this->config->item('n___42376')) && !access_level_i(null, $_POST['i__id'])){
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
@@ -1047,29 +1047,29 @@ class App extends CI_Controller
 
                 $ui = '';
                 $listed_items = 0;
-                if(in_array($_POST['LinkType'], $this->config->item('n___42261')) || in_array($_POST['LinkType'], $this->config->item('n___42284'))){
+                if(in_array($_POST['link_type'], $this->config->item('n___42261')) || in_array($_POST['link_type'], $this->config->item('n___42284'))){
 
                     //SOURCES
                     $e___6177 = $this->config->item('e___6177'); //Source Types
                     $e___4593 = $this->config->item('e___4593'); //Transaction Types
                     $current_e__handle = view__valid_handle_e($_POST['first_segment']);
-                    foreach(view__i_covers($_POST['LinkType'], $_POST['i__id'], 1, false) as $e_e) {
+                    foreach(view__i_covers($_POST['link_type'], $_POST['i__id'], 1, false) as $e_e) {
                         if(isset($e_e['e__id'])){
-                            $ui .= view__card(view__memory(42903,42902).$e_e['e__handle'], $current_e__handle && $e_e['e__handle']==$current_e__handle, $e_e['LinkType'], $e_e['e__privacy'], view__cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['LinkText']);
+                            $ui .= view__card(view__memory(42903,42902).$e_e['e__handle'], $current_e__handle && $e_e['e__handle']==$current_e__handle, $e_e['link_type'], $e_e['e__privacy'], view__cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['link_text']);
                             $listed_items++;
                         }
                     }
 
-                } elseif(in_array($_POST['LinkType'], $this->config->item('n___11020'))){
+                } elseif(in_array($_POST['link_type'], $this->config->item('n___11020'))){
 
                     //IDEAS
                     $e___4737 = $this->config->item('e___4737'); //Idea Types
                     $e___4593 = $this->config->item('e___4593'); //Transaction Types
                     $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
 
-                    foreach(view__i_covers($_POST['LinkType'], $_POST['i__id'], 1, false) as $next_i) {
+                    foreach(view__i_covers($_POST['link_type'], $_POST['i__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view__card($target_disccovery.view__memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['LinkType'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view__i_title($next_i, true), $next_i['LinkText']);
+                            $ui .= view__card($target_disccovery.view__memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['link_type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view__i_title($next_i, true), $next_i['link_text']);
                             $listed_items++;
                         }
                     }
@@ -1113,7 +1113,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => 'Missing sorting ideas',
             ));
-        } elseif (!isset($_POST['LinkType']) || !in_array($_POST['LinkType'], $this->config->item('n___4603'))) {
+        } elseif (!isset($_POST['link_type']) || !in_array($_POST['link_type'], $this->config->item('n___4603'))) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Invalid Transaction Type',
@@ -1122,11 +1122,11 @@ class App extends CI_Controller
 
         //Update the order of their discoveries:
         $updated = 0;
-        foreach($_POST['new_x_order'] as $LinkNumber => $LinkId){
-            if(intval($LinkId) > 0 && intval($LinkNumber) > 0){
+        foreach($_POST['new_x_order'] as $link_number => $link_id){
+            if(intval($link_id) > 0 && intval($link_number) > 0){
                 //Update order of this transaction:
-                if($this->Mench_ledger->update(intval($LinkId), array(
-                    'LinkNumber' => $LinkNumber,
+                if($this->Mench_ledger->update(intval($link_id), array(
+                    'link_number' => $link_number,
                 ), $player_e['e__id'], 4603)){
                     $updated++;
                 }
@@ -1142,10 +1142,10 @@ class App extends CI_Controller
 
     function view__i_body(){
         //Authenticate Member:
-        if (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['LinkType']) || intval($_POST['LinkType']) < 1) {
+        if (!isset($_POST['i__id']) || intval($_POST['i__id']) < 1 || !isset($_POST['counter']) || !isset($_POST['link_type']) || intval($_POST['link_type']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
-            echo view__i_body($_POST['LinkType'], $_POST['counter'], $_POST['i__id']);
+            echo view__i_body($_POST['link_type'], $_POST['counter'], $_POST['i__id']);
         }
     }
 
@@ -1153,22 +1153,22 @@ class App extends CI_Controller
 
     function view__e_body(){
         //Authenticate Member:
-        if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['LinkType']) || intval($_POST['LinkType']) < 1) {
+        if (!isset($_POST['e__id']) || intval($_POST['e__id']) < 1 || !isset($_POST['link_type']) || intval($_POST['link_type']) < 1) {
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
         } else {
-            echo view__e_body($_POST['LinkType'], $_POST['counter'], $_POST['e__id'], $_POST['js_request_uri']);
+            echo view__e_body($_POST['link_type'], $_POST['counter'], $_POST['e__id'], $_POST['js_request_uri']);
         }
     }
 
     function e_load_cover(){
 
-        if (!isset($_POST['e__id']) || !isset($_POST['LinkType']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
+        if (!isset($_POST['e__id']) || !isset($_POST['link_type']) || !isset($_POST['first_segment']) || !isset($_POST['counter'])) {
 
             echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-exclamation-circle"></i></span>Missing core variables</div>';
 
         } else {
 
-            if(in_array($_POST['LinkType'], $this->config->item('n___42376')) && !access_level_e(null, $_POST['e__id'])){
+            if(in_array($_POST['link_type'], $this->config->item('n___42376')) && !access_level_e(null, $_POST['e__id'])){
 
                 echo '<div class="alert alert-danger" role="alert"><span class="icon-block"><i class="far fa-lock"></i></span>Private</div>';
 
@@ -1177,21 +1177,21 @@ class App extends CI_Controller
                 $ui = '';
                 $listed_items = 0;
 
-                if(in_array($_POST['LinkType'], $this->config->item('n___11028'))){
+                if(in_array($_POST['link_type'], $this->config->item('n___11028'))){
 
                     //SOURCES
                     $current_e__handle = view__valid_handle_e($_POST['first_segment']);
                     $e___6177 = $this->config->item('e___6177'); //Source Privacy
                     $e___4593 = $this->config->item('e___4593'); //Transaction Types
 
-                    foreach(view__e_covers($_POST['LinkType'], $_POST['e__id'], 1, false) as $e_e) {
+                    foreach(view__e_covers($_POST['link_type'], $_POST['e__id'], 1, false) as $e_e) {
                         if(isset($e_e['e__id'])){
-                            $ui .= view__card(view__memory(42903,42902).$e_e['e__handle'], $e_e['e__handle']==$current_e__handle, $e_e['LinkType'], $e_e['e__privacy'], view__cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['LinkText']);
+                            $ui .= view__card(view__memory(42903,42902).$e_e['e__handle'], $e_e['e__handle']==$current_e__handle, $e_e['link_type'], $e_e['e__privacy'], view__cover($e_e['e__cover'], true), $e_e['e__title'], $e_e['link_text']);
                             $listed_items++;
                         }
                     }
 
-                } elseif(in_array($_POST['LinkType'], $this->config->item('n___42261')) || in_array($_POST['LinkType'], $this->config->item('n___42284'))){
+                } elseif(in_array($_POST['link_type'], $this->config->item('n___42261')) || in_array($_POST['link_type'], $this->config->item('n___42284'))){
 
                     //IDEAS
                     $current_i__hashtag = ( substr($_POST['first_segment'], 0, 1)=='~' ? substr($_POST['first_segment'], 1) : false );
@@ -1199,9 +1199,9 @@ class App extends CI_Controller
                     $e___4593 = $this->config->item('e___4593'); //Transaction Types
                     $target_disccovery = target_disccovery();
 
-                    foreach(view__e_covers($_POST['LinkType'], $_POST['e__id'], 1, false) as $next_i) {
+                    foreach(view__e_covers($_POST['link_type'], $_POST['e__id'], 1, false) as $next_i) {
                         if(isset($next_i['i__id'])){
-                            $ui .= view__card($target_disccovery.view__memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['LinkType'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view__i_title($next_i, true), $next_i['LinkText']);
+                            $ui .= view__card($target_disccovery.view__memory(42903,33286).$next_i['i__hashtag'], $next_i['i__hashtag']==$current_i__hashtag, $next_i['link_type'], null, ( in_array($next_i['i__type'], $this->config->item('n___32172')) ? $e___4737[$next_i['i__type']]['m__cover'] : '' ), view__i_title($next_i, true), $next_i['link_text']);
                             $listed_items++;
                         }
                     }
@@ -1238,7 +1238,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid e__id',
             ));
-        } elseif (!isset($_POST['new_LinkNumber']) || !is_array($_POST['new_LinkNumber']) || count($_POST['new_LinkNumber']) < 1) {
+        } elseif (!isset($_POST['new_link_number']) || !is_array($_POST['new_link_number']) || count($_POST['new_link_number']) < 1) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Nothing passed for sorting',
@@ -1253,11 +1253,11 @@ class App extends CI_Controller
 
             //Count followers:
             $list_e_count = $this->Mench_ledger->fetch(array(
-                'LinkUp' => $_POST['e__id'],
-                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'link_up' => $_POST['e__id'],
+                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('LinkDown'), 0, 0, array(), 'COUNT(e__id) as totals');
+            ), array('link_down'), 0, 0, array(), 'COUNT(e__id) as totals');
 
             if (count($es) < 1) {
 
@@ -1276,9 +1276,9 @@ class App extends CI_Controller
             } else {
 
                 //Update them all:
-                foreach($_POST['new_LinkNumber'] as $rank => $LinkId) {
-                    $this->Mench_ledger->update($LinkId, array(
-                        'LinkNumber' => intval($rank),
+                foreach($_POST['new_link_number'] as $rank => $link_id) {
+                    $this->Mench_ledger->update($link_id, array(
+                        'link_number' => intval($rank),
                     ), $player_e['e__id'], 13006 /* SOURCE SORT MANUAL */);
                 }
 
@@ -1301,7 +1301,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => view__unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['LinkId'])) {
+        } elseif (!isset($_POST['link_id'])) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Invalid Transaction ID',
@@ -1309,8 +1309,8 @@ class App extends CI_Controller
         }
 
         //Archive Transaction:
-        $this->Mench_ledger->update($_POST['LinkId'], array(
-            'LinkPrivacy' => 6173,
+        $this->Mench_ledger->update($_POST['link_id'], array(
+            'link_privacy' => 6173,
         ), $player_e['e__id'], 10673 /* IDEA NOTES Unpublished */);
 
         return view__json(array(
@@ -1369,31 +1369,31 @@ class App extends CI_Controller
 
         //Followers:
         foreach($this->Mench_ledger->fetch(array(
-            'LinkUp' => $_POST['e__id'],
-            'LinkType IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'link_up' => $_POST['e__id'],
+            'link_type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             //Make sure none existent in new source:
             if(!count($this->Mench_ledger->fetch(array(
-                'LinkType' => $x['LinkType'],
-                'LinkUp' => $focus_e['e__id'],
-                'LinkDown' => $x['LinkDown'],
-                'LinkText' => $x['LinkText'],
-                'LinkReference' => $x['LinkReference'],
-                'LinkPrivacy' => $x['LinkPrivacy'],
-                'LinkMetadata' => $x['LinkMetadata'],
+                'link_type' => $x['link_type'],
+                'link_up' => $focus_e['e__id'],
+                'link_down' => $x['link_down'],
+                'link_text' => $x['link_text'],
+                'link_reference' => $x['link_reference'],
+                'link_privacy' => $x['link_privacy'],
+                'link_metadata' => $x['link_metadata'],
             )))){
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkNumber' => $x['LinkNumber'],
+                    'link_player' => $player_e['e__id'],
+                    'link_number' => $x['link_number'],
 
-                    'LinkType' => $x['LinkType'],
-                    'LinkUp' => $focus_e['e__id'],
-                    'LinkDown' => $x['LinkDown'],
-                    'LinkText' => $x['LinkText'],
-                    'LinkReference' => $x['LinkReference'],
-                    'LinkPrivacy' => $x['LinkPrivacy'],
-                    'LinkMetadata' => $x['LinkMetadata'],
+                    'link_type' => $x['link_type'],
+                    'link_up' => $focus_e['e__id'],
+                    'link_down' => $x['link_down'],
+                    'link_text' => $x['link_text'],
+                    'link_reference' => $x['link_reference'],
+                    'link_privacy' => $x['link_privacy'],
+                    'link_metadata' => $x['link_metadata'],
                 ));
             }
         }
@@ -1401,64 +1401,64 @@ class App extends CI_Controller
 
         //Followings:
         foreach($this->Mench_ledger->fetch(array(
-            'LinkDown' => $_POST['e__id'],
-            'LinkType IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'link_down' => $_POST['e__id'],
+            'link_type IN (' . join(',', $this->config->item('n___41303')) . ')' => null, //Clone Source Links
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
         ), array(), 0) as $x) {
             if(!count($this->Mench_ledger->fetch(array(
-                'LinkType' => $x['LinkType'],
-                'LinkUp' => $x['LinkUp'],
-                'LinkDown' => $focus_e['e__id'],
-                'LinkText' => $x['LinkText'],
-                'LinkReference' => $x['LinkReference'],
-                'LinkMetadata' => $x['LinkMetadata'],
-                'LinkPrivacy' => $x['LinkPrivacy'],
+                'link_type' => $x['link_type'],
+                'link_up' => $x['link_up'],
+                'link_down' => $focus_e['e__id'],
+                'link_text' => $x['link_text'],
+                'link_reference' => $x['link_reference'],
+                'link_metadata' => $x['link_metadata'],
+                'link_privacy' => $x['link_privacy'],
             )))){
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkNumber' => $x['LinkNumber'],
+                    'link_player' => $player_e['e__id'],
+                    'link_number' => $x['link_number'],
 
-                    'LinkType' => $x['LinkType'],
-                    'LinkUp' => $x['LinkUp'],
-                    'LinkDown' => $focus_e['e__id'],
-                    'LinkText' => $x['LinkText'],
-                    'LinkReference' => $x['LinkReference'],
-                    'LinkMetadata' => $x['LinkMetadata'],
-                    'LinkPrivacy' => $x['LinkPrivacy'],
+                    'link_type' => $x['link_type'],
+                    'link_up' => $x['link_up'],
+                    'link_down' => $focus_e['e__id'],
+                    'link_text' => $x['link_text'],
+                    'link_reference' => $x['link_reference'],
+                    'link_metadata' => $x['link_metadata'],
+                    'link_privacy' => $x['link_privacy'],
                 ));
             }
         }
 
         //Ideas:
         foreach($this->Mench_ledger->fetch(array(
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            'LinkType IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
-            'LinkUp' => $_POST['e__id'],
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            'link_type IN (' . join(',', $this->config->item('n___41302')) . ')' => null, //Clone Idea Source Links
+            'link_up' => $_POST['e__id'],
         ), array(), 0) as $x){
             if(!count($this->Mench_ledger->fetch(array(
-                'LinkType' => $x['LinkType'],
-                'LinkUp' => $focus_e['e__id'],
-                'LinkDown' => $x['LinkDown'],
-                'LinkLeft' => $x['LinkLeft'],
-                'LinkRight' => $x['LinkRight'],
-                'LinkText' => $x['LinkText'],
-                'LinkReference' => $x['LinkReference'],
-                'LinkMetadata' => $x['LinkMetadata'],
-                'LinkPrivacy' => $x['LinkPrivacy'],
+                'link_type' => $x['link_type'],
+                'link_up' => $focus_e['e__id'],
+                'link_down' => $x['link_down'],
+                'link_left' => $x['link_left'],
+                'link_right' => $x['link_right'],
+                'link_text' => $x['link_text'],
+                'link_reference' => $x['link_reference'],
+                'link_metadata' => $x['link_metadata'],
+                'link_privacy' => $x['link_privacy'],
             )))){
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkNumber' => $x['LinkNumber'],
+                    'link_player' => $player_e['e__id'],
+                    'link_number' => $x['link_number'],
 
-                    'LinkType' => $x['LinkType'],
-                    'LinkUp' => $focus_e['e__id'],
-                    'LinkDown' => $x['LinkDown'],
-                    'LinkLeft' => $x['LinkLeft'],
-                    'LinkRight' => $x['LinkRight'],
-                    'LinkText' => $x['LinkText'],
-                    'LinkReference' => $x['LinkReference'],
-                    'LinkMetadata' => $x['LinkMetadata'],
-                    'LinkPrivacy' => $x['LinkPrivacy'],
+                    'link_type' => $x['link_type'],
+                    'link_up' => $focus_e['e__id'],
+                    'link_down' => $x['link_down'],
+                    'link_left' => $x['link_left'],
+                    'link_right' => $x['link_right'],
+                    'link_text' => $x['link_text'],
+                    'link_reference' => $x['link_reference'],
+                    'link_metadata' => $x['link_metadata'],
+                    'link_privacy' => $x['link_privacy'],
                 ));
             }
         }
@@ -1489,7 +1489,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => view__unauthorized_message(10939),
             ));
-        } elseif (!isset($_POST['LinkType']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
+        } elseif (!isset($_POST['link_type']) || !isset($_POST['focus_id']) || !isset($_POST['focus_card'])) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing Core Variables',
@@ -1534,7 +1534,7 @@ class App extends CI_Controller
         }
 
         //All seems good, go ahead and try to create/link the Idea:
-        return view__json($this->Idea_cache->create_or_link($_POST['focus_card'], $_POST['LinkType'], trim($_POST['new_i__message']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
+        return view__json($this->Idea_cache->create_or_link($_POST['focus_card'], $_POST['link_type'], trim($_POST['new_i__message']), $member_e['e__id'], $_POST['focus_id'], $_POST['link_i__id']));
 
     }
 
@@ -1555,7 +1555,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Following Source',
             ));
-        } elseif (!isset($_POST['LinkType'])) {
+        } elseif (!isset($_POST['link_type'])) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Invalid Source Creation Type',
@@ -1602,8 +1602,8 @@ class App extends CI_Controller
 
         //Set some variables:
         $_POST['e_new_string'] = trim($_POST['e_new_string']);
-        $_POST['LinkType'] = intval($_POST['LinkType']);
-        $is_upwards = in_array($_POST['LinkType'], $this->config->item('n___14686'));
+        $_POST['link_type'] = intval($_POST['link_type']);
+        $is_upwards = in_array($_POST['link_type'], $this->config->item('n___14686'));
 
         if(!intval($_POST['e_existing_id']) && view__valid_handle_e($_POST['e_new_string'])){
             foreach($this->Source_cache->fetch(array(
@@ -1655,10 +1655,10 @@ class App extends CI_Controller
 
             //Add Reference:
             $ur2 = $this->Mench_ledger->create(array(
-                'LinkPlayer' => $player_e['e__id'],
-                'LinkType' => 4983, //Co-Author
-                'LinkUp' => $focus_e['e__id'],
-                'LinkRight' => $fetch_o[0]['i__id'],
+                'link_player' => $player_e['e__id'],
+                'link_type' => 4983, //Co-Author
+                'link_up' => $focus_e['e__id'],
+                'link_right' => $fetch_o[0]['i__id'],
             ));
 
         } else {
@@ -1669,30 +1669,30 @@ class App extends CI_Controller
             if ($is_upwards) {
 
                 //Following
-                $LinkDown = $fetch_o[0]['e__id'];
-                $LinkUp = $focus_e['e__id'];
-                $LinkNumber = 0; //Never sort following, only sort followers
+                $link_down = $fetch_o[0]['e__id'];
+                $link_up = $focus_e['e__id'];
+                $link_number = 0; //Never sort following, only sort followers
 
             } else {
 
                 //Followers
-                $LinkUp = $fetch_o[0]['e__id'];
-                $LinkDown = $focus_e['e__id'];
-                $LinkNumber = 0;
+                $link_up = $fetch_o[0]['e__id'];
+                $link_down = $focus_e['e__id'];
+                $link_number = 0;
 
             }
 
 
-            $LinkText = null;
+            $link_text = null;
 
             //Create transaction:
             $ur2 = $this->Mench_ledger->create(array(
-                'LinkPlayer' => $player_e['e__id'],
-                'LinkType' => 4251,
-                'LinkText' => $LinkText,
-                'LinkDown' => $LinkDown,
-                'LinkUp' => $LinkUp,
-                'LinkNumber' => $LinkNumber,
+                'link_player' => $player_e['e__id'],
+                'link_type' => 4251,
+                'link_text' => $link_text,
+                'link_down' => $link_down,
+                'link_up' => $link_up,
+                'link_number' => $link_number,
             ));
         }
 
@@ -1700,7 +1700,7 @@ class App extends CI_Controller
         //Return source:
         return view__json(array(
             'status' => 1,
-            'e_new_echo' => view__card_e($_POST['LinkType'], array_merge($focus_e, $ur2), null),
+            'e_new_echo' => view__card_e($_POST['link_type'], array_merge($focus_e, $ur2), null),
         ));
 
     }
@@ -1717,7 +1717,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => view__unauthorized_message(),
             ));
-        } elseif (!isset($_POST['e__id']) || !isset($_POST['LinkId'])) {
+        } elseif (!isset($_POST['e__id']) || !isset($_POST['link_id'])) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing Core IDs',
@@ -1750,11 +1750,11 @@ class App extends CI_Controller
 
         //Fetch Source Templates, if any:
         foreach($this->Mench_ledger->fetch(array(
-            'LinkUp IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //Dynamic Sources
-            'LinkDown' => $es[0]['e__id'],
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('LinkUp'), 0, 0, sort_by(42178)) as $e_group) {
+            'link_up IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //Dynamic Sources
+            'link_down' => $es[0]['e__id'],
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array('link_up'), 0, 0, sort_by(42178)) as $e_group) {
 
             if(in_array($e_group['e__id'], $scanned_sources)){
                 continue;
@@ -1762,11 +1762,11 @@ class App extends CI_Controller
             array_push($scanned_sources, $e_group['e__id']);
 
             foreach($this->Mench_ledger->fetch(array(
-                'LinkDown' => $e_group['e__id'],
-                'LinkUp IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
-                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-            ), array('LinkUp'), 0, 0, $order_42145) as $e_template) {
+                'link_down' => $e_group['e__id'],
+                'link_up IN (' . join(',', $this->config->item('n___42145')) . ')' => null, //Dynamic Input Templates
+                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+            ), array('link_up'), 0, 0, $order_42145) as $e_template) {
 
                 $profile_header = '<div class="profile_header main__title"><span class="icon-block-sm">'.view__cover($e_template['e__cover']).'</span>'.$e_template['e__title'].'<a href="'.view__memory(42903,42902).$e_group['e__handle'].'" target="_blank" data-toggle="tooltip" data-placement="top" title="Because you follow '.$e_group['e__title'].'... Click to Open in a New Window"><span class="icon-block-sm">'.view__cover($e_group['e__cover']).'</span></a></div>';
 
@@ -1775,8 +1775,8 @@ class App extends CI_Controller
                 if(!is_array($this->config->item('e___'.$e_template['e__id']))){
                     //Report Error:
                     $this->Mench_ledger->create(array(
-                        'LinkType' => 4246, //Platform Bug Reports
-                        'LinkText' => 'e_editor_load() ERROR: @'.$e_template['e__id'].' is NOT in memory cache',
+                        'link_type' => 4246, //Platform Bug Reports
+                        'link_text' => 'e_editor_load() ERROR: @'.$e_template['e__id'].' is NOT in memory cache',
                     ));
                     continue;
                 } elseif(in_array($e_template['e__id'], $scanned_sources)){
@@ -1802,26 +1802,26 @@ class App extends CI_Controller
 
                         //This is strange, we are expecting 1 match only report this:
                         $this->Mench_ledger->create(array(
-                            'LinkType' => 4246, //Platform Bug Reports
-                            'LinkPlayer' => $player_e['e__id'],
-                            'LinkUp' => 31912, //Edit Source
-                            'LinkDown' => $dynamic_e__id,
-                            'LinkReference' => $_POST['LinkId'],
-                            'LinkText' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong',
+                            'link_type' => 4246, //Platform Bug Reports
+                            'link_player' => $player_e['e__id'],
+                            'link_up' => 31912, //Edit Source
+                            'link_down' => $dynamic_e__id,
+                            'link_reference' => $_POST['link_id'],
+                            'link_text' => 'Found '.count($data_types).' Data Types (@'.$es[0]['e__id'].') (Expecting exactly 1) for @'.$dynamic_e__id.': Check @4592 to see what is wrong',
                         ));
                         continue; //Go to the next dynamic data type
 
                     } elseif ($input_pointer >= view__memory(6404, 42206)) {
                         //Monitor if we ever reach the maximum:
                         $this->Mench_ledger->create(array(
-                            'LinkType' => 4246, //Platform Bug Reports
-                            'LinkPlayer' => $player_e['e__id'],
-                            'LinkUp' => 42179, //Dynamic Input Fields
-                            'LinkDown' => $dynamic_e__id,
-                            'LinkRight' => $_POST['e__id'],
-                            'LinkReference' => $_POST['LinkId'],
-                            'LinkMetadata' => $_POST,
-                            'LinkText' => 'Dynamic Fields Reach their maximum limit of ' . view__memory(6404, 42206) . '  which may require field expansion',
+                            'link_type' => 4246, //Platform Bug Reports
+                            'link_player' => $player_e['e__id'],
+                            'link_up' => 42179, //Dynamic Input Fields
+                            'link_down' => $dynamic_e__id,
+                            'link_right' => $_POST['e__id'],
+                            'link_reference' => $_POST['link_id'],
+                            'link_metadata' => $_POST,
+                            'link_text' => 'Dynamic Fields Reach their maximum limit of ' . view__memory(6404, 42206) . '  which may require field expansion',
                         ));
                     }
 
@@ -1838,7 +1838,7 @@ class App extends CI_Controller
                         array_push($return_inputs, array(
                             'd__id' => $dynamic_e__id,
                             'd__is_radio' => 1,
-                            'd_LinkId' => 0,
+                            'd_link_id' => 0,
                             'd__html' => view__instant_select($dynamic_e__id, $es[0]['e__id'], 0),
                             'd__value' => ( $es[0]['e__id']>0 ? $es[0]['e__id'] : '' ),
                             'd__type_name' => '',
@@ -1857,20 +1857,20 @@ class App extends CI_Controller
                         $counted = 0;
                         $unique_values = array();
                         foreach($this->Mench_ledger->fetch(array(
-                            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                            'LinkDown' => $es[0]['e__id'],
-                            'LinkUp' => $dynamic_e__id,
-                        ), array('LinkUp')) as $selected_e){
-                            if(strlen($selected_e['LinkText']) && !in_array($selected_e['LinkText'], $unique_values)){
-                                array_push($unique_values, $selected_e['LinkText']);
+                            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                            'link_down' => $es[0]['e__id'],
+                            'link_up' => $dynamic_e__id,
+                        ), array('link_up')) as $selected_e){
+                            if(strlen($selected_e['link_text']) && !in_array($selected_e['link_text'], $unique_values)){
+                                array_push($unique_values, $selected_e['link_text']);
                                 $counted++;
                                 array_push($return_inputs, array(
                                     'd__id' => $dynamic_e__id,
                                     'd__is_radio' => 0,
-                                    'd_LinkId' => $selected_e['LinkId'],
+                                    'd_link_id' => $selected_e['link_id'],
                                     'd__html' => view__dynamic_headline($dynamic_e__id, $m, $selected_e),
-                                    'd__value' => $selected_e['LinkText'],
+                                    'd__value' => $selected_e['link_text'],
                                     'd__type_name' => html_input_type($data_type),
                                     'd__placeholder' => ( strlen($this_data_type[$dynamic_e__id]['m__message']) ? $this_data_type[$dynamic_e__id]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
                                     'd__profile_header' => $profile_header,
@@ -1885,7 +1885,7 @@ class App extends CI_Controller
                                 array_push($return_inputs, array(
                                     'd__id' => $dynamic_e__id,
                                     'd__is_radio' => 0,
-                                    'd_LinkId' => 0,
+                                    'd_link_id' => 0,
                                     'd__html' => view__dynamic_headline($dynamic_e__id, $m, $selected_e),
                                     'd__value' => '',
                                     'd__type_name' => html_input_type($data_type),
@@ -1909,17 +1909,17 @@ class App extends CI_Controller
                 foreach(array_intersect($e___42776[$selected_e['e__id']]['m__following'], $this->config->item('n___4592')) as $data_type){
                     //Any value?
                     $values = $this->Mench_ledger->fetch(array(
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                        'LinkDown' => $es[0]['e__id'],
-                        'LinkUp' => $selected_e['e__id'],
+                        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                        'link_down' => $es[0]['e__id'],
+                        'link_up' => $selected_e['e__id'],
                     ));
                     array_push($return_inputs, array(
                         'd__id' => $selected_e['e__id'],
                         'd__is_radio' => 0,
-                        'd_LinkId' => 0,
+                        'd_link_id' => 0,
                         'd__html' => view__dynamic_headline($selected_e['e__id'], $e___42776[$selected_e['e__id']], $selected_e),
-                        'd__value' => ( isset($values[0]['LinkText']) && strlen($values[0]['LinkText'])>0 ? $values[0]['LinkText'] : '' ),
+                        'd__value' => ( isset($values[0]['link_text']) && strlen($values[0]['link_text'])>0 ? $values[0]['link_text'] : '' ),
                         'd__type_name' => html_input_type($data_type),
                         'd__placeholder' => ( strlen($e___42776[$selected_e['e__id']]['m__message']) ? $e___42776[$selected_e['e__id']]['m__message'] : $e___4592[$data_type]['m__title'].'...' ),
                         'd__profile_header' => '', //No header for universals
@@ -1934,19 +1934,19 @@ class App extends CI_Controller
         $cover_history_content = array();
         $unique_covers = array();
         foreach($this->Mench_ledger->fetch(array(
-            'LinkDown' => $_POST['e__id'],
-            'LinkType' => 10653, //Source Cover Update
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array(), 0, 0, array('LinkId' => 'DESC')) as $x) {
-            $LinkMetadata = unserialize($x['LinkMetadata']);
-            if(strlen($LinkMetadata['before'])){
-                $cover = ( substr_count($LinkMetadata['before'], 'class="') ? one_two_explode('class="','"',$LinkMetadata['before']) : $LinkMetadata['before'] );
+            'link_down' => $_POST['e__id'],
+            'link_type' => 10653, //Source Cover Update
+            'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+        ), array(), 0, 0, array('link_id' => 'DESC')) as $x) {
+            $link_metadata = unserialize($x['link_metadata']);
+            if(strlen($link_metadata['before'])){
+                $cover = ( substr_count($link_metadata['before'], 'class="') ? one_two_explode('class="','"',$link_metadata['before']) : $link_metadata['before'] );
                 if((filter_var($cover, FILTER_VALIDATE_URL) || string_is_icon($cover) || string_is_emoji($cover)) && !in_array($cover, $unique_covers)){
                     array_push($unique_covers, $cover);
                     array_push($cover_history_content, array(
                         'cover_preview' => $cover,
                         'cover_apply' => $cover,
-                        'new_title' => $x['LinkTime'],
+                        'new_title' => $x['link_time'],
                     ));
                 }
             }
@@ -1960,12 +1960,12 @@ class App extends CI_Controller
 
         //Log Modal View:
         $this->Mench_ledger->create(array(
-            'LinkPlayer' => $player_e['e__id'],
-            'LinkType' => 14576, //MODAL VIEWED
-            'LinkUp' => 31912, //Edit Source
-            'LinkDown' => $es[0]['e__id'],
-            'LinkReference' => $_POST['LinkId'],
-            'LinkMetadata' => $return_array,
+            'link_player' => $player_e['e__id'],
+            'link_type' => 14576, //MODAL VIEWED
+            'link_up' => 31912, //Edit Source
+            'link_down' => $es[0]['e__id'],
+            'link_reference' => $_POST['link_id'],
+            'link_metadata' => $return_array,
         ));
 
         //Return everything we found:
@@ -2007,7 +2007,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => 'Invalid Source Cover',
             ));
-        } elseif(!isset($_POST['save_LinkId']) || !isset($_POST['save_LinkText'])){
+        } elseif(!isset($_POST['save_link_id']) || !isset($_POST['save_link_text'])){
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing Transaction Data',
@@ -2042,7 +2042,7 @@ class App extends CI_Controller
             if(!isset($input_parts[0]) || !isset($input_parts[1])){
                 continue;
             }
-            $d_LinkId = $input_parts[0];
+            $d_link_id = $input_parts[0];
             $dynamic_e__id = $input_parts[1];
             $dynamic_value = trim($input_parts[2]);
 
@@ -2068,18 +2068,18 @@ class App extends CI_Controller
 
 
             //Fetch the current value:
-            if($d_LinkId > 0){
+            if($d_link_id > 0){
                 $values = $this->Mench_ledger->fetch(array(
-                    'LinkId' => $d_LinkId,
+                    'link_id' => $d_link_id,
                 ));
             }
 
-            if(!$d_LinkId || !count($values)){
+            if(!$d_link_id || !count($values)){
                 $values = $this->Mench_ledger->fetch(array(
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'LinkUp' => $dynamic_e__id,
-                    'LinkDown' => $es[0]['e__id'],
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'link_up' => $dynamic_e__id,
+                    'link_down' => $es[0]['e__id'],
                 ));
             }
 
@@ -2089,8 +2089,8 @@ class App extends CI_Controller
 
                 //Remove Link if we have one:
                 if(count($values) && $dynamic_e__id!=11035 /* HACK: Summary are key links that should not be removed */){
-                    $this->Mench_ledger->update($values[0]['LinkId'], array(
-                        'LinkPrivacy' => 6173, //Transaction Removed
+                    $this->Mench_ledger->update($values[0]['link_id'], array(
+                        'link_privacy' => 6173, //Transaction Removed
                     ), $player_e['e__id'], 42175 /* Dynamic Link Content Removed */);
                 }
 
@@ -2098,19 +2098,19 @@ class App extends CI_Controller
 
                 //Create Link:
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkType' => 4251,
-                    'LinkUp' => $dynamic_e__id,
-                    'LinkDown' => $es[0]['e__id'],
-                    'LinkText' => $dynamic_value,
-                    'LinkNumber' => number_LinkNumber($dynamic_value),
+                    'link_player' => $player_e['e__id'],
+                    'link_type' => 4251,
+                    'link_up' => $dynamic_e__id,
+                    'link_down' => $es[0]['e__id'],
+                    'link_text' => $dynamic_value,
+                    'link_number' => number_link_number($dynamic_value),
                 ));
 
-            } elseif ($values[0]['LinkText'] != $dynamic_value) {
+            } elseif ($values[0]['link_text'] != $dynamic_value) {
 
                 //Update Link:
-                $this->Mench_ledger->update($values[0]['LinkId'], array(
-                    'LinkText' => $dynamic_value,
+                $this->Mench_ledger->update($values[0]['link_id'], array(
+                    'link_text' => $dynamic_value,
                 ), $player_e['e__id'], 42176 /* Dynamic Link Content Updated */);
 
             }
@@ -2160,18 +2160,18 @@ class App extends CI_Controller
         $es[0]['e__handle'] = sync_handle_references($es[0], trim($_POST['save_e__handle']));
 
         //Do we have a link reference message that need to be saved?
-        if($_POST['save_LinkId']>0 && $_POST['save_LinkText']!='IGNORE_INPUT'){
+        if($_POST['save_link_id']>0 && $_POST['save_link_text']!='IGNORE_INPUT'){
 
             //Fetch transaction:
             foreach($this->Mench_ledger->fetch(array(
-                'LinkId' => $_POST['save_LinkId'],
+                'link_id' => $_POST['save_link_id'],
             )) as $this_x){
 
                 $es[0] = array_merge($es[0], $this_x);
 
-                if($this_x['LinkText'] != trim($_POST['save_LinkText'])){
-                    $this->Mench_ledger->update($this_x['LinkId'], array(
-                        'LinkText' => trim($_POST['save_LinkText']),
+                if($this_x['link_text'] != trim($_POST['save_link_text'])){
+                    $this->Mench_ledger->update($this_x['link_id'], array(
+                        'link_text' => trim($_POST['save_link_text']),
                     ), $player_e['e__id'], 42171);
                 }
             }
@@ -2241,15 +2241,15 @@ class App extends CI_Controller
             //Dispatch Any Emails Necessary:
             if(isset($_POST['selected_e__id']) && intval($_POST['selected_e__id'])>0){
                 foreach($this->Mench_ledger->fetch(array(
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'LinkType' => 33600, //Draft
-                    'LinkUp' => $_POST['selected_e__id'],
-                ), array('LinkRight'), 0) as $i){
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_type' => 33600, //Draft
+                    'link_up' => $_POST['selected_e__id'],
+                ), array('link_right'), 0) as $i){
                     if(count($this->Mench_ledger->fetch(array(
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'LinkType' => 33600, //Draft
-                        'LinkUp' => 31065, //Choice Update Email Templates
-                        'LinkRight' => $i['i__id'], //Is this the template?
+                        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'link_type' => 33600, //Draft
+                        'link_up' => 31065, //Choice Update Email Templates
+                        'link_right' => $i['i__id'], //Is this the template?
                     )))){
                         //Found the email template to send:
                         $total_sent = $this->Mench_ledger->send_i_mass_dm(array($player_e), $i, website_setting(0), false);
@@ -2264,10 +2264,10 @@ class App extends CI_Controller
                 //Add special transaction to monitor unsubscribes:
                 if(in_array($_POST['selected_e__id'], $this->config->item('n___29648'))){
                     $this->Mench_ledger->create(array(
-                        'LinkPlayer' => $player_e['e__id'],
-                        'LinkType' => 29648, //Communication Downgraded
-                        'LinkUp' => $_POST['focus__id'],
-                        'LinkDown' => $_POST['selected_e__id'],
+                        'link_player' => $player_e['e__id'],
+                        'link_type' => 29648, //Communication Downgraded
+                        'link_up' => $_POST['focus__id'],
+                        'link_down' => $_POST['selected_e__id'],
                     ));
                 }
             }
@@ -2281,20 +2281,20 @@ class App extends CI_Controller
 
             //Fetch all possible answers based on followings source:
             $query_filters = array(
-                'LinkUp' => $_POST['focus__id'],
-                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                'link_up' => $_POST['focus__id'],
+                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
             );
 
             if((!$is_required || $_POST['enable_mulitiselect']) && $_POST['was_previously_selected']){
                 //Just delete this single item, not the other ones:
-                $query_filters['LinkDown'] = $_POST['selected_e__id'];
+                $query_filters['link_down'] = $_POST['selected_e__id'];
             }
 
             //List all possible answers:
             $possible_answers = array();
-            foreach($this->Mench_ledger->fetch($query_filters, array('LinkDown'), 0, 0) as $answer_e){
+            foreach($this->Mench_ledger->fetch($query_filters, array('link_down'), 0, 0) as $answer_e){
                 $stats['total']++;
                 array_push($possible_answers, $answer_e['e__id']);
             }
@@ -2302,25 +2302,25 @@ class App extends CI_Controller
             //Delete previously selected options:
             if($_POST['down_e__id']){
                 $delete_query = $this->Mench_ledger->fetch(array(
-                    'LinkUp IN (' . join(',', $possible_answers) . ')' => null,
-                    'LinkDown' => $_POST['down_e__id'],
-                    'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_up IN (' . join(',', $possible_answers) . ')' => null,
+                    'link_down' => $_POST['down_e__id'],
+                    'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ));
             } elseif($_POST['right_i__id']){
                 $delete_query = $this->Mench_ledger->fetch(array(
-                    'LinkUp IN (' . join(',', $possible_answers) . ')' => null,
-                    'LinkRight' => $_POST['right_i__id'],
-                    'LinkType IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_up IN (' . join(',', $possible_answers) . ')' => null,
+                    'link_right' => $_POST['right_i__id'],
+                    'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                 ));
             }
 
             foreach($delete_query as $delete){
                 $stats['deleted']++;
                 //Should usually delete a single option:
-                $this->Mench_ledger->update($delete['LinkId'], array(
-                    'LinkPrivacy' => 6173, //Transaction Removed
+                $this->Mench_ledger->update($delete['link_id'], array(
+                    'link_privacy' => 6173, //Transaction Removed
                 ), $player_e['e__id'], 6224 /* Member Account Updated */);
             }
 
@@ -2331,25 +2331,25 @@ class App extends CI_Controller
             if($_POST['down_e__id']){
                 $stats['added']++;
                 $this->Mench_ledger->create(array(
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkUp' => $_POST['selected_e__id'],
-                    'LinkType' => 4251,
-                    'LinkDown' => $_POST['down_e__id'],
+                    'link_player' => $player_e['e__id'],
+                    'link_up' => $_POST['selected_e__id'],
+                    'link_type' => 4251,
+                    'link_down' => $_POST['down_e__id'],
                 ));
             } elseif($_POST['right_i__id']){
 
                 if(!count($this->Mench_ledger->fetch(array(
-                    'LinkType IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
-                    'LinkUp' => $_POST['selected_e__id'],
-                    'LinkRight' => $_POST['right_i__id'],
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'link_type IN (' . join(',', $this->config->item('n___31919')) . ')' => null, //IDEA AUTHOR
+                    'link_up' => $_POST['selected_e__id'],
+                    'link_right' => $_POST['right_i__id'],
+                    'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 )))){
                     $stats['added']++;
                     $this->Mench_ledger->create(array(
-                        'LinkPlayer' => $player_e['e__id'],
-                        'LinkType' => 4983, //Co-Author
-                        'LinkUp' => $_POST['selected_e__id'],
-                        'LinkRight' => $_POST['right_i__id'],
+                        'link_player' => $player_e['e__id'],
+                        'link_type' => 4983, //Co-Author
+                        'link_up' => $_POST['selected_e__id'],
+                        'link_right' => $_POST['right_i__id'],
                     ));
                 }
 
@@ -2433,19 +2433,19 @@ class App extends CI_Controller
         //Auth Code:
         $is_authenticated = false;
         foreach($this->Mench_ledger->fetch(array(
-            'LinkType' => 32078, //Sign In Key
-            'LinkPrivacy' => 6175, //Still Pending
-            'LinkText' => $_POST['account_email_phone'],
-        ), array(), 1, 0, array('LinkId' => 'DESC')) as $sent_key){
+            'link_type' => 32078, //Sign In Key
+            'link_privacy' => 6175, //Still Pending
+            'link_text' => $_POST['account_email_phone'],
+        ), array(), 1, 0, array('link_id' => 'DESC')) as $sent_key){
 
-            $LinkMetadata = unserialize($sent_key['LinkMetadata']);
+            $link_metadata = unserialize($sent_key['link_metadata']);
             $session_key = $this->session->userdata('session_key');
 
-            if(strlen($session_key) && $LinkMetadata['hash_code']==md5($session_key.$_POST['input_code'])){
+            if(strlen($session_key) && $link_metadata['hash_code']==md5($session_key.$_POST['input_code'])){
 
                 //Complete access code:
-                $is_authenticated = $this->Mench_ledger->update($sent_key['LinkId'], array(
-                    'LinkPrivacy' => 6176, //Published
+                $is_authenticated = $this->Mench_ledger->update($sent_key['link_id'], array(
+                    'link_privacy' => 6176, //Published
                 ), $_POST['account_id'], 32569); //Code Verified
 
             }
@@ -2517,7 +2517,7 @@ class App extends CI_Controller
                 'message' => view__unauthorized_message(10939),
             ));
 
-        } elseif(!isset($_POST['LinkPlayer']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['LinkId'])){
+        } elseif(!isset($_POST['link_player']) || !isset($_POST['e__id']) || !isset($_POST['i__id']) || !isset($_POST['link_id'])){
 
             return view__json(array(
                 'status' => 0,
@@ -2529,24 +2529,24 @@ class App extends CI_Controller
             $_POST['require_writing'] = intval($_POST['require_writing']);
 
             $already_added = $this->Mench_ledger->fetch(array(
-                'LinkUp' => $_POST['e__id'],
-                'LinkDown' => $_POST['LinkPlayer'],
-                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            ), array('LinkUp'));
+                'link_up' => $_POST['e__id'],
+                'link_down' => $_POST['link_player'],
+                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            ), array('link_up'));
 
             if(count($already_added)){
 
                 if(intval($_POST['require_writing'])){
 
                     //Updating current value if changed:
-                    if(strlen($_POST['written_answer']) && trim($_POST['written_answer'])!=$already_added[0]['LinkText']){
-                        $this->Mench_ledger->update($already_added[0]['LinkId'], array(
-                            'LinkText' => $_POST['written_answer'],
+                    if(strlen($_POST['written_answer']) && trim($_POST['written_answer'])!=$already_added[0]['link_text']){
+                        $this->Mench_ledger->update($already_added[0]['link_id'], array(
+                            'link_text' => $_POST['written_answer'],
                         ));
                     } elseif(!strlen($_POST['written_answer'])){
-                        $this->Mench_ledger->update($already_added[0]['LinkId'], array(
-                            'LinkPrivacy' => 6173, //Transaction Deleted
+                        $this->Mench_ledger->update($already_added[0]['link_id'], array(
+                            'link_privacy' => 6173, //Transaction Deleted
                         ), $player_e['e__id'], 10673 /* Member Transaction Unpublished */);
                     }
 
@@ -2558,8 +2558,8 @@ class App extends CI_Controller
                 } else {
 
                     //Already exists, let's remove:
-                    $this->Mench_ledger->update($already_added[0]['LinkId'], array(
-                        'LinkPrivacy' => 6173, //Transaction Deleted
+                    $this->Mench_ledger->update($already_added[0]['link_id'], array(
+                        'link_privacy' => 6173, //Transaction Deleted
                     ), $player_e['e__id'], 10673 /* Member Transaction Unpublished */);
 
                     return view__json(array(
@@ -2587,11 +2587,11 @@ class App extends CI_Controller
 
                         //Does not exist, Add:
                         $this->Mench_ledger->create(array(
-                            'LinkUp' => $_POST['e__id'],
-                            'LinkDown' => $_POST['LinkPlayer'],
-                            'LinkPlayer' => $player_e['e__id'],
-                            'LinkText' => $_POST['written_answer'],
-                            'LinkType' => 4251,
+                            'link_up' => $_POST['e__id'],
+                            'link_down' => $_POST['link_player'],
+                            'link_player' => $player_e['e__id'],
+                            'link_text' => $_POST['written_answer'],
+                            'link_type' => 4251,
                         ));
 
                         return view__json(array(
@@ -2648,16 +2648,16 @@ class App extends CI_Controller
 
 
         //Search for email/phone to see if it exists
-        $LinkPlayer = 0;
+        $link_player = 0;
         foreach($this->Mench_ledger->fetch(array(
-            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-            'LinkText' => $_POST['account_email_phone'],
-            'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-            'LinkUp' => ( filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783 ), //Email / Phone
+            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+            'link_text' => $_POST['account_email_phone'],
+            'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+            'link_up' => ( filter_var($_POST['account_email_phone'], FILTER_VALIDATE_EMAIL) ? 3288 : 4783 ), //Email / Phone
             'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-        ), array('LinkDown')) as $map_e){
+        ), array('link_down')) as $map_e){
             $u = $map_e;
-            $LinkPlayer = $map_e['e__id'];
+            $link_player = $map_e['e__id'];
             break;
         }
 
@@ -2675,17 +2675,17 @@ class App extends CI_Controller
         if($valid_email) {
 
             //Email:
-            dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $LinkPlayer, array(), 0, 0, false);
+            dispatch_email(array($_POST['account_email_phone']), $html_message, '<div class="line">'.$html_message.'</div>', $link_player, array(), 0, 0, false);
 
 
             //Log new key:
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $LinkPlayer, //Member making request
-                'LinkLeft' => intval($_POST['sign_i__id']),
-                'LinkType' => 32078, //Sign In Key
-                'LinkPrivacy' => 6175, //Pending until used (if used)
-                'LinkText' => $_POST['account_email_phone'],
-                'LinkMetadata' => array(
+                'link_player' => $link_player, //Member making request
+                'link_left' => intval($_POST['sign_i__id']),
+                'link_type' => 32078, //Sign In Key
+                'link_privacy' => 6175, //Pending until used (if used)
+                'link_text' => $_POST['account_email_phone'],
+                'link_metadata' => array(
                     'hash_code' => md5($session_key.$passcode),
                 ),
             ));
@@ -2697,12 +2697,12 @@ class App extends CI_Controller
 
             //Log new key:
             $this->Mench_ledger->create(array(
-                'LinkPlayer' => $LinkPlayer, //Member making request
-                'LinkLeft' => intval($_POST['sign_i__id']),
-                'LinkType' => 32078, //Sign In Key
-                'LinkPrivacy' => 6175, //Pending until used (if used)
-                'LinkText' => $_POST['account_email_phone'],
-                'LinkMetadata' => array(
+                'link_player' => $link_player, //Member making request
+                'link_left' => intval($_POST['sign_i__id']),
+                'link_type' => 32078, //Sign In Key
+                'link_privacy' => 6175, //Pending until used (if used)
+                'link_text' => $_POST['account_email_phone'],
+                'link_metadata' => array(
                     'hash_code' => md5($session_key.$passcode),
                 ),
             ));
@@ -2711,9 +2711,9 @@ class App extends CI_Controller
 
         return view__json(array(
             'status' => 1,
-            'account_id' => $LinkPlayer,
+            'account_id' => $link_player,
             'valid_email' => ( $valid_email ? 1 : 0 ),
-            'account_preview' => ( $LinkPlayer ? '<span class="icon-block">'.view__cover($u['e__cover'], true). '</span>'.$u['e__title'] : '' ),
+            'account_preview' => ( $link_player ? '<span class="icon-block">'.view__cover($u['e__cover'], true). '</span>'.$u['e__title'] : '' ),
             'clean_contact' => $_POST['account_email_phone'],
         ));
 
@@ -2800,11 +2800,11 @@ class App extends CI_Controller
         //Log Modal View
         $player_e = superpower_unlocked(null, 0, $this->player_e);
         $this->Mench_ledger->create(array(
-            'LinkPlayer' => ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 ),
-            'LinkType' => 14576, //MODAL VIEWED
-            'LinkUp' => $_POST['apply_id'],
-            'LinkDown' => ( $_POST['apply_id']==4997 ? $_POST['s__id'] : 0 ),
-            'LinkRight' => ( $_POST['apply_id']==12589 ? $_POST['s__id'] : 0 ),
+            'link_player' => ( isset($player_e['e__id']) ? $player_e['e__id'] : 0 ),
+            'link_type' => 14576, //MODAL VIEWED
+            'link_up' => $_POST['apply_id'],
+            'link_down' => ( $_POST['apply_id']==4997 ? $_POST['s__id'] : 0 ),
+            'link_right' => ( $_POST['apply_id']==12589 ? $_POST['s__id'] : 0 ),
         ));
 
         if(!isset($_POST['apply_id']) || !isset($_POST['s__id'])){
@@ -2832,11 +2832,11 @@ class App extends CI_Controller
 
                 //idea list:
                 $is_next = $this->Mench_ledger->fetch(array(
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                    'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                     'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
-                    'LinkType IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                    'LinkLeft' => $_POST['s__id'],
-                ), array('LinkRight'), 0, 0, array('LinkNumber' => 'ASC'));
+                    'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                    'link_left' => $_POST['s__id'],
+                ), array('link_right'), 0, 0, array('link_number' => 'ASC'));
                 $counter = count($is_next);
 
                 if(!$counter){
@@ -2878,12 +2878,12 @@ class App extends CI_Controller
             ));
             $focus_e = $focus_es[0];
 
-            foreach(view__e_covers($_POST['LinkType'], $_POST['focus__id'], $_POST['current_page']) as $s) {
-                if (in_array($_POST['LinkType'], $this->config->item('n___11028'))) {
-                    echo view__card_e($_POST['LinkType'], $s);
+            foreach(view__e_covers($_POST['link_type'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+                if (in_array($_POST['link_type'], $this->config->item('n___11028'))) {
+                    echo view__card_e($_POST['link_type'], $s);
                     $success = true;
-                } else if ($_POST['LinkType']==6255 || in_array($_POST['LinkType'], $this->config->item('n___42284')) || in_array($_POST['LinkType'], $this->config->item('n___42261')) || in_array($_POST['LinkType'], $this->config->item('n___11020'))) {
-                    echo view__card_i($_POST['LinkType'], $s, $previous_i, null, $focus_e['e__id']);
+                } else if ($_POST['link_type']==6255 || in_array($_POST['link_type'], $this->config->item('n___42284')) || in_array($_POST['link_type'], $this->config->item('n___42261')) || in_array($_POST['link_type'], $this->config->item('n___11020'))) {
+                    echo view__card_i($_POST['link_type'], $s, $previous_i, null, $focus_e['e__id']);
                     $success = true;
                 }
             }
@@ -2896,12 +2896,12 @@ class App extends CI_Controller
             ));
             $previous_i = $previous_is[0];
 
-            foreach(view__i_covers($_POST['LinkType'], $_POST['focus__id'], $_POST['current_page']) as $s) {
-                if (in_array($_POST['LinkType'], $this->config->item('n___11020'))) {
-                    echo view__card_i($_POST['LinkType'], $s, $previous_i, null, $focus_e['e__id']);
+            foreach(view__i_covers($_POST['link_type'], $_POST['focus__id'], $_POST['current_page']) as $s) {
+                if (in_array($_POST['link_type'], $this->config->item('n___11020'))) {
+                    echo view__card_i($_POST['link_type'], $s, $previous_i, null, $focus_e['e__id']);
                     $success = true;
-                } else if ($_POST['LinkType']==6255 || in_array($_POST['LinkType'], $this->config->item('n___42261')) || in_array($_POST['LinkType'], $this->config->item('n___42284')) || in_array($_POST['LinkType'], $this->config->item('n___11028'))) {
-                    echo view__card_e($_POST['LinkType'], $s);
+                } else if ($_POST['link_type']==6255 || in_array($_POST['link_type'], $this->config->item('n___42261')) || in_array($_POST['link_type'], $this->config->item('n___42284')) || in_array($_POST['link_type'], $this->config->item('n___11028'))) {
+                    echo view__card_e($_POST['link_type'], $s);
                     $success = true;
                 }
             }
@@ -2940,26 +2940,26 @@ class App extends CI_Controller
             //Ideas order based on alphabetical order
             $order = 0;
             foreach($this->Mench_ledger->fetch(array(
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                'LinkType IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                'LinkLeft' => $_POST['focus__id'],
-            ), array('LinkRight'), 0, 0, array('i__message' => 'ASC')) as $x) {
+                'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                'link_left' => $_POST['focus__id'],
+            ), array('link_right'), 0, 0, array('i__message' => 'ASC')) as $x) {
                 $order++;
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkNumber' => $order,
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_number' => $order,
                 ), $player_e['e__id'], 13007 /* SOURCE SORT RESET */);
             }
         } elseif($_POST['focus__node']==12274){
             //Sources reset order
             foreach($this->Mench_ledger->fetch(array(
-                'LinkUp' => $_POST['focus__id'],
-                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                'link_up' => $_POST['focus__id'],
+                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
                 'e__privacy IN (' . join(',', $this->config->item('n___7358')) . ')' => null, //ACTIVE
-            ), array('LinkDown'), 0, 0) as $x) {
-                $this->Mench_ledger->update($x['LinkId'], array(
-                    'LinkNumber' => 0,
+            ), array('link_down'), 0, 0) as $x) {
+                $this->Mench_ledger->update($x['link_id'], array(
+                    'link_number' => 0,
                 ), $player_e['e__id'], 13007 /* SOURCE SORT RESET */);
             }
         }
@@ -3042,15 +3042,15 @@ class App extends CI_Controller
                 //How about the min selection?
                 if($i_required && !$is_single_selection){
                     foreach($this->Mench_ledger->fetch(array(
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                        'LinkRight' => $focus_i['i__id'],
-                        'LinkUp' => 40834, //Min Selection
+                        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'link_type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                        'link_right' => $focus_i['i__id'],
+                        'link_up' => 40834, //Min Selection
                     ), array(), 1) as $limit){
-                        if(intval($limit['LinkText']) > 0 && $total_selected < intval($limit['LinkText'])){
+                        if(intval($limit['link_text']) > 0 && $total_selected < intval($limit['link_text'])){
                             return view__json(array(
                                 'status' => 0,
-                                'message' => 'Select '.$limit['LinkText'].' or more ideas to go next.',
+                                'message' => 'Select '.$limit['link_text'].' or more ideas to go next.',
                             ));
                         }
                     }
@@ -3060,15 +3060,15 @@ class App extends CI_Controller
                 //How about max selection?
                 if(!$is_single_selection){
                     foreach($this->Mench_ledger->fetch(array(
-                        'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                        'LinkType IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
-                        'LinkRight' => $focus_i['i__id'],
-                        'LinkUp' => 40833, //Max Selection
+                        'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                        'link_type IN (' . join(',', $this->config->item('n___42991')) . ')' => null, //Active Writes
+                        'link_right' => $focus_i['i__id'],
+                        'link_up' => 40833, //Max Selection
                     ), array(), 1) as $limit){
-                        if(intval($limit['LinkText']) > 0 && $total_selected > intval($limit['LinkText'])){
+                        if(intval($limit['link_text']) > 0 && $total_selected > intval($limit['link_text'])){
                             return view__json(array(
                                 'status' => 0,
-                                'message' => 'You cannot select more than '.$limit['LinkText'].' items.',
+                                'message' => 'You cannot select more than '.$limit['link_text'].' items.',
                             ));
                         }
                     }
@@ -3079,11 +3079,11 @@ class App extends CI_Controller
                 $already_answered = array();
                 foreach($this->Mench_ledger->fetch(array(
                     'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                    'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                    'LinkType' => 7712, //Input Choice
-                    'LinkPlayer' => $player_e['e__id'],
-                    'LinkLeft' => $focus_i['i__id'],
-                ), array('LinkRight')) as $x_selection){
+                    'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                    'link_type' => 7712, //Input Choice
+                    'link_player' => $player_e['e__id'],
+                    'link_left' => $focus_i['i__id'],
+                ), array('link_right')) as $x_selection){
 
                     if(in_array($x_selection['i__id'], $_POST['selection_i__id'])){
                         //Current selection is already in the database from before:
@@ -3091,21 +3091,21 @@ class App extends CI_Controller
                         continue; //Nothing we need to do here...
                     }
 
-                    $this->Mench_ledger->update($x_selection['LinkId'], array(
-                        'LinkPrivacy' => 6173, //Transaction Deleted
+                    $this->Mench_ledger->update($x_selection['link_id'], array(
+                        'link_privacy' => 6173, //Transaction Deleted
                     ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
 
 
                     //Remove discovery if we can:
                     if(!in_array($x_selection['i__type'], $this->config->item('n___42905'))){
                         foreach($this->Mench_ledger->fetch(array(
-                            'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                            'LinkType IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
-                            'LinkLeft' => $x_selection['i__id'],
-                            'LinkPlayer' => $player_e['e__id'],
+                            'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                            'link_type IN (' . join(',', $this->config->item('n___6255')) . ')' => null, //DISCOVERIES
+                            'link_left' => $x_selection['i__id'],
+                            'link_player' => $player_e['e__id'],
                         ), array(), 0) as $x_discovery){
-                            $this->Mench_ledger->update($x_discovery['LinkId'], array(
-                                'LinkPrivacy' => 6173, //Transaction Deleted
+                            $this->Mench_ledger->update($x_discovery['link_id'], array(
+                                'link_privacy' => 6173, //Transaction Deleted
                             ), $player_e['e__id'], 12129 /* DISCOVERY ANSWER DELETED */);
                         }
                     }
@@ -3115,10 +3115,10 @@ class App extends CI_Controller
                 foreach($_POST['selection_i__id'] as $answer_i__id){
                     if(!in_array($answer_i__id, $already_answered)){
                         $this->Mench_ledger->create(array(
-                            'LinkType' => 7712, //Input Choice
-                            'LinkPlayer' => $player_e['e__id'],
-                            'LinkLeft' => $focus_i['i__id'],
-                            'LinkRight' => $answer_i__id,
+                            'link_type' => 7712, //Input Choice
+                            'link_player' => $player_e['e__id'],
+                            'link_left' => $focus_i['i__id'],
+                            'link_right' => $answer_i__id,
                         ));
                     }
                 }
@@ -3127,7 +3127,7 @@ class App extends CI_Controller
 
             //Issue DISCOVERY/IDEA COIN:
             $completion_status = $this->Mench_ledger->mark_complete(i__discovery_link($focus_i, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $focus_i, $_POST['focus_i_data'], array(
-                'LinkNumber' => $_POST['focus_i_data']['i__quantity'],
+                'link_number' => $_POST['focus_i_data']['i__quantity'],
             ));
             if(!$completion_status['status']){
                 //We had an error with data within target_i__id:
@@ -3160,12 +3160,12 @@ class App extends CI_Controller
 
                     //Can we auto-complete?
                     if(in_array($i_next['i__type'], $this->config->item('n___43039')) || (!strlen($next_i_data['i__text']) && !count($next_i_data['uploaded_media']) && count($this->Mench_ledger->fetch(array(
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
                                 'i__privacy IN (' . join(',', $this->config->item('n___42948')) . ')' => null, //Public Ideas
                                 'i__type IN (' . join(',', $this->config->item('n___43050')) . ')' => null, //Input Required Ideas
-                                'LinkType IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
-                                'LinkLeft' => $i_next['i__id'],
-                            ), array('LinkRight'), 0, 0)))){
+                                'link_type IN (' . join(',', $this->config->item('n___42267')) . ')' => null, //IDEA LINKS
+                                'link_left' => $i_next['i__id'],
+                            ), array('link_right'), 0, 0)))){
                         //Focus Discovery only, so must go to next level:
                         continue;
                     }
@@ -3179,7 +3179,7 @@ class App extends CI_Controller
                     if(!($i_required && $trying_to_skip)){
                         //Try to complete:
                         $completion_status = $this->Mench_ledger->mark_complete(i__discovery_link($i_next, $trying_to_skip), $player_e['e__id'], $_POST['target_i__id'], $i_next, $next_i_data, array(
-                            'LinkNumber' => $next_i_data['i__quantity'],
+                            'link_number' => $next_i_data['i__quantity'],
                         ));
                         if($i_required && !$completion_status['status']){
                             //We had an error with data within target_i__id:
@@ -3219,7 +3219,7 @@ class App extends CI_Controller
 
     function x_update_instant_select(){
 
-        if(!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_e__id']) || !isset($_POST['migrate_s__handle']) || !isset($_POST['LinkId'])){
+        if(!isset($_POST['focus__id']) || !isset($_POST['o__id']) || !isset($_POST['element_id']) || !isset($_POST['new_e__id']) || !isset($_POST['migrate_s__handle']) || !isset($_POST['link_id'])){
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing core data',
@@ -3254,11 +3254,11 @@ class App extends CI_Controller
         if(is_array($_POST['o__id'])){
             $mass_result = array();
             foreach($_POST['o__id'] as $o__id){
-                array_push($mass_result, $this->Mench_ledger->x_update_instant_select($_POST['focus__id'],$o__id,$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['LinkId']));
+                array_push($mass_result, $this->Mench_ledger->x_update_instant_select($_POST['focus__id'],$o__id,$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['link_id']));
             }
             return view__json($mass_result);
         } else {
-            return view__json($this->Mench_ledger->x_update_instant_select($_POST['focus__id'],$_POST['o__id'],$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['LinkId']));
+            return view__json($this->Mench_ledger->x_update_instant_select($_POST['focus__id'],$_POST['o__id'],$_POST['element_id'],$_POST['new_e__id'],$_POST['migrate_s__handle'],$_POST['link_id']));
         }
 
     }
@@ -3281,7 +3281,7 @@ class App extends CI_Controller
                 'message' => 'Missing Idea ID',
             ));
 
-        } elseif (!isset($_POST['LinkType'])) {
+        } elseif (!isset($_POST['link_type'])) {
 
             return view__json(array(
                 'status' => 0,
@@ -3310,17 +3310,17 @@ class App extends CI_Controller
 
         //Save IDEA:
         $x = $this->Mench_ledger->create(array(
-            'LinkPlayer' => $player_e['e__id'],
-            'LinkUp' => $player_e['e__id'],
-            'LinkLeft' => $_POST['target_i__id'],
-            'LinkRight' => $_POST['i__id'],
-            'LinkType' => $_POST['LinkType'],
+            'link_player' => $player_e['e__id'],
+            'link_up' => $player_e['e__id'],
+            'link_left' => $_POST['target_i__id'],
+            'link_right' => $_POST['i__id'],
+            'link_type' => $_POST['link_type'],
         ));
 
         //All Good:
         return view__json(array(
             'status' => 1,
-            'LinkId' => $x['LinkId'],
+            'link_id' => $x['link_id'],
         ));
 
     }
@@ -3343,7 +3343,7 @@ class App extends CI_Controller
                 'status' => 0,
                 'message' => view__unauthorized_message(),
             ));
-        } elseif (!isset($_POST['LinkId']) || intval($_POST['LinkId']) < 1) {
+        } elseif (!isset($_POST['link_id']) || intval($_POST['link_id']) < 1) {
             return view__json(array(
                 'status' => 0,
                 'message' => 'Missing Link ID',
@@ -3351,8 +3351,8 @@ class App extends CI_Controller
         }
 
         //Remove Idea
-        $this->Mench_ledger->update($_POST['LinkId'], array(
-            'LinkPrivacy' => 6173, //DELETED
+        $this->Mench_ledger->update($_POST['link_id'], array(
+            'link_privacy' => 6173, //DELETED
         ), $player_e['e__id'], 10673);
 
         return view__json(array(
@@ -3379,7 +3379,7 @@ class App extends CI_Controller
 
         //Fetch transactions and total transaction counts:
         $x = $this->Mench_ledger->fetch($query_filters, $joined_by, view__memory(6404,11064), $query_offset);
-        $x_count = $this->Mench_ledger->fetch($query_filters, $joined_by, 0, 0, array(), 'COUNT(LinkId) as total_count');
+        $x_count = $this->Mench_ledger->fetch($query_filters, $joined_by, 0, 0, array(), 'COUNT(link_id) as total_count');
         $total_items_loaded = ($query_offset+count($x));
         $has_more_x = ($x_count[0]['total_count'] > 0 && $total_items_loaded < $x_count[0]['total_count']);
 
@@ -3400,15 +3400,15 @@ class App extends CI_Controller
 
                 $message .= view__card_x($x);
 
-                if($player_e && strlen($x['LinkText'])>0 && strlen($_POST['LinkText_find'])>0 && strlen($_POST['LinkText_replace'])>0 && substr_count($x['LinkText'], $_POST['LinkText_find'])>0){
+                if($player_e && strlen($x['link_text'])>0 && strlen($_POST['link_text_find'])>0 && strlen($_POST['link_text_replace'])>0 && substr_count($x['link_text'], $_POST['link_text_find'])>0){
 
-                    $new_content = str_replace($_POST['LinkText_find'],trim($_POST['LinkText_replace']),$x['LinkText']);
+                    $new_content = str_replace($_POST['link_text_find'],trim($_POST['link_text_replace']),$x['link_text']);
 
-                    $this->Mench_ledger->update($x['LinkId'], array(
-                        'LinkText' => $new_content,
-                    ), $player_e['e__id'], 12360, update_description($x['LinkText'], $new_content));
+                    $this->Mench_ledger->update($x['link_id'], array(
+                        'link_text' => $new_content,
+                    ), $player_e['e__id'], 12360, update_description($x['link_text'], $new_content));
 
-                    $message .= '<div class="alert alert-info" role="alert"><i class="far fa-check-circle"></i> Replaced ['.$_POST['LinkText_find'].'] with ['.trim($_POST['LinkText_replace']).']</div>';
+                    $message .= '<div class="alert alert-info" role="alert"><i class="far fa-check-circle"></i> Replaced ['.$_POST['link_text_find'].'] with ['.trim($_POST['link_text_replace']).']</div>';
 
                 }
 
@@ -3484,34 +3484,34 @@ class App extends CI_Controller
 
         //Count transactions:
         $return_array = array();
-        foreach($this->config->item('e___33292') as $LinkType1 => $m1) { //Gameplay
+        foreach($this->config->item('e___33292') as $link_type1 => $m1) { //Gameplay
             $level1_total = 0;
-            foreach($this->config->item('e___'.$LinkType1) as $LinkType2 => $m2) { //Nodes/Links
+            foreach($this->config->item('e___'.$link_type1) as $link_type2 => $m2) { //Nodes/Links
 
-                $e_pinned = e_pinned($LinkType2, true);
+                $e_pinned = e_pinned($link_type2, true);
                 $level2_total = 0;
                 if(!is_array($this->config->item('e___'.$e_pinned)) || !count($this->config->item('e___'.$e_pinned)) ){
                     continue;
                 }
-                foreach($this->config->item('e___'.$e_pinned) as $LinkType3 => $m3) { //Source/Idea/Discovery
+                foreach($this->config->item('e___'.$e_pinned) as $link_type3 => $m3) { //Source/Idea/Discovery
 
-                    if($LinkType2==12273){
+                    if($link_type2==12273){
 
                         if($has_handle){
 
                             $sub_counter = $this->Mench_ledger->fetch(array(
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'LinkType IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                                'LinkUp' => $es[0]['e__id'],
-                                'i__type' => $LinkType3,
+                                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                                'link_up' => $es[0]['e__id'],
+                                'i__type' => $link_type3,
                                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
-                            ), array('LinkRight'), 0, 0, array(), 'COUNT(LinkId) as totals');
+                            ), array('link_right'), 0, 0, array(), 'COUNT(link_id) as totals');
 
                         } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->Idea_cache->fetch(array(
-                                'i__type' => $LinkType3,
+                                'i__type' => $link_type3,
                                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                                 'i__id IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
                             ), 0, 0, array(), 'COUNT(i__id) as totals');
@@ -3519,37 +3519,37 @@ class App extends CI_Controller
                         } else {
 
                             $sub_counter = $this->Idea_cache->fetch(array(
-                                'i__type' => $LinkType3,
+                                'i__type' => $link_type3,
                                 'i__privacy IN (' . join(',', $this->config->item('n___31871')) . ')' => null, //ACTIVE
                             ), 0, 0, array(), 'COUNT(i__id) as totals');
 
                         }
 
-                    } elseif($LinkType2==12274){
+                    } elseif($link_type2==12274){
 
                         if($has_handle){
 
                             $sub_counter = $this->Mench_ledger->fetch(array(
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'LinkType IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
-                                'LinkUp' => $es[0]['e__id'],
-                                'e__privacy' => $LinkType3,
-                            ), array('LinkDown'), 0, 0, array(), 'COUNT(LinkId) as totals');
+                                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'link_type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
+                                'link_up' => $es[0]['e__id'],
+                                'e__privacy' => $link_type3,
+                            ), array('link_down'), 0, 0, array(), 'COUNT(link_id) as totals');
 
                         } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             //See stats for this idea:
                             $sub_counter = $this->Mench_ledger->fetch(array(
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
-                                'LinkType IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
-                                'LinkRight IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
-                                'e__privacy' => $LinkType3,
-                            ), array('LinkUp'), 0, 0, array(), 'COUNT(LinkId) as totals');
+                                'link_privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
+                                'link_type IN (' . join(',', $this->config->item('n___33602')) . ')' => null, //Idea/Source Links Active
+                                'link_right IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ')' => null,
+                                'e__privacy' => $link_type3,
+                            ), array('link_up'), 0, 0, array(), 'COUNT(link_id) as totals');
 
                         } else {
 
                             $sub_counter = $this->Source_cache->fetch(array(
-                                'e__privacy' => $LinkType3,
+                                'e__privacy' => $link_type3,
                             ), 0, 0, array(), 'COUNT(e__id) as totals');
 
                         }
@@ -3559,41 +3559,41 @@ class App extends CI_Controller
                         if($has_handle){
 
                             $sub_counter = $this->Mench_ledger->fetch(array(
-                                'LinkType' => $LinkType3,
-                                '( LinkDown = ' . $es[0]['e__id'] . ' OR LinkUp = ' . $es[0]['e__id'] . ' OR LinkPlayer = ' . $es[0]['e__id'] . ' )' => null,
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array(), 0, 0, array(), 'COUNT(LinkId) as totals');
+                                'link_type' => $link_type3,
+                                '( link_down = ' . $es[0]['e__id'] . ' OR link_up = ' . $es[0]['e__id'] . ' OR link_player = ' . $es[0]['e__id'] . ' )' => null,
+                                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
 
                         } elseif($has_hashtag && count($recursive_down_ids['recursive_i_ids'])){
 
                             $sub_counter = $this->Mench_ledger->fetch(array(
-                                'LinkType' => $LinkType3,
-                                '( LinkLeft IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ') OR LinkRight IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . '))' => null,
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array(), 0, 0, array(), 'COUNT(LinkId) as totals');
+                                'link_type' => $link_type3,
+                                '( link_left IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . ') OR link_right IN (' . join(',', $recursive_down_ids['recursive_i_ids']) . '))' => null,
+                                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
 
                         } else {
 
                             $sub_counter = $this->Mench_ledger->fetch(array(
-                                'LinkType' => $LinkType3,
-                                'LinkPrivacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-                            ), array(), 0, 0, array(), 'COUNT(LinkId) as totals');
+                                'link_type' => $link_type3,
+                                'link_privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
+                            ), array(), 0, 0, array(), 'COUNT(link_id) as totals');
 
                         }
 
                     }
 
                     $level2_total += $sub_counter[0]['totals'];
-                    $return_array[$LinkType3] = intval($sub_counter[0]['totals']);
+                    $return_array[$link_type3] = intval($sub_counter[0]['totals']);
 
                 }
 
                 $level1_total += $level2_total;
-                $return_array[$LinkType2] = intval($level2_total);
+                $return_array[$link_type2] = intval($level2_total);
 
             }
 
-            $return_array[$LinkType1] = intval($level1_total);
+            $return_array[$link_type1] = intval($level1_total);
 
         }
         return view__json(array(
