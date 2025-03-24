@@ -1622,8 +1622,6 @@ class Mench_ledger extends CIdea_cache
             unset($media['e__weight']);
             unset($media['e__external']);
             unset($media['e__cache']);
-            unset($media['e__cover']);
-
             array_push($i['uploaded_media'], $media);
         }
 
