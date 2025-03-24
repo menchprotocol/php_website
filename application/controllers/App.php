@@ -1749,12 +1749,12 @@ class App extends CI_Controller
         $profile_header = '';
 
         //Fetch Source Templates, if any:
-        `foreach($this->Mench_ledger->fetch(array(
+        foreach($this->Mench_ledger->fetch(array(
             'x__following IN (' . join(',', $this->config->item('n___42178')) . ')' => null, //Dynamic Sources
             'x__follower' => $es[0]['e__id'],
             'x__type IN (' . join(',', $this->config->item('n___32292')) . ')' => null, //SOURCE LINKS
             'x__privacy IN (' . join(',', $this->config->item('n___7360')) . ')' => null, //ACTIVE
-        ), array('x__following'), 0, 0, sort_by(42178)) as $e_group) {`
+        ), array('x__following'), 0, 0, sort_by(42178)) as $e_group) {
 
             if(in_array($e_group['e__id'], $scanned_sources)){
                 continue;
