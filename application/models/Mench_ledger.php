@@ -1587,6 +1587,7 @@ class Mench_ledger extends CIdea_cache
             'x__privacy IN (' . join(',', $this->config->item('n___7359')) . ')' => null, //PUBLIC
             'e__privacy IN (' . join(',', $this->config->item('n___7357')) . ')' => null, //PUBLIC/OWNER
         ), array('x__following'), 0, 0, array('x__weight' => 'ASC')) as $media){
+            unset($media['x__time']);
             unset($media['x__following']);
             unset($media['x__follower']);
             unset($media['x__weight']);
@@ -1601,7 +1602,6 @@ class Mench_ledger extends CIdea_cache
             unset($media['x__id']);
             unset($media['x__reference']);
             unset($media['e__id']);
-            unset($media['e__cover']);
             unset($media['e__title']);
             unset($media['e__handle']);
             unset($media['e__privacy']);
